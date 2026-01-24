@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Menu, X, User } from "lucide-react";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,12 +61,32 @@ const Header = () => {
 
         {/* CTA Buttons */}
         <div className="hidden lg:flex items-center gap-4">
-          <Button variant="ghost" className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10">
-            Login
-          </Button>
-          <Button variant="cta" size="lg">
-            Get Quote
-          </Button>
+          {user ? (
+            <>
+              <Button variant="ghost" className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10" asChild>
+                <Link to="/dashboard">
+                  <User className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Link>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10"
+                onClick={() => signOut()}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="ghost" className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10" asChild>
+                <Link to="/auth">Login</Link>
+              </Button>
+              <Button variant="cta" size="lg" asChild>
+                <Link to="/pricing">Get Quote</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -94,12 +116,35 @@ const Header = () => {
             </Link>
           ))}
           <div className="flex flex-col gap-3 pt-4 border-t border-primary-foreground/20">
-            <Button variant="ghost" className="text-primary-foreground hover:text-secondary justify-start">
-              Login
-            </Button>
-            <Button variant="cta" className="w-full">
-              Get Quote
-            </Button>
+            {user ? (
+              <>
+                <Button variant="ghost" className="text-primary-foreground hover:text-secondary justify-start" asChild>
+                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                    <User className="w-4 h-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </Button>
+                <Button 
+                  variant="cta" 
+                  className="w-full"
+                  onClick={() => {
+                    signOut();
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" className="text-primary-foreground hover:text-secondary justify-start" asChild>
+                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
+                </Button>
+                <Button variant="cta" className="w-full" asChild>
+                  <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)}>Get Quote</Link>
+                </Button>
+              </>
+            )}
           </div>
         </nav>
       </div>
