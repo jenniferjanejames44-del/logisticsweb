@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
+import PayShipmentDialog from "@/components/shipments/PayShipmentDialog";
 import {
   Package,
   Plus,
@@ -21,6 +23,8 @@ import {
   AlertCircle,
   MapPin,
   Calendar,
+  DollarSign,
+  Wallet,
 } from "lucide-react";
 
 interface Shipment {
@@ -36,6 +40,8 @@ interface Shipment {
   estimated_delivery: string | null;
   description: string | null;
   created_at: string;
+  price: number | null;
+  payment_status: string;
 }
 
 const countries = [
@@ -53,12 +59,15 @@ const serviceTypes = [
 const Shipments = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { balance, refetch: refetchBalance } = useWalletBalance(user?.id);
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
   const [formData, setFormData] = useState({
     origin_country: "",
@@ -171,8 +180,36 @@ const Shipments = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const openPaymentDialog = (shipment: Shipment) => {
+    setSelectedShipment(shipment);
+    setPaymentDialogOpen(true);
+  };
+
+  const handlePaymentSuccess = () => {
+    fetchShipments();
+    refetchBalance();
+  };
+
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
+      {/* Balance Card */}
+      <Card className="mb-6 border-border/50 bg-gradient-to-r from-secondary/10 to-secondary/5">
+        <CardContent className="p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-secondary" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Wallet Balance</p>
+              <p className="text-xl font-bold text-foreground">${balance.toFixed(2)}</p>
+            </div>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => window.location.href = "/dashboard/wallet"}>
+            Manage Wallet
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Actions Bar */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1">
@@ -356,11 +393,35 @@ const Shipments = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right space-y-2">
+                    {shipment.price !== null && (
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="font-semibold text-foreground">${Number(shipment.price).toFixed(2)}</span>
+                        {shipment.payment_status === "paid" ? (
+                          <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/30">
+                            Paid
+                          </Badge>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="cta"
+                            onClick={() => openPaymentDialog(shipment)}
+                          >
+                            <DollarSign className="w-4 h-4 mr-1" />
+                            Pay Now
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                    {shipment.price === null && (
+                      <Badge variant="secondary" className="text-xs">
+                        Price Pending
+                      </Badge>
+                    )}
                     <p className="text-sm text-muted-foreground">
                       Created {new Date(shipment.created_at).toLocaleDateString()}
                     </p>
-                    <Badge variant="outline" className="mt-1 capitalize">
+                    <Badge variant="outline" className="capitalize">
                       {shipment.service_type.replace("-", " ")}
                     </Badge>
                   </div>
@@ -387,6 +448,20 @@ const Shipments = () => {
             )}
           </CardContent>
         </Card>
+      )}
+
+      {/* Payment Dialog */}
+      {selectedShipment && selectedShipment.price !== null && (
+        <PayShipmentDialog
+          open={paymentDialogOpen}
+          onOpenChange={setPaymentDialogOpen}
+          shipmentId={selectedShipment.id}
+          trackingNumber={selectedShipment.tracking_number}
+          price={Number(selectedShipment.price)}
+          userBalance={balance}
+          userId={user?.id || ""}
+          onSuccess={handlePaymentSuccess}
+        />
       )}
     </DashboardLayout>
   );

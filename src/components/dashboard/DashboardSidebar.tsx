@@ -13,11 +13,13 @@ import {
   X,
   Shield,
   ChevronRight,
+  Wallet,
 } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
+  { icon: Wallet, label: "Wallet", href: "/dashboard/wallet" },
   { icon: Package, label: "Shipments", href: "/dashboard/shipments" },
   { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
