@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { Menu, X, User } from "lucide-react";
+import { useUserRole } from "@/hooks/useUserRole";
+import { Menu, X, User, Shield } from "lucide-react";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, signOut } = useAuth();
-
+  const { isAdmin } = useUserRole();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -63,6 +64,14 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           {user ? (
             <>
+              {isAdmin && (
+                <Button variant="ghost" className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10" asChild>
+                  <Link to="/admin">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Link>
+                </Button>
+              )}
               <Button variant="ghost" className="text-primary-foreground hover:text-secondary hover:bg-primary-foreground/10" asChild>
                 <Link to="/dashboard">
                   <User className="w-4 h-4 mr-2" />
@@ -118,6 +127,14 @@ const Header = () => {
           <div className="flex flex-col gap-3 pt-4 border-t border-primary-foreground/20">
             {user ? (
               <>
+                {isAdmin && (
+                  <Button variant="ghost" className="text-primary-foreground hover:text-secondary justify-start" asChild>
+                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Shield className="w-4 h-4 mr-2" />
+                      Admin
+                    </Link>
+                  </Button>
+                )}
                 <Button variant="ghost" className="text-primary-foreground hover:text-secondary justify-start" asChild>
                   <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                     <User className="w-4 h-4 mr-2" />
