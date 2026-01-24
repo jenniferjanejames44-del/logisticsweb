@@ -41,7 +41,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2 } from "lucide-react";
+import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -80,6 +80,14 @@ const AdminUsers = () => {
   const [newAdminPassword, setNewAdminPassword] = useState("");
   const [newAdminName, setNewAdminName] = useState("");
   const [creatingAdmin, setCreatingAdmin] = useState(false);
+  
+  // Reset password state
+  const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
+  const [resetPasswordUserId, setResetPasswordUserId] = useState<string | null>(null);
+  const [resetPasswordUserName, setResetPasswordUserName] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [resettingPassword, setResettingPassword] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -256,6 +264,69 @@ const AdminUsers = () => {
     } finally {
       setCreatingAdmin(false);
     }
+  };
+
+  const handleResetPassword = async () => {
+    if (!resetPasswordUserId || !newPassword) {
+      toast.error("New password is required");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    setResettingPassword(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            userId: resetPasswordUserId,
+            newPassword,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to reset password");
+      }
+
+      toast.success("Password reset successfully!");
+      setResetPasswordOpen(false);
+      setResetPasswordUserId(null);
+      setResetPasswordUserName("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error: any) {
+      console.error("Error resetting password:", error);
+      toast.error(error.message || "Failed to reset password");
+    } finally {
+      setResettingPassword(false);
+    }
+  };
+
+  const openResetPasswordDialog = (userId: string, userName: string) => {
+    setResetPasswordUserId(userId);
+    setResetPasswordUserName(userName);
+    setNewPassword("");
+    setConfirmPassword("");
+    setResetPasswordOpen(true);
   };
 
   const getDeviceIcon = (deviceType: string | null) => {
@@ -499,12 +570,21 @@ const AdminUsers = () => {
                                 <SelectItem value="admin">Admin</SelectItem>
                               </SelectContent>
                             </Select>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")}
+                              title="Reset Password"
+                            >
+                              <KeyRound className="w-4 h-4" />
+                            </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                 <Button
                                   variant="destructive"
                                   size="icon"
                                   disabled={deletingUserId === user.user_id}
+                                  title="Delete User"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
@@ -539,6 +619,58 @@ const AdminUsers = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Reset Password Dialog */}
+        <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Reset Password</DialogTitle>
+              <DialogDescription>
+                Set a new password for {resetPasswordUserName}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="new-password">New Password *</Label>
+                <Input
+                  id="new-password"
+                  type="password"
+                  placeholder="Enter new password (min 6 characters)"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password">Confirm Password *</Label>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setResetPasswordOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleResetPassword} disabled={resettingPassword}>
+                {resettingPassword ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Resetting...
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="w-4 h-4 mr-2" />
+                    Reset Password
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
