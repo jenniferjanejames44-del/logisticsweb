@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRole } from "@/hooks/useUserRole";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -19,14 +20,19 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   const { signIn, signUp, user } = useAuth();
+  const { isAdmin, loading: roleLoading } = useUserRole();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (user) {
-      navigate("/dashboard");
+    if (user && !roleLoading) {
+      if (isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     }
-  }, [user, navigate]);
+  }, [user, isAdmin, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +46,7 @@ const Auth = () => {
           title: "Welcome back!",
           description: "You have been signed in successfully.",
         });
-        navigate("/dashboard");
+        // Navigation handled by useEffect based on role
       } else {
         if (!fullName.trim()) {
           throw new Error("Please enter your full name");
@@ -51,7 +57,7 @@ const Auth = () => {
           title: "Account created!",
           description: "Welcome to RAC Logistics. You can now access your dashboard.",
         });
-        navigate("/dashboard");
+        // Navigation handled by useEffect based on role
       }
     } catch (error: any) {
       toast({
