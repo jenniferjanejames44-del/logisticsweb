@@ -3,7 +3,7 @@ import { useInView } from "@/hooks/useInView";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-// Premium service cards with images
+// Premium service cards with real logistics images
 const services = [
   {
     title: "Air Shipping",
@@ -47,33 +47,33 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-16 sm:py-24 md:py-32 bg-section-gradient relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-secondary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-40 sm:w-80 h-40 sm:h-80 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+    <section ref={ref} className="py-20 sm:py-28 lg:py-36 bg-muted/30 relative overflow-hidden">
+      {/* Subtle background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Premium Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <span
-            className={`inline-block text-secondary font-bold text-xs sm:text-sm tracking-widest uppercase mb-3 sm:mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-bold text-sm tracking-widest uppercase mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             What We Offer
           </span>
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-foreground mb-4 sm:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 leading-tight ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Comprehensive Logistics{" "}
-            <span className="bg-gradient-to-r from-secondary to-[hsl(40,100%,55%)] bg-clip-text text-transparent">
+            <span className="text-secondary">
               Solutions
             </span>
           </h2>
           <p
-            className={`text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
+            className={`text-lg md:text-xl text-foreground/70 leading-relaxed transition-all duration-700 delay-200 font-medium ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -82,65 +82,66 @@ const ServicesSection = () => {
           </p>
         </div>
 
-        {/* Premium Services Grid with Images */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+        {/* Services Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-2xl sm:rounded-3xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 ${
+              className={`group relative bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 border border-border/50 ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              {/* Image Container with Zoom Effect */}
-              <div className="relative h-40 sm:h-56 overflow-hidden">
+              {/* Image Container - Same aspect ratio */}
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
                 />
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+                {/* Gradient Overlay for readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/30 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
                 
-                {/* Hover overlay with icon */}
+                {/* Hover overlay */}
                 <div className="absolute inset-0 bg-secondary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <ArrowRight size={36} className="sm:w-12 sm:h-12 text-secondary-foreground" />
+                    <ArrowRight size={48} className="text-secondary-foreground" />
                   </div>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-5 sm:p-8">
-                <h3 className="text-lg sm:text-2xl font-heading font-bold text-foreground mb-2 sm:mb-3 group-hover:text-secondary transition-colors duration-300">
+              <div className="p-6 sm:p-8">
+                <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground mb-3 group-hover:text-secondary transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed mb-3 sm:mb-5 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
+                <p className="text-foreground/60 leading-relaxed mb-5 text-base">
                   {service.description}
                 </p>
 
                 {/* Learn More Link */}
-                <div className="flex items-center gap-2 text-secondary font-semibold text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-secondary font-bold">
                   <span>Learn More</span>
                   <ArrowRight
-                    size={16}
-                    className="sm:w-[18px] sm:h-[18px] group-hover:translate-x-2 transition-transform duration-300"
+                    size={18}
+                    className="group-hover:translate-x-2 transition-transform duration-300"
                   />
                 </div>
               </div>
 
               {/* Bottom accent line */}
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary via-secondary to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </Link>
           ))}
         </div>
 
         {/* CTA Button */}
         <div
-          className={`text-center mt-16 transition-all duration-700 delay-700 ${
+          className={`text-center mt-16 sm:mt-20 transition-all duration-700 delay-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >

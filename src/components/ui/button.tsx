@@ -5,105 +5,108 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-[0.97]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: [
           "bg-primary text-primary-foreground",
-          "shadow-md hover:shadow-xl",
+          "shadow-lg hover:shadow-xl",
           "hover:bg-primary/90 hover:-translate-y-1",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity",
+          "active:translate-y-0 active:scale-[0.98]",
           "relative overflow-hidden",
         ].join(" "),
         destructive: [
           "bg-destructive text-destructive-foreground",
-          "shadow-md hover:shadow-xl",
+          "shadow-lg hover:shadow-xl",
           "hover:bg-destructive/90 hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.98]",
           "relative overflow-hidden",
         ].join(" "),
         outline: [
-          "border-2 border-input bg-background",
-          "hover:bg-accent hover:text-accent-foreground hover:border-primary/50",
+          "border-2 border-border bg-background text-foreground",
+          "hover:bg-muted hover:border-primary/40",
           "hover:-translate-y-0.5 hover:shadow-md",
+          "active:translate-y-0 active:scale-[0.98]",
         ].join(" "),
         secondary: [
-          "bg-secondary text-secondary-foreground",
-          "shadow-md hover:shadow-yellow",
-          "hover:bg-secondary/90 hover:-translate-y-1",
-          "relative overflow-hidden",
+          "bg-muted text-foreground",
+          "shadow-md hover:shadow-lg",
+          "hover:bg-muted/80 hover:-translate-y-0.5",
+          "active:translate-y-0 active:scale-[0.98]",
         ].join(" "),
-        ghost: "hover:bg-accent hover:text-accent-foreground hover:scale-105",
+        ghost: "hover:bg-muted hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
         
-        // Premium RAC Logistics variants - Enhanced with dynamic effects
+        /* Premium CTA - Yellow button with dark text */
         cta: [
           "bg-secondary text-secondary-foreground font-bold",
           "shadow-button hover:shadow-button-hover",
-          "hover:-translate-y-1.5 hover:scale-[1.03]",
+          "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/20 before:to-white/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity",
+          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/15 before:to-white/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
           "relative overflow-hidden",
-          "transition-all duration-300 ease-out",
         ].join(" "),
         
+        /* CTA Outline - Dark outline with yellow hover */
         ctaOutline: [
-          "border-2 border-secondary bg-transparent text-secondary font-bold",
-          "hover:bg-secondary hover:text-secondary-foreground",
-          "hover:-translate-y-1.5 hover:shadow-yellow",
-          "active:translate-y-0",
-          "transition-all duration-300 ease-out",
-        ].join(" "),
-        
-        heroOutline: [
-          "border-2 border-primary-foreground/40 bg-transparent text-primary-foreground font-semibold",
-          "hover:bg-primary-foreground/10 hover:border-secondary hover:text-secondary",
+          "border-2 border-primary bg-transparent text-primary font-bold",
+          "hover:bg-primary hover:text-primary-foreground",
           "hover:-translate-y-1.5 hover:shadow-lg",
-          "transition-all duration-300 ease-out",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
+        /* Hero Outline - For dark backgrounds */
+        heroOutline: [
+          "border-2 border-white/30 bg-white/5 text-white font-semibold",
+          "hover:bg-white/10 hover:border-secondary hover:text-secondary",
+          "hover:-translate-y-1.5 hover:shadow-lg",
+          "active:translate-y-0 active:scale-[0.97]",
+          "backdrop-blur-sm",
+        ].join(" "),
+        
+        /* Nav CTA - Compact yellow button */
         navCta: [
           "bg-secondary text-secondary-foreground font-bold",
           "shadow-button hover:shadow-button-hover",
-          "hover:-translate-y-1 hover:scale-[1.03]",
-          "transition-all duration-300 ease-out",
+          "hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
+        /* Premium Gradient Button */
         premium: [
           "bg-gradient-to-r from-secondary to-[hsl(40,100%,55%)] text-secondary-foreground font-bold",
           "shadow-yellow hover:shadow-yellow-lg",
-          "hover:-translate-y-1.5 hover:scale-[1.03]",
+          "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity",
+          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
           "relative overflow-hidden",
-          "transition-all duration-300 ease-out",
         ].join(" "),
         
+        /* Navy Outline */
         navyOutline: [
           "border-2 border-primary bg-transparent text-primary font-semibold",
           "hover:bg-primary hover:text-primary-foreground",
           "hover:-translate-y-1.5 hover:shadow-lg",
-          "active:translate-y-0",
-          "transition-all duration-300 ease-out",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
 
-        // New dynamic variant
+        /* Dynamic gradient effect */
         dynamic: [
           "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-bold",
           "shadow-lg hover:shadow-xl",
-          "hover:-translate-y-1.5 hover:scale-[1.02]",
+          "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
           "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500",
           "relative overflow-hidden",
-          "transition-all duration-300 ease-out",
         ].join(" "),
       },
       size: {
-        default: "h-10 sm:h-11 px-4 sm:px-5 py-2 sm:py-2.5 text-sm",
-        sm: "h-8 sm:h-9 rounded-lg px-3 sm:px-4 text-xs",
-        lg: "h-11 sm:h-12 rounded-xl px-6 sm:px-8 text-sm sm:text-base",
-        xl: "h-12 sm:h-14 rounded-2xl px-8 sm:px-10 text-base sm:text-lg",
-        icon: "h-10 w-10 sm:h-11 sm:w-11",
+        default: "h-11 px-5 py-2.5 text-sm",
+        sm: "h-9 rounded-lg px-4 text-xs",
+        lg: "h-12 rounded-xl px-8 text-base",
+        xl: "h-14 rounded-2xl px-10 text-lg",
+        icon: "h-11 w-11",
       },
     },
     defaultVariants: {
