@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -38,8 +39,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail } from "lucide-react";
+import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -71,6 +73,13 @@ const AdminUsers = () => {
   const [selectedUserHistory, setSelectedUserHistory] = useState<LoginHistory[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  
+  // Add admin form state
+  const [addAdminOpen, setAddAdminOpen] = useState(false);
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [newAdminPassword, setNewAdminPassword] = useState("");
+  const [newAdminName, setNewAdminName] = useState("");
+  const [creatingAdmin, setCreatingAdmin] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -198,6 +207,57 @@ const AdminUsers = () => {
     }
   };
 
+  const handleCreateAdmin = async () => {
+    if (!newAdminEmail || !newAdminPassword) {
+      toast.error("Email and password are required");
+      return;
+    }
+
+    if (newAdminPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    setCreatingAdmin(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            email: newAdminEmail,
+            password: newAdminPassword,
+            fullName: newAdminName,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to create admin");
+      }
+
+      toast.success("New admin created successfully!");
+      setAddAdminOpen(false);
+      setNewAdminEmail("");
+      setNewAdminPassword("");
+      setNewAdminName("");
+      fetchUsers();
+    } catch (error: any) {
+      console.error("Error creating admin:", error);
+      toast.error(error.message || "Failed to create admin");
+    } finally {
+      setCreatingAdmin(false);
+    }
+  };
+
   const getDeviceIcon = (deviceType: string | null) => {
     switch (deviceType?.toLowerCase()) {
       case "mobile":
@@ -230,14 +290,81 @@ const AdminUsers = () => {
                 <UserCog className="w-5 h-5" />
                 All Users ({filteredUsers.length})
               </CardTitle>
-              <div className="relative w-full sm:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search users..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative w-full sm:w-64">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search users..."
+                    className="pl-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Add Admin
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New Admin</DialogTitle>
+                      <DialogDescription>
+                        Create a new admin account. They will have full access to the admin dashboard.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="admin-name">Full Name</Label>
+                        <Input
+                          id="admin-name"
+                          placeholder="Enter full name"
+                          value={newAdminName}
+                          onChange={(e) => setNewAdminName(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="admin-email">Email *</Label>
+                        <Input
+                          id="admin-email"
+                          type="email"
+                          placeholder="Enter email address"
+                          value={newAdminEmail}
+                          onChange={(e) => setNewAdminEmail(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="admin-password">Password *</Label>
+                        <Input
+                          id="admin-password"
+                          type="password"
+                          placeholder="Enter password (min 6 characters)"
+                          value={newAdminPassword}
+                          onChange={(e) => setNewAdminPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin}>
+                        {creatingAdmin ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Creating...
+                          </>
+                        ) : (
+                          <>
+                            <UserPlus className="w-4 h-4 mr-2" />
+                            Create Admin
+                          </>
+                        )}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </CardHeader>
