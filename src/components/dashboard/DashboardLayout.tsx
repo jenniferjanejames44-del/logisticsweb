@@ -8,9 +8,10 @@ interface DashboardLayoutProps {
   children: ReactNode;
   title: string;
   description?: string;
+  action?: ReactNode;
 }
 
-const DashboardLayout = ({ children, title, description }: DashboardLayoutProps) => {
+const DashboardLayout = ({ children, title, description, action }: DashboardLayoutProps) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -50,12 +51,17 @@ const DashboardLayout = ({ children, title, description }: DashboardLayoutProps)
               <span>/</span>
               <span className="text-foreground font-medium">{title}</span>
             </div>
-            <h1 className="font-heading text-3xl lg:text-4xl font-bold text-foreground">
-              {title}
-            </h1>
-            {description && (
-              <p className="text-muted-foreground mt-2 text-lg">{description}</p>
-            )}
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <h1 className="font-heading text-3xl lg:text-4xl font-bold text-foreground">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="text-muted-foreground mt-2 text-lg">{description}</p>
+                )}
+              </div>
+              {action && <div>{action}</div>}
+            </div>
           </div>
           {children}
         </div>
