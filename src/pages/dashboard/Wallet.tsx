@@ -5,6 +5,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import CustomerAddFundsDialog from "@/components/wallet/CustomerAddFundsDialog";
 import {
   Wallet as WalletIcon,
   ArrowUpCircle,
@@ -12,6 +13,7 @@ import {
   TrendingUp,
   CreditCard,
   Clock,
+  Plus,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -28,7 +30,7 @@ const Wallet = () => {
   const [balance, setBalance] = useState<number>(0);
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [addFundsOpen, setAddFundsOpen] = useState(false);
   useEffect(() => {
     if (user) {
       fetchWalletData();
@@ -72,7 +74,16 @@ const Wallet = () => {
     .reduce((acc, t) => acc + Number(t.amount), 0);
 
   return (
-    <DashboardLayout title="Wallet" description="Manage your account balance and view transactions">
+    <DashboardLayout 
+      title="Wallet" 
+      description="Manage your account balance and view transactions"
+      action={
+        <Button variant="cta" onClick={() => setAddFundsOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" />
+          Add Funds
+        </Button>
+      }
+    >
       {loading ? (
         <div className="flex items-center justify-center py-12">
           <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
@@ -218,6 +229,8 @@ const Wallet = () => {
           </Card>
         </div>
       )}
+      
+      <CustomerAddFundsDialog open={addFundsOpen} onOpenChange={setAddFundsOpen} />
     </DashboardLayout>
   );
 };
