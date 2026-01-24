@@ -24,8 +24,8 @@ const HeroSection = () => {
         }} />
       </div>
 
-      {/* Animated Floating Icons */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Animated Floating Icons - Hidden on mobile for performance */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block">
         <div className="absolute top-[15%] right-[8%] animate-float opacity-15">
           <div className="bg-secondary/20 backdrop-blur-sm rounded-2xl p-4">
             <Plane size={60} className="text-secondary" />
@@ -48,46 +48,46 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Glowing orbs for depth */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/30 rounded-full blur-3xl" />
+      {/* Glowing orbs for depth - Smaller on mobile */}
+      <div className="absolute top-1/4 left-1/4 w-48 md:w-96 h-48 md:h-96 bg-secondary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-40 md:w-80 h-40 md:h-80 bg-primary/30 rounded-full blur-3xl" />
 
-      <div className="container mx-auto px-4 relative z-10 pt-24">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 pt-20 sm:pt-24">
         <div className="max-w-4xl">
           {/* Premium Badge */}
-          <div className="inline-flex items-center gap-3 bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 rounded-full px-5 py-2.5 mb-8 animate-fade-in-down">
-            <span className="relative flex h-2.5 w-2.5">
+          <div className="inline-flex items-center gap-2 sm:gap-3 bg-primary-foreground/10 backdrop-blur-md border border-primary-foreground/20 rounded-full px-3 sm:px-5 py-2 sm:py-2.5 mb-6 sm:mb-8 animate-fade-in-down">
+            <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-secondary"></span>
             </span>
-            <span className="text-sm text-primary-foreground/90 font-medium tracking-wide">
+            <span className="text-xs sm:text-sm text-primary-foreground/90 font-medium tracking-wide">
               Trusted by 10,000+ Businesses Worldwide
             </span>
           </div>
 
           {/* Headline with premium typography */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-primary-foreground leading-[1.1] mb-8 animate-fade-in-up tracking-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-primary-foreground leading-[1.1] mb-6 sm:mb-8 animate-fade-in-up tracking-tight">
             Global Logistics
-            <span className="block mt-3 bg-gradient-to-r from-secondary to-[hsl(40,100%,60%)] bg-clip-text text-transparent">
+            <span className="block mt-2 sm:mt-3 bg-gradient-to-r from-secondary to-[hsl(40,100%,60%)] bg-clip-text text-transparent">
               Delivered With Excellence
             </span>
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-primary-foreground/80 mb-10 leading-relaxed max-w-2xl animate-fade-in-up font-light" style={{ animationDelay: "0.15s" }}>
+          <p className="text-base sm:text-xl md:text-2xl text-primary-foreground/80 mb-8 sm:mb-10 leading-relaxed max-w-2xl animate-fade-in-up font-light" style={{ animationDelay: "0.15s" }}>
             Your trusted partner for seamless shipping solutions. From air freight to ocean cargo, 
             we deliver your goods safely and on time across the globe.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-5 mb-14 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-            <Button variant="cta" size="xl" className="group" asChild>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 mb-10 sm:mb-14 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+            <Button variant="cta" size="lg" className="group w-full sm:w-auto" asChild>
               <Link to="/pricing">
                 Get Free Quote
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform duration-300" size={20} />
               </Link>
             </Button>
-            <Button variant="heroOutline" size="xl" asChild>
+            <Button variant="heroOutline" size="lg" className="w-full sm:w-auto" asChild>
               <Link to="/services">
                 Our Services
               </Link>
@@ -95,25 +95,25 @@ const HeroSection = () => {
           </div>
 
           {/* Premium Shipment Tracker */}
-          <div className="glass rounded-3xl p-8 max-w-xl animate-fade-in-up border border-primary-foreground/10" style={{ animationDelay: "0.45s" }}>
-            <h3 className="text-primary-foreground font-heading font-bold text-lg mb-5 flex items-center gap-3">
-              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
-                <Search size={20} className="text-secondary-foreground" />
+          <div className="glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 max-w-xl animate-fade-in-up border border-primary-foreground/10" style={{ animationDelay: "0.45s" }}>
+            <h3 className="text-primary-foreground font-heading font-bold text-base sm:text-lg mb-4 sm:mb-5 flex items-center gap-2 sm:gap-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-secondary rounded-lg sm:rounded-xl flex items-center justify-center">
+                <Search size={16} className="sm:w-5 sm:h-5 text-secondary-foreground" />
               </div>
               Quick Shipment Tracker
             </h3>
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Input
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
                 placeholder="Enter your tracking number"
-                className="flex-1 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-14 rounded-xl text-base px-5"
+                className="flex-1 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-12 sm:h-14 rounded-xl text-sm sm:text-base px-4 sm:px-5"
               />
-              <Button variant="cta" size="lg" className="px-8 h-14">
+              <Button variant="cta" size="lg" className="px-6 sm:px-8 h-12 sm:h-14 w-full sm:w-auto">
                 Track
               </Button>
             </div>
-            <p className="text-sm text-primary-foreground/50 mt-4 flex items-center gap-2">
+            <p className="text-xs sm:text-sm text-primary-foreground/50 mt-3 sm:mt-4 flex items-center gap-2">
               <Package size={14} />
               Example: RAC-2026-XXXXXX
             </p>
@@ -121,8 +121,10 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Premium Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
+      {/* Premium Scroll Indicator - Hidden on mobile */}
+
+      {/* Premium Scroll Indicator - Hidden on mobile */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:block">
         <div className="flex flex-col items-center gap-2 animate-bounce">
           <span className="text-primary-foreground/50 text-xs uppercase tracking-widest">Scroll</span>
           <div className="w-8 h-12 border-2 border-primary-foreground/30 rounded-full flex justify-center pt-3">

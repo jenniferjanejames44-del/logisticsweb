@@ -47,23 +47,23 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-section-gradient relative overflow-hidden">
+    <section ref={ref} className="py-16 sm:py-24 md:py-32 bg-section-gradient relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-secondary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-40 sm:w-80 h-40 sm:h-80 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Premium Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
           <span
-            className={`inline-block text-secondary font-bold text-sm tracking-widest uppercase mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-bold text-xs sm:text-sm tracking-widest uppercase mb-3 sm:mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             What We Offer
           </span>
           <h2
-            className={`text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-foreground mb-4 sm:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -73,7 +73,7 @@ const ServicesSection = () => {
             </span>
           </h2>
           <p
-            className={`text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
+            className={`text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -83,12 +83,12 @@ const ServicesSection = () => {
         </div>
 
         {/* Premium Services Grid with Images */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-3xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 ${
+              className={`group relative bg-card rounded-2xl sm:rounded-3xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -96,7 +96,7 @@ const ServicesSection = () => {
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Image Container with Zoom Effect */}
-              <div className="relative h-56 overflow-hidden">
+              <div className="relative h-40 sm:h-56 overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
@@ -108,26 +108,26 @@ const ServicesSection = () => {
                 {/* Hover overlay with icon */}
                 <div className="absolute inset-0 bg-secondary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <ArrowRight size={48} className="text-secondary-foreground" />
+                    <ArrowRight size={36} className="sm:w-12 sm:h-12 text-secondary-foreground" />
                   </div>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-8">
-                <h3 className="text-2xl font-heading font-bold text-foreground mb-3 group-hover:text-secondary transition-colors duration-300">
+              <div className="p-5 sm:p-8">
+                <h3 className="text-lg sm:text-2xl font-heading font-bold text-foreground mb-2 sm:mb-3 group-hover:text-secondary transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed mb-5">
+                <p className="text-muted-foreground leading-relaxed mb-3 sm:mb-5 text-sm sm:text-base line-clamp-2 sm:line-clamp-none">
                   {service.description}
                 </p>
 
                 {/* Learn More Link */}
-                <div className="flex items-center gap-2 text-secondary font-semibold">
+                <div className="flex items-center gap-2 text-secondary font-semibold text-sm sm:text-base">
                   <span>Learn More</span>
                   <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-2 transition-transform duration-300"
+                    size={16}
+                    className="sm:w-[18px] sm:h-[18px] group-hover:translate-x-2 transition-transform duration-300"
                   />
                 </div>
               </div>
