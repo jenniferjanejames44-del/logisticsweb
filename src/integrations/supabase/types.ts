@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      login_history: {
+        Row: {
+          browser: string | null
+          device_type: string | null
+          id: string
+          ip_address: string | null
+          location: string | null
+          logged_in_at: string
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          logged_in_at?: string
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          logged_in_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
@@ -105,6 +135,7 @@ export type Database = {
           company_name: string | null
           country: string | null
           created_at: string
+          email: string | null
           full_name: string | null
           id: string
           phone: string | null
@@ -118,6 +149,7 @@ export type Database = {
           company_name?: string | null
           country?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id?: string
           phone?: string | null
@@ -131,6 +163,7 @@ export type Database = {
           company_name?: string | null
           country?: string | null
           created_at?: string
+          email?: string | null
           full_name?: string | null
           id?: string
           phone?: string | null
