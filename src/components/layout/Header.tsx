@@ -33,18 +33,24 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-primary shadow-xl py-3"
-          : "bg-primary/95 backdrop-blur-md py-4"
+          ? "bg-background/95 backdrop-blur-xl shadow-lg border-b border-border py-3"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 bg-secondary rounded-xl flex items-center justify-center font-heading font-extrabold text-primary text-xl transition-transform group-hover:scale-110 shadow-lg">
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-extrabold text-xl transition-all duration-300 shadow-lg ${
+            isScrolled 
+              ? "bg-primary text-primary-foreground group-hover:scale-110" 
+              : "bg-secondary text-secondary-foreground group-hover:scale-110"
+          }`}>
             R
           </div>
-          <span className="font-heading font-bold text-xl text-white">
-            RAC <span className="text-secondary">Logistics</span>
+          <span className={`font-heading font-bold text-xl transition-colors duration-300 ${
+            isScrolled ? "text-foreground" : "text-white"
+          }`}>
+            RAC <span className={isScrolled ? "text-primary" : "text-secondary"}>Logistics</span>
           </span>
         </Link>
 
@@ -54,10 +60,16 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/90 hover:text-secondary font-semibold transition-colors relative group"
+              className={`font-semibold transition-colors relative group ${
+                isScrolled 
+                  ? "text-foreground/80 hover:text-primary" 
+                  : "text-white/90 hover:text-secondary"
+              }`}
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-secondary transition-all group-hover:w-full rounded-full" />
+              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full ${
+                isScrolled ? "bg-primary" : "bg-secondary"
+              }`} />
             </Link>
           ))}
         </nav>
@@ -68,21 +80,21 @@ const Header = () => {
           {user ? (
             <>
               {isAdmin && (
-                <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10" asChild>
+                <Button variant={isScrolled ? "ghost" : "ghost"} className={isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"} asChild>
                   <Link to="/admin">
                     <Shield className="w-4 h-4 mr-2" />
                     Admin
                   </Link>
                 </Button>
               )}
-              <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10" asChild>
+              <Button variant={isScrolled ? "ghost" : "ghost"} className={isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"} asChild>
                 <Link to="/dashboard">
                   <User className="w-4 h-4 mr-2" />
                   Dashboard
                 </Link>
               </Button>
               <Button 
-                variant="heroOutline"
+                variant={isScrolled ? "ctaOutline" : "heroOutline"}
                 onClick={() => signOut()}
               >
                 Logout
@@ -90,10 +102,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10 font-semibold" asChild>
+              <Button variant={isScrolled ? "ghost" : "ghost"} className={`font-semibold ${isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"}`} asChild>
                 <Link to="/auth">Login</Link>
               </Button>
-              <Button variant="cta" size="lg" asChild>
+              <Button variant={isScrolled ? "cta" : "accent"} size="lg" asChild>
                 <Link to="/pricing">Get Quote</Link>
               </Button>
             </>
@@ -104,7 +116,11 @@ const Header = () => {
         <div className="lg:hidden flex items-center gap-2">
           <ThemeToggle />
           <button
-            className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className={`p-2 rounded-lg transition-colors ${
+              isScrolled 
+                ? "text-foreground hover:bg-primary/10" 
+                : "text-white hover:bg-white/10"
+            }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -115,8 +131,8 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-primary border-t border-white/10 transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? "max-h-[500px] py-6" : "max-h-0"
+        className={`lg:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-xl transition-all duration-300 overflow-hidden ${
+          isMobileMenuOpen ? "max-h-[600px] py-6" : "max-h-0"
         }`}
       >
         <nav className="container mx-auto px-4 flex flex-col gap-2">
@@ -124,24 +140,24 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/90 hover:text-secondary hover:bg-white/5 font-semibold py-3 px-4 rounded-xl transition-all"
+              className="text-foreground/80 hover:text-primary hover:bg-primary/5 font-semibold py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
-          <div className="flex flex-col gap-3 pt-4 mt-2 border-t border-white/10">
+          <div className="flex flex-col gap-3 pt-4 mt-2 border-t border-border">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button variant="ghost" className="text-white hover:text-secondary justify-start" asChild>
+                  <Button variant="ghost" className="justify-start" asChild>
                     <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
                       <Shield className="w-4 h-4 mr-2" />
                       Admin
                     </Link>
                   </Button>
                 )}
-                <Button variant="ghost" className="text-white hover:text-secondary justify-start" asChild>
+                <Button variant="ghost" className="justify-start" asChild>
                   <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                     <User className="w-4 h-4 mr-2" />
                     Dashboard
@@ -160,7 +176,7 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button variant="heroOutline" className="w-full" asChild>
+                <Button variant="ctaOutline" className="w-full" asChild>
                   <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
                 </Button>
                 <Button variant="cta" className="w-full" asChild>

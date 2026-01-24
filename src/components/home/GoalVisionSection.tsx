@@ -5,92 +5,105 @@ const GoalVisionSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 lg:py-28 bg-muted/30 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="py-20 sm:py-24 lg:py-32 bg-muted/40 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-secondary/5 rounded-full blur-3xl" />
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span
-            className={`inline-block bg-secondary/10 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase px-4 py-2 rounded-full mb-4 transition-all duration-700 ${
+            className={`inline-block bg-primary/10 text-primary font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Who We Are
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 leading-tight transition-all duration-700 delay-100 ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-foreground mb-5 leading-tight transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Driven by <span className="text-secondary">Purpose</span>
+            Driven by <span className="text-primary">Purpose</span>
           </h2>
+          <p
+            className={`text-lg sm:text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            Our mission and vision guide everything we do
+          </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
           {/* Goal Card */}
           <div
-            className={`group bg-card rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 border border-border hover:border-secondary/30 hover:shadow-lg transition-all duration-500 ${
+            className={`group bg-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-secondary/10 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-105 transition-transform">
-              <Target size={24} className="sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-secondary" />
+            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary/15 transition-all">
+              <Target size={28} className="sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-primary" />
             </div>
             
-            <span className="inline-flex items-center gap-2 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase mb-3">
-              <TrendingUp size={14} />
+            <span className="inline-flex items-center gap-2 text-primary font-bold text-xs sm:text-sm tracking-wider uppercase mb-4">
+              <TrendingUp size={16} />
               Our Goal
             </span>
             
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-foreground mb-3 sm:mb-4 leading-tight">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-foreground mb-4 sm:mb-5 leading-tight">
               Excellence in Every{" "}
-              <span className="text-secondary">Delivery</span>
+              <span className="text-primary">Delivery</span>
             </h3>
             
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 sm:mb-6">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6 sm:mb-8">
               Delivering shipments globally with unmatched speed, precision, and security. 
-              We strive to exceed expectations with every package.
+              We strive to exceed expectations with every single package we handle.
             </p>
             
-            <div className="flex items-center gap-3 text-secondary font-semibold text-sm sm:text-base">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
-                <Sparkles size={16} className="sm:w-5 sm:h-5" />
+            <div className="flex items-center gap-4 text-primary font-semibold">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                <Sparkles size={20} />
               </div>
-              <span>Committed to Your Success</span>
+              <span className="text-foreground">Committed to Your Success</span>
             </div>
           </div>
 
           {/* Vision Card */}
           <div
-            className={`group bg-primary rounded-xl sm:rounded-2xl p-5 sm:p-6 lg:p-8 relative overflow-hidden transition-all duration-500 delay-200 ${
+            className={`group bg-primary rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="absolute -top-20 -right-20 w-40 h-40 sm:w-60 sm:h-60 bg-secondary/15 rounded-full blur-3xl" />
+            {/* Decorative elements */}
+            <div className="absolute -top-20 -right-20 w-48 h-48 sm:w-64 sm:h-64 bg-secondary/20 rounded-full blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
             
-            <div className="relative w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-secondary rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-105 transition-transform">
-              <Eye size={24} className="sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-primary" />
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-secondary rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform shadow-accent">
+              <Eye size={28} className="sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-secondary-foreground" />
             </div>
             
-            <span className="relative inline-flex items-center gap-2 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase mb-3">
-              <Globe size={14} />
+            <span className="relative inline-flex items-center gap-2 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase mb-4">
+              <Globe size={16} />
               Our Vision
             </span>
             
-            <h3 className="relative text-xl sm:text-2xl lg:text-3xl font-heading font-bold text-white mb-3 sm:mb-4 leading-tight">
+            <h3 className="relative text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-white mb-4 sm:mb-5 leading-tight">
               Leading Global{" "}
               <span className="text-secondary">Logistics</span>
             </h3>
             
-            <p className="relative text-sm sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-6">
+            <p className="relative text-base sm:text-lg text-white/85 leading-relaxed mb-6 sm:mb-8">
               To become the world's most reliable and trusted logistics partner, 
-              setting the standard for innovation.
+              setting the standard for innovation and excellence in global shipping.
             </p>
             
-            <div className="relative flex items-center gap-3 text-secondary font-semibold text-sm sm:text-base">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-secondary flex items-center justify-center">
-                <Sparkles size={16} className="sm:w-5 sm:h-5 text-primary" />
+            <div className="relative flex items-center gap-4 text-secondary font-semibold">
+              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shadow-accent">
+                <Sparkles size={20} className="text-secondary-foreground" />
               </div>
-              <span>Transforming Global Trade</span>
+              <span className="text-white">Transforming Global Trade</span>
             </div>
           </div>
         </div>
