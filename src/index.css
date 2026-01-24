@@ -1,124 +1,128 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* RAC Logistics Premium Design System - Navy Blue #0B1C2D + Yellow #FFC400 */
+/* RAC Logistics Premium Design System - Refined & Bright */
+/* Primary: Yellow #FFC700 | Supporting Dark: Soft Navy #1F2A37 | Clean whites & grays */
 
 @layer base {
   :root {
+    /* Light, airy backgrounds */
     --background: 0 0% 100%;
-    --foreground: 210 40% 11%;
+    --foreground: 220 20% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 210 40% 11%;
+    --card-foreground: 220 20% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 210 40% 11%;
+    --popover-foreground: 220 20% 10%;
 
-    /* Deep Navy Blue Primary - #0B1C2D */
-    --primary: 210 62% 11%;
+    /* Soft Navy/Charcoal Primary - #1F2A37 */
+    --primary: 215 28% 17%;
     --primary-foreground: 0 0% 100%;
 
-    /* Vibrant Yellow Secondary - #FFC400 */
-    --secondary: 46 100% 50%;
-    --secondary-foreground: 210 62% 11%;
+    /* Logistics Yellow - #FFC700 */
+    --secondary: 45 100% 50%;
+    --secondary-foreground: 220 20% 10%;
 
-    /* Light backgrounds for content */
-    --muted: 210 20% 96%;
-    --muted-foreground: 210 20% 40%;
+    /* Soft gray backgrounds */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 40%;
 
-    /* Subtle accent for cards */
-    --accent: 210 15% 98%;
-    --accent-foreground: 210 40% 11%;
+    /* Subtle accent */
+    --accent: 220 14% 98%;
+    --accent-foreground: 220 20% 10%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 20% 90%;
-    --input: 210 20% 90%;
-    --ring: 46 100% 50%;
+    /* Lighter borders */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 45 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* Navy Blue Sidebar */
-    --sidebar-background: 210 62% 11%;
+    /* Premium Navy Sidebar */
+    --sidebar-background: 215 28% 17%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 46 100% 50%;
-    --sidebar-primary-foreground: 210 62% 11%;
-    --sidebar-accent: 210 50% 20%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 20% 10%;
+    --sidebar-accent: 215 25% 25%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 210 50% 20%;
-    --sidebar-ring: 46 100% 50%;
+    --sidebar-border: 215 25% 25%;
+    --sidebar-ring: 45 100% 50%;
 
     /* Chart Colors */
-    --chart-1: 210 62% 11%;
-    --chart-2: 46 100% 50%;
-    --chart-3: 210 45% 30%;
-    --chart-4: 46 80% 60%;
-    --chart-5: 210 30% 50%;
+    --chart-1: 215 28% 17%;
+    --chart-2: 45 100% 50%;
+    --chart-3: 215 35% 35%;
+    --chart-4: 45 85% 60%;
+    --chart-5: 215 25% 50%;
 
     /* Premium Shadow System */
-    --shadow-xs: 0 1px 2px 0 hsl(210 62% 11% / 0.05);
-    --shadow-sm: 0 1px 3px 0 hsl(210 62% 11% / 0.1), 0 1px 2px -1px hsl(210 62% 11% / 0.1);
-    --shadow-md: 0 4px 6px -1px hsl(210 62% 11% / 0.1), 0 2px 4px -2px hsl(210 62% 11% / 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(210 62% 11% / 0.1), 0 4px 6px -4px hsl(210 62% 11% / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(210 62% 11% / 0.1), 0 8px 10px -6px hsl(210 62% 11% / 0.1);
-    --shadow-2xl: 0 25px 50px -12px hsl(210 62% 11% / 0.25);
-    --shadow-yellow: 0 10px 40px -10px hsl(46 100% 50% / 0.5);
-    --shadow-yellow-lg: 0 20px 60px -15px hsl(46 100% 50% / 0.6);
-    --shadow-card: 0 4px 24px -4px hsl(210 62% 11% / 0.08);
-    --shadow-card-hover: 0 24px 48px -12px hsl(210 62% 11% / 0.18);
-    --shadow-button: 0 4px 14px -2px hsl(46 100% 50% / 0.4);
-    --shadow-button-hover: 0 8px 24px -4px hsl(46 100% 50% / 0.5);
+    --shadow-xs: 0 1px 2px 0 hsl(220 20% 10% / 0.04);
+    --shadow-sm: 0 1px 3px 0 hsl(220 20% 10% / 0.06), 0 1px 2px -1px hsl(220 20% 10% / 0.06);
+    --shadow-md: 0 4px 6px -1px hsl(220 20% 10% / 0.07), 0 2px 4px -2px hsl(220 20% 10% / 0.07);
+    --shadow-lg: 0 10px 15px -3px hsl(220 20% 10% / 0.08), 0 4px 6px -4px hsl(220 20% 10% / 0.08);
+    --shadow-xl: 0 20px 25px -5px hsl(220 20% 10% / 0.1), 0 8px 10px -6px hsl(220 20% 10% / 0.1);
+    --shadow-2xl: 0 25px 50px -12px hsl(220 20% 10% / 0.2);
+    --shadow-yellow: 0 10px 40px -10px hsl(45 100% 50% / 0.35);
+    --shadow-yellow-lg: 0 20px 60px -15px hsl(45 100% 50% / 0.45);
+    --shadow-card: 0 4px 24px -4px hsl(220 20% 10% / 0.06);
+    --shadow-card-hover: 0 24px 48px -12px hsl(220 20% 10% / 0.12);
+    --shadow-button: 0 4px 14px -2px hsl(45 100% 50% / 0.35);
+    --shadow-button-hover: 0 8px 24px -4px hsl(45 100% 50% / 0.45);
 
     /* Premium Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(210 62% 11%) 0%, hsl(210 50% 18%) 50%, hsl(210 45% 22%) 100%);
-    --gradient-hero-overlay: linear-gradient(180deg, hsl(210 62% 11% / 0.95) 0%, hsl(210 62% 11% / 0.8) 50%, hsl(210 62% 11% / 0.7) 100%);
-    --gradient-yellow: linear-gradient(135deg, hsl(46 100% 50%) 0%, hsl(40 100% 55%) 100%);
-    --gradient-yellow-subtle: linear-gradient(135deg, hsl(46 100% 50% / 0.1) 0%, hsl(40 100% 55% / 0.05) 100%);
-    --gradient-navy: linear-gradient(135deg, hsl(210 62% 11%) 0%, hsl(210 55% 16%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-    --gradient-section: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(0 0% 100%) 50%, hsl(210 20% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(215 28% 17%) 0%, hsl(215 30% 25%) 50%, hsl(215 25% 30%) 100%);
+    --gradient-hero-overlay: linear-gradient(180deg, hsl(215 28% 17% / 0.85) 0%, hsl(215 28% 17% / 0.7) 50%, hsl(215 28% 17% / 0.6) 100%);
+    --gradient-yellow: linear-gradient(135deg, hsl(45 100% 50%) 0%, hsl(40 100% 55%) 100%);
+    --gradient-yellow-subtle: linear-gradient(135deg, hsl(45 100% 50% / 0.08) 0%, hsl(40 100% 55% / 0.04) 100%);
+    --gradient-navy: linear-gradient(135deg, hsl(215 28% 17%) 0%, hsl(215 30% 22%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 99%) 100%);
+    --gradient-section: linear-gradient(180deg, hsl(220 14% 97%) 0%, hsl(0 0% 100%) 50%, hsl(220 14% 97%) 100%);
+    --gradient-section-alt: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 97%) 100%);
   }
 
   .dark {
-    --background: 210 62% 8%;
+    --background: 220 20% 8%;
     --foreground: 0 0% 98%;
 
-    --card: 210 55% 14%;
+    --card: 220 20% 12%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 210 55% 14%;
+    --popover: 220 20% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 46 100% 50%;
-    --primary-foreground: 210 62% 11%;
+    --primary: 45 100% 50%;
+    --primary-foreground: 220 20% 10%;
 
-    --secondary: 210 62% 11%;
+    --secondary: 215 28% 17%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 45% 20%;
-    --muted-foreground: 210 15% 70%;
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 65%;
 
-    --accent: 210 45% 18%;
+    --accent: 220 20% 16%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 40% 22%;
-    --input: 210 40% 22%;
-    --ring: 46 100% 50%;
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 45 100% 50%;
 
-    --sidebar-background: 210 62% 8%;
+    --sidebar-background: 220 20% 6%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 46 100% 50%;
-    --sidebar-primary-foreground: 210 62% 11%;
-    --sidebar-accent: 210 45% 18%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 20% 10%;
+    --sidebar-accent: 220 20% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 210 40% 22%;
-    --sidebar-ring: 46 100% 50%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 45 100% 50%;
   }
 }
 
@@ -136,27 +140,50 @@
   body {
     @apply bg-background text-foreground font-sans antialiased transition-colors duration-300;
     font-feature-settings: "cv11", "ss01", "ss03";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Premium Typography Hierarchy */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold tracking-tight;
+    @apply font-heading tracking-tight;
     text-rendering: optimizeLegibility;
   }
 
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.1];
+    letter-spacing: -0.025em;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl leading-tight;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.15];
+    letter-spacing: -0.02em;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl leading-snug;
+    @apply text-2xl md:text-3xl font-bold leading-snug;
+    letter-spacing: -0.015em;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl font-semibold leading-snug;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl font-semibold;
+  }
+
+  h6 {
+    @apply text-base md:text-lg font-semibold;
   }
 
   p {
-    @apply leading-relaxed;
+    @apply leading-relaxed text-muted-foreground;
+  }
+
+  /* Strong text contrast for subtitles */
+  .subtitle {
+    @apply text-lg md:text-xl text-foreground/80 leading-relaxed font-medium;
   }
 }
 

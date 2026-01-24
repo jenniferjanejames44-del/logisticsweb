@@ -32,35 +32,35 @@ const HowItWorksSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-20 lg:py-32 bg-muted relative overflow-hidden">
+    <section ref={ref} className="py-20 sm:py-28 lg:py-36 bg-background relative overflow-hidden">
       {/* Subtle dot pattern */}
       <div 
-        className="absolute inset-0 opacity-[0.015]"
+        className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
           backgroundSize: '32px 32px'
         }}
       />
 
-      <div className="container mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-block text-secondary font-semibold text-sm tracking-widest uppercase mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-bold text-sm tracking-widest uppercase mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Simple Process
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-5 transition-all duration-700 delay-100 leading-tight ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 leading-tight ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             How It <span className="text-secondary">Works</span>
           </h2>
           <p
-            className={`text-muted-foreground text-base md:text-lg leading-relaxed transition-all duration-700 delay-200 ${
+            className={`text-foreground/70 text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-700 delay-200 font-medium ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -68,7 +68,7 @@ const HowItWorksSection = () => {
           </p>
         </div>
 
-        {/* Steps - Mobile: Stack, Tablet: 2x2, Desktop: 4 columns */}
+        {/* Steps Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
           {steps.map((step, index) => (
             <div
@@ -79,27 +79,27 @@ const HowItWorksSection = () => {
               style={{ transitionDelay: `${index * 100 + 300}ms` }}
             >
               {/* Card */}
-              <div className="group h-full bg-card rounded-2xl p-6 lg:p-8 border border-border hover:border-secondary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+              <div className="group h-full bg-card rounded-2xl p-6 lg:p-8 border border-border hover:border-secondary/40 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                 {/* Step Number */}
-                <div className="absolute top-4 right-4 w-10 h-10 lg:w-12 lg:h-12 bg-secondary text-secondary-foreground rounded-xl flex items-center justify-center font-heading font-bold text-sm lg:text-base shadow-md">
+                <div className="absolute top-4 right-4 w-12 h-12 bg-secondary text-primary rounded-xl flex items-center justify-center font-heading font-extrabold text-base shadow-lg">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-primary rounded-xl flex items-center justify-center mb-5 group-hover:scale-105 transition-transform duration-300">
-                  <step.icon className="w-7 h-7 lg:w-8 lg:h-8 text-primary-foreground" />
+                <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 shadow-md">
+                  <step.icon className="w-8 h-8 text-white" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg lg:text-xl font-heading font-bold text-foreground mb-3 pr-12">
+                <h3 className="text-xl font-heading font-bold text-foreground mb-3 pr-14">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">
+                <p className="text-foreground/60 text-base leading-relaxed">
                   {step.description}
                 </p>
               </div>
 
-              {/* Connector arrow - only on desktop between cards */}
+              {/* Connector arrow - Desktop only */}
               {index < steps.length - 1 && (
                 <div className="hidden xl:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
                   <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center">

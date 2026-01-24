@@ -11,7 +11,7 @@ const LiveChat = () => {
     <>
       {/* Chat Window */}
       <div
-        className={`fixed bottom-24 right-6 w-80 sm:w-96 bg-card rounded-2xl shadow-2xl z-50 transition-all duration-300 overflow-hidden ${
+        className={`fixed bottom-28 right-6 w-80 sm:w-96 bg-card rounded-2xl shadow-2xl z-[9998] border border-border transition-all duration-300 overflow-hidden ${
           isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
@@ -68,17 +68,29 @@ const LiveChat = () => {
         </div>
       </div>
 
-      {/* Floating Button */}
+      {/* Floating Button - Fixed position with proper spacing */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 w-14 h-14 rounded-full shadow-lg z-50 flex items-center justify-center transition-all duration-300 hover:scale-110 ${
-          isOpen ? "bg-destructive rotate-90" : "bg-secondary animate-pulse-glow"
+        aria-label={isOpen ? "Close chat" : "Open chat"}
+        className={`fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl z-[9999] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-yellow-lg ${
+          isOpen 
+            ? "bg-primary rotate-180" 
+            : "bg-secondary"
         }`}
+        style={{ 
+          position: 'fixed',
+          bottom: '1.5rem',
+          right: '1.5rem',
+        }}
       >
         {isOpen ? (
-          <X size={24} className="text-destructive-foreground" />
+          <X size={26} className="text-primary-foreground transition-transform" />
         ) : (
-          <MessageCircle size={24} className="text-primary" />
+          <>
+            <MessageCircle size={26} className="text-secondary-foreground" />
+            {/* Pulse ring effect */}
+            <span className="absolute inset-0 rounded-full bg-secondary animate-ping opacity-25" />
+          </>
         )}
       </button>
     </>
