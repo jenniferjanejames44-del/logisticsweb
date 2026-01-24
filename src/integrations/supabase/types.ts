@@ -14,7 +14,149 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          payment_method: string | null
+          shipment_id: string | null
+          status: string
+          transaction_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          payment_method?: string | null
+          shipment_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          payment_method?: string | null
+          shipment_id?: string | null
+          status?: string
+          transaction_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_shipment_id_fkey"
+            columns: ["shipment_id"]
+            isOneToOne: false
+            referencedRelation: "shipments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          city: string | null
+          company_name: string | null
+          country: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          city?: string | null
+          company_name?: string | null
+          country?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      shipments: {
+        Row: {
+          actual_delivery: string | null
+          created_at: string
+          description: string | null
+          destination_city: string
+          destination_country: string
+          estimated_delivery: string | null
+          id: string
+          origin_city: string
+          origin_country: string
+          service_type: string
+          status: string
+          tracking_number: string
+          updated_at: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          actual_delivery?: string | null
+          created_at?: string
+          description?: string | null
+          destination_city: string
+          destination_country: string
+          estimated_delivery?: string | null
+          id?: string
+          origin_city: string
+          origin_country: string
+          service_type: string
+          status?: string
+          tracking_number: string
+          updated_at?: string
+          user_id: string
+          weight: number
+        }
+        Update: {
+          actual_delivery?: string | null
+          created_at?: string
+          description?: string | null
+          destination_city?: string
+          destination_country?: string
+          estimated_delivery?: string | null
+          id?: string
+          origin_city?: string
+          origin_country?: string
+          service_type?: string
+          status?: string
+          tracking_number?: string
+          updated_at?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
