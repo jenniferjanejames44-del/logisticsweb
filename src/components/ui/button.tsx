@@ -5,126 +5,125 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2.5 whitespace-nowrap rounded-full text-sm font-semibold tracking-wide ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: [
           "bg-primary text-primary-foreground",
-          "shadow-lg hover:shadow-xl",
-          "hover:bg-primary/90 hover:-translate-y-1",
-          "active:translate-y-0 active:scale-[0.98]",
-          "relative overflow-hidden",
+          "shadow-md hover:shadow-lg",
+          "hover:brightness-110 hover:-translate-y-0.5",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         destructive: [
           "bg-destructive text-destructive-foreground",
-          "shadow-lg hover:shadow-xl",
-          "hover:bg-destructive/90 hover:-translate-y-1",
-          "active:translate-y-0 active:scale-[0.98]",
-          "relative overflow-hidden",
+          "shadow-md hover:shadow-lg",
+          "hover:brightness-110 hover:-translate-y-0.5",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         outline: [
-          "border-2 border-border bg-background text-foreground",
-          "hover:bg-muted hover:border-primary/40",
+          "border-2 border-primary bg-transparent text-primary",
+          "hover:bg-primary hover:text-primary-foreground",
           "hover:-translate-y-0.5 hover:shadow-md",
-          "active:translate-y-0 active:scale-[0.98]",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         secondary: [
           "bg-muted text-foreground",
-          "shadow-md hover:shadow-lg",
+          "shadow-sm hover:shadow-md",
           "hover:bg-muted/80 hover:-translate-y-0.5",
-          "active:translate-y-0 active:scale-[0.98]",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
-        ghost: "hover:bg-muted hover:text-foreground",
+        ghost: "hover:bg-muted hover:text-foreground rounded-lg",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
         
-        /* Premium CTA - Electric Blue gradient button */
+        /* Primary CTA - Solid Electric Blue pill button */
         cta: [
-          "bg-gradient-to-r from-primary to-[hsl(200,100%,55%)] text-primary-foreground font-bold",
+          "bg-primary text-primary-foreground font-bold uppercase tracking-wider",
           "shadow-button hover:shadow-button-hover",
-          "hover:-translate-y-1.5",
+          "hover:brightness-110 hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/15 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
-          "relative overflow-hidden",
         ].join(" "),
         
-        /* Accent CTA - Vibrant Yellow button */
+        /* Secondary CTA - Solid Vibrant Yellow pill button */
         accent: [
-          "bg-gradient-to-r from-secondary to-[hsl(45,100%,48%)] text-secondary-foreground font-bold",
+          "bg-secondary text-secondary-foreground font-bold uppercase tracking-wider",
           "shadow-accent hover:shadow-accent-hover",
-          "hover:-translate-y-1.5",
+          "hover:brightness-110 hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/5 before:to-white/25 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
-          "relative overflow-hidden",
         ].join(" "),
         
-        /* CTA Outline - Electric Blue outline with fill hover */
+        /* Outline Primary - Electric Blue outline */
         ctaOutline: [
-          "border-2 border-primary bg-transparent text-primary font-bold",
+          "border-2 border-primary bg-transparent text-primary font-bold uppercase tracking-wider",
           "hover:bg-primary hover:text-primary-foreground",
-          "hover:-translate-y-1.5 hover:shadow-lg",
+          "hover:-translate-y-1 hover:shadow-button",
           "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
-        /* Hero Outline - For dark/blue backgrounds */
+        /* Hero Outline - Glassmorphism for dark backgrounds */
         heroOutline: [
-          "border-2 border-white/30 bg-white/10 text-white font-semibold",
-          "hover:bg-white/20 hover:border-secondary hover:text-secondary",
-          "hover:-translate-y-1.5 hover:shadow-lg",
+          "border-2 border-white/40 bg-white/10 text-white font-bold uppercase tracking-wider",
+          "hover:bg-white hover:text-primary hover:border-white",
+          "hover:-translate-y-1 hover:shadow-lg",
           "active:translate-y-0 active:scale-[0.97]",
           "backdrop-blur-sm",
         ].join(" "),
         
-        /* Nav CTA - Compact gradient button */
+        /* Nav CTA - Compact solid pill for navigation */
         navCta: [
-          "bg-gradient-to-r from-primary to-[hsl(200,100%,55%)] text-primary-foreground font-bold",
-          "shadow-button hover:shadow-button-hover",
-          "hover:-translate-y-1",
+          "bg-primary text-primary-foreground font-semibold",
+          "shadow-sm hover:shadow-button",
+          "hover:brightness-110 hover:-translate-y-0.5",
           "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
-        /* Premium Gradient Button */
-        premium: [
-          "bg-gradient-to-r from-primary via-[hsl(200,100%,55%)] to-primary text-primary-foreground font-bold",
-          "shadow-blue hover:shadow-blue-lg",
-          "hover:-translate-y-1.5",
+        /* Nav Outline - Compact outline pill for navigation */
+        navOutline: [
+          "border-2 border-primary bg-transparent text-primary font-semibold",
+          "hover:bg-primary hover:text-primary-foreground",
+          "hover:-translate-y-0.5 hover:shadow-sm",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
-          "relative overflow-hidden",
+        ].join(" "),
+        
+        /* Premium - Gradient Electric Blue */
+        premium: [
+          "bg-gradient-to-r from-primary to-[hsl(200,100%,55%)] text-primary-foreground font-bold uppercase tracking-wider",
+          "shadow-button hover:shadow-button-hover",
+          "hover:brightness-110 hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
         /* Blue Outline */
         blueOutline: [
           "border-2 border-primary bg-transparent text-primary font-semibold",
           "hover:bg-primary hover:text-primary-foreground",
-          "hover:-translate-y-1.5 hover:shadow-lg",
+          "hover:-translate-y-0.5 hover:shadow-md",
           "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
 
-        /* Dynamic gradient effect */
+        /* Dynamic - With shine effect */
         dynamic: [
-          "bg-gradient-to-r from-primary to-[hsl(200,80%,50%)] text-primary-foreground font-bold",
-          "shadow-lg hover:shadow-xl",
-          "hover:-translate-y-1.5",
+          "bg-primary text-primary-foreground font-bold uppercase tracking-wider",
+          "shadow-button hover:shadow-button-hover",
+          "hover:brightness-110 hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500",
+          "before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-r before:from-white/30 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500",
           "relative overflow-hidden",
         ].join(" "),
 
         /* Coral/Orange accent button */
         coral: [
-          "bg-gradient-to-r from-accent to-[hsl(10,100%,55%)] text-accent-foreground font-bold",
-          "shadow-lg hover:shadow-xl",
-          "hover:-translate-y-1.5",
+          "bg-accent text-accent-foreground font-bold uppercase tracking-wider",
+          "shadow-md hover:shadow-lg",
+          "hover:brightness-110 hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
-          "relative overflow-hidden",
         ].join(" "),
       },
       size: {
-        default: "h-11 px-5 py-2.5 text-sm",
-        sm: "h-9 rounded-lg px-4 text-xs",
-        lg: "h-12 rounded-xl px-8 text-base",
-        xl: "h-14 rounded-2xl px-10 text-lg",
+        default: "h-11 px-6 py-2.5 text-sm",
+        sm: "h-9 px-5 text-xs",
+        lg: "h-12 px-8 text-base",
+        xl: "h-14 px-10 text-lg",
         icon: "h-11 w-11",
       },
     },
