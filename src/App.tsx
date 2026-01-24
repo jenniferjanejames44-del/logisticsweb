@@ -23,6 +23,12 @@ import Shipments from "./pages/dashboard/Shipments";
 import Payments from "./pages/dashboard/Payments";
 import Profile from "./pages/dashboard/Profile";
 import Notifications from "./pages/dashboard/Notifications";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminShipments from "./pages/admin/AdminShipments";
+import AdminPayments from "./pages/admin/AdminPayments";
+import AdminPricing from "./pages/admin/AdminPricing";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,11 +55,19 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/auth" element={<Auth />} />
+            {/* Customer Dashboard */}
             <Route path="/dashboard" element={<Overview />} />
             <Route path="/dashboard/shipments" element={<Shipments />} />
             <Route path="/dashboard/payments" element={<Payments />} />
             <Route path="/dashboard/profile" element={<Profile />} />
             <Route path="/dashboard/notifications" element={<Notifications />} />
+            {/* Admin Dashboard */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/shipments" element={<AdminShipments />} />
+            <Route path="/admin/payments" element={<AdminPayments />} />
+            <Route path="/admin/pricing" element={<AdminPricing />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
