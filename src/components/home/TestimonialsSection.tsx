@@ -52,50 +52,58 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-24 bg-muted overflow-hidden">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+    <section ref={ref} className="py-24 md:py-32 bg-muted relative overflow-hidden">
+      {/* Decorative background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full opacity-5">
+        <Quote size={400} className="text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Premium Header */}
+        <div className="text-center max-w-3xl mx-auto mb-20">
           <span
-            className={`inline-block text-secondary font-semibold mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-bold text-sm tracking-widest uppercase mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            TESTIMONIALS
+            Testimonials
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-6 transition-all duration-700 delay-100 ${
+            className={`text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            What Our <span className="text-secondary">Clients Say</span>
+            What Our{" "}
+            <span className="bg-gradient-to-r from-secondary to-[hsl(40,100%,55%)] bg-clip-text text-transparent">
+              Clients Say
+            </span>
           </h2>
         </div>
 
-        {/* Testimonials Slider */}
-        <div className="relative max-w-4xl mx-auto">
+        {/* Premium Testimonials Slider */}
+        <div className="relative max-w-5xl mx-auto">
           {/* Navigation Buttons */}
           <Button
             variant="outline"
             size="icon"
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-16 z-10 bg-card shadow-lg"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-20 z-10 bg-card shadow-lg border-2 hover:bg-secondary hover:text-secondary-foreground hover:border-secondary w-14 h-14 rounded-2xl"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={28} />
           </Button>
           <Button
             variant="outline"
             size="icon"
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-16 z-10 bg-card shadow-lg"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-20 z-10 bg-card shadow-lg border-2 hover:bg-secondary hover:text-secondary-foreground hover:border-secondary w-14 h-14 rounded-2xl"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={28} />
           </Button>
 
           {/* Slides */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-3xl">
             <div
-              className="flex transition-transform duration-500 ease-out"
+              className="flex transition-transform duration-700 ease-out-expo"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
@@ -103,40 +111,40 @@ const TestimonialsSection = () => {
                   key={index}
                   className="w-full flex-shrink-0 px-4"
                 >
-                  <div className="bg-card rounded-2xl p-8 md:p-12 shadow-card text-center">
+                  <div className="bg-card rounded-3xl p-10 md:p-14 shadow-card text-center border border-border/50">
                     {/* Quote Icon */}
-                    <div className="w-14 h-14 mx-auto bg-secondary/10 rounded-full flex items-center justify-center mb-6">
-                      <Quote size={24} className="text-secondary" />
+                    <div className="w-20 h-20 mx-auto bg-secondary/10 rounded-2xl flex items-center justify-center mb-8">
+                      <Quote size={36} className="text-secondary" />
                     </div>
 
                     {/* Content */}
-                    <p className="text-lg md:text-xl text-foreground leading-relaxed mb-8">
+                    <p className="text-xl md:text-2xl text-foreground leading-relaxed mb-10 font-light">
                       "{testimonial.content}"
                     </p>
 
                     {/* Rating */}
-                    <div className="flex justify-center gap-1 mb-6">
+                    <div className="flex justify-center gap-1.5 mb-8">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star
                           key={i}
-                          size={20}
+                          size={24}
                           className="text-secondary fill-secondary"
                         />
                       ))}
                     </div>
 
                     {/* Author */}
-                    <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center justify-center gap-5">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 rounded-full object-cover border-2 border-secondary"
+                        className="w-16 h-16 rounded-2xl object-cover border-2 border-secondary shadow-lg"
                       />
                       <div className="text-left">
-                        <h4 className="font-heading font-bold text-foreground">
+                        <h4 className="font-heading font-bold text-foreground text-xl">
                           {testimonial.name}
                         </h4>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-muted-foreground">
                           {testimonial.role}
                         </p>
                       </div>
@@ -147,16 +155,16 @@ const TestimonialsSection = () => {
             </div>
           </div>
 
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-8">
+          {/* Premium Dots */}
+          <div className="flex justify-center gap-3 mt-10">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`h-3 rounded-full transition-all duration-500 ${
                   index === currentIndex
-                    ? "bg-secondary w-8"
-                    : "bg-border hover:bg-muted-foreground"
+                    ? "bg-gradient-to-r from-secondary to-[hsl(40,100%,55%)] w-10"
+                    : "bg-border hover:bg-muted-foreground w-3"
                 }`}
               />
             ))}

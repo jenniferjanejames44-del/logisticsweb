@@ -13,32 +13,38 @@ const PartnersSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 bg-background border-y border-border">
+    <section ref={ref} className="py-20 bg-background relative overflow-hidden">
+      {/* Top and bottom borders */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      
       <div className="container mx-auto px-4">
         {/* Header */}
         <p
-          className={`text-center text-muted-foreground font-medium mb-10 transition-all duration-700 ${
+          className={`text-center text-muted-foreground font-semibold text-sm tracking-widest uppercase mb-12 transition-all duration-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          TRUSTED BY LEADING COMPANIES WORLDWIDE
+          Trusted by Leading Companies Worldwide
         </p>
 
         {/* Partners Marquee */}
-        <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
+        <div className="relative overflow-hidden py-4">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
           
           <div className="flex animate-marquee">
-            {[...partners, ...partners].map((partner, index) => (
+            {[...partners, ...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-12 flex items-center justify-center h-16 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+                className="flex-shrink-0 mx-16 flex items-center justify-center h-16 logo-gray hover:scale-110 transition-all duration-400 cursor-pointer"
               >
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="h-8 md:h-10 object-contain"
+                  className="h-10 md:h-12 object-contain"
+                  loading="lazy"
                 />
               </div>
             ))}
