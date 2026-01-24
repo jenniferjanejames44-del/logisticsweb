@@ -118,6 +118,36 @@ const buttonVariants = cva(
           "hover:brightness-110 hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
+
+        /* Get Quote - Card style with animated arrow */
+        quote: [
+          "bg-card text-foreground font-semibold rounded-xl border border-border",
+          "shadow-sm hover:shadow-card hover:border-primary/30",
+          "hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.98]",
+          "group",
+          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
+        ].join(" "),
+
+        /* Quote Primary - Blue background with animated arrow */
+        quotePrimary: [
+          "bg-primary text-primary-foreground font-semibold rounded-xl",
+          "shadow-button hover:shadow-button-hover",
+          "hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.98]",
+          "group",
+          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
+        ].join(" "),
+
+        /* Quote Accent - Yellow background with animated arrow */
+        quoteAccent: [
+          "bg-secondary text-secondary-foreground font-semibold rounded-xl",
+          "shadow-accent hover:shadow-accent-hover",
+          "hover:-translate-y-1",
+          "active:translate-y-0 active:scale-[0.98]",
+          "group",
+          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
+        ].join(" "),
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
