@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useUserRole } from "@/hooks/useUserRole";
+import AuthRedirect from "@/components/AuthRedirect";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
 
-const Auth = () => {
+const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,24 +19,8 @@ const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { signIn, signUp, user } = useAuth();
-  const { isAdmin, loading: roleLoading } = useUserRole();
-  const navigate = useNavigate();
+  const { signIn, signUp } = useAuth();
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Only redirect when we have user AND role is fully loaded
-    if (!user) return;
-    if (roleLoading) return;
-    
-    console.log("Auth redirect check - isAdmin:", isAdmin, "roleLoading:", roleLoading);
-    
-    if (isAdmin) {
-      navigate("/admin", { replace: true });
-    } else {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [user, isAdmin, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,6 +179,14 @@ const Auth = () => {
       </main>
       <Footer />
     </div>
+  );
+};
+
+const Auth = () => {
+  return (
+    <AuthRedirect>
+      <AuthForm />
+    </AuthRedirect>
   );
 };
 
