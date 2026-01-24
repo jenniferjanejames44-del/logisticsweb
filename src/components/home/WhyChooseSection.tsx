@@ -1,6 +1,6 @@
 import { useInView } from "@/hooks/useInView";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
-import { Package, Users, Globe, Award, Zap, ShieldCheck, HeadphonesIcon } from "lucide-react";
+import { Package, Users, Globe, Award, Zap, HeadphonesIcon } from "lucide-react";
 
 const stats = [
   {
@@ -58,7 +58,7 @@ const StatsCounter = ({
 }) => {
   const count = useAnimatedCounter(value, 2000, isActive);
   return (
-    <span className="text-3xl sm:text-5xl md:text-6xl font-heading font-extrabold bg-gradient-to-r from-secondary to-[hsl(40,100%,60%)] bg-clip-text text-transparent">
+    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-extrabold bg-gradient-to-r from-secondary to-[hsl(40,100%,60%)] bg-clip-text text-transparent">
       {count.toLocaleString()}
       {suffix}
     </span>
@@ -69,7 +69,7 @@ const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 sm:py-24 md:py-32 bg-navy-gradient relative overflow-hidden">
+    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-navy-gradient relative overflow-hidden">
       {/* Premium Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-secondary/10 to-transparent" />
@@ -80,22 +80,22 @@ const WhyChooseSection = () => {
         }} />
       </div>
 
-      {/* Glowing orbs - Smaller on mobile */}
-      <div className="absolute top-1/4 left-1/4 w-32 sm:w-64 h-32 sm:h-64 bg-secondary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-40 sm:w-80 h-40 sm:h-80 bg-secondary/5 rounded-full blur-3xl" />
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-56 md:w-80 h-56 md:h-80 bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Premium Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
           <span
-            className={`inline-block text-secondary font-bold text-xs sm:text-sm tracking-widest uppercase mb-3 sm:mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-bold text-xs sm:text-sm tracking-widest uppercase mb-3 md:mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Why RAC Logistics
           </span>
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-primary-foreground mb-4 sm:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-extrabold text-primary-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -107,26 +107,26 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Premium Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-12 sm:mb-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-12 md:mb-20">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className={`group text-center p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 hover:bg-primary-foreground/10 transition-all duration-500 hover:-translate-y-2 ${
+              className={`group text-center p-5 md:p-6 lg:p-8 rounded-2xl md:rounded-3xl bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 hover:bg-primary-foreground/10 transition-all duration-500 hover:-translate-y-2 ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="w-12 h-12 sm:w-20 sm:h-20 mx-auto bg-secondary/20 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-6 group-hover:scale-110 group-hover:bg-secondary/30 transition-all duration-500">
-                <stat.icon size={20} className="sm:w-9 sm:h-9 text-secondary" />
+              <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 mx-auto bg-secondary/20 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 group-hover:bg-secondary/30 transition-all duration-500">
+                <stat.icon className="w-6 h-6 md:w-7 md:h-7 lg:w-9 lg:h-9 text-secondary" />
               </div>
               <StatsCounter
                 value={stat.value}
                 suffix={stat.suffix}
                 isActive={isInView}
               />
-              <p className="text-primary-foreground/70 mt-2 sm:mt-4 font-medium text-xs sm:text-lg">
+              <p className="text-primary-foreground/70 mt-3 md:mt-4 font-medium text-xs sm:text-sm md:text-base lg:text-lg">
                 {stat.label}
               </p>
             </div>
@@ -134,11 +134,11 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Premium Differentiators */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group relative bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 rounded-2xl sm:rounded-3xl p-6 sm:p-10 hover:bg-primary-foreground/10 transition-all duration-500 hover:-translate-y-3 overflow-hidden ${
+              className={`group relative bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 hover:bg-primary-foreground/10 transition-all duration-500 hover:-translate-y-3 overflow-hidden ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -146,18 +146,18 @@ const WhyChooseSection = () => {
               style={{ transitionDelay: `${(index + 4) * 100}ms` }}
             >
               {/* Hover glow effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute -inset-px bg-gradient-to-r from-secondary/20 via-secondary/10 to-secondary/20 rounded-2xl sm:rounded-3xl blur-xl" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                <div className="absolute -inset-px bg-gradient-to-r from-secondary/20 via-secondary/10 to-secondary/20 rounded-2xl md:rounded-3xl blur-xl" />
               </div>
               
               <div className="relative z-10">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-secondary/20 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:bg-secondary transition-all duration-500">
-                  <item.icon size={24} className="sm:w-8 sm:h-8 text-secondary group-hover:text-secondary-foreground transition-colors" />
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/20 rounded-xl md:rounded-2xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 group-hover:bg-secondary transition-all duration-500">
+                  <item.icon className="w-6 h-6 md:w-8 md:h-8 text-secondary group-hover:text-secondary-foreground transition-colors" />
                 </div>
-                <h3 className="text-lg sm:text-2xl font-heading font-bold text-primary-foreground mb-2 sm:mb-4 group-hover:text-secondary transition-colors duration-300">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-heading font-bold text-primary-foreground mb-3 md:mb-4 group-hover:text-secondary transition-colors duration-300">
                   {item.title}
                 </h3>
-                <p className="text-primary-foreground/70 leading-relaxed text-sm sm:text-lg">
+                <p className="text-primary-foreground/70 leading-relaxed text-sm md:text-base lg:text-lg">
                   {item.description}
                 </p>
               </div>
