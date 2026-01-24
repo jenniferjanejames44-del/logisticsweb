@@ -38,9 +38,9 @@ const buttonVariants = cva(
         ghost: "hover:bg-muted hover:text-foreground",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
         
-        /* Premium CTA - Teal gradient button */
+        /* Premium CTA - Electric Blue gradient button */
         cta: [
-          "bg-gradient-to-r from-primary to-[hsl(190,100%,50%)] text-primary-foreground font-bold",
+          "bg-gradient-to-r from-primary to-[hsl(200,100%,55%)] text-primary-foreground font-bold",
           "shadow-button hover:shadow-button-hover",
           "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
@@ -48,17 +48,17 @@ const buttonVariants = cva(
           "relative overflow-hidden",
         ].join(" "),
         
-        /* Accent CTA - Yellow-Orange button */
+        /* Accent CTA - Vibrant Yellow button */
         accent: [
-          "bg-gradient-to-r from-secondary to-[hsl(38,100%,60%)] text-secondary-foreground font-bold",
+          "bg-gradient-to-r from-secondary to-[hsl(45,100%,48%)] text-secondary-foreground font-bold",
           "shadow-accent hover:shadow-accent-hover",
           "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
+          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/5 before:to-white/25 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
           "relative overflow-hidden",
         ].join(" "),
         
-        /* CTA Outline - Teal outline with fill hover */
+        /* CTA Outline - Electric Blue outline with fill hover */
         ctaOutline: [
           "border-2 border-primary bg-transparent text-primary font-bold",
           "hover:bg-primary hover:text-primary-foreground",
@@ -66,7 +66,7 @@ const buttonVariants = cva(
           "active:translate-y-0 active:scale-[0.97]",
         ].join(" "),
         
-        /* Hero Outline - For dark/teal backgrounds */
+        /* Hero Outline - For dark/blue backgrounds */
         heroOutline: [
           "border-2 border-white/30 bg-white/10 text-white font-semibold",
           "hover:bg-white/20 hover:border-secondary hover:text-secondary",
@@ -77,7 +77,7 @@ const buttonVariants = cva(
         
         /* Nav CTA - Compact gradient button */
         navCta: [
-          "bg-gradient-to-r from-primary to-[hsl(190,100%,50%)] text-primary-foreground font-bold",
+          "bg-gradient-to-r from-primary to-[hsl(200,100%,55%)] text-primary-foreground font-bold",
           "shadow-button hover:shadow-button-hover",
           "hover:-translate-y-1",
           "active:translate-y-0 active:scale-[0.97]",
@@ -85,16 +85,16 @@ const buttonVariants = cva(
         
         /* Premium Gradient Button */
         premium: [
-          "bg-gradient-to-r from-primary via-[hsl(190,100%,50%)] to-primary text-primary-foreground font-bold",
-          "shadow-teal hover:shadow-teal-lg",
+          "bg-gradient-to-r from-primary via-[hsl(200,100%,55%)] to-primary text-primary-foreground font-bold",
+          "shadow-blue hover:shadow-blue-lg",
           "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
           "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-t before:from-black/10 before:to-white/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300",
           "relative overflow-hidden",
         ].join(" "),
         
-        /* Teal Outline */
-        tealOutline: [
+        /* Blue Outline */
+        blueOutline: [
           "border-2 border-primary bg-transparent text-primary font-semibold",
           "hover:bg-primary hover:text-primary-foreground",
           "hover:-translate-y-1.5 hover:shadow-lg",
@@ -103,11 +103,20 @@ const buttonVariants = cva(
 
         /* Dynamic gradient effect */
         dynamic: [
-          "bg-gradient-to-r from-primary to-[hsl(190,80%,50%)] text-primary-foreground font-bold",
+          "bg-gradient-to-r from-primary to-[hsl(200,80%,50%)] text-primary-foreground font-bold",
           "shadow-lg hover:shadow-xl",
           "hover:-translate-y-1.5",
           "active:translate-y-0 active:scale-[0.97]",
           "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500",
+          "relative overflow-hidden",
+        ].join(" "),
+
+        /* Coral/Orange accent button */
+        coral: [
+          "bg-gradient-to-r from-accent to-[hsl(10,100%,55%)] text-accent-foreground font-bold",
+          "shadow-lg hover:shadow-xl",
+          "hover:-translate-y-1.5",
+          "active:translate-y-0 active:scale-[0.97]",
           "relative overflow-hidden",
         ].join(" "),
       },

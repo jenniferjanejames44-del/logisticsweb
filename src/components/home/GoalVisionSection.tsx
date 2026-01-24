@@ -1,14 +1,14 @@
-import { Target, Eye, Sparkles, TrendingUp, Globe } from "lucide-react";
+import { Target, Eye, Sparkles, TrendingUp, Globe, Rocket } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const GoalVisionSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-24 lg:py-32 bg-muted/40 relative overflow-hidden">
+    <section ref={ref} className="py-20 sm:py-24 lg:py-32 bg-muted/30 relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-10 w-72 h-72 bg-secondary/5 rounded-full blur-3xl" />
+      <div className="absolute top-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
@@ -39,11 +39,11 @@ const GoalVisionSection = () => {
         <div className="grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
           {/* Goal Card */}
           <div
-            className={`group bg-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-500 ${
+            className={`group bg-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 group-hover:bg-primary/15 transition-all">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-all shadow-lg">
               <Target size={28} className="sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-primary" />
             </div>
             
@@ -63,22 +63,22 @@ const GoalVisionSection = () => {
             </p>
             
             <div className="flex items-center gap-4 text-primary font-semibold">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all shadow-md">
                 <Sparkles size={20} />
               </div>
               <span className="text-foreground">Committed to Your Success</span>
             </div>
           </div>
 
-          {/* Vision Card */}
+          {/* Vision Card - Electric Blue gradient */}
           <div
-            className={`group bg-primary rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 delay-200 ${
+            className={`group bg-gradient-to-br from-primary via-primary to-[hsl(200,100%,50%)] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 delay-200 shadow-blue ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
             {/* Decorative elements */}
             <div className="absolute -top-20 -right-20 w-48 h-48 sm:w-64 sm:h-64 bg-secondary/20 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
             
             <div className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-secondary rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform shadow-accent">
               <Eye size={28} className="sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-secondary-foreground" />
@@ -94,14 +94,14 @@ const GoalVisionSection = () => {
               <span className="text-secondary">Logistics</span>
             </h3>
             
-            <p className="relative text-base sm:text-lg text-white/85 leading-relaxed mb-6 sm:mb-8">
+            <p className="relative text-base sm:text-lg text-white/90 leading-relaxed mb-6 sm:mb-8">
               To become the world's most reliable and trusted logistics partner, 
               setting the standard for innovation and excellence in global shipping.
             </p>
             
             <div className="relative flex items-center gap-4 text-secondary font-semibold">
               <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center shadow-accent">
-                <Sparkles size={20} className="text-secondary-foreground" />
+                <Rocket size={20} className="text-secondary-foreground" />
               </div>
               <span className="text-white">Transforming Global Trade</span>
             </div>
