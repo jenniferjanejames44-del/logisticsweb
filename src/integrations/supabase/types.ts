@@ -183,6 +183,8 @@ export type Database = {
           id: string
           origin_city: string
           origin_country: string
+          payment_status: string
+          price: number | null
           service_type: string
           status: string
           tracking_number: string
@@ -200,6 +202,8 @@ export type Database = {
           id?: string
           origin_city: string
           origin_country: string
+          payment_status?: string
+          price?: number | null
           service_type: string
           status?: string
           tracking_number: string
@@ -217,6 +221,8 @@ export type Database = {
           id?: string
           origin_city?: string
           origin_country?: string
+          payment_status?: string
+          price?: number | null
           service_type?: string
           status?: string
           tracking_number?: string
@@ -247,9 +253,45 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      user_balances: {
+        Row: {
+          balance: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
