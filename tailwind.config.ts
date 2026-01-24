@@ -68,7 +68,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        heading: ["Manrope", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Poppins", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       fontSize: {
         "display-xl": ["4.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
@@ -116,8 +116,8 @@ export default {
           "75%": { transform: "translateY(-15px) rotate(-2deg)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px hsl(190 100% 43% / 0.4)" },
-          "50%": { boxShadow: "0 0 40px hsl(190 100% 43% / 0.7)" },
+          "0%, 100%": { boxShadow: "0 0 20px hsl(217 100% 58% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(217 100% 58% / 0.7)" },
         },
         marquee: {
           "0%": { transform: "translateX(0)" },
@@ -140,8 +140,8 @@ export default {
           "100%": { transform: "scale(2)", opacity: "0" },
         },
         glow: {
-          "0%, 100%": { boxShadow: "0 0 20px hsl(190 100% 43% / 0.4)" },
-          "50%": { boxShadow: "0 0 40px hsl(190 100% 43% / 0.7)" },
+          "0%, 100%": { boxShadow: "0 0 20px hsl(217 100% 58% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(217 100% 58% / 0.7)" },
         },
       },
       animation: {
@@ -162,16 +162,16 @@ export default {
         glow: "glow 2s ease-in-out infinite",
       },
       boxShadow: {
-        "xs": "0 1px 2px 0 hsl(213 27% 18% / 0.05)",
-        card: "0 4px 24px -4px hsl(213 27% 18% / 0.08)",
-        "card-hover": "0 24px 48px -12px hsl(213 27% 18% / 0.18)",
-        teal: "0 10px 40px -10px hsl(190 100% 43% / 0.5)",
-        "teal-lg": "0 20px 60px -15px hsl(190 100% 43% / 0.6)",
-        button: "0 4px 14px -2px hsl(190 100% 43% / 0.4)",
-        "button-hover": "0 8px 24px -4px hsl(190 100% 43% / 0.5)",
-        accent: "0 4px 14px -2px hsl(42 100% 64% / 0.4)",
-        "accent-hover": "0 8px 24px -4px hsl(42 100% 64% / 0.5)",
-        "inner-glow": "inset 0 0 20px hsl(190 100% 43% / 0.1)",
+        "xs": "0 1px 2px 0 hsl(240 10% 12% / 0.05)",
+        card: "0 4px 24px -4px hsl(240 10% 12% / 0.1)",
+        "card-hover": "0 24px 48px -12px hsl(240 10% 12% / 0.2)",
+        blue: "0 10px 40px -10px hsl(217 100% 58% / 0.5)",
+        "blue-lg": "0 20px 60px -15px hsl(217 100% 58% / 0.6)",
+        button: "0 4px 14px -2px hsl(217 100% 58% / 0.45)",
+        "button-hover": "0 8px 24px -4px hsl(217 100% 58% / 0.55)",
+        accent: "0 4px 14px -2px hsl(50 100% 50% / 0.45)",
+        "accent-hover": "0 8px 24px -4px hsl(50 100% 50% / 0.55)",
+        "inner-glow": "inset 0 0 20px hsl(217 100% 58% / 0.1)",
       },
       backdropBlur: {
         xs: "2px",

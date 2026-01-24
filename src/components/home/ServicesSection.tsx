@@ -7,13 +7,13 @@ const services = [
   {
     title: "Air Shipping",
     description: "Express delivery worldwide with real-time tracking and priority handling.",
-    href: "/services/air",
+    href: "/services/air-shipping",
     image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Ocean Shipping",
     description: "Cost-effective sea freight for large shipments across all major ports.",
-    href: "/services/ocean",
+    href: "/services/ocean-shipping",
     image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&q=80&w=800",
   },
   {
@@ -37,7 +37,7 @@ const services = [
   {
     title: "Customs Clearance",
     description: "Expert clearance and full regulatory compliance services.",
-    href: "/services/customs",
+    href: "/services/customs-clearance",
     image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=800",
   },
 ];
@@ -48,8 +48,8 @@ const ServicesSection = () => {
   return (
     <section ref={ref} className="py-20 sm:py-24 lg:py-32 bg-background relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header */}
@@ -84,7 +84,7 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/40 transition-all duration-500 hover:-translate-y-3 hover:shadow-xl ${
+              className={`group relative bg-card rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:-translate-y-3 hover:shadow-card-hover ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
@@ -106,10 +106,10 @@ const ServicesSection = () => {
                   </h3>
                 </div>
 
-                {/* Hover overlay with arrow */}
-                <div className="absolute inset-0 bg-primary/95 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {/* Hover overlay with arrow - Electric Blue */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/95 to-[hsl(200,100%,50%)]/95 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="text-center">
-                    <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-3">
+                    <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                       <ArrowRight size={32} className="text-white" />
                     </div>
                     <span className="text-white font-bold text-lg">Learn More</span>
