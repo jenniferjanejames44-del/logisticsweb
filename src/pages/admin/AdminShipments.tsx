@@ -4,6 +4,7 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -20,7 +21,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Package, Trash2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Search, Package, Trash2, DollarSign, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Shipment {
@@ -35,6 +44,9 @@ interface Shipment {
   status: string;
   created_at: string;
   estimated_delivery: string | null;
+  price: number | null;
+  payment_status: string;
+  user_id: string;
 }
 
 const statusOptions = [
@@ -63,6 +75,12 @@ const AdminShipments = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  
+  // Price dialog state
+  const [priceDialogOpen, setPriceDialogOpen] = useState(false);
+  const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
+  const [priceInput, setPriceInput] = useState("");
+  const [settingPrice, setSettingPrice] = useState(false);
 
   const fetchShipments = async () => {
     try {
@@ -128,6 +146,41 @@ const AdminShipments = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const openPriceDialog = (shipment: Shipment) => {
+    setSelectedShipment(shipment);
+    setPriceInput(shipment.price?.toString() || "");
+    setPriceDialogOpen(true);
+  };
+
+  const handleSetPrice = async () => {
+    if (!selectedShipment) return;
+    
+    const price = parseFloat(priceInput);
+    if (isNaN(price) || price < 0) {
+      toast.error("Please enter a valid price");
+      return;
+    }
+
+    setSettingPrice(true);
+    try {
+      const { error } = await supabase
+        .from("shipments")
+        .update({ price })
+        .eq("id", selectedShipment.id);
+
+      if (error) throw error;
+      
+      toast.success("Price set successfully");
+      setPriceDialogOpen(false);
+      fetchShipments();
+    } catch (error) {
+      console.error("Error setting price:", error);
+      toast.error("Failed to set price");
+    } finally {
+      setSettingPrice(false);
+    }
+  };
+
   return (
     <AdminLayout>
       <div className="space-y-8">
@@ -188,6 +241,8 @@ const AdminShipments = () => {
                       <TableHead>Destination</TableHead>
                       <TableHead>Weight</TableHead>
                       <TableHead>Service</TableHead>
+                      <TableHead>Price</TableHead>
+                      <TableHead>Payment</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Created</TableHead>
                       <TableHead>Actions</TableHead>
@@ -210,6 +265,28 @@ const AdminShipments = () => {
                           {shipment.service_type.replace("_", " ")}
                         </TableCell>
                         <TableCell>
+                          {shipment.price !== null ? (
+                            <span className="font-medium">${Number(shipment.price).toFixed(2)}</span>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openPriceDialog(shipment)}
+                            >
+                              <DollarSign className="w-3 h-3 mr-1" />
+                              Set Price
+                            </Button>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={shipment.payment_status === "paid" ? "default" : "secondary"}
+                            className={shipment.payment_status === "paid" ? "bg-green-500/20 text-green-600" : ""}
+                          >
+                            {shipment.payment_status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
                           <Badge className={getStatusColor(shipment.status)}>
                             {shipment.status.replace("_", " ")}
                           </Badge>
@@ -219,6 +296,14 @@ const AdminShipments = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openPriceDialog(shipment)}
+                            >
+                              <DollarSign className="w-3 h-3 mr-1" />
+                              {shipment.price !== null ? "Edit" : "Set"}
+                            </Button>
                             <Select
                               value={shipment.status}
                               onValueChange={(value) =>
@@ -254,6 +339,61 @@ const AdminShipments = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Set Price Dialog */}
+        <Dialog open={priceDialogOpen} onOpenChange={setPriceDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Set Shipment Price</DialogTitle>
+              <DialogDescription>
+                Set the price for shipment {selectedShipment?.tracking_number}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="price">Price (USD)</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                    className="pl-10"
+                    value={priceInput}
+                    onChange={(e) => setPriceInput(e.target.value)}
+                  />
+                </div>
+              </div>
+              {selectedShipment && (
+                <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-1">
+                  <p><span className="text-muted-foreground">Route:</span> {selectedShipment.origin_city} → {selectedShipment.destination_city}</p>
+                  <p><span className="text-muted-foreground">Weight:</span> {selectedShipment.weight} kg</p>
+                  <p><span className="text-muted-foreground">Service:</span> {selectedShipment.service_type}</p>
+                </div>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setPriceDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSetPrice} disabled={settingPrice}>
+                {settingPrice ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Setting...
+                  </>
+                ) : (
+                  <>
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Set Price
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );

@@ -41,9 +41,10 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound } from "lucide-react";
+import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import AddFundsDialog from "@/components/wallet/AddFundsDialog";
 
 interface UserWithRole {
   id: string;
@@ -56,6 +57,7 @@ interface UserWithRole {
   country: string | null;
   created_at: string;
   role: string;
+  balance?: number;
 }
 
 interface LoginHistory {
@@ -88,6 +90,11 @@ const AdminUsers = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [resettingPassword, setResettingPassword] = useState(false);
+  
+  // Add funds dialog state
+  const [addFundsOpen, setAddFundsOpen] = useState(false);
+  const [addFundsUserId, setAddFundsUserId] = useState("");
+  const [addFundsUserName, setAddFundsUserName] = useState("");
 
   const fetchUsers = async () => {
     try {
@@ -106,12 +113,27 @@ const AdminUsers = () => {
 
       if (rolesError) throw rolesError;
 
-      // Combine profiles with roles
+      // Fetch wallet transactions to calculate balances
+      const { data: transactions, error: txnError } = await supabase
+        .from("wallet_transactions")
+        .select("user_id, amount, type");
+
+      if (txnError) throw txnError;
+
+      // Calculate balances per user
+      const balanceMap: Record<string, number> = {};
+      (transactions || []).forEach((txn) => {
+        if (!balanceMap[txn.user_id]) balanceMap[txn.user_id] = 0;
+        balanceMap[txn.user_id] += txn.type === "credit" ? Number(txn.amount) : -Number(txn.amount);
+      });
+
+      // Combine profiles with roles and balances
       const usersWithRoles = (profiles || []).map((profile) => {
         const userRole = roles?.find((r) => r.user_id === profile.user_id);
         return {
           ...profile,
           role: userRole?.role || "customer",
+          balance: balanceMap[profile.user_id] || 0,
         };
       });
 
@@ -329,6 +351,12 @@ const AdminUsers = () => {
     setResetPasswordOpen(true);
   };
 
+  const openAddFundsDialog = (userId: string, userName: string) => {
+    setAddFundsUserId(userId);
+    setAddFundsUserName(userName);
+    setAddFundsOpen(true);
+  };
+
   const getDeviceIcon = (deviceType: string | null) => {
     switch (deviceType?.toLowerCase()) {
       case "mobile":
@@ -454,6 +482,7 @@ const AdminUsers = () => {
                       <TableHead>Company</TableHead>
                       <TableHead>Location</TableHead>
                       <TableHead>Role</TableHead>
+                      <TableHead>Balance</TableHead>
                       <TableHead>Joined</TableHead>
                       <TableHead>Activity</TableHead>
                       <TableHead>Actions</TableHead>
@@ -483,6 +512,20 @@ const AdminUsers = () => {
                           >
                             {user.role}
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">${(user.balance || 0).toFixed(2)}</span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7"
+                              onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")}
+                              title="Add Funds"
+                            >
+                              <Wallet className="w-4 h-4 text-green-600" />
+                            </Button>
+                          </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col">
@@ -671,6 +714,15 @@ const AdminUsers = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Add Funds Dialog */}
+        <AddFundsDialog
+          open={addFundsOpen}
+          onOpenChange={setAddFundsOpen}
+          userId={addFundsUserId}
+          userName={addFundsUserName}
+          onSuccess={fetchUsers}
+        />
       </div>
     </AdminLayout>
   );

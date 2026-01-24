@@ -22,6 +22,7 @@ import Blog from "./pages/Blog";
 import Auth from "./pages/Auth";
 import Overview from "./pages/dashboard/Overview";
 import Shipments from "./pages/dashboard/Shipments";
+import Wallet from "./pages/dashboard/Wallet";
 import Payments from "./pages/dashboard/Payments";
 import Profile from "./pages/dashboard/Profile";
 import Notifications from "./pages/dashboard/Notifications";
@@ -67,6 +68,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
+              <Route path="/dashboard/wallet" element={<Wallet />} />
               <Route path="/dashboard/shipments" element={<Shipments />} />
               <Route path="/dashboard/payments" element={<Payments />} />
               <Route path="/dashboard/profile" element={<Profile />} />
