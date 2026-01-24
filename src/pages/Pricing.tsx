@@ -157,21 +157,21 @@ const Pricing = () => {
                   {/* Service Type */}
                   <div className="space-y-3">
                     <Label className="text-base font-medium">Service Type</Label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {services.map((service) => (
                         <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
-                          className={`p-4 rounded-xl border-2 text-left transition-all duration-300 hover:border-secondary/50 ${
+                          className={`p-3 sm:p-4 rounded-xl border-2 text-left transition-all duration-300 hover:border-secondary/50 ${
                             selectedService === service.id
                               ? 'border-secondary bg-secondary/10'
                               : 'border-border/50 bg-background'
                           }`}
                         >
-                          <service.icon className={`w-6 h-6 mb-2 ${
+                          <service.icon className={`w-5 h-5 sm:w-6 sm:h-6 mb-2 ${
                             selectedService === service.id ? 'text-secondary' : 'text-muted-foreground'
                           }`} />
-                          <div className="font-medium text-foreground">{service.name}</div>
+                          <div className="font-medium text-foreground text-sm sm:text-base">{service.name}</div>
                           <div className="text-xs text-muted-foreground">{service.description}</div>
                         </button>
                       ))}
@@ -188,20 +188,20 @@ const Pricing = () => {
                   <CardContent className="p-8">
                     <div className="text-center">
                       <p className="text-muted-foreground mb-2">Estimated Price</p>
-                      <div className="relative h-24 flex items-center justify-center">
+                      <div className="relative h-20 sm:h-24 flex items-center justify-center">
                         {isCalculating ? (
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
-                            <span className="text-muted-foreground">Calculating...</span>
+                            <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
+                            <span className="text-muted-foreground text-sm sm:text-base">Calculating...</span>
                           </div>
                         ) : calculatedPrice !== null ? (
                           <div className="animate-count-up">
-                            <span className="font-heading text-5xl md:text-6xl font-bold text-secondary">
+                            <span className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-secondary">
                               ${calculatedPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-lg">
+                          <span className="text-muted-foreground text-sm sm:text-lg text-center px-4">
                             Fill in the form to get a quote
                           </span>
                         )}
@@ -244,18 +244,18 @@ const Pricing = () => {
                 </Card>
 
                 {/* Features */}
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="flex flex-col items-center text-center p-4 bg-muted/30 rounded-xl">
-                    <Zap className="w-8 h-8 text-secondary mb-2" />
-                    <span className="text-sm font-medium text-foreground">Instant Quote</span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
+                    <span className="text-xs sm:text-sm font-medium text-foreground">Instant Quote</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-4 bg-muted/30 rounded-xl">
-                    <Shield className="w-8 h-8 text-secondary mb-2" />
-                    <span className="text-sm font-medium text-foreground">Secure Payment</span>
+                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
+                    <span className="text-xs sm:text-sm font-medium text-foreground">Secure Payment</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-4 bg-muted/30 rounded-xl">
-                    <Clock className="w-8 h-8 text-secondary mb-2" />
-                    <span className="text-sm font-medium text-foreground">24/7 Support</span>
+                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                    <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
+                    <span className="text-xs sm:text-sm font-medium text-foreground">24/7 Support</span>
                   </div>
                 </div>
               </div>
