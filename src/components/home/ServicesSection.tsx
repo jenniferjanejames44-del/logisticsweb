@@ -3,41 +3,40 @@ import { useInView } from "@/hooks/useInView";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-// Premium service cards with real logistics images
 const services = [
   {
     title: "Air Shipping",
-    description: "Express delivery worldwide with real-time tracking and secure handling for time-sensitive cargo.",
+    description: "Express delivery worldwide with real-time tracking.",
     href: "/services/air",
     image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Ocean Shipping",
-    description: "Cost-effective sea freight for large shipments with full container and LCL options.",
+    description: "Cost-effective sea freight for large shipments.",
     href: "/services/ocean",
     image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Personal Shopping",
-    description: "We buy and ship products from any store worldwide directly to your doorstep.",
+    description: "We buy and ship products from any store worldwide.",
     href: "/services/personal-shopping",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Procurement",
-    description: "Source products globally with our expert procurement and supplier management services.",
+    description: "Source products globally with expert management.",
     href: "/services/procurement",
     image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Warehousing",
-    description: "Secure storage solutions with advanced inventory management and distribution systems.",
+    description: "Secure storage with inventory management.",
     href: "/services/warehousing",
     image: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Customs Clearance",
-    description: "Navigate customs regulations seamlessly with our expert clearance and compliance services.",
+    description: "Expert clearance and compliance services.",
     href: "/services/customs",
     image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=800",
   },
@@ -47,23 +46,19 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden">
-      {/* Light decorative backgrounds */}
-      <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px]" />
-      <div className="absolute bottom-20 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px]" />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header - Bigger, bolder */}
-        <div className="text-center max-w-4xl mx-auto mb-20 sm:mb-24">
+    <section ref={ref} className="py-16 sm:py-20 lg:py-28 bg-background relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-16">
           <span
-            className={`inline-block bg-secondary/10 text-secondary font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-full mb-6 transition-all duration-700 ${
+            className={`inline-block bg-secondary/10 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase px-4 py-2 rounded-full mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Services
           </span>
           <h2
-            className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-foreground mb-8 transition-all duration-700 delay-100 leading-[1.05] ${
+            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 sm:mb-5 leading-tight transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -71,87 +66,72 @@ const ServicesSection = () => {
             <span className="text-secondary">Solutions</span>
           </h2>
           <p
-            className={`text-xl md:text-2xl text-foreground/70 leading-relaxed transition-all duration-700 delay-200 font-medium ${
+            className={`text-base sm:text-lg text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            From air freight to ocean cargo, we provide end-to-end logistics services 
-            tailored to your business needs with enterprise-grade reliability.
+            End-to-end logistics services tailored to your business needs.
           </p>
         </div>
 
-        {/* Premium Services Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+        {/* Services Grid - Responsive */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-3xl overflow-hidden border border-border/80 hover:border-secondary/50 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl ${
-                isInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+              className={`group relative bg-card rounded-xl sm:rounded-2xl overflow-hidden border border-border hover:border-secondary/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
             >
-              {/* Image Container */}
+              {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                {/* Subtle overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
                 
-                {/* Title overlay on image */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl sm:text-3xl font-heading font-bold text-white drop-shadow-lg">
+                {/* Title on image */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                  <h3 className="text-lg sm:text-xl lg:text-2xl font-heading font-bold text-white">
                     {service.title}
                   </h3>
                 </div>
 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-95 transition-all duration-400">
-                  <div className="text-center p-6">
-                    <ArrowRight size={56} className="text-secondary-foreground mx-auto mb-4" />
-                    <span className="text-secondary-foreground font-bold text-xl">View Service</span>
-                  </div>
+                <div className="absolute inset-0 bg-secondary flex items-center justify-center opacity-0 group-hover:opacity-95 transition-opacity duration-300">
+                  <ArrowRight size={40} className="text-secondary-foreground" />
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 sm:p-8 bg-card">
-                <p className="text-foreground/70 leading-relaxed text-lg mb-5">
+              <div className="p-4 sm:p-5 lg:p-6">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-3 sm:mb-4">
                   {service.description}
                 </p>
-
-                {/* Learn More */}
-                <div className="flex items-center gap-2 text-secondary font-bold text-lg">
+                <div className="flex items-center gap-2 text-secondary font-bold text-sm sm:text-base">
                   <span>Learn More</span>
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-3 transition-transform duration-300"
-                  />
+                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
-
-              {/* Bottom accent */}
-              <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </Link>
           ))}
         </div>
 
-        {/* CTA Button */}
+        {/* CTA */}
         <div
-          className={`text-center mt-20 sm:mt-24 transition-all duration-700 delay-700 ${
+          className={`text-center mt-10 sm:mt-14 lg:mt-16 transition-all duration-700 delay-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <Button variant="cta" size="xl" className="text-lg px-12 py-7 rounded-2xl" asChild>
+          <Button variant="cta" size="lg" className="text-sm sm:text-base px-6 sm:px-10 py-5 sm:py-6 rounded-xl" asChild>
             <Link to="/services" className="group">
               View All Services
-              <ArrowRight size={24} className="ml-3 group-hover:translate-x-2 transition-transform duration-300" />
+              <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
         </div>
