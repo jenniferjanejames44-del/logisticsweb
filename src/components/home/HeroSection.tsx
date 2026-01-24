@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight, Package, Play } from "lucide-react";
+import { Search, ArrowRight, Package, MapPin, Clock, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-logistics.jpg";
 
@@ -10,93 +10,104 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Static Image Background - Premium & Professional */}
+      {/* High-quality Image Background */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
           alt="Global Logistics"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover scale-105"
         />
-        {/* Refined overlay - lighter, more professional */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-primary/70" />
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        {/* Much lighter overlay - bright and professional */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/70 via-primary/50 to-primary/40" />
+        {/* Light glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-30" />
       </div>
 
-      <div className="container mx-auto px-5 sm:px-6 lg:px-8 relative z-10 py-32 lg:py-40">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-3 bg-white/10 border border-white/20 rounded-full px-5 py-2.5 mb-8 backdrop-blur-sm">
-            <span className="relative flex h-2.5 w-2.5">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8 relative z-10 py-28 lg:py-36">
+        <div className="max-w-5xl mx-auto text-center">
+          {/* Trust Badge */}
+          <div className="inline-flex items-center gap-3 bg-white/15 backdrop-blur-md border border-white/30 rounded-full px-6 py-3 mb-10">
+            <span className="relative flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
             </span>
-            <span className="text-sm text-white font-semibold tracking-wide">
+            <span className="text-sm text-white font-bold tracking-wide uppercase">
               Trusted by 10,000+ Businesses Worldwide
             </span>
           </div>
 
-          {/* Headline - Strong, confident typography */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-extrabold text-white leading-[1.05] mb-6 tracking-tight">
+          {/* Massive Hero Headline */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black text-white leading-[0.95] mb-8 tracking-tight">
             Global Logistics
-            <span className="block mt-3 text-secondary drop-shadow-lg">
+            <span className="block mt-2 sm:mt-4 text-secondary drop-shadow-[0_4px_20px_rgba(255,199,0,0.5)]">
               Delivered With Excellence
             </span>
           </h1>
 
-          {/* Subheadline - Clear visibility, good contrast */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto font-medium">
+          {/* Clear, visible subtitle */}
+          <p className="text-xl sm:text-2xl lg:text-3xl text-white font-medium mb-14 leading-relaxed max-w-3xl mx-auto">
             Your trusted partner for seamless shipping solutions. From air freight to ocean cargo, 
-            we deliver your goods safely and on time across the globe.
+            we deliver your goods safely across the globe.
           </p>
 
-          {/* CTA Buttons - Premium styling */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <Button variant="cta" size="xl" className="group text-base" asChild>
+          {/* Premium CTA Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-5 mb-20">
+            <Button variant="cta" size="xl" className="group text-lg px-10 py-7 rounded-2xl" asChild>
               <Link to="/pricing">
                 Get Free Quote
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform duration-300" size={24} />
               </Link>
             </Button>
-            <Button variant="heroOutline" size="xl" className="group text-base" asChild>
+            <Button variant="heroOutline" size="xl" className="group text-lg px-10 py-7 rounded-2xl" asChild>
               <Link to="/services">
-                <Play size={18} className="mr-2" />
-                Our Services
+                Explore Services
               </Link>
             </Button>
           </div>
 
-          {/* Tracker Card - Glassmorphism effect */}
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-6 sm:p-8 max-w-xl mx-auto shadow-2xl">
-            <h3 className="text-white font-heading font-bold text-xl mb-6 flex items-center justify-center gap-3">
-              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center shadow-lg">
-                <Search size={22} className="text-secondary-foreground" />
+          {/* Premium Glassmorphism Tracker */}
+          <div className="bg-white/15 backdrop-blur-xl border border-white/25 rounded-3xl p-8 sm:p-10 max-w-2xl mx-auto shadow-2xl">
+            <h3 className="text-white font-heading font-bold text-2xl mb-8 flex items-center justify-center gap-4">
+              <div className="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center shadow-lg shadow-secondary/30">
+                <Search size={26} className="text-secondary-foreground" />
               </div>
               Track Your Shipment
             </h3>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Enter tracking number"
-                className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/50 h-14 rounded-xl text-base font-medium"
+                placeholder="Enter your tracking number"
+                className="flex-1 bg-white/15 border-white/30 text-white placeholder:text-white/60 h-16 rounded-2xl text-lg font-medium px-6"
               />
-              <Button variant="cta" className="h-14 px-8 text-base font-bold">
+              <Button variant="cta" className="h-16 px-10 text-lg font-bold rounded-2xl">
                 Track Now
               </Button>
             </div>
-            <p className="text-sm text-white/60 mt-5 flex items-center justify-center gap-2 font-medium">
-              <Package size={16} />
+            <p className="text-base text-white/70 mt-6 flex items-center justify-center gap-3 font-medium">
+              <Package size={20} />
               Example: RAC-2026-XXXXXX
             </p>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 sm:gap-12">
+            {[
+              { icon: MapPin, text: "150+ Countries" },
+              { icon: Clock, text: "24/7 Support" },
+              { icon: Shield, text: "Fully Insured" },
+            ].map((item, index) => (
+              <div key={index} className="flex items-center gap-3 text-white/90">
+                <item.icon size={24} className="text-secondary" />
+                <span className="font-bold text-lg">{item.text}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background via-background/50 to-transparent pointer-events-none" />
+      {/* Smooth bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" />
     </section>
   );
 };
