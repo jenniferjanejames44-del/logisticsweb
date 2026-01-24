@@ -25,19 +25,17 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Wait for both user and role to be fully loaded before redirecting
-    if (!user || roleLoading) return;
+    // Only redirect when we have user AND role is fully loaded
+    if (!user) return;
+    if (roleLoading) return;
     
-    // Small delay to ensure role is properly fetched
-    const timer = setTimeout(() => {
-      if (isAdmin) {
-        navigate("/admin", { replace: true });
-      } else {
-        navigate("/dashboard", { replace: true });
-      }
-    }, 100);
+    console.log("Auth redirect check - isAdmin:", isAdmin, "roleLoading:", roleLoading);
     
-    return () => clearTimeout(timer);
+    if (isAdmin) {
+      navigate("/admin", { replace: true });
+    } else {
+      navigate("/dashboard", { replace: true });
+    }
   }, [user, isAdmin, roleLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
