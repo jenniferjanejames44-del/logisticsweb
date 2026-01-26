@@ -2,6 +2,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
 import HeroSection from "@/components/home/HeroSection";
+import ShipmentCreationForm from "@/components/home/ShipmentCreationForm";
 import GoalVisionSection from "@/components/home/GoalVisionSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
@@ -19,6 +20,7 @@ const Index = () => {
       <Header />
       <main>
         <HeroSection />
+        <ShipmentCreationForm />
         <GoalVisionSection />
         <ServicesSection />
         <HowItWorksSection />
