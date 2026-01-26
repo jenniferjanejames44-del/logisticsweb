@@ -21,7 +21,8 @@ import {
   Twitter, 
   Linkedin, 
   Instagram,
-  CheckCircle
+  CheckCircle,
+  ArrowRight
 } from "lucide-react";
 
 const Contact = () => {
@@ -317,11 +318,15 @@ const Contact = () => {
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button variant="cta" size="xl" asChild>
-                <Link to="/blog">View Resources</Link>
+              <Button variant="cta" size="xl" className="group px-8" asChild>
+                <Link to="/blog">
+                  View Resources
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                </Link>
               </Button>
-              <Button variant="heroOutline" size="xl">
+              <Button variant="heroOutline" size="xl" className="group px-8">
                 Start Live Chat
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
             </div>
           </div>

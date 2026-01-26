@@ -22,14 +22,17 @@ const AboutCTASection = () => {
             Let's discuss how we can help your business grow.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="cta" size="xl" asChild>
+            <Button variant="cta" size="xl" className="group" asChild>
               <Link to="/contact">
                 Contact Us Today
-                <ArrowRight size={20} className="ml-2" />
+                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-            <Button variant="outline" size="xl" asChild>
-              <Link to="/services">Explore Services</Link>
+            <Button variant="outline" size="xl" className="group" asChild>
+              <Link to="/services">
+                Explore Services
+                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
           </div>
         </div>

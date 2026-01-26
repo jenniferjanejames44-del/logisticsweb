@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calculator, Plane, Ship, ShoppingBag, Package, Zap, Shield, Clock, CheckCircle } from "lucide-react";
+import { Calculator, Plane, Ship, ShoppingBag, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 const countries = [
   { code: "US", name: "United States", airMultiplier: 1.0, oceanMultiplier: 1.0 },
@@ -231,8 +231,9 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="cta" size="xl" className="w-full mt-6">
+                          <Button variant="cta" size="xl" className="w-full mt-6 group">
                             Proceed to Payment
+                            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                           </Button>
                           <p className="text-xs text-muted-foreground">
                             Secure payment via Stripe/PayPal
@@ -307,8 +308,11 @@ const Pricing = () => {
             <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.
             </p>
-            <Button variant="cta" size="xl" asChild>
-              <Link to="/contact">Contact Sales</Link>
+            <Button variant="cta" size="xl" className="group px-8" asChild>
+              <Link to="/contact">
+                Contact Sales
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Link>
             </Button>
           </div>
         </section>
