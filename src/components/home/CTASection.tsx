@@ -27,7 +27,8 @@ const CTASection = () => {
       </div>
       
       {/* Dark Navy Overlay for Text Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(222,47%,6%)/95] via-[hsl(222,40%,8%)/92] to-[hsl(222,47%,6%)/95]" />
+      <div className="absolute inset-0 bg-[hsl(222,47%,4%)]" style={{ opacity: 0.9 }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,2%)] via-transparent to-[hsl(222,47%,2%)]" style={{ opacity: 0.5 }} />
       
       {/* Dot Pattern Overlay */}
       <div className="absolute inset-0 opacity-10">
