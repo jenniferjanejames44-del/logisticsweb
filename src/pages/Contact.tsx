@@ -95,22 +95,22 @@ const Contact = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-primary/90 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
         >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
           </div>
           
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
                 Get in Touch
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6">
                 Contact <span className="text-secondary">RAC Logistics</span>
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-8">
+              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] leading-relaxed">
                 Have questions? Need a quote? We're here to help. Reach out to our team and we'll respond within 24 hours.
               </p>
             </div>
@@ -118,21 +118,21 @@ const Contact = () => {
         </section>
 
         {/* Contact Form & Info */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-12">
+        <section className="section-padding bg-background">
+          <div className="section-container">
+            <div className="grid lg:grid-cols-3 gap-8 md:gap-12">
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <Card className="border-border/50 shadow-card">
-                  <CardContent className="p-8">
-                    <h2 className="font-heading text-2xl font-bold text-foreground mb-6">
+                <Card className="border border-border rounded-2xl shadow-lg">
+                  <CardContent className="p-6 md:p-8">
+                    <h2 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-6">
                       Send Us a Message
                     </h2>
                     
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <Label htmlFor="name">Full Name *</Label>
+                          <Label htmlFor="name" className="font-semibold text-sm text-foreground">Full Name *</Label>
                           <Input
                             id="name"
                             name="name"
@@ -140,11 +140,11 @@ const Contact = () => {
                             value={formData.name}
                             onChange={handleInputChange}
                             required
-                            className="h-12"
+                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="email">Email Address *</Label>
+                          <Label htmlFor="email" className="font-semibold text-sm text-foreground">Email Address *</Label>
                           <Input
                             id="email"
                             name="email"
@@ -153,14 +153,14 @@ const Contact = () => {
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            className="h-12"
+                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <Label htmlFor="phone">Phone Number</Label>
+                          <Label htmlFor="phone" className="font-semibold text-sm text-foreground">Phone Number</Label>
                           <Input
                             id="phone"
                             name="phone"
@@ -168,16 +168,16 @@ const Contact = () => {
                             placeholder="+234 800 000 0000"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="h-12"
+                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="subject">Subject *</Label>
+                          <Label htmlFor="subject" className="font-semibold text-sm text-foreground">Subject *</Label>
                           <Select 
                             value={formData.subject} 
                             onValueChange={(value) => setFormData(prev => ({ ...prev, subject: value }))}
                           >
-                            <SelectTrigger id="subject" className="h-12">
+                            <SelectTrigger id="subject" className="h-12 rounded-lg border-2 border-border focus:border-secondary">
                               <SelectValue placeholder="Select a subject" />
                             </SelectTrigger>
                             <SelectContent>
@@ -192,7 +192,7 @@ const Contact = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="message">Message *</Label>
+                        <Label htmlFor="message" className="font-semibold text-sm text-foreground">Message *</Label>
                         <Textarea
                           id="message"
                           name="message"
@@ -201,13 +201,13 @@ const Contact = () => {
                           onChange={handleInputChange}
                           required
                           rows={6}
-                          className="resize-none"
+                          className="resize-none rounded-lg border-2 border-border focus:border-secondary"
                         />
                       </div>
 
                       <Button 
                         type="submit" 
-                        variant="cta" 
+                        variant="default" 
                         size="xl" 
                         className="w-full"
                         disabled={isSubmitting}
@@ -231,8 +231,8 @@ const Contact = () => {
 
               {/* Contact Info */}
               <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <Card key={info.title} className="border-border/50 hover:border-secondary/50 hover:shadow-card transition-all duration-300">
+                {contactInfo.map((info) => (
+                  <Card key={info.title} className="border border-border rounded-2xl hover:border-secondary/30 hover:shadow-lg transition-all duration-300">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
                         <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -254,7 +254,7 @@ const Contact = () => {
                 ))}
 
                 {/* Social Links */}
-                <Card className="border-border/50">
+                <Card className="border border-border rounded-2xl">
                   <CardContent className="p-6">
                     <h3 className="font-heading font-bold text-foreground mb-4">
                       Follow Us
@@ -279,25 +279,24 @@ const Contact = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
+        <section className="section-padding bg-muted">
+          <div className="section-container">
+            <div className="text-center mb-8 md:mb-12">
               <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">
                 Location
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                 Visit Our Office
               </h2>
             </div>
             
-            <div className="relative rounded-2xl overflow-hidden shadow-card h-[400px] bg-primary/5">
-              {/* Placeholder Map */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
+            <div className="relative rounded-2xl overflow-hidden shadow-lg h-[400px] bg-gradient-to-br from-[hsl(222,47%,11%)/10] to-secondary/10 border border-border">
+              <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
                   <MapPin className="w-16 h-16 text-secondary mx-auto mb-4" />
                   <p className="text-lg font-medium text-foreground">123 Logistics Avenue</p>
                   <p className="text-muted-foreground">Victoria Island, Lagos, Nigeria</p>
-                  <Button variant="cta" className="mt-4" asChild>
+                  <Button variant="default" className="mt-4" asChild>
                     <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
                       Open in Google Maps
                     </a>
@@ -309,22 +308,22 @@ const Contact = () => {
         </section>
 
         {/* FAQ CTA */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/90">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+        <section className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] to-[hsl(222,40%,15%)]">
+          <div className="section-container text-center">
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
               Have More Questions?
             </h2>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button variant="cta" size="xl" className="group px-8" asChild>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button variant="default" size="xl" className="w-full sm:w-auto group" asChild>
                 <Link to="/blog">
                   View Resources
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                 </Link>
               </Button>
-              <Button variant="heroOutline" size="xl" className="group px-8">
+              <Button variant="ghost" size="xl" className="w-full sm:w-auto group">
                 Start Live Chat
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>

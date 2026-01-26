@@ -52,23 +52,23 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-28 md:py-32 bg-gradient-to-b from-[hsl(210,40%,98%)] to-white relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-secondary/5 to-[hsl(217,91%,60%)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-[hsl(217,91%,60%)]/5 to-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-secondary/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-secondary/5 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-block bg-secondary/10 text-secondary font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
+            className={`inline-block bg-secondary/10 text-secondary font-semibold text-sm tracking-wider uppercase px-4 py-2 rounded-full mb-4 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Services
           </span>
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-[hsl(215,28%,17%)] mb-5 sm:mb-6 leading-tight transition-all duration-700 delay-100 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 md:mb-6 leading-tight transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -76,7 +76,7 @@ const ServicesSection = () => {
             <span className="text-secondary">Solutions</span>
           </h2>
           <p
-            className={`text-lg sm:text-xl text-[hsl(215,16%,47%)] leading-relaxed transition-all duration-700 delay-200 ${
+            className={`text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -85,12 +85,12 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-white rounded-2xl overflow-hidden border border-[hsl(214,32%,91%)] shadow-lg hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 hover:-translate-y-3 ${
+              className={`group relative bg-card rounded-2xl overflow-hidden border border-border shadow-lg hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 hover:-translate-y-2 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
@@ -104,37 +104,37 @@ const ServicesSection = () => {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(215,28%,17%)]/80 via-[hsl(215,28%,17%)]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
                 
                 {/* Title on image */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-                  <h3 className="text-xl sm:text-2xl font-heading font-bold text-white">
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+                  <h3 className="text-xl md:text-2xl font-heading font-bold text-primary-foreground">
                     {service.title}
                   </h3>
                 </div>
 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-secondary/95 to-[hsl(18,100%,50%)]/95 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-secondary/95 to-secondary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="text-center">
-                    <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <ArrowRight size={32} className="text-white" />
+                    <div className="w-16 h-16 mx-auto bg-primary-foreground/20 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                      <ArrowRight size={32} className="text-secondary-foreground" />
                     </div>
-                    <span className="text-white font-bold text-lg">Learn More</span>
+                    <span className="text-secondary-foreground font-bold text-lg">Learn More</span>
                   </div>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 sm:p-8">
+              <div className="p-6 md:p-8">
                 {/* Icon */}
-                <div className="w-16 h-16 bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
-                  <service.icon className="w-8 h-8 text-secondary" />
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-secondary/20 transition-colors">
+                  <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
                 </div>
                 
-                <p className="text-[hsl(215,16%,47%)] text-base leading-relaxed mb-6">
+                <p className="text-muted-foreground leading-relaxed mb-6">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-2 text-secondary font-bold text-base group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-secondary font-bold group-hover:gap-3 transition-all">
                   <span>Learn More</span>
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -145,14 +145,11 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div
-          className={`text-center mt-14 sm:mt-16 lg:mt-20 transition-all duration-700 delay-700 ${
+          className={`text-center mt-12 md:mt-16 transition-all duration-700 delay-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <Button 
-            className="text-base px-10 py-6 rounded-xl font-bold bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] text-white shadow-[0_10px_40px_rgba(251,146,60,0.4)] hover:shadow-[0_15px_50px_rgba(251,146,60,0.5)] hover:scale-105 transition-all group" 
-            asChild
-          >
+          <Button variant="default" size="xl" className="group" asChild>
             <Link to="/services">
               View All Services
               <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />

@@ -81,22 +81,22 @@ const Pricing = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-primary/90 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
         >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
           </div>
           
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
                 Transparent Pricing
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6">
                 Calculate Your <span className="text-secondary">Shipping Cost</span>
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-8">
+              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] leading-relaxed">
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>
@@ -104,13 +104,13 @@ const Pricing = () => {
         </section>
 
         {/* Calculator Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <section className="section-padding bg-background">
+          <div className="section-container">
+            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
               {/* Calculator Form */}
-              <Card className="border-border/50 shadow-card">
+              <Card className="border border-border rounded-2xl shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3 font-heading text-2xl">
+                  <CardTitle className="flex items-center gap-3 font-heading text-xl md:text-2xl">
                     <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
                       <Calculator className="w-6 h-6 text-secondary" />
                     </div>
@@ -120,11 +120,11 @@ const Pricing = () => {
                 <CardContent className="space-y-6">
                   {/* Destination Country */}
                   <div className="space-y-2">
-                    <Label htmlFor="country" className="text-base font-medium">
+                    <Label htmlFor="country" className="font-semibold text-sm text-foreground">
                       Destination Country
                     </Label>
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-                      <SelectTrigger id="country" className="h-12">
+                      <SelectTrigger id="country" className="h-12 rounded-lg border-2 border-border focus:border-secondary">
                         <SelectValue placeholder="Select destination country" />
                       </SelectTrigger>
                       <SelectContent>
@@ -139,7 +139,7 @@ const Pricing = () => {
 
                   {/* Weight */}
                   <div className="space-y-2">
-                    <Label htmlFor="weight" className="text-base font-medium">
+                    <Label htmlFor="weight" className="font-semibold text-sm text-foreground">
                       Weight (KG)
                     </Label>
                     <Input
@@ -150,13 +150,13 @@ const Pricing = () => {
                       placeholder="Enter weight in kilograms"
                       value={weight}
                       onChange={(e) => setWeight(e.target.value)}
-                      className="h-12"
+                      className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                     />
                   </div>
 
                   {/* Service Type */}
                   <div className="space-y-3">
-                    <Label className="text-base font-medium">Service Type</Label>
+                    <Label className="font-semibold text-sm text-foreground">Service Type</Label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {services.map((service) => (
                         <button
@@ -165,13 +165,13 @@ const Pricing = () => {
                           className={`p-3 sm:p-4 rounded-xl border-2 text-left transition-all duration-300 hover:border-secondary/50 ${
                             selectedService === service.id
                               ? 'border-secondary bg-secondary/10'
-                              : 'border-border/50 bg-background'
+                              : 'border-border bg-background'
                           }`}
                         >
                           <service.icon className={`w-5 h-5 sm:w-6 sm:h-6 mb-2 ${
                             selectedService === service.id ? 'text-secondary' : 'text-muted-foreground'
                           }`} />
-                          <div className="font-medium text-foreground text-sm sm:text-base">{service.name}</div>
+                          <div className="font-semibold text-foreground text-sm sm:text-base">{service.name}</div>
                           <div className="text-xs text-muted-foreground">{service.description}</div>
                         </button>
                       ))}
@@ -182,10 +182,10 @@ const Pricing = () => {
 
               {/* Price Result */}
               <div className="space-y-6">
-                <Card className={`border-2 transition-all duration-500 ${
-                  calculatedPrice !== null ? 'border-secondary shadow-yellow' : 'border-border/50'
+                <Card className={`border-2 rounded-2xl transition-all duration-500 ${
+                  calculatedPrice !== null ? 'border-secondary shadow-orange' : 'border-border'
                 }`}>
-                  <CardContent className="p-8">
+                  <CardContent className="p-6 md:p-8">
                     <div className="text-center">
                       <p className="text-muted-foreground mb-2">Estimated Price</p>
                       <div className="relative h-20 sm:h-24 flex items-center justify-center">
@@ -216,7 +216,7 @@ const Pricing = () => {
                             <span>{selectedServiceData.description}</span>
                           </div>
                           
-                          <div className="pt-4 border-t border-border/50 space-y-2 text-sm">
+                          <div className="pt-4 border-t border-border space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground">
                               <span>Base Rate ({weight} KG × ${selectedServiceData.baseRate}/KG)</span>
                               <span>${(parseFloat(weight) * selectedServiceData.baseRate).toFixed(2)}</span>
@@ -231,7 +231,7 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="cta" size="xl" className="w-full mt-6 group">
+                          <Button variant="default" size="xl" className="w-full mt-6 group">
                             Proceed to Payment
                             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                           </Button>
@@ -246,17 +246,17 @@ const Pricing = () => {
 
                 {/* Features */}
                 <div className="grid grid-cols-3 gap-2 sm:gap-4">
-                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-muted rounded-xl">
                     <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
-                    <span className="text-xs sm:text-sm font-medium text-foreground">Instant Quote</span>
+                    <span className="text-xs sm:text-sm font-semibold text-foreground">Instant Quote</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-muted rounded-xl">
                     <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
-                    <span className="text-xs sm:text-sm font-medium text-foreground">Secure Payment</span>
+                    <span className="text-xs sm:text-sm font-semibold text-foreground">Secure Payment</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-2 sm:p-4 bg-muted/30 rounded-xl">
+                  <div className="flex flex-col items-center text-center p-3 sm:p-4 bg-muted rounded-xl">
                     <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-secondary mb-1 sm:mb-2" />
-                    <span className="text-xs sm:text-sm font-medium text-foreground">24/7 Support</span>
+                    <span className="text-xs sm:text-sm font-semibold text-foreground">24/7 Support</span>
                   </div>
                 </div>
               </div>
@@ -265,18 +265,18 @@ const Pricing = () => {
         </section>
 
         {/* What's Included */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
+        <section className="section-padding bg-muted">
+          <div className="section-container">
+            <div className="text-center mb-8 md:mb-12">
               <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">
                 Value
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                 What's Included
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {[
                 "Door-to-door delivery",
                 "Real-time tracking",
@@ -286,13 +286,13 @@ const Pricing = () => {
                 "24/7 customer support",
                 "Secure packaging",
                 "Delivery confirmation"
-              ].map((feature, index) => (
+              ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 p-4 bg-background rounded-xl border border-border/50"
+                  className="flex items-center gap-3 p-4 bg-card rounded-xl border border-border"
                 >
                   <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="font-medium text-foreground">{feature}</span>
+                  <span className="font-semibold text-foreground">{feature}</span>
                 </div>
               ))}
             </div>
@@ -300,15 +300,15 @@ const Pricing = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/90">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+        <section className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] to-[hsl(222,40%,15%)]">
+          <div className="section-container text-center">
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
               Need a Custom Quote?
             </h2>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.
             </p>
-            <Button variant="cta" size="xl" className="group px-8" asChild>
+            <Button variant="default" size="xl" className="group" asChild>
               <Link to="/contact">
                 Contact Sales
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />

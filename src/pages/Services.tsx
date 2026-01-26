@@ -70,29 +70,29 @@ const Services = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-primary/90 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
         >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
           </div>
           
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
                 Our Services
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6">
                 Comprehensive <span className="text-secondary">Logistics Solutions</span>
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-8">
+              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 leading-relaxed">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button variant="cta" size="xl" asChild>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button variant="default" size="xl" className="w-full sm:w-auto" asChild>
                   <Link to="/pricing">Get a Quote</Link>
                 </Button>
-                <Button variant="heroOutline" size="xl" asChild>
+                <Button variant="ghost" size="xl" className="w-full sm:w-auto" asChild>
                   <Link to="/contact">Contact Us</Link>
                 </Button>
               </div>
@@ -101,27 +101,27 @@ const Services = () => {
         </section>
 
         {/* Services Grid */}
-        <section ref={servicesRef} className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section ref={servicesRef} className="section-padding bg-background">
+          <div className="section-container">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
-                  className={`group relative overflow-hidden border-border/50 hover:border-secondary/50 transition-all duration-500 hover:shadow-card hover:-translate-y-2 ${
+                  className={`group bg-card border border-border rounded-2xl hover:border-secondary/30 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
                     servicesInView
                       ? 'opacity-100 translate-y-0'
                       : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-8">
-                    <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
-                      <service.icon className="w-8 h-8 text-secondary" />
+                  <CardContent className="p-6 md:p-8">
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
+                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
                     </div>
-                    <h3 className="font-heading text-2xl font-bold text-foreground mb-4 group-hover:text-secondary transition-colors">
+                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-secondary transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6">
+                    <p className="text-muted-foreground mb-6 leading-relaxed">
                       {service.description}
                     </p>
                     <ul className="space-y-2 mb-6">
@@ -145,15 +145,15 @@ const Services = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/90">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+        <section className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] to-[hsl(222,40%,15%)]">
+          <div className="section-container text-center">
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
               Need a Custom Logistics Solution?
             </h2>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
-            <Button variant="cta" size="xl" asChild>
+            <Button variant="default" size="xl" asChild>
               <Link to="/contact">Get in Touch</Link>
             </Button>
           </div>
