@@ -20,14 +20,20 @@ const CTASection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-white mb-6 leading-tight">
+          <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-white mb-6 leading-tight transition-all duration-700 delay-100 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}>
             Ready to Ship with <span className="text-secondary">RAC</span>?
           </h2>
-          <p className="text-lg sm:text-xl text-white/80 mb-12 leading-relaxed font-medium">
+          <p className={`text-lg sm:text-xl text-white/80 mb-12 leading-relaxed font-medium transition-all duration-700 delay-200 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}>
             Join thousands of businesses who trust RAC Logistics for their shipping needs. 
             Get a free quote today and experience the difference.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-300 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}>
             <Button
               variant="cta"
               size="xl"

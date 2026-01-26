@@ -47,12 +47,16 @@ const FounderSection = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-white mb-8 leading-tight">
               A Message From Our <span className="text-secondary">Founder</span>
             </h2>
-            <blockquote className="text-lg sm:text-xl lg:text-2xl text-white/90 leading-relaxed mb-10 italic font-light">
+            <blockquote className={`text-lg sm:text-xl lg:text-2xl text-white/90 leading-relaxed mb-10 italic font-light transition-all duration-700 delay-300 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}>
               "At RAC Logistics, we don't just move packages—we build bridges between 
               businesses and opportunities worldwide. Our commitment to excellence, 
               innovation, and customer satisfaction drives everything we do."
             </blockquote>
-            <div className="flex items-center gap-4">
+            <div className={`flex items-center gap-4 transition-all duration-700 delay-400 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}>
               <div className="w-16 h-1.5 bg-secondary rounded-full" />
               <div>
                 <h4 className="font-heading font-bold text-white text-lg sm:text-xl">

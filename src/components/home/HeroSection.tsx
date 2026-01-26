@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ArrowRight, Package, MapPin, Clock, Shield, Play } from "lucide-react";
@@ -7,6 +7,13 @@ import heroImage from "@/assets/hero-logistics.jpg";
 
 const HeroSection = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger animations after mount
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -31,7 +38,9 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
         <div className="max-w-5xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 glass backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 shadow-lg">
+          <div className={`inline-flex items-center gap-2 sm:gap-3 glass backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 shadow-lg transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+          }`}>
             <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-secondary"></span>
@@ -42,7 +51,9 @@ const HeroSection = () => {
           </div>
 
           {/* Main Headline - Responsive sizing */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight">
+          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight transition-all duration-700 delay-100 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             Global Logistics
             <span className="block mt-2 sm:mt-3 text-gradient-accent drop-shadow-[0_4px_20px_rgba(236,72,153,0.5)]">
               Delivered With Excellence
@@ -50,13 +61,17 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle - Good contrast */}
-          <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
+          <p className={`text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium transition-all duration-700 delay-200 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
           {/* CTA Buttons - Compact, bold, proper spacing */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
+          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 px-4 sm:px-0 transition-all duration-700 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             <Button variant="heroPrimary" size="lg" className="w-fit text-base font-bold" asChild>
               <Link to="/pricing">
                 Get Free Quote
@@ -72,7 +87,9 @@ const HeroSection = () => {
           </div>
 
           {/* Tracker Card - Glassmorphism with Hot Pink accents */}
-          <div className="glass backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl">
+          <div className={`glass backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl transition-all duration-700 delay-[400ms] ${
+            isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+          }`}>
             <h3 className="text-white font-heading font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-6 flex items-center justify-center gap-3">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-accent">
                 <Search size={20} className="sm:w-6 sm:h-6 text-secondary-foreground" />
@@ -97,13 +114,21 @@ const HeroSection = () => {
           </div>
 
           {/* Trust Indicators - Responsive */}
-          <div className="mt-12 sm:mt-16 flex flex-wrap justify-center gap-6 sm:gap-10 lg:gap-16">
+          <div className={`mt-12 sm:mt-16 flex flex-wrap justify-center gap-6 sm:gap-10 lg:gap-16 transition-all duration-700 delay-500 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
             {[
               { icon: MapPin, text: "150+ Countries", highlight: "Global" },
               { icon: Clock, text: "24/7 Support", highlight: "Always" },
               { icon: Shield, text: "Fully Insured", highlight: "100%" },
             ].map((item, index) => (
-              <div key={index} className="flex items-center gap-3 text-white/90 group">
+              <div 
+                key={index} 
+                className={`flex items-center gap-3 text-white/90 group transition-all duration-500 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+                style={{ transitionDelay: `${600 + index * 100}ms` }}
+              >
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-secondary/30 transition-colors border border-white/10">
                   <item.icon size={20} className="sm:w-6 sm:h-6 text-secondary" />
                 </div>
