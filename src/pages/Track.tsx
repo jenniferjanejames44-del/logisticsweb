@@ -24,9 +24,12 @@ import {
   ArrowRight,
   Bell,
   Copy,
-  Share2
+  Share2,
+  Mail,
+  CheckCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
 
 interface ShipmentData {
   id: string;
@@ -53,6 +56,8 @@ const trackingSteps = [
   { status: "delivered", label: "Delivered", description: "Successfully delivered" },
 ];
 
+const emailSchema = z.string().email("Please enter a valid email address");
+
 const Track = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [trackingNumber, setTrackingNumber] = useState(searchParams.get("number") || "");
@@ -61,6 +66,12 @@ const Track = () => {
   const [error, setError] = useState<string | null>(null);
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { toast } = useToast();
+  
+  // Email notification state
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   // Auto-search if tracking number is in URL
   useEffect(() => {
@@ -162,6 +173,29 @@ const Track = () => {
         description: "Tracking link copied to clipboard",
       });
     }
+  };
+
+  const handleEmailSubscribe = async () => {
+    // Validate email
+    const result = emailSchema.safeParse(notifyEmail);
+    if (!result.success) {
+      setEmailError(result.error.errors[0].message);
+      return;
+    }
+    
+    setEmailError(null);
+    setIsSubscribing(true);
+    
+    // Simulate API call - in production, this would save to database
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    setIsSubscribing(false);
+    setIsSubscribed(true);
+    
+    toast({
+      title: "Subscribed!",
+      description: `You'll receive updates at ${notifyEmail}`,
+    });
   };
 
   const ServiceIcon = shipment ? getServiceIcon(shipment.service_type) : Package;
@@ -427,6 +461,72 @@ const Track = () => {
                         <p className="text-foreground">{shipment.description}</p>
                       </div>
                     )}
+
+                    {/* Email Notification Signup */}
+                    <div className="mt-8 p-5 sm:p-6 bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-xl border border-secondary/20">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center">
+                          <Bell className="w-5 h-5 text-secondary" />
+                        </div>
+                        <div>
+                          <h4 className="font-heading font-bold text-foreground">Get Status Updates</h4>
+                          <p className="text-sm text-muted-foreground">Receive email notifications when your shipment status changes</p>
+                        </div>
+                      </div>
+                      
+                      {isSubscribed ? (
+                        <div className="flex items-center gap-3 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                          <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
+                          <div>
+                            <p className="font-medium text-foreground">You're subscribed!</p>
+                            <p className="text-sm text-muted-foreground">We'll notify you at {notifyEmail}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <div className="relative flex-1">
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                              <Input
+                                type="email"
+                                placeholder="Enter your email address"
+                                value={notifyEmail}
+                                onChange={(e) => {
+                                  setNotifyEmail(e.target.value);
+                                  setEmailError(null);
+                                }}
+                                onKeyDown={(e) => e.key === "Enter" && handleEmailSubscribe()}
+                                className={`pl-12 h-12 rounded-xl ${emailError ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                              />
+                            </div>
+                            <Button
+                              variant="cta"
+                              onClick={handleEmailSubscribe}
+                              disabled={isSubscribing || !notifyEmail}
+                              className="h-12 px-6 rounded-xl"
+                            >
+                              {isSubscribing ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                <>
+                                  <Bell className="w-4 h-4 mr-2" />
+                                  Notify Me
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                          {emailError && (
+                            <p className="text-sm text-destructive flex items-center gap-1.5">
+                              <AlertCircle className="w-4 h-4" />
+                              {emailError}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground">
+                            We'll only send you important updates about this shipment. Unsubscribe anytime.
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
 
