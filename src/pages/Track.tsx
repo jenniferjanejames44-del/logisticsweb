@@ -173,65 +173,100 @@ const Track = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-16 bg-primary overflow-hidden"
+          className="relative pt-32 pb-24 sm:pb-32 bg-primary overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
+          {/* Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] animate-pulse-slow" />
+            <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/30 rounded-full blur-[100px] animate-float" />
           </div>
           
           <div className="container mx-auto px-4 relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-semibold mb-6">
-                <Package size={16} />
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-xl text-white rounded-full text-sm font-semibold mb-6 border border-white/20 shadow-xl">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+                </span>
                 Real-Time Tracking
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
-                Track Your <span className="text-secondary">Shipment</span>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white mb-6 tracking-tight">
+                Track Your{" "}
+                <span 
+                  className="text-[hsl(45,97%,55%)]"
+                  style={{ textShadow: '0 0 60px rgba(251, 191, 36, 0.6), 0 4px 20px rgba(251, 191, 36, 0.3)' }}
+                >
+                  Shipment
+                </span>
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
+              <p className="text-lg sm:text-xl text-[hsl(217,21%,90%)] mb-10 sm:mb-14 max-w-2xl mx-auto font-medium">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
               </p>
 
-              {/* Search Form */}
-              <div className="max-w-2xl mx-auto">
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
-                    <Input
-                      value={trackingNumber}
-                      onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
-                      onKeyDown={(e) => e.key === "Enter" && searchShipment()}
-                      placeholder="Enter tracking number (e.g., RAC12345678)"
-                      className="h-14 pl-12 pr-4 text-lg bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 focus:bg-primary-foreground/15 focus:border-secondary"
-                    />
+              {/* Premium Glassmorphism Tracking Card */}
+              <div className="relative group max-w-2xl mx-auto">
+                {/* Glow effect behind card */}
+                <div className="absolute -inset-2 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
+                
+                {/* Main card */}
+                <div className="relative bg-gradient-to-br from-[hsl(230,40%,15%)] via-[hsl(230,35%,12%)] to-[hsl(230,40%,10%)] backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-secondary/40">
+                  {/* Header */}
+                  <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-secondary rounded-xl sm:rounded-2xl blur-lg opacity-60" />
+                      <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-secondary to-[hsl(24,95%,45%)] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                        <Search size={22} className="sm:w-6 sm:h-6 text-primary-foreground" />
+                      </div>
+                    </div>
+                    <h3 className="text-primary-foreground font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl">
+                      Track Your Shipment
+                    </h3>
                   </div>
-                  <Button 
-                    variant="cta" 
-                    size="xl" 
-                    className="h-14 px-8"
-                    onClick={() => searchShipment()}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <Loader2 className="animate-spin" size={20} />
-                    ) : (
-                      <>
-                        Track Now
-                        <ArrowRight size={18} className="ml-2" />
-                      </>
-                    )}
-                  </Button>
+                  
+                  {/* Input section */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div className="relative flex-1">
+                      <Input
+                        value={trackingNumber}
+                        onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
+                        onKeyDown={(e) => e.key === "Enter" && searchShipment()}
+                        placeholder="Enter tracking number"
+                        className="w-full bg-primary-foreground/10 border-2 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 h-14 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg px-5 focus:bg-primary-foreground/15 focus:border-secondary focus:ring-2 focus:ring-secondary/30 transition-all"
+                      />
+                    </div>
+                    <Button 
+                      variant="heroPrimary" 
+                      size="lg" 
+                      className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg font-bold rounded-xl sm:rounded-2xl shadow-[0_8px_30px_rgba(255,107,53,0.5)] hover:shadow-[0_12px_40px_rgba(255,107,53,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                      onClick={() => searchShipment()}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <Loader2 className="animate-spin" size={20} />
+                      ) : (
+                        <>
+                          <span className="hidden sm:inline">Track Now</span>
+                          <span className="sm:hidden">Track</span>
+                          <ArrowRight className="ml-2 w-5 h-5" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  
+                  {/* Helper text */}
+                  <div className="flex items-center justify-center gap-2 text-primary-foreground/50 mt-5 sm:mt-6">
+                    <Package size={16} className="text-secondary" />
+                    <p className="text-sm sm:text-base font-medium">
+                      Example: <span className="text-primary-foreground/70 font-semibold">RAC + tracking ID</span>
+                    </p>
+                  </div>
                 </div>
-                <p className="text-primary-foreground/50 text-sm mt-4">
-                  Example: RAC + 8 character ID
-                </p>
               </div>
             </div>
           </div>
           
           {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
         </section>
 
         {/* Results Section */}
