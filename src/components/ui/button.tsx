@@ -36,47 +36,47 @@ const buttonVariants = cva(
         ghost: "hover:bg-muted hover:text-foreground rounded-lg",
         link: "text-primary underline-offset-4 hover:underline hover:text-primary/80",
         
-        /* Primary CTA - Vibrant Indigo */
+        /* Primary CTA - Vibrant Orange */
         cta: [
-          "bg-primary text-primary-foreground font-bold rounded-xl",
+          "bg-secondary text-secondary-foreground font-bold rounded-xl",
           "shadow-button hover:shadow-button-hover",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Secondary CTA - Hot Pink */
+        /* Secondary CTA - Dark Navy */
         accent: [
-          "bg-secondary text-secondary-foreground font-bold rounded-xl",
-          "shadow-accent hover:shadow-accent-hover",
+          "bg-primary text-primary-foreground font-bold rounded-xl",
+          "shadow-lg hover:shadow-xl",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Outline Primary - Indigo outline */
+        /* Outline Primary - Orange outline */
         ctaOutline: [
-          "border-2 border-primary bg-transparent text-primary font-bold rounded-xl",
-          "hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-secondary bg-transparent text-secondary font-bold rounded-xl",
+          "hover:bg-secondary hover:text-secondary-foreground",
           "hover:scale-105 hover:-translate-y-1 hover:shadow-button",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Hero Primary - Vibrant Indigo for hero sections */
+        /* Hero Primary - Vibrant Orange for hero sections */
         heroPrimary: [
-          "bg-primary text-primary-foreground font-bold rounded-xl",
+          "bg-secondary text-secondary-foreground font-bold rounded-xl",
           "shadow-button hover:shadow-button-hover",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Hero Secondary - Hot Pink for hero sections */
+        /* Hero Secondary - White for hero sections */
         heroSecondary: [
-          "bg-secondary text-secondary-foreground font-bold rounded-xl",
-          "shadow-accent hover:shadow-accent-hover",
-          "hover:scale-105 hover:-translate-y-1",
+          "bg-card text-primary font-bold rounded-xl",
+          "shadow-lg hover:shadow-xl",
+          "hover:bg-muted hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Hero Outline - Glassmorphism for dark backgrounds */
+        /* Hero Outline - White border for dark backgrounds */
         heroOutline: [
           "border-2 border-white/40 bg-white/10 text-white font-bold rounded-xl",
           "hover:bg-white hover:text-primary hover:border-white",
@@ -85,41 +85,41 @@ const buttonVariants = cva(
           "backdrop-blur-sm",
         ].join(" "),
         
-        /* Nav CTA - Compact solid for navigation */
+        /* Nav CTA - Orange for navigation */
         navCta: [
-          "bg-primary text-primary-foreground font-semibold rounded-xl",
+          "bg-secondary text-secondary-foreground font-semibold rounded-xl",
           "shadow-sm hover:shadow-button",
           "hover:scale-105 hover:-translate-y-0.5",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Nav Outline - Compact outline for navigation */
+        /* Nav Outline - Orange outline for navigation */
         navOutline: [
-          "border-2 border-primary bg-transparent text-primary font-semibold rounded-xl",
-          "hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-secondary bg-transparent text-secondary font-semibold rounded-xl",
+          "hover:bg-secondary hover:text-secondary-foreground",
           "hover:scale-105 hover:-translate-y-0.5 hover:shadow-sm",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Premium - Gradient Indigo to Pink */
+        /* Premium - Gradient Orange */
         premium: [
-          "bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold rounded-xl",
+          "bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] text-secondary-foreground font-bold rounded-xl",
           "shadow-button hover:shadow-button-hover",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
         
-        /* Indigo Outline */
+        /* Orange Outline */
         indigoOutline: [
-          "border-2 border-primary bg-transparent text-primary font-semibold rounded-xl",
-          "hover:bg-primary hover:text-primary-foreground",
+          "border-2 border-secondary bg-transparent text-secondary font-semibold rounded-xl",
+          "hover:bg-secondary hover:text-secondary-foreground",
           "hover:scale-105 hover:-translate-y-0.5 hover:shadow-md",
           "active:scale-[0.98] active:translate-y-0",
         ].join(" "),
 
         /* Dynamic - With shine effect */
         dynamic: [
-          "bg-primary text-primary-foreground font-bold rounded-xl",
+          "bg-secondary text-secondary-foreground font-bold rounded-xl",
           "shadow-button hover:shadow-button-hover",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
@@ -130,16 +130,16 @@ const buttonVariants = cva(
         /* Quote - Card style with animated arrow */
         quote: [
           "bg-card text-foreground font-semibold rounded-xl border border-border",
-          "shadow-sm hover:shadow-card hover:border-primary/30",
+          "shadow-sm hover:shadow-card hover:border-secondary/30",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
           "group",
           "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
         ].join(" "),
 
-        /* Quote Primary - Indigo background with animated arrow */
+        /* Quote Primary - Orange background with animated arrow */
         quotePrimary: [
-          "bg-primary text-primary-foreground font-semibold rounded-xl",
+          "bg-secondary text-secondary-foreground font-semibold rounded-xl",
           "shadow-button hover:shadow-button-hover",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
@@ -147,10 +147,10 @@ const buttonVariants = cva(
           "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
         ].join(" "),
 
-        /* Quote Accent - Pink background with animated arrow */
+        /* Quote Accent - Navy background with animated arrow */
         quoteAccent: [
-          "bg-secondary text-secondary-foreground font-semibold rounded-xl",
-          "shadow-accent hover:shadow-accent-hover",
+          "bg-primary text-primary-foreground font-semibold rounded-xl",
+          "shadow-lg hover:shadow-xl",
           "hover:scale-105 hover:-translate-y-1",
           "active:scale-[0.98] active:translate-y-0",
           "group",
