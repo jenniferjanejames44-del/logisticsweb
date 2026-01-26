@@ -20,30 +20,33 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Video Background with Deep Navy Overlay */}
       <div className="absolute inset-0">
-        {/* Video background */}
+        {/* Video background with lazy loading */}
         <video
           autoPlay
           loop
           muted
           playsInline
           poster={heroImage}
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={heroVideo} type="video/mp4" />
-          {/* Fallback to image if video doesn't load */}
-          <img
-            src={heroImage}
-            alt="Global Logistics"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
         </video>
-        {/* Deep Navy gradient overlay - #0A0E27 to #1A1F3A */}
+        {/* Fallback image with lazy loading */}
+        <img
+          src={heroImage}
+          alt="Global Logistics"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+        />
+        {/* Deep Navy gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,10%)]/90 via-[hsl(230,50%,15%)]/85 to-[hsl(230,55%,12%)]/90" />
         {/* Subtle geometric pattern overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.5'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
-        {/* Animated gradient orbs - using Orange accent */}
+        {/* Animated gradient orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(217,91%,60%)]/10 rounded-full blur-3xl animate-float" />
       </div>

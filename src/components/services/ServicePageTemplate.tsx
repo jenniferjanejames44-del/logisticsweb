@@ -62,11 +62,13 @@ const ServicePageTemplate = ({
           ref={heroRef}
           className="relative pt-32 pb-20 overflow-hidden"
         >
-          {/* Background Image */}
+          {/* Background Image with lazy loading */}
           <div className="absolute inset-0">
             <img 
               src={serviceImages[title] || serviceImages["Air Shipping"]}
               alt={title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/85" />
