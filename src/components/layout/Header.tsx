@@ -49,24 +49,18 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-xl shadow-lg py-3"
+          ? "bg-primary/95 backdrop-blur-xl shadow-xl py-3"
           : "bg-transparent py-4"
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
-        {/* Logo - Deep Blue when scrolled, Orange accent when transparent */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Logo - Always visible with proper contrast */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-extrabold text-xl transition-all duration-300 shadow-lg ${
-            isScrolled 
-              ? "bg-primary text-primary-foreground group-hover:scale-110" 
-              : "bg-secondary text-secondary-foreground group-hover:scale-110"
-          }`}>
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center font-heading font-extrabold text-xl transition-all duration-300 shadow-[0_4px_20px_rgba(255,107,53,0.4)] bg-secondary text-secondary-foreground group-hover:scale-105">
             R
           </div>
-          <span className={`font-heading font-bold text-xl transition-colors duration-300 ${
-            isScrolled ? "text-foreground" : "text-white"
-          }`}>
-            RAC <span className={isScrolled ? "text-primary" : "text-secondary"}>Logistics</span>
+          <span className="font-heading font-bold text-xl transition-colors duration-300 text-white">
+            RAC <span className="text-secondary">Logistics</span>
           </span>
         </Link>
 
@@ -76,16 +70,10 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-semibold transition-colors relative group ${
-                isScrolled 
-                  ? "text-foreground/80 hover:text-primary" 
-                  : "text-white/90 hover:text-secondary"
-              }`}
+              className="font-semibold transition-colors relative group text-white/90 hover:text-secondary"
             >
               {link.name}
-              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full ${
-                isScrolled ? "bg-primary" : "bg-secondary"
-              }`} />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full bg-secondary" />
             </Link>
           ))}
           
@@ -93,27 +81,21 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className={`font-semibold transition-colors relative group flex items-center gap-1 ${
-                  isScrolled 
-                    ? "text-foreground/80 hover:text-primary" 
-                    : "text-white/90 hover:text-secondary"
-                }`}
+                className="font-semibold transition-colors relative group flex items-center gap-1 text-white/90 hover:text-secondary"
               >
                 Services
                 <ChevronDown className="w-4 h-4 transition-transform group-data-[state=open]:rotate-180" />
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full ${
-                  isScrolled ? "bg-primary" : "bg-secondary"
-                }`} />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full bg-secondary" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="center" 
-              className="w-64 p-2 bg-background/95 backdrop-blur-xl border-border"
+              className="w-64 p-2 bg-card/95 backdrop-blur-xl border-border shadow-xl"
             >
               <DropdownMenuItem asChild className="p-0 mb-2">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors w-full font-semibold text-primary"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary/10 transition-colors w-full font-semibold text-secondary"
                 >
                   View All Services
                 </Link>
@@ -122,9 +104,9 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors w-full"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary/10 transition-colors w-full"
                   >
-                    <service.icon className="w-4 h-4 text-primary" />
+                    <service.icon className="w-4 h-4 text-secondary" />
                     <span className="font-medium text-foreground">{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
@@ -136,16 +118,10 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-semibold transition-colors relative group ${
-                isScrolled 
-                  ? "text-foreground/80 hover:text-primary" 
-                  : "text-white/90 hover:text-secondary"
-              }`}
+              className="font-semibold transition-colors relative group text-white/90 hover:text-secondary"
             >
               {link.name}
-              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full ${
-                isScrolled ? "bg-primary" : "bg-secondary"
-              }`} />
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full rounded-full bg-secondary" />
             </Link>
           ))}
         </nav>
@@ -156,21 +132,22 @@ const Header = () => {
           {user ? (
             <>
               {isAdmin && (
-                <Button variant={isScrolled ? "ghost" : "ghost"} className={isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"} asChild>
+                <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10 font-semibold" asChild>
                   <Link to="/admin">
                     <Shield className="w-4 h-4 mr-2" />
                     Admin
                   </Link>
                 </Button>
               )}
-              <Button variant={isScrolled ? "ghost" : "ghost"} className={isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"} asChild>
+              <Button variant="ghost" className="text-white hover:text-secondary hover:bg-white/10 font-semibold" asChild>
                 <Link to="/dashboard">
                   <User className="w-4 h-4 mr-2" />
                   Dashboard
                 </Link>
               </Button>
               <Button 
-                variant={isScrolled ? "ctaOutline" : "heroOutline"}
+                variant="cta"
+                className="px-6 py-2.5 rounded-lg font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)] hover:shadow-[0_8px_30px_rgba(255,107,53,0.5)]"
                 onClick={() => signOut()}
               >
                 Logout
@@ -178,10 +155,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button variant={isScrolled ? "ghost" : "ghost"} className={`font-semibold ${isScrolled ? "hover:bg-primary/10" : "text-white hover:text-secondary hover:bg-white/10"}`} asChild>
+              <Button variant="ghost" className="font-semibold text-white hover:text-secondary hover:bg-white/10" asChild>
                 <Link to="/auth">Login</Link>
               </Button>
-              <Button variant={isScrolled ? "cta" : "accent"} size="lg" asChild>
+              <Button variant="cta" size="lg" className="px-6 py-2.5 rounded-lg font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)] hover:shadow-[0_8px_30px_rgba(255,107,53,0.5)]" asChild>
                 <Link to="/pricing">Get Quote</Link>
               </Button>
             </>
@@ -192,11 +169,7 @@ const Header = () => {
         <div className="lg:hidden flex items-center gap-2">
           <ThemeToggle />
           <button
-            className={`p-2 rounded-lg transition-colors ${
-              isScrolled 
-                ? "text-foreground hover:bg-primary/10" 
-                : "text-white hover:bg-white/10"
-            }`}
+            className="p-2 rounded-lg transition-colors text-white hover:bg-white/10"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -205,18 +178,18 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Enhanced with slide animation and backdrop blur */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-background shadow-xl transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? "max-h-[800px] py-6" : "max-h-0 py-0"
+        className={`lg:hidden fixed inset-0 top-[60px] bg-primary/98 backdrop-blur-xl transition-all duration-300 overflow-y-auto ${
+          isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
-        <nav className="container mx-auto px-4 flex flex-col gap-2">
+        <nav className="container mx-auto px-4 py-6 flex flex-col gap-2">
           {navLinks.slice(0, 2).map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground/80 hover:text-primary hover:bg-primary/5 font-semibold py-3 px-4 rounded-xl transition-all"
+              className="text-white/90 hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -226,7 +199,7 @@ const Header = () => {
           {/* Mobile Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-foreground/80 hover:text-primary hover:bg-primary/5 font-semibold py-3 px-4 rounded-xl transition-all"
+              className="flex items-center justify-between text-white/90 hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px]"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -235,7 +208,7 @@ const Header = () => {
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[500px]" : "max-h-0"}`}>
               <Link
                 to="/services"
-                className="flex items-center gap-3 text-primary font-semibold py-2.5 px-8 rounded-lg hover:bg-primary/5 transition-all"
+                className="flex items-center gap-3 text-secondary font-semibold py-3 px-8 rounded-lg hover:bg-white/10 transition-all min-h-[44px]"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 View All Services
@@ -244,10 +217,10 @@ const Header = () => {
                 <Link
                   key={service.name}
                   to={service.href}
-                  className="flex items-center gap-3 text-foreground/70 hover:text-primary py-2.5 px-8 rounded-lg hover:bg-primary/5 transition-all"
+                  className="flex items-center gap-3 text-white/70 hover:text-secondary py-3 px-8 rounded-lg hover:bg-white/10 transition-all min-h-[44px]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <service.icon className="w-4 h-4 text-primary" />
+                  <service.icon className="w-4 h-4 text-secondary" />
                   {service.name}
                 </Link>
               ))}
@@ -258,25 +231,25 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground/80 hover:text-primary hover:bg-primary/5 font-semibold py-3 px-4 rounded-xl transition-all"
+              className="text-white/90 hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="flex flex-col gap-3 pt-4 mt-2 border-t border-border">
+          <div className="flex flex-col gap-3 pt-6 mt-4 border-t border-white/10">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button variant="ghost" className="justify-start" asChild>
+                  <Button variant="ghost" className="justify-start text-white/90 hover:text-secondary hover:bg-white/10 min-h-[48px]" asChild>
                     <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
                       <Shield className="w-4 h-4 mr-2" />
                       Admin
                     </Link>
                   </Button>
                 )}
-                <Button variant="ghost" className="justify-start" asChild>
+                <Button variant="ghost" className="justify-start text-white/90 hover:text-secondary hover:bg-white/10 min-h-[48px]" asChild>
                   <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
                     <User className="w-4 h-4 mr-2" />
                     Dashboard
@@ -284,7 +257,7 @@ const Header = () => {
                 </Button>
                 <Button 
                   variant="cta" 
-                  className="w-full"
+                  className="w-full min-h-[48px] shadow-[0_4px_20px_rgba(255,107,53,0.4)]"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -295,10 +268,10 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button variant="ctaOutline" className="w-full" asChild>
+                <Button variant="ghost" className="w-full min-h-[48px] text-white border-2 border-white/30 hover:bg-white/10" asChild>
                   <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
                 </Button>
-                <Button variant="cta" className="w-full" asChild>
+                <Button variant="cta" className="w-full min-h-[48px] shadow-[0_4px_20px_rgba(255,107,53,0.4)]" asChild>
                   <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)}>Get Quote</Link>
                 </Button>
               </>
