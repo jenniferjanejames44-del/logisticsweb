@@ -1,10 +1,10 @@
 import { Linkedin, Twitter, Mail } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import founderImage from "@/assets/founder.jpg";
+import founderImage from "@/assets/founder-rex.jpg";
 
 const teamMembers = [
   {
-    name: "James Wuyep",
+    name: "Offor Rex C.K",
     role: "Founder & CEO",
     image: founderImage,
     bio: "Visionary leader with 20+ years in global logistics and supply chain management.",
