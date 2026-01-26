@@ -81,12 +81,13 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        heading: ["Poppins", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        button: ["Manrope", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       fontSize: {
-        "display-xl": ["4.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        "display": ["3rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+        "display-xl": ["4.5rem", { lineHeight: "1.1", letterSpacing: "-0.03em" }],
+        "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.025em" }],
+        "display": ["3rem", { lineHeight: "1.2", letterSpacing: "-0.02em" }],
       },
       spacing: {
         "18": "4.5rem",
@@ -129,8 +130,8 @@ export default {
           "75%": { transform: "translateY(-15px) rotate(-2deg)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px hsl(217 100% 58% / 0.4)" },
-          "50%": { boxShadow: "0 0 40px hsl(217 100% 58% / 0.7)" },
+          "0%, 100%": { boxShadow: "0 0 20px hsl(239 84% 67% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(239 84% 67% / 0.7)" },
         },
         marquee: {
           "0%": { transform: "translateX(0)" },
@@ -153,8 +154,8 @@ export default {
           "100%": { transform: "scale(2)", opacity: "0" },
         },
         glow: {
-          "0%, 100%": { boxShadow: "0 0 20px hsl(217 100% 58% / 0.4)" },
-          "50%": { boxShadow: "0 0 40px hsl(217 100% 58% / 0.7)" },
+          "0%, 100%": { boxShadow: "0 0 20px hsl(239 84% 67% / 0.4)" },
+          "50%": { boxShadow: "0 0 40px hsl(239 84% 67% / 0.7)" },
         },
       },
       animation: {
@@ -175,16 +176,18 @@ export default {
         glow: "glow 2s ease-in-out infinite",
       },
       boxShadow: {
-        "xs": "0 1px 2px 0 hsl(240 10% 12% / 0.05)",
-        card: "0 4px 24px -4px hsl(240 10% 12% / 0.1)",
-        "card-hover": "0 24px 48px -12px hsl(240 10% 12% / 0.2)",
-        blue: "0 10px 40px -10px hsl(217 100% 58% / 0.5)",
-        "blue-lg": "0 20px 60px -15px hsl(217 100% 58% / 0.6)",
-        button: "0 4px 14px -2px hsl(217 100% 58% / 0.45)",
-        "button-hover": "0 8px 24px -4px hsl(217 100% 58% / 0.55)",
-        accent: "0 4px 14px -2px hsl(50 100% 50% / 0.45)",
-        "accent-hover": "0 8px 24px -4px hsl(50 100% 50% / 0.55)",
-        "inner-glow": "inset 0 0 20px hsl(217 100% 58% / 0.1)",
+        "xs": "0 1px 2px 0 hsl(222 47% 11% / 0.05)",
+        card: "0 4px 24px -4px hsl(222 47% 11% / 0.1)",
+        "card-hover": "0 24px 48px -12px hsl(222 47% 11% / 0.2)",
+        indigo: "0 10px 40px -10px hsl(239 84% 67% / 0.5)",
+        "indigo-lg": "0 20px 60px -15px hsl(239 84% 67% / 0.6)",
+        pink: "0 10px 40px -10px hsl(330 81% 60% / 0.5)",
+        "pink-lg": "0 20px 60px -15px hsl(330 81% 60% / 0.6)",
+        button: "0 4px 14px -2px hsl(239 84% 67% / 0.45)",
+        "button-hover": "0 8px 24px -4px hsl(239 84% 67% / 0.55)",
+        accent: "0 4px 14px -2px hsl(330 81% 60% / 0.45)",
+        "accent-hover": "0 8px 24px -4px hsl(330 81% 60% / 0.55)",
+        "inner-glow": "inset 0 0 20px hsl(239 84% 67% / 0.1)",
       },
       backdropBlur: {
         xs: "2px",

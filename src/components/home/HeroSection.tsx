@@ -10,28 +10,28 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Deep Blue Overlay */}
+      {/* Background Image with Vibrant Indigo Overlay */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
           alt="Global Logistics"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Modern Deep Blue gradient overlay - #1E40AF */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(224,70%,35%)] via-[hsl(224,70%,40%)] to-[hsl(217,80%,45%)]/95" />
+        {/* Modern Vibrant Indigo gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(239,84%,50%)] via-[hsl(239,84%,55%)] to-[hsl(260,80%,55%)]/95" />
         {/* Subtle geometric pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{
+        <div className="absolute inset-0 opacity-[0.05]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.5'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
-        {/* Animated gradient orbs - using Electric Orange */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/25 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(217,80%,55%)]/20 rounded-full blur-3xl animate-float" />
+        {/* Animated gradient orbs - using Hot Pink */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(260,80%,60%)]/20 rounded-full blur-3xl animate-float" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
         <div className="max-w-5xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 shadow-lg">
+          <div className="inline-flex items-center gap-2 sm:gap-3 glass backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 shadow-lg">
             <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-secondary"></span>
@@ -44,35 +44,35 @@ const HeroSection = () => {
           {/* Main Headline - Responsive sizing */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight">
             Global Logistics
-            <span className="block mt-2 sm:mt-3 text-secondary drop-shadow-[0_4px_20px_rgba(255,107,53,0.5)]">
+            <span className="block mt-2 sm:mt-3 text-gradient-accent drop-shadow-[0_4px_20px_rgba(236,72,153,0.5)]">
               Delivered With Excellence
             </span>
           </h1>
 
           {/* Subtitle - Good contrast */}
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl text-white/90 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium">
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
-          {/* CTA Buttons - Electric Orange primary CTA */}
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
-            <Button variant="accent" size="xl" className="w-full sm:w-auto text-sm sm:text-base px-8 sm:px-10 py-6 rounded-2xl group shadow-accent-hover" asChild>
+          {/* CTA Buttons - Compact, bold, proper spacing */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
+            <Button variant="heroPrimary" size="lg" className="w-fit text-base font-bold" asChild>
               <Link to="/pricing">
                 Get Free Quote
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
               </Link>
             </Button>
-            <Button variant="heroOutline" size="xl" className="w-full sm:w-auto text-sm sm:text-base px-8 sm:px-10 py-6 rounded-2xl group" asChild>
+            <Button variant="heroSecondary" size="lg" className="w-fit text-base font-bold" asChild>
               <Link to="/services">
-                <Play size={18} className="mr-2" />
+                <Play size={16} className="mr-2" />
                 Our Services
               </Link>
             </Button>
           </div>
 
-          {/* Tracker Card - Glassmorphism with Electric Orange accents */}
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl">
+          {/* Tracker Card - Glassmorphism with Hot Pink accents */}
+          <div className="glass backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl">
             <h3 className="text-white font-heading font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-6 flex items-center justify-center gap-3">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-accent">
                 <Search size={20} className="sm:w-6 sm:h-6 text-secondary-foreground" />
@@ -84,9 +84,9 @@ const HeroSection = () => {
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
                 placeholder="Enter tracking number"
-                className="flex-1 bg-white/15 border-white/25 text-white placeholder:text-white/60 h-14 sm:h-16 rounded-xl text-base focus:bg-white/20 focus:border-secondary transition-all"
+                className="flex-1 bg-white/15 border-white/25 text-white placeholder:text-white/60 h-12 sm:h-14 rounded-xl text-base focus:bg-white/20 focus:border-secondary focus:ring-2 focus:ring-secondary/50 transition-all"
               />
-              <Button variant="accent" className="h-14 sm:h-16 px-8 text-base font-bold rounded-xl shadow-accent-hover">
+              <Button variant="accent" size="lg" className="h-12 sm:h-14 px-6 text-base font-bold">
                 Track Now
               </Button>
             </div>
