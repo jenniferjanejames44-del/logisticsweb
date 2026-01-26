@@ -1,6 +1,6 @@
 import { Quote } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import founderImage from "@/assets/founder.jpg";
+import founderImage from "@/assets/founder-rex.jpg";
 
 const FounderSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
@@ -60,7 +60,7 @@ const FounderSection = () => {
               <div className="w-16 h-1.5 bg-secondary rounded-full" />
               <div>
                 <h4 className="font-heading font-bold text-white text-lg sm:text-xl">
-                  James Wuyep
+                  Offor Rex C.K
                 </h4>
                 <p className="text-white/70 font-medium">
                   Founder & CEO, RAC Logistics
