@@ -30,7 +30,7 @@ const differentiators = [
 const StatsCounter = ({ value, suffix, isActive }: { value: number; suffix: string; isActive: boolean }) => {
   const count = useAnimatedCounter(value, 2000, isActive);
   return (
-    <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-secondary">
+    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-secondary">
       {count.toLocaleString()}{suffix}
     </span>
   );
@@ -76,21 +76,21 @@ const WhyChooseSection = () => {
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-16 sm:mb-20">
+        {/* Stats Grid - Fixed tablet responsiveness */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-16 sm:mb-20">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
-              className={`group text-center p-5 sm:p-6 lg:p-8 rounded-2xl bg-white/10 border border-white/15 hover:bg-white/15 backdrop-blur-sm transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl ${
+              className={`group text-center p-4 sm:p-5 md:p-6 lg:p-8 rounded-2xl bg-white/10 border border-white/15 hover:bg-white/15 backdrop-blur-sm transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 mx-auto bg-secondary/20 rounded-xl flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-110 group-hover:bg-secondary transition-all shadow-lg">
-                <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-secondary group-hover:text-secondary-foreground transition-colors" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto bg-secondary/20 rounded-xl flex items-center justify-center mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 group-hover:bg-secondary transition-all shadow-lg">
+                <stat.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-secondary group-hover:text-secondary-foreground transition-colors" />
               </div>
               <StatsCounter value={stat.value} suffix={stat.suffix} isActive={isInView} />
-              <p className="text-primary-foreground/80 mt-2 sm:mt-3 text-sm sm:text-base lg:text-lg font-medium">
+              <p className="text-primary-foreground/80 mt-1.5 sm:mt-2 md:mt-3 text-xs sm:text-sm md:text-base lg:text-lg font-medium">
                 {stat.label}
               </p>
             </div>
