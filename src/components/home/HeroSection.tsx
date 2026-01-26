@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, MapPin, Clock, Shield, Search, UserPlus, Package, Loader2, AlertCircle, CheckCircle2, Plane, Ship, Truck } from "lucide-react";
+import { ArrowRight, MapPin, Clock, Shield, Search, UserPlus, Package, Loader2, AlertCircle, CheckCircle2, Plane, Ship, Truck, Play, CheckCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import heroVideo from "@/assets/hero-logistics-video.mp4";
-import heroImage from "@/assets/hero-logistics.jpg";
 
 interface ShipmentData {
   tracking_number: string;
@@ -126,158 +124,145 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
-      {/* Video Background with Deep Navy Overlay */}
-      <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={heroImage}
-          preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <img
-          src={heroImage}
-          alt="Global Logistics"
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Deep Navy Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,6%)] via-[hsl(215,50%,12%)] to-[hsl(220,55%,8%)]" />
+      
+      {/* Animated Dots Pattern Overlay */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, hsl(0,0%,100%) 1px, transparent 0)`,
+            backgroundSize: '40px 40px',
+          }}
         />
-        {/* Deep Navy gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/90 to-primary" />
-        <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-secondary/5 to-transparent" />
-        {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/30 rounded-full blur-[100px] animate-float" />
       </div>
+      
+      {/* Animated gradient orbs */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] animate-pulse-slow" />
+      <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-[hsl(217,91%,60%)]/10 rounded-full blur-[120px] animate-float" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[hsl(230,50%,15%)]/50 rounded-full blur-[200px]" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Badge */}
-          <div className={`inline-flex items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-xl rounded-full px-5 sm:px-6 py-2.5 sm:py-3 mb-6 sm:mb-8 shadow-xl border border-white/20 transition-all duration-700 ${
+          {/* Trust Badge - Enhanced with pulse animation */}
+          <div className={`inline-flex items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-lg rounded-full px-6 py-3 mb-8 shadow-xl border border-white/30 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
           }`}>
-            <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-secondary"></span>
-            </span>
-            <span className="text-xs sm:text-sm text-white font-semibold tracking-wide">
+            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+            <span className="text-sm sm:text-base text-white font-semibold tracking-wide">
               Trusted by 10,000+ Businesses Worldwide
+            </span>
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
             </span>
           </div>
 
-          {/* Main Headline */}
-          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight transition-all duration-700 delay-100 ${
+          {/* Main Headline - MAXIMUM CONTRAST */}
+          <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-extrabold leading-[0.95] mb-6 tracking-tight transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            Global Logistics
+            <span className="text-white drop-shadow-2xl" style={{ textShadow: '0 4px 30px rgba(0,0,0,0.5)' }}>
+              Global Logistics
+            </span>
             <span 
-              className="block mt-2 sm:mt-3 text-[hsl(45,97%,55%)]"
-              style={{ textShadow: '0 0 60px rgba(251, 191, 36, 0.6), 0 4px 20px rgba(251, 191, 36, 0.3)' }}
+              className="block mt-3 text-[hsl(24,93%,61%)]"
+              style={{ 
+                textShadow: '0 0 60px rgba(251,146,60,0.6), 0 4px 30px rgba(251,146,60,0.4)',
+                filter: 'drop-shadow(0 0 30px rgba(251,146,60,0.4))'
+              }}
             >
               Delivered With Excellence
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <p className={`text-lg sm:text-xl md:text-2xl text-[hsl(217,21%,90%)] mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium transition-all duration-700 delay-200 ${
+          {/* Subtitle - Enhanced visibility */}
+          <p className={`text-lg sm:text-xl md:text-2xl text-[hsl(215,20%,80%)] mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-normal transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
-          {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 transition-all duration-700 delay-300 ${
+          {/* CTA Buttons - Enhanced styling */}
+          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-14 sm:mb-16 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Button 
-              variant="heroPrimary" 
-              size="lg" 
-              className="w-fit px-8 py-6 text-base font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)] hover:shadow-[0_8px_30px_rgba(255,107,53,0.5)]" 
+              className="w-full sm:w-auto px-10 py-7 text-lg font-bold rounded-xl bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] text-white shadow-[0_10px_40px_rgba(251,146,60,0.5)] hover:shadow-[0_15px_50px_rgba(251,146,60,0.6)] hover:scale-105 transition-all duration-300 group" 
               asChild
             >
               <Link to="/pricing">
                 Get Free Quote
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Link>
             </Button>
             <Button 
-              variant="heroSecondary" 
-              size="lg" 
-              className="w-fit px-8 py-6 text-base font-bold border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary" 
-              onClick={handleSignUpClick}
+              className="w-full sm:w-auto px-10 py-7 text-lg font-bold rounded-xl bg-transparent border-2 border-white text-white hover:bg-white hover:text-[hsl(230,60%,10%)] hover:scale-105 transition-all duration-300 group"
+              asChild
             >
-              <UserPlus size={16} className="mr-2" />
-              {user ? "Go to Dashboard" : "Sign Up"}
+              <Link to="/services">
+                <Play size={18} className="mr-2" />
+                Our Services
+              </Link>
             </Button>
           </div>
 
-          {/* Premium Glassmorphism Tracking Card - Enhanced */}
+          {/* Premium Glassmorphism Tracking Card */}
           <div className={`relative group max-w-2xl mx-auto transition-all duration-700 delay-[400ms] ${
             isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
           }`}>
             {/* Multi-layer glow effects */}
-            <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-r from-secondary/30 via-[hsl(45,97%,55%)]/40 to-secondary/30 rounded-[2.5rem] blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 animate-pulse-slow" />
+            <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-r from-secondary/30 via-[hsl(24,93%,61%)]/40 to-secondary/30 rounded-[2.5rem] blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 animate-pulse-slow" />
             <div className="absolute -inset-1.5 sm:-inset-2 bg-gradient-to-br from-secondary/50 to-[hsl(24,95%,45%)]/50 rounded-[2rem] blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
             
-            {/* Main card with enhanced styling */}
+            {/* Main card */}
             <div className="relative bg-gradient-to-br from-[hsl(230,45%,16%)] via-[hsl(230,40%,12%)] to-[hsl(230,45%,8%)] backdrop-blur-3xl rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 lg:p-10 shadow-[0_20px_70px_-15px_rgba(0,0,0,0.5)] border-2 border-secondary/30 overflow-hidden">
               {/* Decorative corner accents */}
               <div className="absolute top-0 left-0 w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-br from-secondary/20 to-transparent rounded-br-full" />
               <div className="absolute bottom-0 right-0 w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-tl from-secondary/15 to-transparent rounded-tl-full" />
               
-              {/* Animated border gradient */}
-              <div className="absolute inset-0 rounded-2xl sm:rounded-[2rem] p-[2px] bg-gradient-to-r from-secondary/0 via-secondary/50 to-secondary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-              
               {/* Content */}
               <div className="relative z-10">
-                {/* Header with enhanced icon */}
+                {/* Header */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
                   <div className="relative">
-                    {/* Animated glow ring */}
                     <div className="absolute inset-0 bg-secondary rounded-2xl blur-xl opacity-60 animate-pulse" />
-                    <div className="absolute -inset-1 bg-gradient-to-r from-secondary to-[hsl(45,97%,55%)] rounded-2xl opacity-40 blur-lg" />
-                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary via-[hsl(24,95%,50%)] to-[hsl(45,97%,55%)] rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
-                      <Search size={24} className="sm:w-7 sm:h-7 text-primary-foreground drop-shadow-lg" />
+                    <div className="absolute -inset-1 bg-gradient-to-r from-secondary to-[hsl(24,93%,61%)] rounded-2xl opacity-40 blur-lg" />
+                    <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary via-[hsl(24,95%,50%)] to-[hsl(24,93%,61%)] rounded-2xl flex items-center justify-center shadow-2xl transform group-hover:scale-105 transition-transform duration-300">
+                      <Search size={24} className="sm:w-7 sm:h-7 text-white drop-shadow-lg" />
                     </div>
                   </div>
                   <div className="text-center sm:text-left">
-                    <h3 className="text-primary-foreground font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight">
+                    <h3 className="text-white font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl tracking-tight">
                       Track Your Shipment
                     </h3>
-                    <p className="text-primary-foreground/60 text-sm sm:text-base mt-1 hidden sm:block">
+                    <p className="text-white/60 text-sm sm:text-base mt-1 hidden sm:block">
                       Real-time updates • Instant results
                     </p>
                   </div>
                 </div>
                 
-                {/* Input section with enhanced styling */}
+                {/* Input section */}
                 <div className="flex flex-col gap-3 sm:gap-4">
                   <div className="relative group/input">
-                    {/* Input glow on focus */}
-                    <div className="absolute -inset-1 bg-gradient-to-r from-secondary/30 to-[hsl(45,97%,55%)]/30 rounded-2xl blur opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute -inset-1 bg-gradient-to-r from-secondary/30 to-[hsl(24,93%,61%)]/30 rounded-2xl blur opacity-0 group-focus-within/input:opacity-100 transition-opacity duration-300" />
                     <Input
                       value={trackingNumber}
                       onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                       onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
                       placeholder="Enter your tracking number (e.g., RAC123456)"
-                      className="relative w-full bg-primary-foreground/10 border-2 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 h-14 sm:h-16 lg:h-18 rounded-xl sm:rounded-2xl text-base sm:text-lg lg:text-xl px-5 sm:px-6 focus:bg-primary-foreground/15 focus:border-secondary focus:ring-4 focus:ring-secondary/20 transition-all duration-300"
+                      className="relative w-full bg-white/10 border-2 border-white/20 text-white placeholder:text-white/40 h-14 sm:h-16 lg:h-18 rounded-xl sm:rounded-2xl text-base sm:text-lg lg:text-xl px-5 sm:px-6 focus:bg-white/15 focus:border-secondary focus:ring-4 focus:ring-secondary/20 transition-all duration-300"
                     />
-                    {/* Search icon inside input on mobile */}
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 sm:hidden">
-                      <Search size={20} className="text-primary-foreground/40" />
+                      <Search size={20} className="text-white/40" />
                     </div>
                   </div>
                   
                   <Button 
-                    variant="heroPrimary" 
-                    size="lg" 
-                    className="h-14 sm:h-16 lg:h-18 px-8 sm:px-12 text-base sm:text-lg lg:text-xl font-bold rounded-xl sm:rounded-2xl shadow-[0_10px_40px_rgba(255,107,53,0.5)] hover:shadow-[0_15px_50px_rgba(255,107,53,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 bg-gradient-to-r from-secondary via-[hsl(24,95%,50%)] to-secondary bg-[length:200%_100%] hover:bg-right"
+                    className="h-14 sm:h-16 lg:h-18 px-8 sm:px-12 text-base sm:text-lg lg:text-xl font-bold rounded-xl sm:rounded-2xl bg-gradient-to-r from-secondary via-[hsl(24,95%,50%)] to-secondary bg-[length:200%_100%] hover:bg-right text-white shadow-[0_10px_40px_rgba(251,146,60,0.5)] hover:shadow-[0_15px_50px_rgba(251,146,60,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                     onClick={handleTrackClick}
                     disabled={isLoading}
                   >
@@ -292,16 +277,16 @@ const HeroSection = () => {
                   </Button>
                 </div>
 
-                {/* Tracking Status Preview - Real Data */}
+                {/* Tracking Status Preview */}
                 <div className={`overflow-hidden transition-all duration-500 ease-out ${
                   (shipmentData || error || isLoading) && trackingNumber.length >= 6 
                     ? "max-h-56 opacity-100 mt-5 sm:mt-6" 
                     : "max-h-0 opacity-0 mt-0"
                 }`}>
                   {isLoading ? (
-                    <div className="bg-primary-foreground/10 rounded-xl sm:rounded-2xl p-5 sm:p-6 border border-primary-foreground/10 flex items-center justify-center gap-3">
+                    <div className="bg-white/10 rounded-xl sm:rounded-2xl p-5 sm:p-6 border border-white/10 flex items-center justify-center gap-3">
                       <Loader2 size={22} className="text-secondary animate-spin" />
-                      <span className="text-primary-foreground/70 font-medium text-base sm:text-lg">Searching...</span>
+                      <span className="text-white/70 font-medium text-base sm:text-lg">Searching...</span>
                     </div>
                   ) : error ? (
                     <div className="bg-red-500/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-red-500/20 flex items-center gap-3">
@@ -309,7 +294,7 @@ const HeroSection = () => {
                       <span className="text-red-300 text-sm sm:text-base">{error}</span>
                     </div>
                   ) : shipmentData ? (
-                    <div className="bg-gradient-to-br from-primary-foreground/10 to-primary-foreground/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-primary-foreground/15">
+                    <div className="bg-gradient-to-br from-white/10 to-white/5 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/15">
                       {/* Shipment Header */}
                       <div className="flex items-center gap-3 mb-4">
                         <div className="w-11 h-11 sm:w-12 sm:h-12 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-xl flex items-center justify-center">
@@ -319,7 +304,7 @@ const HeroSection = () => {
                           })()}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-primary-foreground font-bold text-base sm:text-lg truncate">
+                          <p className="text-white font-bold text-base sm:text-lg truncate">
                             {shipmentData.tracking_number}
                           </p>
                           <p className={`text-sm sm:text-base font-semibold capitalize ${getStatusColor(shipmentData.status)}`}>
@@ -335,7 +320,7 @@ const HeroSection = () => {
                       </div>
 
                       {/* Route Info */}
-                      <div className="flex items-center gap-2 text-sm sm:text-base text-primary-foreground/70 mb-3">
+                      <div className="flex items-center gap-2 text-sm sm:text-base text-white/70 mb-3">
                         <MapPin size={14} className="text-secondary shrink-0" />
                         <span className="font-medium truncate">{shipmentData.origin_city}</span>
                         <ArrowRight size={14} className="text-secondary shrink-0" />
@@ -344,28 +329,28 @@ const HeroSection = () => {
 
                       {/* Progress Bar */}
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="flex-1 h-2.5 sm:h-3 bg-primary-foreground/10 rounded-full overflow-hidden">
+                        <div className="flex-1 h-2.5 sm:h-3 bg-white/10 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-gradient-to-r from-secondary via-[hsl(45,97%,55%)] to-emerald-400 rounded-full transition-all duration-700 relative"
+                            className="h-full bg-gradient-to-r from-secondary via-[hsl(24,93%,61%)] to-emerald-400 rounded-full transition-all duration-700 relative"
                             style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
                           >
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
                           </div>
                         </div>
-                        <span className="text-primary-foreground/70 text-sm font-bold min-w-[45px] text-right">
+                        <span className="text-white/70 text-sm font-bold min-w-[45px] text-right">
                           {getStatusProgress(shipmentData.status)}%
                         </span>
                       </div>
 
                       {/* Footer Info */}
                       <div className="flex items-center justify-between text-xs sm:text-sm">
-                        <p className="text-primary-foreground/50 flex items-center gap-1.5">
+                        <p className="text-white/50 flex items-center gap-1.5">
                           <Clock size={14} className="text-secondary" />
                           Updated {formatTimeAgo(shipmentData.updated_at)}
                         </p>
                         {shipmentData.estimated_delivery && (
-                          <p className="text-primary-foreground/50">
-                            ETA: <span className="text-primary-foreground/70 font-medium">
+                          <p className="text-white/50">
+                            ETA: <span className="text-white/70 font-medium">
                               {new Date(shipmentData.estimated_delivery).toLocaleDateString()}
                             </span>
                           </p>
@@ -375,14 +360,14 @@ const HeroSection = () => {
                   ) : null}
                 </div>
                 
-                {/* Helper text with animation */}
-                <div className={`flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-primary-foreground/50 transition-all duration-300 ${
+                {/* Helper text */}
+                <div className={`flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-white/50 transition-all duration-300 ${
                   shipmentData || error || isLoading ? "mt-4" : "mt-5 sm:mt-6"
                 }`}>
                   <div className="flex items-center gap-2">
                     <Package size={18} className="text-secondary" />
                     <p className="text-sm sm:text-base font-medium">
-                      Enter: <span className="text-primary-foreground/70 font-semibold">RAC + tracking ID</span>
+                      Enter: <span className="text-white/70 font-semibold">RAC + tracking ID</span>
                     </p>
                   </div>
                   <div className="hidden sm:flex items-center gap-2 text-sm">
@@ -395,7 +380,7 @@ const HeroSection = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div className={`mt-14 sm:mt-20 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-500 ${
+          <div className={`mt-16 sm:mt-20 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             {[
