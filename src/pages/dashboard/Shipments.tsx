@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { ShipmentsListSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -189,6 +190,14 @@ const Shipments = () => {
     fetchShipments();
     refetchBalance();
   };
+
+  if (loading) {
+    return (
+      <DashboardLayout title="Shipments" description="Manage and track all your shipments">
+        <ShipmentsListSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">

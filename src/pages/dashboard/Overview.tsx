@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { OverviewSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -95,9 +96,16 @@ const Overview = () => {
     );
   };
 
+  if (loading) {
+    return (
+      <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
+        <OverviewSkeleton />
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
-      {/* Stats Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card className="border-border/50 hover:shadow-card transition-shadow">
           <CardContent className="p-6">
