@@ -33,7 +33,7 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminPricing from "./pages/admin/AdminPricing";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import NotFound from "./pages/NotFound";
-
+import Track from "./pages/Track";
 const queryClient = new QueryClient();
 
 // Component that uses the login tracking hook
@@ -66,6 +66,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/track" element={<Track />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />

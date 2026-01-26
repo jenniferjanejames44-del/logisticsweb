@@ -37,7 +37,7 @@ const CTASection = () => {
             <Button
               variant="cta"
               size="xl"
-              className="text-base sm:text-lg group"
+              className="text-base sm:text-lg group px-8"
               asChild
             >
               <Link to="/pricing">
@@ -48,10 +48,13 @@ const CTASection = () => {
             <Button
               variant="heroOutline"
               size="xl"
-              className="text-base sm:text-lg"
+              className="text-base sm:text-lg group px-8"
               asChild
             >
-              <Link to="/contact">Contact Sales</Link>
+              <Link to="/contact">
+                Contact Sales
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Link>
             </Button>
           </div>
         </div>
