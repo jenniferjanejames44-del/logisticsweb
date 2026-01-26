@@ -17,7 +17,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
       {/* Video Background with Deep Navy Overlay */}
       <div className="absolute inset-0">
         {/* Video background with lazy loading */}
@@ -40,15 +40,13 @@ const HeroSection = () => {
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover -z-10"
         />
-        {/* Deep Navy gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,10%)]/90 via-[hsl(230,50%,15%)]/85 to-[hsl(230,55%,12%)]/90" />
-        {/* Subtle geometric pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.5'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-        {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(217,91%,60%)]/10 rounded-full blur-3xl animate-float" />
+        {/* Deep Navy gradient overlay - Clean solid overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/95 via-primary/90 to-primary" />
+        {/* Subtle animated accent */}
+        <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-secondary/5 to-transparent" />
+        {/* Animated gradient orbs - more subtle */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/30 rounded-full blur-[100px] animate-float" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
@@ -116,35 +114,58 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Tracker Card - Enhanced Glassmorphism */}
-          <div className={`bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl border border-white/20 transition-all duration-700 delay-[400ms] ${
+          {/* Tracker Card - Premium Glassmorphism */}
+          <div className={`relative group max-w-xl mx-auto transition-all duration-700 delay-[400ms] ${
             isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
           }`}>
-            <h3 className="text-white font-heading font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-6 flex items-center justify-center gap-3">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-[0_4px_20px_rgba(255,107,53,0.4)]">
-                <Search size={20} className="sm:w-6 sm:h-6 text-white" />
+            {/* Glow effect behind card */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-secondary/50 via-secondary/30 to-secondary/50 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity" />
+            
+            {/* Main card */}
+            <div className="relative bg-gradient-to-br from-primary/80 via-primary/70 to-primary/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-secondary/30">
+              {/* Header */}
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-secondary rounded-xl sm:rounded-2xl blur-md opacity-50" />
+                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-secondary to-[hsl(24,95%,45%)] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
+                    <Search size={22} className="sm:w-6 sm:h-6 text-primary-foreground" />
+                  </div>
+                </div>
+                <h3 className="text-primary-foreground font-heading font-extrabold text-xl sm:text-2xl lg:text-3xl">
+                  Track Your Shipment
+                </h3>
               </div>
-              Track Your Shipment
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Input
-                value={trackingNumber}
-                onChange={(e) => setTrackingNumber(e.target.value)}
-                placeholder="Enter tracking number"
-                className="flex-1 bg-white/15 border-white/25 text-white placeholder:text-white/60 h-12 sm:h-14 rounded-xl text-base focus:bg-white/20 focus:border-secondary focus:ring-2 focus:ring-secondary/50 transition-all"
-              />
-              <Button 
-                variant="heroPrimary" 
-                size="lg" 
-                className="h-12 sm:h-14 px-6 text-base font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)]"
-              >
-                Track Now
-              </Button>
+              
+              {/* Input section */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <div className="relative flex-1">
+                  <div className="absolute inset-0 bg-primary-foreground/5 rounded-xl sm:rounded-2xl" />
+                  <Input
+                    value={trackingNumber}
+                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    placeholder="Enter tracking number"
+                    className="relative flex-1 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-14 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg px-5 focus:bg-primary-foreground/15 focus:border-secondary focus:ring-2 focus:ring-secondary/30 transition-all"
+                  />
+                </div>
+                <Button 
+                  variant="heroPrimary" 
+                  size="lg" 
+                  className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg font-bold rounded-xl sm:rounded-2xl shadow-[0_8px_30px_rgba(255,107,53,0.5)] hover:shadow-[0_12px_40px_rgba(255,107,53,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                >
+                  <span className="hidden sm:inline">Track Now</span>
+                  <span className="sm:hidden">Track</span>
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+              
+              {/* Helper text */}
+              <div className="mt-5 sm:mt-6 flex items-center justify-center gap-2 text-primary-foreground/60">
+                <Package size={16} className="text-secondary" />
+                <p className="text-sm sm:text-base font-medium">
+                  Example: <span className="text-primary-foreground/80 font-semibold">RAC-2026-XXXXXX</span>
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-white/70 mt-4 flex items-center justify-center gap-2">
-              <Package size={16} />
-              Example: RAC-2026-XXXXXX
-            </p>
           </div>
 
           {/* Trust Indicators - Enhanced styling */}
@@ -176,8 +197,8 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Bottom fade to background */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+      {/* Bottom fade to background - seamless transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-40 sm:h-56 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
     </section>
   );
 };
