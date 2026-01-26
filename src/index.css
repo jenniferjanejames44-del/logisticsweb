@@ -3,129 +3,146 @@
 @tailwind components;
 @tailwind utilities;
 
-/* RAC Logistics Premium Design System - Electric Blue Theme */
-/* Primary: Electric Blue #2978FF | Accent: Vibrant Yellow #FFD500 | Text: Charcoal #1C1C1E */
+/* RAC Logistics Premium Design System - Professional Blue & Orange Theme */
+/* Primary: Deep Blue #1E40AF | Secondary: Electric Orange #FF6B35 | Text: Dark Gray #1F2937 */
 
 @layer base {
   :root {
-    /* Light, modern backgrounds */
-    --background: 220 20% 98%;
-    --foreground: 240 10% 12%;
+    /* Off White Background - #F9FAFB */
+    --background: 210 20% 98%;
+    /* Dark Gray Text - #1F2937 */
+    --foreground: 221 26% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 12%;
+    --card-foreground: 221 26% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 12%;
+    --popover-foreground: 221 26% 17%;
 
-    /* Electric Blue Primary - #2978FF */
-    --primary: 217 100% 58%;
+    /* Deep Blue Primary - #1E40AF */
+    --primary: 224 70% 40%;
     --primary-foreground: 0 0% 100%;
 
-    /* Vibrant Yellow Accent - #FFD500 */
-    --secondary: 50 100% 50%;
-    --secondary-foreground: 240 10% 12%;
+    /* Electric Orange Secondary/CTA - #FF6B35 */
+    --secondary: 16 100% 60%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Soft gray backgrounds */
-    --muted: 220 20% 96%;
-    --muted-foreground: 220 10% 45%;
+    /* Medium Gray for muted - #6B7280 */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    /* Subtle accent - Coral highlight */
+    /* Electric Orange Accent - #FF6B35 */
     --accent: 16 100% 60%;
     --accent-foreground: 0 0% 100%;
 
+    /* Red Destructive - #EF4444 */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Lighter borders */
-    --border: 220 20% 90%;
-    --input: 220 20% 90%;
-    --ring: 217 100% 58%;
+    /* Light Gray Borders - #E5E7EB */
+    --border: 220 14% 91%;
+    --input: 220 14% 91%;
+    --ring: 224 70% 40%;
 
     --radius: 0.875rem;
 
-    /* Premium Blue Sidebar */
-    --sidebar-background: 217 100% 50%;
+    /* Status Colors */
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 221 26% 17%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
+    /* Deep Blue Sidebar */
+    --sidebar-background: 224 70% 35%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 50 100% 50%;
-    --sidebar-primary-foreground: 240 10% 12%;
-    --sidebar-accent: 217 90% 55%;
+    --sidebar-primary: 16 100% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 60% 45%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 217 80% 60%;
-    --sidebar-ring: 50 100% 50%;
+    --sidebar-border: 224 60% 50%;
+    --sidebar-ring: 16 100% 60%;
 
     /* Chart Colors */
-    --chart-1: 217 100% 58%;
-    --chart-2: 50 100% 50%;
-    --chart-3: 217 70% 45%;
-    --chart-4: 50 85% 60%;
-    --chart-5: 217 50% 65%;
+    --chart-1: 224 70% 40%;
+    --chart-2: 16 100% 60%;
+    --chart-3: 160 84% 39%;
+    --chart-4: 38 92% 50%;
+    --chart-5: 217 91% 60%;
 
     /* Premium Shadow System */
-    --shadow-xs: 0 1px 2px 0 hsl(240 10% 12% / 0.04);
-    --shadow-sm: 0 1px 3px 0 hsl(240 10% 12% / 0.06), 0 1px 2px -1px hsl(240 10% 12% / 0.06);
-    --shadow-md: 0 4px 6px -1px hsl(240 10% 12% / 0.07), 0 2px 4px -2px hsl(240 10% 12% / 0.07);
-    --shadow-lg: 0 10px 15px -3px hsl(240 10% 12% / 0.08), 0 4px 6px -4px hsl(240 10% 12% / 0.08);
-    --shadow-xl: 0 20px 25px -5px hsl(240 10% 12% / 0.1), 0 8px 10px -6px hsl(240 10% 12% / 0.1);
-    --shadow-2xl: 0 25px 50px -12px hsl(240 10% 12% / 0.2);
-    --shadow-blue: 0 10px 40px -10px hsl(217 100% 58% / 0.4);
-    --shadow-blue-lg: 0 20px 60px -15px hsl(217 100% 58% / 0.5);
-    --shadow-card: 0 4px 24px -4px hsl(240 10% 12% / 0.08);
-    --shadow-card-hover: 0 24px 48px -12px hsl(240 10% 12% / 0.15);
-    --shadow-button: 0 4px 14px -2px hsl(217 100% 58% / 0.4);
-    --shadow-button-hover: 0 8px 24px -4px hsl(217 100% 58% / 0.5);
-    --shadow-accent: 0 4px 14px -2px hsl(50 100% 50% / 0.4);
-    --shadow-accent-hover: 0 8px 24px -4px hsl(50 100% 50% / 0.5);
+    --shadow-xs: 0 1px 2px 0 hsl(221 26% 17% / 0.04);
+    --shadow-sm: 0 1px 3px 0 hsl(221 26% 17% / 0.06), 0 1px 2px -1px hsl(221 26% 17% / 0.06);
+    --shadow-md: 0 4px 6px -1px hsl(221 26% 17% / 0.07), 0 2px 4px -2px hsl(221 26% 17% / 0.07);
+    --shadow-lg: 0 10px 15px -3px hsl(221 26% 17% / 0.08), 0 4px 6px -4px hsl(221 26% 17% / 0.08);
+    --shadow-xl: 0 20px 25px -5px hsl(221 26% 17% / 0.1), 0 8px 10px -6px hsl(221 26% 17% / 0.1);
+    --shadow-2xl: 0 25px 50px -12px hsl(221 26% 17% / 0.2);
+    --shadow-blue: 0 10px 40px -10px hsl(224 70% 40% / 0.4);
+    --shadow-blue-lg: 0 20px 60px -15px hsl(224 70% 40% / 0.5);
+    --shadow-card: 0 4px 24px -4px hsl(221 26% 17% / 0.08);
+    --shadow-card-hover: 0 24px 48px -12px hsl(221 26% 17% / 0.15);
+    --shadow-button: 0 4px 14px -2px hsl(224 70% 40% / 0.4);
+    --shadow-button-hover: 0 8px 24px -4px hsl(224 70% 40% / 0.5);
+    --shadow-accent: 0 4px 14px -2px hsl(16 100% 60% / 0.4);
+    --shadow-accent-hover: 0 8px 24px -4px hsl(16 100% 60% / 0.5);
 
     /* Premium Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(217 100% 50%) 0%, hsl(217 100% 60%) 50%, hsl(200 100% 55%) 100%);
-    --gradient-hero-overlay: linear-gradient(180deg, hsl(217 100% 50% / 0.92) 0%, hsl(217 100% 45% / 0.88) 50%, hsl(217 100% 40% / 0.90) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(217 100% 58%) 0%, hsl(200 100% 55%) 100%);
-    --gradient-primary-subtle: linear-gradient(135deg, hsl(217 100% 58% / 0.08) 0%, hsl(200 100% 55% / 0.04) 100%);
-    --gradient-accent: linear-gradient(135deg, hsl(50 100% 50%) 0%, hsl(45 100% 48%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 99%) 100%);
-    --gradient-section: linear-gradient(180deg, hsl(220 20% 97%) 0%, hsl(0 0% 100%) 50%, hsl(220 20% 97%) 100%);
-    --gradient-section-alt: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 20% 97%) 100%);
-    --gradient-dark: linear-gradient(135deg, hsl(240 10% 12%) 0%, hsl(240 12% 18%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(224 70% 35%) 0%, hsl(224 70% 45%) 50%, hsl(217 80% 50%) 100%);
+    --gradient-hero-overlay: linear-gradient(180deg, hsl(224 70% 35% / 0.92) 0%, hsl(224 70% 30% / 0.88) 50%, hsl(224 70% 25% / 0.90) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(224 70% 40%) 0%, hsl(217 80% 50%) 100%);
+    --gradient-primary-subtle: linear-gradient(135deg, hsl(224 70% 40% / 0.08) 0%, hsl(217 80% 50% / 0.04) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(16 100% 60%) 0%, hsl(20 100% 55%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 99%) 100%);
+    --gradient-section: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(0 0% 100%) 50%, hsl(210 20% 98%) 100%);
+    --gradient-section-alt: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(221 26% 17%) 0%, hsl(221 26% 22%) 100%);
   }
 
   .dark {
-    --background: 240 10% 6%;
+    --background: 221 26% 8%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 10%;
+    --card: 221 26% 12%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 10%;
+    --popover: 221 26% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 217 100% 60%;
+    /* Deep Blue Primary - lighter for dark mode */
+    --primary: 224 70% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 50 100% 50%;
-    --secondary-foreground: 240 10% 12%;
+    /* Electric Orange Secondary */
+    --secondary: 16 100% 60%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 10% 16%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 221 26% 18%;
+    --muted-foreground: 220 14% 70%;
 
     --accent: 16 100% 60%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62% 30%;
+    --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 10% 18%;
-    --input: 240 10% 18%;
-    --ring: 217 100% 60%;
+    --border: 221 26% 20%;
+    --input: 221 26% 20%;
+    --ring: 224 70% 55%;
 
-    --sidebar-background: 240 10% 5%;
+    /* Status Colors - Dark Mode */
+    --success: 160 84% 45%;
+    --warning: 38 92% 55%;
+    --info: 217 91% 65%;
+
+    --sidebar-background: 221 26% 6%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 217 100% 60%;
+    --sidebar-primary: 16 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 12%;
+    --sidebar-accent: 221 26% 14%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 10% 16%;
-    --sidebar-ring: 217 100% 60%;
+    --sidebar-border: 221 26% 18%;
+    --sidebar-ring: 16 100% 60%;
   }
 }
 
