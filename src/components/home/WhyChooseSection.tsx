@@ -42,7 +42,7 @@ const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-28 lg:py-32 bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] relative overflow-hidden">
+    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div 
@@ -52,10 +52,12 @@ const WhyChooseSection = () => {
           }}
         />
       </div>
+      {/* Additional depth gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
           <span
             className={`inline-flex items-center gap-2 bg-white/20 text-white font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -116,21 +118,21 @@ const WhyChooseSection = () => {
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 ${
+              className={`group bg-gradient-to-br from-card to-muted/20 rounded-2xl p-8 lg:p-10 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-3 border border-border/30 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${(index + 4) * 100}ms` }}
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all">
+              <div className="w-16 h-16 lg:w-18 lg:h-18 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all shadow-sm">
                 <item.icon className="w-8 h-8 text-secondary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-heading font-bold text-[hsl(215,28%,17%)] mb-4">
+              <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground mb-4">
                 {item.title}
               </h3>
-              <p className="text-[hsl(215,16%,47%)] text-base leading-relaxed">
+              <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
                 {item.description}
               </p>
-              <div className="mt-5 flex items-center gap-2 text-secondary font-semibold">
+              <div className="mt-6 flex items-center gap-2 text-secondary font-semibold">
                 <CheckCircle size={18} className="fill-secondary/20" />
                 <span>Guaranteed</span>
               </div>

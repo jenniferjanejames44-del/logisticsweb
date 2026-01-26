@@ -61,35 +61,41 @@ const AuthForm = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <Card className="w-full max-w-md border-border/50 shadow-card">
+      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5 relative overflow-hidden">
+        {/* Subtle background decoration */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        </div>
+        
+        <Card className="w-full max-w-md border-border/30 shadow-2xl relative z-10 backdrop-blur-sm">
           <CardHeader className="text-center pb-2">
-            <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center font-heading font-bold text-primary text-2xl mx-auto mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl flex items-center justify-center font-heading font-bold text-secondary-foreground text-2xl mx-auto mb-4 shadow-lg shadow-secondary/30 transition-transform duration-300 hover:scale-105">
               R
             </div>
-            <CardTitle className="font-heading text-2xl">
+            <CardTitle className="font-heading text-2xl tracking-tight">
               {isLogin ? "Welcome Back" : "Create Account"}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-base">
               {isLogin
                 ? "Sign in to access your dashboard"
                 : "Join RAC Logistics today"}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {!isLogin && (
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
                     <Input
                       id="fullName"
                       type="text"
                       placeholder="John Doe"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="pl-10 h-12"
+                      className="pl-12"
                       required={!isLogin}
                     />
                   </div>
@@ -97,39 +103,39 @@ const AuthForm = () => {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 h-12"
+                    className="pl-12"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 h-12"
+                    className="pl-12 pr-12"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-secondary transition-colors p-1 rounded-lg hover:bg-secondary/10"
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -140,7 +146,7 @@ const AuthForm = () => {
                 type="submit"
                 variant="cta"
                 size="xl"
-                className="w-full"
+                className="w-full mt-2 shadow-lg shadow-secondary/25"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -148,19 +154,19 @@ const AuthForm = () => {
                 ) : (
                   <>
                     {isLogin ? "Sign In" : "Create Account"}
-                    <ArrowRight className="w-5 h-5" />
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                   </>
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-8 text-center">
               <p className="text-muted-foreground">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                 <button
                   type="button"
                   onClick={() => setIsLogin(!isLogin)}
-                  className="text-secondary hover:underline font-medium"
+                  className="text-secondary hover:underline font-semibold transition-colors"
                 >
                   {isLogin ? "Sign up" : "Sign in"}
                 </button>
@@ -169,8 +175,8 @@ const AuthForm = () => {
 
             {isLogin && (
               <div className="mt-4 text-center">
-                <Link to="/" className="text-sm text-muted-foreground hover:text-secondary">
-                  Back to Home
+                <Link to="/" className="text-sm text-muted-foreground hover:text-secondary transition-colors inline-flex items-center gap-1">
+                  ← Back to Home
                 </Link>
               </div>
             )}

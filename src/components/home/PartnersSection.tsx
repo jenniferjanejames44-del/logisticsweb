@@ -13,10 +13,19 @@ const PartnersSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 lg:py-24 bg-muted/40 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={ref} className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-muted/30 to-muted/60 relative overflow-hidden">
+      {/* Subtle pattern */}
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-10 sm:mb-12">
+        <div className="text-center mb-10 sm:mb-14">
           <p
             className={`text-muted-foreground font-semibold text-sm sm:text-base tracking-wider uppercase transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -27,12 +36,12 @@ const PartnersSection = () => {
         </div>
 
         {/* Partners Marquee */}
-        <div className={`relative overflow-hidden py-4 sm:py-6 transition-all duration-700 delay-200 ${
+        <div className={`relative overflow-hidden py-6 sm:py-8 bg-gradient-to-r from-card/50 via-card to-card/50 rounded-2xl border border-border/30 shadow-sm transition-all duration-700 delay-200 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}>
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 lg:w-40 bg-gradient-to-r from-muted/80 to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 lg:w-40 bg-gradient-to-l from-muted/80 to-transparent z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-r from-card to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-l from-card to-transparent z-10" />
           
           <div className="flex animate-marquee">
             {[...partners, ...partners, ...partners].map((partner, index) => (
@@ -45,6 +54,7 @@ const PartnersSection = () => {
                   alt={partner.name}
                   className="h-10 sm:h-12 md:h-14 object-contain"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             ))}

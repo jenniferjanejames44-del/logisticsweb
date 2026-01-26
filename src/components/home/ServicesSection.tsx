@@ -52,10 +52,17 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-gradient-to-b from-muted/50 to-muted relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-secondary/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-secondary/5 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-primary/5 to-transparent rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '32px 32px'
+        }}
+      />
       
       <div className="section-container relative">
         {/* Header */}
@@ -90,10 +97,10 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-2xl overflow-hidden border border-border shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ${
+              className={`group relative bg-gradient-to-br from-card to-muted/20 rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-2xl hover:-translate-y-3 hover:border-secondary/30 transition-all duration-500 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
-              style={{ transitionDelay: `${index * 80}ms` }}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -115,16 +122,16 @@ const ServicesSection = () => {
               </div>
 
               {/* Content */}
-              <div className="p-6 md:p-8 bg-card">
+              <div className="p-6 md:p-8 bg-gradient-to-b from-card to-muted/10">
                 {/* Icon */}
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                  <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all duration-300 shadow-sm">
+                  <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary group-hover:text-secondary-foreground transition-colors" />
                 </div>
                 
-                <p className="text-muted-foreground leading-relaxed mb-6">
+                <p className="text-muted-foreground leading-relaxed mb-6 text-base">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-2 text-secondary font-bold group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-secondary font-bold group-hover:gap-4 transition-all">
                   <span>Learn More</span>
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </div>

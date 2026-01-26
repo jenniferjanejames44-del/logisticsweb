@@ -5,14 +5,21 @@ const GoalVisionSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-24 lg:py-32 bg-muted/30 relative overflow-hidden">
+    <section ref={ref} className="py-24 sm:py-28 lg:py-36 bg-gradient-to-b from-muted/20 to-muted/50 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-20 left-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '32px 32px'
+        }}
+      />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 lg:mb-20">
           <span
             className={`inline-block bg-primary/10 text-primary font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -39,11 +46,11 @@ const GoalVisionSection = () => {
         <div className="grid md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
           {/* Goal Card */}
           <div
-            className={`group bg-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-500 ${
+            className={`group bg-gradient-to-br from-card to-muted/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 border border-border/50 hover:border-primary/40 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-all shadow-lg">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-all shadow-md">
               <Target size={28} className="sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-primary" />
             </div>
             
@@ -72,7 +79,7 @@ const GoalVisionSection = () => {
 
           {/* Vision Card - Electric Blue gradient */}
           <div
-            className={`group bg-gradient-to-br from-primary via-primary to-[hsl(200,100%,50%)] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 delay-200 shadow-blue ${
+            className={`group bg-gradient-to-br from-primary via-primary to-[hsl(200,100%,50%)] rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 relative overflow-hidden transition-all duration-500 delay-200 shadow-xl hover:shadow-2xl hover:-translate-y-2 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
           >
