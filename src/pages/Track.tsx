@@ -73,6 +73,43 @@ const Track = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
 
+  // Reset subscription state when tracking number changes
+  useEffect(() => {
+    setIsSubscribed(false);
+    setNotifyEmail("");
+    setEmailError(null);
+  }, [trackingNumber]);
+
+  // Real-time subscription for shipment updates
+  useEffect(() => {
+    if (!shipment) return;
+
+    const channel = supabase
+      .channel(`shipment-${shipment.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'shipments',
+          filter: `id=eq.${shipment.id}`,
+        },
+        (payload) => {
+          console.log('Shipment updated:', payload);
+          setShipment(payload.new as ShipmentData);
+          toast({
+            title: "Shipment Updated!",
+            description: `Status changed to: ${(payload.new as ShipmentData).status.replace("_", " ")}`,
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [shipment?.id, toast]);
+
   // Auto-search if tracking number is in URL
   useEffect(() => {
     const number = searchParams.get("number");
@@ -176,6 +213,8 @@ const Track = () => {
   };
 
   const handleEmailSubscribe = async () => {
+    if (!shipment) return;
+    
     // Validate email
     const result = emailSchema.safeParse(notifyEmail);
     if (!result.success) {
@@ -186,16 +225,50 @@ const Track = () => {
     setEmailError(null);
     setIsSubscribing(true);
     
-    // Simulate API call - in production, this would save to database
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsSubscribing(false);
-    setIsSubscribed(true);
-    
-    toast({
-      title: "Subscribed!",
-      description: `You'll receive updates at ${notifyEmail}`,
-    });
+    try {
+      // Check if already subscribed
+      const { data: existing } = await supabase
+        .from("shipment_notifications")
+        .select("id, is_active")
+        .eq("tracking_number", shipment.tracking_number)
+        .eq("email", notifyEmail)
+        .maybeSingle();
+      
+      if (existing) {
+        if (!existing.is_active) {
+          // Reactivate subscription
+          await supabase
+            .from("shipment_notifications")
+            .update({ is_active: true })
+            .eq("id", existing.id);
+        }
+      } else {
+        // Create new subscription
+        const { error: insertError } = await supabase
+          .from("shipment_notifications")
+          .insert({
+            tracking_number: shipment.tracking_number,
+            email: notifyEmail,
+          });
+        
+        if (insertError) throw insertError;
+      }
+      
+      setIsSubscribed(true);
+      toast({
+        title: "Subscribed!",
+        description: `You'll receive updates at ${notifyEmail}`,
+      });
+    } catch (err) {
+      console.error("Subscription error:", err);
+      toast({
+        title: "Subscription Failed",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   const ServiceIcon = shipment ? getServiceIcon(shipment.service_type) : Package;
