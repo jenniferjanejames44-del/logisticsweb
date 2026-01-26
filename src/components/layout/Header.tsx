@@ -54,7 +54,7 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo - Deep Blue when scrolled, Orange accent when transparent */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className={`w-11 h-11 rounded-xl flex items-center justify-center font-heading font-extrabold text-xl transition-all duration-300 shadow-lg ${
             isScrolled 

@@ -10,22 +10,22 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Electric Blue Overlay */}
+      {/* Background Image with Deep Blue Overlay */}
       <div className="absolute inset-0">
         <img
           src={heroImage}
           alt="Global Logistics"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Modern Electric Blue gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(217,100%,45%)] via-[hsl(217,100%,50%)] to-[hsl(200,100%,50%)]/95" />
+        {/* Modern Deep Blue gradient overlay - #1E40AF */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(224,70%,35%)] via-[hsl(224,70%,40%)] to-[hsl(217,80%,45%)]/95" />
         {/* Subtle geometric pattern overlay */}
         <div className="absolute inset-0 opacity-[0.07]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.5'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }} />
-        {/* Animated gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(200,100%,60%)]/20 rounded-full blur-3xl animate-float" />
+        {/* Animated gradient orbs - using Electric Orange */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/25 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(217,80%,55%)]/20 rounded-full blur-3xl animate-float" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
@@ -44,7 +44,7 @@ const HeroSection = () => {
           {/* Main Headline - Responsive sizing */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight">
             Global Logistics
-            <span className="block mt-2 sm:mt-3 text-secondary drop-shadow-[0_4px_20px_rgba(255,213,0,0.5)]">
+            <span className="block mt-2 sm:mt-3 text-secondary drop-shadow-[0_4px_20px_rgba(255,107,53,0.5)]">
               Delivered With Excellence
             </span>
           </h1>
@@ -55,7 +55,7 @@ const HeroSection = () => {
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
-          {/* CTA Buttons - Responsive */}
+          {/* CTA Buttons - Electric Orange primary CTA */}
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 px-4 sm:px-0">
             <Button variant="accent" size="xl" className="w-full sm:w-auto text-sm sm:text-base px-8 sm:px-10 py-6 rounded-2xl group shadow-accent-hover" asChild>
               <Link to="/pricing">
@@ -71,7 +71,7 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Tracker Card - Glassmorphism */}
+          {/* Tracker Card - Glassmorphism with Electric Orange accents */}
           <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl">
             <h3 className="text-white font-heading font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-6 flex items-center justify-center gap-3">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-accent">
