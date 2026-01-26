@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight, Package, MapPin, Clock, Shield, Play } from "lucide-react";
+import { Search, ArrowRight, Package, MapPin, Clock, Shield, Play, CheckCircle2, Truck, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroVideo from "@/assets/hero-logistics-video.mp4";
 import heroImage from "@/assets/hero-logistics.jpg";
@@ -9,12 +9,19 @@ import heroImage from "@/assets/hero-logistics.jpg";
 const HeroSection = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     // Trigger animations after mount
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Show preview when tracking number looks valid (e.g., RAC-XXXX pattern)
+  useEffect(() => {
+    const isValidFormat = trackingNumber.length >= 6 && trackingNumber.toUpperCase().startsWith("RAC");
+    setShowPreview(isValidFormat);
+  }, [trackingNumber]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
@@ -114,19 +121,19 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Tracker Card - Premium Glassmorphism */}
-          <div className={`relative group max-w-xl mx-auto transition-all duration-700 delay-[400ms] ${
+          {/* Tracker Card - Premium Glassmorphism with Floating Animation */}
+          <div className={`relative group max-w-xl mx-auto transition-all duration-700 delay-[400ms] animate-float ${
             isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
           }`}>
             {/* Glow effect behind card */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-secondary/50 via-secondary/30 to-secondary/50 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity" />
+            <div className="absolute -inset-2 bg-gradient-to-r from-secondary/40 via-secondary/60 to-secondary/40 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-500" />
             
             {/* Main card */}
-            <div className="relative bg-gradient-to-br from-primary/80 via-primary/70 to-primary/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-secondary/30">
+            <div className="relative bg-gradient-to-br from-[hsl(230,40%,15%)] via-[hsl(230,35%,12%)] to-[hsl(230,40%,10%)] backdrop-blur-2xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-secondary/40">
               {/* Header */}
               <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-secondary rounded-xl sm:rounded-2xl blur-md opacity-50" />
+                  <div className="absolute inset-0 bg-secondary rounded-xl sm:rounded-2xl blur-lg opacity-60" />
                   <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-secondary to-[hsl(24,95%,45%)] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg">
                     <Search size={22} className="sm:w-6 sm:h-6 text-primary-foreground" />
                   </div>
@@ -139,12 +146,11 @@ const HeroSection = () => {
               {/* Input section */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <div className="relative flex-1">
-                  <div className="absolute inset-0 bg-primary-foreground/5 rounded-xl sm:rounded-2xl" />
                   <Input
                     value={trackingNumber}
-                    onChange={(e) => setTrackingNumber(e.target.value)}
+                    onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                     placeholder="Enter tracking number"
-                    className="relative flex-1 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 h-14 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg px-5 focus:bg-primary-foreground/15 focus:border-secondary focus:ring-2 focus:ring-secondary/30 transition-all"
+                    className="w-full bg-primary-foreground/10 border-2 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 h-14 sm:h-16 rounded-xl sm:rounded-2xl text-base sm:text-lg px-5 focus:bg-primary-foreground/15 focus:border-secondary focus:ring-2 focus:ring-secondary/30 transition-all"
                   />
                 </div>
                 <Button 
@@ -157,19 +163,49 @@ const HeroSection = () => {
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </div>
+
+              {/* Tracking Status Preview */}
+              <div className={`overflow-hidden transition-all duration-500 ease-out ${
+                showPreview ? "max-h-40 opacity-100 mt-5 sm:mt-6" : "max-h-0 opacity-0 mt-0"
+              }`}>
+                <div className="bg-primary-foreground/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-primary-foreground/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                      <Truck size={16} className="text-emerald-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-primary-foreground font-semibold text-sm sm:text-base">{trackingNumber}</p>
+                      <p className="text-emerald-400 text-xs sm:text-sm font-medium">In Transit</p>
+                    </div>
+                    <Loader2 size={18} className="text-secondary animate-spin" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-primary-foreground/10 rounded-full overflow-hidden">
+                      <div className="h-full w-3/4 bg-gradient-to-r from-secondary to-emerald-400 rounded-full" />
+                    </div>
+                    <span className="text-primary-foreground/60 text-xs font-medium">75%</span>
+                  </div>
+                  <p className="text-primary-foreground/50 text-xs mt-2 flex items-center gap-1.5">
+                    <CheckCircle2 size={12} className="text-emerald-400" />
+                    Last update: Lagos Hub • 2 hours ago
+                  </p>
+                </div>
+              </div>
               
               {/* Helper text */}
-              <div className="mt-5 sm:mt-6 flex items-center justify-center gap-2 text-primary-foreground/60">
+              <div className={`flex items-center justify-center gap-2 text-primary-foreground/50 transition-all duration-300 ${
+                showPreview ? "mt-4" : "mt-5 sm:mt-6"
+              }`}>
                 <Package size={16} className="text-secondary" />
                 <p className="text-sm sm:text-base font-medium">
-                  Example: <span className="text-primary-foreground/80 font-semibold">RAC-2026-XXXXXX</span>
+                  Example: <span className="text-primary-foreground/70 font-semibold">RAC-2026-XXXXXX</span>
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Trust Indicators - Enhanced styling */}
-          <div className={`mt-12 sm:mt-16 flex flex-wrap justify-center gap-6 sm:gap-10 lg:gap-16 transition-all duration-700 delay-500 ${
+          {/* Trust Indicators - Professional styling with high visibility */}
+          <div className={`mt-14 sm:mt-20 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             {[
@@ -179,18 +215,26 @@ const HeroSection = () => {
             ].map((item, index) => (
               <div 
                 key={index} 
-                className={`flex items-center gap-3 text-white/90 group transition-all duration-500 ${
+                className={`flex flex-col items-center text-center group transition-all duration-500 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
                 style={{ transitionDelay: `${600 + index * 100}ms` }}
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-secondary/30 transition-colors border border-white/10">
-                  <item.icon size={20} className="sm:w-6 sm:h-6 text-secondary" />
+                {/* Icon container with glow */}
+                <div className="relative mb-3 sm:mb-4">
+                  <div className="absolute inset-0 bg-secondary/30 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center group-hover:from-secondary/30 group-hover:to-secondary/20 transition-all border border-secondary/30">
+                    <item.icon size={24} className="sm:w-7 sm:h-7 text-secondary" />
+                  </div>
                 </div>
-                <div className="text-left">
-                  <span className="block text-xs text-secondary font-semibold">{item.highlight}</span>
-                  <span className="font-bold text-sm sm:text-base">{item.text}</span>
-                </div>
+                {/* Highlight badge */}
+                <span className="inline-block px-3 py-1 bg-secondary/20 rounded-full text-secondary font-bold text-xs sm:text-sm mb-1.5 sm:mb-2">
+                  {item.highlight}
+                </span>
+                {/* Main text - high contrast */}
+                <span className="font-bold text-primary-foreground text-sm sm:text-base lg:text-lg">
+                  {item.text}
+                </span>
               </div>
             ))}
           </div>
