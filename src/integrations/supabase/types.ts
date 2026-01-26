@@ -213,6 +213,33 @@ export type Database = {
         }
         Relationships: []
       }
+      shipment_notifications: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean
+          tracking_number: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean
+          tracking_number: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean
+          tracking_number?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       shipments: {
         Row: {
           actual_delivery: string | null
