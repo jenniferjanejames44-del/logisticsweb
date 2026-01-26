@@ -1,17 +1,28 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Clock, Shield, Play } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ArrowRight, MapPin, Clock, Shield, Search, UserPlus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import heroVideo from "@/assets/hero-logistics-video.mp4";
 import heroImage from "@/assets/hero-logistics.jpg";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleSignUpClick = () => {
+    if (user) {
+      navigate("/dashboard");
+    } else {
+      navigate("/auth");
+    }
+  };
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-primary">
@@ -80,7 +91,7 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 transition-all duration-700 delay-300 ${
+          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-8 sm:mb-12 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Button 
@@ -98,17 +109,32 @@ const HeroSection = () => {
               variant="heroSecondary" 
               size="lg" 
               className="w-fit px-8 py-6 text-base font-bold border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary" 
+              onClick={handleSignUpClick}
+            >
+              <UserPlus size={16} className="mr-2" />
+              {user ? "Go to Dashboard" : "Sign Up"}
+            </Button>
+          </div>
+
+          {/* Track Shipment Button */}
+          <div className={`transition-all duration-700 delay-350 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="w-fit px-6 py-5 text-sm font-semibold border-2 border-secondary/50 text-secondary bg-secondary/10 hover:bg-secondary hover:text-secondary-foreground hover:border-secondary backdrop-blur-sm" 
               asChild
             >
-              <Link to="/services">
-                <Play size={16} className="mr-2" />
-                Our Services
+              <Link to="/track">
+                <Search size={16} className="mr-2" />
+                Track Your Shipment
               </Link>
             </Button>
           </div>
 
           {/* Trust Indicators */}
-          <div className={`mt-8 sm:mt-12 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-400 ${
+          <div className={`mt-12 sm:mt-16 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-400 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             {[
