@@ -32,7 +32,7 @@ const StatsCounter = ({ value, suffix, isActive, isDecimal }: { value: number; s
   const displayValue = isDecimal ? (count / 10).toFixed(1) : count.toLocaleString();
   
   return (
-    <span className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white">
+    <span className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-extrabold text-white whitespace-nowrap">
       {displayValue}{suffix}
     </span>
   );
@@ -81,7 +81,7 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-16 sm:mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-16 sm:mb-20">
           {stats.map((stat, index) => (
             <div
               key={stat.label}

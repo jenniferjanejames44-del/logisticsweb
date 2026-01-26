@@ -2,14 +2,35 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
+import { useParallax } from "@/hooks/useParallax";
+import heroLogisticsImage from "@/assets/hero-logistics.jpg";
 
 const CTASection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
+  const parallaxOffset = useParallax(0.3);
 
   return (
-    <section ref={ref} className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,12%)] to-[hsl(222,47%,11%)] relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
+    <section ref={ref} className="section-padding relative overflow-hidden min-h-[500px] flex items-center">
+      {/* Parallax Image Background */}
+      <div 
+        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{ 
+          transform: `translateY(${parallaxOffset}px)`,
+          willChange: 'transform'
+        }}
+      >
+        <img 
+          src={heroLogisticsImage} 
+          alt="Global logistics background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      {/* Dark Navy Overlay for Text Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(222,47%,11%)/90] via-[hsl(222,40%,12%)/85] to-[hsl(222,47%,11%)/90]" />
+      
+      {/* Dot Pattern Overlay */}
+      <div className="absolute inset-0 opacity-10">
         <div 
           className="absolute inset-0"
           style={{
@@ -23,7 +44,7 @@ const CTASection = () => {
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[150px]" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[120px]" />
 
-      <div className="section-container relative z-10">
+      <div className="section-container relative z-10 w-full">
         <div
           className={`text-center max-w-4xl mx-auto transition-all duration-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
