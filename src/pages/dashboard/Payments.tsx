@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { PaymentsListSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -88,6 +89,14 @@ const Payments = () => {
     const matchesStatus = statusFilter === "all" || payment.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  if (loading) {
+    return (
+      <DashboardLayout title="Payments" description="View your payment history and invoices">
+        <PaymentsListSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title="Payments" description="View your payment history and invoices">

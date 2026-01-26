@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { WalletSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -85,9 +86,7 @@ const Wallet = () => {
       }
     >
       {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
-        </div>
+        <WalletSkeleton />
       ) : (
         <div className="space-y-6">
           {/* Balance Cards */}
