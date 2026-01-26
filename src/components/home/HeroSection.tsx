@@ -379,8 +379,8 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Bottom fade to background - seamless transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 sm:h-56 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none" />
+      {/* Bottom fade - smooth transition to next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-primary to-transparent pointer-events-none" />
     </section>
   );
 };
