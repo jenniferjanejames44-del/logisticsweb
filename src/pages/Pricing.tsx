@@ -81,22 +81,29 @@ const Pricing = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
+          className="relative pt-32 pb-24 md:pt-44 md:pb-28 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
         >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
           </div>
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: '40px 40px'
+            }}
+          />
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
+              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
                 Transparent Pricing
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6 leading-tight">
                 Calculate Your <span className="text-secondary">Shipping Cost</span>
               </h1>
-              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] leading-relaxed">
+              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] leading-relaxed max-w-2xl mx-auto">
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>
@@ -104,20 +111,20 @@ const Pricing = () => {
         </section>
 
         {/* Calculator Section */}
-        <section className="section-padding bg-background">
+        <section className="section-padding bg-gradient-to-b from-background to-muted/30">
           <div className="section-container">
-            <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-start">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
               {/* Calculator Form */}
-              <Card className="border border-border rounded-2xl shadow-lg">
-                <CardHeader>
+              <Card className="border-border/30 shadow-2xl">
+                <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 font-heading text-xl md:text-2xl">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                      <Calculator className="w-6 h-6 text-secondary" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center shadow-lg shadow-secondary/30">
+                      <Calculator className="w-6 h-6 text-secondary-foreground" />
                     </div>
                     Price Calculator
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 pt-2">
                   {/* Destination Country */}
                   <div className="space-y-2">
                     <Label htmlFor="country" className="font-semibold text-sm text-foreground">
@@ -265,13 +272,13 @@ const Pricing = () => {
         </section>
 
         {/* What's Included */}
-        <section className="section-padding bg-muted">
+        <section className="section-padding bg-gradient-to-b from-muted/30 to-muted/60">
           <div className="section-container">
-            <div className="text-center mb-8 md:mb-12">
-              <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">
+            <div className="text-center mb-10 md:mb-14">
+              <span className="inline-block px-5 py-2.5 bg-secondary/10 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-4">
                 Value
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground">
                 What's Included
               </h2>
             </div>
@@ -289,7 +296,7 @@ const Pricing = () => {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 p-4 bg-card rounded-xl border border-border"
+                  className="flex items-center gap-3 p-4 lg:p-5 bg-gradient-to-br from-card to-muted/20 rounded-xl border border-border/50 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                 >
                   <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
                   <span className="font-semibold text-foreground">{feature}</span>

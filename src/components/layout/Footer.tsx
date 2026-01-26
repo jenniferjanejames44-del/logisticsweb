@@ -41,13 +41,20 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[hsl(230,60%,4%)] text-white relative overflow-hidden">
+    <footer className="bg-gradient-to-b from-[hsl(230,60%,6%)] to-[hsl(230,60%,4%)] text-white relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[hsl(217,91%,60%)]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
       
       {/* Main Footer */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           {/* Column 1 - Company */}
           <div className="space-y-6 sm:col-span-2 lg:col-span-1">

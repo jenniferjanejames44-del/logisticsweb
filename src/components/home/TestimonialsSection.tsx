@@ -48,11 +48,18 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-20 sm:py-28 lg:py-36 bg-[hsl(210,40%,98%)] relative overflow-hidden">
+    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-gradient-to-b from-muted/40 to-muted/60 relative overflow-hidden">
       {/* Decorative background */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full opacity-5">
-        <Quote size={400} className="text-[hsl(215,28%,17%)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full opacity-[0.03]">
+        <Quote size={400} className="text-foreground absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
       </div>
+      <div 
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -109,9 +116,9 @@ const TestimonialsSection = () => {
                   key={index}
                   className="w-full flex-shrink-0 px-4"
                 >
-                  <div className="bg-white rounded-3xl p-8 sm:p-10 md:p-14 shadow-xl text-center border border-[hsl(214,32%,91%)]">
+                  <div className="bg-gradient-to-br from-card to-muted/20 rounded-3xl p-8 sm:p-10 md:p-14 shadow-2xl text-center border border-border/30">
                     {/* Quote Icon */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-secondary/10 rounded-2xl flex items-center justify-center mb-8">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mb-8 shadow-sm">
                       <Quote size={32} className="text-secondary sm:w-9 sm:h-9" />
                     </div>
 

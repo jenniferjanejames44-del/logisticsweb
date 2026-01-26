@@ -6,14 +6,24 @@ const FounderSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-28 lg:py-36 relative overflow-hidden">
+    <section ref={ref} className="py-24 sm:py-32 lg:py-40 relative overflow-hidden">
       {/* Parallax Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-fixed"
         style={{ backgroundImage: `url(${founderImage})` }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
       </div>
+      
+      {/* Subtle pattern overlay */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}
+      />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -27,10 +37,12 @@ const FounderSection = () => {
               <img
                 src={founderImage}
                 alt="James Wuyep - Founder & CEO"
-                className="w-full rounded-3xl shadow-2xl"
+                className="w-full rounded-3xl shadow-2xl ring-4 ring-white/10"
+                loading="lazy"
+                decoding="async"
               />
-              <div className="absolute -bottom-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-secondary rounded-2xl flex items-center justify-center shadow-yellow">
-                <Quote size={36} className="text-primary sm:w-10 sm:h-10" />
+              <div className="absolute -bottom-5 -right-5 w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl flex items-center justify-center shadow-xl shadow-secondary/30 hover:scale-110 transition-transform">
+                <Quote size={36} className="text-secondary-foreground sm:w-10 sm:h-10" />
               </div>
             </div>
           </div>

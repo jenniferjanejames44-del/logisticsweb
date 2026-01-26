@@ -32,12 +32,12 @@ const HowItWorksSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-20 sm:py-28 lg:py-36 bg-background relative overflow-hidden">
+    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
       {/* Subtle dot pattern */}
       <div 
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.02]"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--primary)) 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
           backgroundSize: '32px 32px'
         }}
       />
@@ -47,7 +47,7 @@ const HowItWorksSection = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-24">
           <span
             className={`inline-block bg-primary/10 text-primary font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -82,15 +82,15 @@ const HowItWorksSection = () => {
               style={{ transitionDelay: `${index * 100 + 300}ms` }}
             >
               {/* Card */}
-              <div className="group h-full bg-card rounded-2xl p-6 lg:p-8 border border-border hover:border-primary/40 hover:shadow-card-hover transition-all duration-300 relative overflow-hidden">
-                {/* Step Number - Yellow badge */}
-                <div className="absolute top-4 right-4 w-12 h-12 bg-secondary text-secondary-foreground rounded-xl flex items-center justify-center font-heading font-extrabold text-base shadow-accent">
+              <div className="group h-full bg-gradient-to-br from-card to-muted/20 rounded-2xl p-6 lg:p-8 border border-border/50 hover:border-secondary/40 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                {/* Step Number - Orange badge */}
+                <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground rounded-xl flex items-center justify-center font-heading font-extrabold text-base shadow-lg shadow-secondary/30">
                   {step.step}
                 </div>
 
-                {/* Icon - Electric Blue */}
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-[hsl(200,100%,55%)] rounded-xl flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 shadow-button">
-                  <step.icon className="w-8 h-8 text-white" />
+                {/* Icon - Primary gradient */}
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-[hsl(200,100%,55%)] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <step.icon className="w-8 h-8 text-primary-foreground" />
                 </div>
 
                 {/* Content */}
