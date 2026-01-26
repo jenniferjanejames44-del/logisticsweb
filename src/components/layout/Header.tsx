@@ -180,9 +180,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu - Slide from right with backdrop blur */}
+      {/* Mobile Menu - Slide from right */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 bg-[hsl(230,60%,6%)]/98 backdrop-blur-xl transition-all duration-300 overflow-y-auto shadow-2xl ${
+        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 bg-[hsl(222,47%,11%)] transition-all duration-300 overflow-y-auto shadow-2xl ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
         style={{ top: '0' }}
@@ -190,7 +190,7 @@ const Header = () => {
         {/* Close button */}
         <div className="flex justify-end p-4">
           <button
-            className="p-2 rounded-lg transition-colors text-white hover:bg-white/10"
+            className="p-2 rounded-lg transition-colors text-white hover:bg-secondary hover:text-white"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close menu"
           >
@@ -203,7 +203,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-[hsl(215,20%,85%)] hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
+              className="text-white hover:bg-secondary hover:text-white font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -213,7 +213,7 @@ const Header = () => {
           {/* Mobile Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-[hsl(215,20%,85%)] hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px]"
+              className="flex items-center justify-between text-white hover:bg-secondary hover:text-white font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px]"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -222,7 +222,7 @@ const Header = () => {
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[500px]" : "max-h-0"}`}>
               <Link
                 to="/services"
-                className="flex items-center gap-3 text-secondary font-semibold py-3 px-8 rounded-lg hover:bg-white/10 transition-all min-h-[44px]"
+                className="flex items-center gap-3 text-secondary font-semibold py-3 px-8 rounded-lg hover:bg-secondary hover:text-white transition-all min-h-[44px]"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 View All Services
@@ -231,10 +231,10 @@ const Header = () => {
                 <Link
                   key={service.name}
                   to={service.href}
-                  className="flex items-center gap-3 text-white/70 hover:text-secondary py-3 px-8 rounded-lg hover:bg-white/10 transition-all min-h-[44px]"
+                  className="flex items-center gap-3 text-white hover:bg-secondary hover:text-white py-3 px-8 rounded-lg transition-all min-h-[44px]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <service.icon className="w-4 h-4 text-secondary" />
+                  <service.icon className="w-4 h-4" />
                   {service.name}
                 </Link>
               ))}
@@ -245,48 +245,60 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-[hsl(215,20%,85%)] hover:text-secondary hover:bg-white/10 font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
+              className="text-white hover:bg-secondary hover:text-white font-semibold py-4 px-4 rounded-xl transition-all min-h-[48px] flex items-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="flex flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+          <div className="flex flex-col items-center gap-3 pt-6 mt-4 border-t border-white/20">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button variant="ghost" className="justify-start text-[hsl(215,20%,85%)] hover:text-secondary hover:bg-white/10 min-h-[48px]" asChild>
-                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Shield className="w-4 h-4 mr-2" />
-                      Admin
-                    </Link>
-                  </Button>
-                )}
-                <Button variant="ghost" className="justify-start text-[hsl(215,20%,85%)] hover:text-secondary hover:bg-white/10 min-h-[48px]" asChild>
-                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
-                    <User className="w-4 h-4 mr-2" />
-                    Dashboard
+                  <Link 
+                    to="/admin" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-auto px-6 py-3 text-white hover:bg-secondary hover:text-white font-bold uppercase text-sm rounded-lg transition-all flex items-center gap-2"
+                  >
+                    <Shield className="w-4 h-4" />
+                    ADMIN
                   </Link>
-                </Button>
-                <Button 
-                  className="w-full min-h-[48px] bg-secondary text-white font-bold shadow-[0_4px_20px_rgba(251,146,60,0.4)] hover:bg-[hsl(18,100%,55%)]"
+                )}
+                <Link 
+                  to="/dashboard" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-auto px-6 py-3 text-white hover:bg-secondary hover:text-white font-bold uppercase text-sm rounded-lg transition-all flex items-center gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  DASHBOARD
+                </Link>
+                <button 
+                  className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  Logout
-                </Button>
+                  LOGOUT
+                </button>
               </>
             ) : (
               <>
-                <Button variant="ghost" className="w-full min-h-[48px] text-white border-2 border-white/30 hover:bg-white/10 font-semibold" asChild>
-                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
-                </Button>
-                <Button className="w-full min-h-[48px] bg-secondary text-white font-bold shadow-[0_4px_20px_rgba(251,146,60,0.4)] hover:bg-[hsl(18,100%,55%)]" asChild>
-                  <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)}>Get Quote</Link>
-                </Button>
+                <Link 
+                  to="/auth" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-auto px-6 py-3 bg-white text-[hsl(222,47%,11%)] font-bold uppercase text-sm rounded-lg hover:scale-105 transition-all duration-300"
+                >
+                  SIGN UP
+                </Link>
+                <Link 
+                  to="/pricing" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                >
+                  GET QUOTE
+                </Link>
               </>
             )}
           </div>

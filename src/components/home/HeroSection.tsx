@@ -211,26 +211,24 @@ const HeroSection = () => {
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
-          {/* CTA Buttons - Enhanced styling */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-14 sm:mb-16 transition-all duration-700 delay-300 ${
+          {/* CTA Buttons */}
+          <div className={`flex flex-row justify-center items-center gap-4 mb-14 sm:mb-16 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Button 
-              className="w-full sm:w-auto px-10 py-7 text-lg font-bold rounded-xl bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] text-white shadow-[0_10px_40px_rgba(251,146,60,0.5)] hover:shadow-[0_15px_50px_rgba(251,146,60,0.6)] hover:scale-105 transition-all duration-300 group" 
+              className="w-auto px-6 py-3 text-base font-bold uppercase rounded-lg bg-secondary text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300" 
               asChild
             >
               <Link to="/pricing">
-                Get Free Quote
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                GET QUOTE
               </Link>
             </Button>
             <Button 
-              className="w-full sm:w-auto px-10 py-7 text-lg font-bold rounded-xl bg-transparent border-2 border-white text-white hover:bg-white hover:text-[hsl(230,60%,10%)] hover:scale-105 transition-all duration-300 group"
+              className="w-auto px-6 py-3 text-base font-bold uppercase rounded-lg bg-white text-[hsl(222,47%,11%)] border-2 border-white hover:bg-white/90 hover:scale-105 transition-all duration-300"
               asChild
             >
-              <Link to="/services">
-                <Play size={18} className="mr-2" />
-                Our Services
+              <Link to="/auth">
+                SIGN UP
               </Link>
             </Button>
           </div>
