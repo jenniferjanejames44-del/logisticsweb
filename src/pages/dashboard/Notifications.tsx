@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { NotificationsSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Package, CreditCard, CheckCircle, AlertCircle, Info } from "lucide-react";
@@ -57,40 +59,58 @@ const notifications = [
 ];
 
 const Notifications = () => {
+  const [loading, setLoading] = useState(true);
   const unreadCount = notifications.filter((n) => !n.read).length;
+
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <DashboardLayout 
+        title="Notifications" 
+        description="Loading notifications..."
+      >
+        <NotificationsSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout 
       title="Notifications" 
       description={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
     >
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {notifications.map((notification) => (
           <Card 
             key={notification.id} 
-            className={`border-border/50 hover:shadow-card transition-shadow ${
+            className={`border-border/50 card-premium hover:shadow-card-hover transition-all duration-300 ${
               !notification.read ? 'border-l-4 border-l-secondary' : ''
             }`}
           >
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                   !notification.read ? 'bg-secondary/10' : 'bg-muted'
                 }`}>
-                  <notification.icon className={`w-5 h-5 ${notification.iconColor}`} />
+                  <notification.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${notification.iconColor}`} />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-foreground">{notification.title}</h3>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-foreground text-sm sm:text-base">{notification.title}</h3>
                         {!notification.read && (
                           <Badge variant="secondary" className="text-xs">New</Badge>
                         )}
                       </div>
-                      <p className="text-muted-foreground">{notification.message}</p>
+                      <p className="text-muted-foreground text-xs sm:text-sm">{notification.message}</p>
                     </div>
-                    <span className="text-sm text-muted-foreground whitespace-nowrap">
+                    <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap flex-shrink-0">
                       {notification.time}
                     </span>
                   </div>
@@ -101,11 +121,11 @@ const Notifications = () => {
         ))}
 
         {notifications.length === 0 && (
-          <Card className="border-border/50">
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Bell className="w-16 h-16 text-muted-foreground mb-4" />
-              <h3 className="font-heading text-xl font-semibold text-foreground mb-2">No Notifications</h3>
-              <p className="text-muted-foreground">You're all caught up!</p>
+          <Card className="border-border/50 card-premium">
+            <CardContent className="flex flex-col items-center justify-center py-10 sm:py-12">
+              <Bell className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mb-3 sm:mb-4" />
+              <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-2">No Notifications</h3>
+              <p className="text-muted-foreground text-sm sm:text-base">You're all caught up!</p>
             </CardContent>
           </Card>
         )}

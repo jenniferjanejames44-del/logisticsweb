@@ -201,38 +201,38 @@ const Shipments = () => {
 
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
-      {/* Balance Card */}
-      <Card className="mb-6 border-border/50 bg-gradient-to-r from-secondary/10 to-secondary/5">
-        <CardContent className="p-4 flex items-center justify-between">
+      {/* Balance Card - Responsive */}
+      <Card className="mb-4 sm:mb-6 border-border/50 bg-gradient-to-r from-secondary/10 to-secondary/5 card-premium">
+        <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-secondary" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Wallet Balance</p>
-              <p className="text-xl font-bold text-foreground">${balance.toFixed(2)}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Wallet Balance</p>
+              <p className="text-lg sm:text-xl font-bold text-foreground">${balance.toFixed(2)}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={() => window.location.href = "/dashboard/wallet"}>
+          <Button variant="outline" size="sm" className="w-full sm:w-auto" onClick={() => window.location.href = "/dashboard/wallet"}>
             Manage Wallet
           </Button>
         </CardContent>
       </Card>
 
-      {/* Actions Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      {/* Actions Bar - Responsive */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mb-4 sm:mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
           <Input
-            placeholder="Search by tracking number or destination..."
+            placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-9 sm:pl-10 h-9 sm:h-10 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Filter by status" />
+          <SelectTrigger className="w-full sm:w-[160px] h-9 sm:h-10">
+            <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
@@ -245,9 +245,9 @@ const Shipments = () => {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="cta">
-              <Plus className="w-5 h-5" />
-              New Shipment
+            <Button variant="cta" className="w-full sm:w-auto h-9 sm:h-10">
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="sm:inline">New Shipment</span>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">

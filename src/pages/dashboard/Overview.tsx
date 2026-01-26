@@ -106,151 +106,150 @@ const Overview = () => {
 
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="border-border/50 hover:shadow-card transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Shipments</p>
-                <p className="text-3xl font-bold text-foreground">{stats.total}</p>
+      {/* Stats Grid - Enhanced & Responsive */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Shipments</p>
+                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.total}</p>
               </div>
-              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <Package className="w-6 h-6 text-secondary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 hover:shadow-card transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">In Transit</p>
-                <p className="text-3xl font-bold text-foreground">{stats.inTransit}</p>
-              </div>
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Truck className="w-6 h-6 text-primary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Package className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/50 hover:shadow-card transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Delivered</p>
-                <p className="text-3xl font-bold text-foreground">{stats.delivered}</p>
+        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">In Transit</p>
+                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.inTransit}</p>
               </div>
-              <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-500" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/50 hover:shadow-card transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Spent</p>
-                <p className="text-3xl font-bold text-foreground">${totalSpent.toLocaleString()}</p>
+        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Delivered</p>
+                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.delivered}</p>
               </div>
-              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <CreditCard className="w-6 h-6 text-secondary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Spent</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">${totalSpent.toLocaleString()}</p>
+              </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <Card className="border-border/50 hover:border-secondary/50 hover:shadow-card transition-all cursor-pointer group">
-          <CardContent className="p-6">
-            <Link to="/dashboard/shipments" className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-secondary text-secondary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Plus className="w-6 h-6" />
+      {/* Quick Actions - Enhanced & Responsive */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
+        <Card className="border-border/50 card-premium hover:border-secondary/50 hover:shadow-card-hover transition-all duration-300 cursor-pointer group">
+          <CardContent className="p-4 sm:p-6">
+            <Link to="/dashboard/shipments" className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary text-secondary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Create Shipment</h3>
-                <p className="text-sm text-muted-foreground">Start a new shipment</p>
-              </div>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 hover:border-secondary/50 hover:shadow-card transition-all cursor-pointer group">
-          <CardContent className="p-6">
-            <Link to="/pricing" className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                <CreditCard className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Get Quote</h3>
-                <p className="text-sm text-muted-foreground">Calculate shipping cost</p>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">Create Shipment</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Start a new shipment</p>
               </div>
             </Link>
           </CardContent>
         </Card>
 
-        <Card className="border-border/50 hover:border-secondary/50 hover:shadow-card transition-all cursor-pointer group">
-          <CardContent className="p-6">
-            <Link to="/contact" className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-muted text-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Package className="w-6 h-6" />
+        <Card className="border-border/50 card-premium hover:border-primary/50 hover:shadow-card-hover transition-all duration-300 cursor-pointer group">
+          <CardContent className="p-4 sm:p-6">
+            <Link to="/pricing" className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <h3 className="font-semibold text-foreground">Contact Support</h3>
-                <p className="text-sm text-muted-foreground">Get help with shipments</p>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">Get Quote</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Calculate shipping cost</p>
+              </div>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/50 card-premium hover:border-muted-foreground/30 hover:shadow-card-hover transition-all duration-300 cursor-pointer group sm:col-span-2 lg:col-span-1">
+          <CardContent className="p-4 sm:p-6">
+            <Link to="/contact" className="flex items-center gap-3 sm:gap-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted text-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <Package className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-foreground text-sm sm:text-base">Contact Support</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Get help with shipments</p>
               </div>
             </Link>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Shipments */}
-      <Card className="border-border/50">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="font-heading">Recent Shipments</CardTitle>
-          <Button variant="link" className="text-secondary" asChild>
+      {/* Recent Shipments - Enhanced & Responsive */}
+      <Card className="border-border/50 card-premium">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 sm:p-6">
+          <CardTitle className="font-heading text-lg sm:text-xl">Recent Shipments</CardTitle>
+          <Button variant="link" className="text-secondary p-0 h-auto justify-start sm:justify-end" asChild>
             <Link to="/dashboard/shipments">
               View All <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </Button>
         </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
-            </div>
-          ) : recentShipments.length > 0 ? (
-            <div className="space-y-4">
+        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+          {recentShipments.length > 0 ? (
+            <div className="space-y-3 sm:space-y-4">
               {recentShipments.map((shipment) => (
                 <div
                   key={shipment.id}
-                  className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                  className="flex items-center justify-between p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors gap-3"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
-                      <Package className="w-5 h-5 text-secondary" />
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
                     </div>
-                    <div>
-                      <p className="font-medium text-foreground">{shipment.tracking_number}</p>
-                      <p className="text-sm text-muted-foreground">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-foreground text-sm sm:text-base truncate">{shipment.tracking_number}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">
                         To: {shipment.destination_country}
                       </p>
                     </div>
                   </div>
-                  {getStatusBadge(shipment.status)}
+                  <div className="flex-shrink-0">
+                    {getStatusBadge(shipment.status)}
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">No shipments yet</p>
-              <Button variant="cta" className="mt-4" asChild>
+            <div className="text-center py-6 sm:py-8">
+              <Package className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
+              <p className="text-muted-foreground text-sm sm:text-base">No shipments yet</p>
+              <Button variant="cta" className="mt-3 sm:mt-4" size="sm" asChild>
                 <Link to="/dashboard/shipments">Create Your First Shipment</Link>
               </Button>
             </div>

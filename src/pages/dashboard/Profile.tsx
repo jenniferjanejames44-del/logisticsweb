@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { ProfileSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -108,127 +109,126 @@ const Profile = () => {
   if (loading) {
     return (
       <DashboardLayout title="Profile" description="Manage your account settings">
-        <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
-        </div>
+        <ProfileSkeleton />
       </DashboardLayout>
     );
   }
 
   return (
     <DashboardLayout title="Profile" description="Manage your account settings and preferences">
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {/* Profile Card */}
-        <Card className="border-border/50 lg:col-span-1">
-          <CardContent className="p-6 text-center">
-            <div className="w-24 h-24 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User className="w-12 h-12 text-secondary" />
+        <Card className="border-border/50 lg:col-span-1 card-premium">
+          <CardContent className="p-4 sm:p-6 text-center">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <User className="w-10 h-10 sm:w-12 sm:h-12 text-secondary" />
             </div>
-            <h3 className="font-heading text-xl font-semibold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground">
               {formData.full_name || "User"}
             </h3>
-            <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1">
-              <Mail className="w-4 h-4" />
-              {user?.email}
+            <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1 text-sm sm:text-base">
+              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+              <span className="truncate">{user?.email}</span>
             </p>
             {formData.company_name && (
-              <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1">
-                <Building className="w-4 h-4" />
-                {formData.company_name}
+              <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1 text-sm sm:text-base">
+                <Building className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">{formData.company_name}</span>
               </p>
             )}
             {formData.country && (
-              <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1">
-                <Globe className="w-4 h-4" />
-                {formData.city ? `${formData.city}, ` : ""}{formData.country}
+              <p className="text-muted-foreground flex items-center justify-center gap-2 mt-1 text-sm sm:text-base">
+                <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="truncate">{formData.city ? `${formData.city}, ` : ""}{formData.country}</span>
               </p>
             )}
           </CardContent>
         </Card>
 
         {/* Edit Form */}
-        <Card className="border-border/50 lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="font-heading">Edit Profile</CardTitle>
+        <Card className="border-border/50 lg:col-span-2 card-premium">
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="font-heading text-lg sm:text-xl">Edit Profile</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="full_name">Full Name</Label>
+          <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="full_name" className="text-sm">Full Name</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                     <Input
                       id="full_name"
                       value={formData.full_name}
                       onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                       placeholder="John Doe"
-                      className="pl-10"
+                      className="pl-9 sm:pl-10 h-9 sm:h-10"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="phone" className="text-sm">Phone Number</Label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                     <Input
                       id="phone"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+1 234 567 8900"
-                      className="pl-10"
+                      className="pl-9 sm:pl-10 h-9 sm:h-10"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="company_name">Company Name</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="company_name" className="text-sm">Company Name</Label>
                 <div className="relative">
-                  <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Building className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                   <Input
                     id="company_name"
                     value={formData.company_name}
                     onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                     placeholder="Your Company Inc."
-                    className="pl-10"
+                    className="pl-9 sm:pl-10 h-9 sm:h-10"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="address" className="text-sm">Address</Label>
                 <div className="relative">
-                  <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+                  <MapPin className="absolute left-3 top-2.5 sm:top-3 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
                   <Textarea
                     id="address"
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     placeholder="123 Main Street, Suite 100"
-                    className="pl-10 min-h-[80px]"
+                    className="pl-9 sm:pl-10 min-h-[70px] sm:min-h-[80px]"
                   />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="city" className="text-sm">City</Label>
                   <Input
                     id="city"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="New York"
+                    className="h-9 sm:h-10"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
+                <div className="space-y-1.5 sm:space-y-2">
+                  <Label htmlFor="country" className="text-sm">Country</Label>
                   <Select
                     value={formData.country}
                     onValueChange={(value) => setFormData({ ...formData, country: value })}
                   >
-                    <SelectTrigger id="country">
+                    <SelectTrigger id="country" className="h-9 sm:h-10">
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
@@ -242,10 +242,10 @@ const Profile = () => {
 
               <Button type="submit" variant="cta" className="w-full sm:w-auto" disabled={saving}>
                 {saving ? (
-                  <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
                 ) : (
                   <>
-                    <Save className="w-5 h-5" />
+                    <Save className="w-4 h-4 sm:w-5 sm:h-5" />
                     Save Changes
                   </>
                 )}

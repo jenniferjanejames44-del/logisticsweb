@@ -42,25 +42,25 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-muted/30 via-background to-muted/50">
       <DashboardSidebar />
-      <main className="flex-1 p-6 lg:p-8 overflow-auto">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto ml-0 lg:ml-0">
+        <div className="max-w-7xl mx-auto pt-14 lg:pt-0">
           {/* Page Header */}
-          <div className="mb-8 pb-6 border-b border-border/50">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+          <div className="mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-border/50">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-2">
               <span>Dashboard</span>
               <span>/</span>
-              <span className="text-foreground font-medium">{title}</span>
+              <span className="text-foreground font-medium truncate">{title}</span>
             </div>
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h1 className="font-heading text-3xl lg:text-4xl font-bold text-foreground">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+              <div className="min-w-0">
+                <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground truncate">
                   {title}
                 </h1>
                 {description && (
-                  <p className="text-muted-foreground mt-2 text-lg">{description}</p>
+                  <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base lg:text-lg line-clamp-2">{description}</p>
                 )}
               </div>
-              {action && <div>{action}</div>}
+              {action && <div className="flex-shrink-0">{action}</div>}
             </div>
           </div>
           {children}
