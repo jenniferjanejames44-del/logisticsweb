@@ -150,7 +150,8 @@ const HeroSection = () => {
       </div>
       
       {/* Dark Navy Gradient Overlay for Text Readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,4%)/95] via-[hsl(215,50%,8%)/92] to-[hsl(220,55%,4%)/95]" />
+      <div className="absolute inset-0 bg-[hsl(230,60%,4%)]" style={{ opacity: 0.92 }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(230,60%,2%)] via-transparent to-[hsl(230,60%,2%)]" style={{ opacity: 0.6 }} />
       
       {/* Animated Dots Pattern Overlay */}
       <div className="absolute inset-0 opacity-15">
