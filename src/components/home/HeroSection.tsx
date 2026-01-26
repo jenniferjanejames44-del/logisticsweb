@@ -1,15 +1,30 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ArrowRight, Package, MapPin, Clock, Shield, Play, CheckCircle2, Truck, Loader2 } from "lucide-react";
+import { Search, ArrowRight, Package, MapPin, Clock, Shield, Play, CheckCircle2, Truck, Loader2, AlertCircle, Plane, Ship, Box } from "lucide-react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import heroVideo from "@/assets/hero-logistics-video.mp4";
 import heroImage from "@/assets/hero-logistics.jpg";
+
+interface ShipmentData {
+  tracking_number: string;
+  status: string;
+  origin_city: string;
+  origin_country: string;
+  destination_city: string;
+  destination_country: string;
+  service_type: string;
+  estimated_delivery: string | null;
+  updated_at: string;
+}
 
 const HeroSection = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [shipmentData, setShipmentData] = useState<ShipmentData | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Trigger animations after mount
@@ -17,11 +32,82 @@ const HeroSection = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Show preview when tracking number looks valid (e.g., RAC-XXXX pattern)
+  // Debounced search for tracking number
   useEffect(() => {
-    const isValidFormat = trackingNumber.length >= 6 && trackingNumber.toUpperCase().startsWith("RAC");
-    setShowPreview(isValidFormat);
+    const searchShipment = async () => {
+      if (trackingNumber.length < 6) {
+        setShipmentData(null);
+        setError(null);
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      const { data, error: fetchError } = await supabase
+        .from("shipments")
+        .select("tracking_number, status, origin_city, origin_country, destination_city, destination_country, service_type, estimated_delivery, updated_at")
+        .ilike("tracking_number", `%${trackingNumber}%`)
+        .limit(1)
+        .maybeSingle();
+
+      setIsLoading(false);
+
+      if (fetchError) {
+        setError("Unable to search. Please try again.");
+        setShipmentData(null);
+      } else if (data) {
+        setShipmentData(data);
+        setError(null);
+      } else {
+        setShipmentData(null);
+        setError(trackingNumber.length >= 8 ? "No shipment found with this tracking number" : null);
+      }
+    };
+
+    const debounceTimer = setTimeout(searchShipment, 500);
+    return () => clearTimeout(debounceTimer);
   }, [trackingNumber]);
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "delivered": return "text-emerald-400";
+      case "in_transit": case "in transit": return "text-blue-400";
+      case "pending": return "text-amber-400";
+      case "delayed": return "text-red-400";
+      default: return "text-primary-foreground/70";
+    }
+  };
+
+  const getStatusProgress = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "delivered": return 100;
+      case "in_transit": case "in transit": return 75;
+      case "processing": return 50;
+      case "pending": return 25;
+      default: return 10;
+    }
+  };
+
+  const getServiceIcon = (serviceType: string) => {
+    switch (serviceType.toLowerCase()) {
+      case "air": case "air_freight": return Plane;
+      case "ocean": case "sea_freight": return Ship;
+      default: return Truck;
+    }
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+    
+    if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    if (diffHours > 0) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    return "Just now";
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
@@ -164,41 +250,93 @@ const HeroSection = () => {
                 </Button>
               </div>
 
-              {/* Tracking Status Preview */}
+              {/* Tracking Status Preview - Real Data */}
               <div className={`overflow-hidden transition-all duration-500 ease-out ${
-                showPreview ? "max-h-40 opacity-100 mt-5 sm:mt-6" : "max-h-0 opacity-0 mt-0"
+                (shipmentData || error || isLoading) && trackingNumber.length >= 6 
+                  ? "max-h-48 opacity-100 mt-5 sm:mt-6" 
+                  : "max-h-0 opacity-0 mt-0"
               }`}>
-                <div className="bg-primary-foreground/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-primary-foreground/10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                      <Truck size={16} className="text-emerald-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-primary-foreground font-semibold text-sm sm:text-base">{trackingNumber}</p>
-                      <p className="text-emerald-400 text-xs sm:text-sm font-medium">In Transit</p>
-                    </div>
-                    <Loader2 size={18} className="text-secondary animate-spin" />
+                {isLoading ? (
+                  <div className="bg-primary-foreground/10 rounded-xl sm:rounded-2xl p-5 sm:p-6 border border-primary-foreground/10 flex items-center justify-center gap-3">
+                    <Loader2 size={20} className="text-secondary animate-spin" />
+                    <span className="text-primary-foreground/70 font-medium">Searching...</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-primary-foreground/10 rounded-full overflow-hidden">
-                      <div className="h-full w-3/4 bg-gradient-to-r from-secondary to-emerald-400 rounded-full" />
-                    </div>
-                    <span className="text-primary-foreground/60 text-xs font-medium">75%</span>
+                ) : error ? (
+                  <div className="bg-red-500/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-red-500/20 flex items-center gap-3">
+                    <AlertCircle size={20} className="text-red-400 shrink-0" />
+                    <span className="text-red-300 text-sm sm:text-base">{error}</span>
                   </div>
-                  <p className="text-primary-foreground/50 text-xs mt-2 flex items-center gap-1.5">
-                    <CheckCircle2 size={12} className="text-emerald-400" />
-                    Last update: Lagos Hub • 2 hours ago
-                  </p>
-                </div>
+                ) : shipmentData ? (
+                  <div className="bg-primary-foreground/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-primary-foreground/10">
+                    {/* Shipment Header */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center">
+                        {(() => {
+                          const ServiceIcon = getServiceIcon(shipmentData.service_type);
+                          return <ServiceIcon size={18} className="text-secondary" />;
+                        })()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-primary-foreground font-bold text-sm sm:text-base truncate">
+                          {shipmentData.tracking_number}
+                        </p>
+                        <p className={`text-xs sm:text-sm font-semibold capitalize ${getStatusColor(shipmentData.status)}`}>
+                          {shipmentData.status.replace("_", " ")}
+                        </p>
+                      </div>
+                      {shipmentData.status.toLowerCase() !== "delivered" && (
+                        <Loader2 size={18} className="text-secondary animate-spin shrink-0" />
+                      )}
+                      {shipmentData.status.toLowerCase() === "delivered" && (
+                        <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+                      )}
+                    </div>
+
+                    {/* Route Info */}
+                    <div className="flex items-center gap-2 text-xs sm:text-sm text-primary-foreground/70 mb-3">
+                      <span className="font-medium">{shipmentData.origin_city}</span>
+                      <ArrowRight size={14} className="text-secondary shrink-0" />
+                      <span className="font-medium">{shipmentData.destination_city}</span>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex-1 h-2 bg-primary-foreground/10 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-secondary to-emerald-400 rounded-full transition-all duration-700"
+                          style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
+                        />
+                      </div>
+                      <span className="text-primary-foreground/60 text-xs font-bold">
+                        {getStatusProgress(shipmentData.status)}%
+                      </span>
+                    </div>
+
+                    {/* Footer Info */}
+                    <div className="flex items-center justify-between text-xs">
+                      <p className="text-primary-foreground/50 flex items-center gap-1.5">
+                        <Clock size={12} className="text-secondary" />
+                        Updated {formatTimeAgo(shipmentData.updated_at)}
+                      </p>
+                      {shipmentData.estimated_delivery && (
+                        <p className="text-primary-foreground/50">
+                          ETA: <span className="text-primary-foreground/70 font-medium">
+                            {new Date(shipmentData.estimated_delivery).toLocaleDateString()}
+                          </span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
               </div>
               
               {/* Helper text */}
               <div className={`flex items-center justify-center gap-2 text-primary-foreground/50 transition-all duration-300 ${
-                showPreview ? "mt-4" : "mt-5 sm:mt-6"
+                shipmentData || error || isLoading ? "mt-4" : "mt-5 sm:mt-6"
               }`}>
                 <Package size={16} className="text-secondary" />
                 <p className="text-sm sm:text-base font-medium">
-                  Example: <span className="text-primary-foreground/70 font-semibold">RAC-2026-XXXXXX</span>
+                  Example: <span className="text-primary-foreground/70 font-semibold">RAC + tracking ID</span>
                 </p>
               </div>
             </div>
