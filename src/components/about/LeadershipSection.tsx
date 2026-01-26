@@ -102,29 +102,28 @@ const LeadershipSection = () => {
                 <img
                   src={member.image}
                   alt={member.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
-                {/* Social Links */}
+                {/* Social Links - Always visible at bottom */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                   <a
                     href={member.linkedin}
-                    className="w-10 h-10 bg-primary-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Linkedin size={18} className="text-primary-foreground" />
+                    <Linkedin size={18} className="text-white" />
                   </a>
                   <a
                     href={member.twitter}
-                    className="w-10 h-10 bg-primary-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Twitter size={18} className="text-primary-foreground" />
+                    <Twitter size={18} className="text-white" />
                   </a>
                   <a
                     href={`mailto:${member.name.toLowerCase().replace(" ", ".")}@raclogistics.com`}
-                    className="w-10 h-10 bg-primary-foreground/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Mail size={18} className="text-primary-foreground" />
+                    <Mail size={18} className="text-white" />
                   </a>
                 </div>
               </div>

@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
 
@@ -21,19 +20,21 @@ const AboutCTASection = () => {
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="default" size="xl" className="w-full sm:w-auto group" asChild>
-              <Link to="/contact">
-                Contact Us Today
-                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-            <Button variant="secondary" size="xl" className="w-full sm:w-auto group" asChild>
-              <Link to="/services">
-                Explore Services
-                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link 
+              to="/contact"
+              className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              CONTACT US
+              <ArrowRight size={18} />
+            </Link>
+            <Link 
+              to="/services"
+              className="w-auto px-6 py-3 bg-white text-[hsl(222,47%,11%)] border-2 border-[hsl(222,47%,11%)] font-bold uppercase text-sm rounded-lg hover:bg-[hsl(222,47%,11%)] hover:text-white hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              VIEW SERVICES
+              <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </div>

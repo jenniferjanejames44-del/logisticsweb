@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
 import { useParallax } from "@/hooks/useParallax";
@@ -66,21 +65,23 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 delay-300 ${
+          <div className={`flex flex-row gap-4 justify-center items-center transition-all duration-700 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
-            <Button variant="default" size="xl" className="w-full sm:w-auto group" asChild>
-              <Link to="/pricing">
-                Get Free Quote
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="xl" className="w-full sm:w-auto group" asChild>
-              <Link to="/contact">
-                Contact Sales
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
-            </Button>
+            <Link 
+              to="/pricing"
+              className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              GET QUOTE
+              <ArrowRight size={18} />
+            </Link>
+            <Link 
+              to="/contact"
+              className="w-auto px-6 py-3 bg-white text-[hsl(222,47%,11%)] border-2 border-white font-bold uppercase text-sm rounded-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              CONTACT US
+              <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </div>

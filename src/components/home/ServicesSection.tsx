@@ -90,7 +90,7 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`group relative bg-card rounded-2xl overflow-hidden border border-border shadow-lg hover:shadow-2xl hover:border-secondary/30 transition-all duration-500 hover:-translate-y-2 ${
+              className={`group relative bg-card rounded-2xl overflow-hidden border border-border shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
@@ -104,30 +104,20 @@ const ServicesSection = () => {
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(222,47%,11%)]/80 via-[hsl(222,47%,11%)]/30 to-transparent" />
                 
                 {/* Title on image */}
                 <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                  <h3 className="text-xl md:text-2xl font-heading font-bold text-primary-foreground">
+                  <h3 className="text-xl md:text-2xl font-heading font-bold text-white">
                     {service.title}
                   </h3>
-                </div>
-
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-secondary/95 to-secondary/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-center">
-                    <div className="w-16 h-16 mx-auto bg-primary-foreground/20 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                      <ArrowRight size={32} className="text-secondary-foreground" />
-                    </div>
-                    <span className="text-secondary-foreground font-bold text-lg">Learn More</span>
-                  </div>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 md:p-8">
+              <div className="p-6 md:p-8 bg-card">
                 {/* Icon */}
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-secondary/20 transition-colors">
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
                   <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
                 </div>
                 
@@ -149,10 +139,10 @@ const ServicesSection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <Button variant="default" size="xl" className="group" asChild>
+          <Button className="w-auto px-6 py-3 text-sm font-bold uppercase rounded-lg bg-secondary text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300" asChild>
             <Link to="/services">
-              View All Services
-              <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              VIEW ALL SERVICES
+              <ArrowRight size={18} className="ml-2" />
             </Link>
           </Button>
         </div>
