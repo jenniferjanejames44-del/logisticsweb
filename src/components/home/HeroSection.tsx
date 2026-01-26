@@ -53,52 +53,62 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Badge - Glass effect */}
-          <div className={`inline-flex items-center gap-2 sm:gap-3 bg-white/15 backdrop-blur-md rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 shadow-lg border border-white/20 transition-all duration-700 ${
+          {/* Badge - Enhanced Glass effect with icon */}
+          <div className={`inline-flex items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-xl rounded-full px-5 sm:px-6 py-2.5 sm:py-3 mb-6 sm:mb-8 shadow-xl border border-white/20 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
           }`}>
-            <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
+            <span className="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-secondary"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-secondary"></span>
             </span>
             <span className="text-xs sm:text-sm text-white font-semibold tracking-wide">
               Trusted by 10,000+ Businesses Worldwide
             </span>
           </div>
 
-          {/* Main Headline - Pure White */}
+          {/* Main Headline - Pure White with enhanced typography */}
           <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-extrabold text-white leading-[0.95] mb-5 sm:mb-6 tracking-tight transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Global Logistics
-            {/* Subheading - Vibrant Orange with glow */}
+            {/* Subheading - Golden Yellow #FBBF24 for maximum visibility */}
             <span 
-              className="block mt-2 sm:mt-3 text-[hsl(18,100%,60%)]"
-              style={{ textShadow: '0 0 40px rgba(255, 107, 53, 0.5)' }}
+              className="block mt-2 sm:mt-3 text-[hsl(45,97%,55%)]"
+              style={{ textShadow: '0 0 60px rgba(251, 191, 36, 0.6), 0 4px 20px rgba(251, 191, 36, 0.3)' }}
             >
               Delivered With Excellence
             </span>
           </h1>
 
-          {/* Subtitle - Light Gray #E2E8F0 */}
-          <p className={`text-lg sm:text-xl md:text-2xl text-[hsl(214,32%,91%)] mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium transition-all duration-700 delay-200 ${
+          {/* Subtitle - Light Gray #E5E7EB for better readability */}
+          <p className={`text-lg sm:text-xl md:text-2xl text-[hsl(217,21%,90%)] mb-8 sm:mb-10 lg:mb-12 leading-relaxed max-w-3xl mx-auto px-2 font-medium transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
-          {/* CTA Buttons - High contrast */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 px-4 sm:px-0 transition-all duration-700 delay-300 ${
+          {/* CTA Buttons - Fixed spacing with w-fit */}
+          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 sm:mb-16 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <Button variant="heroPrimary" size="lg" className="w-fit text-base font-bold" asChild>
+            <Button 
+              variant="heroPrimary" 
+              size="lg" 
+              className="w-fit px-8 py-6 text-base font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)] hover:shadow-[0_8px_30px_rgba(255,107,53,0.5)]" 
+              asChild
+            >
               <Link to="/pricing">
                 Get Free Quote
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
               </Link>
             </Button>
-            <Button variant="heroSecondary" size="lg" className="w-fit text-base font-bold" asChild>
+            <Button 
+              variant="heroSecondary" 
+              size="lg" 
+              className="w-fit px-8 py-6 text-base font-bold border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary" 
+              asChild
+            >
               <Link to="/services">
                 <Play size={16} className="mr-2" />
                 Our Services
@@ -106,12 +116,12 @@ const HeroSection = () => {
             </Button>
           </div>
 
-          {/* Tracker Card - Glassmorphism with Orange accents */}
+          {/* Tracker Card - Enhanced Glassmorphism */}
           <div className={`bg-white/10 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 max-w-xl mx-auto shadow-2xl border border-white/20 transition-all duration-700 delay-[400ms] ${
             isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
           }`}>
             <h3 className="text-white font-heading font-bold text-lg sm:text-xl lg:text-2xl mb-5 sm:mb-6 flex items-center justify-center gap-3">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-button">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-secondary rounded-xl flex items-center justify-center shadow-[0_4px_20px_rgba(255,107,53,0.4)]">
                 <Search size={20} className="sm:w-6 sm:h-6 text-white" />
               </div>
               Track Your Shipment
@@ -123,7 +133,11 @@ const HeroSection = () => {
                 placeholder="Enter tracking number"
                 className="flex-1 bg-white/15 border-white/25 text-white placeholder:text-white/60 h-12 sm:h-14 rounded-xl text-base focus:bg-white/20 focus:border-secondary focus:ring-2 focus:ring-secondary/50 transition-all"
               />
-              <Button variant="heroPrimary" size="lg" className="h-12 sm:h-14 px-6 text-base font-bold">
+              <Button 
+                variant="heroPrimary" 
+                size="lg" 
+                className="h-12 sm:h-14 px-6 text-base font-bold shadow-[0_4px_20px_rgba(255,107,53,0.4)]"
+              >
                 Track Now
               </Button>
             </div>
@@ -133,7 +147,7 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* Trust Indicators */}
+          {/* Trust Indicators - Enhanced styling */}
           <div className={`mt-12 sm:mt-16 flex flex-wrap justify-center gap-6 sm:gap-10 lg:gap-16 transition-all duration-700 delay-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
