@@ -5,6 +5,8 @@ import { ArrowRight, MapPin, Clock, Shield, Search, UserPlus, Package, Loader2, 
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useParallax } from "@/hooks/useParallax";
+import heroVideo from "@/assets/hero-logistics-video.mp4";
 
 interface ShipmentData {
   tracking_number: string;
@@ -123,13 +125,35 @@ const HeroSection = () => {
     }
   };
 
+  const parallaxOffset = useParallax(0.4);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Deep Navy Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,6%)] via-[hsl(215,50%,12%)] to-[hsl(220,55%,8%)]" />
+      {/* Video Background with Parallax Effect */}
+      <div 
+        className="absolute inset-0 w-full h-[120%] -top-[10%]"
+        style={{ 
+          transform: `translateY(${parallaxOffset}px)`,
+          willChange: 'transform'
+        }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="w-full h-full object-cover"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+      </div>
+      
+      {/* Dark Navy Gradient Overlay for Text Readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,6%)/85] via-[hsl(215,50%,12%)/80] to-[hsl(220,55%,8%)/85]" />
       
       {/* Animated Dots Pattern Overlay */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-15">
         <div 
           className="absolute inset-0"
           style={{
