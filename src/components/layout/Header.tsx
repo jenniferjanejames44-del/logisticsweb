@@ -207,8 +207,8 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-xl transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? "max-h-[800px] py-6" : "max-h-0"
+        className={`lg:hidden absolute top-full left-0 right-0 bg-background shadow-xl transition-all duration-300 overflow-hidden ${
+          isMobileMenuOpen ? "max-h-[800px] py-6" : "max-h-0 py-0"
         }`}
       >
         <nav className="container mx-auto px-4 flex flex-col gap-2">
