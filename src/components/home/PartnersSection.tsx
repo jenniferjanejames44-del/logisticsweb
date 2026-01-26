@@ -27,7 +27,9 @@ const PartnersSection = () => {
         </div>
 
         {/* Partners Marquee */}
-        <div className="relative overflow-hidden py-4 sm:py-6">
+        <div className={`relative overflow-hidden py-4 sm:py-6 transition-all duration-700 delay-200 ${
+          isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}>
           {/* Fade edges */}
           <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 lg:w-40 bg-gradient-to-r from-muted/80 to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 lg:w-40 bg-gradient-to-l from-muted/80 to-transparent z-10" />
