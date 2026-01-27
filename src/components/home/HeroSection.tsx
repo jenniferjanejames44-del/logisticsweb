@@ -192,49 +192,49 @@ const HeroSection = () => {
 
             {/* Tracking Result Preview */}
             {(shipmentData || error) && trackingNumber.length >= 6 && (
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 {error ? (
-                  <div className="bg-destructive/10 rounded-xl p-4 flex items-center gap-3 border border-destructive/30">
-                    <AlertCircle size={20} className="text-destructive shrink-0" />
-                    <span className="text-destructive text-sm">{error}</span>
+                  <div className="bg-destructive/10 rounded-lg sm:rounded-xl p-2.5 sm:p-4 flex items-center gap-2 sm:gap-3 border border-destructive/30">
+                    <AlertCircle size={16} className="sm:w-5 sm:h-5 text-destructive shrink-0" />
+                    <span className="text-destructive text-xs sm:text-sm">{error}</span>
                   </div>
                 ) : shipmentData && (
-                  <div className="bg-muted rounded-xl p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 gradient-blue rounded-lg flex items-center justify-center">
+                  <div className="bg-muted rounded-lg sm:rounded-xl p-2.5 sm:p-4">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 gradient-blue rounded-md sm:rounded-lg flex items-center justify-center shrink-0">
                         {(() => {
                           const ServiceIcon = getServiceIcon(shipmentData.service_type);
-                          return <ServiceIcon size={18} className="text-white" />;
+                          return <ServiceIcon size={14} className="sm:w-[18px] sm:h-[18px] text-white" />;
                         })()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-primary font-semibold text-sm truncate">{shipmentData.tracking_number}</p>
-                        <p className={`text-sm font-medium capitalize ${getStatusColor(shipmentData.status)}`}>
+                        <p className="text-primary font-semibold text-xs sm:text-sm truncate">{shipmentData.tracking_number}</p>
+                        <p className={`text-xs sm:text-sm font-medium capitalize ${getStatusColor(shipmentData.status)}`}>
                           {shipmentData.status.replace("_", " ")}
                         </p>
                       </div>
                       {shipmentData.status.toLowerCase() === "delivered" ? (
-                        <CheckCircle2 size={18} className="text-green-600 shrink-0" />
+                        <CheckCircle2 size={14} className="sm:w-[18px] sm:h-[18px] text-green-600 shrink-0" />
                       ) : (
-                        <Loader2 size={18} className="text-accent animate-spin shrink-0" />
+                        <Loader2 size={14} className="sm:w-[18px] sm:h-[18px] text-accent animate-spin shrink-0" />
                       )}
                     </div>
                     
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                      <MapPin size={14} className="text-accent shrink-0" />
+                    <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
+                      <MapPin size={12} className="sm:w-[14px] sm:h-[14px] text-accent shrink-0" />
                       <span className="truncate">{shipmentData.origin_city}</span>
-                      <ArrowRight size={14} className="text-accent shrink-0" />
+                      <ArrowRight size={10} className="sm:w-[14px] sm:h-[14px] text-accent shrink-0" />
                       <span className="truncate">{shipmentData.destination_city}</span>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="flex-1 h-1.5 sm:h-2 bg-border rounded-full overflow-hidden">
                         <div 
                           className="h-full gradient-blue rounded-full transition-all duration-700"
                           style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
                         />
                       </div>
-                      <span className="text-muted-foreground text-xs font-medium">
+                      <span className="text-muted-foreground text-[10px] sm:text-xs font-medium">
                         {getStatusProgress(shipmentData.status)}%
                       </span>
                     </div>
