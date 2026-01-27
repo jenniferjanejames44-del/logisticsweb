@@ -133,19 +133,19 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-col sm:flex-row gap-3 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
               to="/pricing"
-              className="btn btn-primary"
+              className="btn btn-lg btn-primary group"
             >
               Get Quote
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="btn btn-secondary"
+              className="btn btn-lg btn-secondary group"
             >
               Sign Up
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />

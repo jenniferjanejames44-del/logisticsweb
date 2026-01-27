@@ -337,12 +337,12 @@
     @apply max-w-[1400px] mx-auto;
   }
 
-  /* Button Base */
+  /* Professional Button System */
   .btn {
-    padding: 0.875rem 2rem;
+    padding: 0.875rem 1.75rem;
     border-radius: 12px;
-    font-size: 1.125rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 700;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -351,43 +351,47 @@
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    min-height: 48px;
+    white-space: nowrap;
   }
 
-  /* Button Styles - Orange Primary */
+  /* Primary - Orange Gradient */
   .btn-primary {
     background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
     color: #FFFFFF;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
   }
 
   .btn-primary:hover {
     background: linear-gradient(135deg, #E55A28 0%, #D94E1F 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 90, 40, 0.5);
+    box-shadow: 0 6px 20px rgba(229, 90, 40, 0.45);
   }
 
-  /* Button Secondary - White */
+  /* Secondary - White with subtle border */
   .btn-secondary {
     background: #FFFFFF;
     color: #1E293B;
-    border: 2px solid #FFFFFF;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    border: 2px solid #E2E8F0;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
   .btn-secondary:hover {
     background: #F8FAFC;
+    border-color: #CBD5E1;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  /* Button Ghost - For dark backgrounds */
+  /* Ghost - For dark backgrounds */
   .btn-ghost {
     background: rgba(255, 255, 255, 0.1);
     color: #FFFFFF;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .btn-ghost:hover {
@@ -396,12 +400,12 @@
     transform: translateY(-2px);
   }
 
-  /* Button Outline - Blue border */
+  /* Outline - Blue border */
   .btn-outline {
     background: transparent;
     color: #0EA5E9;
     border: 2px solid #0EA5E9;
-    font-weight: 800;
+    font-weight: 700;
   }
 
   .btn-outline:hover {
@@ -410,12 +414,32 @@
     transform: translateY(-2px);
   }
 
+  /* Size Variants */
+  .btn-sm {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    min-height: 40px;
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    min-height: 56px;
+    font-weight: 800;
+  }
+
+  /* Mobile Responsive */
   @media (max-width: 768px) {
     .btn {
-      padding: 1rem 1.5rem;
+      padding: 0.875rem 1.5rem;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      min-height: 52px;
+    }
+    
+    .btn-lg {
+      padding: 1rem 1.75rem;
       font-size: 1rem;
-      font-weight: 900;
-      width: 100%;
       min-height: 56px;
     }
   }
