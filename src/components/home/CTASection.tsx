@@ -32,19 +32,19 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-600 delay-300 ${
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-600 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-lg transition-all bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
             >
               Get Quote
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-lg transition-all bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:-translate-y-0.5 group"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:-translate-y-0.5 group"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />

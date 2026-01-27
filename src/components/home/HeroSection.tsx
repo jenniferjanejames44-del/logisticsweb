@@ -114,7 +114,7 @@ const HeroSection = () => {
       {/* Blue Gradient Overlay */}
       <div className="absolute inset-0 bg-navy opacity-90" />
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-20 pb-16 md:py-32">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-28 sm:pt-32 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
           {/* Main Heading */}
           <h1 className={`mb-6 transition-all duration-700 ${
@@ -133,19 +133,19 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row items-center sm:items-center justify-center lg:justify-start gap-3 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-col sm:flex-row items-center sm:items-center justify-center lg:justify-start gap-4 mb-10 sm:mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-5 py-3 font-extrabold text-base rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:from-[#E55A28] hover:to-[#D94E1F] hover:shadow-xl hover:-translate-y-0.5 group"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-6 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:from-[#E55A28] hover:to-[#D94E1F] hover:shadow-xl hover:-translate-y-0.5 group"
             >
               Get Quote
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-5 py-3 font-extrabold text-base rounded-xl transition-all duration-300 bg-white/10 text-white border-2 border-white/50 hover:bg-secondary hover:text-primary hover:border-secondary hover:-translate-y-0.5 group"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-6 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 bg-white/10 text-white border-2 border-white/50 hover:bg-secondary hover:text-primary hover:border-secondary hover:-translate-y-0.5 group"
             >
               Sign Up
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
