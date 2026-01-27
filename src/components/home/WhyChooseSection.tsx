@@ -56,6 +56,24 @@ const WhyChooseSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+          <span
+            className={`inline-flex items-center gap-2 bg-white/20 text-white font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            <CheckCircle size={14} className="fill-white/30" />
+            Our Advantage
+          </span>
+          <h2
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight transition-all duration-700 delay-100 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            Why Choose <span className="text-white/90" style={{ textShadow: '0 0 40px rgba(255,255,255,0.4)' }}>Us</span>
+          </h2>
+        </div>
 
         {/* Differentiators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
