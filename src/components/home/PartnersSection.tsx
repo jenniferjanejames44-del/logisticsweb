@@ -31,7 +31,7 @@ const PartnersSection = () => {
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 opacity-50 hover:opacity-100 hover:scale-105 transition-all duration-300 grayscale hover:grayscale-0"
               >
                 <img
                   src={partner.logo}
