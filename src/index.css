@@ -339,20 +339,20 @@
 
   /* Professional Button System */
   .btn {
-    padding: 0.875rem 1.75rem;
-    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     border: none;
     cursor: pointer;
-    letter-spacing: 0.3px;
-    min-height: 48px;
+    letter-spacing: 0.2px;
+    min-height: 44px;
     white-space: nowrap;
   }
 
@@ -360,44 +360,41 @@
   .btn-primary {
     background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
     color: #FFFFFF;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
   }
 
   .btn-primary:hover {
     background: linear-gradient(135deg, #E55A28 0%, #D94E1F 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 90, 40, 0.45);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(229, 90, 40, 0.4);
   }
 
-  /* Secondary - White with subtle border */
+  /* Secondary - White with border (for light backgrounds) */
   .btn-secondary {
     background: #FFFFFF;
     color: #1E293B;
     border: 2px solid #E2E8F0;
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    font-weight: 600;
   }
 
   .btn-secondary:hover {
     background: #F8FAFC;
     border-color: #CBD5E1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
   }
 
-  /* Ghost - For dark backgrounds */
+  /* Ghost - For dark backgrounds (mobile menu) */
   .btn-ghost {
-    background: rgba(255, 255, 255, 0.1);
+    background: transparent;
     color: #FFFFFF;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    font-weight: 700;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    font-weight: 600;
   }
 
   .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
   }
 
   /* Outline - Blue border */
@@ -405,42 +402,40 @@
     background: transparent;
     color: #0EA5E9;
     border: 2px solid #0EA5E9;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .btn-outline:hover {
     background: #0EA5E9;
     color: #FFFFFF;
-    transform: translateY(-2px);
   }
 
   /* Size Variants */
   .btn-sm {
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    min-height: 40px;
+    min-height: 36px;
   }
 
   .btn-lg {
-    padding: 1rem 2rem;
-    font-size: 1.125rem;
-    min-height: 56px;
-    font-weight: 800;
+    padding: 0.875rem 1.75rem;
+    font-size: 1.0625rem;
+    min-height: 48px;
+    font-weight: 700;
   }
 
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .btn {
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.25rem;
       font-size: 0.9375rem;
-      font-weight: 700;
-      min-height: 52px;
+      min-height: 48px;
     }
     
     .btn-lg {
-      padding: 1rem 1.75rem;
+      padding: 0.875rem 1.5rem;
       font-size: 1rem;
-      min-height: 56px;
+      min-height: 52px;
     }
   }
 

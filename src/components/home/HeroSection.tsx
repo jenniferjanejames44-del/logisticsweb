@@ -138,14 +138,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="btn btn-lg btn-primary group"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-lg transition-all bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
             >
               Get Quote
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="btn btn-lg btn-secondary group"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-lg transition-all bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:-translate-y-0.5 group"
             >
               Sign Up
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
