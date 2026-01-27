@@ -102,27 +102,17 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-dark">
-      {/* Animated Floating Orb */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
       <div 
-        className="absolute w-[800px] h-[800px] rounded-full animate-float-orb opacity-30 pointer-events-none"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          background: 'radial-gradient(circle, rgba(255, 107, 53, 0.4) 0%, rgba(255, 140, 66, 0.2) 40%, transparent 70%)',
-          top: '10%',
-          right: '-20%',
+          backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80)',
         }}
       />
       
-      {/* Second Orb */}
-      <div 
-        className="absolute w-[600px] h-[600px] rounded-full animate-float-orb opacity-20 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(255, 107, 53, 0.3) 0%, transparent 60%)',
-          bottom: '10%',
-          left: '-10%',
-          animationDelay: '-10s',
-        }}
-      />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 gradient-overlay" />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-20 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
@@ -135,7 +125,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed transition-all duration-700 delay-100 ${
+          <p className={`text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-12 leading-relaxed transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
@@ -143,7 +133,7 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row gap-4 mb-12 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
@@ -154,15 +144,15 @@ const HeroSection = () => {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
-              to="/contact"
-              className="btn-secondary flex items-center justify-center gap-2 group"
+              to="/auth"
+              className="btn-secondary flex items-center justify-center gap-2 group bg-white"
             >
-              Contact Us
+              Sign Up
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Tracking Card - Glass Effect */}
+          {/* Tracking Card */}
           <div className={`glass-card p-6 md:p-8 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
@@ -171,8 +161,8 @@ const HeroSection = () => {
                 <Search size={22} className="text-white" />
               </div>
               <div className="text-left">
-                <h3 className="text-white font-semibold text-lg">Track Your Shipment</h3>
-                <p className="text-white/60 text-sm">Real-time updates • Instant results</p>
+                <h3 className="text-primary font-semibold text-lg">Track Your Shipment</h3>
+                <p className="text-muted-foreground text-sm">Real-time updates • Instant results</p>
               </div>
             </div>
             
@@ -182,7 +172,7 @@ const HeroSection = () => {
                 onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
                 placeholder="Enter tracking number (e.g., RAC123456)"
-                className="flex-1 h-12 px-4 text-base bg-white/5 border-white/10 text-white placeholder:text-white/40 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
+                className="flex-1 h-12 px-4 text-base bg-background border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
               />
               <button 
                 onClick={handleTrackClick}
@@ -199,12 +189,12 @@ const HeroSection = () => {
             {(shipmentData || error) && trackingNumber.length >= 6 && (
               <div className="mt-4">
                 {error ? (
-                  <div className="glass rounded-xl p-4 flex items-center gap-3 border-red-500/30">
-                    <AlertCircle size={20} className="text-red-400 shrink-0" />
-                    <span className="text-red-400 text-sm">{error}</span>
+                  <div className="bg-destructive/10 rounded-xl p-4 flex items-center gap-3 border border-destructive/30">
+                    <AlertCircle size={20} className="text-destructive shrink-0" />
+                    <span className="text-destructive text-sm">{error}</span>
                   </div>
                 ) : shipmentData && (
-                  <div className="glass rounded-xl p-4">
+                  <div className="bg-muted rounded-xl p-4">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-10 h-10 gradient-orange rounded-lg flex items-center justify-center">
                         {(() => {
@@ -213,19 +203,19 @@ const HeroSection = () => {
                         })()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-white font-semibold text-sm truncate">{shipmentData.tracking_number}</p>
+                        <p className="text-primary font-semibold text-sm truncate">{shipmentData.tracking_number}</p>
                         <p className={`text-sm font-medium capitalize ${getStatusColor(shipmentData.status)}`}>
                           {shipmentData.status.replace("_", " ")}
                         </p>
                       </div>
                       {shipmentData.status.toLowerCase() === "delivered" ? (
-                        <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+                        <CheckCircle2 size={18} className="text-emerald-500 shrink-0" />
                       ) : (
                         <Loader2 size={18} className="text-secondary animate-spin shrink-0" />
                       )}
                     </div>
                     
-                    <div className="flex items-center gap-2 text-sm text-white/60 mb-3">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                       <MapPin size={14} className="text-secondary shrink-0" />
                       <span className="truncate">{shipmentData.origin_city}</span>
                       <ArrowRight size={14} className="text-secondary shrink-0" />
@@ -233,13 +223,13 @@ const HeroSection = () => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
                         <div 
                           className="h-full gradient-orange rounded-full transition-all duration-700"
                           style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
                         />
                       </div>
-                      <span className="text-white/60 text-xs font-medium">
+                      <span className="text-muted-foreground text-xs font-medium">
                         {getStatusProgress(shipmentData.status)}%
                       </span>
                     </div>

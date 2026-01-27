@@ -1,4 +1,4 @@
-import { ArrowRight, Plane, Ship, ShoppingBag, Package, Warehouse, FileCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Link } from "react-router-dom";
 
@@ -7,22 +7,19 @@ const services = [
     title: "Express Delivery",
     description: "Express delivery worldwide with real-time tracking and priority handling for urgent shipments.",
     href: "/services/air-shipping",
-    icon: Plane,
-    emoji: "✈️",
+    image: "https://images.unsplash.com/photo-1566140967404-b8b3932483f5?w=600&q=80",
   },
   {
     title: "Ocean Shipping",
     description: "Cost-effective sea freight for large shipments across all major international ports.",
     href: "/services/ocean-shipping",
-    icon: Ship,
-    emoji: "🚢",
+    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80",
   },
   {
     title: "Warehousing",
     description: "Secure storage facilities with advanced inventory management systems.",
     href: "/services/warehousing",
-    icon: Warehouse,
-    emoji: "🏭",
+    image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80",
   },
 ];
 
@@ -30,7 +27,7 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding gradient-overlay relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-services relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -42,14 +39,14 @@ const ServicesSection = () => {
             Our Services
           </span>
           <h2
-            className={`text-white mb-6 transition-all duration-600 delay-100 ${
+            className={`mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Comprehensive Logistics <span className="gradient-text">Solutions</span>
           </h2>
           <p
-            className={`text-white/70 text-lg transition-all duration-600 delay-200 ${
+            className={`text-foreground text-lg transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -63,26 +60,33 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`glass-card card-top-border p-10 group transition-all duration-600 ${
+              className={`glass-card card-top-border overflow-hidden group transition-all duration-600 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
-              {/* Icon */}
-              <div className="w-[72px] h-[72px] gradient-orange rounded-2xl flex items-center justify-center mb-6 text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                {service.emoji}
+              {/* Service Image */}
+              <div className="w-full h-[200px] overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
 
               {/* Content */}
-              <h3 className="text-white text-2xl font-semibold mb-4">
-                {service.title}
-              </h3>
-              <p className="text-white/70 leading-relaxed mb-6">
-                {service.description}
-              </p>
-              <div className="flex items-center gap-2 gradient-text font-semibold group-hover:gap-4 transition-all duration-300">
-                <span>Learn More</span>
-                <ArrowRight size={16} />
+              <div className="p-8">
+                <h3 className="text-primary text-2xl font-semibold mb-4">
+                  {service.title}
+                </h3>
+                <p className="text-foreground leading-relaxed mb-6">
+                  {service.description}
+                </p>
+                <div className="flex items-center gap-2 gradient-text font-semibold group-hover:gap-4 transition-all duration-300">
+                  <span>Learn More</span>
+                  <ArrowRight size={16} />
+                </div>
               </div>
             </Link>
           ))}
