@@ -144,18 +144,18 @@ const HeroSection = () => {
           <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-16 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
-            <Button 
-              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center" 
-              asChild
+            <Link 
+              to="/pricing"
+              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center"
             >
-              <Link to="/pricing">Get Quote</Link>
-            </Button>
-            <Button 
+              Get Quote
+            </Link>
+            <Link 
+              to="/auth"
               className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-white text-foreground hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center"
-              asChild
             >
-              <Link to="/auth">Sign Up</Link>
-            </Button>
+              Sign Up
+            </Link>
           </div>
 
           {/* Tracking Card - Clean minimal style */}
