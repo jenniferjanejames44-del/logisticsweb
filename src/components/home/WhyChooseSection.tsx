@@ -1,13 +1,5 @@
 import { useInView } from "@/hooks/useInView";
-import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
-import { Package, Users, Globe, Award, Zap, HeadphonesIcon, CheckCircle } from "lucide-react";
-
-const stats = [
-  { icon: Package, value: 10000, suffix: "+", label: "Shipments Delivered" },
-  { icon: Globe, value: 150, suffix: "+", label: "Countries Served" },
-  { icon: Award, value: 99.8, suffix: "%", label: "On-Time Delivery", isDecimal: true },
-  { icon: HeadphonesIcon, value: 24, suffix: "/7", label: "Customer Support" },
-];
+import { Globe, Zap, HeadphonesIcon, CheckCircle } from "lucide-react";
 
 const differentiators = [
   {
@@ -27,22 +19,11 @@ const differentiators = [
   },
 ];
 
-const StatsCounter = ({ value, suffix, isActive, isDecimal }: { value: number; suffix: string; isActive: boolean; isDecimal?: boolean }) => {
-  const count = useAnimatedCounter(isDecimal ? value * 10 : value, 2000, isActive);
-  const displayValue = isDecimal ? (count / 10).toFixed(1) : count.toLocaleString();
-  
-  return (
-    <span className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-heading font-extrabold text-white whitespace-nowrap">
-      {displayValue}{suffix}
-    </span>
-  );
-};
-
 const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-gradient-to-r from-secondary to-[hsl(18,100%,55%)] relative overflow-hidden">
+    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-secondary relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div 
@@ -52,50 +33,48 @@ const WhyChooseSection = () => {
           }}
         />
       </div>
-      {/* Additional depth gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-transparent" />
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-flex items-center gap-2 bg-white/20 text-white font-bold text-xs sm:text-sm tracking-wider uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 bg-white/20 text-white font-semibold text-sm tracking-wide uppercase px-4 py-2 rounded-full mb-4 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            <CheckCircle size={14} className="fill-white/30" />
+            <CheckCircle size={14} />
             Our Advantage
           </span>
           <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight transition-all duration-700 delay-100 ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Why Choose <span className="text-white/90" style={{ textShadow: '0 0 40px rgba(255,255,255,0.4)' }}>Us</span>
+            Why Choose Us
           </h2>
         </div>
 
-        {/* Differentiators */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* Differentiators Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group bg-gradient-to-br from-card to-muted/20 rounded-2xl p-8 lg:p-10 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-3 border border-border/30 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`group bg-card rounded-2xl p-8 md:p-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
-              style={{ transitionDelay: `${(index + 4) * 100}ms` }}
+              style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
-              <div className="w-16 h-16 lg:w-18 lg:h-18 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all shadow-sm">
-                <item.icon className="w-8 h-8 text-secondary group-hover:text-white transition-colors" />
+              <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-105 transition-all duration-300">
+                <item.icon className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
               </div>
-              <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground mb-4">
+              <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 {item.description}
               </p>
-              <div className="mt-6 flex items-center gap-2 text-secondary font-semibold">
-                <CheckCircle size={18} className="fill-secondary/20" />
+              <div className="flex items-center gap-2 text-secondary font-medium text-sm">
+                <CheckCircle size={16} />
                 <span>Guaranteed</span>
               </div>
             </div>

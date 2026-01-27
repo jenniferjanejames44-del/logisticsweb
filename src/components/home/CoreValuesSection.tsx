@@ -33,29 +33,26 @@ const CoreValuesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 lg:py-36 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-      {/* Subtle background decoration */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-secondary/5 rounded-full blur-3xl opacity-50" />
-      
-      <div className="container mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-background relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-24">
+        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-block bg-secondary/10 text-secondary font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
+            className={`inline-block bg-secondary/10 text-secondary font-semibold text-sm tracking-wide uppercase px-4 py-2 rounded-full mb-4 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Principles
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 leading-tight ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Core <span className="text-secondary">Values</span>
           </h2>
           <p
-            className={`text-muted-foreground text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-700 delay-200 ${
+            className={`text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -63,29 +60,29 @@ const CoreValuesSection = () => {
           </p>
         </div>
 
-        {/* Values Grid - Mobile: 1 col, Tablet: 2-3 cols, Desktop: 5 cols */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-6">
+        {/* Values Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 md:gap-8">
           {values.map((value, index) => (
             <div
               key={value.title}
-              className={`group transition-all duration-700 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`group transition-all duration-600 ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
-              style={{ transitionDelay: `${index * 100 + 300}ms` }}
+              style={{ transitionDelay: `${index * 80 + 200}ms` }}
             >
-              <div className="h-full bg-gradient-to-br from-card to-muted/20 rounded-2xl p-6 lg:p-8 text-center border border-border/50 hover:border-secondary/40 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+              <div className="h-full bg-card rounded-2xl p-6 md:p-8 text-center border border-border/50 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                 {/* Icon */}
-                <div className="w-14 h-14 lg:w-16 lg:h-16 mx-auto bg-secondary/10 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-secondary group-hover:scale-110 transition-all duration-300 shadow-sm">
-                  <value.icon className="w-7 h-7 lg:w-8 lg:h-8 text-secondary group-hover:text-secondary-foreground transition-colors duration-300" />
+                <div className="w-12 h-12 mx-auto bg-secondary/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-secondary group-hover:scale-105 transition-all duration-300">
+                  <value.icon className="w-6 h-6 text-secondary group-hover:text-white transition-colors" />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-base lg:text-lg font-heading font-bold text-foreground mb-3">
+                <h3 className="text-lg font-semibold text-foreground mb-3">
                   {value.title}
                 </h3>
                 
                 {/* Description */}
-                <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {value.description}
                 </p>
               </div>

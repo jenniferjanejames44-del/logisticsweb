@@ -32,38 +32,26 @@ const HowItWorksSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 sm:py-32 lg:py-40 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-      {/* Subtle dot pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
-          backgroundSize: '32px 32px'
-        }}
-      />
-      {/* Gradient orbs */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-background relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-24">
+        <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-block bg-primary/10 text-primary font-bold text-sm tracking-widest uppercase px-5 py-2.5 rounded-full mb-5 transition-all duration-700 ${
+            className={`inline-block bg-foreground/10 text-foreground font-semibold text-sm tracking-wide uppercase px-4 py-2 rounded-full mb-4 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Simple Process
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-foreground mb-6 transition-all duration-700 delay-100 leading-tight ${
+            className={`text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            How It <span className="text-primary">Works</span>
+            How It <span className="text-secondary">Works</span>
           </h2>
           <p
-            className={`text-muted-foreground text-base md:text-lg lg:text-xl leading-relaxed transition-all duration-700 delay-200 font-medium ${
+            className={`text-lg md:text-xl text-muted-foreground leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -72,41 +60,41 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {steps.map((step, index) => (
             <div
               key={step.step}
-              className={`relative transition-all duration-700 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              className={`relative transition-all duration-600 ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
-              style={{ transitionDelay: `${index * 100 + 300}ms` }}
+              style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
               {/* Card */}
-              <div className="group h-full bg-gradient-to-br from-card to-muted/20 rounded-2xl p-6 lg:p-8 border border-border/50 hover:border-secondary/40 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
-                {/* Step Number - Orange badge */}
-                <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground rounded-xl flex items-center justify-center font-heading font-extrabold text-base shadow-lg shadow-secondary/30">
+              <div className="group h-full bg-card rounded-2xl p-8 border border-border/50 hover:border-secondary/30 hover:shadow-md transition-all duration-300 relative overflow-hidden">
+                {/* Step Number */}
+                <div className="absolute top-6 right-6 w-10 h-10 bg-secondary text-white rounded-lg flex items-center justify-center font-semibold text-sm">
                   {step.step}
                 </div>
 
-                {/* Icon - Primary gradient */}
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-[hsl(200,100%,55%)] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <step.icon className="w-8 h-8 text-primary-foreground" />
+                {/* Icon */}
+                <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-105 transition-all duration-300">
+                  <step.icon className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-heading font-bold text-foreground mb-3 pr-14">
+                <h3 className="text-xl font-semibold text-foreground mb-3 pr-12">
                   {step.title}
                 </h3>
-                <p className="text-muted-foreground text-base leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed">
                   {step.description}
                 </p>
               </div>
 
-              {/* Connector arrow - Desktop only */}
+              {/* Connector - Desktop only */}
               {index < steps.length - 1 && (
-                <div className="hidden xl:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-20">
-                  <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center border border-primary/30 shadow-md">
-                    <ArrowRight className="w-4 h-4 text-primary" />
+                <div className="hidden lg:flex absolute top-1/2 -right-5 transform -translate-y-1/2 z-10">
+                  <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center border border-border">
+                    <ArrowRight className="w-4 h-4 text-muted-foreground" />
                   </div>
                 </div>
               )}
