@@ -34,7 +34,7 @@ const CoreValuesSection = () => {
 
   return (
     <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
           <span

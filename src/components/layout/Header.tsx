@@ -52,7 +52,7 @@ const Header = () => {
           : "bg-transparent py-4"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center font-semibold text-lg transition-all duration-300 bg-secondary text-white group-hover:scale-105">

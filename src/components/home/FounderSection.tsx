@@ -7,7 +7,7 @@ const FounderSection = () => {
 
   return (
     <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-foreground relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Image */}
           <div

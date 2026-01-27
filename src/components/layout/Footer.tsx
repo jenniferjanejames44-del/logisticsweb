@@ -23,7 +23,7 @@ const Footer = () => {
   return (
     <footer className="bg-foreground text-white">
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-16 md:pt-20 pb-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-16 md:pt-20 pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           {/* Column 1 - Company */}
           <div className="space-y-6 sm:col-span-2 lg:col-span-1">
@@ -106,7 +106,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-white/50 text-sm text-center sm:text-left">
             © 2026 RAC Logistics. All rights reserved.
           </p>
