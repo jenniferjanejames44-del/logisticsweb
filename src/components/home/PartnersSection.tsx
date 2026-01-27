@@ -13,37 +13,27 @@ const PartnersSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-muted/30 to-muted/60 relative overflow-hidden">
-      {/* Subtle pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }}
-      />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section ref={ref} className="py-12 md:py-16 bg-background relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
         {/* Partners Marquee */}
-        <div className={`relative overflow-hidden py-6 sm:py-8 transition-all duration-700 delay-200 ${
-          isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        <div className={`relative overflow-hidden py-6 transition-all duration-600 ${
+          isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}>
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-r from-muted/30 to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-l from-muted/30 to-transparent z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-background to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-background to-transparent z-10" />
           
           <div className="flex animate-marquee">
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-10 sm:mx-14 lg:mx-20 flex items-center justify-center h-14 sm:h-16 lg:h-20 logo-gray hover:scale-110 transition-all duration-300 cursor-pointer"
+                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
               >
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="h-10 sm:h-12 md:h-14 object-contain"
+                  className="h-8 md:h-10 lg:h-12 object-contain"
                   loading="lazy"
-                  decoding="async"
                 />
               </div>
             ))}

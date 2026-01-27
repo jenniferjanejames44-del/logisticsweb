@@ -5,192 +5,54 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-bold tracking-wide ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        /* Primary Button - Orange CTA (Main Actions) */
-        default: [
-          "bg-secondary text-secondary-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:bg-[hsl(25,95%,48%)] hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
+        /* Primary Button - Orange CTA */
+        default: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98]",
 
-        /* Secondary Button - White with Navy Border */
-        secondary: [
-          "bg-card text-foreground border-2 border-foreground rounded-xl",
-          "shadow-sm hover:shadow-lg",
-          "hover:bg-foreground hover:text-card hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
+        /* Secondary Button - White with border */
+        secondary: "bg-card text-foreground border border-border rounded-xl hover:border-secondary/50 hover:scale-[1.02] active:scale-[0.98]",
 
-        /* Ghost Button - For Dark Backgrounds */
-        ghost: [
-          "bg-transparent text-primary-foreground border-2 border-primary-foreground/40 rounded-xl",
-          "hover:bg-primary-foreground hover:text-foreground hover:border-primary-foreground hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-          "backdrop-blur-sm",
-        ].join(" "),
+        /* Ghost Button */
+        ghost: "bg-transparent text-foreground rounded-xl hover:bg-muted hover:scale-[1.02] active:scale-[0.98]",
 
-        /* Navigation Button - Orange (Header CTA) */
-        nav: [
-          "bg-secondary text-secondary-foreground font-semibold rounded-lg",
-          "shadow-sm hover:shadow-lg hover:shadow-secondary/30",
-          "hover:bg-[hsl(25,95%,48%)]",
-          "active:scale-[0.98]",
-        ].join(" "),
+        /* Navigation Button */
+        nav: "bg-secondary text-secondary-foreground rounded-lg hover:scale-[1.02] active:scale-[0.98]",
 
-        /* Outline - Orange Border */
-        outline: [
-          "border-2 border-secondary bg-transparent text-secondary rounded-xl",
-          "hover:bg-secondary hover:text-secondary-foreground",
-          "hover:scale-105 hover:shadow-lg hover:shadow-secondary/20",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
+        /* Outline */
+        outline: "border border-border bg-transparent text-foreground rounded-xl hover:bg-muted hover:scale-[1.02] active:scale-[0.98]",
 
         /* Destructive */
-        destructive: [
-          "bg-destructive text-destructive-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl",
-          "hover:bg-destructive/90 hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
+        destructive: "bg-destructive text-destructive-foreground rounded-xl hover:bg-destructive/90 hover:scale-[1.02] active:scale-[0.98]",
 
         /* Link Style */
-        link: "text-secondary underline-offset-4 hover:underline hover:text-secondary/80 p-0 h-auto min-h-0",
+        link: "text-secondary underline-offset-4 hover:underline p-0 h-auto",
 
-        /* Legacy Variants - Mapped to New System */
-        cta: [
-          "bg-secondary text-secondary-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:bg-[hsl(25,95%,48%)] hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        heroPrimary: [
-          "bg-secondary text-secondary-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:bg-[hsl(25,95%,48%)] hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        heroSecondary: [
-          "bg-card text-foreground border-2 border-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl",
-          "hover:bg-foreground hover:text-card hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        heroOutline: [
-          "bg-transparent text-primary-foreground border-2 border-primary-foreground/40 rounded-xl",
-          "hover:bg-primary-foreground hover:text-foreground hover:border-primary-foreground hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-          "backdrop-blur-sm",
-        ].join(" "),
-
-        accent: [
-          "bg-foreground text-background rounded-xl",
-          "shadow-lg hover:shadow-xl",
-          "hover:bg-foreground/90 hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        navCta: [
-          "bg-secondary text-secondary-foreground font-semibold rounded-lg",
-          "shadow-sm hover:shadow-lg hover:shadow-secondary/30",
-          "hover:bg-[hsl(25,95%,48%)]",
-          "active:scale-[0.98]",
-        ].join(" "),
-
-        navOutline: [
-          "border-2 border-secondary bg-transparent text-secondary font-semibold rounded-lg",
-          "hover:bg-secondary hover:text-secondary-foreground",
-          "hover:shadow-sm",
-          "active:scale-[0.98]",
-        ].join(" "),
-
-        ctaOutline: [
-          "border-2 border-secondary bg-transparent text-secondary rounded-xl",
-          "hover:bg-secondary hover:text-secondary-foreground",
-          "hover:scale-105 hover:shadow-lg hover:shadow-secondary/20",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        premium: [
-          "bg-gradient-to-r from-secondary to-[hsl(25,95%,58%)] text-secondary-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:scale-105",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        indigoOutline: [
-          "border-2 border-secondary bg-transparent text-secondary font-semibold rounded-xl",
-          "hover:bg-secondary hover:text-secondary-foreground",
-          "hover:scale-105 hover:shadow-md",
-          "active:scale-[0.98]",
-          "min-h-[48px]",
-        ].join(" "),
-
-        dynamic: [
-          "bg-secondary text-secondary-foreground rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:scale-105",
-          "active:scale-[0.98]",
-          "before:absolute before:inset-0 before:rounded-xl before:bg-gradient-to-r before:from-white/30 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-500",
-          "relative overflow-hidden",
-          "min-h-[48px]",
-        ].join(" "),
-
-        quote: [
-          "bg-card text-foreground font-semibold rounded-xl border border-border",
-          "shadow-sm hover:shadow-lg hover:border-secondary/30",
-          "hover:scale-105 hover:-translate-y-1",
-          "active:scale-[0.98]",
-          "group",
-          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
-          "min-h-[48px]",
-        ].join(" "),
-
-        quotePrimary: [
-          "bg-secondary text-secondary-foreground font-semibold rounded-xl",
-          "shadow-lg hover:shadow-xl hover:shadow-secondary/30",
-          "hover:scale-105 hover:-translate-y-1",
-          "active:scale-[0.98]",
-          "group",
-          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
-          "min-h-[48px]",
-        ].join(" "),
-
-        quoteAccent: [
-          "bg-foreground text-background font-semibold rounded-xl",
-          "shadow-lg hover:shadow-xl",
-          "hover:scale-105 hover:-translate-y-1",
-          "active:scale-[0.98]",
-          "group",
-          "[&_svg]:transition-transform [&_svg]:duration-300 [&_svg.arrow-icon]:group-hover:translate-x-1.5",
-          "min-h-[48px]",
-        ].join(" "),
+        /* Legacy variants */
+        cta: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98]",
+        heroPrimary: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98]",
+        heroSecondary: "bg-card text-foreground border border-border rounded-xl hover:scale-[1.02] active:scale-[0.98]",
+        heroOutline: "bg-transparent text-white border border-white/30 rounded-xl hover:bg-white/10 hover:scale-[1.02] active:scale-[0.98]",
+        accent: "bg-foreground text-background rounded-xl hover:bg-foreground/90 hover:scale-[1.02] active:scale-[0.98]",
+        navCta: "bg-secondary text-secondary-foreground rounded-lg hover:scale-[1.02] active:scale-[0.98]",
+        navOutline: "border border-secondary bg-transparent text-secondary rounded-lg hover:bg-secondary hover:text-secondary-foreground active:scale-[0.98]",
+        ctaOutline: "border border-secondary bg-transparent text-secondary rounded-xl hover:bg-secondary hover:text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]",
+        premium: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98]",
+        indigoOutline: "border border-secondary bg-transparent text-secondary rounded-xl hover:bg-secondary hover:text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]",
+        dynamic: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98]",
+        quote: "bg-card text-foreground border border-border rounded-xl hover:shadow-md hover:scale-[1.02] active:scale-[0.98] group",
+        quotePrimary: "bg-secondary text-secondary-foreground rounded-xl hover:scale-[1.02] active:scale-[0.98] group",
+        quoteAccent: "bg-foreground text-background rounded-xl hover:scale-[1.02] active:scale-[0.98] group",
       },
       size: {
-        default: "h-12 px-8 py-3.5 text-base",
+        default: "h-11 px-6 py-2.5 text-base",
         sm: "h-9 px-4 text-sm",
         lg: "h-12 px-8 text-base",
-        xl: "h-14 px-8 text-base",
-        icon: "h-12 w-12",
-        nav: "h-10 px-6 py-2.5 text-sm",
+        xl: "h-14 px-10 text-lg",
+        icon: "h-10 w-10",
+        nav: "h-10 px-5 text-sm",
       },
     },
     defaultVariants: {

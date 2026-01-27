@@ -9,14 +9,11 @@ const CTASection = () => {
   const parallaxOffset = useParallax(0.3);
 
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden min-h-[500px] flex items-center">
+    <section ref={ref} className="py-16 md:py-24 lg:py-32 relative overflow-hidden min-h-[450px] flex items-center">
       {/* Parallax Image Background */}
       <div 
         className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={{ 
-          transform: `translateY(${parallaxOffset}px)`,
-          willChange: 'transform'
-        }}
+        style={{ transform: `translateY(${parallaxOffset}px)`, willChange: 'transform' }}
       >
         <img 
           src={heroLogisticsImage} 
@@ -25,61 +22,45 @@ const CTASection = () => {
         />
       </div>
       
-      {/* Dark Navy Overlay for Text Contrast */}
-      <div className="absolute inset-0 bg-[hsl(222,47%,4%)]" style={{ opacity: 0.9 }} />
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,2%)] via-transparent to-[hsl(222,47%,2%)]" style={{ opacity: 0.5 }} />
-      
-      {/* Dot Pattern Overlay */}
-      <div className="absolute inset-0 opacity-10">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(0,0%,100%) 1px, transparent 0)`,
-            backgroundSize: '50px 50px',
-          }}
-        />
-      </div>
-      
-      {/* Gradient Orbs */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/20 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-[120px]" />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-foreground/85" />
 
-      <div className="section-container relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10 w-full">
         <div
-          className={`text-center max-w-4xl mx-auto transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          className={`text-center max-w-3xl mx-auto transition-all duration-600 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {/* Heading */}
-          <h2 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-tight mb-6 transition-all duration-700 delay-100 ${
+          <h2 className={`text-3xl md:text-4xl lg:text-5xl font-semibold leading-tight mb-6 transition-all duration-600 delay-100 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
-            <span className="text-primary-foreground">Ready to Ship </span>
+            <span className="text-white">Ready to Ship </span>
             <span className="text-secondary">Globally?</span>
           </h2>
           
-          <p className={`text-lg sm:text-xl text-[hsl(215,20%,75%)] mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${
+          <p className={`text-lg md:text-xl text-white/70 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             Join thousands of businesses who trust RAC Logistics for their shipping needs. 
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-row gap-4 justify-center items-center transition-all duration-700 delay-300 ${
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-600 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 bg-secondary text-white font-semibold text-base rounded-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
             >
-              GET QUOTE
+              Get Quote
               <ArrowRight size={18} />
             </Link>
             <Link 
               to="/contact"
-              className="w-auto px-6 py-3 bg-white text-[hsl(222,47%,11%)] border-2 border-white font-bold uppercase text-sm rounded-lg hover:bg-white/90 hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 bg-white text-foreground font-semibold text-base rounded-xl hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
             >
-              CONTACT US
+              Contact Us
               <ArrowRight size={18} />
             </Link>
           </div>
