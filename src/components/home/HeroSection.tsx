@@ -153,39 +153,39 @@ const HeroSection = () => {
           </div>
 
           {/* Tracking Card */}
-          <div className={`p-4 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-2xl sm:rounded-[20px] border-2 border-white/20 ${
+          <div className={`p-3 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-xl sm:rounded-[20px] border border-white/20 sm:border-2 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ 
             background: 'rgba(255, 255, 255, 0.98)', 
             backdropFilter: 'blur(10px)',
-            boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
+            boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
           }}>
-            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="w-11 h-11 sm:w-[60px] sm:h-[60px] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg gradient-blue shrink-0">
-                <Search size={20} className="sm:hidden text-white" />
+            <div className="flex items-center gap-2.5 sm:gap-4 mb-3 sm:mb-6">
+              <div className="w-9 h-9 sm:w-[60px] sm:h-[60px] rounded-lg sm:rounded-2xl flex items-center justify-center shadow-md sm:shadow-lg gradient-blue shrink-0">
+                <Search size={16} className="sm:hidden text-white" />
                 <Search size={28} className="hidden sm:block text-white" />
               </div>
               <div className="text-left min-w-0">
-                <h3 className="font-bold text-base sm:text-lg text-primary">Track Your Shipment</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">Real-time updates • Instant results</p>
+                <h3 className="font-bold text-sm sm:text-lg text-primary leading-tight">Track Your Shipment</h3>
+                <p className="text-[11px] sm:text-sm text-muted-foreground">Real-time updates</p>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
               <Input
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
                 placeholder="Enter tracking number"
-                className="flex-1 h-11 sm:h-12 px-3.5 sm:px-4 text-sm sm:text-base bg-muted border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:border-accent focus:ring-2 focus:ring-accent/20"
+                className="flex-1 h-10 sm:h-12 px-3 sm:px-4 text-sm bg-muted border-border text-foreground placeholder:text-muted-foreground rounded-lg sm:rounded-xl focus:border-accent focus:ring-2 focus:ring-accent/20"
               />
               <button 
                 onClick={handleTrackClick}
                 disabled={isLoading}
-                className="h-11 sm:h-14 px-5 sm:px-8 btn btn-primary rounded-xl text-sm sm:text-base"
+                className="h-10 sm:h-14 px-4 sm:px-8 btn btn-primary rounded-lg sm:rounded-xl text-sm"
               >
-                {isLoading ? <Loader2 className="animate-spin" size={18} /> : (
-                  <>Track <span className="hidden sm:inline">Now</span> <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" /></>
+                {isLoading ? <Loader2 className="animate-spin" size={16} /> : (
+                  <>Track <ArrowRight size={14} className="sm:w-[18px] sm:h-[18px]" /></>
                 )}
               </button>
             </div>
