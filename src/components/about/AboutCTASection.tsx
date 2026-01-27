@@ -23,16 +23,16 @@ const AboutCTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/contact"
-              className="w-auto px-6 py-3 bg-secondary text-white font-bold uppercase text-sm rounded-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-secondary text-white font-bold text-base rounded-xl hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
-              CONTACT US
+              Contact Us
               <ArrowRight size={18} />
             </Link>
             <Link 
               to="/services"
-              className="w-auto px-6 py-3 bg-white text-[hsl(222,47%,11%)] border-2 border-[hsl(222,47%,11%)] font-bold uppercase text-sm rounded-lg hover:bg-[hsl(222,47%,11%)] hover:text-white hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-white text-foreground border-2 border-foreground font-bold text-base rounded-xl hover:bg-foreground hover:text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
-              VIEW SERVICES
+              View Services
               <ArrowRight size={18} />
             </Link>
           </div>
