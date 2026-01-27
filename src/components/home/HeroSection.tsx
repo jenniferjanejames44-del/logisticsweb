@@ -133,7 +133,7 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-col sm:flex-row items-center sm:items-center justify-center lg:justify-start gap-3 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
