@@ -28,21 +28,21 @@ const Footer = () => {
   ];
 
   return (
-    <footer style={{ background: 'linear-gradient(135deg, #0C4A6E 0%, #075985 100%)' }}>
+    <footer className="bg-navy">
       {/* Main Footer */}
       <div className="section-container px-4 sm:px-6 pt-16 md:pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left Side - Company Info */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-white group-hover:scale-105 transition-transform" style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' }}>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-primary group-hover:scale-105 transition-transform gradient-yellow">
                 R
               </div>
               <span className="font-semibold text-xl text-white">
-                RAC <span style={{ color: '#FF6B35' }}>Logistics</span>
+                RAC <span className="text-secondary">Logistics</span>
               </span>
             </Link>
-            <p style={{ color: '#BAE6FD' }} className="leading-relaxed max-w-md">
+            <p className="text-white/70 leading-relaxed max-w-md">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
             </p>
             
@@ -53,14 +53,7 @@ const Footer = () => {
                   key={social.name}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-11 h-11 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: 'rgba(255,255,255,0.1)' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#0EA5E9';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                  }}
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-white/60 hover:text-primary bg-white/10 hover:bg-secondary transition-all duration-300 hover:-translate-y-1"
                 >
                   {social.name}
                 </a>
@@ -78,12 +71,9 @@ const Footer = () => {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className="inline-flex items-center gap-2 group transition-colors duration-300"
-                      style={{ color: '#BAE6FD' }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = '#0EA5E9'}
-                      onMouseLeave={(e) => e.currentTarget.style.color = '#BAE6FD'}
+                      className="inline-flex items-center gap-2 group transition-colors duration-300 text-white/70 hover:text-secondary"
                     >
-                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all" style={{ color: '#0EA5E9' }} />
+                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
                       {link.name}
                     </Link>
                   </li>
@@ -99,12 +89,9 @@ const Footer = () => {
                   <li key={service.name}>
                     <Link
                       to={service.href}
-                      className="inline-flex items-center gap-2 group transition-colors duration-300"
-                      style={{ color: '#BAE6FD' }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = '#0EA5E9'}
-                      onMouseLeave={(e) => e.currentTarget.style.color = '#BAE6FD'}
+                      className="inline-flex items-center gap-2 group transition-colors duration-300 text-white/70 hover:text-secondary"
                     >
-                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all" style={{ color: '#0EA5E9' }} />
+                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
                       {service.name}
                     </Link>
                   </li>
@@ -116,21 +103,21 @@ const Footer = () => {
             <div className="col-span-2 sm:col-span-1">
               <h4 className="font-semibold text-lg mb-6 text-white">Contact</h4>
               <div className="space-y-4">
-                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 transition-colors duration-300 group" style={{ color: '#BAE6FD' }}>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                    <Mail size={18} style={{ color: '#0EA5E9' }} />
+                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 transition-colors duration-300 group text-white/70 hover:text-white">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors bg-white/10">
+                    <Mail size={18} className="text-secondary" />
                   </div>
                   <span className="text-sm">info@raclogistics.com</span>
                 </a>
-                <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 group" style={{ color: '#BAE6FD' }}>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                    <Phone size={18} style={{ color: '#0EA5E9' }} />
+                <a href="tel:+1234567890" className="flex items-center gap-3 transition-colors duration-300 group text-white/70 hover:text-white">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
+                    <Phone size={18} className="text-secondary" />
                   </div>
                   <span className="text-sm">+1 (234) 567-890</span>
                 </a>
-                <div className="flex items-start gap-3" style={{ color: '#BAE6FD' }}>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                    <MapPin size={18} style={{ color: '#0EA5E9' }} />
+                <div className="flex items-start gap-3 text-white/70">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-white/10">
+                    <MapPin size={18} className="text-secondary" />
                   </div>
                   <span className="text-sm">123 Logistics Way, New York, NY 10001</span>
                 </div>
@@ -141,27 +128,21 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+      <div className="border-t border-white/10">
         <div className="section-container px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-center sm:text-left" style={{ color: '#BAE6FD' }}>
+          <p className="text-sm text-center sm:text-left text-white/70">
             © 2026 RAC Logistics. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <Link 
               to="/privacy" 
-              className="transition-colors duration-300"
-              style={{ color: '#BAE6FD' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#0EA5E9'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#BAE6FD'}
+              className="transition-colors duration-300 text-white/70 hover:text-secondary"
             >
               Privacy Policy
             </Link>
             <Link 
               to="/terms" 
-              className="transition-colors duration-300"
-              style={{ color: '#BAE6FD' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#0EA5E9'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#BAE6FD'}
+              className="transition-colors duration-300 text-white/70 hover:text-secondary"
             >
               Terms of Service
             </Link>

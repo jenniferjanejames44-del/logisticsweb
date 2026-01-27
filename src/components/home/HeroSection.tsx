@@ -75,11 +75,11 @@ const HeroSection = () => {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "delivered": return "text-emerald-400";
-      case "in_transit": case "in transit": return "text-blue-400";
-      case "pending": return "text-amber-400";
-      case "delayed": return "text-red-400";
-      default: return "text-white/70";
+      case "delivered": return "text-green-600";
+      case "in_transit": case "in transit": return "text-blue-600";
+      case "pending": return "text-yellow-600";
+      case "delayed": return "text-red-600";
+      default: return "text-muted-foreground";
     }
   };
 
@@ -111,8 +111,8 @@ const HeroSection = () => {
         }}
       />
       
-      {/* Ocean Blue Gradient Overlay */}
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.9) 0%, rgba(59, 130, 246, 0.85) 100%)' }} />
+      {/* Blue Gradient Overlay */}
+      <div className="absolute inset-0 bg-navy opacity-90" />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-20 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
@@ -121,13 +121,13 @@ const HeroSection = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
             <span className="text-white block font-extrabold">Global Logistics.</span>
-            <span className="gradient-text block font-extrabold">Delivered With Excellence.</span>
+            <span className="text-secondary block font-extrabold">Delivered With Excellence.</span>
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed font-medium transition-all duration-700 delay-100 ${
+          <p className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed font-medium transition-all duration-700 delay-100 text-white/90 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`} style={{ color: '#F0F9FF', textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+          }`} style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
@@ -138,14 +138,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="btn-primary flex items-center justify-center gap-2 group"
+              className="btn-secondary flex items-center justify-center gap-2 group"
             >
               Get Quote
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="btn-secondary flex items-center justify-center gap-2 group bg-white"
+              className="px-8 py-4 rounded-xl font-bold bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2 group"
             >
               Sign Up
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -153,20 +153,20 @@ const HeroSection = () => {
           </div>
 
           {/* Tracking Card */}
-          <div className={`p-6 md:p-8 transition-all duration-700 delay-300 rounded-[20px] border-2 ${
+          <div className={`p-6 md:p-8 transition-all duration-700 delay-300 rounded-[20px] border-2 border-white/20 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ 
-            background: 'rgba(255, 255, 255, 0.95)', 
+            background: 'rgba(255, 255, 255, 0.98)', 
             backdropFilter: 'blur(10px)',
-            borderColor: 'rgba(255, 255, 255, 0.3)'
+            boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
           }}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%)' }}>
+              <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center shadow-lg gradient-blue">
                 <Search size={28} className="text-white" />
               </div>
               <div className="text-left">
-                <h3 className="font-bold text-lg" style={{ color: '#0C4A6E' }}>Track Your Shipment</h3>
-                <p className="text-sm" style={{ color: '#64748B' }}>Real-time updates • Instant results</p>
+                <h3 className="font-bold text-lg text-primary">Track Your Shipment</h3>
+                <p className="text-sm text-muted-foreground">Real-time updates • Instant results</p>
               </div>
             </div>
             
@@ -176,7 +176,7 @@ const HeroSection = () => {
                 onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
                 placeholder="Enter tracking number (e.g., RAC123456)"
-                className="flex-1 h-12 px-4 text-base bg-background border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
+                className="flex-1 h-12 px-4 text-base bg-muted border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:border-accent focus:ring-2 focus:ring-accent/20"
               />
               <button 
                 onClick={handleTrackClick}
@@ -200,7 +200,7 @@ const HeroSection = () => {
                 ) : shipmentData && (
                   <div className="bg-muted rounded-xl p-4">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 gradient-orange rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 gradient-blue rounded-lg flex items-center justify-center">
                         {(() => {
                           const ServiceIcon = getServiceIcon(shipmentData.service_type);
                           return <ServiceIcon size={18} className="text-white" />;
@@ -213,23 +213,23 @@ const HeroSection = () => {
                         </p>
                       </div>
                       {shipmentData.status.toLowerCase() === "delivered" ? (
-                        <CheckCircle2 size={18} className="text-emerald-500 shrink-0" />
+                        <CheckCircle2 size={18} className="text-green-600 shrink-0" />
                       ) : (
-                        <Loader2 size={18} className="text-secondary animate-spin shrink-0" />
+                        <Loader2 size={18} className="text-accent animate-spin shrink-0" />
                       )}
                     </div>
                     
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                      <MapPin size={14} className="text-secondary shrink-0" />
+                      <MapPin size={14} className="text-accent shrink-0" />
                       <span className="truncate">{shipmentData.origin_city}</span>
-                      <ArrowRight size={14} className="text-secondary shrink-0" />
+                      <ArrowRight size={14} className="text-accent shrink-0" />
                       <span className="truncate">{shipmentData.destination_city}</span>
                     </div>
 
                     <div className="flex items-center gap-3">
                       <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
                         <div 
-                          className="h-full gradient-orange rounded-full transition-all duration-700"
+                          className="h-full gradient-blue rounded-full transition-all duration-700"
                           style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
                         />
                       </div>

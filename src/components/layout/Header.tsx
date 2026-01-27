@@ -48,22 +48,18 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 ${
         isScrolled
-          ? "bg-white border-b shadow-sm"
+          ? "bg-card border-b border-border shadow-sm"
           : "bg-transparent"
       }`}
-      style={{ 
-        borderColor: isScrolled ? '#E5E7EB' : 'transparent',
-        boxShadow: isScrolled ? '0 1px 3px rgba(0,0,0,0.05)' : 'none'
-      }}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' }}>
+          <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105 gradient-blue">
             R
           </div>
-          <span className="font-semibold text-xl" style={{ color: isScrolled ? '#0C4A6E' : 'white' }}>
-            RAC <span style={{ color: '#FF6B35' }}>Logistics</span>
+          <span className={`font-semibold text-xl ${isScrolled ? 'text-primary' : 'text-white'}`}>
+            RAC <span className="text-secondary">Logistics</span>
           </span>
         </Link>
 
@@ -73,10 +69,9 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium transition-colors duration-300"
-              style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = isScrolled ? '#0EA5E9' : 'white'}
-              onMouseLeave={(e) => e.currentTarget.style.color = isScrolled ? '#475569' : 'rgba(255,255,255,0.8)'}
+              className={`font-medium transition-colors duration-300 hover:text-accent ${
+                isScrolled ? 'text-muted-foreground' : 'text-white/80 hover:text-white'
+              }`}
             >
               {link.name}
             </Link>
@@ -86,19 +81,19 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className="font-medium transition-colors duration-300 flex items-center gap-1"
-                style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+                className={`font-medium transition-colors duration-300 flex items-center gap-1 ${
+                  isScrolled ? 'text-muted-foreground' : 'text-white/80'
+                }`}
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-56 p-2 bg-white border border-gray-100 shadow-lg">
+            <DropdownMenuContent align="center" className="w-56 p-2 bg-card border-border shadow-lg">
               <DropdownMenuItem asChild className="p-0 mb-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors w-full font-medium"
-                  style={{ color: '#0EA5E9' }}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors w-full font-medium text-accent"
                 >
                   View All Services
                 </Link>
@@ -107,10 +102,10 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted transition-colors w-full text-muted-foreground hover:text-primary"
                   >
-                    <service.icon className="w-4 h-4" style={{ color: '#0EA5E9' }} />
-                    <span style={{ color: '#475569' }}>{service.name}</span>
+                    <service.icon className="w-4 h-4 text-accent" />
+                    <span>{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
@@ -121,10 +116,9 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium transition-colors duration-300"
-              style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = isScrolled ? '#0EA5E9' : 'white'}
-              onMouseLeave={(e) => e.currentTarget.style.color = isScrolled ? '#475569' : 'rgba(255,255,255,0.8)'}
+              className={`font-medium transition-colors duration-300 hover:text-accent ${
+                isScrolled ? 'text-muted-foreground' : 'text-white/80 hover:text-white'
+              }`}
             >
               {link.name}
             </Link>
@@ -138,8 +132,9 @@ const Header = () => {
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 transition-colors"
-                  style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+                  className={`flex items-center gap-2 px-4 py-2 transition-colors ${
+                    isScrolled ? 'text-muted-foreground' : 'text-white/80'
+                  }`}
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -147,19 +142,16 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 transition-colors"
-                style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+                className={`flex items-center gap-2 px-4 py-2 transition-colors ${
+                  isScrolled ? 'text-muted-foreground' : 'text-white/80'
+                }`}
               >
                 <User className="w-4 h-4" />
                 Dashboard
               </Link>
               <button 
                 onClick={() => signOut()}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white transition-all duration-300 hover:-translate-y-1"
-                style={{ 
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
-                  boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
-                }}
+                className="btn-primary flex items-center gap-2"
               >
                 Logout
               </button>
@@ -168,32 +160,14 @@ const Header = () => {
             <>
               <Link 
                 to="/pricing"
-                className="flex items-center gap-2 group px-6 py-2.5 rounded-xl font-bold text-white transition-all duration-300 hover:-translate-y-1"
-                style={{ 
-                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
-                  boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
-                }}
+                className="btn-secondary flex items-center gap-2 group"
               >
                 Get Quote
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link 
                 to="/auth"
-                className="flex items-center gap-2 group px-6 py-2.5 rounded-xl font-bold transition-all duration-300 hover:-translate-y-1"
-                style={{ 
-                  background: '#FFFFFF',
-                  color: '#0EA5E9',
-                  border: '2px solid white',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#0EA5E9';
-                  e.currentTarget.style.color = 'white';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#FFFFFF';
-                  e.currentTarget.style.color = '#0EA5E9';
-                }}
+                className="btn-primary flex items-center gap-2 group"
               >
                 Sign Up
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -204,11 +178,9 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-          style={{ 
-            background: isScrolled ? 'rgba(14, 165, 233, 0.1)' : 'rgba(255,255,255,0.1)',
-            color: isScrolled ? '#0EA5E9' : 'white'
-          }}
+          className={`lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+            isScrolled ? 'bg-accent/10 text-accent' : 'bg-white/10 text-white'
+          }`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -218,10 +190,9 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 transition-all duration-300 overflow-y-auto ${
+        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 transition-all duration-300 overflow-y-auto bg-navy ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
-        style={{ background: 'linear-gradient(135deg, #0C4A6E 0%, #075985 100%)' }}
       >
         <div className="flex justify-end p-4">
           <button
@@ -256,8 +227,7 @@ const Header = () => {
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[400px]" : "max-h-0"}`}>
               <Link
                 to="/services"
-                className="flex items-center gap-3 font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all"
-                style={{ color: '#0EA5E9' }}
+                className="flex items-center gap-3 font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all text-secondary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 View All Services
@@ -323,11 +293,7 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all"
-                  style={{ 
-                    background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
-                    boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
-                  }}
+                  className="w-full text-center btn-secondary flex items-center justify-center gap-2"
                 >
                   Get Quote
                   <ArrowRight className="w-4 h-4" />
@@ -335,12 +301,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all"
-                  style={{ 
-                    background: '#FFFFFF',
-                    color: '#0EA5E9',
-                    border: '2px solid white'
-                  }}
+                  className="w-full text-center btn-primary flex items-center justify-center gap-2"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4" />

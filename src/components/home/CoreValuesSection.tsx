@@ -6,31 +6,26 @@ const values = [
     icon: Shield,
     title: "Reliability",
     description: "Consistently delivering on our promises with dependable service you can trust.",
-    emoji: "🛡️",
   },
   {
     icon: Eye,
     title: "Transparency",
     description: "Real-time tracking and clear communication throughout your shipment journey.",
-    emoji: "👁️",
   },
   {
     icon: Zap,
     title: "Speed",
     description: "Express delivery options ensuring your packages arrive on time, every time.",
-    emoji: "⚡",
   },
   {
     icon: Lock,
     title: "Security",
     description: "Advanced handling protocols and insurance for complete peace of mind.",
-    emoji: "🔒",
   },
   {
     icon: HeartHandshake,
     title: "Customer-Centric",
     description: "24/7 support and personalized solutions tailored to your unique needs.",
-    emoji: "🤝",
   },
 ];
 
@@ -38,26 +33,26 @@ const CoreValuesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding gradient-dark relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span
-            className={`badge-orange mb-6 transition-all duration-600 ${
+            className={`badge-yellow mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Principles
           </span>
           <h2
-            className={`text-white mb-6 transition-all duration-600 delay-100 ${
+            className={`text-primary mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Core <span className="gradient-text">Values</span>
           </h2>
           <p
-            className={`text-white/70 text-lg transition-all duration-600 delay-200 ${
+            className={`text-muted-foreground text-lg transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -75,18 +70,18 @@ const CoreValuesSection = () => {
               }`}
               style={{ transitionDelay: `${index * 80 + 200}ms` }}
             >
-              {/* Emoji Icon */}
-              <div className="w-14 h-14 mx-auto gradient-orange rounded-xl flex items-center justify-center mb-6 text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                {value.emoji}
+              {/* Icon */}
+              <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <value.icon size={24} className="text-white" />
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-semibold text-white mb-3">
+              <h3 className="text-lg font-semibold text-primary mb-3">
                 {value.title}
               </h3>
               
               {/* Description */}
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {value.description}
               </p>
             </div>

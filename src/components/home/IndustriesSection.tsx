@@ -6,37 +6,31 @@ const industries = [
     icon: ShoppingCart,
     title: "E-Commerce",
     description: "Fast, reliable shipping for online retailers worldwide.",
-    emoji: "🛒",
   },
   {
     icon: Factory,
     title: "Manufacturing",
     description: "Supply chain solutions for industrial operations.",
-    emoji: "🏭",
   },
   {
     icon: Pill,
     title: "Healthcare",
     description: "Temperature-controlled logistics for pharmaceuticals.",
-    emoji: "💊",
   },
   {
     icon: Laptop,
     title: "Technology",
     description: "Secure handling for sensitive electronics.",
-    emoji: "💻",
   },
   {
     icon: Utensils,
     title: "Food & Beverage",
     description: "Cold chain logistics for perishable goods.",
-    emoji: "🍽️",
   },
   {
     icon: Car,
     title: "Automotive",
     description: "Parts logistics and just-in-time delivery.",
-    emoji: "🚗",
   },
 ];
 
@@ -44,26 +38,26 @@ const IndustriesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding gradient-overlay relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span
-            className={`badge-orange mb-6 transition-all duration-600 ${
+            className={`badge-yellow mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Industries We Serve
           </span>
           <h2
-            className={`text-white mb-6 transition-all duration-600 delay-100 ${
+            className={`text-primary mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Solutions for <span className="gradient-text">Every Industry</span>
           </h2>
           <p
-            className={`text-white/70 text-lg transition-all duration-600 delay-200 ${
+            className={`text-muted-foreground text-lg transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -82,17 +76,17 @@ const IndustriesSection = () => {
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
             >
-              {/* Emoji Icon */}
-              <div className="w-14 h-14 flex-shrink-0 gradient-orange rounded-xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                {industry.emoji}
+              {/* Icon */}
+              <div className="w-14 h-14 flex-shrink-0 gradient-blue rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <industry.icon size={24} className="text-white" />
               </div>
 
               {/* Content */}
               <div>
-                <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-secondary transition-colors">
+                <h3 className="text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors">
                   {industry.title}
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {industry.description}
                 </p>
               </div>
