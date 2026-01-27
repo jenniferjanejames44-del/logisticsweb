@@ -24,17 +24,6 @@ const PartnersSection = () => {
       />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-10 sm:mb-14">
-          <p
-            className={`text-muted-foreground font-semibold text-sm sm:text-base tracking-wider uppercase transition-all duration-700 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}
-          >
-            Trusted by Leading Companies Worldwide
-          </p>
-        </div>
-
         {/* Partners Marquee */}
         <div className={`relative overflow-hidden py-6 sm:py-8 bg-gradient-to-r from-card/50 via-card to-card/50 rounded-2xl border border-border/30 shadow-sm transition-all duration-700 delay-200 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
