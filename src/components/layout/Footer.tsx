@@ -1,18 +1,11 @@
 import { Link } from "react-router-dom";
 import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
   Mail, 
   Phone, 
   MapPin,
-  Send,
   ArrowRight,
   Heart
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const Footer = () => {
   const companyLinks = [
@@ -33,12 +26,6 @@ const Footer = () => {
     { name: "Customs Clearance", href: "/services/customs-clearance" },
   ];
 
-  const socialLinks = [
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-  ];
 
   return (
     <footer className="bg-gradient-to-b from-[hsl(230,60%,6%)] to-[hsl(230,60%,4%)] text-white relative overflow-hidden">
@@ -70,19 +57,6 @@ const Footer = () => {
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
             </p>
             
-            {/* Social Icons */}
-            <div className="flex gap-3">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center hover:bg-secondary hover:text-white transition-all duration-300 hover:scale-110 border border-white/10"
-                >
-                  <social.icon size={20} />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Column 2 - Quick Links */}
@@ -121,12 +95,12 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4 - Newsletter */}
+          {/* Column 4 - Contact Info */}
           <div className="space-y-6 sm:col-span-2 lg:col-span-1">
-            <h4 className="font-heading font-bold text-xl mb-6 text-white">Stay Updated</h4>
+            <h4 className="font-heading font-bold text-xl mb-6 text-white">Contact Us</h4>
             
             {/* Contact Info */}
-            <div className="space-y-4 mb-6">
+            <div className="space-y-4">
               <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 text-[hsl(215,20%,65%)] hover:text-secondary transition-colors text-base group">
                 <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center group-hover:bg-secondary transition-colors">
                   <Mail size={18} className="text-secondary group-hover:text-white" />
@@ -144,21 +118,6 @@ const Footer = () => {
                   <MapPin size={18} className="text-secondary" />
                 </div>
                 123 Logistics Way, New York, NY 10001
-              </div>
-            </div>
-
-            {/* Newsletter Form */}
-            <div>
-              <p className="text-sm text-[hsl(215,20%,65%)] mb-3">Subscribe to our newsletter for updates</p>
-              <div className="flex gap-0">
-                <Input
-                  type="email"
-                  placeholder="Your email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 rounded-l-xl rounded-r-none focus:border-secondary focus:ring-2 focus:ring-secondary/30 flex-1"
-                />
-                <Button className="h-12 px-4 rounded-r-xl rounded-l-none bg-secondary hover:bg-[hsl(18,100%,55%)] text-white shadow-[0_4px_20px_rgba(251,146,60,0.4)]">
-                  <Send size={18} />
-                </Button>
               </div>
             </div>
           </div>
