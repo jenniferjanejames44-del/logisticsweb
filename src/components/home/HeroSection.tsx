@@ -111,23 +111,23 @@ const HeroSection = () => {
         }}
       />
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 gradient-overlay" />
+      {/* Ocean Blue Gradient Overlay */}
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.9) 0%, rgba(59, 130, 246, 0.85) 100%)' }} />
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-20 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
           {/* Main Heading */}
           <h1 className={`mb-6 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}>
-            <span className="text-white block">Global Logistics.</span>
-            <span className="gradient-text block">Delivered With Excellence.</span>
+          }`} style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+            <span className="text-white block font-extrabold">Global Logistics.</span>
+            <span className="gradient-text block font-extrabold">Delivered With Excellence.</span>
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-12 leading-relaxed transition-all duration-700 delay-100 ${
+          <p className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed font-medium transition-all duration-700 delay-100 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}>
+          }`} style={{ color: '#F0F9FF', textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
@@ -153,16 +153,20 @@ const HeroSection = () => {
           </div>
 
           {/* Tracking Card */}
-          <div className={`glass-card p-6 md:p-8 transition-all duration-700 delay-300 ${
+          <div className={`p-6 md:p-8 transition-all duration-700 delay-300 rounded-[20px] border-2 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}>
+          }`} style={{ 
+            background: 'rgba(255, 255, 255, 0.95)', 
+            backdropFilter: 'blur(10px)',
+            borderColor: 'rgba(255, 255, 255, 0.3)'
+          }}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center shadow-lg">
-                <Search size={22} className="text-white" />
+              <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #0EA5E9 0%, #3B82F6 100%)' }}>
+                <Search size={28} className="text-white" />
               </div>
               <div className="text-left">
-                <h3 className="text-primary font-semibold text-lg">Track Your Shipment</h3>
-                <p className="text-muted-foreground text-sm">Real-time updates • Instant results</p>
+                <h3 className="font-bold text-lg" style={{ color: '#0C4A6E' }}>Track Your Shipment</h3>
+                <p className="text-sm" style={{ color: '#64748B' }}>Real-time updates • Instant results</p>
               </div>
             </div>
             

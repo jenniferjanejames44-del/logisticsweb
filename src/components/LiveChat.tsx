@@ -229,13 +229,23 @@ const LiveChat = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-8 right-4 sm:right-6 w-16 h-16 rounded-full shadow-xl z-[9999] flex items-center justify-center transition-all duration-300 hover:scale-110",
+          "fixed bottom-8 right-4 sm:right-6 w-16 h-16 rounded-full shadow-xl z-[9999] flex items-center justify-center transition-all duration-300",
           isOpen
-            ? "glass hover:bg-white/10"
-            : "gradient-orange hover:shadow-2xl"
+            ? "hover:scale-105"
+            : "hover:scale-110"
         )}
         style={{
-          boxShadow: isOpen ? undefined : '0 4px 15px rgba(0,0,0,0.2)',
+          background: isOpen ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
+          boxShadow: isOpen ? undefined : '0 8px 24px rgba(255, 107, 53, 0.4)',
+          backdropFilter: isOpen ? 'blur(10px)' : undefined
+        }}
+        onMouseEnter={(e) => {
+          if (!isOpen) {
+            e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)';
         }}
       >
         {isOpen ? (
