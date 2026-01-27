@@ -82,36 +82,6 @@ const WhyChooseSection = () => {
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 lg:gap-10 mb-16 sm:mb-20">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`group text-center py-8 sm:py-10 relative transition-all duration-300 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-            >
-              {/* Separator line for desktop */}
-              {index < stats.length - 1 && (
-                <div className="hidden md:block absolute right-0 top-1/4 bottom-1/4 w-px bg-white/20" />
-              )}
-              
-              {/* Icon */}
-              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-white/20 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-white/30 transition-all">
-                <stat.icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
-              </div>
-              
-              {/* Counter */}
-              <StatsCounter value={stat.value} suffix={stat.suffix} isActive={isInView} isDecimal={stat.isDecimal} />
-              
-              {/* Label */}
-              <p className="text-white/90 mt-3 text-sm sm:text-base font-medium uppercase tracking-wide">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
 
         {/* Differentiators */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
