@@ -4,6 +4,7 @@ import { ArrowRight, Search, Loader2, AlertCircle, CheckCircle2, Plane, Ship, Tr
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useParallax } from "@/hooks/useParallax";
 
 interface ShipmentData {
   tracking_number: string;
@@ -25,6 +26,7 @@ const HeroSection = () => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const parallaxOffset = useParallax(0.4);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -103,11 +105,12 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Parallax */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat will-change-transform"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80)',
+          transform: `translateY(${parallaxOffset}px) scale(1.1)`,
         }}
       />
       

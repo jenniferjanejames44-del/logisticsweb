@@ -1,15 +1,23 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
+import { useParallax } from "@/hooks/useParallax";
 
 const CTASection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
+  const parallaxOffset = useParallax(0.3);
 
   return (
     <section ref={ref} className="section-padding bg-navy relative overflow-hidden">
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+      {/* Decorative Elements with Parallax */}
+      <div 
+        className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl will-change-transform" 
+        style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
+      />
+      <div 
+        className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl will-change-transform" 
+        style={{ transform: `translateY(${-parallaxOffset * 0.3}px)` }}
+      />
 
       <div className="section-container relative z-10">
         <div
