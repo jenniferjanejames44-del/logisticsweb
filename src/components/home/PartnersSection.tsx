@@ -14,7 +14,7 @@ const PartnersSection = () => {
 
   return (
     <section ref={ref} className="py-12 md:py-16 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
         {/* Partners Marquee */}
         <div className={`relative overflow-hidden py-6 transition-all duration-600 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"

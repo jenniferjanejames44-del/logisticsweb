@@ -25,7 +25,7 @@ const CTASection = () => {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-foreground/85" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 w-full">
         <div
           className={`text-center max-w-3xl mx-auto transition-all duration-600 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
