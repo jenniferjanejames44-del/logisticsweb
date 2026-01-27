@@ -121,7 +121,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[hsl(222,47%,4%)]" style={{ opacity: 0.88 }} />
       <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,2%)]/60 via-transparent to-[hsl(222,47%,2%)]/60" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10 py-32 md:py-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 py-24 sm:py-32 md:py-40">
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Heading */}
           <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 transition-all duration-700 delay-100 ${
@@ -133,7 +133,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Description */}
-          <p className={`text-lg md:text-xl text-white/70 mb-12 leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${
+          <p className={`text-base sm:text-lg md:text-xl text-white/70 mb-8 sm:mb-12 leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
@@ -141,7 +141,7 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-4 mb-16 transition-all duration-700 delay-300 ${
+          <div className={`flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             <Link 
