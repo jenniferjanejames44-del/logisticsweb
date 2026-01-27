@@ -244,7 +244,7 @@ const ShipmentCreationForm = () => {
                       type="button" 
                       disabled={!isStep1Complete}
                       onClick={() => setStep(2)}
-                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
+                      className="btn btn-primary disabled:opacity-50"
                     >
                       Continue
                       <ArrowRight className="w-4 h-4" />
@@ -318,7 +318,7 @@ const ShipmentCreationForm = () => {
                     <button 
                       type="button" 
                       onClick={() => setStep(1)}
-                      className="btn-secondary"
+                      className="btn btn-secondary"
                     >
                       Back
                     </button>
@@ -326,7 +326,7 @@ const ShipmentCreationForm = () => {
                       type="button" 
                       disabled={!isStep2Complete}
                       onClick={() => setStep(3)}
-                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
+                      className="btn btn-primary disabled:opacity-50"
                     >
                       Review
                       <ArrowRight className="w-4 h-4" />
@@ -382,14 +382,14 @@ const ShipmentCreationForm = () => {
                     <button 
                       type="button" 
                       onClick={() => setStep(2)}
-                      className="btn-secondary"
+                      className="btn btn-secondary"
                     >
                       Back
                     </button>
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
+                      className="btn btn-primary disabled:opacity-50"
                     >
                       {isSubmitting ? "Creating..." : "Create Shipment"}
                       <ArrowRight className="w-4 h-4" />

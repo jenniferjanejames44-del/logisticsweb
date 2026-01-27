@@ -264,7 +264,7 @@ const Header = () => {
                   <Link 
                     to="/admin" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full px-5 py-3.5 text-white bg-white/5 hover:bg-white/15 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
+                    className="w-full py-3.5 text-white bg-white/5 hover:bg-white/10 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 border border-white/20"
                   >
                     <Shield className="w-4 h-4" />
                     Admin
@@ -273,13 +273,13 @@ const Header = () => {
                 <Link 
                   to="/dashboard" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full px-5 py-3.5 text-white bg-white/5 hover:bg-white/15 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
+                  className="w-full py-3.5 text-white bg-white/5 hover:bg-white/10 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 border border-white/20"
                 >
                   <User className="w-4 h-4" />
                   Dashboard
                 </Link>
                 <button 
-                  className="btn btn-primary w-full"
+                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -293,7 +293,7 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="btn btn-secondary w-full group"
+                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white group"
                 >
                   Get Quote
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -301,7 +301,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="btn btn-primary w-full group"
+                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 hover:bg-white/20 group"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
