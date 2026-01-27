@@ -2,12 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import {
   Package,
@@ -117,24 +115,24 @@ const ShipmentCreationForm = () => {
   const isStep2Complete = formData.weight && formData.service_type;
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-muted/30">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 bg-secondary/10 text-secondary rounded-full px-4 py-2 text-sm font-semibold mb-4">
+    <section className="section-padding gradient-overlay relative overflow-hidden">
+      <div className="section-container">
+        <div className="text-center mb-12">
+          <span className="badge-orange mb-6">
             <Package className="w-4 h-4" />
             Quick Shipping
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4">
-            Create Your Shipment
+          </span>
+          <h2 className="text-white mb-4">
+            Create Your <span className="gradient-text">Shipment</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-white/70 text-lg max-w-2xl mx-auto">
             Get started with your shipping in minutes. Fill out the form below and we'll handle the rest.
           </p>
         </div>
 
-        <Card className="max-w-4xl mx-auto border-border/50 shadow-card overflow-hidden">
+        <div className="glass-card max-w-4xl mx-auto overflow-hidden">
           {/* Progress Steps */}
-          <div className="bg-muted/50 border-b border-border/50 p-4 sm:p-6">
+          <div className="glass border-b border-white/10 p-4 sm:p-6">
             <div className="flex items-center justify-center gap-4 sm:gap-8">
               {[
                 { num: 1, label: "Route", icon: MapPin },
@@ -142,48 +140,48 @@ const ShipmentCreationForm = () => {
                 { num: 3, label: "Review", icon: CheckCircle2 },
               ].map((s, i) => (
                 <div key={s.num} className="flex items-center gap-2 sm:gap-4">
-                  <div className={`flex items-center gap-2 ${step >= s.num ? "text-secondary" : "text-muted-foreground"}`}>
+                  <div className={`flex items-center gap-2 ${step >= s.num ? "text-secondary" : "text-white/40"}`}>
                     <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
                       step >= s.num 
-                        ? "bg-secondary text-secondary-foreground" 
-                        : "bg-muted text-muted-foreground"
+                        ? "gradient-orange text-white" 
+                        : "glass text-white/40"
                     }`}>
                       {step > s.num ? <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" /> : s.num}
                     </div>
-                    <span className="hidden sm:block font-medium">{s.label}</span>
+                    <span className="hidden sm:block font-medium text-white">{s.label}</span>
                   </div>
                   {i < 2 && (
-                    <div className={`w-8 sm:w-16 h-0.5 rounded-full ${step > s.num ? "bg-secondary" : "bg-muted"}`} />
+                    <div className={`w-8 sm:w-16 h-0.5 rounded-full ${step > s.num ? "gradient-orange" : "bg-white/10"}`} />
                   )}
                 </div>
               ))}
             </div>
           </div>
 
-          <CardContent className="p-6 sm:p-8 lg:p-10">
+          <div className="p-6 sm:p-8 lg:p-10">
             <form onSubmit={handleSubmit}>
               {/* Step 1: Route */}
               {step === 1 && (
                 <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-foreground font-semibold mb-2">
-                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <MapPin className="w-4 h-4 text-primary" />
+                      <div className="flex items-center gap-2 text-white font-semibold mb-2">
+                        <div className="w-8 h-8 gradient-orange rounded-lg flex items-center justify-center">
+                          <MapPin className="w-4 h-4 text-white" />
                         </div>
                         Origin
                       </div>
                       <div className="space-y-3">
                         <div className="space-y-2">
-                          <Label className="text-muted-foreground">Country</Label>
+                          <Label className="text-white/70">Country</Label>
                           <Select
                             value={formData.origin_country}
                             onValueChange={(value) => setFormData({ ...formData, origin_country: value })}
                           >
-                            <SelectTrigger className="h-12">
+                            <SelectTrigger className="h-12 glass border-white/10 text-white">
                               <SelectValue placeholder="Select country" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="glass border-white/10">
                               {countries.map((country) => (
                                 <SelectItem key={country} value={country}>{country}</SelectItem>
                               ))}
@@ -191,12 +189,12 @@ const ShipmentCreationForm = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-muted-foreground">City</Label>
+                          <Label className="text-white/70">City</Label>
                           <Input
                             value={formData.origin_city}
                             onChange={(e) => setFormData({ ...formData, origin_city: e.target.value })}
                             placeholder="Enter city"
-                            className="h-12"
+                            className="h-12 glass border-white/10 text-white placeholder:text-white/40"
                             required
                           />
                         </div>
@@ -204,23 +202,23 @@ const ShipmentCreationForm = () => {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-foreground font-semibold mb-2">
-                        <div className="w-8 h-8 bg-secondary/10 rounded-lg flex items-center justify-center">
-                          <MapPin className="w-4 h-4 text-secondary" />
+                      <div className="flex items-center gap-2 text-white font-semibold mb-2">
+                        <div className="w-8 h-8 gradient-orange rounded-lg flex items-center justify-center">
+                          <MapPin className="w-4 h-4 text-white" />
                         </div>
                         Destination
                       </div>
                       <div className="space-y-3">
                         <div className="space-y-2">
-                          <Label className="text-muted-foreground">Country</Label>
+                          <Label className="text-white/70">Country</Label>
                           <Select
                             value={formData.destination_country}
                             onValueChange={(value) => setFormData({ ...formData, destination_country: value })}
                           >
-                            <SelectTrigger className="h-12">
+                            <SelectTrigger className="h-12 glass border-white/10 text-white">
                               <SelectValue placeholder="Select country" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="glass border-white/10">
                               {countries.map((country) => (
                                 <SelectItem key={country} value={country}>{country}</SelectItem>
                               ))}
@@ -228,12 +226,12 @@ const ShipmentCreationForm = () => {
                           </Select>
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-muted-foreground">City</Label>
+                          <Label className="text-white/70">City</Label>
                           <Input
                             value={formData.destination_city}
                             onChange={(e) => setFormData({ ...formData, destination_city: e.target.value })}
                             placeholder="Enter city"
-                            className="h-12"
+                            className="h-12 glass border-white/10 text-white placeholder:text-white/40"
                             required
                           />
                         </div>
@@ -242,17 +240,15 @@ const ShipmentCreationForm = () => {
                   </div>
 
                   <div className="flex justify-end pt-4">
-                    <Button 
+                    <button 
                       type="button" 
-                      variant="cta" 
-                      size="lg"
                       disabled={!isStep1Complete}
                       onClick={() => setStep(2)}
-                      className="gap-2"
+                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
                     >
                       Continue
                       <ArrowRight className="w-4 h-4" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -262,8 +258,8 @@ const ShipmentCreationForm = () => {
                 <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="flex items-center gap-2">
-                        <Scale className="w-4 h-4 text-muted-foreground" />
+                      <Label className="flex items-center gap-2 text-white/70">
+                        <Scale className="w-4 h-4" />
                         Weight (KG)
                       </Label>
                       <Input
@@ -273,29 +269,29 @@ const ShipmentCreationForm = () => {
                         value={formData.weight}
                         onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                         placeholder="Enter package weight"
-                        className="h-12"
+                        className="h-12 glass border-white/10 text-white placeholder:text-white/40"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label className="flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-muted-foreground" />
+                      <Label className="flex items-center gap-2 text-white/70">
+                        <Truck className="w-4 h-4" />
                         Service Type
                       </Label>
                       <Select
                         value={formData.service_type}
                         onValueChange={(value) => setFormData({ ...formData, service_type: value })}
                       >
-                        <SelectTrigger className="h-12">
+                        <SelectTrigger className="h-12 glass border-white/10 text-white">
                           <SelectValue placeholder="Select service" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="glass border-white/10">
                           {serviceTypes.map((type) => (
                             <SelectItem key={type.id} value={type.id}>
                               <div className="flex items-center gap-2">
                                 <type.icon className="w-4 h-4" />
                                 <span>{type.name}</span>
-                                <span className="text-muted-foreground text-xs">({type.description})</span>
+                                <span className="text-white/40 text-xs">({type.description})</span>
                               </div>
                             </SelectItem>
                           ))}
@@ -305,8 +301,8 @@ const ShipmentCreationForm = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-muted-foreground" />
+                    <Label className="flex items-center gap-2 text-white/70">
+                      <FileText className="w-4 h-4" />
                       Description (Optional)
                     </Label>
                     <Textarea
@@ -314,30 +310,27 @@ const ShipmentCreationForm = () => {
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Describe the contents of your shipment"
                       rows={3}
-                      className="resize-none"
+                      className="resize-none glass border-white/10 text-white placeholder:text-white/40"
                     />
                   </div>
 
                   <div className="flex justify-between pt-4">
-                    <Button 
+                    <button 
                       type="button" 
-                      variant="outline" 
-                      size="lg"
                       onClick={() => setStep(1)}
+                      className="btn-secondary"
                     >
                       Back
-                    </Button>
-                    <Button 
+                    </button>
+                    <button 
                       type="button" 
-                      variant="cta" 
-                      size="lg"
                       disabled={!isStep2Complete}
                       onClick={() => setStep(3)}
-                      className="gap-2"
+                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
                     >
                       Review
                       <ArrowRight className="w-4 h-4" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -345,77 +338,68 @@ const ShipmentCreationForm = () => {
               {/* Step 3: Review */}
               {step === 3 && (
                 <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                  <div className="bg-muted/50 rounded-xl p-6 space-y-4">
-                    <h3 className="font-heading font-bold text-lg text-foreground">Shipment Summary</h3>
+                  <div className="glass rounded-xl p-6 space-y-4">
+                    <h3 className="font-bold text-lg text-white">Shipment Summary</h3>
                     
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="bg-background rounded-lg p-4 border border-border/50">
-                        <p className="text-sm text-muted-foreground mb-1">From</p>
-                        <p className="font-semibold text-foreground">{formData.origin_city}, {formData.origin_country}</p>
+                      <div className="glass rounded-lg p-4">
+                        <p className="text-sm text-white/60 mb-1">From</p>
+                        <p className="font-semibold text-white">{formData.origin_city}, {formData.origin_country}</p>
                       </div>
-                      <div className="bg-background rounded-lg p-4 border border-border/50">
-                        <p className="text-sm text-muted-foreground mb-1">To</p>
-                        <p className="font-semibold text-foreground">{formData.destination_city}, {formData.destination_country}</p>
+                      <div className="glass rounded-lg p-4">
+                        <p className="text-sm text-white/60 mb-1">To</p>
+                        <p className="font-semibold text-white">{formData.destination_city}, {formData.destination_country}</p>
                       </div>
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="bg-background rounded-lg p-4 border border-border/50">
-                        <p className="text-sm text-muted-foreground mb-1">Weight</p>
-                        <p className="font-semibold text-foreground">{formData.weight} KG</p>
+                      <div className="glass rounded-lg p-4">
+                        <p className="text-sm text-white/60 mb-1">Weight</p>
+                        <p className="font-semibold text-white">{formData.weight} KG</p>
                       </div>
-                      <div className="bg-background rounded-lg p-4 border border-border/50">
-                        <p className="text-sm text-muted-foreground mb-1">Service</p>
-                        <p className="font-semibold text-foreground capitalize">{formData.service_type.replace("-", " ")}</p>
+                      <div className="glass rounded-lg p-4">
+                        <p className="text-sm text-white/60 mb-1">Service</p>
+                        <p className="font-semibold text-white capitalize">{formData.service_type.replace("-", " ")}</p>
                       </div>
                     </div>
 
                     {formData.description && (
-                      <div className="bg-background rounded-lg p-4 border border-border/50">
-                        <p className="text-sm text-muted-foreground mb-1">Description</p>
-                        <p className="text-foreground">{formData.description}</p>
+                      <div className="glass rounded-lg p-4">
+                        <p className="text-sm text-white/60 mb-1">Description</p>
+                        <p className="text-white">{formData.description}</p>
                       </div>
                     )}
                   </div>
 
-                  <div className="bg-secondary/10 border border-secondary/20 rounded-xl p-4 flex items-start gap-3">
+                  <div className="glass border-secondary/30 rounded-xl p-4 flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-secondary mt-0.5 shrink-0" />
-                    <p className="text-sm text-muted-foreground">
-                      By submitting, you agree to our shipping terms. Our team will review your request and set a competitive price. You'll be notified once pricing is available.
+                    <p className="text-sm text-white/70">
+                      By submitting, you agree to our shipping terms. Our team will review your request and set a competitive price.
                     </p>
                   </div>
 
                   <div className="flex justify-between pt-4">
-                    <Button 
+                    <button 
                       type="button" 
-                      variant="outline" 
-                      size="lg"
                       onClick={() => setStep(2)}
+                      className="btn-secondary"
                     >
                       Back
-                    </Button>
-                    <Button 
+                    </button>
+                    <button 
                       type="submit" 
-                      variant="cta" 
-                      size="lg"
                       disabled={isSubmitting}
-                      className="gap-2 min-w-[160px]"
+                      className="btn-primary flex items-center gap-2 disabled:opacity-50"
                     >
-                      {isSubmitting ? (
-                        <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          Create Shipment
-                          <Package className="w-4 h-4" />
-                        </>
-                      )}
-                    </Button>
+                      {isSubmitting ? "Creating..." : "Create Shipment"}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               )}
             </form>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </section>
   );

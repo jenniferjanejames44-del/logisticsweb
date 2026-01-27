@@ -46,20 +46,20 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 ${
         isScrolled
-          ? "bg-foreground/95 backdrop-blur-lg py-3"
-          : "bg-transparent py-4"
+          ? "bg-background/95 backdrop-blur-lg border-b border-white/10"
+          : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-semibold text-lg transition-all duration-300 bg-secondary text-white group-hover:scale-105">
+          <div className="w-12 h-12 rounded-full gradient-orange flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105">
             R
           </div>
           <span className="font-semibold text-xl text-white">
-            RAC <span className="text-secondary">Logistics</span>
+            RAC <span className="gradient-text">Logistics</span>
           </span>
         </Link>
 
@@ -69,7 +69,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-white/80 hover:text-secondary transition-colors"
+              className="font-medium text-white/70 hover:text-white transition-colors duration-300"
             >
               {link.name}
             </Link>
@@ -78,16 +78,16 @@ const Header = () => {
           {/* Services Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="font-medium text-white/80 hover:text-secondary transition-colors flex items-center gap-1">
+              <button className="font-medium text-white/70 hover:text-white transition-colors duration-300 flex items-center gap-1">
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-56 p-2 bg-card border-border">
+            <DropdownMenuContent align="center" className="w-56 p-2 glass border-white/10">
               <DropdownMenuItem asChild className="p-0 mb-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-secondary/10 transition-colors w-full font-medium text-secondary"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors w-full font-medium gradient-text"
                 >
                   View All Services
                 </Link>
@@ -96,10 +96,10 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-secondary/10 transition-colors w-full"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors w-full"
                   >
                     <service.icon className="w-4 h-4 text-secondary" />
-                    <span className="text-foreground">{service.name}</span>
+                    <span className="text-white/80">{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
@@ -110,7 +110,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-white/80 hover:text-secondary transition-colors"
+              className="font-medium text-white/70 hover:text-white transition-colors duration-300"
             >
               {link.name}
             </Link>
@@ -122,67 +122,71 @@ const Header = () => {
           {user ? (
             <>
               {isAdmin && (
-                <Button variant="ghost" className="text-white/80 hover:text-secondary hover:bg-white/10" asChild>
-                  <Link to="/admin">
-                    <Shield className="w-4 h-4 mr-2" />
-                    Admin
-                  </Link>
-                </Button>
-              )}
-              <Button variant="ghost" className="text-white/80 hover:text-secondary hover:bg-white/10" asChild>
-                <Link to="/dashboard">
-                  <User className="w-4 h-4 mr-2" />
-                  Dashboard
+                <Link 
+                  to="/admin"
+                  className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition-colors"
+                >
+                  <Shield className="w-4 h-4" />
+                  Admin
                 </Link>
-              </Button>
-              <Button 
-                className="px-6 py-2.5 rounded-xl font-medium bg-secondary text-white hover:scale-[1.02] transition-all"
+              )}
+              <Link 
+                to="/dashboard"
+                className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition-colors"
+              >
+                <User className="w-4 h-4" />
+                Dashboard
+              </Link>
+              <button 
                 onClick={() => signOut()}
+                className="btn-primary flex items-center gap-2"
               >
                 Logout
-              </Button>
+              </button>
             </>
           ) : (
             <>
-              <Button variant="ghost" className="text-white/80 hover:text-secondary hover:bg-white/10" asChild>
-                <Link to="/auth">Login</Link>
-              </Button>
-              <Button 
-                className="px-6 py-2.5 rounded-xl font-medium bg-secondary text-white hover:scale-[1.02] transition-all group" 
-                asChild
+              <Link 
+                to="/pricing"
+                className="btn-primary flex items-center gap-2 group"
               >
-                <Link to="/pricing">
-                  Get Quote
-                  <ArrowRight className="ml-1 w-4 h-4" />
-                </Link>
-              </Button>
+                Get Quote
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link 
+                to="/contact"
+                className="btn-secondary flex items-center gap-2 group"
+              >
+                Contact Us
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </>
           )}
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+          className="lg:hidden w-10 h-10 rounded-xl glass flex items-center justify-center text-white hover:bg-white/10 transition-colors"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 bg-foreground transition-all duration-300 overflow-y-auto ${
+        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 gradient-dark transition-all duration-300 overflow-y-auto ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
       >
         <div className="flex justify-end p-4">
           <button
-            className="p-2 rounded-lg text-white hover:bg-secondary transition-colors"
+            className="w-10 h-10 rounded-xl glass flex items-center justify-center text-white hover:bg-white/10 transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close menu"
           >
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
 
@@ -191,7 +195,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white hover:bg-secondary/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -201,7 +205,7 @@ const Header = () => {
           {/* Mobile Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-white hover:bg-secondary/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="flex items-center justify-between text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -210,7 +214,7 @@ const Header = () => {
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[400px]" : "max-h-0"}`}>
               <Link
                 to="/services"
-                className="flex items-center gap-3 text-secondary font-medium py-3 px-8 rounded-lg hover:bg-secondary/10 transition-all"
+                className="flex items-center gap-3 gradient-text font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 View All Services
@@ -219,7 +223,7 @@ const Header = () => {
                 <Link
                   key={service.name}
                   to={service.href}
-                  className="flex items-center gap-3 text-white/80 hover:bg-secondary/10 py-3 px-8 rounded-lg transition-all"
+                  className="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 py-3 px-8 rounded-lg transition-all"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <service.icon className="w-4 h-4" />
@@ -233,21 +237,21 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white hover:bg-secondary/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="flex flex-col items-center gap-3 pt-6 mt-4 border-t border-white/10">
+          <div className="flex flex-col gap-3 pt-6 mt-4 border-t border-white/10">
             {user ? (
               <>
                 {isAdmin && (
                   <Link 
                     to="/admin" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full px-6 py-3 text-white hover:bg-secondary/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+                    className="w-full px-6 py-3 text-white hover:bg-white/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
                   >
                     <Shield className="w-4 h-4" />
                     Admin
@@ -256,13 +260,13 @@ const Header = () => {
                 <Link 
                   to="/dashboard" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full px-6 py-3 text-white hover:bg-secondary/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="w-full px-6 py-3 text-white hover:bg-white/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
                 >
                   <User className="w-4 h-4" />
                   Dashboard
                 </Link>
                 <button 
-                  className="w-full px-6 py-3 bg-secondary text-white font-medium rounded-xl hover:scale-[1.02] transition-all"
+                  className="w-full btn-primary"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -274,18 +278,20 @@ const Header = () => {
             ) : (
               <>
                 <Link 
-                  to="/auth" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full px-6 py-3 bg-white text-foreground font-medium rounded-xl hover:scale-[1.02] transition-all text-center"
-                >
-                  Sign Up
-                </Link>
-                <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full px-6 py-3 bg-secondary text-white font-medium rounded-xl hover:scale-[1.02] transition-all text-center"
+                  className="w-full btn-primary text-center flex items-center justify-center gap-2"
                 >
                   Get Quote
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link 
+                  to="/contact" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full btn-secondary text-center flex items-center justify-center gap-2"
+                >
+                  Contact Us
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </>
             )}
@@ -296,7 +302,7 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-foreground/50 backdrop-blur-sm z-[-1]"
+          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[-1]"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}

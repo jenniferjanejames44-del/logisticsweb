@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { Button } from "@/components/ui/button";
 
 const testimonials = [
   {
@@ -48,24 +47,23 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-muted/30 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
+    <section ref={ref} className="section-padding gradient-dark relative overflow-hidden">
+      <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span
-            className={`inline-block bg-secondary/10 text-secondary font-semibold text-sm tracking-wide uppercase mb-4 px-4 py-2 rounded-full transition-all duration-600 ${
+            className={`badge-orange mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Testimonials
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-6 leading-tight transition-all duration-600 delay-100 ${
+            className={`text-white transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            What Our{" "}
-            <span className="text-secondary">Clients Say</span>
+            What Our <span className="gradient-text">Clients Say</span>
           </h2>
         </div>
 
@@ -74,22 +72,18 @@ const TestimonialsSection = () => {
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}>
           {/* Navigation Buttons */}
-          <Button
-            variant="outline"
-            size="icon"
+          <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 bg-card border-border hover:bg-secondary hover:text-white hover:border-secondary w-12 h-12 rounded-xl transition-all"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 w-12 h-12 glass rounded-xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
           >
             <ChevronLeft size={22} />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
+          </button>
+          <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 bg-card border-border hover:bg-secondary hover:text-white hover:border-secondary w-12 h-12 rounded-xl transition-all"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 w-12 h-12 glass rounded-xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all duration-300"
           >
             <ChevronRight size={22} />
-          </Button>
+          </button>
 
           {/* Slides */}
           <div className="overflow-hidden rounded-2xl">
@@ -99,14 +93,14 @@ const TestimonialsSection = () => {
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-4">
-                  <div className="bg-card rounded-2xl p-8 md:p-12 text-center border border-border/50">
+                  <div className="glass-card p-8 md:p-12 text-center">
                     {/* Quote Icon */}
-                    <div className="w-14 h-14 mx-auto bg-secondary/10 rounded-xl flex items-center justify-center mb-8">
-                      <Quote size={28} className="text-secondary" />
+                    <div className="w-14 h-14 mx-auto gradient-orange rounded-xl flex items-center justify-center mb-8 shadow-lg">
+                      <Quote size={28} className="text-white" />
                     </div>
 
                     {/* Content */}
-                    <p className="text-lg md:text-xl text-foreground leading-relaxed mb-8">
+                    <p className="text-lg md:text-xl text-white/90 leading-relaxed mb-8">
                       "{testimonial.content}"
                     </p>
 
@@ -122,17 +116,17 @@ const TestimonialsSection = () => {
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 rounded-xl object-cover"
+                        className="w-14 h-14 rounded-xl object-cover border-2 border-secondary/30"
                         loading="lazy"
                       />
                       <div className="text-left">
-                        <h4 className="font-semibold text-foreground text-lg">
+                        <h4 className="font-semibold text-white text-lg">
                           {testimonial.name}
                         </h4>
-                        <p className="text-muted-foreground text-sm">
+                        <p className="text-white/60 text-sm">
                           {testimonial.role}
                         </p>
-                        <p className="text-secondary text-sm font-medium">
+                        <p className="gradient-text text-sm font-medium">
                           {testimonial.company}
                         </p>
                       </div>
@@ -151,8 +145,8 @@ const TestimonialsSection = () => {
                 onClick={() => setCurrentIndex(index)}
                 className={`h-2.5 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-secondary w-8"
-                    : "bg-border hover:bg-secondary/50 w-2.5"
+                    ? "gradient-orange w-8"
+                    : "bg-white/20 hover:bg-white/40 w-2.5"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

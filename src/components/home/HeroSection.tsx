@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Search, Loader2, AlertCircle, CheckCircle2, Plane, Ship, Truck, MapPin } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useParallax } from "@/hooks/useParallax";
-import heroVideo from "@/assets/hero-logistics-video.mp4";
 
 interface ShipmentData {
   tracking_number: string;
@@ -28,7 +25,6 @@ const HeroSection = () => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const parallaxOffset = useParallax(0.4);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -106,162 +102,151 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Video Background with Parallax */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-dark">
+      {/* Animated Floating Orb */}
       <div 
-        className="absolute inset-0 w-full h-[120%] -top-[10%]"
-        style={{ transform: `translateY(${parallaxOffset}px)`, willChange: 'transform' }}
-      >
-        <video autoPlay muted loop playsInline preload="metadata" className="w-full h-full object-cover">
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-      </div>
+        className="absolute w-[800px] h-[800px] rounded-full animate-float-orb opacity-30 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 107, 53, 0.4) 0%, rgba(255, 140, 66, 0.2) 40%, transparent 70%)',
+          top: '10%',
+          right: '-20%',
+        }}
+      />
       
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-[hsl(222,47%,4%)]" style={{ opacity: 0.88 }} />
-      <div className="absolute inset-0 bg-gradient-to-b from-[hsl(222,47%,2%)]/60 via-transparent to-[hsl(222,47%,2%)]/60" />
+      {/* Second Orb */}
+      <div 
+        className="absolute w-[600px] h-[600px] rounded-full animate-float-orb opacity-20 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(255, 107, 53, 0.3) 0%, transparent 60%)',
+          bottom: '10%',
+          left: '-10%',
+          animationDelay: '-10s',
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10 py-24 sm:py-32 md:py-40">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-20 pb-16 md:py-32">
+        <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
           {/* Main Heading */}
-          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 transition-all duration-700 delay-100 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          <h1 className={`mb-6 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <span className="text-white">Global Logistics.</span>
-            <br />
-            <span className="text-secondary">Delivered With Excellence.</span>
+            <span className="text-white block">Global Logistics.</span>
+            <span className="gradient-text block">Delivered With Excellence.</span>
           </h1>
 
-          {/* Description */}
-          <p className={`text-base sm:text-lg md:text-xl text-white/70 mb-8 sm:mb-12 leading-relaxed max-w-2xl mx-auto transition-all duration-700 delay-200 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          {/* Subtitle */}
+          <p className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed transition-all duration-700 delay-100 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-300 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          <div className={`flex flex-col sm:flex-row gap-4 mb-12 transition-all duration-700 delay-200 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
               to="/pricing"
-              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center"
+              className="btn-primary flex items-center justify-center gap-2 group"
             >
               Get Quote
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
-              to="/auth"
-              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-white text-foreground hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center"
+              to="/contact"
+              className="btn-secondary flex items-center justify-center gap-2 group"
             >
-              Sign Up
+              Contact Us
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Tracking Card - Clean minimal style */}
-          <div className={`max-w-xl mx-auto transition-all duration-700 delay-400 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          {/* Tracking Card - Glass Effect */}
+          <div className={`glass-card p-6 md:p-8 transition-all duration-700 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <div className="bg-white rounded-2xl p-6 md:p-8 shadow-xl">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                  <Search size={22} className="text-secondary" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-foreground font-semibold text-lg">Track Your Shipment</h3>
-                  <p className="text-muted-foreground text-sm">Real-time updates • Instant results</p>
-                </div>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 gradient-orange rounded-xl flex items-center justify-center shadow-lg">
+                <Search size={22} className="text-white" />
               </div>
-              
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Input
-                  value={trackingNumber}
-                  onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
-                  onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
-                  placeholder="Enter tracking number (e.g., RAC123456)"
-                  className="flex-1 h-12 px-4 text-base border-border/50 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
-                />
-                <Button 
-                  className="h-12 px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
-                  onClick={handleTrackClick}
-                  disabled={isLoading}
-                >
-                  {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
-                    <>Track Now <ArrowRight size={18} /></>
-                  )}
-                </Button>
+              <div className="text-left">
+                <h3 className="text-white font-semibold text-lg">Track Your Shipment</h3>
+                <p className="text-white/60 text-sm">Real-time updates • Instant results</p>
               </div>
-
-              {/* Tracking Result Preview */}
-              {(shipmentData || error) && trackingNumber.length >= 6 && (
-                <div className="mt-4">
-                  {error ? (
-                    <div className="bg-red-50 rounded-xl p-4 flex items-center gap-3">
-                      <AlertCircle size={20} className="text-red-500 shrink-0" />
-                      <span className="text-red-600 text-sm">{error}</span>
-                    </div>
-                  ) : shipmentData && (
-                    <div className="bg-muted/50 rounded-xl p-4">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
-                          {(() => {
-                            const ServiceIcon = getServiceIcon(shipmentData.service_type);
-                            return <ServiceIcon size={18} className="text-secondary" />;
-                          })()}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-foreground font-semibold text-sm truncate">{shipmentData.tracking_number}</p>
-                          <p className={`text-sm font-medium capitalize ${getStatusColor(shipmentData.status)}`}>
-                            {shipmentData.status.replace("_", " ")}
-                          </p>
-                        </div>
-                        {shipmentData.status.toLowerCase() === "delivered" ? (
-                          <CheckCircle2 size={18} className="text-emerald-500 shrink-0" />
-                        ) : (
-                          <Loader2 size={18} className="text-secondary animate-spin shrink-0" />
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                        <MapPin size={14} className="text-secondary shrink-0" />
-                        <span className="truncate">{shipmentData.origin_city}</span>
-                        <ArrowRight size={14} className="text-secondary shrink-0" />
-                        <span className="truncate">{shipmentData.destination_city}</span>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-secondary to-emerald-400 rounded-full transition-all duration-700"
-                            style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
-                          />
-                        </div>
-                        <span className="text-muted-foreground text-xs font-medium">
-                          {getStatusProgress(shipmentData.status)}%
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
-          </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Input
+                value={trackingNumber}
+                onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
+                onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
+                placeholder="Enter tracking number (e.g., RAC123456)"
+                className="flex-1 h-12 px-4 text-base bg-white/5 border-white/10 text-white placeholder:text-white/40 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
+              />
+              <button 
+                onClick={handleTrackClick}
+                disabled={isLoading}
+                className="h-12 px-6 btn-primary flex items-center justify-center gap-2 rounded-xl"
+              >
+                {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
+                  <>Track Now <ArrowRight size={18} /></>
+                )}
+              </button>
+            </div>
 
-          {/* Stats Row */}
-          <div className={`grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mt-16 transition-all duration-700 delay-500 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}>
-            {[
-              { value: "5,000+", label: "Shipments Delivered" },
-              { value: "150+", label: "Countries Served" },
-              { value: "99.8%", label: "On-Time Delivery" },
-              { value: "24/7", label: "Customer Support" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1">{stat.value}</p>
-                <p className="text-white/60 text-sm">{stat.label}</p>
+            {/* Tracking Result Preview */}
+            {(shipmentData || error) && trackingNumber.length >= 6 && (
+              <div className="mt-4">
+                {error ? (
+                  <div className="glass rounded-xl p-4 flex items-center gap-3 border-red-500/30">
+                    <AlertCircle size={20} className="text-red-400 shrink-0" />
+                    <span className="text-red-400 text-sm">{error}</span>
+                  </div>
+                ) : shipmentData && (
+                  <div className="glass rounded-xl p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 gradient-orange rounded-lg flex items-center justify-center">
+                        {(() => {
+                          const ServiceIcon = getServiceIcon(shipmentData.service_type);
+                          return <ServiceIcon size={18} className="text-white" />;
+                        })()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-semibold text-sm truncate">{shipmentData.tracking_number}</p>
+                        <p className={`text-sm font-medium capitalize ${getStatusColor(shipmentData.status)}`}>
+                          {shipmentData.status.replace("_", " ")}
+                        </p>
+                      </div>
+                      {shipmentData.status.toLowerCase() === "delivered" ? (
+                        <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
+                      ) : (
+                        <Loader2 size={18} className="text-secondary animate-spin shrink-0" />
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center gap-2 text-sm text-white/60 mb-3">
+                      <MapPin size={14} className="text-secondary shrink-0" />
+                      <span className="truncate">{shipmentData.origin_city}</span>
+                      <ArrowRight size={14} className="text-secondary shrink-0" />
+                      <span className="truncate">{shipmentData.destination_city}</span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full gradient-orange rounded-full transition-all duration-700"
+                          style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
+                        />
+                      </div>
+                      <span className="text-white/60 text-xs font-medium">
+                        {getStatusProgress(shipmentData.status)}%
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

@@ -20,84 +20,107 @@ const Footer = () => {
     { name: "Customs Clearance", href: "/services/customs-clearance" },
   ];
 
+  const socialLinks = [
+    { name: "in", href: "#", label: "LinkedIn" },
+    { name: "𝕏", href: "#", label: "Twitter" },
+    { name: "f", href: "#", label: "Facebook" },
+    { name: "📷", href: "#", label: "Instagram" },
+  ];
+
   return (
-    <footer className="bg-foreground text-white">
+    <footer className="gradient-dark border-t border-white/10">
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-16 md:pt-20 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          {/* Column 1 - Company */}
-          <div className="space-y-6 sm:col-span-2 lg:col-span-1">
+      <div className="section-container px-4 sm:px-6 pt-16 md:pt-20 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Left Side - Company Info */}
+          <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center font-semibold text-white text-lg group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 gradient-orange rounded-full flex items-center justify-center font-bold text-xl text-white group-hover:scale-105 transition-transform">
                 R
               </div>
               <span className="font-semibold text-xl text-white">
-                RAC <span className="text-secondary">Logistics</span>
+                RAC <span className="gradient-text">Logistics</span>
               </span>
             </Link>
-            <p className="text-white/60 leading-relaxed">
+            <p className="text-white/60 leading-relaxed max-w-md">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
             </p>
-          </div>
-
-          {/* Column 2 - Quick Links */}
-          <div>
-            <h4 className="font-semibold text-lg mb-6 text-white">Quick Links</h4>
-            <ul className="space-y-3">
-              {companyLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-white/60 hover:text-secondary transition-colors inline-flex items-center gap-2 group"
-                  >
-                    <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 3 - Services */}
-          <div>
-            <h4 className="font-semibold text-lg mb-6 text-white">Our Services</h4>
-            <ul className="space-y-3">
-              {services.map((service) => (
-                <li key={service.name}>
-                  <Link
-                    to={service.href}
-                    className="text-white/60 hover:text-secondary transition-colors inline-flex items-center gap-2 group"
-                  >
-                    <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
-                    {service.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 4 - Contact Info */}
-          <div className="space-y-6 sm:col-span-2 lg:col-span-1">
-            <h4 className="font-semibold text-lg mb-6 text-white">Contact Us</h4>
             
-            <div className="space-y-4">
-              <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 text-white/60 hover:text-secondary transition-colors group">
-                <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-secondary transition-colors">
-                  <Mail size={18} className="text-white" />
+            {/* Social Links */}
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  aria-label={social.label}
+                  className="w-11 h-11 glass rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all duration-300 hover:-translate-y-1"
+                >
+                  {social.name}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Side - Links & Contact */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold text-lg mb-6 text-white">Quick Links</h4>
+              <ul className="space-y-3">
+                {companyLinks.map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      to={link.href}
+                      className="text-white/60 hover:text-secondary transition-colors duration-300 inline-flex items-center gap-2 group"
+                    >
+                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h4 className="font-semibold text-lg mb-6 text-white">Services</h4>
+              <ul className="space-y-3">
+                {services.map((service) => (
+                  <li key={service.name}>
+                    <Link
+                      to={service.href}
+                      className="text-white/60 hover:text-secondary transition-colors duration-300 inline-flex items-center gap-2 group"
+                    >
+                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
+                      {service.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div className="col-span-2 sm:col-span-1">
+              <h4 className="font-semibold text-lg mb-6 text-white">Contact</h4>
+              <div className="space-y-4">
+                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 text-white/60 hover:text-secondary transition-colors duration-300 group">
+                  <div className="w-10 h-10 glass rounded-lg flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+                    <Mail size={18} className="text-secondary" />
+                  </div>
+                  <span className="text-sm">info@raclogistics.com</span>
+                </a>
+                <a href="tel:+1234567890" className="flex items-center gap-3 text-white/60 hover:text-secondary transition-colors duration-300 group">
+                  <div className="w-10 h-10 glass rounded-lg flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+                    <Phone size={18} className="text-secondary" />
+                  </div>
+                  <span className="text-sm">+1 (234) 567-890</span>
+                </a>
+                <div className="flex items-start gap-3 text-white/60">
+                  <div className="w-10 h-10 glass rounded-lg flex items-center justify-center flex-shrink-0">
+                    <MapPin size={18} className="text-secondary" />
+                  </div>
+                  <span className="text-sm">123 Logistics Way, New York, NY 10001</span>
                 </div>
-                info@raclogistics.com
-              </a>
-              <a href="tel:+1234567890" className="flex items-center gap-3 text-white/60 hover:text-secondary transition-colors group">
-                <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center group-hover:bg-secondary transition-colors">
-                  <Phone size={18} className="text-white" />
-                </div>
-                +1 (234) 567-890
-              </a>
-              <div className="flex items-start gap-3 text-white/60">
-                <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin size={18} className="text-white" />
-                </div>
-                123 Logistics Way, New York, NY 10001
               </div>
             </div>
           </div>
@@ -106,15 +129,15 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-white/50 text-sm text-center sm:text-left">
+        <div className="section-container px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-white/40 text-sm text-center sm:text-left">
             © 2026 RAC Logistics. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <Link to="/privacy" className="text-white/50 hover:text-secondary transition-colors">
+            <Link to="/privacy" className="text-white/40 hover:text-secondary transition-colors duration-300">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="text-white/50 hover:text-secondary transition-colors">
+            <Link to="/terms" className="text-white/40 hover:text-secondary transition-colors duration-300">
               Terms of Service
             </Link>
           </div>

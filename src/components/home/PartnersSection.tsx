@@ -13,21 +13,22 @@ const PartnersSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-12 md:py-16 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
+    <section ref={ref} className="py-12 md:py-16 gradient-dark relative overflow-hidden">
+      <div className="section-container px-4 sm:px-6 relative">
         {/* Partners Marquee */}
         <div className={`relative overflow-hidden py-6 transition-all duration-600 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}>
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-background to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-background to-transparent z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-[#0a0e1a] to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-[#0a0e1a] to-transparent z-10" />
           
           <div className="flex animate-marquee">
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 opacity-40 hover:opacity-100 hover:scale-105 transition-all duration-300"
+                style={{ filter: 'brightness(0) invert(1)' }}
               >
                 <img
                   src={partner.logo}
