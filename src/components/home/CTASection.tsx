@@ -51,14 +51,14 @@ const CTASection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="w-full sm:w-auto px-8 py-4 bg-secondary text-white font-semibold text-base rounded-xl hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-secondary text-white font-bold text-base rounded-xl hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
               Get Quote
               <ArrowRight size={18} />
             </Link>
             <Link 
               to="/contact"
-              className="w-full sm:w-auto px-8 py-4 bg-white text-foreground font-semibold text-base rounded-xl hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-white text-foreground font-bold text-base rounded-xl hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
             >
               Contact Us
               <ArrowRight size={18} />

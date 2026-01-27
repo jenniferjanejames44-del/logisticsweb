@@ -47,12 +47,12 @@ const buttonVariants = cva(
         quoteAccent: "bg-foreground text-background rounded-xl hover:scale-[1.02] active:scale-[0.98] group",
       },
       size: {
-        default: "h-11 px-6 py-2.5 text-base",
-        sm: "h-9 px-4 text-sm",
-        lg: "h-12 px-8 text-base",
-        xl: "h-14 px-10 text-lg",
+        default: "h-11 px-6 py-3 text-base",
+        sm: "h-9 px-4 py-2 text-sm",
+        lg: "h-12 px-6 py-3 text-base",
+        xl: "h-14 px-8 py-4 text-lg",
         icon: "h-10 w-10",
-        nav: "h-10 px-5 text-sm",
+        nav: "h-10 px-5 py-2 text-sm",
       },
     },
     defaultVariants: {

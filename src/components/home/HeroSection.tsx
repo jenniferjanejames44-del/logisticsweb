@@ -145,13 +145,13 @@ const HeroSection = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             <Button 
-              className="w-full sm:w-auto px-8 py-4 text-base font-semibold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300" 
+              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center" 
               asChild
             >
               <Link to="/pricing">Get Quote</Link>
             </Button>
             <Button 
-              className="w-full sm:w-auto px-8 py-4 text-base font-semibold rounded-xl bg-white text-foreground hover:bg-white/90 hover:scale-[1.02] transition-all duration-300"
+              className="w-full sm:w-auto px-6 py-3 text-base font-bold rounded-xl bg-white text-foreground hover:bg-white/90 hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center"
               asChild
             >
               <Link to="/auth">Sign Up</Link>
@@ -182,12 +182,12 @@ const HeroSection = () => {
                   className="flex-1 h-12 px-4 text-base border-border/50 rounded-xl focus:border-secondary focus:ring-2 focus:ring-secondary/20"
                 />
                 <Button 
-                  className="h-12 px-6 text-base font-semibold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300"
+                  className="h-12 px-6 py-3 text-base font-bold rounded-xl bg-secondary text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
                   onClick={handleTrackClick}
                   disabled={isLoading}
                 >
                   {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
-                    <>Track Now <ArrowRight size={18} className="ml-2" /></>
+                    <>Track Now <ArrowRight size={18} /></>
                   )}
                 </Button>
               </div>
