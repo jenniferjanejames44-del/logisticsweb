@@ -8,41 +8,42 @@
 
 @layer base {
   :root {
-    /* Light Background - Soft Blue-Gray */
-    --background: 210 25% 95%;
-    --foreground: 200 18% 26%;
+    /* Ocean Blue Professional Theme */
+    /* Main Background - Soft Gray */
+    --background: 210 20% 98%;
+    --foreground: 200 25% 25%;
 
-    /* Card - White */
+    /* Card - Pure White */
     --card: 0 0% 100%;
-    --card-foreground: 200 18% 26%;
+    --card-foreground: 201 90% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 200 18% 26%;
+    --popover-foreground: 201 90% 15%;
 
-    /* Primary - Deep Blue */
-    --primary: 232 74% 29%;
+    /* Primary - Ocean Blue */
+    --primary: 201 90% 15%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary/Accent - Orange Gradient */
+    /* Secondary/Accent - Vibrant Orange */
     --secondary: 18 100% 60%;
     --secondary-foreground: 0 0% 100%;
 
-    /* Muted */
-    --muted: 210 20% 90%;
-    --muted-foreground: 200 18% 40%;
+    /* Muted - Light Sky Blue */
+    --muted: 204 100% 97%;
+    --muted-foreground: 215 16% 47%;
 
-    /* Accent - Same as Secondary */
-    --accent: 18 100% 60%;
+    /* Accent - Sky Blue */
+    --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders */
-    --border: 210 20% 85%;
-    --input: 210 20% 85%;
-    --ring: 18 100% 60%;
+    /* Borders - Light Blue Tint */
+    --border: 204 100% 94%;
+    --input: 204 100% 94%;
+    --ring: 199 89% 48%;
 
     --radius: 0.75rem;
 
@@ -51,56 +52,56 @@
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 55%;
     --warning-foreground: 0 0% 100%;
-    --info: 217 91% 65%;
+    --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
 
-    /* Sidebar - Deep Blue */
-    --sidebar-background: 232 74% 29%;
+    /* Sidebar - Deep Ocean Blue */
+    --sidebar-background: 201 90% 15%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 18 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 232 74% 35%;
+    --sidebar-accent: 201 90% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.1;
-    --sidebar-ring: 18 100% 60%;
+    --sidebar-ring: 199 89% 48%;
 
     /* Chart Colors */
     --chart-1: 18 100% 60%;
-    --chart-2: 217 91% 60%;
+    --chart-2: 199 89% 48%;
     --chart-3: 142 76% 42%;
     --chart-4: 38 92% 55%;
     --chart-5: 280 80% 60%;
 
     /* Section Backgrounds */
-    --section-services: 122 39% 92%;
-    --section-hero-start: 0 0% 100%;
-    --section-hero-end: 206 100% 94%;
+    --section-services: 204 100% 97%;
+    --section-hero-start: 204 100% 97%;
+    --section-hero-end: 204 100% 94%;
   }
 
   .dark {
-    /* Dark theme variant */
-    --background: 225 33% 7%;
+    /* Dark Ocean Blue Theme */
+    --background: 201 90% 8%;
     --foreground: 0 0% 100%;
-    --card: 225 30% 10%;
+    --card: 201 80% 12%;
     --card-foreground: 0 0% 100%;
-    --popover: 225 30% 10%;
+    --popover: 201 80% 12%;
     --popover-foreground: 0 0% 100%;
-    --primary: 232 74% 29%;
+    --primary: 199 89% 48%;
     --primary-foreground: 0 0% 100%;
     --secondary: 18 100% 60%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 225 25% 15%;
-    --muted-foreground: 0 0% 70%;
-    --accent: 18 100% 60%;
+    --muted: 201 70% 15%;
+    --muted-foreground: 204 100% 85%;
+    --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 100% / 0.1;
     --input: 0 0% 100% / 0.1;
-    --ring: 18 100% 60%;
-    --section-services: 225 25% 12%;
-    --section-hero-start: 225 33% 10%;
-    --section-hero-end: 225 33% 7%;
+    --ring: 199 89% 48%;
+    --section-services: 201 70% 12%;
+    --section-hero-start: 201 80% 10%;
+    --section-hero-end: 201 90% 8%;
   }
 }
 
@@ -200,9 +201,9 @@
     background: linear-gradient(180deg, hsl(var(--section-hero-start)) 0%, hsl(var(--section-hero-end)) 100%);
   }
 
-  /* Section Gradient Overlay for images */
+  /* Section Gradient Overlay for images - Ocean Blue */
   .gradient-overlay {
-    background: linear-gradient(135deg, rgba(26, 35, 126, 0.85) 0%, rgba(25, 118, 210, 0.75) 100%);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.9) 0%, rgba(59, 130, 246, 0.85) 100%);
   }
 
   /* Custom Scrollbar */

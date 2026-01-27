@@ -48,18 +48,22 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-lg border-b border-white/10"
+          ? "bg-white border-b shadow-sm"
           : "bg-transparent"
       }`}
+      style={{ 
+        borderColor: isScrolled ? '#E5E7EB' : 'transparent',
+        boxShadow: isScrolled ? '0 1px 3px rgba(0,0,0,0.05)' : 'none'
+      }}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-12 h-12 rounded-full gradient-orange flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105">
+          <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105" style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' }}>
             R
           </div>
-          <span className="font-semibold text-xl text-white">
-            RAC <span className="gradient-text">Logistics</span>
+          <span className="font-semibold text-xl" style={{ color: isScrolled ? '#0C4A6E' : 'white' }}>
+            RAC <span style={{ color: '#FF6B35' }}>Logistics</span>
           </span>
         </Link>
 
@@ -69,7 +73,10 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-white/70 hover:text-white transition-colors duration-300"
+              className="font-medium transition-colors duration-300"
+              style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = isScrolled ? '#0EA5E9' : 'white'}
+              onMouseLeave={(e) => e.currentTarget.style.color = isScrolled ? '#475569' : 'rgba(255,255,255,0.8)'}
             >
               {link.name}
             </Link>
@@ -78,16 +85,20 @@ const Header = () => {
           {/* Services Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="font-medium text-white/70 hover:text-white transition-colors duration-300 flex items-center gap-1">
+              <button 
+                className="font-medium transition-colors duration-300 flex items-center gap-1"
+                style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+              >
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-56 p-2 glass border-white/10">
+            <DropdownMenuContent align="center" className="w-56 p-2 bg-white border border-gray-100 shadow-lg">
               <DropdownMenuItem asChild className="p-0 mb-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors w-full font-medium gradient-text"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 transition-colors w-full font-medium"
+                  style={{ color: '#0EA5E9' }}
                 >
                   View All Services
                 </Link>
@@ -96,10 +107,10 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors w-full"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full"
                   >
-                    <service.icon className="w-4 h-4 text-secondary" />
-                    <span className="text-white/80">{service.name}</span>
+                    <service.icon className="w-4 h-4" style={{ color: '#0EA5E9' }} />
+                    <span style={{ color: '#475569' }}>{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
@@ -110,7 +121,10 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-white/70 hover:text-white transition-colors duration-300"
+              className="font-medium transition-colors duration-300"
+              style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = isScrolled ? '#0EA5E9' : 'white'}
+              onMouseLeave={(e) => e.currentTarget.style.color = isScrolled ? '#475569' : 'rgba(255,255,255,0.8)'}
             >
               {link.name}
             </Link>
@@ -124,7 +138,8 @@ const Header = () => {
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 transition-colors"
+                  style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -132,14 +147,19 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white transition-colors"
+                className="flex items-center gap-2 px-4 py-2 transition-colors"
+                style={{ color: isScrolled ? '#475569' : 'rgba(255,255,255,0.8)' }}
               >
                 <User className="w-4 h-4" />
                 Dashboard
               </Link>
               <button 
                 onClick={() => signOut()}
-                className="btn-primary flex items-center gap-2"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white transition-all duration-300 hover:-translate-y-1"
+                style={{ 
+                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
+                  boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
+                }}
               >
                 Logout
               </button>
@@ -148,16 +168,34 @@ const Header = () => {
             <>
               <Link 
                 to="/pricing"
-                className="btn-primary flex items-center gap-2 group"
+                className="flex items-center gap-2 group px-6 py-2.5 rounded-xl font-bold text-white transition-all duration-300 hover:-translate-y-1"
+                style={{ 
+                  background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
+                  boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
+                }}
               >
                 Get Quote
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link 
-                to="/contact"
-                className="btn-secondary flex items-center gap-2 group"
+                to="/auth"
+                className="flex items-center gap-2 group px-6 py-2.5 rounded-xl font-bold transition-all duration-300 hover:-translate-y-1"
+                style={{ 
+                  background: '#FFFFFF',
+                  color: '#0EA5E9',
+                  border: '2px solid white',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#0EA5E9';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = '#FFFFFF';
+                  e.currentTarget.style.color = '#0EA5E9';
+                }}
               >
-                Contact Us
+                Sign Up
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </>
@@ -166,7 +204,11 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden w-10 h-10 rounded-xl glass flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
+          style={{ 
+            background: isScrolled ? 'rgba(14, 165, 233, 0.1)' : 'rgba(255,255,255,0.1)',
+            color: isScrolled ? '#0EA5E9' : 'white'
+          }}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -176,13 +218,14 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 gradient-dark transition-all duration-300 overflow-y-auto ${
+        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 transition-all duration-300 overflow-y-auto ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
+        style={{ background: 'linear-gradient(135deg, #0C4A6E 0%, #075985 100%)' }}
       >
         <div className="flex justify-end p-4">
           <button
-            className="w-10 h-10 rounded-xl glass flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-white hover:bg-white/10 transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close menu"
           >
@@ -202,8 +245,7 @@ const Header = () => {
             </Link>
           ))}
           
-          {/* Mobile Services Accordion */}
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-3">
             <button
               className="flex items-center justify-between text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
@@ -214,7 +256,8 @@ const Header = () => {
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[400px]" : "max-h-0"}`}>
               <Link
                 to="/services"
-                className="flex items-center gap-3 gradient-text font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all"
+                className="flex items-center gap-3 font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all"
+                style={{ color: '#0EA5E9' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 View All Services
@@ -280,17 +323,26 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full btn-primary text-center flex items-center justify-center gap-2"
+                  className="w-full text-center flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-white transition-all"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
+                    boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
+                  }}
                 >
                   Get Quote
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link 
-                  to="/contact" 
+                  to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full btn-secondary text-center flex items-center justify-center gap-2"
+                  className="w-full text-center flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold transition-all"
+                  style={{ 
+                    background: '#FFFFFF',
+                    color: '#0EA5E9',
+                    border: '2px solid white'
+                  }}
                 >
-                  Contact Us
+                  Sign Up
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </>
