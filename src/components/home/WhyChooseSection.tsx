@@ -6,16 +6,19 @@ const differentiators = [
     icon: Globe,
     title: "Global Network",
     description: "Connected to every corner of the world through our extensive logistics network spanning 150+ countries.",
+    emoji: "🌍",
   },
   {
     icon: Zap,
     title: "Smart Technology",
     description: "AI-powered tracking and route optimization for faster, more efficient deliveries every time.",
+    emoji: "⚡",
   },
   {
     icon: HeadphonesIcon,
     title: "24/7 Support",
     description: "Round-the-clock customer service with dedicated agents ready to assist you anytime.",
+    emoji: "🎧",
   },
 ];
 
@@ -23,9 +26,9 @@ const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-16 md:py-24 lg:py-32 bg-secondary relative overflow-hidden">
+    <section ref={ref} className="section-padding gradient-dark relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-5">
         <div 
           className="absolute inset-0"
           style={{
@@ -34,11 +37,11 @@ const WhyChooseSection = () => {
         />
       </div>
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative">
+      <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16">
           <span
-            className={`inline-flex items-center gap-2 bg-white/20 text-white font-semibold text-sm tracking-wide uppercase px-4 py-2 rounded-full mb-4 transition-all duration-600 ${
+            className={`badge-orange mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -46,34 +49,34 @@ const WhyChooseSection = () => {
             Our Advantage
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-semibold text-white leading-tight transition-all duration-600 delay-100 ${
+            className={`text-white transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Why Choose Us
+            Why Choose <span className="gradient-text">Us</span>
           </h2>
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group bg-card rounded-2xl p-8 md:p-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              className={`glass-card card-top-border p-10 group transition-all duration-600 ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
-              <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-105 transition-all duration-300">
-                <item.icon className="w-7 h-7 text-secondary group-hover:text-white transition-colors" />
+              <div className="w-[72px] h-[72px] gradient-orange rounded-2xl flex items-center justify-center mb-6 text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
+                {item.emoji}
               </div>
-              <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
+              <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed mb-6">
+              <p className="text-white/70 leading-relaxed mb-6">
                 {item.description}
               </p>
-              <div className="flex items-center gap-2 text-secondary font-medium text-sm">
+              <div className="flex items-center gap-2 gradient-text font-medium text-sm">
                 <CheckCircle size={16} />
                 <span>Guaranteed</span>
               </div>
