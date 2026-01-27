@@ -153,8 +153,11 @@ const Services = () => {
             <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
-            <Button variant="default" size="xl" asChild>
-              <Link to="/contact">Get in Touch</Link>
+            <Button variant="default" size="xl" className="group" asChild>
+              <Link to="/contact">
+                Get in Touch
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Link>
             </Button>
           </div>
         </section>

@@ -133,22 +133,22 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-col sm:flex-row gap-4 mb-8 sm:mb-16 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
               to="/pricing"
-              className="btn-secondary flex items-center justify-center gap-2 group"
+              className="btn btn-primary"
             >
               Get Quote
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="px-8 py-4 rounded-xl font-bold bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2 group"
+              className="btn btn-secondary"
             >
               Sign Up
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -181,7 +181,7 @@ const HeroSection = () => {
               <button 
                 onClick={handleTrackClick}
                 disabled={isLoading}
-                className="h-12 px-6 btn-primary flex items-center justify-center gap-2 rounded-xl"
+                className="h-14 px-8 btn btn-primary rounded-xl"
               >
                 {isLoading ? <Loader2 className="animate-spin" size={20} /> : (
                   <>Track Now <ArrowRight size={18} /></>

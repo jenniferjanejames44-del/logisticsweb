@@ -75,7 +75,7 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="btn-primary inline-flex items-center gap-2 group"
+              className="btn btn-primary"
             >
               Learn More
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
