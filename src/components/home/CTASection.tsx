@@ -32,19 +32,19 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-600 delay-300 ${
+          <div className={`flex flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-600 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="btn btn-primary"
+              className="btn btn-lg btn-primary group"
             >
               Get Quote
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/contact"
-              className="btn btn-secondary"
+              className="btn btn-lg btn-secondary group"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />

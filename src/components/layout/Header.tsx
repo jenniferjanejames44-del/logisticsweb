@@ -132,8 +132,8 @@ const Header = () => {
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className={`flex items-center gap-2 px-4 py-2 transition-colors ${
-                    isScrolled ? 'text-muted-foreground' : 'text-white/80'
+                  className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
+                    isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/80 hover:text-white'
                   }`}
                 >
                   <Shield className="w-4 h-4" />
@@ -142,8 +142,8 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className={`flex items-center gap-2 px-4 py-2 transition-colors ${
-                  isScrolled ? 'text-muted-foreground' : 'text-white/80'
+                className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
+                  isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/80 hover:text-white'
                 }`}
               >
                 <User className="w-4 h-4" />
@@ -151,7 +151,7 @@ const Header = () => {
               </Link>
               <button 
                 onClick={() => signOut()}
-                className="btn-primary flex items-center gap-2"
+                className="btn btn-sm btn-primary"
               >
                 Logout
               </button>
@@ -160,14 +160,14 @@ const Header = () => {
             <>
               <Link 
                 to="/pricing"
-                className="btn-secondary flex items-center gap-2 group"
+                className="btn btn-sm btn-secondary group"
               >
                 Get Quote
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link 
                 to="/auth"
-                className="btn-primary flex items-center gap-2 group"
+                className="btn btn-sm btn-primary group"
               >
                 Sign Up
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -264,7 +264,7 @@ const Header = () => {
                   <Link 
                     to="/admin" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full px-6 py-3 text-white hover:bg-white/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+                    className="w-full px-5 py-3.5 text-white bg-white/5 hover:bg-white/15 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
                   >
                     <Shield className="w-4 h-4" />
                     Admin
@@ -273,13 +273,13 @@ const Header = () => {
                 <Link 
                   to="/dashboard" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full px-6 py-3 text-white hover:bg-white/10 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+                  className="w-full px-5 py-3.5 text-white bg-white/5 hover:bg-white/15 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 border border-white/10"
                 >
                   <User className="w-4 h-4" />
                   Dashboard
                 </Link>
                 <button 
-                  className="w-full btn-primary"
+                  className="btn btn-primary w-full"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -293,18 +293,18 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center btn-secondary flex items-center justify-center gap-2"
+                  className="btn btn-secondary w-full group"
                 >
                   Get Quote
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center btn-primary flex items-center justify-center gap-2"
+                  className="btn btn-primary w-full group"
                 >
                   Sign Up
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </>
             )}

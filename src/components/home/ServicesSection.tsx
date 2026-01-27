@@ -101,7 +101,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="btn-primary inline-flex items-center gap-2 group"
+            className="btn btn-lg btn-primary group"
           >
             View All Services
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
