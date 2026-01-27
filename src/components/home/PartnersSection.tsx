@@ -25,12 +25,12 @@ const PartnersSection = () => {
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Partners Marquee */}
-        <div className={`relative overflow-hidden py-6 sm:py-8 bg-gradient-to-r from-card/50 via-card to-card/50 rounded-2xl border border-border/30 shadow-sm transition-all duration-700 delay-200 ${
+        <div className={`relative overflow-hidden py-6 sm:py-8 transition-all duration-700 delay-200 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}>
           {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-r from-card to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-l from-card to-transparent z-10" />
+          <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-r from-muted/30 to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 lg:w-48 bg-gradient-to-l from-muted/30 to-transparent z-10" />
           
           <div className="flex animate-marquee">
             {[...partners, ...partners, ...partners].map((partner, index) => (
