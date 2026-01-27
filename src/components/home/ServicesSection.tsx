@@ -27,36 +27,28 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%)' }}>
+    <section ref={ref} className="section-padding bg-section-blue relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm uppercase tracking-wide mb-6 transition-all duration-600 ${
+            className={`badge-blue mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ 
-              background: 'rgba(14, 165, 233, 0.1)', 
-              border: '2px solid #0EA5E9', 
-              color: '#0284C7',
-              fontWeight: 700 
-            }}
           >
             Our Services
           </span>
           <h2
-            className={`mb-6 transition-all duration-600 delay-100 ${
+            className={`text-primary mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ color: '#0C4A6E', fontWeight: 800, fontSize: 'clamp(2rem, 4vw, 2.75rem)' }}
           >
             Comprehensive Logistics <span className="gradient-text">Solutions</span>
           </h2>
           <p
-            className={`text-lg transition-all duration-600 delay-200 ${
+            className={`text-muted-foreground text-lg transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ color: '#475569' }}
           >
             End-to-end logistics services tailored to your business needs with unmatched reliability.
           </p>
@@ -68,27 +60,10 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`overflow-hidden group transition-all duration-[400ms] ${
+              className={`glass-card card-top-border overflow-hidden group transition-all duration-[400ms] ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ 
-                transitionDelay: `${index * 100 + 200}ms`,
-                background: '#FFFFFF',
-                border: '2px solid #E0F2FE',
-                borderRadius: '20px',
-                boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#0EA5E9';
-                e.currentTarget.style.boxShadow = '0 20px 40px rgba(14, 165, 233, 0.15)';
-                e.currentTarget.style.transform = 'translateY(-8px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#E0F2FE';
-                e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
               {/* Service Image with Overlay */}
               <div className="relative w-full h-[240px] overflow-hidden">
@@ -98,21 +73,18 @@ const ServicesSection = () => {
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                 />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%)' }} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
 
               {/* Content */}
               <div className="p-7">
-                <h3 className="text-2xl mb-4" style={{ color: '#0C4A6E', fontWeight: 700 }}>
+                <h3 className="text-2xl font-bold text-primary mb-4">
                   {service.title}
                 </h3>
-                <p className="leading-relaxed mb-6" style={{ color: '#64748B' }}>
+                <p className="text-muted-foreground leading-relaxed mb-6">
                   {service.description}
                 </p>
-                <div 
-                  className="inline-flex items-center gap-2 font-semibold group-hover:gap-4 transition-all duration-300"
-                  style={{ color: '#0EA5E9' }}
-                >
+                <div className="inline-flex items-center gap-2 font-semibold text-accent group-hover:gap-4 transition-all duration-300">
                   <span>Learn More</span>
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -129,19 +101,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center gap-2 group px-8 py-4 rounded-xl font-bold text-white transition-all duration-300 hover:-translate-y-1"
-            style={{ 
-              background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)',
-              boxShadow: '0 6px 20px rgba(255, 107, 53, 0.4)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, #E55A28 0%, #D94E1F 100%)';
-              e.currentTarget.style.boxShadow = '0 10px 30px rgba(229, 90, 40, 0.5)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(255, 107, 53, 0.4)';
-            }}
+            className="btn-primary inline-flex items-center gap-2 group"
           >
             View All Services
             <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />

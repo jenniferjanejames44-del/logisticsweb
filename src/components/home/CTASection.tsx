@@ -6,17 +6,10 @@ const CTASection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="section-padding gradient-dark relative overflow-hidden">
-      {/* Animated Orb */}
-      <div 
-        className="absolute w-[600px] h-[600px] rounded-full animate-float-orb opacity-20 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(255, 107, 53, 0.4) 0%, transparent 60%)',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
+    <section ref={ref} className="section-padding bg-navy relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
 
       <div className="section-container relative z-10">
         <div
@@ -29,10 +22,10 @@ const CTASection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <span className="text-white">Ready to Ship </span>
-            <span className="gradient-text">Globally?</span>
+            <span className="text-secondary">Globally?</span>
           </h2>
           
-          <p className={`text-lg md:text-xl text-white/70 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
+          <p className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             Join thousands of businesses who trust RAC Logistics for their shipping needs. 
@@ -44,14 +37,14 @@ const CTASection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="btn-primary flex items-center gap-2 group"
+              className="btn-secondary flex items-center gap-2 group"
             >
               Get Quote
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/contact"
-              className="btn-secondary flex items-center gap-2 group"
+              className="px-8 py-4 rounded-xl font-bold bg-white/10 text-white border-2 border-white/30 hover:bg-white hover:text-primary transition-all duration-300 hover:-translate-y-1 flex items-center gap-2 group"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />

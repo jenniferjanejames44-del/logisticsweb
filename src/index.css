@@ -3,105 +3,102 @@
 @tailwind components;
 @tailwind utilities;
 
-/* RAC Logistics Professional Light Design System */
-/* Background: #F0F4F8 | Heading: #1A237E | Accent: #ff6b35 → #ff8c42 */
+/* RAC Logistics - Professional Blue & Yellow Design System */
 
 @layer base {
   :root {
-    /* Ocean Blue Professional Theme */
-    /* Main Background - Soft Gray */
-    --background: 210 20% 98%;
-    --foreground: 200 25% 25%;
+    /* Professional Blue & Yellow Theme */
+    /* Main Background - Clean White */
+    --background: 0 0% 99%;
+    --foreground: 222 47% 20%;
 
     /* Card - Pure White */
     --card: 0 0% 100%;
-    --card-foreground: 201 90% 15%;
+    --card-foreground: 222 47% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 201 90% 15%;
+    --popover-foreground: 222 47% 20%;
 
-    /* Primary - Ocean Blue */
-    --primary: 201 90% 15%;
+    /* Primary - Deep Navy Blue */
+    --primary: 222 47% 20%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary/Accent - Vibrant Orange */
-    --secondary: 18 100% 60%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary/Accent - Golden Yellow */
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 222 47% 20%;
 
-    /* Muted - Light Sky Blue */
-    --muted: 204 100% 97%;
-    --muted-foreground: 215 16% 47%;
+    /* Muted - Light Gray */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    /* Accent - Sky Blue */
-    --accent: 199 89% 48%;
+    /* Accent - Bright Blue */
+    --accent: 217 91% 60%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders - Light Blue Tint */
-    --border: 204 100% 94%;
-    --input: 204 100% 94%;
-    --ring: 199 89% 48%;
+    /* Borders - Soft Gray */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
     /* Status Colors */
     --success: 142 76% 42%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 55%;
-    --warning-foreground: 0 0% 100%;
-    --info: 199 89% 48%;
+    --warning: 45 93% 47%;
+    --warning-foreground: 222 47% 20%;
+    --info: 217 91% 60%;
     --info-foreground: 0 0% 100%;
 
-    /* Sidebar - Deep Ocean Blue */
-    --sidebar-background: 201 90% 15%;
+    /* Sidebar - Deep Navy */
+    --sidebar-background: 222 47% 15%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 18 100% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 201 90% 20%;
+    --sidebar-primary: 45 93% 47%;
+    --sidebar-primary-foreground: 222 47% 20%;
+    --sidebar-accent: 222 47% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.1;
-    --sidebar-ring: 199 89% 48%;
+    --sidebar-ring: 217 91% 60%;
 
     /* Chart Colors */
-    --chart-1: 18 100% 60%;
-    --chart-2: 199 89% 48%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 45 93% 47%;
     --chart-3: 142 76% 42%;
-    --chart-4: 38 92% 55%;
-    --chart-5: 280 80% 60%;
+    --chart-4: 280 80% 60%;
+    --chart-5: 0 84% 60%;
 
     /* Section Backgrounds */
-    --section-services: 204 100% 97%;
-    --section-hero-start: 204 100% 97%;
-    --section-hero-end: 204 100% 94%;
+    --section-light: 220 14% 96%;
+    --section-blue: 217 91% 97%;
   }
 
   .dark {
-    /* Dark Ocean Blue Theme */
-    --background: 201 90% 8%;
-    --foreground: 0 0% 100%;
-    --card: 201 80% 12%;
-    --card-foreground: 0 0% 100%;
-    --popover: 201 80% 12%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 199 89% 48%;
+    /* Dark Theme */
+    --background: 222 47% 11%;
+    --foreground: 0 0% 98%;
+    --card: 222 47% 15%;
+    --card-foreground: 0 0% 98%;
+    --popover: 222 47% 15%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 18 100% 60%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 201 70% 15%;
-    --muted-foreground: 204 100% 85%;
-    --accent: 199 89% 48%;
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 222 47% 20%;
+    --muted: 222 47% 18%;
+    --muted-foreground: 220 14% 70%;
+    --accent: 217 91% 60%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 100% / 0.1;
     --input: 0 0% 100% / 0.1;
-    --ring: 199 89% 48%;
-    --section-services: 201 70% 12%;
-    --section-hero-start: 201 80% 10%;
-    --section-hero-end: 201 90% 8%;
+    --ring: 217 91% 60%;
+    --section-light: 222 47% 13%;
+    --section-blue: 222 47% 15%;
   }
 }
 
@@ -158,52 +155,52 @@
 }
 
 @layer utilities {
-  /* Glass Effect */
+  /* Glass Effect - Light theme friendly */
   .glass {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(30, 58, 138, 0.1);
   }
 
   .glass-strong {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(30, 58, 138, 0.15);
   }
 
-  /* Gradient Text */
+  /* Gradient Text - Blue to Yellow */
   .gradient-text {
-    background: linear-gradient(135deg, hsl(18 100% 60%) 0%, hsl(25 100% 55%) 100%);
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(45 93% 47%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Orange Gradient Background */
-  .gradient-orange {
-    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+  /* Yellow/Gold Gradient Background */
+  .gradient-yellow {
+    background: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(38 92% 50%) 100%);
   }
 
-  /* Deep Blue Background */
-  .gradient-dark {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(232 74% 35%) 100%);
+  /* Blue Gradient Background */
+  .gradient-blue {
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(222 47% 20%) 100%);
   }
 
-  /* Services Section Background */
-  .bg-services {
-    background-color: hsl(var(--section-services));
+  /* Light Section Background */
+  .bg-section-light {
+    background: hsl(var(--section-light));
   }
 
-  /* Hero Section Background */
-  .bg-hero-gradient {
-    background: linear-gradient(180deg, hsl(var(--section-hero-start)) 0%, hsl(var(--section-hero-end)) 100%);
+  /* Blue Tinted Section */
+  .bg-section-blue {
+    background: linear-gradient(180deg, hsl(217 91% 97%) 0%, hsl(220 14% 96%) 100%);
   }
 
-  /* Section Gradient Overlay for images - Ocean Blue */
-  .gradient-overlay {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.9) 0%, rgba(59, 130, 246, 0.85) 100%);
+  /* Navy Section - for contrast sections */
+  .bg-navy {
+    background: linear-gradient(135deg, hsl(222 47% 15%) 0%, hsl(222 47% 20%) 100%);
   }
 
   /* Custom Scrollbar */
@@ -212,22 +209,22 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: hsl(var(--muted));
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: hsl(var(--border));
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: hsl(217 91% 60% / 0.5);
   }
 
   /* Selection Color */
   ::selection {
-    background: rgba(255, 107, 53, 0.3);
-    color: white;
+    background: hsl(217 91% 60% / 0.3);
+    color: hsl(222 47% 20%);
   }
 }
 
@@ -269,6 +266,16 @@
     animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
+  /* Marquee Animation */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
   /* Hover Effects */
   .hover-lift {
     @apply transition-all duration-300 ease-out;
@@ -283,21 +290,22 @@
     box-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
   }
 
-  /* Glass Card - Now white cards with shadow */
+  /* Glass Card - Clean white with blue accent */
   .glass-card {
     background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
+    border: 2px solid hsl(var(--border));
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 24px rgba(30, 58, 138, 0.08);
     @apply transition-all duration-300;
   }
 
   .glass-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: hsl(217 91% 60%);
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15);
   }
 
-  /* Top Border Animation on Hover */
+  /* Top Border Animation on Hover - Blue to Yellow */
   .card-top-border {
     position: relative;
     overflow: hidden;
@@ -310,7 +318,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #ff6b35, #ff8c42);
+    background: linear-gradient(90deg, hsl(217 91% 60%), hsl(45 93% 47%));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
@@ -329,48 +337,56 @@
     @apply max-w-[1400px] mx-auto;
   }
 
-  /* Button Styles */
+  /* Button Styles - Blue Primary */
   .btn-primary {
-    background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+    background: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(222 47% 30%) 100%);
     @apply px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all duration-300;
     min-height: 50px;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
   }
 
   .btn-primary:hover {
-    background: linear-gradient(135deg, #E55A28 0%, #E67E3C 100%);
+    background: linear-gradient(135deg, hsl(217 91% 55%) 0%, hsl(222 47% 25%) 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.45);
   }
 
   .btn-primary:active {
     transform: translateY(-1px);
   }
 
+  /* Button Secondary - Yellow */
   .btn-secondary {
-    background: hsl(var(--card));
-    border: 2px solid #ff6b35;
-    color: #ff6b35;
+    background: linear-gradient(135deg, hsl(45 93% 47%) 0%, hsl(38 92% 50%) 100%);
+    color: hsl(222 47% 20%);
     @apply px-8 py-4 rounded-xl font-bold transition-all duration-300;
     min-height: 50px;
+    box-shadow: 0 6px 20px rgba(234, 179, 8, 0.35);
   }
 
   .btn-secondary:hover {
     transform: translateY(-3px);
-    background: #ff6b35;
-    color: white;
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 10px 30px rgba(234, 179, 8, 0.45);
   }
 
   .btn-secondary:active {
     transform: translateY(-1px);
   }
 
-  /* Badge Style */
-  .badge-orange {
+  /* Badge Style - Blue */
+  .badge-blue {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide;
-    background: rgba(255, 107, 53, 0.1);
-    border: 1px solid rgba(255, 107, 53, 0.3);
-    color: #ff6b35;
+    background: hsl(217 91% 60% / 0.1);
+    border: 2px solid hsl(217 91% 60%);
+    color: hsl(217 91% 50%);
+  }
+
+  /* Badge Style - Yellow */
+  .badge-yellow {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide;
+    background: hsl(45 93% 47% / 0.1);
+    border: 2px solid hsl(45 93% 47%);
+    color: hsl(45 93% 40%);
   }
 }
 

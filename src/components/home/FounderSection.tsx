@@ -8,7 +8,7 @@ const FounderSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="section-padding gradient-overlay relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Image */}
@@ -29,12 +29,12 @@ const FounderSection = () => {
               </div>
               
               {/* Quote Badge */}
-              <div className="absolute -bottom-4 -right-4 w-16 h-16 gradient-orange rounded-xl flex items-center justify-center shadow-lg">
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 gradient-blue rounded-xl flex items-center justify-center shadow-lg">
                 <Quote size={28} className="text-white" />
               </div>
               
               {/* Badge */}
-              <div className="absolute bottom-6 left-6 glass px-4 py-2 rounded-full">
+              <div className="absolute bottom-6 left-6 glass-strong px-4 py-2 rounded-full">
                 <span className="gradient-text font-semibold text-sm">🚢 Ocean Shipping</span>
               </div>
             </div>
@@ -46,13 +46,13 @@ const FounderSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
             }`}
           >
-            <span className="badge-orange mb-6">
+            <span className="badge-blue mb-6">
               Leadership
             </span>
-            <h2 className="text-white mb-8">
+            <h2 className="text-primary mb-8">
               A Message From Our <span className="gradient-text">Founder</span>
             </h2>
-            <blockquote className={`text-lg md:text-xl text-white/80 leading-relaxed mb-8 transition-all duration-600 delay-300 ${
+            <blockquote className={`text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 transition-all duration-600 delay-300 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
               "At RAC Logistics, we don't just move packages—we build bridges between 
@@ -62,12 +62,12 @@ const FounderSection = () => {
             <div className={`flex items-center gap-4 mb-8 transition-all duration-600 delay-400 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
-              <div className="w-12 h-1 gradient-orange rounded-full" />
+              <div className="w-12 h-1 gradient-blue rounded-full" />
               <div>
-                <h4 className="font-semibold text-white text-lg">
+                <h4 className="font-semibold text-primary text-lg">
                   Offor Rex C.K
                 </h4>
-                <p className="text-white/60">
+                <p className="text-muted-foreground">
                   Founder & CEO, RAC Logistics
                 </p>
               </div>

@@ -6,19 +6,16 @@ const differentiators = [
     icon: Globe,
     title: "Global Network",
     description: "Connected to every corner of the world through our extensive logistics network spanning 150+ countries.",
-    emoji: "🌍",
   },
   {
     icon: Zap,
     title: "Smart Technology",
     description: "AI-powered tracking and route optimization for faster, more efficient deliveries every time.",
-    emoji: "⚡",
   },
   {
     icon: HeadphonesIcon,
     title: "24/7 Support",
     description: "Round-the-clock customer service with dedicated agents ready to assist you anytime.",
-    emoji: "🎧",
   },
 ];
 
@@ -26,13 +23,13 @@ const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding gradient-dark relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-section-blue relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-[0.03]">
         <div 
           className="absolute inset-0"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e3a8a' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
       </div>
@@ -41,7 +38,7 @@ const WhyChooseSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span
-            className={`badge-orange mb-6 transition-all duration-600 ${
+            className={`badge-blue mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -49,7 +46,7 @@ const WhyChooseSection = () => {
             Our Advantage
           </span>
           <h2
-            className={`text-white transition-all duration-600 delay-100 ${
+            className={`text-primary transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -67,16 +64,16 @@ const WhyChooseSection = () => {
               }`}
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
-              <div className="w-[72px] h-[72px] gradient-orange rounded-2xl flex items-center justify-center mb-6 text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                {item.emoji}
+              <div className="w-[72px] h-[72px] gradient-blue rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <item.icon size={32} className="text-white" />
               </div>
-              <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
+              <h3 className="text-xl md:text-2xl font-semibold text-primary mb-4">
                 {item.title}
               </h3>
-              <p className="text-white/70 leading-relaxed mb-6">
+              <p className="text-muted-foreground leading-relaxed mb-6">
                 {item.description}
               </p>
-              <div className="flex items-center gap-2 gradient-text font-medium text-sm">
+              <div className="flex items-center gap-2 text-accent font-medium text-sm">
                 <CheckCircle size={16} />
                 <span>Guaranteed</span>
               </div>
