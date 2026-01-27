@@ -82,33 +82,6 @@ const WhyChooseSection = () => {
           </p>
         </div>
 
-
-        {/* Differentiators */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {differentiators.map((item, index) => (
-            <div
-              key={item.title}
-              className={`group bg-gradient-to-br from-card to-muted/20 rounded-2xl p-8 lg:p-10 shadow-2xl hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-3 border border-border/30 ${
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-              style={{ transitionDelay: `${(index + 4) * 100}ms` }}
-            >
-              <div className="w-16 h-16 lg:w-18 lg:h-18 bg-gradient-to-br from-secondary/20 to-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-secondary group-hover:scale-110 transition-all shadow-sm">
-                <item.icon className="w-8 h-8 text-secondary group-hover:text-white transition-colors" />
-              </div>
-              <h3 className="text-xl sm:text-2xl font-heading font-bold text-foreground mb-4">
-                {item.title}
-              </h3>
-              <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                {item.description}
-              </p>
-              <div className="mt-6 flex items-center gap-2 text-secondary font-semibold">
-                <CheckCircle size={18} className="fill-secondary/20" />
-                <span>Guaranteed</span>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
