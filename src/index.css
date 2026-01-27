@@ -3,24 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* RAC Logistics Premium Dark Design System */
-/* Primary: #0a0e1a → #1a1f35 | Accent: #ff6b35 → #ff8c42 | Glass: White 5-15% */
+/* RAC Logistics Professional Light Design System */
+/* Background: #F0F4F8 | Heading: #1A237E | Accent: #ff6b35 → #ff8c42 */
 
 @layer base {
   :root {
-    /* Dark Background Gradient Base */
-    --background: 225 33% 7%;
-    --foreground: 0 0% 100%;
+    /* Light Background - Soft Blue-Gray */
+    --background: 210 25% 95%;
+    --foreground: 200 18% 26%;
 
-    /* Card with Glass Effect */
-    --card: 225 30% 10%;
-    --card-foreground: 0 0% 100%;
+    /* Card - White */
+    --card: 0 0% 100%;
+    --card-foreground: 200 18% 26%;
 
-    --popover: 225 30% 10%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 18% 26%;
 
-    /* Primary - Dark Navy */
-    --primary: 225 33% 7%;
+    /* Primary - Deep Blue */
+    --primary: 232 74% 29%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary/Accent - Orange Gradient */
@@ -28,8 +28,8 @@
     --secondary-foreground: 0 0% 100%;
 
     /* Muted */
-    --muted: 225 25% 15%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 210 20% 90%;
+    --muted-foreground: 200 18% 40%;
 
     /* Accent - Same as Secondary */
     --accent: 18 100% 60%;
@@ -39,9 +39,9 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders with Glass Effect */
-    --border: 0 0% 100% / 0.1;
-    --input: 0 0% 100% / 0.1;
+    /* Borders */
+    --border: 210 20% 85%;
+    --input: 210 20% 85%;
     --ring: 18 100% 60%;
 
     --radius: 0.75rem;
@@ -54,12 +54,12 @@
     --info: 217 91% 65%;
     --info-foreground: 0 0% 100%;
 
-    /* Sidebar */
-    --sidebar-background: 225 33% 5%;
+    /* Sidebar - Deep Blue */
+    --sidebar-background: 232 74% 29%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 18 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 225 30% 12%;
+    --sidebar-accent: 232 74% 35%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.1;
     --sidebar-ring: 18 100% 60%;
@@ -70,17 +70,22 @@
     --chart-3: 142 76% 42%;
     --chart-4: 38 92% 55%;
     --chart-5: 280 80% 60%;
+
+    /* Section Backgrounds */
+    --section-services: 122 39% 92%;
+    --section-hero-start: 0 0% 100%;
+    --section-hero-end: 206 100% 94%;
   }
 
   .dark {
-    /* Same as root - already dark theme */
+    /* Dark theme variant */
     --background: 225 33% 7%;
     --foreground: 0 0% 100%;
     --card: 225 30% 10%;
     --card-foreground: 0 0% 100%;
     --popover: 225 30% 10%;
     --popover-foreground: 0 0% 100%;
-    --primary: 225 33% 7%;
+    --primary: 232 74% 29%;
     --primary-foreground: 0 0% 100%;
     --secondary: 18 100% 60%;
     --secondary-foreground: 0 0% 100%;
@@ -93,6 +98,9 @@
     --border: 0 0% 100% / 0.1;
     --input: 0 0% 100% / 0.1;
     --ring: 18 100% 60%;
+    --section-services: 225 25% 12%;
+    --section-hero-start: 225 33% 10%;
+    --section-hero-end: 225 33% 7%;
   }
 }
 
@@ -114,19 +122,19 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans tracking-tight leading-tight;
+    @apply font-sans tracking-tight leading-tight text-primary;
     text-rendering: optimizeLegibility;
   }
 
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    @apply text-4xl md:text-5xl lg:text-6xl font-extrabold;
+    font-size: clamp(2rem, 5vw, 4rem);
     line-height: 1.1;
   }
 
   h2 {
     @apply font-bold;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.5rem, 4vw, 3rem);
     line-height: 1.2;
   }
 
@@ -135,9 +143,16 @@
   }
 
   p {
-    @apply text-foreground/70;
+    @apply text-foreground;
     font-size: 1.125rem;
     line-height: 1.75;
+  }
+
+  /* Mobile text optimization */
+  @media (max-width: 768px) {
+    h1 { @apply font-extrabold text-3xl; }
+    h2 { @apply font-bold text-2xl; }
+    h3 { @apply font-semibold text-xl; }
   }
 }
 
@@ -170,14 +185,24 @@
     background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
   }
 
-  /* Dark Gradient Background */
+  /* Deep Blue Background */
   .gradient-dark {
-    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(232 74% 35%) 100%);
   }
 
-  /* Section Gradient Overlay */
+  /* Services Section Background */
+  .bg-services {
+    background-color: hsl(var(--section-services));
+  }
+
+  /* Hero Section Background */
+  .bg-hero-gradient {
+    background: linear-gradient(180deg, hsl(var(--section-hero-start)) 0%, hsl(var(--section-hero-end)) 100%);
+  }
+
+  /* Section Gradient Overlay for images */
   .gradient-overlay {
-    background: linear-gradient(180deg, rgba(26, 31, 53, 0.5) 0%, rgba(10, 14, 26, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(26, 35, 126, 0.85) 0%, rgba(25, 118, 210, 0.75) 100%);
   }
 
   /* Custom Scrollbar */
@@ -257,19 +282,18 @@
     box-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
   }
 
-  /* Glass Card */
+  /* Glass Card - Now white cards with shadow */
   .glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
     border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     @apply transition-all duration-300;
   }
 
   .glass-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   }
 
   /* Top Border Animation on Hover */
@@ -307,25 +331,37 @@
   /* Button Styles */
   .btn-primary {
     background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-    @apply px-8 py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300;
+    @apply px-8 py-4 rounded-xl font-bold text-white shadow-lg transition-all duration-300;
+    min-height: 50px;
   }
 
   .btn-primary:hover {
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #E55A28 0%, #E67E3C 100%);
+    transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
   }
 
+  .btn-primary:active {
+    transform: translateY(-1px);
+  }
+
   .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    @apply px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300;
+    background: hsl(var(--card));
+    border: 2px solid #ff6b35;
+    color: #ff6b35;
+    @apply px-8 py-4 rounded-xl font-bold transition-all duration-300;
+    min-height: 50px;
   }
 
   .btn-secondary:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+    background: #ff6b35;
+    color: white;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(-1px);
   }
 
   /* Badge Style */
