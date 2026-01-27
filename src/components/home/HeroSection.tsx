@@ -171,19 +171,6 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Trust Badge - Enhanced with pulse animation */}
-          <div className={`inline-flex items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-lg rounded-full px-6 py-3 mb-8 shadow-xl border border-white/30 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-          }`}>
-            <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
-            <span className="text-sm sm:text-base text-white font-semibold tracking-wide">
-              Trusted by 10,000+ Businesses Worldwide
-            </span>
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
-            </span>
-          </div>
 
           {/* Main Headline - MAXIMUM CONTRAST */}
           <h1 className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-extrabold leading-[0.95] mb-6 tracking-tight transition-all duration-700 delay-100 ${
@@ -402,37 +389,6 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Trust Indicators */}
-          <div className={`mt-16 sm:mt-20 grid grid-cols-3 max-w-3xl mx-auto gap-4 sm:gap-8 transition-all duration-700 delay-500 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}>
-            {[
-              { icon: MapPin, text: "150+ Countries", highlight: "Global" },
-              { icon: Clock, text: "24/7 Support", highlight: "Always" },
-              { icon: Shield, text: "Fully Insured", highlight: "100%" },
-            ].map((item, index) => (
-              <div 
-                key={index} 
-                className={`flex flex-col items-center text-center group transition-all duration-500 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
-                style={{ transitionDelay: `${600 + index * 100}ms` }}
-              >
-                <div className="relative mb-3 sm:mb-4">
-                  <div className="absolute inset-0 bg-secondary/30 rounded-xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-secondary to-[hsl(24,95%,45%)] rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                    <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                </div>
-                <span className="text-secondary font-extrabold text-xs sm:text-sm tracking-wide mb-0.5">
-                  {item.highlight}
-                </span>
-                <span className="text-white text-xs sm:text-sm font-semibold">
-                  {item.text}
-                </span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
