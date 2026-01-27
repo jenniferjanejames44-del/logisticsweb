@@ -69,8 +69,8 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-medium transition-colors duration-300 hover:text-accent ${
-                isScrolled ? 'text-muted-foreground' : 'text-white/80 hover:text-white'
+              className={`font-medium transition-colors duration-300 ${
+                isScrolled ? 'text-muted-foreground hover:text-secondary' : 'text-white/80 hover:text-secondary'
               }`}
             >
               {link.name}
@@ -81,7 +81,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className={`font-medium transition-colors duration-300 flex items-center gap-1 ${
+                className={`font-medium transition-colors duration-300 flex items-center gap-1 hover:text-secondary ${
                   isScrolled ? 'text-muted-foreground' : 'text-white/80'
                 }`}
               >
@@ -116,8 +116,8 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-medium transition-colors duration-300 hover:text-accent ${
-                isScrolled ? 'text-muted-foreground' : 'text-white/80 hover:text-white'
+              className={`font-medium transition-colors duration-300 ${
+                isScrolled ? 'text-muted-foreground hover:text-secondary' : 'text-white/80 hover:text-secondary'
               }`}
             >
               {link.name}
@@ -209,7 +209,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -218,7 +218,7 @@ const Header = () => {
           
           <div className="flex flex-col gap-3">
             <button
-              className="flex items-center justify-between text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="flex items-center justify-between text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -236,7 +236,7 @@ const Header = () => {
                 <Link
                   key={service.name}
                   to={service.href}
-                  className="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 py-3 px-8 rounded-lg transition-all"
+                  className="flex items-center gap-3 text-white/60 hover:text-secondary hover:bg-white/10 py-3 px-8 rounded-lg transition-all"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <service.icon className="w-4 h-4" />
@@ -250,7 +250,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-white hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
