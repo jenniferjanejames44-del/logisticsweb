@@ -326,7 +326,7 @@ const Blog = () => {
                 placeholder="Enter your email"
                 className="h-12 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
               />
-              <Button variant="cta" size="lg">
+              <Button variant="default" size="lg">
                 Subscribe
               </Button>
             </div>

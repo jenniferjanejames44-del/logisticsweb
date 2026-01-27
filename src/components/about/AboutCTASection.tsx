@@ -23,14 +23,14 @@ const AboutCTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/contact"
-              className="w-full sm:w-auto px-6 py-3 bg-secondary text-white font-bold text-base rounded-xl hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
+              className="btn btn-primary w-full sm:w-auto"
             >
               Contact Us
               <ArrowRight size={18} />
             </Link>
             <Link 
               to="/services"
-              className="w-full sm:w-auto px-6 py-3 bg-white text-foreground border-2 border-foreground font-bold text-base rounded-xl hover:bg-foreground hover:text-white hover:scale-[1.02] transition-all duration-300 inline-flex items-center justify-center gap-2"
+              className="btn bg-[#0C4A6E] text-white hover:bg-[#0C4A6E]/90 hover:-translate-y-0.5 w-full sm:w-auto"
             >
               View Services
               <ArrowRight size={18} />

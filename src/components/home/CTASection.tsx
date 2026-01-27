@@ -37,14 +37,14 @@ const CTASection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="btn-secondary flex items-center gap-2 group"
+              className="btn btn-primary"
             >
               Get Quote
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/contact"
-              className="px-8 py-4 rounded-xl font-bold bg-white/10 text-white border-2 border-white/30 hover:bg-white hover:text-primary transition-all duration-300 hover:-translate-y-1 flex items-center gap-2 group"
+              className="btn btn-secondary"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
