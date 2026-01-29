@@ -8,60 +8,30 @@ const CTASection = () => {
   const parallaxOffset = useParallax(0.3);
 
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden">
-      {/* Professional Background Image - Main */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center will-change-transform"
-        style={{ 
-          backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80)',
-          transform: `translateY(${parallaxOffset * 0.15}px) scale(1.15)`,
-        }}
-      />
-      
-      {/* Secondary Background Images - Floating Elements */}
-      <div 
-        className="absolute -left-20 top-1/4 w-64 h-64 rounded-2xl overflow-hidden opacity-30 will-change-transform shadow-2xl"
-        style={{ 
-          transform: `translateY(${parallaxOffset * 0.4}px) rotate(-6deg)`,
-        }}
-      >
+    <section ref={ref} className="section-padding relative overflow-hidden min-h-[500px]">
+      {/* Background Image Grid */}
+      <div className="absolute inset-0 grid grid-cols-3 gap-2 opacity-40">
         <img 
-          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=400&q=80" 
-          alt="Cargo ship"
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=80" 
+          alt="Cargo logistics"
           className="w-full h-full object-cover"
         />
-      </div>
-      
-      <div 
-        className="absolute -right-16 bottom-1/4 w-56 h-56 rounded-2xl overflow-hidden opacity-25 will-change-transform shadow-2xl"
-        style={{ 
-          transform: `translateY(${-parallaxOffset * 0.3}px) rotate(8deg)`,
-        }}
-      >
         <img 
-          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=400&q=80" 
+          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80" 
+          alt="Cargo ship at sea"
+          className="w-full h-full object-cover"
+        />
+        <img 
+          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=80" 
           alt="Shipping containers"
           className="w-full h-full object-cover"
         />
       </div>
       
-      <div 
-        className="absolute left-1/4 -bottom-10 w-48 h-48 rounded-2xl overflow-hidden opacity-20 will-change-transform shadow-2xl hidden lg:block"
-        style={{ 
-          transform: `translateY(${-parallaxOffset * 0.25}px) rotate(-3deg)`,
-        }}
-      >
-        <img 
-          src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&q=80" 
-          alt="Airplane cargo"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      
-      {/* Gradient Overlay for Contrast - Lighter to show images */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/80 via-[#0C4A6E]/75 to-[#0A1628]/80" />
+      {/* Gradient Overlay for Text Readability */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/85 via-[#0C4A6E]/80 to-[#0A1628]/85" />
 
-      {/* Decorative Glow Elements with Parallax */}
+      {/* Decorative Glow Elements */}
       <div 
         className="absolute top-0 left-0 w-96 h-96 bg-secondary/15 rounded-full blur-3xl will-change-transform" 
         style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
