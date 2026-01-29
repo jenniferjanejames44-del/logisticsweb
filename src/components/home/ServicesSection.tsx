@@ -60,33 +60,36 @@ const ServicesSection = () => {
             <Link
               key={service.title}
               to={service.href}
-              className={`glass-card card-top-border overflow-hidden group transition-all duration-200 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              
               {/* Service Image with Overlay */}
               <div className="relative w-full h-[200px] overflow-hidden">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent group-hover:from-black/40 transition-all duration-400" />
               </div>
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-primary mb-3">
+                <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors duration-300">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                   {service.description}
                 </p>
-                <div className="inline-flex items-center gap-2 font-medium text-sm text-accent transition-all duration-200 group-hover:gap-3">
+                <div className="inline-flex items-center gap-2 font-bold text-sm text-accent transition-all duration-300 group-hover:gap-3">
                   <span>Learn More</span>
-                  <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
@@ -95,16 +98,16 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div
-          className={`text-center mt-12 transition-all duration-500 delay-400 ${
+          className={`text-center mt-14 transition-all duration-500 delay-400 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
           >
             View All Services
-            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

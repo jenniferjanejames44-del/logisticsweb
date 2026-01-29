@@ -60,29 +60,32 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 xl:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
           {steps.map((step, index) => (
             <div
               key={step.step}
-              className={`relative transition-all duration-200 ${
+              className={`relative transition-all duration-400 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
               {/* Card */}
-              <div className="h-full p-5 sm:p-6 relative overflow-hidden bg-white/5 border border-white/10 rounded-xl hover:bg-white/8 transition-all duration-200">
+              <div className="h-full p-6 lg:p-7 relative overflow-hidden bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-400 ease-out hover:-translate-y-1 group">
+                {/* Top accent bar on hover */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+                
                 {/* Step Number */}
-                <div className="absolute top-4 right-4 w-8 h-8 gradient-yellow rounded-lg flex items-center justify-center font-semibold text-xs text-primary shadow-sm">
+                <div className="absolute top-5 right-5 w-9 h-9 gradient-yellow rounded-xl flex items-center justify-center font-bold text-xs text-primary shadow-md">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-11 h-11 gradient-blue rounded-lg flex items-center justify-center mb-4 shadow-sm">
+                <div className="w-12 h-12 gradient-blue rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110">
                   <step.icon className="w-5 h-5 text-white" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base font-semibold text-white mb-2 pr-10">
+                <h3 className="text-base font-bold text-white mb-3 pr-12 group-hover:text-secondary transition-colors duration-300">
                   {step.title}
                 </h3>
                 <p className="text-sm text-white/70 leading-relaxed">

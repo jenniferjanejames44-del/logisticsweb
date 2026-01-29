@@ -61,22 +61,25 @@ const CoreValuesSection = () => {
         </div>
 
         {/* Values Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 lg:gap-6">
           {values.map((value, index) => (
             <div
               key={value.title}
-              className={`glass-card card-top-border p-6 text-center group transition-all duration-200 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-6 text-center shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 60 + 150}ms` }}
             >
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              
               {/* Icon */}
-              <div className="w-12 h-12 mx-auto gradient-blue rounded-lg flex items-center justify-center mb-5 shadow-sm transition-transform duration-200 group-hover:scale-105">
-                <value.icon size={22} className="text-white" />
+              <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <value.icon size={24} className="text-white" />
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-semibold text-primary mb-2">
+              <h3 className="text-base font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
                 {value.title}
               </h3>
               

@@ -55,26 +55,29 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`glass-card card-top-border p-8 group transition-all duration-200 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
-              <div className="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center mb-5 shadow-sm transition-transform duration-200 group-hover:scale-105">
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              
+              <div className="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
                 <item.icon size={26} className="text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-primary mb-3">
+              <h3 className="text-lg font-bold text-primary mb-3 group-hover:text-accent transition-colors duration-300">
                 {item.title}
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                 {item.description}
               </p>
-              <div className="flex items-center gap-2 text-accent font-medium text-sm">
-                <CheckCircle size={14} />
+              <div className="flex items-center gap-2 text-accent font-bold text-sm">
+                <CheckCircle size={16} />
                 <span>Guaranteed</span>
               </div>
             </div>

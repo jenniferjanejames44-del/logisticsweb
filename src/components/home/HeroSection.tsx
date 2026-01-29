@@ -141,17 +141,17 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg transition-all duration-200 bg-secondary text-primary shadow-md hover:bg-secondary/90 hover:shadow-lg active:scale-[0.98] group"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Get Quote
-              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg transition-all duration-200 bg-white/10 text-white border border-white/30 hover:bg-accent hover:border-accent hover:text-white active:scale-[0.98] group"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 active:bg-white/15 group backdrop-blur-sm"
             >
               Sign Up
-              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -185,10 +185,10 @@ const HeroSection = () => {
               <button 
                 onClick={handleTrackClick}
                 disabled={isLoading}
-                className="h-10 sm:h-14 px-4 sm:px-8 btn btn-primary rounded-lg sm:rounded-xl text-sm"
+                className="h-11 sm:h-14 px-5 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2 bg-secondary text-primary shadow-md hover:shadow-lg hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm disabled:opacity-60 disabled:hover:translate-y-0"
               >
-                {isLoading ? <Loader2 className="animate-spin" size={16} /> : (
-                  <>Track <ArrowRight size={14} className="sm:w-[18px] sm:h-[18px]" /></>
+                {isLoading ? <Loader2 className="animate-spin" size={18} /> : (
+                  <>Track <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" /></>
                 )}
               </button>
             </div>

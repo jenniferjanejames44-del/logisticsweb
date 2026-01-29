@@ -75,10 +75,10 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="btn btn-primary"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Learn More
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
