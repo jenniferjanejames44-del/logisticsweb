@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import AuthRedirect from "@/components/AuthRedirect";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,34 +19,90 @@ const AuthForm = () => {
   const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
 
+  const handleResendVerification = async () => {
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address to resend verification.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsResending(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+      });
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Verification email sent!",
+        description: "Please check your inbox and spam folder.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to resend verification email",
+        variant: "destructive",
+      });
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setShowVerificationMessage(false);
 
     try {
       if (isLogin) {
-        const { error } = await signIn(email, password);
-        if (error) throw error;
+        const { error, data } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (error) {
+          // Check if it's an email not confirmed error
+          if (error.message.toLowerCase().includes('email not confirmed')) {
+            setShowVerificationMessage(true);
+            throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
+          }
+          throw error;
+        }
+        
+        // Double-check email verification status
+        if (data.user && !data.user.email_confirmed_at) {
+          await supabase.auth.signOut();
+          setShowVerificationMessage(true);
+          throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
+        }
+        
         toast({
           title: "Welcome back!",
           description: "You have been signed in successfully.",
         });
-        // Navigation handled by useEffect based on role
       } else {
         if (!fullName.trim()) {
           throw new Error("Please enter your full name");
         }
         const { error } = await signUp(email, password, fullName);
         if (error) throw error;
+        
+        setShowVerificationMessage(true);
         toast({
           title: "Account created!",
-          description: "Welcome to RAC Logistics. You can now access your dashboard.",
+          description: "Please check your email to verify your account before logging in.",
         });
-        // Navigation handled by useEffect based on role
       }
     } catch (error: any) {
       toast({
@@ -83,6 +140,45 @@ const AuthForm = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Email Verification Message */}
+            {showVerificationMessage && (
+              <div className="mb-6 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+                <div className="flex items-start gap-3">
+                  {isLogin ? (
+                    <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+                  ) : (
+                    <CheckCircle2 className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                  )}
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-sm mb-1">
+                      {isLogin ? "Email Verification Required" : "Check Your Email"}
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {isLogin 
+                        ? "Please verify your email before logging in. Check your inbox for the verification link."
+                        : "We've sent a verification link to your email. Please verify your account before logging in."
+                      }
+                    </p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleResendVerification}
+                      disabled={isResending}
+                      className="text-xs"
+                    >
+                      {isResending ? (
+                        <div className="w-3 h-3 border-2 border-current/30 border-t-current rounded-full animate-spin mr-2" />
+                      ) : (
+                        <Mail className="w-3 h-3 mr-2" />
+                      )}
+                      Resend Verification Email
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-5">
               {!isLogin && (
                 <div className="space-y-2">
