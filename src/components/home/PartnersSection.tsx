@@ -1,12 +1,31 @@
 import { useInView } from "@/hooks/useInView";
 
+// Using real brand colors for each partner
 const partners = [
-  { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
-  { name: "FedEx", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/FedEx_Corporation_-_2016_Logo.svg" },
-  { name: "DHL", logo: "https://upload.wikimedia.org/wikipedia/commons/a/ac/DHL_Logo.svg" },
-  { name: "UPS", logo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/United_Parcel_Service_logo_2014.svg" },
-  { name: "Maersk", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Maersk_Group_Logo.svg" },
-  { name: "Alibaba", logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Alibaba-Logo.svg" },
+  { 
+    name: "Amazon", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+  },
+  { 
+    name: "FedEx", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/FedEx_Corporation_-_2016_Logo.svg",
+  },
+  { 
+    name: "DHL", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/ac/DHL_Logo.svg",
+  },
+  { 
+    name: "UPS", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/United_Parcel_Service_logo_2014.svg",
+  },
+  { 
+    name: "Maersk", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Maersk_Group_Logo.svg",
+  },
+  { 
+    name: "Alibaba", 
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Alibaba-Logo.svg",
+  },
 ];
 
 const PartnersSection = () => {
@@ -31,7 +50,7 @@ const PartnersSection = () => {
             {[...partners, ...partners, ...partners].map((partner, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 opacity-50 hover:opacity-100 hover:scale-105 transition-all duration-300 grayscale hover:grayscale-0"
+                className="flex-shrink-0 mx-8 md:mx-12 lg:mx-16 flex items-center justify-center h-12 md:h-14 opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
               >
                 <img
                   src={partner.logo}
