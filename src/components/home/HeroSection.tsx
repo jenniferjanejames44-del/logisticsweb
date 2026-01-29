@@ -141,14 +141,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group"
+              className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg transition-all duration-200 bg-secondary text-primary shadow-md hover:bg-secondary/90 hover:shadow-lg active:scale-[0.98] group"
             >
               Get Quote
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 active:scale-[0.98] group"
+              className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg transition-all duration-200 bg-white/10 text-white border border-white/30 hover:bg-accent hover:border-accent hover:text-white active:scale-[0.98] group"
             >
               Sign Up
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
