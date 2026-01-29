@@ -46,10 +46,8 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 ${
-        isScrolled
-          ? "bg-card border-b border-border shadow-sm"
-          : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-white shadow-sm ${
+        isScrolled ? "shadow-md" : ""
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
@@ -58,7 +56,7 @@ const Header = () => {
           <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-white transition-transform duration-300 group-hover:scale-105 gradient-blue">
             R
           </div>
-          <span className={`font-semibold text-xl ${isScrolled ? 'text-primary' : 'text-white'}`}>
+          <span className="font-semibold text-xl text-primary">
             RAC <span className="text-secondary">Logistics</span>
           </span>
         </Link>
@@ -69,9 +67,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-medium transition-colors duration-300 ${
-                isScrolled ? 'text-muted-foreground hover:text-secondary' : 'text-white/80 hover:text-secondary'
-              }`}
+              className="font-medium transition-colors duration-300 text-muted-foreground hover:text-secondary"
             >
               {link.name}
             </Link>
@@ -81,9 +77,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className={`font-medium transition-colors duration-300 flex items-center gap-1 hover:text-secondary ${
-                  isScrolled ? 'text-muted-foreground' : 'text-white/80'
-                }`}
+                className="font-medium transition-colors duration-300 flex items-center gap-1 hover:text-secondary text-muted-foreground"
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
@@ -116,9 +110,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className={`font-medium transition-colors duration-300 ${
-                isScrolled ? 'text-muted-foreground hover:text-secondary' : 'text-white/80 hover:text-secondary'
-              }`}
+              className="font-medium transition-colors duration-300 text-muted-foreground hover:text-secondary"
             >
               {link.name}
             </Link>
@@ -132,9 +124,7 @@ const Header = () => {
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
-                    isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/80 hover:text-white'
-                  }`}
+                  className="flex items-center gap-2 px-4 py-2 font-medium transition-colors text-muted-foreground hover:text-primary"
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -142,9 +132,7 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className={`flex items-center gap-2 px-4 py-2 font-medium transition-colors ${
-                  isScrolled ? 'text-muted-foreground hover:text-primary' : 'text-white/80 hover:text-white'
-                }`}
+                className="flex items-center gap-2 px-4 py-2 font-medium transition-colors text-muted-foreground hover:text-primary"
               >
                 <User className="w-4 h-4" />
                 Dashboard
@@ -178,9 +166,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className={`lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-            isScrolled ? 'bg-accent/10 text-accent' : 'bg-white/10 text-white'
-          }`}
+          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-accent/10 text-accent"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
