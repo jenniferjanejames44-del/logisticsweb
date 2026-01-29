@@ -8,14 +8,26 @@ const CTASection = () => {
   const parallaxOffset = useParallax(0.3);
 
   return (
-    <section ref={ref} className="section-padding bg-navy relative overflow-hidden">
+    <section ref={ref} className="section-padding relative overflow-hidden">
+      {/* Professional Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center will-change-transform"
+        style={{ 
+          backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80)',
+          transform: `translateY(${parallaxOffset * 0.2}px) scale(1.1)`,
+        }}
+      />
+      
+      {/* Dark Overlay for Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/95 via-[#0C4A6E]/90 to-[#0A1628]/95" />
+
       {/* Decorative Elements with Parallax */}
       <div 
-        className="absolute top-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl will-change-transform" 
+        className="absolute top-0 left-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl will-change-transform" 
         style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
       />
       <div 
-        className="absolute bottom-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl will-change-transform" 
+        className="absolute bottom-0 right-0 w-96 h-96 bg-accent/15 rounded-full blur-3xl will-change-transform" 
         style={{ transform: `translateY(${-parallaxOffset * 0.3}px)` }}
       />
 
@@ -26,16 +38,22 @@ const CTASection = () => {
           }`}
         >
           {/* Heading */}
-          <h2 className={`mb-6 transition-all duration-600 delay-100 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}>
+          <h2 
+            className={`mb-6 transition-all duration-600 delay-100 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
+          >
             <span className="text-white">Ready to Ship </span>
             <span className="text-secondary">Globally?</span>
           </h2>
           
-          <p className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}>
+          <p 
+            className={`text-lg md:text-xl text-white/90 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}
+          >
             Join thousands of businesses who trust RAC Logistics for their shipping needs. 
             Get a free quote today and experience the difference.
           </p>
@@ -52,7 +70,7 @@ const CTASection = () => {
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:-translate-y-0.5 group"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-white/15 text-white border-2 border-white/50 backdrop-blur-sm hover:bg-white/25 hover:-translate-y-0.5 group"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
