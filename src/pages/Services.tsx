@@ -84,72 +84,86 @@ const Services = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
+              <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-secondary/30">
                 Our Services
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 Comprehensive <span className="text-secondary">Logistics Solutions</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+              <p className="text-lg md:text-xl text-white font-medium leading-relaxed mb-10 max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
-              <div className="flex flex-row justify-center gap-3 sm:gap-4">
+              <div className="flex flex-row justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
+                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
                 >
                   Get a Quote
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-white/10 text-white border-2 border-white/50 hover:bg-white/20 hover:-translate-y-0.5 group"
+                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm group"
                 >
                   Contact Us
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Services Grid */}
         <section ref={servicesRef} className="section-padding bg-background">
           <div className="section-container">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {/* Section Header */}
+            <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+              <h2 className="text-primary mb-5">
+                Explore Our <span className="gradient-text">Services</span>
+              </h2>
+              <p className="text-foreground/80 text-lg md:text-xl font-medium leading-relaxed">
+                Comprehensive logistics solutions designed for your business needs.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
-                  className={`group bg-card border border-border rounded-2xl hover:border-secondary/30 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
+                  className={`group relative overflow-hidden bg-card border border-border/50 rounded-2xl hover:border-secondary/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
                     servicesInView
                       ? 'opacity-100 translate-y-0'
                       : 'opacity-0 translate-y-10'
                   }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
+                  style={{ transitionDelay: `${index * 80}ms` }}
                 >
+                  {/* Top accent bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+                  
                   <CardContent className="p-6 md:p-8">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-secondary/20 group-hover:scale-110 transition-all duration-300">
-                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
+                    <div className="w-14 h-14 md:w-16 md:h-16 gradient-blue rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 shadow-md transition-all duration-300">
+                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
                     </div>
-                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-secondary transition-colors">
+                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-accent transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <p className="text-foreground/70 mb-6 leading-relaxed font-medium">
                       {service.description}
                     </p>
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-2.5 mb-6">
                       {service.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <div className="w-1.5 h-1.5 bg-secondary rounded-full" />
+                        <li key={feature} className="flex items-center gap-2.5 text-sm text-foreground/70 font-medium">
+                          <div className="w-1.5 h-1.5 bg-secondary rounded-full flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
                     </ul>
-                    <Button variant="link" className="p-0 h-auto text-secondary group-hover:gap-3 transition-all" asChild>
-                      <Link to={service.link}>
-                        Learn More <ArrowRight className="w-4 h-4" />
-                      </Link>
-                    </Button>
+                    <Link 
+                      to={service.link}
+                      className="inline-flex items-center gap-2 font-bold text-sm text-accent group-hover:gap-3 transition-all duration-300"
+                    >
+                      Learn More 
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Link>
                   </CardContent>
                 </Card>
               ))}
@@ -158,20 +172,25 @@ const Services = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] to-[hsl(222,40%,15%)]">
-          <div className="section-container text-center">
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-              Need a Custom Logistics Solution?
+        <section className="section-padding bg-navy relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+          
+          <div className="section-container text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              Need a Custom Logistics <span className="text-secondary">Solution?</span>
             </h2>
-            <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
-            <Button variant="default" size="xl" className="group" asChild>
-              <Link to="/contact">
-                Get in Touch
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
-            </Button>
+            <Link 
+              to="/contact"
+              className="inline-flex items-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 group"
+            >
+              Get in Touch
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         </section>
       </main>

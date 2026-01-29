@@ -95,13 +95,13 @@ const Pricing = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
+              <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-secondary/30">
                 Transparent Pricing
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 Calculate Your <span className="text-secondary">Shipping Cost</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+              <p className="text-lg md:text-xl text-white font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>
@@ -167,17 +167,19 @@ const Pricing = () => {
                         <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
-                          className={`p-3 sm:p-4 rounded-xl border-2 text-left transition-all duration-300 hover:border-secondary/50 ${
+                          className={`p-4 rounded-xl border-2 text-left transition-all duration-300 hover:border-secondary/50 hover:-translate-y-0.5 hover:shadow-md ${
                             selectedService === service.id
-                              ? 'border-secondary bg-secondary/10'
-                              : 'border-border bg-background'
+                              ? 'border-secondary bg-secondary/10 shadow-md'
+                              : 'border-border bg-background hover:bg-muted/50'
                           }`}
                         >
-                          <service.icon className={`w-5 h-5 sm:w-6 sm:h-6 mb-2 ${
-                            selectedService === service.id ? 'text-secondary' : 'text-muted-foreground'
+                          <service.icon className={`w-5 h-5 sm:w-6 sm:h-6 mb-2 transition-colors ${
+                            selectedService === service.id ? 'text-secondary' : 'text-foreground/60'
                           }`} />
-                          <div className="font-semibold text-foreground text-sm sm:text-base">{service.name}</div>
-                          <div className="text-xs text-muted-foreground">{service.description}</div>
+                          <div className={`font-bold text-sm sm:text-base transition-colors ${
+                            selectedService === service.id ? 'text-foreground' : 'text-foreground/80'
+                          }`}>{service.name}</div>
+                          <div className="text-xs text-foreground/60 font-medium">{service.description}</div>
                         </button>
                       ))}
                     </div>
@@ -236,11 +238,13 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="default" size="xl" className="w-full mt-6 group">
+                          <button 
+                            className="w-full mt-6 inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 group"
+                          >
                             Proceed to Payment
-                            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                          </Button>
-                          <p className="text-xs text-muted-foreground">
+                            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                          </button>
+                          <p className="text-xs text-foreground/60 font-medium mt-3">
                             Secure payment via Stripe/PayPal
                           </p>
                         </div>
@@ -270,14 +274,14 @@ const Pricing = () => {
         </section>
 
         {/* What's Included */}
-        <section className="section-padding bg-gradient-to-b from-muted/30 to-muted/60">
+        <section className="section-padding bg-section-blue">
           <div className="section-container">
-            <div className="text-center mb-10 md:mb-14">
-              <span className="inline-block px-5 py-2.5 bg-secondary/10 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-4">
+            <div className="text-center mb-14 lg:mb-16">
+              <span className="badge-yellow mb-6">
                 Value
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground">
-                What's Included
+              <h2 className="text-primary mb-5">
+                What's <span className="gradient-text">Included</span>
               </h2>
             </div>
             
@@ -291,13 +295,14 @@ const Pricing = () => {
                 "24/7 customer support",
                 "Secure packaging",
                 "Delivery confirmation"
-              ].map((feature) => (
+              ].map((feature, index) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 p-4 lg:p-5 bg-gradient-to-br from-card to-muted/20 rounded-xl border border-border/50 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  className="group flex items-center gap-3 p-5 lg:p-6 bg-card rounded-xl border border-border/50 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  style={{ transitionDelay: `${index * 50}ms` }}
                 >
                   <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="font-semibold text-foreground">{feature}</span>
+                  <span className="font-bold text-foreground">{feature}</span>
                 </div>
               ))}
             </div>
@@ -305,20 +310,24 @@ const Pricing = () => {
         </section>
 
         {/* CTA */}
-        <section className="section-padding bg-gradient-to-br from-[hsl(222,47%,11%)] to-[hsl(222,40%,15%)]">
-          <div className="section-container text-center">
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6">
-              Need a Custom Quote?
+        <section className="section-padding bg-navy relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+          
+          <div className="section-container text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              Need a Custom <span className="text-secondary">Quote?</span>
             </h2>
-            <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.
             </p>
-            <Button variant="default" size="xl" className="group" asChild>
-              <Link to="/contact">
-                Contact Sales
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
-            </Button>
+            <Link 
+              to="/contact"
+              className="inline-flex items-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 group"
+            >
+              Contact Sales
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         </section>
       </main>

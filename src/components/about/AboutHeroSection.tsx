@@ -20,13 +20,13 @@ const AboutHeroSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
-            <span className="inline-block text-secondary font-semibold mb-3 sm:mb-4 uppercase tracking-wider text-xs sm:text-sm">
+            <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6 border border-secondary/30">
               About RAC Logistics
             </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-primary-foreground mb-4 sm:mb-6 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 sm:mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
               Your Trusted <span className="text-secondary">Global Partner</span>
             </h1>
-            <p className="text-base sm:text-lg text-[hsl(215,20%,80%)] leading-relaxed mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0">
+            <p className="text-base sm:text-lg md:text-xl text-white font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
               Since 2010, RAC Logistics has been at the forefront of international 
               shipping and logistics. We've built our reputation on reliability, 
               innovation, and an unwavering commitment to customer satisfaction.
