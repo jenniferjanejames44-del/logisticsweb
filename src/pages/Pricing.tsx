@@ -81,29 +81,27 @@ const Pricing = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-24 md:pt-44 md:pb-28 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
+          className="relative pt-32 pb-24 md:pt-44 md:pb-28 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
-          </div>
+          {/* Background Image */}
           <div 
-            className="absolute inset-0 opacity-[0.03]"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '40px 40px'
+              backgroundImage: 'url(https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80)',
             }}
           />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-navy opacity-90" />
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
                 Transparent Pricing
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6 leading-tight">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
                 Calculate Your <span className="text-secondary">Shipping Cost</span>
               </h1>
-              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>

@@ -280,13 +280,17 @@ const Track = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-24 sm:pb-32 bg-primary overflow-hidden"
+          className="relative pt-32 pb-24 sm:pb-32 overflow-hidden"
         >
-          {/* Background Effects */}
-          <div className="absolute inset-0">
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[120px] animate-pulse-slow" />
-            <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-primary/30 rounded-full blur-[100px] animate-float" />
-          </div>
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80)',
+            }}
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-navy opacity-90" />
           
           <div className="container mx-auto px-4 relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>

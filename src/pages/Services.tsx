@@ -70,31 +70,44 @@ const Services = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
-          </div>
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80)',
+            }}
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-navy opacity-90" />
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
+              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
                 Our Services
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
                 Comprehensive <span className="text-secondary">Logistics Solutions</span>
               </h1>
-              <p className="text-lg md:text-xl text-[hsl(215,20%,80%)] mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button variant="default" size="xl" className="w-full sm:w-auto" asChild>
-                  <Link to="/pricing">Get a Quote</Link>
-                </Button>
-                <Button variant="ghost" size="xl" className="w-full sm:w-auto" asChild>
-                  <Link to="/contact">Contact Us</Link>
-                </Button>
+              <div className="flex flex-row justify-center gap-3 sm:gap-4">
+                <Link 
+                  to="/pricing"
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
+                >
+                  Get a Quote
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link 
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-white/10 text-white border-2 border-white/50 hover:bg-white/20 hover:-translate-y-0.5 group"
+                >
+                  Contact Us
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                </Link>
               </div>
             </div>
           </div>

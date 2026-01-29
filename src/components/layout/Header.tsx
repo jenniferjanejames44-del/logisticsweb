@@ -118,13 +118,13 @@ const Header = () => {
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           {user ? (
             <>
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 font-medium transition-colors text-muted-foreground hover:text-primary"
+                  className="flex items-center gap-2 px-4 py-2.5 font-semibold transition-colors text-muted-foreground hover:text-primary"
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -132,14 +132,14 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 font-medium transition-colors text-muted-foreground hover:text-primary"
+                className="flex items-center gap-2 px-4 py-2.5 font-semibold transition-colors text-muted-foreground hover:text-primary"
               >
                 <User className="w-4 h-4" />
                 Dashboard
               </Link>
               <button 
                 onClick={() => signOut()}
-                className="btn btn-sm btn-primary"
+                className="inline-flex items-center gap-2 px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:-translate-y-0.5"
               >
                 Logout
               </button>
@@ -148,14 +148,14 @@ const Header = () => {
             <>
               <Link 
                 to="/pricing"
-                className="btn btn-sm btn-secondary group"
+                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary hover:-translate-y-0.5 group"
               >
                 Get Quote
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <Link 
                 to="/auth"
-                className="btn btn-sm btn-primary group"
+                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 group"
               >
                 Sign Up
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
