@@ -119,18 +119,18 @@ const HeroSection = () => {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10 pt-28 sm:pt-32 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
-          {/* Main Heading */}
+          {/* Main Heading - Larger and more prominent */}
           <h1 className={`mb-6 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
-            <span className="text-white block font-extrabold">Global Logistics.</span>
-            <span className="text-secondary block font-extrabold">Delivered With Excellence.</span>
+            <span className="text-white block font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">Global Logistics.</span>
+            <span className="text-secondary block font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">Delivered With Excellence.</span>
           </h1>
 
-          {/* Subtitle - Enhanced visibility */}
-          <p className={`text-lg sm:text-xl md:text-2xl mb-10 sm:mb-14 leading-relaxed font-semibold transition-all duration-700 delay-100 text-white ${
+          {/* Subtitle - Smaller than headline for proper hierarchy */}
+          <p className={`text-base sm:text-lg md:text-xl mb-10 sm:mb-14 leading-relaxed font-medium transition-all duration-700 delay-100 text-white/90 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`} style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)', letterSpacing: '-0.01em' }}>
+          }`} style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>
