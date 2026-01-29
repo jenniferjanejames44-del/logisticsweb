@@ -5,7 +5,7 @@ import AboutHeroSection from "@/components/about/AboutHeroSection";
 import MissionVisionSection from "@/components/about/MissionVisionSection";
 import CompanyStorySection from "@/components/about/CompanyStorySection";
 import LeadershipSection from "@/components/about/LeadershipSection";
-import AchievementsSection from "@/components/about/AchievementsSection";
+import TrustedBySection from "@/components/about/TrustedBySection";
 import AboutCTASection from "@/components/about/AboutCTASection";
 
 const About = () => {
@@ -17,7 +17,7 @@ const About = () => {
         <MissionVisionSection />
         <CompanyStorySection />
         <LeadershipSection />
-        <AchievementsSection />
+        <TrustedBySection />
         <AboutCTASection />
       </main>
       <Footer />
