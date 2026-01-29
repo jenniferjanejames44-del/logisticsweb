@@ -174,11 +174,25 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu backdrop - must be outside header stacking context */}
+      {isMobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm"
+          style={{ zIndex: 9998 }}
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile Menu - fixed position with highest z-index */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-gradient-to-b from-[hsl(222,47%,11%)] to-[hsl(222,47%,8%)] shadow-2xl ${
-          isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-gradient-to-b from-[hsl(222,47%,11%)] to-[hsl(222,47%,8%)] shadow-2xl ${
+          isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
+        style={{ zIndex: 9999 }}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
       >
         {/* Header with close button */}
         <div className="flex items-center justify-between p-5 border-b border-white/10">
@@ -303,14 +317,6 @@ const Header = () => {
           </div>
         </nav>
       </div>
-
-      {/* Mobile menu backdrop */}
-      {isMobileMenuOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[-1]"
-          onClick={() => setIsMobileMenuOpen(false)}
-        />
-      )}
     </header>
   );
 };
