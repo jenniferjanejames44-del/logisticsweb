@@ -42,7 +42,7 @@ const Footer = () => {
                 RAC <span className="text-secondary">Logistics</span>
               </span>
             </Link>
-            <p className="text-white/70 leading-relaxed max-w-md">
+            <p className="text-white/80 leading-relaxed max-w-md font-medium">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
             </p>
             
@@ -53,7 +53,7 @@ const Footer = () => {
                   key={social.name}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-11 h-11 rounded-full flex items-center justify-center text-white/60 hover:text-primary bg-white/10 hover:bg-secondary transition-all duration-300 hover:-translate-y-1"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center text-white bg-white/10 hover:bg-secondary hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-lg font-medium"
                 >
                   {social.name}
                 </a>
