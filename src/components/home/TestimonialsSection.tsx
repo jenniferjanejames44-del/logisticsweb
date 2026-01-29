@@ -50,7 +50,7 @@ const TestimonialsSection = () => {
     <section ref={ref} className="section-padding bg-section-blue relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
             className={`badge-blue mb-6 transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -59,12 +59,19 @@ const TestimonialsSection = () => {
             Testimonials
           </span>
           <h2
-            className={`text-primary transition-all duration-600 delay-100 ${
+            className={`text-primary mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             What Our <span className="gradient-text">Clients Say</span>
           </h2>
+          <p
+            className={`text-foreground/80 text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
+              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}
+          >
+            Trusted by businesses worldwide for reliable shipping solutions.
+          </p>
         </div>
 
         {/* Testimonials Slider */}

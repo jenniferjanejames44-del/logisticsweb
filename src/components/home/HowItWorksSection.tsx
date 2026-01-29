@@ -35,25 +35,26 @@ const HowItWorksSection = () => {
     <section ref={ref} className="section-padding bg-navy relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide mb-6 transition-all duration-600 bg-secondary/20 border-2 border-secondary text-secondary ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-secondary/20 border-2 border-secondary text-secondary ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Simple Process
           </span>
           <h2
-            className={`text-white mb-6 transition-all duration-600 delay-100 ${
+            className={`text-white mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             How It <span className="text-secondary">Works</span>
           </h2>
           <p
-            className={`text-white/70 text-lg transition-all duration-600 delay-200 ${
+            className={`text-white text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
+            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
           >
             Getting your shipment delivered is simple. Our streamlined process ensures a hassle-free experience.
           </p>
