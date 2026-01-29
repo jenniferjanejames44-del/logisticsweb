@@ -9,42 +9,42 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary Button - Orange Gradient with refined shadows */
-        default: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] active:shadow-sm",
+        /* Primary Button - Orange Gradient with visible hover */
+        default: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:shadow-sm active:translate-y-0",
 
-        /* Secondary Button - Clean white with subtle border */
-        secondary: "bg-white text-foreground border border-border rounded-lg shadow-sm hover:bg-muted hover:border-muted-foreground/20 active:scale-[0.98]",
+        /* Secondary Button - Clean white with visible hover */
+        secondary: "bg-white text-foreground border border-border rounded-lg shadow-sm hover:bg-secondary hover:text-secondary-foreground hover:border-secondary hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
 
-        /* Ghost Button - Transparent with subtle hover */
-        ghost: "bg-transparent text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground active:scale-[0.98]",
+        /* Ghost Button - Transparent with visible hover */
+        ghost: "bg-transparent text-muted-foreground rounded-lg hover:bg-accent/10 hover:text-accent active:scale-[0.98]",
 
-        /* Outline - Clean border style */
-        outline: "border border-border bg-transparent text-foreground rounded-lg hover:bg-muted hover:border-muted-foreground/30 active:scale-[0.98]",
+        /* Outline - Clean border style with visible hover */
+        outline: "border border-border bg-transparent text-foreground rounded-lg hover:bg-primary hover:text-primary-foreground hover:border-primary hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
 
         /* Destructive */
-        destructive: "bg-destructive text-destructive-foreground rounded-lg shadow-sm hover:bg-destructive/90 active:scale-[0.98]",
+        destructive: "bg-destructive text-destructive-foreground rounded-lg shadow-sm hover:bg-destructive/80 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
 
         /* Link Style */
-        link: "text-accent underline-offset-4 hover:underline p-0 h-auto font-medium",
+        link: "text-accent underline-offset-4 hover:underline hover:text-accent/80 p-0 h-auto font-medium",
 
         /* Navigation CTA */
-        nav: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98]",
+        nav: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
 
-        /* CTA variants - refined with subtle effects */
-        cta: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98]",
-        heroPrimary: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98]",
-        heroSecondary: "bg-white text-foreground border border-white/20 rounded-lg shadow-md hover:bg-white/95 active:scale-[0.98]",
-        heroOutline: "bg-transparent text-white border border-white/40 rounded-lg hover:bg-white/10 hover:border-white/60 active:scale-[0.98]",
-        accent: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-primary/90 active:scale-[0.98]",
-        navCta: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98]",
-        navOutline: "border border-[#FF6B35] bg-transparent text-[#FF6B35] rounded-lg hover:bg-[#FF6B35]/10 active:scale-[0.98]",
-        ctaOutline: "border border-[#FF6B35] bg-transparent text-[#FF6B35] rounded-lg hover:bg-[#FF6B35] hover:text-white active:scale-[0.98]",
-        premium: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98]",
-        indigoOutline: "border border-accent bg-transparent text-accent rounded-lg hover:bg-accent/10 active:scale-[0.98]",
-        dynamic: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98]",
-        quote: "bg-white text-foreground border border-border rounded-lg shadow-sm hover:shadow-md hover:border-muted-foreground/30 active:scale-[0.98] group",
-        quotePrimary: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group",
-        quoteAccent: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-primary/90 active:scale-[0.98] group",
+        /* CTA variants - with visible hover effects */
+        cta: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroPrimary: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroSecondary: "bg-white text-foreground border border-white/20 rounded-lg shadow-md hover:bg-secondary hover:text-secondary-foreground hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroOutline: "bg-transparent text-white border border-white/40 rounded-lg hover:bg-white/20 hover:border-white hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        accent: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-primary/80 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        navCta: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        navOutline: "border border-[#FF6B35] bg-transparent text-[#FF6B35] rounded-lg hover:bg-[#FF6B35] hover:text-white hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        ctaOutline: "border border-[#FF6B35] bg-transparent text-[#FF6B35] rounded-lg hover:bg-[#FF6B35] hover:text-white hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        premium: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        indigoOutline: "border border-accent bg-transparent text-accent rounded-lg hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        dynamic: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-sm hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        quote: "bg-white text-foreground border border-border rounded-lg shadow-sm hover:bg-secondary hover:text-secondary-foreground hover:border-secondary hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 group",
+        quotePrimary: "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white rounded-lg shadow-md hover:from-[#FF8C42] hover:to-[#FFA94D] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 group",
+        quoteAccent: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-primary/80 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0 group",
       },
       size: {
         default: "h-10 px-5 py-2.5 text-sm",
