@@ -67,7 +67,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Phone",
-      details: ["+234 800 RAC SHIP", "+234 123 456 7890"]
+      details: ["+234 818 595 6707"]
     },
     {
       icon: Mail,
