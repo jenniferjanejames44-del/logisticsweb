@@ -131,22 +131,27 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-primary/90 overflow-hidden"
+          className="relative pt-32 pb-20 overflow-hidden"
         >
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl" />
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl" />
-          </div>
+          {/* Background Image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80)',
+            }}
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-navy opacity-90" />
           
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium mb-6">
+              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
                 Blog & Resources
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
                 Insights & <span className="text-secondary">Updates</span>
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-8">
+              <p className="text-lg md:text-xl text-white/90 mb-8" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
