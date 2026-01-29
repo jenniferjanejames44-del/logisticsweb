@@ -81,13 +81,13 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        heading: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        heading: ["Poppins", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
         button: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
       fontSize: {
-        "display-xl": ["4.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
-        "display-lg": ["3.75rem", { lineHeight: "1.15", letterSpacing: "-0.02em" }],
-        "display": ["3rem", { lineHeight: "1.2", letterSpacing: "-0.015em" }],
+        "display-xl": ["4.5rem", { lineHeight: "1.05", letterSpacing: "-0.025em" }],
+        "display-lg": ["3.75rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }],
+        "display": ["3rem", { lineHeight: "1.15", letterSpacing: "-0.015em" }],
       },
       spacing: {
         "18": "4.5rem",
