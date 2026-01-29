@@ -155,40 +155,45 @@ const HeroSection = () => {
             </Link>
           </div>
 
-          {/* Tracking Card */}
-          <div className={`p-4 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-xl border border-white/15 ${
+          {/* Tracking Card - Enhanced Mobile Design */}
+          <div className={`p-5 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-2xl border border-white/20 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ 
             background: 'rgba(255, 255, 255, 0.98)', 
-            backdropFilter: 'blur(12px)',
-            boxShadow: '0 4px 24px rgba(0,0,0,0.12)'
+            backdropFilter: 'blur(16px)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)'
           }}>
-            <div className="flex items-center gap-2.5 sm:gap-4 mb-3 sm:mb-6">
-              <div className="w-9 h-9 sm:w-[60px] sm:h-[60px] rounded-lg sm:rounded-2xl flex items-center justify-center shadow-md sm:shadow-lg gradient-blue shrink-0">
-                <Search size={16} className="sm:hidden text-white" />
+            {/* Header with Icon */}
+            <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+              <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg gradient-blue shrink-0 ring-4 ring-accent/10">
+                <Search size={20} className="sm:hidden text-white" />
                 <Search size={28} className="hidden sm:block text-white" />
               </div>
               <div className="text-left min-w-0">
-                <h3 className="font-bold text-sm sm:text-lg text-primary leading-tight">Track Your Shipment</h3>
-                <p className="text-[11px] sm:text-sm text-muted-foreground">Real-time updates</p>
+                <h3 className="font-bold text-base sm:text-lg text-primary leading-tight">Track Your Shipment</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground font-medium">Real-time updates worldwide</p>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            {/* Input and Button - Premium Mobile Design */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-3">
               <Input
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === "Enter" && handleTrackClick()}
                 placeholder="Enter tracking number"
-                className="flex-1 h-10 sm:h-12 px-3 sm:px-4 text-sm bg-muted border-border text-foreground placeholder:text-muted-foreground rounded-lg sm:rounded-xl focus:border-accent focus:ring-2 focus:ring-accent/20"
+                className="flex-1 h-12 sm:h-12 px-4 sm:px-4 text-sm font-medium bg-muted border-2 border-border text-foreground placeholder:text-muted-foreground rounded-xl focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
               />
               <button 
                 onClick={handleTrackClick}
                 disabled={isLoading}
-                className="h-11 sm:h-14 px-5 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2 bg-secondary text-primary shadow-md hover:shadow-lg hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm disabled:opacity-60 disabled:hover:translate-y-0"
+                className="h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2.5 bg-gradient-to-r from-secondary to-[hsl(38,92%,50%)] text-primary shadow-lg hover:shadow-xl hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md disabled:opacity-60 disabled:hover:translate-y-0 group"
               >
                 {isLoading ? <Loader2 className="animate-spin" size={18} /> : (
-                  <>Track <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" /></>
+                  <>
+                    Track Now
+                    <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px] transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </>
                 )}
               </button>
             </div>

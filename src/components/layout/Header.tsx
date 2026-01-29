@@ -211,7 +211,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
+              className="text-white/80 hover:text-white bg-transparent hover:bg-white/10 font-medium text-[15px] py-3.5 px-4 rounded-xl transition-all duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -221,7 +221,7 @@ const Header = () => {
           {/* Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
+              className="flex items-center justify-between text-white/80 hover:text-white bg-transparent hover:bg-white/10 font-medium text-[15px] py-3.5 px-4 rounded-xl transition-all duration-200"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -231,7 +231,7 @@ const Header = () => {
               <div className="pl-3 py-2 space-y-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 font-semibold text-sm py-2.5 px-4 rounded-lg bg-secondary/10 text-secondary"
+                  className="flex items-center gap-3 font-semibold text-sm py-3 px-4 rounded-xl bg-secondary/15 text-secondary hover:bg-secondary/25 transition-all duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   View All Services
@@ -240,7 +240,7 @@ const Header = () => {
                   <Link
                     key={service.name}
                     to={service.href}
-                    className="flex items-center gap-3 text-white/60 hover:text-white text-sm py-2.5 px-4 rounded-lg hover:bg-white/5 transition-all"
+                    className="flex items-center gap-3 text-white/60 hover:text-white text-sm py-3 px-4 rounded-xl bg-transparent hover:bg-white/10 transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <service.icon className="w-4 h-4 text-secondary/70" />
@@ -255,7 +255,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
+              className="text-white/80 hover:text-white bg-transparent hover:bg-white/10 font-medium text-[15px] py-3.5 px-4 rounded-xl transition-all duration-200"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
