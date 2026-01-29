@@ -57,26 +57,26 @@ const LeadershipSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section ref={ref} className="py-16 md:py-24 bg-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
-            className={`inline-block text-secondary font-semibold mb-4 transition-all duration-700 ${
+            className={`inline-block text-secondary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             OUR TEAM
           </span>
           <h2
-            className={`text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-6 transition-all duration-700 delay-100 ${
+            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Leadership <span className="text-secondary">Team</span>
           </h2>
           <p
-            className={`text-lg text-muted-foreground transition-all duration-700 delay-200 ${
+            className={`text-base md:text-lg text-muted-foreground transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -86,11 +86,11 @@ const LeadershipSection = () => {
         </div>
 
         {/* Team Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
           {teamMembers.map((member, index) => (
             <div
               key={member.name}
-              className={`group bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 hover:-translate-y-3 ${
+              className={`group bg-card rounded-xl sm:rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-500 hover:-translate-y-2 sm:hover:-translate-y-3 ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -103,38 +103,39 @@ const LeadershipSection = () => {
                   src={member.image}
                   alt={member.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 
                 {/* Social Links - Always visible at bottom */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                   <a
                     href={member.linkedin}
-                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Linkedin size={18} className="text-white" />
+                    <Linkedin size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={member.twitter}
-                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Twitter size={18} className="text-white" />
+                    <Twitter size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={`mailto:${member.name.toLowerCase().replace(" ", ".")}@raclogistics.com`}
-                    className="w-10 h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
                   >
-                    <Mail size={18} className="text-white" />
+                    <Mail size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-heading font-bold text-foreground mb-1">
+              <div className="p-4 sm:p-5 md:p-6">
+                <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mb-1">
                   {member.name}
                 </h3>
-                <p className="text-secondary font-medium mb-3">{member.role}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-secondary font-medium text-sm sm:text-base mb-2 sm:mb-3">{member.role}</p>
+                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
                   {member.bio}
                 </p>
               </div>

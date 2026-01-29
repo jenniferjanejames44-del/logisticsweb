@@ -28,7 +28,7 @@ const blogPosts = [
     author: "Sarah Johnson",
     date: "Jan 15, 2025",
     readTime: "5 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=500&fit=crop",
     featured: true
   },
   {
@@ -39,7 +39,7 @@ const blogPosts = [
     author: "Michael Chen",
     date: "Jan 12, 2025",
     readTime: "8 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&h=500&fit=crop",
     featured: true
   },
   {
@@ -50,7 +50,7 @@ const blogPosts = [
     author: "Emily Davis",
     date: "Jan 10, 2025",
     readTime: "4 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=800&h=500&fit=crop",
     featured: false
   },
   {
@@ -61,7 +61,7 @@ const blogPosts = [
     author: "RAC Team",
     date: "Jan 8, 2025",
     readTime: "3 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=500&fit=crop",
     featured: false
   },
   {
@@ -72,7 +72,7 @@ const blogPosts = [
     author: "James Wilson",
     date: "Jan 5, 2025",
     readTime: "6 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1580674285054-bed31e145f59?w=800&h=500&fit=crop",
     featured: false
   },
   {
@@ -83,7 +83,7 @@ const blogPosts = [
     author: "Lisa Green",
     date: "Jan 3, 2025",
     readTime: "5 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1473445361085-b9a07f55608b?w=800&h=500&fit=crop",
     featured: false
   },
   {
@@ -94,7 +94,7 @@ const blogPosts = [
     author: "David Brown",
     date: "Dec 28, 2024",
     readTime: "7 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=500&fit=crop",
     featured: false
   },
   {
@@ -105,7 +105,7 @@ const blogPosts = [
     author: "Robert Kim",
     date: "Dec 25, 2024",
     readTime: "6 min read",
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=800&h=500&fit=crop",
     featured: false
   }
 ];
@@ -170,8 +170,14 @@ const Blog = () => {
                   key={post.id} 
                   className="group overflow-hidden border-border/50 hover:border-secondary/50 hover:shadow-card transition-all duration-300"
                 >
-                  <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/60 group-hover:bg-primary/40 transition-colors" />
+                  <div className="aspect-video relative overflow-hidden">
+                    <img 
+                      src={post.image} 
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
                     <Badge className="absolute top-4 left-4 bg-secondary text-secondary-foreground">
                       {post.category}
                     </Badge>
@@ -251,7 +257,14 @@ const Blog = () => {
                     key={post.id}
                     className="group overflow-hidden border-border/50 hover:border-secondary/50 hover:shadow-card hover:-translate-y-2 transition-all duration-300"
                   >
-                    <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 relative overflow-hidden">
+                    <div className="aspect-video relative overflow-hidden">
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
                       <Badge className="absolute top-4 left-4 bg-secondary/90 text-secondary-foreground">
                         {post.category}
                       </Badge>
