@@ -55,38 +55,38 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {services.map((service, index) => (
             <Link
               key={service.title}
               to={service.href}
-              className={`glass-card card-top-border overflow-hidden group transition-all duration-[400ms] ${
+              className={`glass-card card-top-border overflow-hidden group transition-all duration-200 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: `${index * 100 + 200}ms` }}
+              style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
               {/* Service Image with Overlay */}
-              <div className="relative w-full h-[240px] overflow-hidden">
+              <div className="relative w-full h-[200px] overflow-hidden">
                 <img 
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
 
               {/* Content */}
-              <div className="p-7">
-                <h3 className="text-2xl font-bold text-primary mb-4">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-primary mb-3">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed mb-6">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                   {service.description}
                 </p>
-                <div className="inline-flex items-center gap-2 font-semibold text-accent group-hover:gap-4 transition-all duration-300">
+                <div className="inline-flex items-center gap-2 font-medium text-sm text-accent transition-all duration-200 group-hover:gap-3">
                   <span>Learn More</span>
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
                 </div>
               </div>
             </Link>
@@ -95,16 +95,16 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div
-          className={`text-center mt-16 transition-all duration-600 delay-500 ${
+          className={`text-center mt-12 transition-all duration-500 delay-400 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group"
           >
             View All Services
-            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+            <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
           </Link>
         </div>
       </div>

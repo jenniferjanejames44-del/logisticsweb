@@ -61,22 +61,22 @@ const CoreValuesSection = () => {
         </div>
 
         {/* Values Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {values.map((value, index) => (
             <div
               key={value.title}
-              className={`glass-card card-top-border p-8 text-center group transition-all duration-600 ${
+              className={`glass-card card-top-border p-6 text-center group transition-all duration-200 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: `${index * 80 + 200}ms` }}
+              style={{ transitionDelay: `${index * 60 + 150}ms` }}
             >
               {/* Icon */}
-              <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <value.icon size={24} className="text-white" />
+              <div className="w-12 h-12 mx-auto gradient-blue rounded-lg flex items-center justify-center mb-5 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                <value.icon size={22} className="text-white" />
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-semibold text-primary mb-3">
+              <h3 className="text-base font-semibold text-primary mb-2">
                 {value.title}
               </h3>
               

@@ -74,53 +74,53 @@ const TestimonialsSection = () => {
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent hover:shadow-lg transition-all duration-300"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-12 z-10 w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent/50 hover:shadow-md transition-all duration-200 active:scale-95"
           >
-            <ChevronLeft size={22} />
+            <ChevronLeft size={20} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent hover:shadow-lg transition-all duration-300"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-12 z-10 w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent/50 hover:shadow-md transition-all duration-200 active:scale-95"
           >
-            <ChevronRight size={22} />
+            <ChevronRight size={20} />
           </button>
 
           {/* Slides */}
-          <div className="overflow-hidden rounded-2xl">
+          <div className="overflow-hidden rounded-xl">
             <div
-              className="flex transition-transform duration-600 ease-out"
+              className="flex transition-transform duration-500 ease-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-4">
-                  <div className="glass-card p-8 md:p-12 text-center">
+                  <div className="glass-card p-6 md:p-10 text-center">
                     {/* Quote Icon */}
-                    <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-8 shadow-lg">
-                      <Quote size={28} className="text-white" />
+                    <div className="w-12 h-12 mx-auto gradient-blue rounded-lg flex items-center justify-center mb-6 shadow-sm">
+                      <Quote size={24} className="text-white" />
                     </div>
 
                     {/* Content */}
-                    <p className="text-lg md:text-xl text-foreground leading-relaxed mb-8">
+                    <p className="text-base md:text-lg text-foreground leading-relaxed mb-6">
                       "{testimonial.content}"
                     </p>
 
                     {/* Rating */}
-                    <div className="flex justify-center gap-1 mb-8">
+                    <div className="flex justify-center gap-1 mb-6">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={20} className="text-secondary fill-secondary" />
+                        <Star key={i} size={18} className="text-secondary fill-secondary" />
                       ))}
                     </div>
 
                     {/* Author */}
-                    <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center justify-center gap-3">
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 rounded-xl object-cover border-2 border-accent/30"
+                        className="w-12 h-12 rounded-lg object-cover border border-accent/20"
                         loading="lazy"
                       />
                       <div className="text-left">
-                        <h4 className="font-semibold text-primary text-lg">
+                        <h4 className="font-semibold text-primary">
                           {testimonial.name}
                         </h4>
                         <p className="text-muted-foreground text-sm">
@@ -138,15 +138,15 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center gap-2 mt-8">
+          <div className="flex justify-center gap-2 mt-6">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-200 ${
                   index === currentIndex
-                    ? "gradient-blue w-8"
-                    : "bg-border hover:bg-accent/50 w-2.5"
+                    ? "gradient-blue w-6"
+                    : "bg-border hover:bg-accent/30 w-2"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
