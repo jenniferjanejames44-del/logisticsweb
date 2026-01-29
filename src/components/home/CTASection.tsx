@@ -9,25 +9,65 @@ const CTASection = () => {
 
   return (
     <section ref={ref} className="section-padding relative overflow-hidden">
-      {/* Professional Background Image */}
+      {/* Professional Background Image - Main */}
       <div 
         className="absolute inset-0 bg-cover bg-center will-change-transform"
         style={{ 
-          backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80)',
-          transform: `translateY(${parallaxOffset * 0.2}px) scale(1.1)`,
+          backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80)',
+          transform: `translateY(${parallaxOffset * 0.15}px) scale(1.15)`,
         }}
       />
       
-      {/* Dark Overlay for Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/95 via-[#0C4A6E]/90 to-[#0A1628]/95" />
-
-      {/* Decorative Elements with Parallax */}
+      {/* Secondary Background Images - Floating Elements */}
       <div 
-        className="absolute top-0 left-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl will-change-transform" 
+        className="absolute -left-20 top-1/4 w-64 h-64 rounded-2xl overflow-hidden opacity-30 will-change-transform shadow-2xl"
+        style={{ 
+          transform: `translateY(${parallaxOffset * 0.4}px) rotate(-6deg)`,
+        }}
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=400&q=80" 
+          alt="Cargo ship"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      <div 
+        className="absolute -right-16 bottom-1/4 w-56 h-56 rounded-2xl overflow-hidden opacity-25 will-change-transform shadow-2xl"
+        style={{ 
+          transform: `translateY(${-parallaxOffset * 0.3}px) rotate(8deg)`,
+        }}
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=400&q=80" 
+          alt="Shipping containers"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      <div 
+        className="absolute left-1/4 -bottom-10 w-48 h-48 rounded-2xl overflow-hidden opacity-20 will-change-transform shadow-2xl hidden lg:block"
+        style={{ 
+          transform: `translateY(${-parallaxOffset * 0.25}px) rotate(-3deg)`,
+        }}
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&q=80" 
+          alt="Airplane cargo"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      {/* Gradient Overlay for Contrast - Lighter to show images */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628]/80 via-[#0C4A6E]/75 to-[#0A1628]/80" />
+
+      {/* Decorative Glow Elements with Parallax */}
+      <div 
+        className="absolute top-0 left-0 w-96 h-96 bg-secondary/15 rounded-full blur-3xl will-change-transform" 
         style={{ transform: `translateY(${parallaxOffset * 0.5}px)` }}
       />
       <div 
-        className="absolute bottom-0 right-0 w-96 h-96 bg-accent/15 rounded-full blur-3xl will-change-transform" 
+        className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl will-change-transform" 
         style={{ transform: `translateY(${-parallaxOffset * 0.3}px)` }}
       />
 
