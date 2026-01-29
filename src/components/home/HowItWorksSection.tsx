@@ -60,7 +60,7 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-6 xl:gap-8">
           {steps.map((step, index) => (
             <div
               key={step.step}
@@ -70,19 +70,19 @@ const HowItWorksSection = () => {
               style={{ transitionDelay: `${index * 100 + 200}ms` }}
             >
               {/* Card */}
-              <div className="h-full p-5 sm:p-6 lg:p-8 relative overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-300">
+              <div className="h-full p-6 sm:p-7 xl:p-8 relative overflow-hidden bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-300">
                 {/* Step Number */}
-                <div className="absolute top-4 right-4 sm:top-5 sm:right-5 lg:top-6 lg:right-6 w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 gradient-yellow rounded-lg flex items-center justify-center font-bold text-xs sm:text-sm text-primary shadow-lg">
+                <div className="absolute top-5 right-5 xl:top-6 xl:right-6 w-9 h-9 xl:w-10 xl:h-10 gradient-yellow rounded-lg flex items-center justify-center font-bold text-sm text-primary shadow-lg">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 gradient-blue rounded-xl flex items-center justify-center mb-4 sm:mb-5 lg:mb-6 shadow-lg">
-                  <step.icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
+                <div className="w-12 h-12 xl:w-14 xl:h-14 gradient-blue rounded-xl flex items-center justify-center mb-5 xl:mb-6 shadow-lg">
+                  <step.icon className="w-6 h-6 xl:w-7 xl:h-7 text-white" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-white mb-2 sm:mb-3 pr-10 sm:pr-12">
+                <h3 className="text-lg xl:text-xl font-semibold text-white mb-3 pr-12">
                   {step.title}
                 </h3>
                 <p className="text-sm sm:text-base text-white/70 leading-relaxed">
@@ -90,9 +90,9 @@ const HowItWorksSection = () => {
                 </p>
               </div>
 
-              {/* Connector - Desktop only */}
+              {/* Connector - Large Desktop only */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                <div className="hidden xl:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
                   <div className="w-8 h-8 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center">
                     <ArrowRight className="w-4 h-4 text-secondary" />
                   </div>
