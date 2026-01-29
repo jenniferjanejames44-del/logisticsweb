@@ -141,14 +141,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-[hsl(38,100%,55%)] hover:-translate-y-1 active:translate-y-0 active:shadow-md group"
             >
               Get Quote
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 active:bg-white/15 group backdrop-blur-sm"
+              className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-secondary hover:text-primary hover:border-secondary hover:-translate-y-1 active:translate-y-0 group backdrop-blur-sm"
             >
               Sign Up
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -187,7 +187,7 @@ const HeroSection = () => {
               <button 
                 onClick={handleTrackClick}
                 disabled={isLoading}
-                className="h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2.5 bg-gradient-to-r from-secondary to-[hsl(38,92%,50%)] text-primary shadow-lg hover:shadow-xl hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md disabled:opacity-60 disabled:hover:translate-y-0 group"
+                className="h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2.5 bg-gradient-to-r from-secondary to-[hsl(38,92%,50%)] text-primary shadow-lg hover:shadow-xl hover:from-[hsl(38,100%,55%)] hover:to-[hsl(38,100%,60%)] hover:-translate-y-1 active:translate-y-0 active:shadow-md disabled:opacity-60 disabled:hover:translate-y-0 group"
               >
                 {isLoading ? <Loader2 className="animate-spin" size={18} /> : (
                   <>
