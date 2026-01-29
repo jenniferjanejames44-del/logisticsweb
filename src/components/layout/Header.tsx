@@ -176,59 +176,64 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 w-full sm:w-80 transition-all duration-300 overflow-y-auto bg-navy ${
+        className={`lg:hidden fixed inset-y-0 right-0 w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-gradient-to-b from-[hsl(222,47%,11%)] to-[hsl(222,47%,8%)] shadow-2xl ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
         }`}
       >
-        <div className="flex justify-end p-4">
+        {/* Header with close button */}
+        <div className="flex items-center justify-between p-5 border-b border-white/10">
+          <span className="text-white font-heading font-bold text-lg">Menu</span>
           <button
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            className="w-9 h-9 rounded-lg flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close menu"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
-        <nav className="px-6 pb-6 flex flex-col gap-2">
+        <nav className="p-5 flex flex-col gap-1">
           {navLinks.slice(0, 2).map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="flex flex-col gap-3">
+          {/* Services Accordion */}
+          <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="flex items-center justify-between text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
-              <ChevronDown className={`w-4 h-4 transition-transform ${isMobileServicesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[400px]" : "max-h-0"}`}>
-              <Link
-                to="/services"
-                className="flex items-center gap-3 font-medium py-3 px-8 rounded-lg hover:bg-white/10 transition-all text-secondary"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                View All Services
-              </Link>
-              {serviceLinks.map((service) => (
+              <div className="pl-3 py-2 space-y-1">
                 <Link
-                  key={service.name}
-                  to={service.href}
-                  className="flex items-center gap-3 text-white/60 hover:text-secondary hover:bg-white/10 py-3 px-8 rounded-lg transition-all"
+                  to="/services"
+                  className="flex items-center gap-3 font-semibold text-sm py-2.5 px-4 rounded-lg bg-secondary/10 text-secondary"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <service.icon className="w-4 h-4" />
-                  {service.name}
+                  View All Services
                 </Link>
-              ))}
+                {serviceLinks.map((service) => (
+                  <Link
+                    key={service.name}
+                    to={service.href}
+                    className="flex items-center gap-3 text-white/60 hover:text-white text-sm py-2.5 px-4 rounded-lg hover:bg-white/5 transition-all"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <service.icon className="w-4 h-4 text-secondary/70" />
+                    {service.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
           
@@ -236,42 +241,43 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-white/80 hover:text-secondary hover:bg-white/10 font-medium py-3 px-4 rounded-xl transition-all"
+              className="text-white/80 hover:text-white hover:bg-white/5 font-medium text-[15px] py-3 px-4 rounded-lg transition-all"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
             </Link>
           ))}
           
-          <div className="flex flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+          {/* CTA Buttons */}
+          <div className="flex flex-col gap-3 pt-5 mt-4 border-t border-white/10">
             {user ? (
               <>
                 {isAdmin && (
                   <Link 
                     to="/admin" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full py-3.5 text-white bg-white/5 hover:bg-white/10 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 border border-white/20"
+                    className="w-full py-3 text-white/90 bg-white/5 hover:bg-white/10 font-semibold text-sm rounded-lg transition-all flex items-center justify-center gap-2 border border-white/15"
                   >
                     <Shield className="w-4 h-4" />
-                    Admin
+                    Admin Panel
                   </Link>
                 )}
                 <Link 
                   to="/dashboard" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3.5 text-white bg-white/5 hover:bg-white/10 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 border border-white/20"
+                  className="w-full py-3 text-white/90 bg-white/5 hover:bg-white/10 font-semibold text-sm rounded-lg transition-all flex items-center justify-center gap-2 border border-white/15"
                 >
                   <User className="w-4 h-4" />
                   Dashboard
                 </Link>
                 <button 
-                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white"
+                  className="w-full py-3 font-bold text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
                   }}
                 >
-                  Logout
+                  Sign Out
                 </button>
               </>
             ) : (
@@ -279,18 +285,18 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white group"
+                  className="w-full py-3 font-bold text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg active:scale-[0.98]"
                 >
                   Get Quote
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3.5 font-semibold rounded-lg transition-all flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 hover:bg-white/20 group"
+                  className="w-full py-3 font-semibold text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-transparent text-white border border-white/25 hover:bg-white/10 active:scale-[0.98]"
                 >
                   Sign Up
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </>
             )}
