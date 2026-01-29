@@ -67,23 +67,26 @@ const IndustriesSection = () => {
         </div>
 
         {/* Industries Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {industries.map((industry, index) => (
             <div
               key={industry.title}
-              className={`glass-card card-top-border p-8 group flex items-start gap-5 transition-all duration-600 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-7 flex items-start gap-5 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
             >
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              
               {/* Icon */}
-              <div className="w-14 h-14 flex-shrink-0 gradient-blue rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="w-14 h-14 flex-shrink-0 gradient-blue rounded-xl flex items-center justify-center shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
                 <industry.icon size={24} className="text-white" />
               </div>
 
               {/* Content */}
               <div>
-                <h3 className="text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors">
+                <h3 className="text-lg font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
                   {industry.title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">

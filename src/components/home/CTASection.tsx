@@ -68,22 +68,22 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-500 delay-300 ${
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-500 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Get Quote
-              <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-white/15 text-white border border-white/30 hover:bg-white/25 hover:border-white/50 active:scale-[0.98] group"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm group"
             >
               Contact Us
-              <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>
