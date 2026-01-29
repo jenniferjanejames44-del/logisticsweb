@@ -127,10 +127,10 @@ const HeroSection = () => {
             <span className="text-secondary block font-extrabold">Delivered With Excellence.</span>
           </h1>
 
-          {/* Subtitle */}
-          <p className={`text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed font-medium transition-all duration-700 delay-100 text-white/90 ${
+          {/* Subtitle - Enhanced visibility */}
+          <p className={`text-lg sm:text-xl md:text-2xl mb-10 sm:mb-14 leading-relaxed font-semibold transition-all duration-700 delay-100 text-white ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`} style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+          }`} style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)', letterSpacing: '-0.01em' }}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
             Fast, secure, and reliable delivery guaranteed.
           </p>

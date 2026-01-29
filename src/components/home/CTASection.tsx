@@ -49,20 +49,20 @@ const CTASection = () => {
         >
           {/* Heading */}
           <h2 
-            className={`mb-6 transition-all duration-600 delay-100 ${
+            className={`mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
+            style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}
           >
             <span className="text-white">Ready to Ship </span>
             <span className="text-secondary">Globally?</span>
           </h2>
           
           <p 
-            className={`text-lg md:text-xl text-white/90 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
+            className={`text-lg md:text-2xl text-white font-medium mb-12 leading-relaxed max-w-2xl mx-auto transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}
+            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)', letterSpacing: '-0.01em' }}
           >
             Join thousands of businesses who trust RAC Logistics for their shipping needs. 
             Get a free quote today and experience the difference.

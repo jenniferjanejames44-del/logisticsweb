@@ -49,10 +49,10 @@ const FounderSection = () => {
             <span className="badge-blue mb-6">
               Leadership
             </span>
-            <h2 className="text-primary mb-8">
+            <h2 className="text-primary mb-6">
               A Message From Our <span className="gradient-text">Founder</span>
             </h2>
-            <blockquote className={`text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 transition-all duration-600 delay-300 ${
+            <blockquote className={`text-lg md:text-xl text-foreground/80 font-medium leading-relaxed mb-8 transition-all duration-600 delay-300 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
               "At RAC Logistics, we don't just move packages—we build bridges between 
