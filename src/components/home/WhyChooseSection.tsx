@@ -55,26 +55,26 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`glass-card card-top-border p-10 group transition-all duration-600 ${
+              className={`glass-card card-top-border p-8 group transition-all duration-200 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: `${index * 100 + 200}ms` }}
+              style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
-              <div className="w-[72px] h-[72px] gradient-blue rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <item.icon size={32} className="text-white" />
+              <div className="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center mb-5 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                <item.icon size={26} className="text-white" />
               </div>
-              <h3 className="text-xl md:text-2xl font-semibold text-primary mb-4">
+              <h3 className="text-lg font-semibold text-primary mb-3">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed mb-6">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                 {item.description}
               </p>
               <div className="flex items-center gap-2 text-accent font-medium text-sm">
-                <CheckCircle size={16} />
+                <CheckCircle size={14} />
                 <span>Guaranteed</span>
               </div>
             </div>

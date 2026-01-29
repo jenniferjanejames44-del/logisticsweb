@@ -139,7 +139,7 @@ const Header = () => {
               </Link>
               <button 
                 onClick={() => signOut()}
-                className="inline-flex items-center gap-2 px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-sm rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98]"
               >
                 Logout
               </button>
@@ -148,17 +148,17 @@ const Header = () => {
             <>
               <Link 
                 to="/pricing"
-                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary hover:-translate-y-0.5 group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-sm rounded-lg transition-all duration-200 border border-secondary text-secondary hover:bg-secondary/10 active:scale-[0.98] group"
               >
                 Get Quote
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
               <Link 
                 to="/auth"
-                className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-sm rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-sm hover:shadow-md hover:brightness-105 active:scale-[0.98] group"
               >
                 Sign Up
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
             </>
           )}
@@ -299,7 +299,7 @@ const Header = () => {
                 <Link 
                   to="/pricing" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 font-bold text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg active:scale-[0.98]"
+                  className="w-full py-3 font-semibold text-sm rounded-lg transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md active:scale-[0.98]"
                 >
                   Get Quote
                   <ArrowRight className="w-4 h-4" />
@@ -307,7 +307,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 font-semibold text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-transparent text-white border border-white/25 hover:bg-white/10 active:scale-[0.98]"
+                  className="w-full py-3 font-semibold text-sm rounded-lg transition-all duration-200 flex items-center justify-center gap-2 bg-transparent text-white border border-white/25 hover:bg-white/10 active:scale-[0.98]"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4" />

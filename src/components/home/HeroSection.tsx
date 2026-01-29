@@ -136,32 +136,32 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-10 sm:mb-16 transition-all duration-700 delay-200 ${
+          <div className={`flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-10 sm:mb-14 transition-all duration-700 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:from-[#E55A28] hover:to-[#D94E1F] hover:shadow-xl hover:-translate-y-0.5 group"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-md hover:shadow-lg hover:brightness-105 active:scale-[0.98] group"
             >
               Get Quote
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-5 sm:px-7 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 bg-white/10 text-white border-2 border-white/50 hover:bg-secondary hover:text-primary hover:border-secondary hover:-translate-y-0.5 group"
+              className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-white/10 text-white border border-white/30 hover:bg-white/20 hover:border-white/50 active:scale-[0.98] group"
             >
               Sign Up
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </Link>
           </div>
 
           {/* Tracking Card */}
-          <div className={`p-3 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-xl sm:rounded-[20px] border border-white/20 sm:border-2 ${
+          <div className={`p-4 sm:p-6 md:p-8 transition-all duration-700 delay-300 rounded-xl border border-white/15 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`} style={{ 
             background: 'rgba(255, 255, 255, 0.98)', 
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 12px 40px rgba(0,0,0,0.15)'
+            backdropFilter: 'blur(12px)',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.12)'
           }}>
             <div className="flex items-center gap-2.5 sm:gap-4 mb-3 sm:mb-6">
               <div className="w-9 h-9 sm:w-[60px] sm:h-[60px] rounded-lg sm:rounded-2xl flex items-center justify-center shadow-md sm:shadow-lg gradient-blue shrink-0">
