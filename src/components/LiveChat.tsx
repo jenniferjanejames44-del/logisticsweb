@@ -13,8 +13,11 @@ interface Message {
   timestamp: Date;
 }
 
+const SCROLL_THRESHOLD = 120; // pixels
+
 const LiveChat = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -27,6 +30,20 @@ const LiveChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Show/hide chat button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsVisible(scrollY > SCROLL_THRESHOLD);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -224,24 +241,27 @@ const LiveChat = () => {
         </div>
       </div>
 
-      {/* Floating Button */}
+      {/* Floating Button - Hidden until scroll */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-8 right-4 sm:right-6 w-16 h-16 rounded-full shadow-xl z-[9999] flex items-center justify-center transition-all duration-300 hover:scale-110",
+          "fixed bottom-6 right-4 sm:right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-xl z-[9999] flex items-center justify-center transition-all duration-300",
           isOpen
-            ? "bg-muted"
-            : "gradient-blue"
+            ? "bg-muted scale-100"
+            : "gradient-blue hover:scale-105",
+          isVisible || isOpen
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 translate-y-4 pointer-events-none"
         )}
         style={{
-          boxShadow: isOpen ? undefined : '0 8px 24px rgba(59, 130, 246, 0.4)',
+          boxShadow: isOpen ? undefined : '0 6px 20px rgba(59, 130, 246, 0.35)',
         }}
       >
         {isOpen ? (
-          <X size={24} className="text-primary" />
+          <X size={22} className="text-primary" />
         ) : (
-          <span className="text-2xl">💬</span>
+          <span className="text-xl sm:text-2xl">💬</span>
         )}
       </button>
     </>

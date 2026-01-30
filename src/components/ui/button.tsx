@@ -9,42 +9,56 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary Button - Yellow Gradient with visible hover */
-        default: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-md hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:shadow-md active:translate-y-0",
+        /* Primary Button - Yellow (stays yellow, darker amber on hover) */
+        default: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-md hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:shadow-md active:translate-y-0",
 
-        /* Secondary Button - Clean white with navy hover */
-        secondary: "bg-card text-primary border-2 border-border rounded-xl shadow-sm hover:bg-muted hover:border-primary hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        /* Secondary Button - Dark Blue (stays blue, subtle teal tint on hover) */
+        secondary: "bg-primary text-primary-foreground rounded-xl shadow-md hover:bg-[hsl(200,70%,28%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
 
-        /* Ghost Button - Transparent with teal hover */
-        ghost: "bg-transparent text-muted-foreground rounded-xl hover:bg-accent/10 hover:text-accent active:scale-[0.97]",
+        /* Ghost Button - Transparent with subtle fill on hover */
+        ghost: "bg-transparent text-muted-foreground rounded-xl hover:bg-muted hover:text-foreground active:scale-[0.97]",
 
-        /* Outline - Teal accent with fill hover */
-        outline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        /* Outline Teal - Teal border, fills with teal on hover */
+        outline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+
+        /* Outline Navy - Navy border, fills with navy on hover */
+        outlineNavy: "border-2 border-primary bg-transparent text-primary rounded-xl hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
 
         /* Destructive */
-        destructive: "bg-destructive text-destructive-foreground rounded-xl shadow-sm hover:bg-destructive/85 hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        destructive: "bg-destructive text-destructive-foreground rounded-xl shadow-sm hover:bg-destructive/85 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
 
         /* Link Style */
         link: "text-accent underline-offset-4 hover:underline hover:text-accent/80 p-0 h-auto font-medium",
 
-        /* Navigation CTA - Yellow */
-        nav: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        /* Navigation Primary CTA - Yellow */
+        nav: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
 
-        /* CTA variants - with visible hover effects */
-        cta: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        heroPrimary: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        heroSecondary: "bg-card text-foreground border-2 border-border rounded-xl shadow-md hover:bg-muted hover:border-primary hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        heroOutline: "bg-transparent text-white border-2 border-white/50 rounded-xl hover:bg-white/20 hover:border-white hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        accent: "bg-accent text-accent-foreground rounded-xl shadow-sm hover:bg-accent/85 hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        navCta: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        navOutline: "border-2 border-primary bg-transparent text-primary rounded-xl hover:bg-primary hover:text-primary-foreground hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        ctaOutline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        premium: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        indigoOutline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        dynamic: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
-        quote: "bg-card text-foreground border-2 border-border rounded-xl shadow-sm hover:bg-muted hover:border-primary hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0 group",
-        quotePrimary: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(38,100%,55%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(38,100%,55%)] hover:to-[hsl(45,100%,60%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0 group",
-        quoteAccent: "bg-accent text-accent-foreground rounded-xl shadow-sm hover:bg-accent/85 hover:shadow-lg hover:-translate-y-1 active:scale-[0.97] active:translate-y-0 group",
+        /* Navigation Secondary - Navy */
+        navSecondary: "bg-primary text-primary-foreground rounded-xl shadow-sm hover:bg-[hsl(200,70%,28%)] hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+
+        /* Hero Primary - Yellow with enhanced shadow */
+        heroPrimary: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+
+        /* Hero Secondary - Dark Blue */
+        heroSecondary: "bg-primary text-primary-foreground rounded-xl shadow-lg hover:bg-[hsl(200,70%,28%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+
+        /* Hero Outline - White border for dark backgrounds */
+        heroOutline: "bg-transparent text-white border-2 border-white/50 rounded-xl hover:bg-white/15 hover:border-white hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+
+        /* Accent - Teal solid */
+        accent: "bg-accent text-accent-foreground rounded-xl shadow-sm hover:bg-[hsl(188,78%,35%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+
+        /* CTA variants */
+        cta: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        navCta: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+        navOutline: "border-2 border-primary bg-transparent text-primary rounded-xl hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+        ctaOutline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+        premium: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.97] active:translate-y-0",
+        indigoOutline: "border-2 border-accent bg-transparent text-accent rounded-xl hover:bg-accent hover:text-accent-foreground hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+        dynamic: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-sm hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0",
+        quote: "bg-primary text-primary-foreground rounded-xl shadow-sm hover:bg-[hsl(200,70%,28%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group",
+        quotePrimary: "bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground rounded-xl shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group",
+        quoteAccent: "bg-accent text-accent-foreground rounded-xl shadow-sm hover:bg-[hsl(188,78%,35%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group",
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
