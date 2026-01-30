@@ -131,7 +131,7 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 overflow-hidden"
+          className="relative pt-32 pb-24 md:pt-44 md:pb-28 overflow-hidden"
         >
           {/* Background Image */}
           <div 
@@ -145,13 +145,13 @@ const Blog = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-5 py-2.5 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6">
+              <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-secondary/30">
                 Blog & Resources
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 Insights & <span className="text-secondary">Updates</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-8" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+              <p className="text-lg md:text-xl text-white font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
@@ -159,17 +159,20 @@ const Blog = () => {
         </section>
 
         {/* Featured Posts Slider */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <h2 className="font-heading text-2xl font-bold text-foreground mb-8">
+        <section className="section-padding bg-muted/30">
+          <div className="section-container">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-10">
               Featured Articles
             </h2>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
               {featuredPosts.map((post, index) => (
                 <Card 
                   key={post.id} 
-                  className="group overflow-hidden border-border/50 hover:border-secondary/50 hover:shadow-card transition-all duration-300"
+                  className="group relative overflow-hidden border border-border/50 rounded-2xl hover:border-secondary/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
                 >
+                  {/* Top accent bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
+                  
                   <div className="aspect-video relative overflow-hidden">
                     <img 
                       src={post.image} 
@@ -178,30 +181,30 @@ const Blog = () => {
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
-                    <Badge className="absolute top-4 left-4 bg-secondary text-secondary-foreground">
+                    <Badge className="absolute top-4 left-4 bg-secondary text-secondary-foreground font-bold">
                       {post.category}
                     </Badge>
                   </div>
-                  <CardContent className="p-6">
-                    <h3 className="font-heading text-xl font-bold text-foreground mb-3 group-hover:text-secondary transition-colors line-clamp-2">
+                  <CardContent className="p-6 md:p-8">
+                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-2">
+                    <p className="text-muted-foreground mb-5 line-clamp-2 leading-relaxed">
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1">
-                          <User className="w-4 h-4" />
+                        <span className="flex items-center gap-1.5 font-medium">
+                          <User className="w-4 h-4 text-accent" />
                           {post.author}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
+                        <span className="flex items-center gap-1.5 font-medium">
+                          <Calendar className="w-4 h-4 text-accent" />
                           {post.date}
                         </span>
                       </div>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
+                      <span className="flex items-center gap-1.5 font-medium">
+                        <Clock className="w-4 h-4 text-accent" />
                         {post.readTime}
                       </span>
                     </div>
@@ -213,30 +216,30 @@ const Blog = () => {
         </section>
 
         {/* Search & Filter */}
-        <section className="py-12 bg-background border-b border-border/50">
-          <div className="container mx-auto px-4">
+        <section className="py-10 md:py-12 bg-background border-b border-border/50">
+          <div className="section-container">
             <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
               {/* Search */}
-              <div className="relative w-full md:w-auto md:min-w-[300px]">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <div className="relative w-full md:w-auto md:min-w-[320px]">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input
                   placeholder="Search articles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-12"
+                  className="pl-12 h-12 rounded-xl border-2 border-border focus:border-secondary"
                 />
               </div>
               
               {/* Categories */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 justify-center md:justify-end">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 ${
                       selectedCategory === category
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'bg-muted/50 text-muted-foreground hover:bg-secondary/20 hover:text-secondary'
+                        ? 'bg-secondary text-secondary-foreground shadow-md'
+                        : 'bg-muted text-muted-foreground hover:bg-secondary/20 hover:text-secondary'
                     }`}
                   >
                     {category}
@@ -248,15 +251,19 @@ const Blog = () => {
         </section>
 
         {/* Blog Posts Grid */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
+        <section className="section-padding bg-background">
+          <div className="section-container">
             {filteredPosts.length > 0 ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 {filteredPosts.map((post, index) => (
                   <Card 
                     key={post.id}
-                    className="group overflow-hidden border-border/50 hover:border-secondary/50 hover:shadow-card hover:-translate-y-2 transition-all duration-300"
+                    className="group relative overflow-hidden border border-border/50 rounded-2xl hover:border-secondary/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                    style={{ transitionDelay: `${index * 50}ms` }}
                   >
+                    {/* Top accent bar */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
+                    
                     <div className="aspect-video relative overflow-hidden">
                       <img 
                         src={post.image} 
@@ -264,89 +271,91 @@ const Blog = () => {
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />
-                      <Badge className="absolute top-4 left-4 bg-secondary/90 text-secondary-foreground">
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
+                      <Badge className="absolute top-4 left-4 bg-secondary text-secondary-foreground font-bold">
                         {post.category}
                       </Badge>
                     </div>
                     <CardContent className="p-6">
-                      <h3 className="font-heading text-lg font-bold text-foreground mb-3 group-hover:text-secondary transition-colors line-clamp-2">
+                      <h3 className="font-heading text-lg font-bold text-foreground mb-3 group-hover:text-accent transition-colors line-clamp-2">
                         {post.title}
                       </h3>
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
                         {post.excerpt}
                       </p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
+                      <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 font-medium">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-accent" />
                           {post.date}
                         </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
+                        <span className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-accent" />
                           {post.readTime}
                         </span>
                       </div>
-                      <Button variant="link" className="p-0 h-auto text-secondary group-hover:gap-3 transition-all">
+                      <span className="inline-flex items-center gap-2 font-bold text-sm text-accent group-hover:gap-3 transition-all duration-300 cursor-pointer">
                         Read More <ArrowRight className="w-4 h-4" />
-                      </Button>
+                      </span>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg">No articles found matching your criteria.</p>
-                <Button 
-                  variant="outline" 
-                  className="mt-4"
+              <div className="text-center py-16">
+                <p className="text-muted-foreground text-lg font-medium">No articles found matching your criteria.</p>
+                <button 
+                  className="mt-6 inline-flex items-center justify-center gap-2.5 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 ease-out border-2 border-accent bg-transparent text-accent hover:bg-accent hover:text-accent-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97]"
                   onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
                 >
                   Clear Filters
-                </Button>
+                </button>
               </div>
             )}
 
             {/* Pagination */}
             {filteredPosts.length > 0 && (
-              <div className="flex items-center justify-center gap-2 mt-12">
-                <Button variant="outline" size="icon" disabled>
+              <div className="flex items-center justify-center gap-2 mt-14">
+                <button className="w-11 h-11 rounded-xl border-2 border-border flex items-center justify-center text-muted-foreground opacity-50 cursor-not-allowed" disabled>
                   <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <Button variant="default" size="icon" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                </button>
+                <button className="w-11 h-11 rounded-xl bg-secondary text-secondary-foreground font-bold shadow-md">
                   1
-                </Button>
-                <Button variant="outline" size="icon">
+                </button>
+                <button className="w-11 h-11 rounded-xl border-2 border-border text-foreground font-bold hover:border-secondary/50 hover:bg-secondary/10 transition-all">
                   2
-                </Button>
-                <Button variant="outline" size="icon">
+                </button>
+                <button className="w-11 h-11 rounded-xl border-2 border-border text-foreground font-bold hover:border-secondary/50 hover:bg-secondary/10 transition-all">
                   3
-                </Button>
-                <Button variant="outline" size="icon">
+                </button>
+                <button className="w-11 h-11 rounded-xl border-2 border-border flex items-center justify-center text-foreground hover:border-secondary/50 hover:bg-secondary/10 transition-all">
                   <ChevronRight className="w-4 h-4" />
-                </Button>
+                </button>
               </div>
             )}
           </div>
         </section>
 
         {/* Newsletter CTA */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/90">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
-              Subscribe to Our Newsletter
+        <section className="section-padding bg-navy relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+          
+          <div className="section-container text-center relative z-10">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              Subscribe to Our <span className="text-secondary">Newsletter</span>
             </h2>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="h-12 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
+                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-secondary rounded-xl"
               />
-              <Button variant="default" size="lg">
+              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
                 Subscribe
-              </Button>
+              </button>
             </div>
           </div>
         </section>
