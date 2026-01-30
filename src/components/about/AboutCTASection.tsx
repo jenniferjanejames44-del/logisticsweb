@@ -23,14 +23,14 @@ const AboutCTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 group w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group w-full sm:w-auto"
             >
               Contact Us
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all bg-primary text-white hover:bg-primary/90 hover:-translate-y-0.5 group w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-md hover:bg-[hsl(200,70%,28%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group w-full sm:w-auto"
             >
               View Services
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
