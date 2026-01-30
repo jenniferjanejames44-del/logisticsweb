@@ -61,8 +61,8 @@ const Header = () => {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
+        {/* Desktop Navigation - visible on medium screens and up */}
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {navLinks.slice(0, 2).map((link) => (
             <Link
               key={link.name}
@@ -117,8 +117,8 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* CTA Buttons */}
-        <div className="hidden lg:flex items-center gap-4">
+        {/* CTA Buttons - visible on medium screens and up */}
+        <div className="hidden md:flex items-center gap-3 lg:gap-4">
           {user ? (
             <>
               {isAdmin && (
@@ -164,9 +164,9 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button - only visible on small screens */}
         <button
-          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-accent/10 text-accent"
+          className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-accent/10 text-accent"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -174,19 +174,19 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Mobile menu backdrop - must be outside header stacking context */}
+      {/* Mobile menu backdrop - only visible on small screens */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm"
+          className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm"
           style={{ zIndex: 9998 }}
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
         />
       )}
 
-      {/* Mobile Menu - fixed position with highest z-index */}
+      {/* Mobile Menu - only visible on small screens */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-gradient-to-b from-[hsl(222,47%,11%)] to-[hsl(222,47%,8%)] shadow-2xl ${
+        className={`md:hidden fixed top-0 right-0 h-screen w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-gradient-to-b from-[hsl(222,47%,11%)] to-[hsl(222,47%,8%)] shadow-2xl ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
