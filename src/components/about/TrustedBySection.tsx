@@ -39,31 +39,25 @@ const TrustedBySection = () => {
 
   return (
     <section ref={ref} className="py-16 md:py-24 bg-primary relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-br from-secondary/10 to-transparent" />
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-tl from-secondary/10 to-transparent" />
-      </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-block text-secondary font-semibold mb-4 text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-block text-white/80 font-semibold mb-4 text-sm uppercase tracking-wider transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             TRUSTED WORLDWIDE
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-primary-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            What Our <span className="text-secondary">Clients Say</span>
+            What Our Clients Say
           </h2>
           <p
-            className={`text-base md:text-lg text-primary-foreground/80 transition-all duration-700 delay-200 ${
+            className={`text-base md:text-lg text-white/80 transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -76,7 +70,7 @@ const TrustedBySection = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.author}
-              className={`group bg-primary-foreground/5 backdrop-blur-sm border border-primary-foreground/10 rounded-2xl p-6 md:p-8 hover:bg-primary-foreground/10 transition-all duration-500 hover:-translate-y-2 ${
+              className={`group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-500 hover:-translate-y-2 ${
                 isInView
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -84,19 +78,19 @@ const TrustedBySection = () => {
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Quote Icon */}
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <Quote size={20} className="text-secondary md:w-6 md:h-6" />
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <Quote size={20} className="text-white md:w-6 md:h-6" />
               </div>
 
               {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} size={16} className="text-secondary fill-secondary" />
+                  <Star key={i} size={16} className="text-white fill-white" />
                 ))}
               </div>
 
               {/* Quote Text */}
-              <p className="text-primary-foreground/90 text-sm md:text-base leading-relaxed mb-6 italic">
+              <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6 italic">
                 "{testimonial.quote}"
               </p>
 
@@ -105,14 +99,14 @@ const TrustedBySection = () => {
                 <img
                   src={testimonial.image}
                   alt={testimonial.author}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-secondary/30"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/30"
                   loading="lazy"
                 />
                 <div>
-                  <h4 className="text-primary-foreground font-semibold text-sm md:text-base">
+                  <h4 className="text-white font-semibold text-sm md:text-base">
                     {testimonial.author}
                   </h4>
-                  <p className="text-primary-foreground/60 text-xs md:text-sm">
+                  <p className="text-white/60 text-xs md:text-sm">
                     {testimonial.role}
                   </p>
                 </div>
@@ -127,16 +121,16 @@ const TrustedBySection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <p className="text-center text-primary-foreground/60 text-sm mb-6 md:mb-8 uppercase tracking-wider">
+          <p className="text-center text-white/60 text-sm mb-6 md:mb-8 uppercase tracking-wider">
             Trusted by leading companies worldwide
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
             {trustedLogos.map((logo, index) => (
               <div
                 key={logo.name}
-                className="w-16 h-16 md:w-20 md:h-20 bg-primary-foreground/10 rounded-xl flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+                className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
               >
-                <span className="text-primary-foreground/70 font-heading font-bold text-lg md:text-xl">
+                <span className="text-white/70 font-heading font-bold text-lg md:text-xl">
                   {logo.initial}
                 </span>
               </div>

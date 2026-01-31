@@ -38,21 +38,21 @@ const CoreValuesSection = () => {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`badge-yellow mb-6 transition-all duration-600 ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-primary/10 text-primary ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Principles
           </span>
           <h2
-            className={`text-primary mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Core <span className="gradient-text">Values</span>
+            Core <span className="text-primary">Values</span>
           </h2>
           <p
-            className={`text-foreground/80 text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
+            className={`text-muted-foreground text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -71,15 +71,15 @@ const CoreValuesSection = () => {
               style={{ transitionDelay: `${index * 60 + 150}ms` }}
             >
               {/* Top accent bar on hover */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
               
               {/* Icon */}
-              <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-                <value.icon size={24} className="text-white" />
+              <div className="w-14 h-14 mx-auto bg-primary rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <value.icon size={24} className="text-primary-foreground" />
               </div>
 
               {/* Title */}
-              <h3 className="text-base font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+              <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                 {value.title}
               </h3>
               

@@ -29,13 +29,13 @@ const FounderSection = () => {
               </div>
               
               {/* Quote Badge */}
-              <div className="absolute -bottom-4 -right-4 w-16 h-16 gradient-blue rounded-xl flex items-center justify-center shadow-lg">
-                <Quote size={28} className="text-white" />
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+                <Quote size={28} className="text-primary-foreground" />
               </div>
               
               {/* Badge */}
-              <div className="absolute bottom-6 left-6 glass-strong px-4 py-2 rounded-full">
-                <span className="gradient-text font-semibold text-sm">🚢 Ocean Shipping</span>
+              <div className="absolute bottom-6 left-6 bg-card/90 backdrop-blur-sm border border-border px-4 py-2 rounded-full">
+                <span className="text-primary font-semibold text-sm">🚢 Ocean Shipping</span>
               </div>
             </div>
           </div>
@@ -46,13 +46,13 @@ const FounderSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
             }`}
           >
-            <span className="badge-blue mb-6">
+            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-primary/10 text-primary">
               Leadership
             </span>
-            <h2 className="text-primary mb-6">
-              A Message From Our <span className="gradient-text">Founder</span>
+            <h2 className="text-foreground mb-6">
+              A Message From Our <span className="text-primary">Founder</span>
             </h2>
-            <blockquote className={`text-lg md:text-xl text-foreground/80 font-medium leading-relaxed mb-8 transition-all duration-600 delay-300 ${
+            <blockquote className={`text-lg md:text-xl text-muted-foreground font-medium leading-relaxed mb-8 transition-all duration-600 delay-300 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
               "At RAC Logistics, we don't just move packages—we build bridges between 
@@ -62,9 +62,9 @@ const FounderSection = () => {
             <div className={`flex items-center gap-4 mb-8 transition-all duration-600 delay-400 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
-              <div className="w-12 h-1 gradient-blue rounded-full" />
+              <div className="w-12 h-1 bg-primary rounded-full" />
               <div>
-                <h4 className="font-semibold text-primary text-lg">
+                <h4 className="font-semibold text-foreground text-lg">
                   Offor Rex C.K
                 </h4>
                 <p className="text-muted-foreground">
@@ -75,7 +75,7 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:bg-[hsl(153,41%,24%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Learn More
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
