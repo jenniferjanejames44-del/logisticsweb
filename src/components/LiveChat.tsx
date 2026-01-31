@@ -13,7 +13,7 @@ interface Message {
   timestamp: Date;
 }
 
-const SCROLL_THRESHOLD = 120; // pixels
+const SCROLL_THRESHOLD = 120;
 
 const LiveChat = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,21 +31,18 @@ const LiveChat = () => {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Show/hide chat button based on scroll position
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       setIsVisible(scrollY > SCROLL_THRESHOLD);
     };
 
-    // Check initial scroll position
     handleScroll();
     
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -55,7 +52,6 @@ const LiveChat = () => {
     }
   }, [messages]);
 
-  // Focus input when chat opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -127,26 +123,26 @@ const LiveChat = () => {
       {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px] bg-card rounded-2xl shadow-2xl border border-border z-[9998] overflow-hidden transition-all duration-300 transform",
+          "fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[360px] max-w-[360px] bg-card rounded-xl shadow-xl border border-border z-[9998] overflow-hidden transition-all duration-300 transform",
           isOpen
             ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
             : "opacity-0 translate-y-4 scale-95 pointer-events-none"
         )}
       >
         {/* Header */}
-        <div className="gradient-blue px-4 py-3 flex items-center justify-between">
+        <div className="bg-primary px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center shadow-md">
-              <span className="text-lg">💬</span>
+            <div className="w-9 h-9 bg-white/20 rounded-lg flex items-center justify-center">
+              <MessageCircle size={18} className="text-white" />
             </div>
             <div>
-              <h4 className="font-bold text-white text-sm">
+              <h4 className="font-semibold text-white text-sm">
                 RAC Support
               </h4>
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+                <span className="w-1.5 h-1.5 bg-white rounded-full" />
                 <p className="text-xs text-white/80">
-                  AI Assistant • Online
+                  Online
                 </p>
               </div>
             </div>
@@ -162,8 +158,8 @@ const LiveChat = () => {
         </div>
 
         {/* Messages */}
-        <ScrollArea ref={scrollAreaRef} className="h-[320px] bg-background">
-          <div className="p-4 space-y-4">
+        <ScrollArea ref={scrollAreaRef} className="h-[300px] bg-background">
+          <div className="p-4 space-y-3">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -173,37 +169,37 @@ const LiveChat = () => {
                 )}
               >
                 {msg.role === "assistant" && (
-                  <div className="w-7 h-7 gradient-blue rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <Bot size={14} className="text-white" />
+                  <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Bot size={14} className="text-primary-foreground" />
                   </div>
                 )}
                 <div
                   className={cn(
-                    "max-w-[75%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm",
+                    "max-w-[75%] rounded-lg px-3 py-2 text-sm leading-relaxed",
                     msg.role === "user"
-                      ? "gradient-blue text-white rounded-br-md"
-                      : "bg-muted text-foreground rounded-bl-md"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-foreground"
                   )}
                 >
                   {msg.content}
                 </div>
                 {msg.role === "user" && (
-                  <div className="w-7 h-7 gradient-yellow rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <User size={14} className="text-primary" />
+                  <div className="w-7 h-7 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+                    <User size={14} className="text-muted-foreground" />
                   </div>
                 )}
               </div>
             ))}
             {isLoading && (
               <div className="flex gap-2 justify-start">
-                <div className="w-7 h-7 gradient-blue rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Bot size={14} className="text-white" />
+                <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Bot size={14} className="text-primary-foreground" />
                 </div>
-                <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+                <div className="bg-muted rounded-lg px-4 py-3">
                   <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               </div>
@@ -221,47 +217,41 @@ const LiveChat = () => {
               onKeyDown={handleKeyPress}
               placeholder="Type your message..."
               disabled={isLoading}
-              className="flex-1 bg-card border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-accent/50 text-sm"
+              className="flex-1 bg-background text-sm"
             />
             <button
               onClick={sendMessage}
               disabled={!message.trim() || isLoading}
-              className="h-10 w-10 gradient-blue rounded-xl flex items-center justify-center shadow-md disabled:opacity-50 transition-all hover:scale-105"
+              className="h-10 w-10 bg-primary rounded-lg flex items-center justify-center disabled:opacity-50 transition-colors hover:bg-[hsl(153,41%,24%)]"
             >
               {isLoading ? (
-                <Loader2 size={18} className="animate-spin text-white" />
+                <Loader2 size={16} className="animate-spin text-primary-foreground" />
               ) : (
-                <Send size={18} className="text-white" />
+                <Send size={16} className="text-primary-foreground" />
               )}
             </button>
           </div>
-          <p className="text-[10px] text-muted-foreground text-center mt-2">
-            Powered by RAC Logistics AI
-          </p>
         </div>
       </div>
 
-      {/* Floating Button - Hidden until scroll */}
+      {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-6 right-4 sm:right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-xl z-[9999] flex items-center justify-center transition-all duration-300",
+          "fixed bottom-6 right-4 sm:right-6 w-12 h-12 rounded-lg shadow-lg z-[9999] flex items-center justify-center transition-all duration-300",
           isOpen
-            ? "bg-muted scale-100"
-            : "gradient-blue hover:scale-105",
+            ? "bg-muted text-foreground"
+            : "bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)]",
           isVisible || isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
         )}
-        style={{
-          boxShadow: isOpen ? undefined : '0 6px 20px rgba(59, 130, 246, 0.35)',
-        }}
       >
         {isOpen ? (
-          <X size={22} className="text-primary" />
+          <X size={20} />
         ) : (
-          <span className="text-xl sm:text-2xl">💬</span>
+          <MessageCircle size={20} />
         )}
       </button>
     </>
