@@ -42,7 +42,7 @@ const CompanyStorySection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
-            className={`inline-block text-secondary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-block text-primary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -53,7 +53,7 @@ const CompanyStorySection = () => {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            The RAC <span className="text-secondary">Story</span>
+            The RAC <span className="text-primary">Story</span>
           </h2>
           <p
             className={`text-base md:text-lg text-muted-foreground transition-all duration-700 delay-200 ${
@@ -82,12 +82,12 @@ const CompanyStorySection = () => {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 {/* Dot - Mobile */}
-                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-secondary rounded-full border-2 sm:border-4 border-background shadow-lg z-10 flex-shrink-0 md:hidden mt-2" />
+                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-primary rounded-full border-2 sm:border-4 border-background shadow-lg z-10 flex-shrink-0 md:hidden mt-2" />
 
                 {/* Content */}
                 <div className={`flex-1 ${index % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
                   <div className="bg-card rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
-                    <span className="text-secondary font-heading font-bold text-base sm:text-lg">
+                    <span className="text-primary font-heading font-bold text-base sm:text-lg">
                       {item.year}
                     </span>
                     <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mt-1 mb-2">
@@ -100,7 +100,7 @@ const CompanyStorySection = () => {
                 </div>
 
                 {/* Dot - Desktop */}
-                <div className="w-4 h-4 bg-secondary rounded-full border-4 border-background shadow-lg z-10 hidden md:block flex-shrink-0" />
+                <div className="w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg z-10 hidden md:block flex-shrink-0" />
 
                 {/* Spacer */}
                 <div className="flex-1 hidden md:block" />

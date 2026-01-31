@@ -62,7 +62,7 @@ const LeadershipSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
-            className={`inline-block text-secondary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-block text-primary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -73,7 +73,7 @@ const LeadershipSection = () => {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Leadership <span className="text-secondary">Team</span>
+            Leadership <span className="text-primary">Team</span>
           </h2>
           <p
             className={`text-base md:text-lg text-muted-foreground transition-all duration-700 delay-200 ${
@@ -110,19 +110,19 @@ const LeadershipSection = () => {
                 <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                   <a
                     href={member.linkedin}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
                   >
                     <Linkedin size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={member.twitter}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
                   >
                     <Twitter size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={`mailto:${member.name.toLowerCase().replace(" ", ".")}@raclogistics.com`}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(222,47%,11%)]/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
                   >
                     <Mail size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
                   </a>
@@ -134,7 +134,7 @@ const LeadershipSection = () => {
                 <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mb-1">
                   {member.name}
                 </h3>
-                <p className="text-secondary font-medium text-sm sm:text-base mb-2 sm:mb-3">{member.role}</p>
+                <p className="text-primary font-medium text-sm sm:text-base mb-2 sm:mb-3">{member.role}</p>
                 <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
                   {member.bio}
                 </p>

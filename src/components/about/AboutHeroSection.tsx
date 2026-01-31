@@ -6,10 +6,10 @@ const AboutHeroSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-40 md:pb-24 bg-gradient-to-br from-[hsl(222,47%,11%)] via-[hsl(222,40%,15%)] to-[hsl(222,47%,11%)] relative overflow-hidden">
+    <section ref={ref} className="pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-40 md:pb-24 bg-primary relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-secondary to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white to-transparent" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -20,34 +20,34 @@ const AboutHeroSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
-            <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-6 border border-secondary/30">
+            <span className="inline-block px-6 py-3 bg-white/20 text-white rounded-full text-sm font-bold tracking-wider uppercase mb-6 border border-white/30">
               About RAC Logistics
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 sm:mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
-              Your Trusted <span className="text-secondary">Global Partner</span>
+              Your Trusted Global Partner
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+            <p className="text-base sm:text-lg md:text-xl text-white/90 font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
               Since 2010, RAC Logistics has been at the forefront of international 
               shipping and logistics. We've built our reputation on reliability, 
               innovation, and an unwavering commitment to customer satisfaction.
             </p>
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary rounded-xl flex items-center justify-center">
-                  <Award size={20} className="text-secondary-foreground sm:w-6 sm:h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                  <Award size={20} className="text-white sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="text-xl sm:text-2xl font-heading font-bold text-primary-foreground">15+</p>
-                  <p className="text-xs sm:text-sm text-[hsl(215,20%,70%)]">Years of Excellence</p>
+                  <p className="text-xl sm:text-2xl font-heading font-bold text-white">15+</p>
+                  <p className="text-xs sm:text-sm text-white/70">Years of Excellence</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary rounded-xl flex items-center justify-center">
-                  <Rocket size={20} className="text-secondary-foreground sm:w-6 sm:h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                  <Rocket size={20} className="text-white sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="text-xl sm:text-2xl font-heading font-bold text-primary-foreground">50K+</p>
-                  <p className="text-xs sm:text-sm text-[hsl(215,20%,70%)]">Deliveries Completed</p>
+                  <p className="text-xl sm:text-2xl font-heading font-bold text-white">50K+</p>
+                  <p className="text-xs sm:text-sm text-white/70">Deliveries Completed</p>
                 </div>
               </div>
             </div>
@@ -66,9 +66,9 @@ const AboutHeroSection = () => {
                 className="w-full rounded-2xl shadow-2xl"
                 loading="lazy"
               />
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
-                <p className="text-2xl sm:text-3xl font-heading font-bold text-secondary-foreground">150+</p>
-                <p className="text-xs sm:text-sm text-secondary-foreground/80">Countries Served</p>
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
+                <p className="text-2xl sm:text-3xl font-heading font-bold text-primary">150+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Countries Served</p>
               </div>
             </div>
           </div>

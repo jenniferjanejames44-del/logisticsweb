@@ -47,26 +47,26 @@ const TestimonialsSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="section-padding bg-section-blue relative overflow-hidden">
+    <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`badge-blue mb-6 transition-all duration-600 ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-primary/10 text-primary ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Testimonials
           </span>
           <h2
-            className={`text-primary mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            What Our <span className="gradient-text">Clients Say</span>
+            What Our <span className="text-primary">Clients Say</span>
           </h2>
           <p
-            className={`text-foreground/80 text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
+            className={`text-muted-foreground text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -81,13 +81,13 @@ const TestimonialsSection = () => {
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:-translate-x-3 lg:hover:-translate-x-[60px]"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:-translate-x-3 lg:hover:-translate-x-[60px]"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-accent hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:translate-x-3 lg:hover:translate-x-[60px]"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:translate-x-3 lg:hover:translate-x-[60px]"
           >
             <ChevronRight size={22} />
           </button>
@@ -102,8 +102,8 @@ const TestimonialsSection = () => {
                 <div key={index} className="w-full flex-shrink-0 px-4">
                   <div className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center shadow-sm">
                     {/* Quote Icon */}
-                    <div className="w-14 h-14 mx-auto gradient-blue rounded-xl flex items-center justify-center mb-8 shadow-md">
-                      <Quote size={26} className="text-white" />
+                    <div className="w-14 h-14 mx-auto bg-primary rounded-xl flex items-center justify-center mb-8 shadow-md">
+                      <Quote size={26} className="text-primary-foreground" />
                     </div>
 
                     {/* Content */}
@@ -114,7 +114,7 @@ const TestimonialsSection = () => {
                     {/* Rating */}
                     <div className="flex justify-center gap-1.5 mb-8">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={20} className="text-secondary fill-secondary" />
+                        <Star key={i} size={20} className="text-primary fill-primary" />
                       ))}
                     </div>
 
@@ -123,17 +123,17 @@ const TestimonialsSection = () => {
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 rounded-xl object-cover border-2 border-accent/30 shadow-sm"
+                        className="w-14 h-14 rounded-xl object-cover border-2 border-primary/30 shadow-sm"
                         loading="lazy"
                       />
                       <div className="text-left">
-                        <h4 className="font-bold text-primary text-lg">
+                        <h4 className="font-bold text-foreground text-lg">
                           {testimonial.name}
                         </h4>
                         <p className="text-muted-foreground text-sm">
                           {testimonial.role}
                         </p>
-                        <p className="gradient-text text-sm font-bold">
+                        <p className="text-primary text-sm font-bold">
                           {testimonial.company}
                         </p>
                       </div>
@@ -152,8 +152,8 @@ const TestimonialsSection = () => {
                 onClick={() => setCurrentIndex(index)}
                 className={`h-2.5 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? "gradient-blue w-8"
-                    : "bg-border hover:bg-accent/40 w-2.5"
+                    ? "bg-primary w-8"
+                    : "bg-border hover:bg-primary/40 w-2.5"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
