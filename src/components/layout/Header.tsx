@@ -147,9 +147,9 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to="/pricing">
+              <Link to="/auth">
                 <Button variant="secondary" size="sm" className="gap-2">
-                  Get Quote
+                  Login
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
