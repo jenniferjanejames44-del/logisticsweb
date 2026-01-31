@@ -72,9 +72,9 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "delivered": return "text-emerald-500";
-      case "in_transit": case "in transit": return "text-accent";
-      case "pending": return "text-secondary";
+      case "delivered": return "text-primary";
+      case "in_transit": case "in transit": return "text-primary";
+      case "pending": return "text-muted-foreground";
       case "delayed": return "text-destructive";
       default: return "text-muted-foreground";
     }
@@ -82,9 +82,9 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
 
   const getStatusBgColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "delivered": return "bg-emerald-500/10 border-emerald-500/20";
-      case "in_transit": case "in transit": return "bg-accent/10 border-accent/20";
-      case "pending": return "bg-secondary/10 border-secondary/20";
+      case "delivered": return "bg-primary/10 border-primary/20";
+      case "in_transit": case "in transit": return "bg-primary/10 border-primary/20";
+      case "pending": return "bg-muted border-border";
       case "delayed": return "bg-destructive/10 border-destructive/20";
       default: return "bg-muted border-border";
     }
@@ -127,43 +127,27 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
 
   return (
     <div 
-      className={`relative transition-all duration-700 delay-300 ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      className={`relative transition-all duration-500 delay-300 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       }`}
     >
       {/* Main Card */}
       <div 
-        className={`relative rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 ${
-          isFocused ? "shadow-2xl shadow-accent/20 scale-[1.01]" : "shadow-xl"
+        className={`relative rounded-xl overflow-hidden transition-all duration-300 bg-background border border-border ${
+          isFocused ? "shadow-lg" : "shadow-md"
         }`}
-        style={{ 
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%)',
-          backdropFilter: 'blur(20px)',
-        }}
       >
-        {/* Animated Border Gradient */}
-        <div className="absolute inset-0 rounded-2xl sm:rounded-3xl p-[1px] bg-gradient-to-br from-accent/30 via-secondary/20 to-primary/20 -z-10" />
-        
-        {/* Glow Effect */}
-        <div className={`absolute -inset-1 bg-gradient-to-r from-accent/20 via-secondary/20 to-accent/20 rounded-3xl blur-xl transition-opacity duration-500 -z-20 ${
-          isFocused ? "opacity-100" : "opacity-0"
-        }`} />
-
-        <div className="p-4 sm:p-6 md:p-8">
+        <div className="p-4 sm:p-6">
           {/* Header */}
-          <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
-            <div className="relative">
-              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-accent to-accent/80 ring-4 ring-accent/10">
-                <Search size={18} className="sm:hidden text-white" />
-                <Search size={24} className="hidden sm:block text-white" />
-              </div>
-              {/* Pulse Animation */}
-              <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-accent/30 animate-ping opacity-75" style={{ animationDuration: '2s' }} />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-primary">
+              <Search size={18} className="sm:hidden text-primary-foreground" />
+              <Search size={20} className="hidden sm:block text-primary-foreground" />
             </div>
-            <div className="text-left min-w-0 flex-1">
-              <h3 className="font-bold text-base sm:text-lg text-primary leading-tight">Track Your Shipment</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground font-medium flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="text-left">
+              <h3 className="font-semibold text-base sm:text-lg text-foreground leading-tight">Track Your Shipment</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground font-normal flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 Real-time updates worldwide
               </p>
             </div>
@@ -179,87 +163,85 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Enter tracking number"
-                className={`h-12 sm:h-14 pl-4 pr-12 text-sm sm:text-base font-medium bg-muted/50 border-2 text-foreground placeholder:text-muted-foreground rounded-xl transition-all duration-300 ${
+                className={`h-11 sm:h-12 pl-4 pr-12 text-sm font-medium bg-muted/50 border text-foreground placeholder:text-muted-foreground rounded-lg transition-all duration-200 ${
                   isFocused 
-                    ? "border-accent ring-4 ring-accent/10 bg-background" 
-                    : "border-border hover:border-accent/50"
+                    ? "border-primary ring-2 ring-primary/10 bg-background" 
+                    : "border-border hover:border-primary/50"
                 }`}
               />
               {isLoading && (
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <Loader2 className="w-5 h-5 text-accent animate-spin" />
+                  <Loader2 className="w-5 h-5 text-primary animate-spin" />
                 </div>
               )}
             </div>
             <button 
               onClick={handleTrackClick}
               disabled={isLoading || trackingNumber.length < 6}
-              className="group h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out flex items-center justify-center gap-2.5 bg-gradient-to-r from-secondary via-secondary to-[hsl(38,92%,50%)] text-primary shadow-lg hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 active:translate-y-0 active:shadow-md disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-lg uppercase tracking-wide overflow-hidden relative"
+              className="h-11 sm:h-12 px-6 font-semibold text-sm rounded-lg transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)] disabled:opacity-50 disabled:hover:bg-primary active:scale-[0.98]"
             >
-              {/* Button Shine Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              <span className="relative z-10">Track Now</span>
-              <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px] transition-transform duration-300 group-hover:translate-x-1 relative z-10" />
+              Track Now
+              <ArrowRight size={16} />
             </button>
           </div>
 
           {/* Results Section */}
           {(shipmentData || error) && trackingNumber.length >= 6 && (
-            <div className="mt-4 sm:mt-5 animate-fade-in">
+            <div className="mt-4 animate-fade-in-up">
               {error ? (
-                <div className="bg-destructive/5 rounded-xl p-3 sm:p-4 flex items-center gap-3 border border-destructive/20">
-                  <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
-                    <AlertCircle size={18} className="text-destructive" />
+                <div className="bg-destructive/5 rounded-lg p-3 flex items-center gap-3 border border-destructive/20">
+                  <div className="w-9 h-9 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
+                    <AlertCircle size={16} className="text-destructive" />
                   </div>
                   <span className="text-destructive text-sm font-medium">{error}</span>
                 </div>
               ) : shipmentData && (
-                <div className="bg-muted/30 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-border/50">
+                <div className="bg-muted/50 rounded-lg p-4 border border-border">
                   {/* Shipment Header */}
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent to-accent/80 rounded-lg sm:rounded-xl flex items-center justify-center shadow-md shrink-0">
+                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shrink-0">
                         {(() => {
                           const ServiceIcon = getServiceIcon(shipmentData.service_type);
-                          return <ServiceIcon size={18} className="sm:w-5 sm:h-5 text-white" />;
+                          return <ServiceIcon size={18} className="text-primary-foreground" />;
                         })()}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-primary font-bold text-sm sm:text-base tracking-wide">{shipmentData.tracking_number}</p>
+                        <p className="text-foreground font-semibold text-sm tracking-wide">{shipmentData.tracking_number}</p>
                         <p className="text-xs text-muted-foreground capitalize">{shipmentData.service_type.replace(/_/g, " ")} Shipping</p>
                       </div>
                     </div>
-                    <div className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border ${getStatusBgColor(shipmentData.status)} ${getStatusColor(shipmentData.status)}`}>
+                    <div className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide border ${getStatusBgColor(shipmentData.status)} ${getStatusColor(shipmentData.status)}`}>
                       {shipmentData.status.replace("_", " ")}
                     </div>
                   </div>
                   
                   {/* Route Display */}
-                  <div className="flex items-center gap-2 text-sm mb-4 p-3 bg-background/80 rounded-lg border border-border/30">
+                  <div className="flex items-center gap-2 text-sm mb-4 p-3 bg-background rounded-lg border border-border">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                      <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
                       <span className="truncate font-medium text-foreground">{shipmentData.origin_city}</span>
                     </div>
                     <div className="flex items-center gap-1 text-muted-foreground shrink-0">
-                      <div className="w-8 h-[2px] bg-gradient-to-r from-accent to-secondary rounded-full" />
+                      <div className="w-6 h-[2px] bg-primary rounded-full" />
                       {(() => {
                         const ServiceIcon = getServiceIcon(shipmentData.service_type);
-                        return <ServiceIcon size={14} className="text-accent" />;
+                        return <ServiceIcon size={14} className="text-primary" />;
                       })()}
-                      <div className="w-8 h-[2px] bg-gradient-to-r from-secondary to-accent rounded-full" />
+                      <div className="w-6 h-[2px] bg-primary rounded-full" />
                     </div>
                     <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
                       <span className="truncate font-medium text-foreground">{shipmentData.destination_city}</span>
-                      <div className="w-2 h-2 rounded-full bg-secondary shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
                     </div>
                   </div>
 
-                  {/* Progress Steps - Mobile Optimized */}
+                  {/* Progress Steps */}
                   <div className="relative">
                     {/* Progress Line */}
-                    <div className="absolute top-5 left-5 right-5 h-1 bg-border rounded-full overflow-hidden">
+                    <div className="absolute top-4 left-4 right-4 h-1 bg-border rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-gradient-to-r from-accent to-secondary rounded-full transition-all duration-1000 ease-out"
+                        className="h-full bg-primary rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${getStatusProgress(shipmentData.status)}%` }}
                       />
                     </div>
@@ -273,15 +255,15 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                         const StepIcon = step.icon;
                         
                         return (
-                          <div key={step.label} className="flex flex-col items-center gap-1.5 sm:gap-2">
+                          <div key={step.label} className="flex flex-col items-center gap-1.5">
                             <div 
-                              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-500 ${
+                              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                                 isActive 
-                                  ? "bg-gradient-to-br from-accent to-secondary text-white shadow-lg shadow-accent/30" 
-                                  : "bg-muted text-muted-foreground border-2 border-border"
-                              } ${isCurrent ? "ring-4 ring-accent/20 scale-110" : ""}`}
+                                  ? "bg-primary text-primary-foreground" 
+                                  : "bg-muted text-muted-foreground border border-border"
+                              } ${isCurrent ? "ring-2 ring-primary/20 scale-110" : ""}`}
                             >
-                              <StepIcon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                              <StepIcon size={14} />
                             </div>
                             <span className={`text-[10px] sm:text-xs font-medium text-center leading-tight ${
                               isActive ? "text-foreground" : "text-muted-foreground"
@@ -297,10 +279,10 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                   {/* View Details Link */}
                   <button 
                     onClick={handleTrackClick}
-                    className="mt-4 w-full py-2.5 text-center text-sm font-semibold text-accent hover:text-accent/80 transition-colors flex items-center justify-center gap-2 group"
+                    className="mt-4 w-full py-2 text-center text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2"
                   >
                     View Full Details
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    <ArrowRight size={14} />
                   </button>
                 </div>
               )}

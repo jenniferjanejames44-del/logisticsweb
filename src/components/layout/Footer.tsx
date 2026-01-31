@@ -28,21 +28,21 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-navy">
+    <footer className="bg-primary">
       {/* Main Footer */}
       <div className="section-container px-4 sm:px-6 pt-16 md:pt-20 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left Side - Company Info */}
           <div className="space-y-6">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl text-primary group-hover:scale-105 transition-transform gradient-yellow">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl text-primary bg-white group-hover:scale-105 transition-transform">
                 R
               </div>
               <span className="font-semibold text-xl text-white">
-                RAC <span className="text-secondary">Logistics</span>
+                RAC <span className="text-white/80">Logistics</span>
               </span>
             </Link>
-            <p className="text-white/80 leading-relaxed max-w-md font-medium">
+            <p className="text-white/80 leading-relaxed max-w-md">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
             </p>
             
@@ -53,7 +53,7 @@ const Footer = () => {
                   key={social.name}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center text-white bg-white/10 hover:bg-secondary hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-lg font-medium"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center text-white bg-white/10 hover:bg-white hover:text-primary transition-all duration-200"
                 >
                   {social.name}
                 </a>
@@ -65,15 +65,15 @@ const Footer = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
             {/* Quick Links */}
             <div>
-              <h4 className="font-semibold text-lg mb-6 text-white">Quick Links</h4>
+              <h4 className="font-semibold text-base mb-5 text-white">Quick Links</h4>
               <ul className="space-y-3">
                 {companyLinks.map((link) => (
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className="inline-flex items-center gap-2 group transition-colors duration-300 text-white/70 hover:text-secondary"
+                      className="inline-flex items-center gap-2 group transition-colors duration-200 text-white/70 hover:text-white text-sm"
                     >
-                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
+                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                       {link.name}
                     </Link>
                   </li>
@@ -83,15 +83,15 @@ const Footer = () => {
 
             {/* Services */}
             <div>
-              <h4 className="font-semibold text-lg mb-6 text-white">Services</h4>
+              <h4 className="font-semibold text-base mb-5 text-white">Services</h4>
               <ul className="space-y-3">
                 {services.map((service) => (
                   <li key={service.name}>
                     <Link
                       to={service.href}
-                      className="inline-flex items-center gap-2 group transition-colors duration-300 text-white/70 hover:text-secondary"
+                      className="inline-flex items-center gap-2 group transition-colors duration-200 text-white/70 hover:text-white text-sm"
                     >
-                      <ArrowRight size={14} className="opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-secondary" />
+                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                       {service.name}
                     </Link>
                   </li>
@@ -101,23 +101,23 @@ const Footer = () => {
 
             {/* Contact */}
             <div className="col-span-2 sm:col-span-1">
-              <h4 className="font-semibold text-lg mb-6 text-white">Contact</h4>
+              <h4 className="font-semibold text-base mb-5 text-white">Contact</h4>
               <div className="space-y-4">
-                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 transition-colors duration-300 group text-white/70 hover:text-white">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors bg-white/10">
-                    <Mail size={18} className="text-secondary" />
+                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 transition-colors duration-200 text-white/70 hover:text-white">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10">
+                    <Mail size={16} className="text-white" />
                   </div>
                   <span className="text-sm">info@raclogistics.com</span>
                 </a>
-                <a href="tel:+2348185956707" className="flex items-center gap-3 transition-colors duration-300 group text-white/70 hover:text-white">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/10">
-                    <Phone size={18} className="text-secondary" />
+                <a href="tel:+2348185956707" className="flex items-center gap-3 transition-colors duration-200 text-white/70 hover:text-white">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10">
+                    <Phone size={16} className="text-white" />
                   </div>
                   <span className="text-sm">+234 818 595 6707</span>
                 </a>
                 <div className="flex items-start gap-3 text-white/70">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 bg-white/10">
-                    <MapPin size={18} className="text-secondary" />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-white/10">
+                    <MapPin size={16} className="text-white" />
                   </div>
                   <span className="text-sm">123 Logistics Way, New York, NY 10001</span>
                 </div>
@@ -129,20 +129,20 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="section-container px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="section-container px-4 sm:px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-center sm:text-left text-white/70">
             © 2026 RAC Logistics. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <Link 
               to="/privacy" 
-              className="transition-colors duration-300 text-white/70 hover:text-secondary"
+              className="transition-colors duration-200 text-white/70 hover:text-white"
             >
               Privacy Policy
             </Link>
             <Link 
               to="/terms" 
-              className="transition-colors duration-300 text-white/70 hover:text-secondary"
+              className="transition-colors duration-200 text-white/70 hover:text-white"
             >
               Terms of Service
             </Link>

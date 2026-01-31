@@ -21,7 +21,6 @@ import {
   Twitter, 
   Linkedin, 
   Instagram,
-  CheckCircle,
   ArrowRight
 } from "lucide-react";
 
@@ -46,7 +45,6 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     toast({
@@ -95,27 +93,25 @@ const Contact = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-24 md:pt-44 md:pb-28 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
           {/* Background Image */}
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80)',
             }}
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-navy opacity-90" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-secondary/20 text-secondary rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-secondary/30">
+            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-block px-4 py-2 bg-white/10 text-white rounded-full text-sm font-medium mb-6 border border-white/20">
                 Get in Touch
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
-                Contact <span className="text-secondary">RAC Logistics</span>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                Contact RAC Logistics
               </h1>
-              <p className="text-lg md:text-xl text-white font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
                 Have questions? Need a quote? We're here to help. Reach out to our team and we'll respond within 24 hours.
               </p>
             </div>
@@ -123,21 +119,21 @@ const Contact = () => {
         </section>
 
         {/* Contact Form & Info */}
-        <section className="section-padding bg-gradient-to-b from-background to-muted/30">
+        <section className="section-padding bg-background">
           <div className="section-container">
-            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid lg:grid-cols-3 gap-8">
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <Card className="border-border/30 shadow-2xl">
-                  <CardContent className="p-6 md:p-10">
-                    <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-8">
+                <Card className="border-border shadow-lg">
+                  <CardContent className="p-6 md:p-8">
+                    <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
                       Send Us a Message
                     </h2>
                     
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid md:grid-cols-2 gap-6">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div className="grid md:grid-cols-2 gap-5">
                         <div className="space-y-2">
-                          <Label htmlFor="name" className="font-semibold text-sm text-foreground">Full Name *</Label>
+                          <Label htmlFor="name" className="font-medium text-sm">Full Name *</Label>
                           <Input
                             id="name"
                             name="name"
@@ -145,11 +141,10 @@ const Contact = () => {
                             value={formData.name}
                             onChange={handleInputChange}
                             required
-                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="email" className="font-semibold text-sm text-foreground">Email Address *</Label>
+                          <Label htmlFor="email" className="font-medium text-sm">Email Address *</Label>
                           <Input
                             id="email"
                             name="email"
@@ -158,14 +153,13 @@ const Contact = () => {
                             value={formData.email}
                             onChange={handleInputChange}
                             required
-                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-6">
+                      <div className="grid md:grid-cols-2 gap-5">
                         <div className="space-y-2">
-                          <Label htmlFor="phone" className="font-semibold text-sm text-foreground">Phone Number</Label>
+                          <Label htmlFor="phone" className="font-medium text-sm">Phone Number</Label>
                           <Input
                             id="phone"
                             name="phone"
@@ -173,16 +167,15 @@ const Contact = () => {
                             placeholder="+234 800 000 0000"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="h-12 rounded-lg border-2 border-border focus:border-secondary"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="subject" className="font-semibold text-sm text-foreground">Subject *</Label>
+                          <Label htmlFor="subject" className="font-medium text-sm">Subject *</Label>
                           <Select 
                             value={formData.subject} 
                             onValueChange={(value) => setFormData(prev => ({ ...prev, subject: value }))}
                           >
-                            <SelectTrigger id="subject" className="h-12 rounded-lg border-2 border-border focus:border-secondary">
+                            <SelectTrigger id="subject">
                               <SelectValue placeholder="Select a subject" />
                             </SelectTrigger>
                             <SelectContent>
@@ -197,7 +190,7 @@ const Contact = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="message" className="font-semibold text-sm text-foreground">Message *</Label>
+                        <Label htmlFor="message" className="font-medium text-sm">Message *</Label>
                         <Textarea
                           id="message"
                           name="message"
@@ -205,55 +198,52 @@ const Contact = () => {
                           value={formData.message}
                           onChange={handleInputChange}
                           required
-                          rows={6}
-                          className="resize-none rounded-lg border-2 border-border focus:border-secondary"
+                          rows={5}
+                          className="resize-none"
                         />
                       </div>
 
-                      <button 
+                      <Button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="w-full inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 group"
+                        className="w-full"
+                        size="lg"
                       >
                         {isSubmitting ? (
                           <>
-                            <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                            <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin mr-2" />
                             Sending...
                           </>
                         ) : (
                           <>
-                            <Send className="w-5 h-5" />
+                            <Send className="w-4 h-4 mr-2" />
                             Send Message
                           </>
                         )}
-                      </button>
+                      </Button>
                     </form>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Contact Info */}
-              <div className="space-y-5">
-                {contactInfo.map((info, index) => (
+              <div className="space-y-4">
+                {contactInfo.map((info) => (
                   <Card 
                     key={info.title} 
-                    className="group relative overflow-hidden border border-border/50 rounded-2xl hover:border-secondary/40 hover:shadow-xl transition-all duration-400 hover:-translate-y-1"
-                    style={{ transitionDelay: `${index * 60}ms` }}
+                    className="border-border hover:shadow-md transition-shadow"
                   >
-                    {/* Top accent bar */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
-                    
-                    <CardContent className="p-6">
+                    <CardContent className="p-5">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 gradient-blue rounded-xl flex items-center justify-center flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300">
-                          <info.icon className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                          <info.icon className="w-5 h-5 text-primary-foreground" />
                         </div>
                         <div>
-                          <h3 className="font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                          <h3 className="font-semibold text-foreground mb-1 text-sm">
                             {info.title}
                           </h3>
                           {info.details.map((detail, i) => (
-                            <p key={i} className="text-foreground/70 text-sm font-medium">
+                            <p key={i} className="text-muted-foreground text-sm">
                               {detail}
                             </p>
                           ))}
@@ -264,9 +254,9 @@ const Contact = () => {
                 ))}
 
                 {/* Social Links */}
-                <Card className="border border-border/50 rounded-2xl">
-                  <CardContent className="p-6">
-                    <h3 className="font-bold text-foreground mb-5">
+                <Card className="border-border">
+                  <CardContent className="p-5">
+                    <h3 className="font-semibold text-foreground mb-4 text-sm">
                       Follow Us
                     </h3>
                     <div className="flex gap-3">
@@ -274,10 +264,10 @@ const Contact = () => {
                         <a
                           key={social.label}
                           href={social.href}
-                          className="w-11 h-11 gradient-blue rounded-xl flex items-center justify-center text-white hover:scale-110 hover:shadow-lg transition-all duration-300"
+                          className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground hover:bg-[hsl(153,41%,24%)] transition-colors"
                           aria-label={social.label}
                         >
-                          <social.icon className="w-5 h-5" />
+                          <social.icon className="w-4 h-4" />
                         </a>
                       ))}
                     </div>
@@ -289,33 +279,33 @@ const Contact = () => {
         </section>
 
         {/* Map Section */}
-        <section className="section-padding bg-section-blue">
+        <section className="section-padding bg-muted">
           <div className="section-container">
-            <div className="text-center mb-12 lg:mb-14">
-              <span className="badge-blue mb-6">
+            <div className="text-center mb-10">
+              <span className="inline-block px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
                 Location
               </span>
-              <h2 className="text-primary">
-                Visit Our <span className="gradient-text">Office</span>
+              <h2 className="text-foreground">
+                Visit Our Office
               </h2>
             </div>
             
-            <div className="relative rounded-2xl overflow-hidden shadow-xl h-[400px] bg-card border border-border/50">
+            <div className="relative rounded-xl overflow-hidden shadow-lg h-[350px] bg-card border border-border">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-20 h-20 gradient-blue rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <MapPin className="w-10 h-10 text-white" />
+                  <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mx-auto mb-5">
+                    <MapPin className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <p className="text-xl font-bold text-foreground mb-2">123 Logistics Avenue</p>
-                  <p className="text-foreground/70 font-medium mb-6">Victoria Island, Lagos, Nigeria</p>
+                  <p className="text-lg font-semibold text-foreground mb-1">123 Logistics Avenue</p>
+                  <p className="text-muted-foreground mb-5">Victoria Island, Lagos, Nigeria</p>
                   <a 
                     href="https://maps.google.com" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2.5 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-md hover:shadow-lg hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 group"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)]"
                   >
                     Open in Google Maps
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
               </div>
@@ -324,28 +314,25 @@ const Contact = () => {
         </section>
 
         {/* FAQ CTA */}
-        <section className="section-padding bg-navy relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-          
-          <div className="section-container text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
-              Have More <span className="text-secondary">Questions?</span>
+        <section className="section-padding bg-primary">
+          <div className="section-container text-center">
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+              Have More Questions?
             </h2>
-            <p className="text-lg md:text-xl text-white font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+            <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-secondary text-primary shadow-lg hover:shadow-xl hover:bg-secondary/95 hover:-translate-y-0.5 active:translate-y-0 group"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-white text-primary hover:bg-white/90 active:scale-[0.98]"
               >
                 View Resources
-                <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm group">
+              <button className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-transparent text-white border border-white/50 hover:bg-white/10 hover:border-white active:scale-[0.98]">
                 Start Live Chat
-                <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>

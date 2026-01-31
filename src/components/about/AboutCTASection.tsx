@@ -9,31 +9,31 @@ const AboutCTASection = () => {
     <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         <div
-          className={`bg-card rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 shadow-xl text-center max-w-4xl mx-auto border border-border transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          className={`bg-card rounded-xl p-8 md:p-12 shadow-lg text-center max-w-3xl mx-auto border border-border transition-all duration-500 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-6">
-            Ready to Partner with <span className="text-secondary">RAC Logistics?</span>
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+            Ready to Partner with RAC Logistics?
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-gradient-to-r from-[hsl(45,100%,51%)] to-[hsl(42,100%,48%)] text-foreground shadow-lg hover:from-[hsl(40,100%,45%)] hover:to-[hsl(35,100%,42%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)] active:scale-[0.98] w-full sm:w-auto"
             >
               Contact Us
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={16} />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-7 py-3.5 sm:py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-md hover:bg-[hsl(200,70%,28%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0 group w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto"
             >
               View Services
-              <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>

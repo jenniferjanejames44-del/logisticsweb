@@ -110,7 +110,6 @@ const AuthForm = () => {
         });
         
         if (error) {
-          // Check if it's an email not confirmed error
           if (error.message.toLowerCase().includes('email not confirmed')) {
             setShowVerificationMessage(true);
             throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
@@ -118,7 +117,6 @@ const AuthForm = () => {
           throw error;
         }
         
-        // Double-check email verification status
         if (data.user && !data.user.email_confirmed_at) {
           await supabase.auth.signOut();
           setShowVerificationMessage(true);
@@ -156,26 +154,20 @@ const AuthForm = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5 relative overflow-hidden">
-        {/* Subtle background decoration */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        </div>
-        
-        <Card className="w-full max-w-md border-border/30 shadow-2xl relative z-10 backdrop-blur-sm">
+      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-muted">
+        <Card className="w-full max-w-md border-border shadow-lg">
           <CardHeader className="text-center pb-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl flex items-center justify-center font-heading font-bold text-secondary-foreground text-2xl mx-auto mb-4 shadow-lg shadow-secondary/30 transition-transform duration-300 hover:scale-105">
+            <div className="w-14 h-14 bg-primary rounded-lg flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
               R
             </div>
-            <CardTitle className="font-heading text-2xl tracking-tight">
+            <CardTitle className="text-xl font-semibold">
               {isForgotPassword 
                 ? "Reset Password" 
                 : isLogin 
                   ? "Welcome Back" 
                   : "Create Account"}
             </CardTitle>
-            <CardDescription className="text-base">
+            <CardDescription className="text-sm">
               {isForgotPassword
                 ? "Enter your email to receive a reset link"
                 : isLogin
@@ -189,16 +181,16 @@ const AuthForm = () => {
               <>
                 {resetEmailSent ? (
                   <div className="text-center py-4">
-                    <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle2 className="w-8 h-8 text-secondary" />
+                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle2 className="w-7 h-7 text-primary" />
                     </div>
-                    <h3 className="font-semibold text-lg mb-2">Check Your Email</h3>
+                    <h3 className="font-semibold text-base mb-2">Check Your Email</h3>
                     <p className="text-muted-foreground text-sm mb-6">
                       We've sent a password reset link to <strong>{email}</strong>. 
                       Please check your inbox and spam folder.
                     </p>
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       onClick={() => {
                         setIsForgotPassword(false);
                         setResetEmailSent(false);
@@ -213,15 +205,15 @@ const AuthForm = () => {
                   <form onSubmit={handleForgotPassword} className="space-y-5">
                     <div className="space-y-2">
                       <Label htmlFor="resetEmail" className="text-sm font-medium">Email Address</Label>
-                      <div className="relative group">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
                           id="resetEmail"
                           type="email"
                           placeholder="you@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="pl-12"
+                          className="pl-10"
                           required
                         />
                       </div>
@@ -229,17 +221,17 @@ const AuthForm = () => {
 
                     <Button
                       type="submit"
-                      variant="cta"
-                      size="xl"
-                      className="w-full shadow-lg shadow-secondary/25"
+                      variant="default"
+                      size="lg"
+                      className="w-full"
                       disabled={isLoading}
                     >
                       {isLoading ? (
-                        <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                       ) : (
                         <>
                           Send Reset Link
-                          <ArrowRight className="w-5 h-5" />
+                          <ArrowRight className="w-4 h-4 ml-2" />
                         </>
                       )}
                     </Button>
@@ -251,7 +243,7 @@ const AuthForm = () => {
                           setIsForgotPassword(false);
                           setEmail("");
                         }}
-                        className="text-sm text-muted-foreground hover:text-secondary transition-colors"
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
                         ← Back to Login
                       </button>
@@ -263,15 +255,15 @@ const AuthForm = () => {
               <>
                 {/* Email Verification Message */}
                 {showVerificationMessage && (
-                  <div className="mb-6 p-4 rounded-xl bg-secondary/10 border border-secondary/20">
+                  <div className="mb-5 p-4 rounded-lg bg-primary/5 border border-primary/20">
                     <div className="flex items-start gap-3">
                       {isLogin ? (
                         <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
                       ) : (
-                        <CheckCircle2 className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                       )}
                       <div className="flex-1">
-                        <h4 className="font-semibold text-sm mb-1">
+                        <h4 className="font-medium text-sm mb-1">
                           {isLogin ? "Email Verification Required" : "Check Your Email"}
                         </h4>
                         <p className="text-sm text-muted-foreground mb-3">
@@ -282,7 +274,7 @@ const AuthForm = () => {
                         </p>
                         <Button
                           type="button"
-                          variant="outline"
+                          variant="secondary"
                           size="sm"
                           onClick={handleResendVerification}
                           disabled={isResending}
@@ -300,19 +292,19 @@ const AuthForm = () => {
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {!isLogin && (
                     <div className="space-y-2">
                       <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
-                      <div className="relative group">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
                           id="fullName"
                           type="text"
                           placeholder="John Doe"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="pl-12"
+                          className="pl-10"
                           required={!isLogin}
                         />
                       </div>
@@ -321,15 +313,15 @@ const AuthForm = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
-                    <div className="relative group">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="email"
                         type="email"
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-12"
+                        className="pl-10"
                         required
                       />
                     </div>
@@ -342,59 +334,59 @@ const AuthForm = () => {
                         <button
                           type="button"
                           onClick={() => setIsForgotPassword(true)}
-                          className="text-xs text-secondary hover:underline font-medium transition-colors"
+                          className="text-xs text-primary hover:underline font-medium transition-colors"
                         >
                           Forgot password?
                         </button>
                       )}
                     </div>
-                    <div className="relative group">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-12 pr-12"
+                        className="pl-10 pr-10"
                         required
                         minLength={6}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-secondary transition-colors p-1 rounded-lg hover:bg-secondary/10"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
                   </div>
 
                   <Button
                     type="submit"
-                    variant="cta"
-                    size="xl"
-                    className="w-full mt-2 shadow-lg shadow-secondary/25"
+                    variant="default"
+                    size="lg"
+                    className="w-full mt-2"
                     disabled={isLoading}
                   >
                     {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                     ) : (
                       <>
                         {isLogin ? "Sign In" : "Create Account"}
-                        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        <ArrowRight className="w-4 h-4 ml-2" />
                       </>
                     )}
                   </Button>
                 </form>
 
-                <div className="mt-8 text-center">
-                  <p className="text-muted-foreground">
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-muted-foreground">
                     {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                     <button
                       type="button"
                       onClick={() => setIsLogin(!isLogin)}
-                      className="text-secondary hover:underline font-semibold transition-colors"
+                      className="text-primary hover:underline font-medium transition-colors"
                     >
                       {isLogin ? "Sign up" : "Sign in"}
                     </button>
@@ -403,7 +395,7 @@ const AuthForm = () => {
 
                 {isLogin && (
                   <div className="mt-4 text-center">
-                    <Link to="/" className="text-sm text-muted-foreground hover:text-secondary transition-colors inline-flex items-center gap-1">
+                    <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1">
                       ← Back to Home
                     </Link>
                   </div>
