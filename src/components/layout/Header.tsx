@@ -296,11 +296,11 @@ const Header = () => {
             ) : (
               <>
                 <Link 
-                  to="/pricing" 
+                  to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="w-full py-3 font-semibold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)]"
                 >
-                  Get Quote
+                  Login
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link 
