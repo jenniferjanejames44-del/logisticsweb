@@ -27,12 +27,12 @@ const HeroSection = () => {
           <h1 className={`mb-6 transition-all duration-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
-            <span className="text-white block font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">Global Logistics.</span>
-            <span className="text-white/90 block font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">Delivered With Excellence.</span>
+            <span className="text-white block font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">Global Logistics.</span>
+            <span className="text-white/90 block font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight">Delivered With Excellence.</span>
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed font-normal transition-all duration-500 delay-100 text-white/80 ${
+          <p className={`text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed font-medium transition-all duration-500 delay-100 text-white/85 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
@@ -45,14 +45,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-white text-[hsl(153,41%,30%)] hover:bg-primary hover:text-white active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-md transition-all duration-200 bg-white text-primary hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-semibold text-sm sm:text-base rounded-lg transition-all duration-200 bg-primary text-white hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-sm transition-all duration-200 border-2 border-white/60 text-white hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] hover:shadow-md active:scale-[0.98]"
             >
               Sign Up
               <ArrowRight className="w-4 h-4" />
