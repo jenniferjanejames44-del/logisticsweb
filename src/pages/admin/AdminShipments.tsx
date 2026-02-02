@@ -60,12 +60,12 @@ const statusOptions = [
 
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
-    pending: "bg-yellow-500/10 text-yellow-500",
+    pending: "bg-warning/10 text-warning",
     processing: "bg-blue-500/10 text-blue-500",
     in_transit: "bg-purple-500/10 text-purple-500",
-    out_for_delivery: "bg-orange-500/10 text-orange-500",
-    delivered: "bg-green-500/10 text-green-500",
-    cancelled: "bg-red-500/10 text-red-500",
+    out_for_delivery: "bg-warning/10 text-warning",
+    delivered: "bg-success/10 text-success",
+    cancelled: "bg-destructive/10 text-destructive",
   };
   return colors[status] || "bg-muted text-muted-foreground";
 };

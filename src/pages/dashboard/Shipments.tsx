@@ -159,10 +159,10 @@ const Shipments = () => {
 
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any; color: string }> = {
-      pending: { variant: "secondary", icon: Clock, color: "text-yellow-500" },
+      pending: { variant: "secondary", icon: Clock, color: "text-warning" },
       in_transit: { variant: "default", icon: Truck, color: "text-blue-500" },
-      delivered: { variant: "outline", icon: CheckCircle, color: "text-green-500" },
-      cancelled: { variant: "destructive", icon: AlertCircle, color: "text-red-500" },
+      delivered: { variant: "outline", icon: CheckCircle, color: "text-success" },
+      cancelled: { variant: "destructive", icon: AlertCircle, color: "text-destructive" },
     };
     const config = statusConfig[status] || statusConfig.pending;
     const Icon = config.icon;

@@ -44,10 +44,10 @@ const statusOptions = [
 
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
-    pending: "bg-yellow-500/10 text-yellow-500",
+    pending: "bg-warning/10 text-warning",
     processing: "bg-blue-500/10 text-blue-500",
-    completed: "bg-green-500/10 text-green-500",
-    failed: "bg-red-500/10 text-red-500",
+    completed: "bg-success/10 text-success",
+    failed: "bg-destructive/10 text-destructive",
     refunded: "bg-purple-500/10 text-purple-500",
   };
   return colors[status] || "bg-muted text-muted-foreground";
@@ -135,8 +135,8 @@ const AdminPayments = () => {
                     ${totalRevenue.toLocaleString()}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-green-500/10">
-                  <DollarSign className="w-6 h-6 text-green-500" />
+                <div className="p-3 rounded-lg bg-success/10">
+                  <DollarSign className="w-6 h-6 text-success" />
                 </div>
               </div>
             </CardContent>
@@ -150,8 +150,8 @@ const AdminPayments = () => {
                     ${pendingAmount.toLocaleString()}
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-yellow-500/10">
-                  <DollarSign className="w-6 h-6 text-yellow-500" />
+                <div className="p-3 rounded-lg bg-warning/10">
+                  <DollarSign className="w-6 h-6 text-warning" />
                 </div>
               </div>
             </CardContent>
@@ -163,8 +163,8 @@ const AdminPayments = () => {
                   <p className="text-sm text-muted-foreground">Total Transactions</p>
                   <p className="text-2xl font-bold text-foreground">{payments.length}</p>
                 </div>
-                <div className="p-3 rounded-lg bg-blue-500/10">
-                  <DollarSign className="w-6 h-6 text-blue-500" />
+                <div className="p-3 rounded-lg bg-primary/10">
+                  <DollarSign className="w-6 h-6 text-primary" />
                 </div>
               </div>
             </CardContent>
