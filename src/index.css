@@ -12,10 +12,10 @@
     --primary-foreground: 0 0% 100%;
     --primary-hover: 153 41% 24%;
     
-    /* Accent Color - Orange (LIMITED USE) #F59E0B */
-    --accent-orange: 38 92% 50%;
-    --accent-orange-hover: 38 90% 43%;
-    --accent-orange-foreground: 0 0% 100%;
+    /* Accent Color - Yellow (LIMITED USE) #FACC15 */
+    --accent-yellow: 48 96% 53%;
+    --accent-yellow-hover: 45 93% 47%;
+    --accent-yellow-foreground: 215 28% 17%;
     
     /* Primary Background - Pure White */
     --background: 0 0% 100%;
@@ -84,9 +84,9 @@
     --primary: 153 41% 45%;
     --primary-foreground: 0 0% 100%;
     --primary-hover: 153 41% 38%;
-    --accent-orange: 38 92% 50%;
-    --accent-orange-hover: 38 90% 43%;
-    --accent-orange-foreground: 0 0% 100%;
+    --accent-yellow: 48 96% 53%;
+    --accent-yellow-hover: 45 93% 47%;
+    --accent-yellow-foreground: 215 28% 17%;
     --background: 0 0% 8%;
     --foreground: 0 0% 98%;
     --card: 0 0% 12%;

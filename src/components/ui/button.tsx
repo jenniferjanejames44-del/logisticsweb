@@ -15,8 +15,8 @@ const buttonVariants = cva(
         /* ⚪ SECONDARY BUTTON - White bg, green text/border → fills green on hover */
         secondary: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
-        /* 🟠 ACCENT BUTTON - Orange (HIGH-INTENT: Submit, Pay, Continue, Confirm) */
-        accent: "bg-[hsl(38,92%,50%)] text-white rounded-lg hover:bg-[hsl(38,90%,43%)] active:scale-[0.98]",
+        /* 🟡 ACCENT BUTTON - Yellow (HIGH-INTENT: Submit, Pay, Continue, Confirm) */
+        accent: "bg-[hsl(48,96%,53%)] text-[hsl(215,28%,17%)] rounded-lg hover:bg-[hsl(45,93%,47%)] active:scale-[0.98]",
 
         /* Ghost Button */
         ghost: "bg-transparent text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground active:scale-[0.98]",
@@ -52,7 +52,7 @@ const buttonVariants = cva(
         dynamic: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
         quote: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
         quotePrimary: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
-        quoteAccent: "bg-[hsl(38,92%,50%)] text-white rounded-lg hover:bg-[hsl(38,90%,43%)] active:scale-[0.98]",
+        quoteAccent: "bg-[hsl(48,96%,53%)] text-[hsl(215,28%,17%)] rounded-lg hover:bg-[hsl(45,93%,47%)] active:scale-[0.98]",
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
