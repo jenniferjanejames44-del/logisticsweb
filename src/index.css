@@ -1,110 +1,110 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Professional Green Design System - Enterprise Ready */
+/* Professional Design System - Green Primary + Yellow Accent */
 
 @layer base {
   :root {
-    /* Primary Brand Color - Deep Professional Green #2D6A4F */
-    --primary: 153 41% 30%;
+    /* Primary Brand Color - Professional Green #2E7D32 */
+    --primary: 122 46% 34%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 153 41% 24%;
+    --primary-hover: 122 46% 28%;
     
-    /* Accent Color - Yellow (LIMITED USE) #FACC15 */
-    --accent-yellow: 48 96% 53%;
-    --accent-yellow-hover: 45 93% 47%;
-    --accent-yellow-foreground: 215 28% 17%;
+    /* Accent Color - Yellow #FFC107 (highlights, badges, hover states) */
+    --accent-yellow: 45 100% 51%;
+    --accent-yellow-hover: 45 100% 45%;
+    --accent-yellow-foreground: 0 0% 13%;
     
     /* Primary Background - Pure White */
     --background: 0 0% 100%;
-    --foreground: 215 28% 17%;
+    --foreground: 220 13% 18%;
     
-    /* Secondary Background / Cards - Soft Light Gray #F8F9FA */
-    --card: 210 20% 98%;
-    --card-foreground: 215 28% 17%;
+    /* Secondary Background / Cards - Soft Light Gray */
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 18%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 215 28% 17%;
+    --popover-foreground: 220 13% 18%;
     
-    /* Secondary - White with green text/border */
-    --secondary: 0 0% 100%;
-    --secondary-foreground: 153 41% 30%;
+    /* Secondary - Neutral for secondary buttons */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 13% 18%;
     
     /* Muted - Light Gray */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 14% 34%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
     
-    /* Accent - Green (consistent with primary) */
-    --accent: 153 41% 30%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Yellow for highlights */
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 13%;
     
     /* Destructive */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Borders / Dividers - Neutral Light Gray #E5E7EB */
+    /* Borders / Dividers */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 153 41% 30%;
+    --ring: 122 46% 34%;
     
     --radius: 0.5rem;
     
     /* Status Colors */
-    --success: 153 41% 30%;
+    --success: 122 46% 34%;
     --success-foreground: 0 0% 100%;
-    --warning: 48 96% 53%;
-    --warning-foreground: 215 28% 17%;
-    --info: 153 41% 30%;
+    --warning: 45 100% 51%;
+    --warning-foreground: 0 0% 13%;
+    --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
     
-    /* Sidebar */
-    --sidebar-background: 153 41% 25%;
+    /* Sidebar - Professional Green */
+    --sidebar-background: 122 46% 28%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 153 41% 30%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 153 41% 35%;
+    --sidebar-primary: 45 100% 51%;
+    --sidebar-primary-foreground: 0 0% 13%;
+    --sidebar-accent: 122 46% 38%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100% / 0.1;
-    --sidebar-ring: 153 41% 30%;
+    --sidebar-border: 0 0% 100% / 0.15;
+    --sidebar-ring: 45 100% 51%;
     
     /* Chart Colors */
-    --chart-1: 153 41% 30%;
-    --chart-2: 153 41% 45%;
-    --chart-3: 153 41% 55%;
-    --chart-4: 153 41% 65%;
-    --chart-5: 153 41% 75%;
+    --chart-1: 122 46% 34%;
+    --chart-2: 45 100% 51%;
+    --chart-3: 199 89% 48%;
+    --chart-4: 122 46% 50%;
+    --chart-5: 45 100% 65%;
     
     /* Section Backgrounds */
-    --section-light: 210 20% 98%;
+    --section-light: 220 14% 98%;
   }
   
   .dark {
-    --primary: 153 41% 45%;
+    --primary: 122 46% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 153 41% 38%;
-    --accent-yellow: 48 96% 53%;
-    --accent-yellow-hover: 45 93% 47%;
-    --accent-yellow-foreground: 215 28% 17%;
-    --background: 0 0% 8%;
+    --primary-hover: 122 46% 38%;
+    --accent-yellow: 45 100% 51%;
+    --accent-yellow-hover: 45 100% 45%;
+    --accent-yellow-foreground: 0 0% 13%;
+    --background: 220 13% 8%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 12%;
+    --card: 220 13% 12%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 12%;
+    --popover: 220 13% 12%;
     --popover-foreground: 0 0% 98%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 153 41% 45%;
-    --muted: 0 0% 15%;
+    --secondary: 220 13% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 220 13% 18%;
     --muted-foreground: 0 0% 65%;
-    --accent: 153 41% 45%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 13%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 153 41% 45%;
-    --section-light: 0 0% 10%;
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: 122 46% 45%;
+    --section-light: 220 13% 10%;
   }
 }
 
