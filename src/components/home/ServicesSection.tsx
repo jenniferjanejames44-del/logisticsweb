@@ -112,7 +112,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
           >
             View All Services
             <ArrowRight size={16} />

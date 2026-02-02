@@ -45,14 +45,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-md transition-all duration-200 bg-white text-primary hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-sm transition-all duration-200 border-2 border-white/60 text-white hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] hover:shadow-md active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-sm sm:text-base rounded-lg shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
             >
               Sign Up
               <ArrowRight className="w-4 h-4" />

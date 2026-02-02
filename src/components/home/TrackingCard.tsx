@@ -178,7 +178,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
             <button 
               onClick={handleTrackClick}
               disabled={isLoading || trackingNumber.length < 6}
-              className="h-11 sm:h-12 px-6 font-bold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg disabled:opacity-50 disabled:hover:bg-primary disabled:hover:text-primary-foreground active:scale-[0.98]"
+              className="h-11 sm:h-12 px-6 font-bold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg disabled:opacity-50 disabled:hover:bg-[hsl(45,100%,51%)] active:scale-[0.98]"
             >
               Track Now
               <ArrowRight size={16} />
