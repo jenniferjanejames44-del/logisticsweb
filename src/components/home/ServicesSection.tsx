@@ -35,7 +35,7 @@ const ServicesSection = () => {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span
-            className={`inline-block px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4 transition-all duration-500 ${
+            className={`inline-block px-3 py-1.5 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-4 transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -80,9 +80,9 @@ const ServicesSection = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   
-                  {/* Icon Badge */}
-                  <div className="absolute bottom-3 right-3 w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                    <ServiceIcon className="w-5 h-5 text-primary-foreground" />
+                  {/* Icon Badge - Yellow accent */}
+                  <div className="absolute bottom-3 right-3 w-10 h-10 bg-[hsl(45,100%,51%)] rounded-lg flex items-center justify-center shadow-md">
+                    <ServiceIcon className="w-5 h-5 text-[hsl(0,0%,13%)]" />
                   </div>
                 </div>
 
@@ -112,7 +112,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg active:scale-[0.98]"
           >
             View All Services
             <ArrowRight size={16} />

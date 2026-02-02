@@ -37,7 +37,7 @@ const HowItWorksSection = () => {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-white/20 border-2 border-white/30 text-white ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -72,17 +72,17 @@ const HowItWorksSection = () => {
             >
               {/* Card */}
               <div className="h-full p-6 lg:p-7 relative overflow-hidden bg-white/10 border border-white/20 rounded-2xl hover:bg-white/15 hover:border-white/30 transition-all duration-400 ease-out hover:-translate-y-1 group">
-                {/* Top accent bar on hover */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+                {/* Top accent bar on hover - Yellow */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-[hsl(45,100%,51%)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                 
-                {/* Step Number */}
-                <div className="absolute top-5 right-5 w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center font-bold text-xs text-white shadow-md">
+                {/* Step Number - Yellow */}
+                <div className="absolute top-5 right-5 w-9 h-9 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center font-bold text-xs text-[hsl(0,0%,13%)] shadow-md">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110">
-                  <step.icon className="w-5 h-5 text-white" />
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:bg-[hsl(45,100%,51%)]">
+                  <step.icon className="w-5 h-5 text-white group-hover:text-[hsl(0,0%,13%)]" />
                 </div>
 
                 {/* Content */}
