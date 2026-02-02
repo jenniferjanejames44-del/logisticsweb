@@ -140,14 +140,14 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-primary">
-              <Search size={18} className="sm:hidden text-primary-foreground" />
-              <Search size={20} className="hidden sm:block text-primary-foreground" />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-[hsl(45,100%,51%)]">
+              <Search size={18} className="sm:hidden text-[hsl(0,0%,13%)]" />
+              <Search size={20} className="hidden sm:block text-[hsl(0,0%,13%)]" />
             </div>
             <div className="text-left">
-              <h3 className="font-semibold text-base sm:text-lg text-foreground leading-tight">Track Your Shipment</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground font-normal flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <h3 className="font-bold text-base sm:text-lg text-foreground leading-tight">Track Your Shipment</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground font-medium flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(45,100%,51%)]" />
                 Real-time updates worldwide
               </p>
             </div>
@@ -178,7 +178,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
             <button 
               onClick={handleTrackClick}
               disabled={isLoading || trackingNumber.length < 6}
-              className="h-11 sm:h-12 px-6 font-semibold text-sm rounded-lg transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)] disabled:opacity-50 disabled:hover:bg-primary active:scale-[0.98]"
+              className="h-11 sm:h-12 px-6 font-bold text-sm rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg disabled:opacity-50 disabled:hover:bg-primary disabled:hover:text-primary-foreground active:scale-[0.98]"
             >
               Track Now
               <ArrowRight size={16} />

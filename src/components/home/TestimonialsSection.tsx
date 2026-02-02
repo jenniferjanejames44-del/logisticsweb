@@ -52,7 +52,7 @@ const TestimonialsSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-primary/10 text-primary ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -101,9 +101,9 @@ const TestimonialsSection = () => {
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-4">
                   <div className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center shadow-sm">
-                    {/* Quote Icon */}
-                    <div className="w-14 h-14 mx-auto bg-primary rounded-xl flex items-center justify-center mb-8 shadow-md">
-                      <Quote size={26} className="text-primary-foreground" />
+                    {/* Quote Icon - Yellow */}
+                    <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-8 shadow-md">
+                      <Quote size={26} className="text-[hsl(0,0%,13%)]" />
                     </div>
 
                     {/* Content */}
@@ -111,10 +111,10 @@ const TestimonialsSection = () => {
                       "{testimonial.content}"
                     </p>
 
-                    {/* Rating */}
+                    {/* Rating - Yellow stars */}
                     <div className="flex justify-center gap-1.5 mb-8">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={20} className="text-primary fill-primary" />
+                        <Star key={i} size={20} className="text-[hsl(45,100%,51%)] fill-[hsl(45,100%,51%)]" />
                       ))}
                     </div>
 
