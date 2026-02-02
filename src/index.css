@@ -10,27 +10,33 @@
     /* Primary Brand Color - Deep Professional Green #2D6A4F */
     --primary: 153 41% 30%;
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 153 41% 24%;
+    
+    /* Accent Color - Orange (LIMITED USE) #F59E0B */
+    --accent-orange: 38 92% 50%;
+    --accent-orange-hover: 38 90% 43%;
+    --accent-orange-foreground: 0 0% 100%;
     
     /* Primary Background - Pure White */
     --background: 0 0% 100%;
-    --foreground: 0 0% 20%;
+    --foreground: 215 28% 17%;
     
     /* Secondary Background / Cards - Soft Light Gray #F8F9FA */
     --card: 210 20% 98%;
-    --card-foreground: 0 0% 20%;
+    --card-foreground: 215 28% 17%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover-foreground: 215 28% 17%;
     
-    /* Secondary - Same Green for consistency */
-    --secondary: 153 41% 30%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary - White with green text/border */
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 153 41% 30%;
     
     /* Muted - Light Gray */
     --muted: 210 20% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted-foreground: 215 14% 34%;
     
-    /* Accent - Same Green (no competing colors) */
+    /* Accent - Green (consistent with primary) */
     --accent: 153 41% 30%;
     --accent-foreground: 0 0% 100%;
     
@@ -48,8 +54,8 @@
     /* Status Colors */
     --success: 153 41% 30%;
     --success-foreground: 0 0% 100%;
-    --warning: 45 93% 47%;
-    --warning-foreground: 0 0% 20%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
     --info: 153 41% 30%;
     --info-foreground: 0 0% 100%;
     
@@ -77,14 +83,18 @@
   .dark {
     --primary: 153 41% 45%;
     --primary-foreground: 0 0% 100%;
+    --primary-hover: 153 41% 38%;
+    --accent-orange: 38 92% 50%;
+    --accent-orange-hover: 38 90% 43%;
+    --accent-orange-foreground: 0 0% 100%;
     --background: 0 0% 8%;
     --foreground: 0 0% 98%;
     --card: 0 0% 12%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 12%;
     --popover-foreground: 0 0% 98%;
-    --secondary: 153 41% 45%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 153 41% 45%;
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 65%;
     --accent: 153 41% 45%;

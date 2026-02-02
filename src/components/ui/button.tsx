@@ -9,17 +9,20 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary Button - Green #2D6A4F */
+        /* 🟢 PRIMARY BRAND BUTTON - Green #2D6A4F → #245A43 on hover */
         default: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
 
-        /* Secondary Button - Outline Green */
-        secondary: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        /* ⚪ SECONDARY BUTTON - White bg, green text/border → fills green on hover */
+        secondary: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+
+        /* 🟠 ACCENT BUTTON - Orange (HIGH-INTENT: Submit, Pay, Continue, Confirm) */
+        accent: "bg-[hsl(38,92%,50%)] text-white rounded-lg hover:bg-[hsl(38,90%,43%)] active:scale-[0.98]",
 
         /* Ghost Button */
         ghost: "bg-transparent text-muted-foreground rounded-lg hover:bg-muted hover:text-foreground active:scale-[0.98]",
 
-        /* Outline - Same as secondary for consistency */
-        outline: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        /* Outline - Same as secondary */
+        outline: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
         /* Destructive */
         destructive: "bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 active:scale-[0.98]",
@@ -27,32 +30,29 @@ const buttonVariants = cva(
         /* Link Style */
         link: "text-primary underline-offset-4 hover:underline p-0 h-auto font-medium",
 
-        /* Navigation variants */
+        /* Navigation variants - Primary green */
         nav: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
-        navSecondary: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
-        navOutline: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        navSecondary: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        navOutline: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
-        /* Hero variants */
+        /* Hero variants - Primary green */
         heroPrimary: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-[hsl(153,41%,24%)] hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
-        heroSecondary: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroSecondary: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
         heroOutline: "bg-transparent text-white border border-white/50 rounded-lg hover:bg-white/10 hover:border-white active:scale-[0.98]",
 
-        /* Accent - Same green */
-        accent: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
-
-        /* CTA variants - all use green */
+        /* CTA variants - Primary green */
         cta: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-[hsl(153,41%,24%)] hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
         navCta: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
-        ctaOutline: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        ctaOutline: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
-        /* Legacy variants mapped to green system */
-        outlineNavy: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        /* Legacy variants - mapped to correct roles */
+        outlineNavy: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
         premium: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-[hsl(153,41%,24%)] hover:shadow-md active:scale-[0.98]",
-        indigoOutline: "bg-transparent text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        indigoOutline: "bg-white text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
         dynamic: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
         quote: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
         quotePrimary: "bg-primary text-primary-foreground rounded-lg shadow-sm hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
-        quoteAccent: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(153,41%,24%)] active:scale-[0.98]",
+        quoteAccent: "bg-[hsl(38,92%,50%)] text-white rounded-lg hover:bg-[hsl(38,90%,43%)] active:scale-[0.98]",
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
