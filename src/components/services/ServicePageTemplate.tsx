@@ -71,7 +71,7 @@ const ServicePageTemplate = ({
               decoding="async"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/85" />
+            <div className="absolute inset-0 bg-primary/90" />
           </div>
           
           {/* Decorative elements */}
@@ -107,12 +107,18 @@ const ServicePageTemplate = ({
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <Button variant="cta" size="xl" asChild>
-                  <Link to="/pricing">Get a Quote</Link>
-                </Button>
-                <Button variant="heroOutline" size="xl" asChild>
-                  <Link to="/contact">Contact Us</Link>
-                </Button>
+                <Link 
+                  to="/pricing"
+                  className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                >
+                  Get a Quote
+                </Link>
+                <Link 
+                  to="/contact"
+                  className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
+                >
+                  Contact Us
+                </Link>
               </div>
             </div>
           </div>
@@ -227,7 +233,7 @@ const ServicePageTemplate = ({
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary/90">
+        <section className="py-20 bg-primary">
           <div className="container mx-auto px-4 text-center">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
               Ready to Get Started?
@@ -236,12 +242,18 @@ const ServicePageTemplate = ({
               Get a free quote today and experience the RAC Logistics difference.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button variant="cta" size="xl" asChild>
-                <Link to="/pricing">Get a Quote</Link>
-              </Button>
-              <Button variant="heroOutline" size="xl" asChild>
-                <Link to="/contact">Contact Sales</Link>
-              </Button>
+              <Link 
+                to="/pricing"
+                className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                Get a Quote
+              </Link>
+              <Link 
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
+              >
+                Contact Sales
+              </Link>
             </div>
           </div>
         </section>

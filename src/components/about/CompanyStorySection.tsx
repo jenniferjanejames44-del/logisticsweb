@@ -42,7 +42,7 @@ const CompanyStorySection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
-            className={`inline-block text-primary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4 uppercase tracking-wider bg-[hsl(45,100%,51%)]/10 text-[hsl(45,100%,41%)] transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -82,7 +82,7 @@ const CompanyStorySection = () => {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 {/* Dot - Mobile */}
-                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-primary rounded-full border-2 sm:border-4 border-background shadow-lg z-10 flex-shrink-0 md:hidden mt-2" />
+                <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[hsl(45,100%,51%)] rounded-full border-2 sm:border-4 border-background shadow-lg z-10 flex-shrink-0 md:hidden mt-2" />
 
                 {/* Content */}
                 <div className={`flex-1 ${index % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
@@ -100,7 +100,7 @@ const CompanyStorySection = () => {
                 </div>
 
                 {/* Dot - Desktop */}
-                <div className="w-4 h-4 bg-primary rounded-full border-4 border-background shadow-lg z-10 hidden md:block flex-shrink-0" />
+                <div className="w-4 h-4 bg-[hsl(45,100%,51%)] rounded-full border-4 border-background shadow-lg z-10 hidden md:block flex-shrink-0" />
 
                 {/* Spacer */}
                 <div className="flex-1 hidden md:block" />
