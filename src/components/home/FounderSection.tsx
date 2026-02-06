@@ -46,7 +46,7 @@ const FounderSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
             }`}
           >
-            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)]">
               Leadership
             </span>
             <h2 className="text-foreground mb-6">
@@ -75,7 +75,7 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:bg-[hsl(153,41%,24%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Learn More
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />

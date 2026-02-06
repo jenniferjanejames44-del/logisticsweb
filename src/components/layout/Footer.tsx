@@ -53,7 +53,7 @@ const Footer = () => {
                   key={social.name}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-white bg-white/10 hover:bg-white hover:text-primary transition-all duration-200"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center text-[hsl(0,0%,13%)] bg-[hsl(45,100%,51%)] hover:bg-white hover:text-primary transition-all duration-200"
                 >
                   {social.name}
                 </a>

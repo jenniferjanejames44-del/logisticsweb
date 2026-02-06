@@ -145,7 +145,7 @@ const Blog = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-white/20 text-white rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-white/30">
+              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
                 Blog & Resources
               </span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
@@ -350,7 +350,7 @@ const Blog = () => {
                 placeholder="Enter your email"
                 className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-xl"
               />
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-white text-primary shadow-lg hover:bg-white/95 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
+              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
                 Subscribe
               </button>
             </div>
