@@ -84,7 +84,7 @@ const Services = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-white/20 text-white rounded-full text-sm font-bold tracking-wider uppercase mb-8 border border-white/30">
+              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
                 Our Services
               </span>
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
@@ -96,14 +96,14 @@ const Services = () => {
               <div className="flex flex-row justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white text-primary shadow-lg hover:shadow-xl hover:bg-white/95 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
                 >
                   Get a Quote
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 hover:border-white/60 hover:-translate-y-0.5 active:translate-y-0 backdrop-blur-sm group"
+                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white text-primary hover:bg-primary hover:text-white hover:-translate-y-0.5 active:translate-y-0 group"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -140,8 +140,8 @@ const Services = () => {
                   <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   
                   <CardContent className="p-6 md:p-8">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-primary rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 shadow-md transition-all duration-300">
-                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary-foreground" />
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 shadow-md transition-all duration-300">
+                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-[hsl(0,0%,13%)]" />
                     </div>
                     <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                       {service.title}
@@ -182,7 +182,7 @@ const Services = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-white text-primary shadow-lg hover:shadow-xl hover:bg-white/95 hover:-translate-y-0.5 active:translate-y-0 group"
+              className="inline-flex items-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:translate-y-0 group"
             >
               Get in Touch
               <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />

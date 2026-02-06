@@ -41,7 +41,7 @@ const MissionVisionSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-700 bg-primary/10 text-primary ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-700 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >

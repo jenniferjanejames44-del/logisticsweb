@@ -20,7 +20,7 @@ const AboutHeroSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
-            <span className="inline-block px-6 py-3 bg-white/20 text-white rounded-full text-sm font-bold tracking-wider uppercase mb-6 border border-white/30">
+            <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-6">
               About RAC Logistics
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 sm:mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
@@ -33,8 +33,8 @@ const AboutHeroSection = () => {
             </p>
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Award size={20} className="text-white sm:w-6 sm:h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center">
+                  <Award size={20} className="text-[hsl(0,0%,13%)] sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
                   <p className="text-xl sm:text-2xl font-heading font-bold text-white">15+</p>
@@ -42,8 +42,8 @@ const AboutHeroSection = () => {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Rocket size={20} className="text-white sm:w-6 sm:h-6" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center">
+                  <Rocket size={20} className="text-[hsl(0,0%,13%)] sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
                   <p className="text-xl sm:text-2xl font-heading font-bold text-white">50K+</p>
