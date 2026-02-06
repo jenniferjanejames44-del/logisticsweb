@@ -62,7 +62,7 @@ const LeadershipSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
-            className={`inline-block text-primary font-semibold mb-3 sm:mb-4 text-xs sm:text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold mb-3 sm:mb-4 uppercase tracking-wider bg-[hsl(45,100%,51%)]/10 text-[hsl(45,100%,41%)] transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -110,21 +110,21 @@ const LeadershipSection = () => {
                 <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                   <a
                     href={member.linkedin}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(45,100%,51%)]/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[hsl(45,100%,45%)] transition-colors"
                   >
-                    <Linkedin size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
+                    <Linkedin size={16} className="text-[hsl(0,0%,13%)] sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={member.twitter}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(45,100%,51%)]/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[hsl(45,100%,45%)] transition-colors"
                   >
-                    <Twitter size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
+                    <Twitter size={16} className="text-[hsl(0,0%,13%)] sm:w-[18px] sm:h-[18px]" />
                   </a>
                   <a
                     href={`mailto:${member.name.toLowerCase().replace(" ", ".")}@raclogistics.com`}
-                    className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-primary transition-colors"
+                    className="w-8 h-8 sm:w-10 sm:h-10 bg-[hsl(45,100%,51%)]/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-[hsl(45,100%,45%)] transition-colors"
                   >
-                    <Mail size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
+                    <Mail size={16} className="text-[hsl(0,0%,13%)] sm:w-[18px] sm:h-[18px]" />
                   </a>
                 </div>
               </div>

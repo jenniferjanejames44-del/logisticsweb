@@ -43,7 +43,7 @@ const TrustedBySection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-block text-white/80 font-semibold mb-4 text-sm uppercase tracking-wider transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold mb-4 uppercase tracking-wider bg-[hsl(45,100%,51%)]/20 text-[hsl(45,100%,51%)] transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -78,14 +78,14 @@ const TrustedBySection = () => {
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               {/* Quote Icon */}
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <Quote size={20} className="text-white md:w-6 md:h-6" />
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-[hsl(45,100%,51%)]/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <Quote size={20} className="text-[hsl(45,100%,51%)] md:w-6 md:h-6" />
               </div>
 
               {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} size={16} className="text-white fill-white" />
+                  <Star key={i} size={16} className="text-[hsl(45,100%,51%)] fill-[hsl(45,100%,51%)]" />
                 ))}
               </div>
 
