@@ -13,7 +13,7 @@ const AboutCTASection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+          <h2 className="text-foreground mb-4">
             Ready to Partner with RAC Logistics?
           </h2>
           <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">

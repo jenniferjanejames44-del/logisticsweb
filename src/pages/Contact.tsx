@@ -126,7 +126,7 @@ const Contact = () => {
               <div className="lg:col-span-2">
                 <Card className="border-border shadow-lg">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
+                    <h2 className="text-foreground mb-6">
                       Send Us a Message
                     </h2>
                     
@@ -239,7 +239,7 @@ const Contact = () => {
                           <info.icon className="w-5 h-5 text-[hsl(0,0%,13%)]" />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground mb-1 text-sm">
+                          <h3 className="text-foreground mb-1">
                             {info.title}
                           </h3>
                           {info.details.map((detail, i) => (
@@ -256,7 +256,7 @@ const Contact = () => {
                 {/* Social Links */}
                 <Card className="border-border">
                   <CardContent className="p-5">
-                    <h3 className="font-semibold text-foreground mb-4 text-sm">
+                    <h3 className="text-foreground mb-4">
                       Follow Us
                     </h3>
                     <div className="flex gap-3">
@@ -320,7 +320,7 @@ const Contact = () => {
         {/* FAQ CTA */}
         <section className="section-padding bg-primary">
           <div className="section-container text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+            <h2 className="text-white mb-4">
               Have More Questions?
             </h2>
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
