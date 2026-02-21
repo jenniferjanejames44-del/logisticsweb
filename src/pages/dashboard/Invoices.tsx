@@ -73,8 +73,9 @@ const Invoices = () => {
 
       if (dlError) throw dlError;
 
-      // Open in new tab for printing/saving
-      const url = URL.createObjectURL(fileData);
+      // Create a properly typed blob so the browser renders HTML
+      const htmlBlob = new Blob([await fileData.text()], { type: "text/html" });
+      const url = URL.createObjectURL(htmlBlob);
       const win = window.open(url, "_blank");
       if (win) win.focus();
       
