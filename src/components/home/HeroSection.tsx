@@ -56,19 +56,19 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons - More prominent like Africanies */}
-          <div className={`flex flex-row items-center justify-center lg:justify-start gap-4 mb-10 sm:mb-12 transition-all duration-500 delay-200 ${
+          <div className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-10 sm:mb-12 transition-all duration-500 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center gap-2 h-14 px-8 sm:px-10 font-bold text-base rounded-full shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 h-14 px-8 sm:px-10 font-bold text-base rounded-full shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
             >
               Get Quote
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center gap-2 h-14 px-8 sm:px-10 font-bold text-base rounded-full shadow-sm transition-all duration-200 bg-white/10 text-white border-2 border-white/40 hover:bg-white hover:text-primary hover:shadow-md hover:-translate-y-1 active:scale-[0.98] backdrop-blur-sm"
+              className="inline-flex items-center justify-center gap-2 h-14 px-8 sm:px-10 font-bold text-base rounded-full shadow-sm transition-all duration-200 bg-white/10 text-white border-2 border-white/40 hover:bg-white hover:text-primary hover:shadow-md hover:-translate-y-1 active:scale-[0.98] backdrop-blur-sm w-full sm:w-auto"
             >
               Sign Up
               <ArrowRight className="w-5 h-5" />
