@@ -7,30 +7,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Search, Package, Trash2, DollarSign, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Shipment {
   id: string;
@@ -61,8 +48,8 @@ const statusOptions = [
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
     pending: "bg-warning/10 text-warning",
-    processing: "bg-blue-500/10 text-blue-500",
-    in_transit: "bg-purple-500/10 text-purple-500",
+    processing: "bg-primary/10 text-primary",
+    in_transit: "bg-primary/10 text-primary",
     out_for_delivery: "bg-warning/10 text-warning",
     delivered: "bg-success/10 text-success",
     cancelled: "bg-destructive/10 text-destructive",
@@ -75,20 +62,16 @@ const AdminShipments = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  
-  // Price dialog state
   const [priceDialogOpen, setPriceDialogOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
   const [priceInput, setPriceInput] = useState("");
   const [settingPrice, setSettingPrice] = useState(false);
+  const isMobile = useIsMobile();
 
   const fetchShipments = async () => {
     try {
       const { data, error } = await supabase
-        .from("shipments")
-        .select("*")
-        .order("created_at", { ascending: false });
-
+        .from("shipments").select("*").order("created_at", { ascending: false });
       if (error) throw error;
       setShipments(data || []);
     } catch (error) {
@@ -99,17 +82,11 @@ const AdminShipments = () => {
     }
   };
 
-  useEffect(() => {
-    fetchShipments();
-  }, []);
+  useEffect(() => { fetchShipments(); }, []);
 
   const handleStatusChange = async (shipmentId: string, newStatus: string) => {
     try {
-      const { error } = await supabase
-        .from("shipments")
-        .update({ status: newStatus })
-        .eq("id", shipmentId);
-
+      const { error } = await supabase.from("shipments").update({ status: newStatus }).eq("id", shipmentId);
       if (error) throw error;
       toast.success("Shipment status updated");
       fetchShipments();
@@ -121,13 +98,8 @@ const AdminShipments = () => {
 
   const handleDelete = async (shipmentId: string) => {
     if (!confirm("Are you sure you want to delete this shipment?")) return;
-
     try {
-      const { error } = await supabase
-        .from("shipments")
-        .delete()
-        .eq("id", shipmentId);
-
+      const { error } = await supabase.from("shipments").delete().eq("id", shipmentId);
       if (error) throw error;
       toast.success("Shipment deleted");
       fetchShipments();
@@ -154,22 +126,12 @@ const AdminShipments = () => {
 
   const handleSetPrice = async () => {
     if (!selectedShipment) return;
-    
     const price = parseFloat(priceInput);
-    if (isNaN(price) || price < 0) {
-      toast.error("Please enter a valid price");
-      return;
-    }
-
+    if (isNaN(price) || price < 0) { toast.error("Please enter a valid price"); return; }
     setSettingPrice(true);
     try {
-      const { error } = await supabase
-        .from("shipments")
-        .update({ price })
-        .eq("id", selectedShipment.id);
-
+      const { error } = await supabase.from("shipments").update({ price }).eq("id", selectedShipment.id);
       if (error) throw error;
-      
       toast.success("Price set successfully");
       setPriceDialogOpen(false);
       fetchShipments();
@@ -183,32 +145,23 @@ const AdminShipments = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-foreground">
-            Shipment Management
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Track and manage all customer shipments
-          </p>
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground">Shipment Management</h1>
+          <p className="text-muted-foreground mt-1 text-sm sm:text-base">Track and manage all customer shipments</p>
         </div>
 
-        <Card className="border-border">
-          <CardHeader>
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-              <CardTitle className="flex items-center gap-2">
-                <Package className="w-5 h-5" />
+        <Card className="border-border/50">
+          <CardHeader className="pb-3 sm:pb-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
                 All Shipments ({filteredShipments.length})
               </CardTitle>
-              <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                <div className="relative w-full sm:w-64">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search shipments..."
-                    className="pl-10"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  <Input placeholder="Search shipments..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="w-full sm:w-40">
@@ -216,23 +169,70 @@ const AdminShipments = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
-                    {statusOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
+                    {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 sm:p-6">
             {loading ? (
-              <p className="text-center text-muted-foreground py-8">Loading shipments...</p>
+              <p className="text-center text-muted-foreground py-8 text-sm">Loading shipments...</p>
             ) : filteredShipments.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No shipments found</p>
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <Package className="w-12 h-12 mb-4 opacity-50" />
+                <p className="font-medium">No shipments found</p>
+              </div>
+            ) : isMobile ? (
+              /* Mobile Card View */
+              <div className="space-y-3">
+                {filteredShipments.map((shipment) => (
+                  <div key={shipment.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono font-medium text-sm text-foreground">{shipment.tracking_number}</span>
+                      <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace("_", " ")}</Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Origin</p>
+                        <p className="text-foreground">{shipment.origin_city}, {shipment.origin_country}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Destination</p>
+                        <p className="text-foreground">{shipment.destination_city}, {shipment.destination_country}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Weight</p>
+                        <p className="text-foreground">{shipment.weight} kg</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Price</p>
+                        <p className="text-foreground font-medium">
+                          {shipment.price !== null ? `$${Number(shipment.price).toFixed(2)}` : "Not set"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1 border-t border-border/50">
+                      <Button variant="outline" size="sm" className="flex-1 h-9" onClick={() => openPriceDialog(shipment)}>
+                        <DollarSign className="w-3.5 h-3.5 mr-1" />
+                        {shipment.price !== null ? "Edit Price" : "Set Price"}
+                      </Button>
+                      <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
+                        <SelectTrigger className="flex-1 h-9"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                        </SelectContent>
+                      </Select>
+                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-9 w-9 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
-              <div className="overflow-x-auto">
+              /* Desktop Table View */
+              <div className="overflow-x-auto -mx-6">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -251,82 +251,40 @@ const AdminShipments = () => {
                   <TableBody>
                     {filteredShipments.map((shipment) => (
                       <TableRow key={shipment.id}>
-                        <TableCell className="font-mono font-medium">
-                          {shipment.tracking_number}
-                        </TableCell>
-                        <TableCell>
-                          {shipment.origin_city}, {shipment.origin_country}
-                        </TableCell>
-                        <TableCell>
-                          {shipment.destination_city}, {shipment.destination_country}
-                        </TableCell>
+                        <TableCell className="font-mono font-medium">{shipment.tracking_number}</TableCell>
+                        <TableCell>{shipment.origin_city}, {shipment.origin_country}</TableCell>
+                        <TableCell>{shipment.destination_city}, {shipment.destination_country}</TableCell>
                         <TableCell>{shipment.weight} kg</TableCell>
-                        <TableCell className="capitalize">
-                          {shipment.service_type.replace("_", " ")}
-                        </TableCell>
+                        <TableCell className="capitalize">{shipment.service_type.replace("_", " ")}</TableCell>
                         <TableCell>
                           {shipment.price !== null ? (
                             <span className="font-medium">${Number(shipment.price).toFixed(2)}</span>
                           ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => openPriceDialog(shipment)}
-                            >
-                              <DollarSign className="w-3 h-3 mr-1" />
-                              Set Price
+                            <Button variant="outline" size="sm" onClick={() => openPriceDialog(shipment)}>
+                              <DollarSign className="w-3 h-3 mr-1" />Set Price
                             </Button>
                           )}
                         </TableCell>
                         <TableCell>
-                          <Badge
-                            variant={shipment.payment_status === "paid" ? "default" : "secondary"}
-                            className={shipment.payment_status === "paid" ? "bg-green-500/20 text-green-600" : ""}
-                          >
+                          <Badge variant={shipment.payment_status === "paid" ? "default" : "secondary"}
+                            className={shipment.payment_status === "paid" ? "bg-success/10 text-success" : ""}>
                             {shipment.payment_status}
                           </Badge>
                         </TableCell>
-                        <TableCell>
-                          <Badge className={getStatusColor(shipment.status)}>
-                            {shipment.status.replace("_", " ")}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          {new Date(shipment.created_at).toLocaleDateString()}
-                        </TableCell>
+                        <TableCell><Badge className={getStatusColor(shipment.status)}>{shipment.status.replace("_", " ")}</Badge></TableCell>
+                        <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => openPriceDialog(shipment)}
-                            >
-                              <DollarSign className="w-3 h-3 mr-1" />
-                              {shipment.price !== null ? "Edit" : "Set"}
+                            <Button variant="outline" size="sm" onClick={() => openPriceDialog(shipment)}>
+                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit" : "Set"}
                             </Button>
-                            <Select
-                              value={shipment.status}
-                              onValueChange={(value) =>
-                                handleStatusChange(shipment.id, value)
-                              }
-                            >
-                              <SelectTrigger className="w-32">
-                                <SelectValue />
-                              </SelectTrigger>
+                            <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
+                              <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
                               <SelectContent>
-                                {statusOptions.map((option) => (
-                                  <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
+                                {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                               </SelectContent>
                             </Select>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="text-destructive hover:text-destructive"
-                              onClick={() => handleDelete(shipment.id)}
-                            >
+                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDelete(shipment.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -342,28 +300,18 @@ const AdminShipments = () => {
 
         {/* Set Price Dialog */}
         <Dialog open={priceDialogOpen} onOpenChange={setPriceDialogOpen}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Set Shipment Price</DialogTitle>
-              <DialogDescription>
-                Set the price for shipment {selectedShipment?.tracking_number}
-              </DialogDescription>
+              <DialogDescription>Set the price for shipment {selectedShipment?.tracking_number}</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="price">Price (USD)</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="price"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="0.00"
-                    className="pl-10"
-                    value={priceInput}
-                    onChange={(e) => setPriceInput(e.target.value)}
-                  />
+                  <Input id="price" type="number" min="0" step="0.01" placeholder="0.00" className="pl-10"
+                    value={priceInput} onChange={(e) => setPriceInput(e.target.value)} />
                 </div>
               </div>
               {selectedShipment && (
@@ -374,22 +322,10 @@ const AdminShipments = () => {
                 </div>
               )}
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setPriceDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleSetPrice} disabled={settingPrice}>
-                {settingPrice ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Setting...
-                  </>
-                ) : (
-                  <>
-                    <DollarSign className="w-4 h-4 mr-2" />
-                    Set Price
-                  </>
-                )}
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="w-full sm:w-auto">Cancel</Button>
+              <Button onClick={handleSetPrice} disabled={settingPrice} className="w-full sm:w-auto">
+                {settingPrice ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Setting...</> : <><DollarSign className="w-4 h-4 mr-2" />Set Price</>}
               </Button>
             </DialogFooter>
           </DialogContent>

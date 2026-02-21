@@ -7,44 +7,24 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,
+  DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
 import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import AddFundsDialog from "@/components/wallet/AddFundsDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface UserWithRole {
   id: string;
@@ -75,69 +55,42 @@ const AdminUsers = () => {
   const [selectedUserHistory, setSelectedUserHistory] = useState<LoginHistory[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
-  
-  // Add admin form state
   const [addAdminOpen, setAddAdminOpen] = useState(false);
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [newAdminPassword, setNewAdminPassword] = useState("");
   const [newAdminName, setNewAdminName] = useState("");
   const [creatingAdmin, setCreatingAdmin] = useState(false);
-  
-  // Reset password state
   const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
   const [resetPasswordUserId, setResetPasswordUserId] = useState<string | null>(null);
   const [resetPasswordUserName, setResetPasswordUserName] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [resettingPassword, setResettingPassword] = useState(false);
-  
-  // Add funds dialog state
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [addFundsUserId, setAddFundsUserId] = useState("");
   const [addFundsUserName, setAddFundsUserName] = useState("");
+  const isMobile = useIsMobile();
 
   const fetchUsers = async () => {
     try {
-      // Fetch profiles
-      const { data: profiles, error: profilesError } = await supabase
-        .from("profiles")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const [{ data: profiles, error: pe }, { data: roles, error: re }, { data: transactions, error: te }] = await Promise.all([
+        supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+        supabase.from("user_roles").select("user_id, role"),
+        supabase.from("wallet_transactions").select("user_id, amount, type"),
+      ]);
+      if (pe) throw pe; if (re) throw re; if (te) throw te;
 
-      if (profilesError) throw profilesError;
-
-      // Fetch roles
-      const { data: roles, error: rolesError } = await supabase
-        .from("user_roles")
-        .select("user_id, role");
-
-      if (rolesError) throw rolesError;
-
-      // Fetch wallet transactions to calculate balances
-      const { data: transactions, error: txnError } = await supabase
-        .from("wallet_transactions")
-        .select("user_id, amount, type");
-
-      if (txnError) throw txnError;
-
-      // Calculate balances per user
       const balanceMap: Record<string, number> = {};
-      (transactions || []).forEach((txn) => {
-        if (!balanceMap[txn.user_id]) balanceMap[txn.user_id] = 0;
-        balanceMap[txn.user_id] += txn.type === "credit" ? Number(txn.amount) : -Number(txn.amount);
+      (transactions || []).forEach(t => {
+        if (!balanceMap[t.user_id]) balanceMap[t.user_id] = 0;
+        balanceMap[t.user_id] += t.type === "credit" ? Number(t.amount) : -Number(t.amount);
       });
 
-      // Combine profiles with roles and balances
-      const usersWithRoles = (profiles || []).map((profile) => {
-        const userRole = roles?.find((r) => r.user_id === profile.user_id);
-        return {
-          ...profile,
-          role: userRole?.role || "customer",
-          balance: balanceMap[profile.user_id] || 0,
-        };
-      });
-
-      setUsers(usersWithRoles);
+      setUsers((profiles || []).map(p => ({
+        ...p,
+        role: roles?.find(r => r.user_id === p.user_id)?.role || "customer",
+        balance: balanceMap[p.user_id] || 0,
+      })));
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to load users");
@@ -149,13 +102,7 @@ const AdminUsers = () => {
   const fetchLoginHistory = async (userId: string) => {
     setHistoryLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("login_history")
-        .select("*")
-        .eq("user_id", userId)
-        .order("logged_in_at", { ascending: false })
-        .limit(10);
-
+      const { data, error } = await supabase.from("login_history").select("*").eq("user_id", userId).order("logged_in_at", { ascending: false }).limit(10);
       if (error) throw error;
       setSelectedUserHistory(data || []);
     } catch (error) {
@@ -166,36 +113,18 @@ const AdminUsers = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  useEffect(() => { fetchUsers(); }, []);
 
   const handleRoleChange = async (userId: string, newRole: "admin" | "customer") => {
     try {
-      // Check if role exists
-      const { data: existingRole } = await supabase
-        .from("user_roles")
-        .select("id")
-        .eq("user_id", userId)
-        .maybeSingle();
-
-      if (existingRole) {
-        // Update existing role
-        const { error } = await supabase
-          .from("user_roles")
-          .update({ role: newRole })
-          .eq("user_id", userId);
-
+      const { data: existing } = await supabase.from("user_roles").select("id").eq("user_id", userId).maybeSingle();
+      if (existing) {
+        const { error } = await supabase.from("user_roles").update({ role: newRole }).eq("user_id", userId);
         if (error) throw error;
       } else {
-        // Insert new role
-        const { error } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: userId, role: newRole }]);
-
+        const { error } = await supabase.from("user_roles").insert([{ user_id: userId, role: newRole }]);
         if (error) throw error;
       }
-
       toast.success("User role updated successfully");
       fetchUsers();
     } catch (error) {
@@ -208,25 +137,13 @@ const AdminUsers = () => {
     setDeletingUserId(userId);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ userId }),
+      });
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to delete user");
-      }
-
+      if (!response.ok) throw new Error(result.error || "Failed to delete user");
       toast.success("User deleted successfully");
       fetchUsers();
     } catch (error: any) {
@@ -238,47 +155,20 @@ const AdminUsers = () => {
   };
 
   const handleCreateAdmin = async () => {
-    if (!newAdminEmail || !newAdminPassword) {
-      toast.error("Email and password are required");
-      return;
-    }
-
-    if (newAdminPassword.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
-
+    if (!newAdminEmail || !newAdminPassword) { toast.error("Email and password are required"); return; }
+    if (newAdminPassword.length < 6) { toast.error("Password must be at least 6 characters"); return; }
     setCreatingAdmin(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({
-            email: newAdminEmail,
-            password: newAdminPassword,
-            fullName: newAdminName,
-          }),
-        }
-      );
-
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ email: newAdminEmail, password: newAdminPassword, fullName: newAdminName }),
+      });
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to create admin");
-      }
-
+      if (!response.ok) throw new Error(result.error || "Failed to create admin");
       toast.success("New admin created successfully!");
-      setAddAdminOpen(false);
-      setNewAdminEmail("");
-      setNewAdminPassword("");
-      setNewAdminName("");
+      setAddAdminOpen(false); setNewAdminEmail(""); setNewAdminPassword(""); setNewAdminName("");
       fetchUsers();
     } catch (error: any) {
       console.error("Error creating admin:", error);
@@ -289,52 +179,21 @@ const AdminUsers = () => {
   };
 
   const handleResetPassword = async () => {
-    if (!resetPasswordUserId || !newPassword) {
-      toast.error("New password is required");
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      toast.error("Password must be at least 6 characters");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
-      return;
-    }
-
+    if (!resetPasswordUserId || !newPassword) { toast.error("New password is required"); return; }
+    if (newPassword.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+    if (newPassword !== confirmPassword) { toast.error("Passwords do not match"); return; }
     setResettingPassword(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/reset-password`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.access_token}`,
-          },
-          body: JSON.stringify({
-            userId: resetPasswordUserId,
-            newPassword,
-          }),
-        }
-      );
-
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
+        body: JSON.stringify({ userId: resetPasswordUserId, newPassword }),
+      });
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || "Failed to reset password");
-      }
-
+      if (!response.ok) throw new Error(result.error || "Failed to reset password");
       toast.success("Password reset successfully!");
-      setResetPasswordOpen(false);
-      setResetPasswordUserId(null);
-      setResetPasswordUserName("");
-      setNewPassword("");
-      setConfirmPassword("");
+      setResetPasswordOpen(false); setResetPasswordUserId(null); setResetPasswordUserName(""); setNewPassword(""); setConfirmPassword("");
     } catch (error: any) {
       console.error("Error resetting password:", error);
       toast.error(error.message || "Failed to reset password");
@@ -344,122 +203,69 @@ const AdminUsers = () => {
   };
 
   const openResetPasswordDialog = (userId: string, userName: string) => {
-    setResetPasswordUserId(userId);
-    setResetPasswordUserName(userName);
-    setNewPassword("");
-    setConfirmPassword("");
-    setResetPasswordOpen(true);
+    setResetPasswordUserId(userId); setResetPasswordUserName(userName); setNewPassword(""); setConfirmPassword(""); setResetPasswordOpen(true);
   };
 
   const openAddFundsDialog = (userId: string, userName: string) => {
-    setAddFundsUserId(userId);
-    setAddFundsUserName(userName);
-    setAddFundsOpen(true);
+    setAddFundsUserId(userId); setAddFundsUserName(userName); setAddFundsOpen(true);
   };
 
   const getDeviceIcon = (deviceType: string | null) => {
     switch (deviceType?.toLowerCase()) {
-      case "mobile":
-        return <Smartphone className="w-4 h-4" />;
-      case "tablet":
-        return <Tablet className="w-4 h-4" />;
-      default:
-        return <Monitor className="w-4 h-4" />;
+      case "mobile": return <Smartphone className="w-4 h-4" />;
+      case "tablet": return <Tablet className="w-4 h-4" />;
+      default: return <Monitor className="w-4 h-4" />;
     }
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.city?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = users.filter(u =>
+    u.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.company_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    u.city?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <AdminLayout
-      title="User Management"
-      description="Manage customer accounts, permissions, and view activity"
-    >
-      <div className="space-y-8">
-        <Card className="border-border">
-          <CardHeader>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <CardTitle className="flex items-center gap-2">
-                <UserCog className="w-5 h-5" />
-                All Users ({filteredUsers.length})
+    <AdminLayout title="User Management" description="Manage customer accounts, permissions, and view activity">
+      <div className="space-y-6 sm:space-y-8">
+        <Card className="border-border/50">
+          <CardHeader className="pb-3 sm:pb-4">
+            <div className="flex flex-col gap-3 sm:gap-4">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />All Users ({filteredUsers.length})
               </CardTitle>
-              <div className="flex items-center gap-3">
-                <div className="relative w-full sm:w-64">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search users..."
-                    className="pl-10"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
+                  <Input placeholder="Search users..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button>
-                      <UserPlus className="w-4 h-4 mr-2" />
-                      Add Admin
-                    </Button>
+                    <Button className="w-full sm:w-auto"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                       <DialogTitle>Add New Admin</DialogTitle>
-                      <DialogDescription>
-                        Create a new admin account. They will have full access to the admin dashboard.
-                      </DialogDescription>
+                      <DialogDescription>Create a new admin account with full dashboard access.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 py-4">
                       <div className="space-y-2">
                         <Label htmlFor="admin-name">Full Name</Label>
-                        <Input
-                          id="admin-name"
-                          placeholder="Enter full name"
-                          value={newAdminName}
-                          onChange={(e) => setNewAdminName(e.target.value)}
-                        />
+                        <Input id="admin-name" placeholder="Enter full name" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-email">Email *</Label>
-                        <Input
-                          id="admin-email"
-                          type="email"
-                          placeholder="Enter email address"
-                          value={newAdminEmail}
-                          onChange={(e) => setNewAdminEmail(e.target.value)}
-                        />
+                        <Input id="admin-email" type="email" placeholder="Enter email address" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-password">Password *</Label>
-                        <Input
-                          id="admin-password"
-                          type="password"
-                          placeholder="Enter password (min 6 characters)"
-                          value={newAdminPassword}
-                          onChange={(e) => setNewAdminPassword(e.target.value)}
-                        />
+                        <Input id="admin-password" type="password" placeholder="Min 6 characters" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
                       </div>
                     </div>
-                    <DialogFooter>
-                      <Button variant="outline" onClick={() => setAddAdminOpen(false)}>
-                        Cancel
-                      </Button>
-                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin}>
-                        {creatingAdmin ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Creating...
-                          </>
-                        ) : (
-                          <>
-                            <UserPlus className="w-4 h-4 mr-2" />
-                            Create Admin
-                          </>
-                        )}
+                    <DialogFooter className="flex-col sm:flex-row gap-2">
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="w-full sm:w-auto">Cancel</Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="w-full sm:w-auto">
+                        {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -467,13 +273,118 @@ const AdminUsers = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-3 sm:p-6">
             {loading ? (
-              <p className="text-center text-muted-foreground py-8">Loading users...</p>
+              <p className="text-center text-muted-foreground py-8 text-sm">Loading users...</p>
             ) : filteredUsers.length === 0 ? (
-              <p className="text-center text-muted-foreground py-8">No users found</p>
+              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                <UserCog className="w-12 h-12 mb-4 opacity-50" />
+                <p className="font-medium">No users found</p>
+              </div>
+            ) : isMobile ? (
+              /* Mobile Card View */
+              <div className="space-y-3">
+                {filteredUsers.map((user) => (
+                  <div key={user.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                    <div className="flex items-center justify-between">
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user.email || "N/A"}</p>
+                      </div>
+                      <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Company</p>
+                        <p className="text-foreground truncate">{user.company_name || "N/A"}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Location</p>
+                        <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Balance</p>
+                        <p className="text-foreground font-medium">${(user.balance || 0).toFixed(2)}</p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Joined</p>
+                        <p className="text-foreground">{format(new Date(user.created_at), "MMM dd, yyyy")}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/50">
+                      <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
+                        <SelectTrigger className="w-24 h-8"><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="customer">Customer</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                        <Wallet className="w-3.5 h-3.5 text-success" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                        <KeyRound className="w-3.5 h-3.5" />
+                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => fetchLoginHistory(user.user_id)}>
+                            <Eye className="w-3.5 h-3.5" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-lg">
+                          <DialogHeader>
+                            <DialogTitle className="text-base">Login Activity - {user.full_name || user.email}</DialogTitle>
+                            <DialogDescription>Recent login history</DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                            {historyLoading ? (
+                              <p className="text-center text-muted-foreground py-4 text-sm">Loading...</p>
+                            ) : selectedUserHistory.length === 0 ? (
+                              <p className="text-center text-muted-foreground py-4 text-sm">No login history found</p>
+                            ) : (
+                              selectedUserHistory.map((h) => (
+                                <div key={h.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border">
+                                  <div className="p-2 rounded-full bg-primary/10 flex-shrink-0">{getDeviceIcon(h.device_type)}</div>
+                                  <div className="flex-1 space-y-1 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <span className="font-medium text-sm">{h.device_type || "Unknown"}</span>
+                                      <Badge variant="outline" className="text-xs">{h.browser || "Unknown"}</Badge>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
+                                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{h.location || "Unknown"}</span>
+                                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{format(new Date(h.logged_in_at), "MMM dd, yyyy hh:mm a")}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="destructive" size="icon" className="h-8 w-8 ml-auto" disabled={deletingUserId === user.user_id}>
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete User</AlertDialogTitle>
+                            <AlertDialogDescription>Are you sure you want to delete {user.full_name || user.email}? This cannot be undone.</AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDeleteUser(user.user_id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
-              <div className="overflow-x-auto">
+              /* Desktop Table View */
+              <div className="overflow-x-auto -mx-6">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -491,9 +402,7 @@ const AdminUsers = () => {
                   <TableBody>
                     {filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell className="font-medium">
-                          {user.full_name || "N/A"}
-                        </TableCell>
+                        <TableCell className="font-medium">{user.full_name || "N/A"}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Mail className="w-4 h-4 text-muted-foreground" />
@@ -501,60 +410,33 @@ const AdminUsers = () => {
                           </div>
                         </TableCell>
                         <TableCell>{user.company_name || "N/A"}</TableCell>
-                        <TableCell>
-                          {user.city && user.country
-                            ? `${user.city}, ${user.country}`
-                            : "N/A"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={user.role === "admin" ? "default" : "secondary"}
-                          >
-                            {user.role}
-                          </Badge>
-                        </TableCell>
+                        <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</TableCell>
+                        <TableCell><Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge></TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">${(user.balance || 0).toFixed(2)}</span>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-7 w-7"
-                              onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")}
-                              title="Add Funds"
-                            >
-                              <Wallet className="w-4 h-4 text-green-600" />
+                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                              <Wallet className="w-4 h-4 text-success" />
                             </Button>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex flex-col">
-                            <span className="text-sm">
-                              {format(new Date(user.created_at), "MMM dd, yyyy")}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {format(new Date(user.created_at), "hh:mm a")}
-                            </span>
+                            <span className="text-sm">{format(new Date(user.created_at), "MMM dd, yyyy")}</span>
+                            <span className="text-xs text-muted-foreground">{format(new Date(user.created_at), "hh:mm a")}</span>
                           </div>
                         </TableCell>
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => fetchLoginHistory(user.user_id)}
-                              >
-                                <Eye className="w-4 h-4 mr-1" />
-                                View
+                              <Button variant="outline" size="sm" onClick={() => fetchLoginHistory(user.user_id)}>
+                                <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-lg">
                               <DialogHeader>
                                 <DialogTitle>Login Activity - {user.full_name || user.email}</DialogTitle>
-                                <DialogDescription>
-                                  Recent login history and device information
-                                </DialogDescription>
+                                <DialogDescription>Recent login history and device information</DialogDescription>
                               </DialogHeader>
                               <div className="space-y-4 max-h-[400px] overflow-y-auto">
                                 {historyLoading ? (
@@ -562,32 +444,17 @@ const AdminUsers = () => {
                                 ) : selectedUserHistory.length === 0 ? (
                                   <p className="text-center text-muted-foreground py-4">No login history found</p>
                                 ) : (
-                                  selectedUserHistory.map((history) => (
-                                    <div
-                                      key={history.id}
-                                      className="flex items-start gap-4 p-3 rounded-lg bg-muted/50 border border-border"
-                                    >
-                                      <div className="p-2 rounded-full bg-primary/10">
-                                        {getDeviceIcon(history.device_type)}
-                                      </div>
+                                  selectedUserHistory.map((h) => (
+                                    <div key={h.id} className="flex items-start gap-4 p-3 rounded-lg bg-muted/50 border border-border">
+                                      <div className="p-2 rounded-full bg-primary/10">{getDeviceIcon(h.device_type)}</div>
                                       <div className="flex-1 space-y-1">
                                         <div className="flex items-center gap-2">
-                                          <span className="font-medium text-sm">
-                                            {history.device_type || "Unknown Device"}
-                                          </span>
-                                          <Badge variant="outline" className="text-xs">
-                                            {history.browser || "Unknown Browser"}
-                                          </Badge>
+                                          <span className="font-medium text-sm">{h.device_type || "Unknown Device"}</span>
+                                          <Badge variant="outline" className="text-xs">{h.browser || "Unknown Browser"}</Badge>
                                         </div>
                                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                          <span className="flex items-center gap-1">
-                                            <MapPin className="w-3 h-3" />
-                                            {history.location || "Unknown location"}
-                                          </span>
-                                          <span className="flex items-center gap-1">
-                                            <Clock className="w-3 h-3" />
-                                            {format(new Date(history.logged_in_at), "MMM dd, yyyy hh:mm a")}
-                                          </span>
+                                          <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{h.location || "Unknown location"}</span>
+                                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{format(new Date(h.logged_in_at), "MMM dd, yyyy hh:mm a")}</span>
                                         </div>
                                       </div>
                                     </div>
@@ -599,36 +466,19 @@ const AdminUsers = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Select
-                              value={user.role}
-                              onValueChange={(value: "admin" | "customer") =>
-                                handleRoleChange(user.user_id, value)
-                              }
-                            >
-                              <SelectTrigger className="w-28">
-                                <SelectValue />
-                              </SelectTrigger>
+                            <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
+                              <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="customer">Customer</SelectItem>
                                 <SelectItem value="admin">Admin</SelectItem>
                               </SelectContent>
                             </Select>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")}
-                              title="Reset Password"
-                            >
+                            <Button variant="outline" size="icon" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
                               <KeyRound className="w-4 h-4" />
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button
-                                  variant="destructive"
-                                  size="icon"
-                                  disabled={deletingUserId === user.user_id}
-                                  title="Delete User"
-                                >
+                                <Button variant="destructive" size="icon" disabled={deletingUserId === user.user_id} title="Delete User">
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
                               </AlertDialogTrigger>
@@ -636,19 +486,12 @@ const AdminUsers = () => {
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>Delete User</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete {user.full_name || user.email}? 
-                                    This action cannot be undone and will remove all their data 
-                                    including shipments, payments, and login history.
+                                    Are you sure you want to delete {user.full_name || user.email}? This action cannot be undone and will remove all their data.
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={() => handleDeleteUser(user.user_id)}
-                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                  >
-                                    Delete
-                                  </AlertDialogAction>
+                                  <AlertDialogAction onClick={() => handleDeleteUser(user.user_id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
@@ -665,64 +508,31 @@ const AdminUsers = () => {
 
         {/* Reset Password Dialog */}
         <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
-          <DialogContent>
+          <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Reset Password</DialogTitle>
-              <DialogDescription>
-                Set a new password for {resetPasswordUserName}
-              </DialogDescription>
+              <DialogDescription>Set a new password for {resetPasswordUserName}</DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="new-password">New Password *</Label>
-                <Input
-                  id="new-password"
-                  type="password"
-                  placeholder="Enter new password (min 6 characters)"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
+                <Input id="new-password" type="password" placeholder="Min 6 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">Confirm Password *</Label>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <Input id="confirm-password" type="password" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setResetPasswordOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={handleResetPassword} disabled={resettingPassword}>
-                {resettingPassword ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Resetting...
-                  </>
-                ) : (
-                  <>
-                    <KeyRound className="w-4 h-4 mr-2" />
-                    Reset Password
-                  </>
-                )}
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setResetPasswordOpen(false)} className="w-full sm:w-auto">Cancel</Button>
+              <Button onClick={handleResetPassword} disabled={resettingPassword} className="w-full sm:w-auto">
+                {resettingPassword ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Resetting...</> : <><KeyRound className="w-4 h-4 mr-2" />Reset Password</>}
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
-        {/* Add Funds Dialog */}
-        <AddFundsDialog
-          open={addFundsOpen}
-          onOpenChange={setAddFundsOpen}
-          userId={addFundsUserId}
-          userName={addFundsUserName}
-          onSuccess={fetchUsers}
-        />
+        <AddFundsDialog open={addFundsOpen} onOpenChange={setAddFundsOpen} userId={addFundsUserId} userName={addFundsUserName} onSuccess={fetchUsers} />
       </div>
     </AdminLayout>
   );
