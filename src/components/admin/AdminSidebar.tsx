@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Shield,
   Bell,
+  FileText,
 } from "lucide-react";
 
 const AdminSidebar = () => {
@@ -27,6 +28,7 @@ const AdminSidebar = () => {
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Users", href: "/admin/users", icon: Users },
     { name: "Shipments", href: "/admin/shipments", icon: Package },
+    { name: "Invoices", href: "/admin/invoices", icon: FileText },
     { name: "Payments", href: "/admin/payments", icon: DollarSign },
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Pricing", href: "/admin/pricing", icon: Settings },
