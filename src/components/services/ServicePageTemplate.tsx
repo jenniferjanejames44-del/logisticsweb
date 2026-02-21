@@ -109,7 +109,7 @@ const ServicePageTemplate = ({
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98] w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98] w-full sm:w-auto"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
