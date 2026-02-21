@@ -305,7 +305,7 @@ const Blog = () => {
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg font-medium">No articles found matching your criteria.</p>
                 <button 
-                  className="mt-6 inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
+                  className="mt-6 inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
                   onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
                 >
                   Clear Filters
@@ -345,15 +345,15 @@ const Blog = () => {
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-md mx-auto items-stretch sm:items-center">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 max-w-md mx-auto items-stretch sm:items-center">
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="h-14 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-full px-6"
+                className="h-11 sm:h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-full px-5"
               />
-              <button className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto whitespace-nowrap">
+              <button className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto whitespace-nowrap">
                 Subscribe
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>

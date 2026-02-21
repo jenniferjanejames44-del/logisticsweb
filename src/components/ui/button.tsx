@@ -55,12 +55,12 @@ const buttonVariants = cva(
         quoteAccent: "bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] font-bold",
       },
       size: {
-        default: "h-11 sm:h-12 px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-[15px]",
-        sm: "h-9 sm:h-10 px-3 sm:px-4 py-2 text-xs sm:text-sm",
-        lg: "h-12 sm:h-[52px] px-6 sm:px-8 py-3 text-sm sm:text-base",
-        xl: "h-12 sm:h-14 px-8 sm:px-10 py-3 sm:py-4 text-sm sm:text-base font-extrabold",
-        icon: "h-12 w-12",
-        nav: "h-11 px-5 py-2.5 text-sm",
+        default: "h-10 sm:h-11 px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-[15px]",
+        sm: "h-8 sm:h-9 px-3 sm:px-4 py-1.5 text-xs sm:text-sm",
+        lg: "h-11 sm:h-12 px-5 sm:px-7 py-2.5 text-sm sm:text-base",
+        xl: "h-11 sm:h-13 px-6 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base font-extrabold",
+        icon: "h-10 w-10 sm:h-12 sm:w-12",
+        nav: "h-10 px-4 py-2 text-sm",
       },
     },
     defaultVariants: {
