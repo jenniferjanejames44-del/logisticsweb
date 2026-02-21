@@ -313,7 +313,7 @@ const Pricing = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
+              className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
             >
               Contact Sales
               <ArrowRight className="w-4 h-4" />

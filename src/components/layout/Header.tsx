@@ -287,7 +287,7 @@ const Header = () => {
                   Dashboard
                 </Link>
                 <button 
-                  className="w-full h-12 font-semibold text-[15px] rounded-[10px] transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -301,7 +301,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full h-12 font-semibold text-[15px] rounded-[10px] transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
                 >
                   Login
                   <ArrowRight className="w-4 h-4" />
@@ -309,7 +309,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full h-12 font-semibold text-[15px] rounded-[10px] transition-all duration-200 flex items-center justify-center gap-2 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground"
+                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4" />

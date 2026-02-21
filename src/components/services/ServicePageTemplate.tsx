@@ -102,13 +102,13 @@ const ServicePageTemplate = ({
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
                 >
                   Get a Quote
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
                 >
                   Contact Us
                 </Link>
@@ -250,13 +250,13 @@ const ServicePageTemplate = ({
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
               >
                 Get a Quote
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
               >
                 Contact Sales
               </Link>

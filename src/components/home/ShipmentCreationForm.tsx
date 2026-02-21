@@ -308,7 +308,7 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep1Complete}
                         onClick={() => setStep(2)}
-                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
                         Continue
                         <ArrowRight className="w-4 h-4" />
@@ -388,7 +388,7 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(1)}
-                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
                       >
                         Back
                       </button>
@@ -396,7 +396,7 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep2Complete}
                         onClick={() => setStep(3)}
-                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
                         Review
                         <ArrowRight className="w-4 h-4" />
@@ -467,14 +467,14 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(2)}
-                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
                       >
                         Back
                       </button>
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
                         {isSubmitting ? "Creating..." : "Create Shipment"}
                         <ArrowRight className="w-4 h-4" />

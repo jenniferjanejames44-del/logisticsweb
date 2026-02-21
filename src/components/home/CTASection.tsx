@@ -45,14 +45,14 @@ const CTASection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight size={16} />
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
             >
               Contact Us
               <ArrowRight size={16} />
