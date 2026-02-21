@@ -46,28 +46,28 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-background border-b border-border ${
-        isScrolled ? "shadow-sm" : ""
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "h-[72px] bg-background/95 backdrop-blur-md border-b border-border shadow-sm" : "h-20 bg-background border-b border-border"
       }`}
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg text-primary-foreground transition-transform duration-200 group-hover:scale-105 bg-primary">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-lg text-primary-foreground transition-transform duration-200 group-hover:scale-105 bg-primary">
             R
           </div>
-          <span className="font-semibold text-lg text-foreground">
+          <span className="font-extrabold text-xl text-foreground tracking-tight">
             RAC <span className="text-primary">Logistics</span>
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+        <nav className="hidden lg:flex items-center gap-8">
           {navLinks.slice(0, 2).map((link) => (
             <Link
               key={link.name}
               to={link.href}
-              className="font-bold text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
+              className="font-semibold text-[15px] transition-colors duration-200 text-muted-foreground hover:text-foreground"
             >
               {link.name}
             </Link>
@@ -77,17 +77,17 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className="font-bold text-sm transition-colors duration-200 flex items-center gap-1 hover:text-primary text-muted-foreground"
+                className="font-semibold text-[15px] transition-colors duration-200 flex items-center gap-1.5 hover:text-foreground text-muted-foreground"
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-56 p-2 bg-background border-border shadow-lg">
+            <DropdownMenuContent align="center" className="w-56 p-2 bg-background border-border shadow-xl rounded-xl">
               <DropdownMenuItem asChild className="p-0 mb-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-muted transition-colors w-full font-medium text-primary"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors w-full font-semibold text-primary"
                 >
                   View All Services
                 </Link>
@@ -96,10 +96,10 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-muted transition-colors w-full text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors w-full text-muted-foreground hover:text-foreground"
                   >
                     <service.icon className="w-4 h-4 text-primary" />
-                    <span>{service.name}</span>
+                    <span className="font-medium">{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
@@ -110,7 +110,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-bold text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
+              className="font-semibold text-[15px] transition-colors duration-200 text-muted-foreground hover:text-foreground"
             >
               {link.name}
             </Link>
@@ -118,13 +118,13 @@ const Header = () => {
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <>
               {isAdmin && (
                 <Link 
                   to="/admin"
-                   className="flex items-center gap-2 px-4 py-2 font-bold text-sm transition-colors text-muted-foreground hover:text-primary"
+                  className="flex items-center gap-2 px-4 py-2 font-semibold text-[15px] transition-colors text-muted-foreground hover:text-foreground"
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -132,7 +132,7 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 font-bold text-sm transition-colors text-muted-foreground hover:text-primary"
+                className="flex items-center gap-2 px-4 py-2 font-semibold text-[15px] transition-colors text-muted-foreground hover:text-foreground"
               >
                 <User className="w-4 h-4" />
                 Dashboard
@@ -148,14 +148,13 @@ const Header = () => {
           ) : (
             <>
               <Link to="/auth">
-                <Button variant="secondary" size="sm" className="gap-2">
-                  Login
-                  <ArrowRight className="w-4 h-4" />
+                <Button variant="ghost" size="sm" className="font-semibold text-[15px]">
+                  Log In
                 </Button>
               </Link>
               <Link to="/auth">
-                <Button variant="default" size="sm" className="gap-2">
-                  Sign Up
+                <Button variant="outline" size="sm" className="font-bold">
+                  Join Now
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -165,7 +164,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden w-10 h-10 rounded-lg flex items-center justify-center transition-colors bg-muted text-foreground"
+          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-muted text-foreground"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -176,7 +175,7 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black/50"
+          className="lg:hidden fixed inset-0 bg-foreground/50 backdrop-blur-sm"
           style={{ zIndex: 9998 }}
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
@@ -185,7 +184,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-0 right-0 h-screen w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-background border-l border-border shadow-xl ${
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[85%] max-w-xs transition-all duration-300 overflow-y-auto bg-background border-l border-border shadow-2xl ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
@@ -195,9 +194,9 @@ const Header = () => {
       >
         {/* Header with close button */}
         <div className="flex items-center justify-between p-5 border-b border-border">
-          <span className="font-semibold text-lg text-foreground">Menu</span>
+          <span className="font-extrabold text-lg text-foreground">Menu</span>
           <button
-            className="w-9 h-9 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             onClick={() => setIsMobileMenuOpen(false)}
             aria-label="Close menu"
           >
@@ -210,7 +209,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
+              className="text-foreground hover:text-primary hover:bg-muted font-semibold text-[15px] py-3.5 px-4 rounded-xl transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -220,7 +219,7 @@ const Header = () => {
           {/* Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
+              className="flex items-center justify-between text-foreground hover:text-primary hover:bg-muted font-semibold text-[15px] py-3.5 px-4 rounded-xl transition-colors"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -230,7 +229,7 @@ const Header = () => {
               <div className="pl-3 py-2 space-y-1">
                 <Link
                   to="/services"
-                  className="flex items-center gap-3 font-semibold text-sm py-3 px-4 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  className="flex items-center gap-3 font-semibold text-sm py-3 px-4 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   View All Services
@@ -239,7 +238,7 @@ const Header = () => {
                   <Link
                     key={service.name}
                     to={service.href}
-                    className="flex items-center gap-3 text-muted-foreground hover:text-foreground text-sm py-3 px-4 rounded-lg hover:bg-muted transition-colors"
+                    className="flex items-center gap-3 text-muted-foreground hover:text-foreground text-sm py-3 px-4 rounded-xl hover:bg-muted transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <service.icon className="w-4 h-4 text-primary" />
@@ -254,7 +253,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
+              className="text-foreground hover:text-primary hover:bg-muted font-semibold text-[15px] py-3.5 px-4 rounded-xl transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -269,7 +268,7 @@ const Header = () => {
                   <Link 
                     to="/admin" 
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full py-3 text-foreground bg-muted hover:bg-muted/80 font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3.5 text-foreground bg-muted hover:bg-muted/80 font-semibold text-sm rounded-xl transition-colors flex items-center justify-center gap-2"
                   >
                     <Shield className="w-4 h-4" />
                     Admin Panel
@@ -278,13 +277,13 @@ const Header = () => {
                 <Link 
                   to="/dashboard" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 text-foreground bg-muted hover:bg-muted/80 font-medium text-sm rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-3.5 text-foreground bg-muted hover:bg-muted/80 font-semibold text-sm rounded-xl transition-colors flex items-center justify-center gap-2"
                 >
                   <User className="w-4 h-4" />
                   Dashboard
                 </Link>
                 <button 
-                   className="w-full py-3 font-extrabold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full py-3.5 font-extrabold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -298,15 +297,15 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 font-extrabold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full py-3.5 font-extrabold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  Login
+                  Log In
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 font-extrabold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground"
+                  className="w-full py-3.5 font-bold text-sm rounded-full transition-colors flex items-center justify-center gap-2 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4" />

@@ -52,14 +52,14 @@ const TestimonialsSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Testimonials
           </span>
           <h2
-            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -81,15 +81,15 @@ const TestimonialsSection = () => {
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 lg:-translate-x-14 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 lg:-translate-x-16 z-10 w-12 h-12 sm:w-14 sm:h-14 bg-card border-2 border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
           >
-            <ChevronLeft size={22} />
+            <ChevronLeft size={24} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 lg:translate-x-14 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 lg:translate-x-16 z-10 w-12 h-12 sm:w-14 sm:h-14 bg-card border-2 border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
           >
-            <ChevronRight size={22} />
+            <ChevronRight size={24} />
           </button>
 
           {/* Slides */}
@@ -100,21 +100,21 @@ const TestimonialsSection = () => {
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-2 sm:px-4">
-                  <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-sm">
-                    {/* Quote Icon - Yellow */}
-                    <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-8 shadow-md">
-                      <Quote size={26} className="text-[hsl(0,0%,13%)]" />
+                  <div className="bg-card border border-border/50 rounded-2xl p-8 sm:p-10 md:p-14 text-center shadow-sm">
+                    {/* Quote Icon */}
+                    <div className="w-16 h-16 mx-auto bg-accent rounded-2xl flex items-center justify-center mb-10 shadow-md">
+                      <Quote size={28} className="text-accent-foreground" />
                     </div>
 
                     {/* Content */}
-                    <p className="text-base sm:text-lg md:text-xl text-foreground leading-relaxed mb-6 sm:mb-8 font-medium">
+                    <p className="text-lg sm:text-xl md:text-2xl text-foreground leading-relaxed mb-8 font-medium">
                       "{testimonial.content}"
                     </p>
 
-                    {/* Rating - Yellow stars */}
+                    {/* Rating */}
                     <div className="flex justify-center gap-1.5 mb-8">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} size={20} className="text-[hsl(45,100%,51%)] fill-[hsl(45,100%,51%)]" />
+                        <Star key={i} size={22} className="text-accent fill-accent" />
                       ))}
                     </div>
 
@@ -123,11 +123,11 @@ const TestimonialsSection = () => {
                       <img
                         src={testimonial.image}
                         alt={testimonial.name}
-                        className="w-14 h-14 rounded-xl object-cover border-2 border-primary/30 shadow-sm"
+                        className="w-16 h-16 rounded-2xl object-cover border-2 border-primary/20 shadow-sm"
                         loading="lazy"
                       />
                       <div className="text-left">
-                        <h4 className="font-bold text-foreground text-lg">
+                        <h4 className="font-extrabold text-foreground text-lg">
                           {testimonial.name}
                         </h4>
                         <p className="text-muted-foreground text-sm">
@@ -145,15 +145,15 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center gap-3 mt-8">
+          <div className="flex justify-center gap-3 mt-10">
             {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
+                className={`h-3 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-primary w-8"
-                    : "bg-border hover:bg-primary/40 w-2.5"
+                    ? "bg-primary w-10"
+                    : "bg-border hover:bg-primary/40 w-3"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
