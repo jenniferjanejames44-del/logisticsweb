@@ -95,14 +95,14 @@ const Services = () => {
               <div className="flex flex-row justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2 h-14 px-8 font-bold text-base rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-1 active:scale-[0.98] group"
+                  className="inline-flex items-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-1 active:scale-[0.98] group"
                 >
                   Get a Quote
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.98] group"
+                  className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.98] group"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -181,7 +181,7 @@ const Services = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2 h-12 px-8 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:scale-[0.98] group"
+              className="inline-flex items-center gap-2 h-12 px-8 font-semibold text-[15px] rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:scale-[0.98] group"
             >
               Get in Touch
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />

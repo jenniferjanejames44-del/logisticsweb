@@ -279,7 +279,7 @@
   /* Professional Button System - 8px grid */
   .btn {
     padding: 0 1.25rem; /* 20px horizontal */
-    border-radius: 10px;
+    border-radius: 9999px;
     font-family: 'Inter', sans-serif;
     font-size: 0.9375rem; /* 15px */
     font-weight: 600;

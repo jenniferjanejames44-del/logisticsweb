@@ -23,14 +23,14 @@ const AboutCTASection = () => {
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-[10px] transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-1 active:scale-[0.98] shadow-md w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-1 active:scale-[0.98] shadow-md w-full sm:w-auto"
             >
               Contact Us
               <ArrowRight size={16} />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-[10px] transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
             >
               View Services
               <ArrowRight size={16} />
