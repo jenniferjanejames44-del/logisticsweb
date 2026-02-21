@@ -28,7 +28,7 @@ const buttonVariants = cva(
         destructive: "bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 active:scale-[0.98]",
 
         /* Link Style */
-        link: "text-primary underline-offset-4 hover:text-[hsl(45,100%,45%)] hover:underline p-0 h-auto font-semibold",
+        link: "text-primary underline-offset-4 hover:text-[hsl(45,100%,45%)] hover:underline p-0 h-auto font-bold",
 
         /* Navigation variants */
         nav: "bg-primary text-primary-foreground rounded-lg hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
