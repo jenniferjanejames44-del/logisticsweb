@@ -99,18 +99,20 @@ const ServicePageTemplate = ({
                 {description}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
                 >
                   Get a Quote
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98] w-full sm:w-auto"
                 >
                   Contact Us
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>
@@ -247,18 +249,20 @@ const ServicePageTemplate = ({
             <p className="text-base text-primary-foreground/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 sm:gap-4">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
               >
                 Get a Quote
+                <ArrowRight className="w-5 h-5" />
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto"
               >
                 Contact Sales
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>

@@ -306,13 +306,13 @@ const Contact = () => {
             </div>
             <div className="mt-4 text-center">
               <a
-                href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
+                  href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
               >
                 Open in Google Maps
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -327,17 +327,17 @@ const Contact = () => {
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 sm:gap-4">
               <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
               >
                 View Resources
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]">
+              <button className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto">
                 Start Live Chat
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
