@@ -38,12 +38,12 @@ const TrustedBySection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-16 md:py-24 bg-primary relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section ref={ref} className="section-padding bg-primary relative overflow-hidden">
+      <div className="section-container relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold mb-4 uppercase tracking-wider bg-[hsl(45,100%,51%)]/20 text-[hsl(45,100%,51%)] transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-[hsl(45,100%,51%)]/20 text-[hsl(45,100%,51%)] transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >

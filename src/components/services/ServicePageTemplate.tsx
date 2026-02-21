@@ -73,7 +73,7 @@ const ServicePageTemplate = ({
             <div className="absolute inset-0 bg-primary/90" />
           </div>
           
-          <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="section-container relative z-10">
             <div className={`max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <Link 
                 to="/services" 
@@ -118,8 +118,8 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Features Grid */}
-        <section className="py-10 sm:py-16 bg-muted/30">
-          <div className="container mx-auto px-4 sm:px-6">
+        <section className="py-10 sm:py-16 bg-muted">
+          <div className="section-container">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {features.map((feature, index) => (
                 <div
@@ -136,8 +136,8 @@ const ServicePageTemplate = ({
         </section>
 
         {/* How It Works */}
-        <section ref={workflowRef} className="py-16 sm:py-20 bg-background">
-          <div className="container mx-auto px-4 sm:px-6">
+        <section ref={workflowRef} className="section-padding bg-background">
+          <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Process
@@ -201,8 +201,8 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Benefits */}
-        <section ref={benefitsRef} className="py-16 sm:py-20 bg-muted/30">
-          <div className="container mx-auto px-4 sm:px-6">
+        <section ref={benefitsRef} className="section-padding bg-muted">
+          <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Benefits
@@ -239,8 +239,8 @@ const ServicePageTemplate = ({
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-20 bg-primary">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
+        <section className="section-padding bg-primary">
+          <div className="section-container text-center">
             <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-primary-foreground mb-4 sm:mb-6">
               Ready to Get Started?
             </h2>
