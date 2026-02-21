@@ -45,16 +45,16 @@ const AdminSidebar = () => {
   const NavContent = () => (
     <>
       {/* Logo Section */}
-      <div className="p-6 border-b border-border/50">
-        <Link to="/admin" className="flex items-center gap-3 group">
-          <div className="w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center font-heading font-bold text-primary text-2xl shadow-lg group-hover:scale-105 transition-transform duration-300">
+      <div className="p-4 sm:p-6 border-b border-border/50">
+        <Link to="/admin" className="flex items-center gap-2.5 sm:gap-3 group" onClick={() => setIsMobileOpen(false)}>
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center font-heading font-bold text-primary text-xl sm:text-2xl shadow-lg group-hover:scale-105 transition-transform duration-300">
             R
           </div>
           <div>
-            <span className="font-heading font-bold text-lg text-foreground block">
+            <span className="font-heading font-bold text-base sm:text-lg text-foreground block">
               RAC Admin
             </span>
-            <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <span className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1">
               <Shield className="w-3 h-3" />
               Control Panel
             </span>
@@ -63,8 +63,8 @@ const AdminSidebar = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        <p className="text-xs font-medium text-muted-foreground/60 uppercase tracking-wider px-4 py-2">
+      <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto scrollbar-thin">
+        <p className="text-[10px] sm:text-xs font-medium text-muted-foreground/60 uppercase tracking-wider px-3 sm:px-4 py-2">
           Management
         </p>
         {navItems.map((item) => {
@@ -75,7 +75,7 @@ const AdminSidebar = () => {
               key={item.name}
               to={item.href}
               onClick={() => setIsMobileOpen(false)}
-              className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden ${
+              className={`group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden touch-target ${
                 active
                   ? "bg-primary text-primary-foreground shadow-lg"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -84,33 +84,33 @@ const AdminSidebar = () => {
               {active && (
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent" />
               )}
-              <Icon className="w-5 h-5 relative z-10" />
-              <span className="font-medium relative z-10">{item.name}</span>
-              {active && <ChevronRight className="w-4 h-4 ml-auto relative z-10" />}
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 flex-shrink-0" />
+              <span className="font-medium relative z-10 text-sm sm:text-base">{item.name}</span>
+              {active && <ChevronRight className="w-4 h-4 ml-auto relative z-10 flex-shrink-0" />}
             </Link>
           );
         })}
       </nav>
 
       {/* Footer Actions */}
-      <div className="p-4 border-t border-border/50 space-y-2">
+      <div className="p-3 sm:p-4 border-t border-border/50 space-y-1.5 sm:space-y-2 safe-area-bottom">
         <Button
           variant="ghost"
-          className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl py-3"
+          className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl py-2.5 sm:py-3 touch-target"
           asChild
         >
-          <Link to="/">
-            <Home className="w-5 h-5 mr-3" />
-            Back to Site
+          <Link to="/" onClick={() => setIsMobileOpen(false)}>
+            <Home className="w-4 h-4 sm:w-5 sm:h-5 mr-2.5 sm:mr-3 flex-shrink-0" />
+            <span className="text-sm sm:text-base">Back to Site</span>
           </Link>
         </Button>
         <Button
           variant="ghost"
-          className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl py-3"
+          className="w-full justify-start text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl py-2.5 sm:py-3 touch-target"
           onClick={() => signOut()}
         >
-          <LogOut className="w-5 h-5 mr-3" />
-          Logout
+          <LogOut className="w-4 h-4 sm:w-5 sm:h-5 mr-2.5 sm:mr-3 flex-shrink-0" />
+          <span className="text-sm sm:text-base">Logout</span>
         </Button>
       </div>
     </>
@@ -120,8 +120,9 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-3 bg-card rounded-xl shadow-premium hover:shadow-premium-lg transition-all duration-300 border border-border"
+        className="md:hidden fixed top-3 left-3 sm:top-4 sm:left-4 z-50 p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 touch-target"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
+        aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
@@ -136,7 +137,7 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-card border-r border-border/50 flex flex-col z-40 transition-transform shadow-2xl ${
+        className={`fixed top-0 left-0 h-full w-[280px] sm:w-72 bg-card border-r border-border/50 flex flex-col z-40 transition-transform duration-300 shadow-2xl ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
