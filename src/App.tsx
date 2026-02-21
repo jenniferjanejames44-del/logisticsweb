@@ -34,6 +34,8 @@ import AdminPayments from "./pages/admin/AdminPayments";
 import AdminPricing from "./pages/admin/AdminPricing";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminInvoices from "./pages/admin/AdminInvoices";
+import Invoices from "./pages/dashboard/Invoices";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
 const queryClient = new QueryClient();
@@ -74,6 +76,7 @@ const App = () => (
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
               <Route path="/dashboard/shipments" element={<Shipments />} />
+              <Route path="/dashboard/invoices" element={<Invoices />} />
               <Route path="/dashboard/payments" element={<Payments />} />
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
@@ -81,6 +84,7 @@ const App = () => (
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/shipments" element={<AdminShipments />} />
+              <Route path="/admin/invoices" element={<AdminInvoices />} />
               <Route path="/admin/payments" element={<AdminPayments />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
