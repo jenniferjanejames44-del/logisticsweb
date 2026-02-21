@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import TrackingCard from "./TrackingCard";
+import heroVideo from "@/assets/hero-logistics-video.mp4";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,13 +14,16 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80)',
-        }}
-      />
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-20"
+      >
+        <source src={heroVideo} type="video/mp4" />
+      </video>
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 relative z-10 pt-28 sm:pt-32 pb-16 md:py-32">
         <div className="max-w-[600px] mx-auto text-center lg:text-left lg:mx-0">
