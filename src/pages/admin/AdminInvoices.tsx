@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, FileText, DollarSign, CheckCircle, Loader2, Download } from "lucide-react";
+import { Search, FileText, DollarSign, CheckCircle, Loader2, Download, Printer } from "lucide-react";
 import { toast } from "sonner";
 
 interface Invoice {
@@ -51,6 +51,8 @@ const AdminInvoices = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [paymentRef, setPaymentRef] = useState("");
   const [marking, setMarking] = useState(false);
+  const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const fetchInvoices = async () => {
     try {
@@ -127,12 +129,17 @@ const AdminInvoices = () => {
         .download(filePath);
       if (dlError) throw dlError;
 
-      const url = URL.createObjectURL(fileData);
-      window.open(url, "_blank");
-      toast.success("Invoice opened");
+      const htmlText = await fileData.text();
+      setInvoiceHtml(htmlText);
     } catch (err) {
       console.error("Download error:", err);
       toast.error("Failed to download invoice");
+    }
+  };
+
+  const handlePrint = () => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.print();
     }
   };
 
@@ -312,6 +319,30 @@ const AdminInvoices = () => {
                 {marking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</> : <><CheckCircle className="w-4 h-4 mr-2" />Confirm Payment</>}
               </Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Invoice Viewer Dialog */}
+        <Dialog open={!!invoiceHtml} onOpenChange={(open) => !open && setInvoiceHtml(null)}>
+          <DialogContent className="max-w-4xl h-[85vh] flex flex-col p-0">
+            <DialogHeader className="px-6 pt-6 pb-2 flex-shrink-0">
+              <div className="flex items-center justify-between">
+                <DialogTitle>Invoice Preview</DialogTitle>
+                <Button size="sm" onClick={handlePrint} className="mr-6">
+                  <Printer className="w-4 h-4 mr-2" />
+                  Print / Save as PDF
+                </Button>
+              </div>
+            </DialogHeader>
+            <div className="flex-1 overflow-hidden px-6 pb-6">
+              <iframe
+                ref={iframeRef}
+                srcDoc={invoiceHtml || ""}
+                className="w-full h-full border border-border rounded-lg"
+                title="Invoice Preview"
+                sandbox="allow-same-origin allow-scripts"
+              />
+            </div>
           </DialogContent>
         </Dialog>
       </div>
