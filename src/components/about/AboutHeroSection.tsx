@@ -20,13 +20,13 @@ const AboutHeroSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
             }`}
           >
-            <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-6">
+            <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
               About RAC Logistics
             </span>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 sm:mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
               Your Trusted Global Partner
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+            <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
               Since 2010, RAC Logistics has been at the forefront of international 
               shipping and logistics. We've built our reputation on reliability, 
               innovation, and an unwavering commitment to customer satisfaction.
@@ -37,7 +37,7 @@ const AboutHeroSection = () => {
                   <Award size={20} className="text-[hsl(0,0%,13%)] sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="text-xl sm:text-2xl font-heading font-bold text-white">15+</p>
+                  <p className="text-xl sm:text-2xl font-bold text-white">15+</p>
                   <p className="text-xs sm:text-sm text-white/70">Years of Excellence</p>
                 </div>
               </div>
@@ -46,7 +46,7 @@ const AboutHeroSection = () => {
                   <Rocket size={20} className="text-[hsl(0,0%,13%)] sm:w-6 sm:h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="text-xl sm:text-2xl font-heading font-bold text-white">50K+</p>
+                  <p className="text-xl sm:text-2xl font-bold text-white">50K+</p>
                   <p className="text-xs sm:text-sm text-white/70">Deliveries Completed</p>
                 </div>
               </div>
@@ -67,7 +67,7 @@ const AboutHeroSection = () => {
                 loading="lazy"
               />
               <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg">
-                <p className="text-2xl sm:text-3xl font-heading font-bold text-primary">150+</p>
+                <p className="text-2xl sm:text-3xl font-bold text-primary">150+</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">Countries Served</p>
               </div>
             </div>

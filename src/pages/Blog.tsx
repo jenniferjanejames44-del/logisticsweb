@@ -131,7 +131,7 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-44 md:pb-28 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden"
         >
           {/* Background Image */}
           <div 
@@ -145,13 +145,13 @@ const Blog = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
+              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
                 Blog & Resources
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                 Insights & Updates
               </h1>
-              <p className="text-lg md:text-xl text-white/90 font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
@@ -161,7 +161,7 @@ const Blog = () => {
         {/* Featured Posts Slider */}
         <section className="section-padding bg-muted/30">
           <div className="section-container">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-10">
+            <h2 className="text-foreground mb-10">
               Featured Articles
             </h2>
             <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
@@ -186,7 +186,7 @@ const Blog = () => {
                     </Badge>
                   </div>
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="text-muted-foreground mb-5 line-clamp-2 leading-relaxed">
@@ -277,7 +277,7 @@ const Blog = () => {
                       </Badge>
                     </div>
                     <CardContent className="p-6">
-                      <h3 className="font-heading text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
@@ -338,10 +338,10 @@ const Blog = () => {
         {/* Newsletter CTA */}
         <section className="section-padding bg-primary relative overflow-hidden">
           <div className="section-container text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-lg md:text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+            <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">

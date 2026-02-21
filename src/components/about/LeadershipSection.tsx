@@ -69,7 +69,7 @@ const LeadershipSection = () => {
             OUR TEAM
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -131,7 +131,7 @@ const LeadershipSection = () => {
 
               {/* Content */}
               <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mb-1">
+                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">
                   {member.name}
                 </h3>
                 <p className="text-primary font-medium text-sm sm:text-base mb-2 sm:mb-3">{member.role}</p>

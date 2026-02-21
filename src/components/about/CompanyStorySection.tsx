@@ -49,7 +49,7 @@ const CompanyStorySection = () => {
             OUR JOURNEY
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-foreground mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -87,10 +87,10 @@ const CompanyStorySection = () => {
                 {/* Content */}
                 <div className={`flex-1 ${index % 2 === 0 ? "md:text-right" : "md:text-left"}`}>
                   <div className="bg-card rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
-                    <span className="text-primary font-heading font-bold text-base sm:text-lg">
+                    <span className="text-primary font-bold text-base sm:text-lg">
                       {item.year}
                     </span>
-                    <h3 className="text-lg sm:text-xl font-heading font-bold text-foreground mt-1 mb-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground mt-1 mb-2">
                       {item.title}
                     </h3>
                     <p className="text-sm sm:text-base text-muted-foreground">
