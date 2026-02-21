@@ -4,7 +4,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface WorkflowStep {
@@ -57,12 +56,12 @@ const ServicePageTemplate = ({
     <div className="min-h-screen">
       <Header />
       <main>
-        {/* Hero Section with Real Photography */}
+        {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 overflow-hidden"
+          className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden"
         >
-          {/* Background Image with lazy loading */}
+          {/* Background Image */}
           <div className="absolute inset-0">
             <img 
               src={serviceImages[title] || serviceImages["Air Shipping"]}
@@ -74,48 +73,42 @@ const ServicePageTemplate = ({
             <div className="absolute inset-0 bg-primary/90" />
           </div>
           
-          {/* Decorative elements */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-secondary rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl animate-pulse" />
-          </div>
-          
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className={`max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
               <Link 
                 to="/services" 
-                className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-secondary transition-colors mb-6"
+                className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-[hsl(45,100%,51%)] transition-colors mb-6 text-sm font-medium"
               >
                 <ArrowRight className="w-4 h-4 rotate-180" />
                 Back to Services
               </Link>
               
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-secondary/20 rounded-xl flex items-center justify-center">
-                  <Icon className="w-8 h-8 text-secondary" />
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[hsl(45,100%,51%)]/20 rounded-xl flex items-center justify-center">
+                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-[hsl(45,100%,51%)]" />
                 </div>
-                <span className="px-4 py-2 bg-secondary/20 text-secondary rounded-full text-sm font-medium">
+                <span className="px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-xs sm:text-sm font-bold">
                   {subtitle}
                 </span>
               </div>
               
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 sm:mb-6">
                 {title}
               </h1>
-              <p className="text-xl text-primary-foreground/80 mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl leading-relaxed">
                 {description}
               </p>
               
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Get a Quote
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
                 >
                   Contact Us
                 </Link>
@@ -125,17 +118,17 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Features Grid */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <section className="py-10 sm:py-16 bg-muted/30">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               {features.map((feature, index) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 p-4 bg-background rounded-lg border border-border/50"
+                  className="flex items-center gap-3 p-3.5 sm:p-4 bg-background rounded-lg border border-border/50 transition-shadow duration-200 hover:shadow-md"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CheckCircle className="w-5 h-5 text-secondary flex-shrink-0" />
-                  <span className="font-medium text-foreground">{feature}</span>
+                  <CheckCircle className="w-5 h-5 text-[hsl(45,100%,51%)] flex-shrink-0" />
+                  <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
                 </div>
               ))}
             </div>
@@ -143,41 +136,54 @@ const ServicePageTemplate = ({
         </section>
 
         {/* How It Works */}
-        <section ref={workflowRef} className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">
+        <section ref={workflowRef} className="py-16 sm:py-20 bg-background">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12 sm:mb-16">
+              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Process
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
                 How It Works
               </h2>
             </div>
             
             <div className="relative max-w-4xl mx-auto">
-              {/* Connection Line */}
-              <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary via-secondary/50 to-secondary hidden md:block" />
+              {/* Connection Line - hidden on mobile */}
+              <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border hidden md:block" />
               
               {workflowSteps.map((step, index) => (
                 <div
                   key={step.step}
-                  className={`relative flex items-start gap-8 mb-12 last:mb-0 transition-all duration-700 ${
+                  className={`relative flex flex-col md:flex-row items-start gap-4 md:gap-8 mb-8 sm:mb-12 last:mb-0 transition-all duration-700 ${
                     workflowInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  <div className={`flex-1 ${index % 2 === 0 ? 'md:text-right md:pr-16' : 'md:order-2 md:pl-16'}`}>
-                    <Card className="inline-block text-left border-border/50 hover:border-secondary/50 hover:shadow-card transition-all duration-300">
+                  {/* Mobile: step number + card inline */}
+                  <div className="flex items-start gap-4 w-full md:hidden">
+                    <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm shrink-0 mt-1">
+                      {step.step}
+                    </div>
+                    <Card className="flex-1 border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+                      <CardContent className="p-4 sm:p-5">
+                        <h3 className="font-heading text-lg font-bold text-foreground mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {step.description}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Desktop: alternating layout */}
+                  <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right pr-16' : 'order-2 pl-16'}`}>
+                    <Card className="inline-block text-left border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                       <CardContent className="p-6">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span className="w-8 h-8 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center font-bold text-sm md:hidden">
-                            {step.step}
-                          </span>
-                          <h3 className="font-heading text-xl font-bold text-foreground">
-                            {step.title}
-                          </h3>
-                        </div>
-                        <p className="text-muted-foreground">
+                        <h3 className="font-heading text-xl font-bold text-foreground mb-2">
+                          {step.title}
+                        </h3>
+                        <p className="text-muted-foreground leading-relaxed">
                           {step.description}
                         </p>
                       </CardContent>
@@ -185,7 +191,7 @@ const ServicePageTemplate = ({
                   </div>
                   
                   {/* Step Number - Desktop */}
-                  <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-secondary text-secondary-foreground rounded-full items-center justify-center font-bold text-lg shadow-lg z-10">
+                  <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-primary text-primary-foreground rounded-full items-center justify-center font-bold text-lg shadow-lg z-10">
                     {step.step}
                   </div>
                 </div>
@@ -195,34 +201,34 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Benefits */}
-        <section ref={benefitsRef} className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <span className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-medium mb-4">
+        <section ref={benefitsRef} className="py-16 sm:py-20 bg-muted/30">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12 sm:mb-16">
+              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Benefits
               </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
                 Why Choose Our {title}
               </h2>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {benefits.map((benefit, index) => (
                 <Card
                   key={benefit.title}
-                  className={`group border-border/50 hover:border-secondary/50 hover:shadow-card hover:-translate-y-2 transition-all duration-500 ${
+                  className={`group border-border/50 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 ${
                     benefitsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
-                      <CheckCircle className="w-6 h-6 text-secondary" />
+                  <CardContent className="p-5 sm:p-6">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)]/15 rounded-lg flex items-center justify-center mb-4 group-hover:bg-[hsl(45,100%,51%)]/25 transition-colors">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(45,100%,51%)]" />
                     </div>
-                    <h3 className="font-heading text-xl font-bold text-foreground mb-2">
+                    <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground mb-2">
                       {benefit.title}
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                       {benefit.description}
                     </p>
                   </CardContent>
@@ -233,24 +239,24 @@ const ServicePageTemplate = ({
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-primary">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-6">
+        <section className="py-16 sm:py-20 bg-primary">
+          <div className="container mx-auto px-4 sm:px-6 text-center">
+            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-primary-foreground mb-4 sm:mb-6">
               Ready to Get Started?
             </h2>
-            <p className="text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 Get a Quote
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-10 py-4 text-base font-extrabold rounded-lg shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
               >
                 Contact Sales
               </Link>
