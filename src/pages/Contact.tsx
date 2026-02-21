@@ -309,10 +309,10 @@ const Contact = () => {
                   href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
               >
                 Open in Google Maps
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </div>
           </div>
@@ -328,16 +328,16 @@ const Contact = () => {
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 sm:gap-4">
-              <Link 
+                <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
               >
                 View Resources
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto">
+              <button className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto">
                 Start Live Chat
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>

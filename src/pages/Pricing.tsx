@@ -313,10 +313,10 @@ const Pricing = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
             >
               Contact Sales
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
           </div>
         </section>
