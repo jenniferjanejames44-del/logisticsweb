@@ -56,19 +56,19 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 sm:gap-3 mb-6 sm:mb-10 transition-all duration-500 delay-200 ${
+          <div className={`flex flex-row flex-wrap items-center justify-center lg:justify-start gap-3 mb-6 sm:mb-10 transition-all duration-500 delay-200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-8 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-8 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]"
             >
               Sign Up
               <ArrowRight className="w-4 h-4" />
