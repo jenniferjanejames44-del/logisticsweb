@@ -67,7 +67,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
+              className="font-bold text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
             >
               {link.name}
             </Link>
@@ -77,7 +77,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
-                className="font-medium text-sm transition-colors duration-200 flex items-center gap-1 hover:text-primary text-muted-foreground"
+                className="font-bold text-sm transition-colors duration-200 flex items-center gap-1 hover:text-primary text-muted-foreground"
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
@@ -110,7 +110,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="font-medium text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
+              className="font-bold text-sm transition-colors duration-200 text-muted-foreground hover:text-primary"
             >
               {link.name}
             </Link>
@@ -124,7 +124,7 @@ const Header = () => {
               {isAdmin && (
                 <Link 
                   to="/admin"
-                  className="flex items-center gap-2 px-4 py-2 font-medium text-sm transition-colors text-muted-foreground hover:text-primary"
+                   className="flex items-center gap-2 px-4 py-2 font-bold text-sm transition-colors text-muted-foreground hover:text-primary"
                 >
                   <Shield className="w-4 h-4" />
                   Admin
@@ -132,7 +132,7 @@ const Header = () => {
               )}
               <Link 
                 to="/dashboard"
-                className="flex items-center gap-2 px-4 py-2 font-medium text-sm transition-colors text-muted-foreground hover:text-primary"
+                className="flex items-center gap-2 px-4 py-2 font-bold text-sm transition-colors text-muted-foreground hover:text-primary"
               >
                 <User className="w-4 h-4" />
                 Dashboard
@@ -210,7 +210,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground hover:text-primary hover:bg-muted font-medium text-sm py-3 px-4 rounded-lg transition-colors"
+              className="text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}
@@ -220,7 +220,7 @@ const Header = () => {
           {/* Services Accordion */}
           <div className="flex flex-col">
             <button
-              className="flex items-center justify-between text-foreground hover:text-primary hover:bg-muted font-medium text-sm py-3 px-4 rounded-lg transition-colors"
+              className="flex items-center justify-between text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
               Services
@@ -254,7 +254,7 @@ const Header = () => {
             <Link
               key={link.name}
               to={link.href}
-              className="text-foreground hover:text-primary hover:bg-muted font-medium text-sm py-3 px-4 rounded-lg transition-colors"
+              className="text-foreground hover:text-primary hover:bg-muted font-bold text-sm py-3 px-4 rounded-lg transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}

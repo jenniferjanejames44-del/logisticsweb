@@ -81,13 +81,13 @@ const TestimonialsSection = () => {
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:-translate-x-3 lg:hover:-translate-x-[60px]"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 lg:-translate-x-14 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-14 z-10 w-12 h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95 hover:-translate-y-1/2 hover:translate-x-3 lg:hover:translate-x-[60px]"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 lg:translate-x-14 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-card border-2 border-border rounded-xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
           >
             <ChevronRight size={22} />
           </button>
@@ -99,15 +99,15 @@ const TestimonialsSection = () => {
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-4">
-                  <div className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center shadow-sm">
+                <div key={index} className="w-full flex-shrink-0 px-2 sm:px-4">
+                  <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-sm">
                     {/* Quote Icon - Yellow */}
                     <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-8 shadow-md">
                       <Quote size={26} className="text-[hsl(0,0%,13%)]" />
                     </div>
 
                     {/* Content */}
-                    <p className="text-lg md:text-xl text-foreground leading-relaxed mb-8 font-medium">
+                    <p className="text-base sm:text-lg md:text-xl text-foreground leading-relaxed mb-6 sm:mb-8 font-medium">
                       "{testimonial.content}"
                     </p>
 
