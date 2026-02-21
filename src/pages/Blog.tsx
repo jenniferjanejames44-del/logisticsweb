@@ -131,7 +131,7 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-24 md:pt-44 md:pb-28 overflow-hidden"
+          className="relative pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-44 md:pb-28 overflow-hidden"
         >
           {/* Background Image */}
           <div 
