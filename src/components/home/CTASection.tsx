@@ -40,19 +40,19 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-2.5 sm:gap-3 justify-center items-stretch sm:items-center transition-all duration-500 delay-300 ${
+          <div className={`flex flex-row flex-wrap gap-3 justify-center items-center transition-all duration-500 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
             >
               Contact Us
               <ArrowRight className="w-4 h-4" />

@@ -309,7 +309,7 @@ const Contact = () => {
                   href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
               >
                 Open in Google Maps
                 <ArrowRight className="w-4 h-4" />
@@ -327,15 +327,15 @@ const Contact = () => {
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2.5 sm:gap-3">
+            <div className="flex flex-row flex-wrap justify-center items-center gap-3">
                 <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] w-full sm:w-auto"
+                className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
               >
                 View Resources
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto">
+              <button className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4" />
               </button>

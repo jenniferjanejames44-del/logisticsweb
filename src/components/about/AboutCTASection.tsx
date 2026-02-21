@@ -20,17 +20,17 @@ const AboutCTASection = () => {
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 justify-center items-stretch sm:items-center">
+          <div className="flex flex-row flex-wrap gap-3 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-1 active:scale-[0.98] shadow-md w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] shadow-md"
             >
               Contact Us
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-1 active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
             >
               View Services
               <ArrowRight className="w-4 h-4" />
