@@ -60,30 +60,53 @@ const CoreValuesSection = () => {
           </p>
         </div>
 
-        {/* Values Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 lg:gap-6">
-          {values.map((value, index) => (
+        {/* Values Grid - 3 top + 2 bottom centered on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {values.slice(0, 3).map((value, index) => (
             <div
               key={value.title}
-              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-6 text-center shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 text-center shadow-sm hover:shadow-xl transition-all duration-500 ease-out hover:-translate-y-1.5 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: `${index * 60 + 150}ms` }}
+              style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
-              {/* Top accent bar on hover */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               
-              {/* Icon */}
-              <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-                <value.icon size={24} className="text-[hsl(0,0%,13%)]" />
+              <div className="w-16 h-16 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <value.icon size={28} className="text-[hsl(0,0%,13%)]" />
               </div>
 
-              {/* Title */}
-              <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+              <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
                 {value.title}
               </h3>
               
-              {/* Description */}
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                {value.description}
+              </p>
+            </div>
+          ))}
+        </div>
+        
+        {/* Bottom row - 2 cards centered */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 mt-6 lg:mt-8 max-w-2xl lg:max-w-3xl mx-auto">
+          {values.slice(3).map((value, index) => (
+            <div
+              key={value.title}
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 text-center shadow-sm hover:shadow-xl transition-all duration-500 ease-out hover:-translate-y-1.5 ${
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${(index + 3) * 80 + 150}ms` }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              
+              <div className="w-16 h-16 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <value.icon size={28} className="text-[hsl(0,0%,13%)]" />
+              </div>
+
+              <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                {value.title}
+              </h3>
+              
               <p className="text-muted-foreground text-sm leading-relaxed">
                 {value.description}
               </p>
