@@ -102,7 +102,7 @@ const Services = () => {
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-white/10 text-white border-2 border-white/40 hover:bg-white hover:text-primary hover:shadow-md hover:-translate-y-1 active:scale-[0.98] backdrop-blur-sm group w-full sm:w-auto"
+                  className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] hover:-translate-y-1 active:scale-[0.98] shadow-lg group w-full sm:w-auto"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 group-hover:translate-x-1" />
