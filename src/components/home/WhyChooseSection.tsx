@@ -26,7 +26,7 @@ const WhyChooseSection = () => {
     <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 lg:mb-20">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -56,11 +56,11 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-6 sm:p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}

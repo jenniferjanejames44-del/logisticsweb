@@ -50,7 +50,7 @@ const TestimonialsSection = () => {
     <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 lg:mb-20">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-2 sm:px-4">
-                  <div className="bg-card border border-border/50 rounded-2xl p-6 sm:p-8 md:p-12 text-center shadow-sm">
+                  <div className="bg-card border border-border/50 rounded-2xl p-5 sm:p-8 md:p-12 text-center shadow-sm">
                     {/* Quote Icon - Yellow */}
                     <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-8 shadow-md">
                       <Quote size={26} className="text-[hsl(0,0%,13%)]" />

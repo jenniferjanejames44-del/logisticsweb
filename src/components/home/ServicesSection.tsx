@@ -33,7 +33,7 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-14 lg:mb-16">
           <span
             className={`inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-4 transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -62,7 +62,7 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
@@ -116,7 +116,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center justify-center gap-2 h-14 px-8 font-bold text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
           >
             View All Services
             <ArrowRight size={18} />
