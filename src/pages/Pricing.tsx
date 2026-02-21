@@ -81,7 +81,7 @@ const Pricing = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
+          className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-primary"
         >
           {/* Background Image */}
           <div 
@@ -96,10 +96,11 @@ const Pricing = () => {
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
                 Transparent Pricing
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
                 Calculate Your Shipping Cost
               </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-xl mx-auto">
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>

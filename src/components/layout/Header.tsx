@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import TopBar from "./TopBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,9 +46,11 @@ const Header = () => {
   ];
 
   return (
+    <>
+    <TopBar />
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-background border-b border-border ${
-        isScrolled ? "shadow-sm" : ""
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-background border-b border-border md:top-[36px] ${
+        isScrolled ? "shadow-sm md:!top-0" : ""
       }`}
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
@@ -317,6 +320,7 @@ const Header = () => {
         </nav>
       </div>
     </header>
+    </>
   );
 };
 

@@ -50,12 +50,16 @@ const IndustriesSection = () => {
             Industries We Serve
           </span>
           <h2
-            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-3 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Solutions for <span className="text-primary">Every Industry</span>
           </h2>
+          {/* Underline accent */}
+          <div className={`w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full transition-all duration-500 delay-150 ${
+            isInView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+          }`} />
           <p
             className={`text-muted-foreground text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"

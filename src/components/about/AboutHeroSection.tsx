@@ -6,7 +6,7 @@ const AboutHeroSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-40 md:pb-24 bg-primary relative overflow-hidden">
+    <section ref={ref} className="pt-32 pb-16 sm:pt-36 sm:pb-20 md:pt-44 md:pb-24 bg-primary relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white to-transparent" />
@@ -23,7 +23,7 @@ const AboutHeroSection = () => {
             <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
               About RAC Logistics
             </span>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
               Your Trusted Global Partner
             </h1>
             <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">

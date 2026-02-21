@@ -59,7 +59,7 @@ const ServicePageTemplate = ({
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden"
+          className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden"
         >
           {/* Background Image */}
           <div className="absolute inset-0">
@@ -92,7 +92,7 @@ const ServicePageTemplate = ({
                 </span>
               </div>
               
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-primary-foreground mb-4 leading-[1.05] tracking-tight">
                 {title}
               </h1>
               <p className="text-base md:text-lg text-primary-foreground/80 mb-8 max-w-2xl leading-relaxed">

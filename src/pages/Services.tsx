@@ -70,16 +70,14 @@ const Services = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden"
+          className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden"
         >
-          {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80)',
             }}
           />
-          {/* Dark Overlay - Using primary green */}
           <div className="absolute inset-0 bg-primary opacity-90" />
           
           <div className="section-container relative z-10">
@@ -87,16 +85,17 @@ const Services = () => {
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
                 Our Services
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
                 Comprehensive Logistics Solutions
               </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-xl mx-auto">
+              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-8 max-w-xl mx-auto">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
               <div className="flex flex-row justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:scale-[0.98] group"
+                  className="inline-flex items-center gap-2 h-14 px-8 font-bold text-base rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-1 active:scale-[0.98] group"
                 >
                   Get a Quote
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
