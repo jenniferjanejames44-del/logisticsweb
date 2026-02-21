@@ -61,14 +61,14 @@ const HeroSection = () => {
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-xl active:scale-[0.98]"
             >
               Get Quote
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link 
               to="/auth"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]"
             >
               Sign Up
               <ArrowRight className="w-4 h-4" />
@@ -84,17 +84,17 @@ const HeroSection = () => {
     {/* Quick Action Row - Inspired by Africanies "Let's get started" */}
     <section className="relative -mt-6 sm:-mt-8 z-20 px-4 sm:px-6">
       <div className="max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {quickActions.map((action, index) => (
             <Link
               key={action.label}
               to={action.href}
-              className={`group flex items-center gap-2.5 sm:gap-4 bg-card border border-border rounded-xl p-3 sm:p-5 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+              className={`group flex items-center gap-2.5 sm:gap-4 bg-card border border-border rounded-lg p-3 sm:p-5 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
               style={{ transitionDelay: `${index * 80 + 600}ms` }}
             >
-              <div className="w-9 h-9 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)] rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+              <div className="w-9 h-9 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)] rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                 <action.icon className="w-4 h-4 sm:w-6 sm:h-6 text-[hsl(0,0%,13%)]" />
               </div>
               <span className="font-bold text-xs sm:text-base text-foreground group-hover:text-primary transition-colors leading-tight">{action.label}</span>

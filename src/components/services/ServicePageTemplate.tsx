@@ -87,7 +87,7 @@ const ServicePageTemplate = ({
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[hsl(45,100%,51%)]/20 rounded-xl flex items-center justify-center">
                   <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-[hsl(45,100%,51%)]" />
                 </div>
-                <span className="px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-xs sm:text-sm font-bold">
+                <span className="px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-md text-xs sm:text-sm font-bold">
                   {subtitle}
                 </span>
               </div>
@@ -102,14 +102,14 @@ const ServicePageTemplate = ({
               <div className="flex flex-row flex-wrap gap-3 items-center">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
                 >
                   Get a Quote
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-lg transition-all duration-200 bg-background text-primary border-2 border-background hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4" />
@@ -141,7 +141,7 @@ const ServicePageTemplate = ({
         <section ref={workflowRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
+               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-md text-sm font-bold mb-4">
                 Process
               </span>
               <h2 className="text-foreground">
@@ -206,7 +206,7 @@ const ServicePageTemplate = ({
         <section ref={benefitsRef} className="section-padding bg-muted">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
+              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-md text-sm font-bold mb-4">
                 Benefits
               </span>
               <h2 className="text-foreground">
@@ -252,15 +252,15 @@ const ServicePageTemplate = ({
             <div className="flex flex-row flex-wrap justify-center items-center gap-3">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
-              >
+                 className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+               >
                 Get a Quote
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
-              >
+                 className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-md shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+               >
                 Contact Sales
                 <ArrowRight className="w-4 h-4" />
               </Link>
