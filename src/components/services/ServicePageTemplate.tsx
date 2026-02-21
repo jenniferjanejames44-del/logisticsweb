@@ -59,7 +59,7 @@ const ServicePageTemplate = ({
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden"
         >
           {/* Background Image */}
           <div className="absolute inset-0">
@@ -92,23 +92,23 @@ const ServicePageTemplate = ({
                 </span>
               </div>
               
-              <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 sm:mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
                 {title}
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl leading-relaxed">
+              <p className="text-base md:text-lg text-primary-foreground/80 mb-8 max-w-2xl leading-relaxed">
                 {description}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
                 >
                   Get a Quote
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-sm transition-all duration-200 bg-transparent text-white border-2 border-white/60 hover:bg-white hover:text-primary active:scale-[0.98]"
                 >
                   Contact Us
                 </Link>
@@ -142,7 +142,7 @@ const ServicePageTemplate = ({
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Process
               </span>
-              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-foreground">
                 How It Works
               </h2>
             </div>
@@ -166,7 +166,7 @@ const ServicePageTemplate = ({
                     </div>
                     <Card className="flex-1 border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                       <CardContent className="p-4 sm:p-5">
-                        <h3 className="font-heading text-lg font-bold text-foreground mb-2">
+                        <h3 className="text-lg font-bold text-foreground mb-2">
                           {step.title}
                         </h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">
@@ -180,7 +180,7 @@ const ServicePageTemplate = ({
                   <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right pr-16' : 'order-2 pl-16'}`}>
                     <Card className="inline-block text-left border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                       <CardContent className="p-6">
-                        <h3 className="font-heading text-xl font-bold text-foreground mb-2">
+                        <h3 className="text-xl font-bold text-foreground mb-2">
                           {step.title}
                         </h3>
                         <p className="text-muted-foreground leading-relaxed">
@@ -207,7 +207,7 @@ const ServicePageTemplate = ({
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] rounded-full text-sm font-bold mb-4">
                 Benefits
               </span>
-              <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-foreground">
                 Why Choose Our {title}
               </h2>
             </div>
@@ -225,7 +225,7 @@ const ServicePageTemplate = ({
                     <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[hsl(45,100%,51%)]/15 rounded-lg flex items-center justify-center mb-4 group-hover:bg-[hsl(45,100%,51%)]/25 transition-colors">
                       <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[hsl(45,100%,51%)]" />
                     </div>
-                    <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground mb-2">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
                       {benefit.title}
                     </h3>
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
@@ -241,22 +241,22 @@ const ServicePageTemplate = ({
         {/* CTA Section */}
         <section className="section-padding bg-primary">
           <div className="section-container text-center">
-            <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-primary-foreground mb-4 sm:mb-6">
+            <h2 className="text-2xl md:text-3xl font-semibold text-primary-foreground mb-4">
               Ready to Get Started?
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base text-primary-foreground/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
               >
                 Get a Quote
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 sm:py-4 text-sm sm:text-base font-bold rounded-xl shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
               >
                 Contact Sales
               </Link>

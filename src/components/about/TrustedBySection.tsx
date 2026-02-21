@@ -50,7 +50,7 @@ const TrustedBySection = () => {
             TRUSTED WORLDWIDE
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-4 md:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-white mb-4 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -130,7 +130,7 @@ const TrustedBySection = () => {
                 key={logo.name}
                 className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
               >
-                <span className="text-white/70 font-heading font-bold text-lg md:text-xl">
+                <span className="text-white/70 font-bold text-lg md:text-xl">
                   {logo.initial}
                 </span>
               </div>

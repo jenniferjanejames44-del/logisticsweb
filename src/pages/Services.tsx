@@ -84,13 +84,13 @@ const Services = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
+              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
                 Our Services
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                 Comprehensive Logistics Solutions
               </h1>
-              <p className="text-lg md:text-xl text-white/90 font-medium leading-relaxed mb-10 max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 max-w-xl mx-auto">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
               <div className="flex flex-row justify-center gap-4">
@@ -143,7 +143,7 @@ const Services = () => {
                     <div className="w-14 h-14 md:w-16 md:h-16 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 shadow-md transition-all duration-300">
                       <service.icon className="w-7 h-7 md:w-8 md:h-8 text-[hsl(0,0%,13%)]" />
                     </div>
-                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                       {service.title}
                     </h3>
                     <p className="text-muted-foreground mb-6 leading-relaxed font-medium">
@@ -174,10 +174,10 @@ const Services = () => {
         {/* CTA Section */}
         <section className="section-padding bg-primary relative overflow-hidden">
           <div className="section-container text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
               Need a Custom Logistics Solution?
             </h2>
-            <p className="text-lg md:text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+            <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
             <Link 
