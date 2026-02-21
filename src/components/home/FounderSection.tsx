@@ -78,7 +78,7 @@ const FounderSection = () => {
               className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full transition-all duration-200 bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-0.5 active:scale-[0.98] group w-full sm:w-auto"
             >
               Learn More
-              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

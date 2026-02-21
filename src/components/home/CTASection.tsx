@@ -48,14 +48,14 @@ const CTASection = () => {
               className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto"
             >
               Get Quote
-              <ArrowRight size={18} />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
             <Link 
               to="/contact"
               className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98] w-full sm:w-auto"
             >
               Contact Us
-              <ArrowRight size={18} />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
             </Link>
           </div>
         </div>
