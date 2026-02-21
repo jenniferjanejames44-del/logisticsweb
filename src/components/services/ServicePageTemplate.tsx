@@ -241,7 +241,7 @@ const ServicePageTemplate = ({
         {/* CTA Section */}
         <section className="section-padding bg-primary">
           <div className="section-container text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-primary-foreground mb-4">
+            <h2 className="text-primary-foreground mb-4">
               Ready to Get Started?
             </h2>
             <p className="text-base text-primary-foreground/80 mb-8 max-w-xl mx-auto leading-relaxed">

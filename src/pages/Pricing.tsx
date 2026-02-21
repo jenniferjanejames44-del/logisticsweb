@@ -304,7 +304,7 @@ const Pricing = () => {
         {/* CTA */}
         <section className="section-padding bg-primary">
           <div className="section-container text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+            <h2 className="text-white mb-4">
               Need a Custom Quote?
             </h2>
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">

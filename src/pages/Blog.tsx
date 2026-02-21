@@ -338,7 +338,7 @@ const Blog = () => {
         {/* Newsletter CTA */}
         <section className="section-padding bg-primary relative overflow-hidden">
           <div className="section-container text-center relative z-10">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+            <h2 className="text-white mb-4">
               Subscribe to Our Newsletter
             </h2>
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
