@@ -9,50 +9,50 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* 🟢 PRIMARY BUTTON - Blue → Yellow on hover */
-        default: "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] shadow-sm hover:shadow-md",
+        /* PRIMARY BUTTON - Deep Navy */
+        default: "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] shadow-sm hover:shadow-md",
 
-        /* ⚪ SECONDARY BUTTON - Neutral/White → Blue on hover */
+        /* SECONDARY BUTTON - Neutral → Navy on hover */
         secondary: "bg-secondary text-secondary-foreground border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary active:scale-[0.98]",
 
-        /* 🟡 ACCENT BUTTON - Yellow with dark text */
-        accent: "bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] shadow-sm font-extrabold",
+        /* ACCENT BUTTON - Sharp Orange CTA */
+        accent: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98] shadow-sm font-extrabold",
 
-        /* Ghost Button → Blue on hover */
+        /* Ghost Button */
         ghost: "bg-transparent text-muted-foreground hover:bg-primary/10 hover:text-primary active:scale-[0.98]",
 
-        /* Outline - White bg, blue border → Blue on hover */
-        outline: "bg-white text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        /* Outline - Navy border */
+        outline: "bg-background text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
         /* Destructive */
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]",
 
         /* Link Style */
-        link: "text-primary underline-offset-4 hover:text-[hsl(45,100%,45%)] hover:underline p-0 h-auto font-bold",
+        link: "text-primary underline-offset-4 hover:text-accent hover:underline p-0 h-auto font-bold",
 
         /* Navigation variants */
-        nav: "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
-        navSecondary: "bg-white text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        nav: "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98]",
+        navSecondary: "bg-background text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
         navOutline: "bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
-        /* Hero variants - Primary with Yellow hover */
-        heroPrimary: "bg-primary text-primary-foreground shadow-md hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
-        heroSecondary: "bg-white text-primary border-2 border-primary shadow-sm hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
-        heroOutline: "bg-transparent text-white border-2 border-white/60 hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:border-[hsl(45,100%,51%)] active:scale-[0.98]",
+        /* Hero variants */
+        heroPrimary: "bg-accent text-accent-foreground shadow-md hover:bg-accent/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroSecondary: "bg-background text-primary border-2 border-primary shadow-sm hover:bg-primary hover:text-primary-foreground hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        heroOutline: "bg-transparent text-white border-2 border-white/60 hover:bg-accent hover:text-accent-foreground hover:border-accent active:scale-[0.98]",
 
-        /* CTA variants */
-        cta: "bg-primary text-primary-foreground shadow-md hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
-        navCta: "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
-        ctaOutline: "bg-white text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        /* CTA variants - Orange for high-intent actions */
+        cta: "bg-accent text-accent-foreground shadow-md hover:bg-accent/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] active:translate-y-0",
+        navCta: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98]",
+        ctaOutline: "bg-background text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
 
         /* Legacy variants - mapped to new system */
-        outlineNavy: "bg-white text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
-        premium: "bg-primary text-primary-foreground shadow-md hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-lg active:scale-[0.98]",
-        indigoOutline: "bg-white text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
-        dynamic: "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
-        quote: "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
-        quotePrimary: "bg-primary text-primary-foreground shadow-md hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]",
-        quoteAccent: "bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] font-extrabold",
+        outlineNavy: "bg-background text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        premium: "bg-accent text-accent-foreground shadow-md hover:bg-accent/90 hover:shadow-lg active:scale-[0.98]",
+        indigoOutline: "bg-background text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]",
+        dynamic: "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98]",
+        quote: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98]",
+        quotePrimary: "bg-accent text-accent-foreground shadow-md hover:bg-accent/90 active:scale-[0.98]",
+        quoteAccent: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98] font-extrabold",
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
