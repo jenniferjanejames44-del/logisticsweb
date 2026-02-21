@@ -96,17 +96,17 @@ const Services = () => {
               <div className="flex flex-row justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+                  className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:scale-[0.98] group"
                 >
                   Get a Quote
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-white text-primary hover:bg-primary hover:text-white hover:-translate-y-0.5 active:translate-y-0 group"
+                  className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-0.5 active:scale-[0.98] group"
                 >
                   Contact Us
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </div>
             </div>
@@ -182,10 +182,10 @@ const Services = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:translate-y-0 group"
+              className="inline-flex items-center gap-2 h-12 px-8 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,45%)] hover:-translate-y-0.5 active:scale-[0.98] group"
             >
               Get in Touch
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
         </section>

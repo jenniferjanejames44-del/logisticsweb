@@ -308,7 +308,7 @@ const Contact = () => {
                 href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
+                className="inline-flex items-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
               >
                 Open in Google Maps
                 <ArrowRight className="w-4 h-4" />
@@ -329,12 +329,12 @@ const Contact = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
               >
                 View Resources
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white active:scale-[0.98]">
+              <button className="inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4" />
               </button>
