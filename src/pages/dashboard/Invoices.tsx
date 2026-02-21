@@ -73,11 +73,15 @@ const Invoices = () => {
 
       if (dlError) throw dlError;
 
-      // Create a properly typed blob so the browser renders HTML
-      const htmlBlob = new Blob([await fileData.text()], { type: "text/html" });
-      const url = URL.createObjectURL(htmlBlob);
-      const win = window.open(url, "_blank");
-      if (win) win.focus();
+      // Read the raw HTML and write it directly into a new window
+      const htmlText = await fileData.text();
+      const win = window.open("", "_blank");
+      if (win) {
+        win.document.open();
+        win.document.write(htmlText);
+        win.document.close();
+        win.focus();
+      }
       
       toast.success("Invoice opened - use Print to save as PDF");
     } catch (err) {
