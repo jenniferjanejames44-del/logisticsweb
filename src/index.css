@@ -7,10 +7,10 @@
 
 @layer base {
   :root {
-    /* Primary Brand Color - Professional Green #2E7D32 */
-    --primary: 122 46% 34%;
+    /* Primary Brand Color - Professional Blue */
+    --primary: 217 71% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 122 46% 28%;
+    --primary-hover: 217 71% 38%;
     
     /* Accent Color - Yellow #FFC107 (highlights, badges, hover states) */
     --accent-yellow: 45 100% 51%;
@@ -47,33 +47,33 @@
     /* Borders / Dividers */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 122 46% 34%;
+    --ring: 217 71% 45%;
     
     --radius: 0.5rem;
     
     /* Status Colors */
-    --success: 122 46% 34%;
+    --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
     --warning: 45 100% 51%;
     --warning-foreground: 0 0% 13%;
     --info: 199 89% 48%;
     --info-foreground: 0 0% 100%;
     
-    /* Sidebar - Professional Green */
-    --sidebar-background: 122 46% 28%;
+    /* Sidebar - Professional Blue */
+    --sidebar-background: 217 71% 38%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 45 100% 51%;
     --sidebar-primary-foreground: 0 0% 13%;
-    --sidebar-accent: 122 46% 38%;
+    --sidebar-accent: 217 71% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.15;
     --sidebar-ring: 45 100% 51%;
     
     /* Chart Colors */
-    --chart-1: 122 46% 34%;
+    --chart-1: 217 71% 45%;
     --chart-2: 45 100% 51%;
     --chart-3: 199 89% 48%;
-    --chart-4: 122 46% 50%;
+    --chart-4: 217 71% 60%;
     --chart-5: 45 100% 65%;
     
     /* Section Backgrounds */
@@ -81,9 +81,9 @@
   }
   
   .dark {
-    --primary: 122 46% 45%;
+    --primary: 217 71% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 122 46% 38%;
+    --primary-hover: 217 71% 48%;
     --accent-yellow: 45 100% 51%;
     --accent-yellow-hover: 45 100% 45%;
     --accent-yellow-foreground: 0 0% 13%;
@@ -103,7 +103,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 20%;
     --input: 220 13% 20%;
-    --ring: 122 46% 45%;
+    --ring: 217 71% 55%;
     --section-light: 220 13% 10%;
   }
 }
