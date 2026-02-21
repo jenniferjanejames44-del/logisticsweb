@@ -60,7 +60,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Head Office",
-      details: ["123 Logistics Avenue", "Victoria Island, Lagos", "Nigeria"]
+      details: ["29b Osolo Way, Opposite Polaris Bank", "Ajao Estate, Isolo", "Lagos State, Nigeria"]
     },
     {
       icon: Phone,
@@ -290,25 +290,29 @@ const Contact = () => {
               </h2>
             </div>
             
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-[350px] bg-card border border-border">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mx-auto mb-5">
-                    <MapPin className="w-8 h-8 text-[hsl(0,0%,13%)]" />
-                  </div>
-                  <p className="text-lg font-semibold text-foreground mb-1">123 Logistics Avenue</p>
-                  <p className="text-muted-foreground mb-5">Victoria Island, Lagos, Nigeria</p>
-                  <a 
-                    href="https://maps.google.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
-                  >
-                    Open in Google Maps
-                    <ArrowRight className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
+            <div className="relative rounded-xl overflow-hidden shadow-lg h-[400px] bg-card border border-border">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.8!2d3.3282!3d6.5282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzEnNDEuNSJOIDPCsDE5JzQxLjUiRQ!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng&q=29b+Osolo+Way+Ajao+Estate+Isolo+Lagos"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="RAC Logistics Office Location"
+                className="absolute inset-0"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <a
+                href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
+              >
+                Open in Google Maps
+                <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </section>
