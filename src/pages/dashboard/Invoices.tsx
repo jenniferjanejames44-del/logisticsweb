@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   FileText,
@@ -39,6 +40,8 @@ const Invoices = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (user) fetchInvoices();
@@ -58,14 +61,12 @@ const Invoices = () => {
   const handleDownload = async (invoice: Invoice) => {
     setDownloading(invoice.id);
     try {
-      // Generate/regenerate the invoice PDF
       const { data, error } = await supabase.functions.invoke("generate-invoice-pdf", {
         body: { invoice_id: invoice.id },
       });
 
       if (error) throw error;
 
-      // Download the file
       const filePath = data.file_path || `${user!.id}/${invoice.invoice_number}.html`;
       const { data: fileData, error: dlError } = await supabase.storage
         .from("invoices")
@@ -73,22 +74,19 @@ const Invoices = () => {
 
       if (dlError) throw dlError;
 
-      // Read the raw HTML and write it directly into a new window
       const htmlText = await fileData.text();
-      const win = window.open("", "_blank");
-      if (win) {
-        win.document.open();
-        win.document.write(htmlText);
-        win.document.close();
-        win.focus();
-      }
-      
-      toast.success("Invoice opened - use Print to save as PDF");
+      setInvoiceHtml(htmlText);
     } catch (err) {
       console.error("Download error:", err);
       toast.error("Failed to download invoice");
     } finally {
       setDownloading(null);
+    }
+  };
+
+  const handlePrint = () => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.print();
     }
   };
 
@@ -263,6 +261,29 @@ const Invoices = () => {
           </CardContent>
         </Card>
       )}
+
+      {/* Invoice Viewer Dialog */}
+      <Dialog open={!!invoiceHtml} onOpenChange={(open) => !open && setInvoiceHtml(null)}>
+        <DialogContent className="max-w-4xl h-[85vh] flex flex-col p-0">
+          <DialogHeader className="px-6 pt-6 pb-2 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <DialogTitle>Invoice Preview</DialogTitle>
+              <Button size="sm" onClick={handlePrint} className="mr-6">
+                Print / Save as PDF
+              </Button>
+            </div>
+          </DialogHeader>
+          <div className="flex-1 overflow-hidden px-6 pb-6">
+            <iframe
+              ref={iframeRef}
+              srcDoc={invoiceHtml || ""}
+              className="w-full h-full border border-border rounded-lg"
+              title="Invoice Preview"
+              sandbox="allow-same-origin allow-scripts"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 };
