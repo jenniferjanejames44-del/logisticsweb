@@ -23,7 +23,6 @@ const ResetPassword = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user came from email link (will have a session from the recovery flow)
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -33,7 +32,6 @@ const ResetPassword = () => {
     
     checkSession();
 
-    // Listen for auth state changes (recovery link will trigger this)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'PASSWORD_RECOVERY') {
         setHasSession(true);
@@ -79,7 +77,6 @@ const ResetPassword = () => {
         description: "Your password has been reset successfully.",
       });
 
-      // Sign out and redirect to login after a delay
       setTimeout(async () => {
         await supabase.auth.signOut();
         navigate("/auth");
@@ -99,21 +96,21 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-          <Card className="w-full max-w-md border-border/30 shadow-2xl">
+        <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
+          <Card className="w-full max-w-md border-border shadow-lg">
             <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl flex items-center justify-center font-heading font-bold text-secondary-foreground text-2xl mx-auto mb-4 shadow-lg shadow-secondary/30">
+              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
                 R
               </div>
-              <CardTitle className="font-heading text-2xl tracking-tight">Invalid Link</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-xl font-semibold">Invalid Link</CardTitle>
+              <CardDescription className="text-sm">
                 This password reset link is invalid or has expired. Please request a new one.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button
-                variant="cta"
-                size="xl"
+                variant="default"
+                size="lg"
                 className="w-full"
                 onClick={() => navigate("/auth")}
               >
@@ -131,14 +128,14 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-          <Card className="w-full max-w-md border-border/30 shadow-2xl">
+        <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
+          <Card className="w-full max-w-md border-border shadow-lg">
             <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <CheckCircle2 className="w-8 h-8 text-white" />
+              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="w-7 h-7 text-primary-foreground" />
               </div>
-              <CardTitle className="font-heading text-2xl tracking-tight">Password Reset!</CardTitle>
-              <CardDescription className="text-base">
+              <CardTitle className="text-xl font-semibold">Password Reset!</CardTitle>
+              <CardDescription className="text-sm">
                 Your password has been updated successfully. Redirecting to login...
               </CardDescription>
             </CardHeader>
@@ -152,19 +149,14 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        </div>
-        
-        <Card className="w-full max-w-md border-border/30 shadow-2xl relative z-10 backdrop-blur-sm">
+      <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
+        <Card className="w-full max-w-md border-border shadow-lg">
           <CardHeader className="text-center pb-2">
-            <div className="w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-2xl flex items-center justify-center font-heading font-bold text-secondary-foreground text-2xl mx-auto mb-4 shadow-lg shadow-secondary/30 transition-transform duration-300 hover:scale-105">
+            <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
               R
             </div>
-            <CardTitle className="font-heading text-2xl tracking-tight">Reset Password</CardTitle>
-            <CardDescription className="text-base">
+            <CardTitle className="text-xl font-semibold">Reset Password</CardTitle>
+            <CardDescription className="text-sm">
               Enter your new password below
             </CardDescription>
           </CardHeader>
@@ -172,65 +164,65 @@ const ResetPassword = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">New Password</Label>
-                <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-12 pr-12"
+                    className="pl-10 pr-10"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-secondary transition-colors p-1 rounded-lg hover:bg-secondary/10"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
-                <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-secondary transition-colors" />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
                     id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-12 pr-12"
+                    className="pl-10 pr-10"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-secondary transition-colors p-1 rounded-lg hover:bg-secondary/10"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <Button
                 type="submit"
-                variant="cta"
-                size="xl"
-                className="w-full mt-2 shadow-lg shadow-secondary/25"
+                variant="default"
+                size="lg"
+                className="w-full mt-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                 ) : (
                   <>
                     Reset Password
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </>
                 )}
               </Button>
