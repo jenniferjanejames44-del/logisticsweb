@@ -119,7 +119,7 @@ const Footer = () => {
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-white/10">
                     <MapPin size={16} className="text-white" />
                   </div>
-                  <span className="text-sm">123 Logistics Way, New York, NY 10001</span>
+                  <span className="text-sm">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State</span>
                 </div>
               </div>
             </div>
