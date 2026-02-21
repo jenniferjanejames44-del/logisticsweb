@@ -33,23 +33,27 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-14 lg:mb-16">
           <span
-            className={`inline-block px-3 py-1.5 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-4 transition-all duration-500 ${
+            className={`inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-4 transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Services
           </span>
           <h2
-            className={`text-foreground mb-4 transition-all duration-500 delay-100 ${
+            className={`text-foreground mb-3 transition-all duration-500 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Comprehensive Logistics Solutions
           </h2>
+          {/* Underline accent */}
+          <div className={`w-16 h-1 bg-primary mx-auto mb-5 rounded-full transition-all duration-500 delay-150 ${
+            isInView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+          }`} />
           <p
-            className={`text-muted-foreground text-base leading-relaxed transition-all duration-500 delay-150 ${
+            className={`text-muted-foreground text-lg leading-relaxed transition-all duration-500 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -58,7 +62,7 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
@@ -87,14 +91,14 @@ const ServicesSection = () => {
                 </div>
 
                 {/* Content */}
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5">
                     {service.description}
                   </p>
-                  <div className="inline-flex items-center gap-2 font-medium text-sm text-primary">
+                  <div className="inline-flex items-center gap-2 font-bold text-sm text-primary group-hover:gap-3 transition-all duration-200">
                     <span>Learn More</span>
                     <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
                   </div>

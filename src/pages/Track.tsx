@@ -280,9 +280,8 @@ const Track = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
+          className="relative pt-36 pb-20 md:pt-44 md:pb-24 overflow-hidden bg-primary"
         >
-          {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
             style={{
@@ -299,11 +298,12 @@ const Track = () => {
                 </span>
                 Real-Time Tracking
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
                 Track Your{" "}
                 <span className="text-[hsl(45,100%,51%)]">Shipment</span>
               </h1>
-              <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
+              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
+              <p className="text-lg md:text-xl text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
               </p>
 
