@@ -43,14 +43,14 @@ const IndustriesSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Industries We Serve
           </span>
           <h2
-            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -67,29 +67,29 @@ const IndustriesSection = () => {
         </div>
 
         {/* Industries Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {industries.map((industry, index) => (
             <div
               key={industry.title}
-              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-7 flex items-start gap-5 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 flex items-start gap-6 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-2 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80}ms` }}
             >
-              {/* Top accent bar on hover - Yellow */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-[hsl(45,100%,51%)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
               
-              {/* Icon - Yellow */}
-              <div className="w-14 h-14 flex-shrink-0 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-                <industry.icon size={24} className="text-[hsl(0,0%,13%)]" />
+              {/* Icon */}
+              <div className="w-16 h-16 flex-shrink-0 bg-accent rounded-2xl flex items-center justify-center shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <industry.icon size={26} className="text-accent-foreground" />
               </div>
 
               {/* Content */}
               <div>
-                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
                   {industry.title}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-muted-foreground text-[15px] leading-relaxed">
                   {industry.description}
                 </p>
               </div>

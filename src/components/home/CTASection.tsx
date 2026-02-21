@@ -18,13 +18,13 @@ const CTASection = () => {
 
       <div className="section-container relative z-10">
         <div
-          className={`text-center max-w-2xl mx-auto transition-all duration-500 ${
+          className={`text-center max-w-3xl mx-auto transition-all duration-500 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {/* Heading */}
           <h2 
-            className={`text-white mb-4 transition-all duration-500 delay-100 ${
+            className={`text-white mb-6 transition-all duration-500 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -32,7 +32,7 @@ const CTASection = () => {
           </h2>
           
           <p 
-            className={`text-lg text-white/80 mb-8 leading-relaxed max-w-xl mx-auto transition-all duration-500 delay-200 ${
+            className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-500 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -40,22 +40,22 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-3 justify-center items-center transition-all duration-500 delay-300 ${
+          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-500 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
             <Link 
               to="/pricing"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-extrabold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Get Quote
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-extrabold text-sm rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white hover:shadow-md active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Contact Us
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </Link>
           </div>
         </div>

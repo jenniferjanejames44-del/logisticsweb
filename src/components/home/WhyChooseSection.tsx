@@ -28,7 +28,7 @@ const WhyChooseSection = () => {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -36,7 +36,7 @@ const WhyChooseSection = () => {
             Our Advantage
           </span>
           <h2
-            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -52,25 +52,25 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-1 ${
+              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-2 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
-              {/* Top accent bar on hover - Yellow */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-[hsl(45,100%,51%)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              {/* Top accent bar on hover */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
               
-              <div className="w-14 h-14 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-                <item.icon size={26} className="text-[hsl(0,0%,13%)]" />
+              <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-7 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+                <item.icon size={28} className="text-accent-foreground" />
               </div>
-              <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+              <h3 className="text-xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+              <p className="text-muted-foreground text-[15px] leading-relaxed mb-6">
                 {item.description}
               </p>
               <div className="flex items-center gap-2 text-primary font-bold text-sm">

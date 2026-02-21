@@ -33,23 +33,23 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-block px-3 py-1.5 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-4 transition-all duration-500 ${
+            className={`inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-5 transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Our Services
           </span>
           <h2
-            className={`text-foreground mb-4 transition-all duration-500 delay-100 ${
+            className={`text-foreground mb-5 transition-all duration-500 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Comprehensive Logistics Solutions
           </h2>
           <p
-            className={`text-muted-foreground text-base leading-relaxed transition-all duration-500 delay-150 ${
+            className={`text-muted-foreground text-lg md:text-xl leading-relaxed transition-all duration-500 delay-150 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -58,45 +58,45 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
               <Link
                 key={service.title}
                 to={service.href}
-                className={`group relative overflow-hidden rounded-xl bg-card border border-border shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${
+                className={`group relative overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: `${index * 80 + 200}ms` }}
               >
                 {/* Service Image */}
-                <div className="relative w-full h-48 overflow-hidden">
+                <div className="relative w-full h-52 overflow-hidden">
                   <img 
                     src={service.image} 
                     alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-foreground/30 group-hover:bg-foreground/20 transition-colors duration-300" />
                   
-                  {/* Icon Badge - Yellow accent */}
-                  <div className="absolute bottom-3 right-3 w-10 h-10 bg-[hsl(45,100%,51%)] rounded-lg flex items-center justify-center shadow-md">
-                    <ServiceIcon className="w-5 h-5 text-[hsl(0,0%,13%)]" />
+                  {/* Icon Badge */}
+                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-accent rounded-xl flex items-center justify-center shadow-lg">
+                    <ServiceIcon className="w-5 h-5 text-accent-foreground" />
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-5">
                     {service.description}
                   </p>
-                  <div className="inline-flex items-center gap-2 font-medium text-sm text-primary">
+                  <div className="inline-flex items-center gap-2 font-bold text-sm text-primary group-hover:gap-3 transition-all duration-200">
                     <span>Learn More</span>
-                    <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
+                    <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>
@@ -106,13 +106,13 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div
-          className={`text-center mt-10 transition-all duration-500 delay-400 ${
+          className={`text-center mt-14 transition-all duration-500 delay-400 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98]"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
           >
             View All Services
             <ArrowRight size={16} />

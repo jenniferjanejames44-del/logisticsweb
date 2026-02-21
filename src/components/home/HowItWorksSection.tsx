@@ -35,33 +35,32 @@ const HowItWorksSection = () => {
     <section ref={ref} className="section-padding bg-primary relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md ${
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-md ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Simple Process
           </span>
           <h2
-            className={`text-white mb-5 transition-all duration-600 delay-100 ${
+            className={`text-white mb-6 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             How It Works
           </h2>
           <p
-            className={`text-white/90 text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
+            className={`text-white/85 text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
-            style={{ textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}
           >
             Getting your shipment delivered is simple. Our streamlined process ensures a hassle-free experience.
           </p>
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-8">
           {steps.map((step, index) => (
             <div
               key={step.step}
@@ -71,34 +70,34 @@ const HowItWorksSection = () => {
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
             >
               {/* Card */}
-              <div className="h-full p-6 lg:p-7 relative overflow-hidden bg-white/10 border border-white/20 rounded-2xl hover:bg-white/15 hover:border-white/30 transition-all duration-400 ease-out hover:-translate-y-1 group">
-                {/* Top accent bar on hover - Yellow */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-[hsl(45,100%,51%)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+              <div className="h-full p-7 lg:p-8 relative overflow-hidden bg-white/10 border border-white/20 rounded-2xl hover:bg-white/15 hover:border-white/30 transition-all duration-400 ease-out hover:-translate-y-2 group">
+                {/* Top accent bar on hover */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                 
-                {/* Step Number - Yellow */}
-                <div className="absolute top-5 right-5 w-9 h-9 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center font-bold text-xs text-[hsl(0,0%,13%)] shadow-md">
+                {/* Step Number */}
+                <div className="absolute top-6 right-6 w-10 h-10 bg-accent rounded-xl flex items-center justify-center font-extrabold text-sm text-accent-foreground shadow-md">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:bg-[hsl(45,100%,51%)]">
-                  <step.icon className="w-5 h-5 text-white group-hover:text-[hsl(0,0%,13%)]" />
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:bg-accent">
+                  <step.icon className="w-6 h-6 text-white group-hover:text-accent-foreground" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base font-bold text-white mb-3 pr-12 transition-colors duration-300">
+                <h3 className="text-lg font-bold text-white mb-3 pr-12 transition-colors duration-300">
                   {step.title}
                 </h3>
-                <p className="text-sm text-white/70 leading-relaxed">
+                <p className="text-[15px] text-white/70 leading-relaxed">
                   {step.description}
                 </p>
               </div>
 
               {/* Connector - Large Desktop only */}
               {index < steps.length - 1 && (
-                <div className="hidden xl:flex absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                  <div className="w-6 h-6 bg-white/20 border border-white/30 rounded-full flex items-center justify-center">
-                    <ArrowRight className="w-3 h-3 text-white" />
+                <div className="hidden xl:flex absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                  <div className="w-8 h-8 bg-white/20 border border-white/30 rounded-full flex items-center justify-center">
+                    <ArrowRight className="w-4 h-4 text-white" />
                   </div>
                 </div>
               )}
