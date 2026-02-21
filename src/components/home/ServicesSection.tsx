@@ -116,10 +116,10 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center justify-center gap-2 h-12 sm:h-14 px-6 sm:px-8 font-bold text-sm sm:text-base rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
           >
             View All Services
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
