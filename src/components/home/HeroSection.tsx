@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import TrackingCard from "./TrackingCard";
 import heroVideo from "@/assets/hero-logistics-video.mp4";
+import heroPoster from "@/assets/hero-logistics.jpg";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,6 +21,9 @@ const HeroSection = () => {
         muted
         loop
         playsInline
+        preload="auto"
+        poster={heroPoster}
+        disablePictureInPicture
         className="absolute inset-0 w-full h-full object-cover opacity-20"
       >
         <source src={heroVideo} type="video/mp4" />
