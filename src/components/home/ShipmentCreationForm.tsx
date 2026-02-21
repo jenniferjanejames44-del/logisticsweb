@@ -122,44 +122,38 @@ const ShipmentCreationForm = () => {
   ];
 
   return (
-    <section className="section-padding bg-section-blue relative overflow-hidden">
+    <section className="section-padding bg-muted relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="section-container relative z-10">
         <div className="text-center mb-12">
-          <span className="badge-yellow mb-6">
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm">
             <Package className="w-4 h-4" />
             Quick Shipping
           </span>
-          <h2 className="text-primary mb-4">
-            Create Your <span className="gradient-text">Shipment</span>
+          <h2 className="text-foreground mb-4">
+            Create Your <span className="text-primary">Shipment</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             Get started with your shipping in minutes. Fill out the form below and we'll handle the rest.
           </p>
         </div>
 
-        {/* Premium Card Container */}
+        {/* Card Container */}
         <div 
           className={`relative max-w-4xl mx-auto rounded-2xl overflow-hidden transition-all duration-500 ${
-            isFocused ? "shadow-2xl shadow-accent/20" : "shadow-xl"
+            isFocused ? "shadow-2xl" : "shadow-xl"
           }`}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         >
-          {/* Animated gradient border */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-accent via-secondary to-accent bg-[length:200%_100%] animate-[shimmer_3s_ease-in-out_infinite] p-[2px]">
-            <div className="absolute inset-[2px] rounded-2xl bg-card" />
-          </div>
-
-          {/* Glass overlay */}
-          <div className="relative backdrop-blur-xl bg-card/95 rounded-2xl border border-border/50">
-            {/* Progress Steps - Premium Design */}
-            <div className="bg-gradient-to-r from-muted/80 via-muted to-muted/80 border-b border-border/50 p-5 sm:p-8">
+          <div className="relative bg-card rounded-2xl border border-border/50">
+            {/* Progress Steps */}
+            <div className="bg-muted/80 border-b border-border/50 p-5 sm:p-8">
               <div className="flex items-center justify-center gap-2 sm:gap-4">
                 {progressSteps.map((s, i) => {
                   const isActive = step >= s.num;
@@ -170,13 +164,12 @@ const ShipmentCreationForm = () => {
                   return (
                     <div key={s.num} className="flex items-center gap-2 sm:gap-4">
                       <div className="flex flex-col items-center gap-1.5">
-                        {/* Step Circle */}
                         <div 
                           className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                             isActive 
-                              ? "bg-gradient-to-br from-accent to-secondary text-white shadow-lg shadow-accent/30" 
-                              : "bg-muted border-2 border-border text-muted-foreground"
-                          } ${isCurrent ? "ring-4 ring-accent/20 scale-110" : ""}`}
+                              ? "bg-primary text-primary-foreground shadow-lg" 
+                              : "bg-background border-2 border-border text-muted-foreground"
+                          } ${isCurrent ? "ring-4 ring-primary/20 scale-110" : ""}`}
                         >
                           {isComplete ? (
                             <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -184,13 +177,11 @@ const ShipmentCreationForm = () => {
                             <StepIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                           )}
                           
-                          {/* Pulse effect for current step */}
                           {isCurrent && (
-                            <span className="absolute inset-0 rounded-full bg-accent/30 animate-ping" />
+                            <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
                           )}
                         </div>
                         
-                        {/* Step Label */}
                         <span className={`text-xs sm:text-sm font-semibold transition-colors ${
                           isActive ? "text-foreground" : "text-muted-foreground"
                         }`}>
@@ -198,11 +189,10 @@ const ShipmentCreationForm = () => {
                         </span>
                       </div>
 
-                      {/* Connector Line */}
                       {i < progressSteps.length - 1 && (
                         <div className="relative w-12 sm:w-20 h-1 rounded-full bg-border overflow-hidden mx-1 sm:mx-2">
                           <div 
-                            className={`absolute inset-y-0 left-0 bg-gradient-to-r from-accent to-secondary rounded-full transition-all duration-500 ${
+                            className={`absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500 ${
                               step > s.num ? "w-full" : "w-0"
                             }`}
                           />
@@ -222,10 +212,10 @@ const ShipmentCreationForm = () => {
                   <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                     <div className="grid md:grid-cols-2 gap-8">
                       {/* Origin Card */}
-                      <div className="group relative p-5 rounded-xl bg-gradient-to-br from-muted/50 to-muted border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
+                      <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
                         <div className="flex items-center gap-3 mb-5">
-                          <div className="w-10 h-10 bg-gradient-to-br from-accent to-secondary rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                            <MapPin className="w-5 h-5 text-white" />
+                          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                            <MapPin className="w-5 h-5 text-primary-foreground" />
                           </div>
                           <span className="font-bold text-lg text-foreground">Origin</span>
                         </div>
@@ -236,7 +226,7 @@ const ShipmentCreationForm = () => {
                               value={formData.origin_country}
                               onValueChange={(value) => setFormData({ ...formData, origin_country: value })}
                             >
-                              <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-accent/50 transition-colors">
+                              <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-primary/50 transition-colors">
                                 <SelectValue placeholder="Select country" />
                               </SelectTrigger>
                               <SelectContent className="bg-card border-border">
@@ -252,7 +242,7 @@ const ShipmentCreationForm = () => {
                               value={formData.origin_city}
                               onChange={(e) => setFormData({ ...formData, origin_city: e.target.value })}
                               placeholder="Enter city"
-                              className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-accent/50 focus:border-accent transition-colors"
+                              className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors"
                               required
                             />
                           </div>
@@ -260,10 +250,10 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Destination Card */}
-                      <div className="group relative p-5 rounded-xl bg-gradient-to-br from-muted/50 to-muted border border-border/50 hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
+                      <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
                         <div className="flex items-center gap-3 mb-5">
-                          <div className="w-10 h-10 bg-gradient-to-br from-secondary to-accent rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                            <MapPin className="w-5 h-5 text-white" />
+                          <div className="w-10 h-10 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                            <MapPin className="w-5 h-5 text-[hsl(0,0%,13%)]" />
                           </div>
                           <span className="font-bold text-lg text-foreground">Destination</span>
                         </div>
@@ -274,7 +264,7 @@ const ShipmentCreationForm = () => {
                               value={formData.destination_country}
                               onValueChange={(value) => setFormData({ ...formData, destination_country: value })}
                             >
-                              <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-accent/50 transition-colors">
+                              <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-primary/50 transition-colors">
                                 <SelectValue placeholder="Select country" />
                               </SelectTrigger>
                               <SelectContent className="bg-card border-border">
@@ -290,7 +280,7 @@ const ShipmentCreationForm = () => {
                               value={formData.destination_city}
                               onChange={(e) => setFormData({ ...formData, destination_city: e.target.value })}
                               placeholder="Enter city"
-                              className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-accent/50 focus:border-accent transition-colors"
+                              className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors"
                               required
                             />
                           </div>
@@ -301,14 +291,14 @@ const ShipmentCreationForm = () => {
                     {/* Route Visualization */}
                     <div className="flex items-center justify-center gap-3 py-4">
                       <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
+                        <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1" />
                         <span className="text-xs text-muted-foreground">{formData.origin_city || "Origin"}</span>
                       </div>
-                      <div className="flex-1 max-w-32 h-0.5 bg-gradient-to-r from-accent via-secondary to-accent rounded-full" />
-                      <Plane className="w-5 h-5 text-accent -rotate-45" />
-                      <div className="flex-1 max-w-32 h-0.5 bg-gradient-to-r from-accent via-secondary to-accent rounded-full" />
+                      <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
+                      <Plane className="w-5 h-5 text-primary -rotate-45" />
+                      <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
                       <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-secondary mx-auto mb-1" />
+                        <div className="w-3 h-3 rounded-full bg-[hsl(45,100%,51%)] mx-auto mb-1" />
                         <span className="text-xs text-muted-foreground">{formData.destination_city || "Destination"}</span>
                       </div>
                     </div>
@@ -318,12 +308,10 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep1Complete}
                         onClick={() => setStep(2)}
-                        className="group relative btn btn-primary disabled:opacity-50 uppercase tracking-wide overflow-hidden"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
-                        <span className="relative z-10 flex items-center gap-2">
-                          Continue
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
+                        Continue
+                        <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -333,10 +321,10 @@ const ShipmentCreationForm = () => {
                 {step === 2 && (
                   <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div className="group p-5 rounded-xl bg-gradient-to-br from-muted/50 to-muted border border-border/50 hover:border-accent/30 transition-all duration-300">
+                      <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-accent to-secondary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Scale className="w-4 h-4 text-white" />
+                          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Scale className="w-4 h-4 text-primary-foreground" />
                           </div>
                           <span className="font-semibold">Weight (KG)</span>
                         </Label>
@@ -347,14 +335,14 @@ const ShipmentCreationForm = () => {
                           value={formData.weight}
                           onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
                           placeholder="Enter package weight"
-                          className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-accent/50 focus:border-accent transition-colors"
+                          className="h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors"
                           required
                         />
                       </div>
-                      <div className="group p-5 rounded-xl bg-gradient-to-br from-muted/50 to-muted border border-border/50 hover:border-accent/30 transition-all duration-300">
+                      <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-secondary to-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Truck className="w-4 h-4 text-white" />
+                          <div className="w-8 h-8 bg-[hsl(45,100%,51%)] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Truck className="w-4 h-4 text-[hsl(0,0%,13%)]" />
                           </div>
                           <span className="font-semibold">Service Type</span>
                         </Label>
@@ -362,14 +350,14 @@ const ShipmentCreationForm = () => {
                           value={formData.service_type}
                           onValueChange={(value) => setFormData({ ...formData, service_type: value })}
                         >
-                          <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-accent/50 transition-colors">
+                          <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-primary/50 transition-colors">
                             <SelectValue placeholder="Select service" />
                           </SelectTrigger>
                           <SelectContent className="bg-card border-border">
                             {serviceTypes.map((type) => (
                               <SelectItem key={type.id} value={type.id}>
                                 <div className="flex items-center gap-2">
-                                  <type.icon className="w-4 h-4 text-accent" />
+                                  <type.icon className="w-4 h-4 text-primary" />
                                   <span>{type.name}</span>
                                   <span className="text-muted-foreground text-xs">({type.description})</span>
                                 </div>
@@ -380,10 +368,10 @@ const ShipmentCreationForm = () => {
                       </div>
                     </div>
 
-                    <div className="group p-5 rounded-xl bg-gradient-to-br from-muted/50 to-muted border border-border/50 hover:border-accent/30 transition-all duration-300">
+                    <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
                       <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                        <div className="w-8 h-8 bg-gradient-to-br from-accent/80 to-secondary/80 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <FileText className="w-4 h-4 text-white" />
+                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <FileText className="w-4 h-4 text-primary" />
                         </div>
                         <span className="font-semibold">Description (Optional)</span>
                       </Label>
@@ -392,7 +380,7 @@ const ShipmentCreationForm = () => {
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Describe the contents of your shipment"
                         rows={3}
-                        className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-accent/50 focus:border-accent transition-colors"
+                        className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors"
                       />
                     </div>
 
@@ -400,7 +388,7 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(1)}
-                        className="btn btn-secondary uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
                       >
                         Back
                       </button>
@@ -408,12 +396,10 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep2Complete}
                         onClick={() => setStep(3)}
-                        className="group btn btn-primary disabled:opacity-50 uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
-                        <span className="flex items-center gap-2">
-                          Review
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
+                        Review
+                        <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -422,23 +408,20 @@ const ShipmentCreationForm = () => {
                 {/* Step 3: Review */}
                 {step === 3 && (
                   <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                    <div className="relative p-6 rounded-xl bg-gradient-to-br from-muted/80 to-muted border border-border/50 overflow-hidden">
-                      {/* Decorative background */}
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full blur-2xl" />
-                      
+                    <div className="relative p-6 rounded-xl bg-muted/80 border border-border/50 overflow-hidden">
                       <h3 className="font-bold text-xl text-foreground mb-6 flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5 text-accent" />
+                        <CheckCircle2 className="w-5 h-5 text-primary" />
                         Shipment Summary
                       </h3>
                       
-                      <div className="grid sm:grid-cols-2 gap-4 relative z-10">
-                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-md transition-all">
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                             <MapPin className="w-3 h-3" /> From
                           </p>
                           <p className="font-bold text-foreground">{formData.origin_city}, {formData.origin_country}</p>
                         </div>
-                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-md transition-all">
+                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                             <MapPin className="w-3 h-3" /> To
                           </p>
@@ -446,14 +429,14 @@ const ShipmentCreationForm = () => {
                         </div>
                       </div>
 
-                      <div className="grid sm:grid-cols-2 gap-4 mt-4 relative z-10">
-                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-md transition-all">
+                      <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                             <Scale className="w-3 h-3" /> Weight
                           </p>
                           <p className="font-bold text-foreground">{formData.weight} KG</p>
                         </div>
-                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-md transition-all">
+                        <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                             <Truck className="w-3 h-3" /> Service
                           </p>
@@ -462,7 +445,7 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {formData.description && (
-                        <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-accent/30 hover:shadow-md transition-all relative z-10">
+                        <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                             <FileText className="w-3 h-3" /> Description
                           </p>
@@ -471,9 +454,9 @@ const ShipmentCreationForm = () => {
                       )}
                     </div>
 
-                    <div className="bg-gradient-to-r from-accent/10 via-secondary/10 to-accent/10 border border-accent/20 rounded-xl p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center shrink-0">
-                        <CheckCircle2 className="w-4 h-4 text-accent" />
+                    <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+                        <CheckCircle2 className="w-4 h-4 text-primary" />
                       </div>
                       <p className="text-sm text-muted-foreground">
                         By submitting, you agree to our shipping terms. Our team will review your request and set a competitive price.
@@ -484,19 +467,17 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(2)}
-                        className="btn btn-secondary uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
                       >
                         Back
                       </button>
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="group btn btn-primary disabled:opacity-50 uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
                       >
-                        <span className="flex items-center gap-2">
-                          {isSubmitting ? "Creating..." : "Create Shipment"}
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
+                        {isSubmitting ? "Creating..." : "Create Shipment"}
+                        <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>

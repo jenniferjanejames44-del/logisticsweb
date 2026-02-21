@@ -123,7 +123,7 @@ const LiveChat = () => {
       {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[360px] max-w-[360px] bg-card rounded-xl shadow-xl border border-border z-[9998] overflow-hidden transition-all duration-300 transform",
+          "fixed bottom-[5.5rem] right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px] bg-card rounded-2xl shadow-2xl border border-border z-[9998] overflow-hidden transition-all duration-300 transform",
           isOpen
             ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
             : "opacity-0 translate-y-4 scale-95 pointer-events-none"
@@ -239,19 +239,19 @@ const LiveChat = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-6 right-4 sm:right-6 w-12 h-12 rounded-lg shadow-lg z-[9999] flex items-center justify-center transition-all duration-300",
+          "fixed bottom-6 right-4 sm:right-6 w-14 h-14 rounded-xl shadow-lg z-[9999] flex items-center justify-center transition-all duration-300",
           isOpen
             ? "bg-muted text-foreground"
-            : "bg-primary text-primary-foreground hover:bg-[hsl(153,41%,24%)]",
+            : "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-xl",
           isVisible || isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
         )}
       >
         {isOpen ? (
-          <X size={20} />
+          <X size={22} />
         ) : (
-          <MessageCircle size={20} />
+          <MessageCircle size={22} />
         )}
       </button>
     </>
