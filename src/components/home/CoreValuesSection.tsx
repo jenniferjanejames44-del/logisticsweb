@@ -36,7 +36,7 @@ const CoreValuesSection = () => {
     <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16 lg:mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-[hsl(45,100%,51%)]/15 text-[hsl(45,100%,40%)] ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -45,16 +45,12 @@ const CoreValuesSection = () => {
             Our Principles
           </span>
           <h2
-            className={`text-foreground mb-3 transition-all duration-600 delay-100 ${
+            className={`text-foreground mb-5 transition-all duration-600 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             Core <span className="text-primary">Values</span>
           </h2>
-          {/* Underline accent */}
-          <div className={`w-16 h-1 bg-primary mx-auto mb-5 rounded-full transition-all duration-500 delay-150 ${
-            isInView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-          }`} />
           <p
             className={`text-muted-foreground text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -78,7 +74,7 @@ const CoreValuesSection = () => {
               <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
               
               {/* Icon */}
-              <div className="w-11 h-11 sm:w-14 sm:h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-lg sm:rounded-xl flex items-center justify-center mb-4 sm:mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
+              <div className="w-14 h-14 mx-auto bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center mb-5 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
                 <value.icon size={24} className="text-[hsl(0,0%,13%)]" />
               </div>
 

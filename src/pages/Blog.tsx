@@ -131,7 +131,7 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden"
+          className="relative pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-44 md:pb-28 overflow-hidden"
         >
           {/* Background Image */}
           <div 
@@ -145,14 +145,13 @@ const Blog = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
+              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
                 Blog & Resources
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 Insights & Updates
               </h1>
-              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-xl mx-auto">
+              <p className="text-lg md:text-xl text-white/90 font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
@@ -162,7 +161,7 @@ const Blog = () => {
         {/* Featured Posts Slider */}
         <section className="section-padding bg-muted/30">
           <div className="section-container">
-            <h2 className="text-foreground mb-10">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-10">
               Featured Articles
             </h2>
             <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
@@ -187,7 +186,7 @@ const Blog = () => {
                     </Badge>
                   </div>
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="text-muted-foreground mb-5 line-clamp-2 leading-relaxed">
@@ -278,7 +277,7 @@ const Blog = () => {
                       </Badge>
                     </div>
                     <CardContent className="p-6">
-                      <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="font-heading text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}
                       </h3>
                       <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
@@ -305,7 +304,7 @@ const Blog = () => {
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg font-medium">No articles found matching your criteria.</p>
                 <button 
-                  className="mt-6 inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 font-bold text-sm rounded-full transition-all duration-200 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
+                  className="mt-6 inline-flex items-center justify-center gap-2.5 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 ease-out border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97]"
                   onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
                 >
                   Clear Filters
@@ -339,21 +338,20 @@ const Blog = () => {
         {/* Newsletter CTA */}
         <section className="section-padding bg-primary relative overflow-hidden">
           <div className="section-container text-center relative z-10">
-            <h2 className="text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
-            <div className="flex flex-row flex-wrap gap-3 max-w-md mx-auto items-center justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="h-11 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-full px-5 flex-1 min-w-[200px]"
+                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-xl"
               />
-              <button className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:bg-[hsl(45,100%,45%)] active:scale-[0.98] whitespace-nowrap">
+              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
                 Subscribe
-                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>

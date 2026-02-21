@@ -280,8 +280,9 @@ const Track = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-36 pb-20 md:pt-44 md:pb-24 overflow-hidden bg-primary"
+          className="relative pt-32 pb-24 sm:pb-32 overflow-hidden bg-primary"
         >
+          {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
             style={{
@@ -298,12 +299,11 @@ const Track = () => {
                 </span>
                 Real-Time Tracking
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
                 Track Your{" "}
                 <span className="text-[hsl(45,100%,51%)]">Shipment</span>
               </h1>
-              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
-              <p className="text-lg md:text-xl text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
               </p>
 
@@ -398,7 +398,7 @@ const Track = () => {
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h2 className="font-bold text-xl text-primary-foreground">
+                            <h2 className="font-heading font-bold text-xl text-primary-foreground">
                               {shipment.tracking_number}
                             </h2>
                             <button onClick={copyTrackingNumber} className="text-primary-foreground/60 hover:text-[hsl(45,100%,51%)] transition-colors">
@@ -445,7 +445,7 @@ const Track = () => {
 
                     {/* Timeline */}
                     <div className="mb-8">
-                      <h3 className="font-bold text-lg text-foreground mb-6">Tracking Timeline</h3>
+                      <h3 className="font-heading font-bold text-lg text-foreground mb-6">Tracking Timeline</h3>
                       <div className="relative">
                         {/* Progress Line */}
                         <div className="absolute left-[23px] top-0 bottom-0 w-0.5 bg-border" />
@@ -527,7 +527,7 @@ const Track = () => {
                           <Bell className="w-5 h-5 text-[hsl(0,0%,13%)]" />
                         </div>
                         <div>
-                          <h4 className="font-bold text-foreground">Get Status Updates</h4>
+                          <h4 className="font-heading font-bold text-foreground">Get Status Updates</h4>
                           <p className="text-sm text-muted-foreground">Receive email notifications when your shipment status changes</p>
                         </div>
                       </div>
@@ -591,7 +591,7 @@ const Track = () => {
                 {/* Help Section */}
                 <Card className="border-border/50">
                   <CardContent className="p-6 text-center">
-                    <h3 className="font-bold text-lg text-foreground mb-2">Need Help?</h3>
+                    <h3 className="font-heading font-bold text-lg text-foreground mb-2">Need Help?</h3>
                     <p className="text-muted-foreground mb-4">
                       Our support team is available 24/7 to assist you with any questions.
                     </p>
@@ -614,7 +614,7 @@ const Track = () => {
                 <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
                   <Package className="w-12 h-12 text-muted-foreground" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-3">
+                <h3 className="font-heading text-2xl font-bold text-foreground mb-3">
                   Track Your Shipment
                 </h3>
                 <p className="text-muted-foreground mb-6">

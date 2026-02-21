@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
-import TopBar from "./TopBar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,11 +45,9 @@ const Header = () => {
   ];
 
   return (
-    <>
-    <TopBar />
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-background border-b border-border md:top-[36px] ${
-        isScrolled ? "shadow-sm md:!top-0" : ""
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-20 bg-background border-b border-border ${
+        isScrolled ? "shadow-sm" : ""
       }`}
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
@@ -287,7 +284,7 @@ const Header = () => {
                   Dashboard
                 </Link>
                 <button 
-                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full py-3 font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
                   onClick={() => {
                     signOut();
                     setIsMobileMenuOpen(false);
@@ -301,7 +298,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
+                  className="w-full py-3 font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)]"
                 >
                   Login
                   <ArrowRight className="w-4 h-4" />
@@ -309,7 +306,7 @@ const Header = () => {
                 <Link 
                   to="/auth" 
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full h-12 font-semibold text-[15px] rounded-full transition-all duration-200 flex items-center justify-center gap-2 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground"
+                  className="w-full py-3 font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   Sign Up
                   <ArrowRight className="w-4 h-4" />
@@ -320,7 +317,6 @@ const Header = () => {
         </nav>
       </div>
     </header>
-    </>
   );
 };
 

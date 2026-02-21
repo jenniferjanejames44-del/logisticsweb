@@ -10,7 +10,7 @@ const FounderSection = () => {
   return (
     <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Image */}
           <div
             className={`relative transition-all duration-600 ${
@@ -75,10 +75,10 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] group"
+              className="inline-flex items-center gap-2.5 px-7 py-3.5 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Learn More
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

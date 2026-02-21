@@ -93,7 +93,7 @@ const Contact = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-primary"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
           {/* Background Image */}
           <div 
@@ -108,11 +108,10 @@ const Contact = () => {
               <span className="inline-block px-4 py-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
                 Get in Touch
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-extrabold text-white mb-4 leading-[1.05] tracking-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                 Contact RAC Logistics
               </h1>
-              <div className="w-16 h-1 bg-[hsl(45,100%,51%)] mx-auto mb-5 rounded-full" />
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-xl mx-auto">
+              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
                 Have questions? Need a quote? We're here to help. Reach out to our team and we'll respond within 24 hours.
               </p>
             </div>
@@ -127,7 +126,7 @@ const Contact = () => {
               <div className="lg:col-span-2">
                 <Card className="border-border shadow-lg">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-foreground mb-6">
+                    <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
                       Send Us a Message
                     </h2>
                     
@@ -240,7 +239,7 @@ const Contact = () => {
                           <info.icon className="w-5 h-5 text-[hsl(0,0%,13%)]" />
                         </div>
                         <div>
-                          <h3 className="text-foreground mb-1">
+                          <h3 className="font-semibold text-foreground mb-1 text-sm">
                             {info.title}
                           </h3>
                           {info.details.map((detail, i) => (
@@ -257,7 +256,7 @@ const Contact = () => {
                 {/* Social Links */}
                 <Card className="border-border">
                   <CardContent className="p-5">
-                    <h3 className="text-foreground mb-4">
+                    <h3 className="font-semibold text-foreground mb-4 text-sm">
                       Follow Us
                     </h3>
                     <div className="flex gap-3">
@@ -306,10 +305,10 @@ const Contact = () => {
             </div>
             <div className="mt-4 text-center">
               <a
-                  href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
+                href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98]"
               >
                 Open in Google Maps
                 <ArrowRight className="w-4 h-4" />
@@ -321,21 +320,21 @@ const Contact = () => {
         {/* FAQ CTA */}
         <section className="section-padding bg-primary">
           <div className="section-container text-center">
-            <h2 className="text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
               Have More Questions?
             </h2>
             <p className="text-base text-white/80 mb-8 max-w-xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-row flex-wrap justify-center items-center gap-3">
-                <Link 
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
+              <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] active:scale-[0.98]"
               >
                 View Resources
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-background text-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]">
+              <button className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-white text-primary hover:bg-primary hover:text-white active:scale-[0.98]">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4" />
               </button>

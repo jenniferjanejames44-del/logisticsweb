@@ -13,27 +13,27 @@ const AboutCTASection = () => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <h2 className="text-foreground mb-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
             Ready to Partner with RAC Logistics?
           </h2>
           <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-row flex-wrap gap-3 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] shadow-md"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
             >
               Contact Us
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight size={16} />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2 h-11 px-6 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto"
             >
               View Services
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight size={16} />
             </Link>
           </div>
         </div>
