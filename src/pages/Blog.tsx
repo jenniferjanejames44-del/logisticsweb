@@ -304,7 +304,7 @@ const Blog = () => {
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg font-medium">No articles found matching your criteria.</p>
                 <button 
-                  className="mt-6 inline-flex items-center justify-center gap-2.5 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 ease-out border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97]"
+                  className="mt-6 inline-flex items-center justify-center gap-2 h-12 px-6 font-semibold text-[15px] rounded-[10px] transition-all duration-200 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-[0.98]"
                   onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
                 >
                   Clear Filters
@@ -350,7 +350,7 @@ const Blog = () => {
                 placeholder="Enter your email"
                 className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-xl"
               />
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
+              <button className="inline-flex items-center justify-center gap-2 h-12 px-8 font-semibold text-[15px] rounded-[10px] transition-all duration-200 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-md hover:bg-[hsl(45,100%,45%)] hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]">
                 Subscribe
               </button>
             </div>
