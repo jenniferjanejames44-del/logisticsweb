@@ -114,8 +114,8 @@ const AdminNotifications = () => {
         <Card className="border-border/50">
           <CardContent className="p-3 sm:pt-6 sm:p-6">
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
               </div>
               <div className="min-w-0">
                 <p className="text-[10px] sm:text-sm text-muted-foreground truncate">Emails</p>
@@ -144,7 +144,7 @@ const AdminNotifications = () => {
         <CardHeader className="border-b border-border/50 pb-3 sm:pb-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />Email Subscriptions
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />Email Subscriptions
             </CardTitle>
             <div className="flex items-center gap-2">
               <div className="relative flex-1 sm:flex-none">

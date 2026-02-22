@@ -121,10 +121,10 @@ const Payments = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending</p>
-                <p className="text-3xl font-bold text-secondary">${pendingAmount.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-accent">${pendingAmount.toLocaleString()}</p>
               </div>
-              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <Clock className="w-6 h-6 text-secondary" />
+              <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                <Clock className="w-6 h-6 text-accent" />
               </div>
             </div>
           </CardContent>
@@ -173,7 +173,7 @@ const Payments = () => {
       {/* Payments List */}
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-secondary/30 border-t-secondary rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
         </div>
       ) : filteredPayments.length > 0 ? (
         <div className="grid gap-4">
@@ -182,8 +182,8 @@ const Payments = () => {
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <CreditCard className="w-6 h-6 text-secondary" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <div className="flex items-center gap-3 mb-2">

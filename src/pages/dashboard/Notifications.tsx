@@ -37,7 +37,7 @@ const getNotificationIcon = (type: string) => {
 const getNotificationIconColor = (type: string) => {
   switch (type) {
     case "shipment_update":
-      return "text-secondary";
+      return "text-primary";
     case "payment":
       return "text-success";
     case "alert":
@@ -200,13 +200,13 @@ const Notifications = () => {
             <Card 
               key={notification.id} 
               className={`border-border/50 card-premium hover:shadow-card-hover transition-all duration-300 ${
-                !notification.read ? 'border-l-4 border-l-secondary bg-secondary/5' : ''
+                !notification.read ? 'border-l-4 border-l-accent bg-accent/5' : ''
               }`}
             >
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    !notification.read ? 'bg-secondary/10' : 'bg-muted'
+                    !notification.read ? 'bg-accent/10' : 'bg-muted'
                   }`}>
                     <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor}`} />
                   </div>
@@ -223,7 +223,7 @@ const Notifications = () => {
                         {notification.shipment_id && (
                           <Link 
                             to={`/dashboard/shipments`}
-                            className="text-secondary text-xs sm:text-sm hover:underline mt-1 inline-block"
+                            className="text-accent text-xs sm:text-sm hover:underline mt-1 inline-block"
                           >
                             View shipment →
                           </Link>
@@ -241,7 +241,7 @@ const Notifications = () => {
                               className="h-8 w-8"
                               onClick={() => markAsRead(notification.id)}
                             >
-                              <CheckCircle size={16} className="text-muted-foreground hover:text-secondary" />
+                              <CheckCircle size={16} className="text-muted-foreground hover:text-accent" />
                             </Button>
                           )}
                           <Button

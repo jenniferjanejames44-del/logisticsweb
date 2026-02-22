@@ -44,7 +44,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-secondary" />
+            <CreditCard className="w-5 h-5 text-primary" />
             Add Funds to Wallet
           </DialogTitle>
           <DialogDescription>
@@ -138,7 +138,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
               <div className="flex items-center justify-between pt-2 border-t border-border">
                 <span className="text-muted-foreground">Reference</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-secondary">{bankDetails.reference}</span>
+                  <span className="font-medium text-primary">{bankDetails.reference}</span>
                   <Button
                     size="icon"
                     variant="ghost"

@@ -148,10 +148,10 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Unpaid</p>
-                <p className="text-2xl sm:text-3xl font-bold text-secondary">${totalUnpaid.toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-accent">${totalUnpaid.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               </div>
             </div>
           </CardContent>
@@ -203,8 +203,8 @@ const Invoices = () => {
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-1 sm:mb-2">

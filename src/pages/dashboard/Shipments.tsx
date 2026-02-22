@@ -202,11 +202,11 @@ const Shipments = () => {
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
       {/* Balance Card - Responsive */}
-      <Card className="mb-4 sm:mb-6 border-border/50 bg-gradient-to-r from-secondary/10 to-secondary/5 card-premium">
+      <Card className="mb-4 sm:mb-6 border-border/50 bg-gradient-to-r from-primary/10 to-primary/5 card-premium">
         <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
             </div>
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground">Wallet Balance</p>
@@ -376,8 +376,8 @@ const Shipments = () => {
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-6 h-6 text-secondary" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Package className="w-6 h-6 text-primary" />
                     </div>
                     <div>
                       <div className="flex items-center gap-3 mb-2">

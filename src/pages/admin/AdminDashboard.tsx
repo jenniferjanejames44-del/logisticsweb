@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
   const statCards = [
     { title: "Total Users", value: stats.totalUsers, icon: Users, color: "text-primary", bgColor: "bg-primary/10" },
-    { title: "Total Shipments", value: stats.totalShipments, icon: Package, color: "text-secondary", bgColor: "bg-secondary/10" },
+    { title: "Total Shipments", value: stats.totalShipments, icon: Package, color: "text-accent", bgColor: "bg-accent/10" },
     { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-success", bgColor: "bg-success/10" },
     { title: "Pending", value: stats.pendingShipments, icon: Clock, color: "text-warning", bgColor: "bg-warning/10" },
     { title: "Completed", value: stats.completedShipments, icon: CheckCircle, color: "text-success", bgColor: "bg-success/10" },
