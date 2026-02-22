@@ -36,7 +36,7 @@ const Footer = () => {
           {/* Left Side - Company Info */}
           <div className="space-y-7">
             <Link to="/" className="flex items-center gap-3 group">
-              <Logo className="h-10 sm:h-12 md:h-14 text-white" />
+              <Logo className="h-14 sm:h-16 md:h-18 text-white" />
             </Link>
             <p className="text-white/75 leading-relaxed max-w-md text-[15px]">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
