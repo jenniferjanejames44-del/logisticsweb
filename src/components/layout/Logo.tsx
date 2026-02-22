@@ -24,8 +24,8 @@ const Logo = ({ className = "h-10 sm:h-12" }: { className?: string }) => (
       x="80"
       y="42"
       fontFamily="Poppins, Inter, sans-serif"
-      fontWeight="800"
-      fontSize="38"
+      fontWeight="900"
+      fontSize="40"
       fill="currentColor"
       letterSpacing="-1"
     >
@@ -36,8 +36,8 @@ const Logo = ({ className = "h-10 sm:h-12" }: { className?: string }) => (
       x="80"
       y="68"
       fontFamily="Poppins, Inter, sans-serif"
-      fontWeight="700"
-      fontSize="22"
+      fontWeight="800"
+      fontSize="24"
       fill="currentColor"
       letterSpacing="3"
     >
