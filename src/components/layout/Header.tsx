@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import logisLogo from "@/assets/logis_logo.jpg";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,13 +53,12 @@ const Header = () => {
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-extrabold text-lg text-primary-foreground transition-transform duration-200 group-hover:scale-105 bg-primary">
-            R
-          </div>
-          <span className="font-extrabold text-xl text-foreground tracking-tight">
-            RAC <span className="text-primary">Logistics</span>
-          </span>
+        <Link to="/" className="flex items-center group">
+          <img
+            src={logisLogo}
+            alt="RAC Logistics"
+            className="h-10 sm:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+          />
         </Link>
 
         {/* Desktop Navigation */}
