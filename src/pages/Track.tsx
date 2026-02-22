@@ -292,16 +292,16 @@ const Track = () => {
           
           <div className="section-container relative z-10">
             <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
                 <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(0,0%,13%)] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[hsl(0,0%,13%)]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
                 </span>
                 Real-Time Tracking
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-white mb-6 leading-tight">
                 Track Your{" "}
-                <span className="text-[hsl(45,100%,51%)]">Shipment</span>
+                <span className="text-accent">Shipment</span>
               </h1>
               <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
@@ -312,8 +312,8 @@ const Track = () => {
                 <div className="relative bg-card rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl border border-border">
                   {/* Header */}
                   <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center">
-                      <Search size={22} className="sm:w-6 sm:h-6 text-[hsl(0,0%,13%)]" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent rounded-xl flex items-center justify-center">
+                      <Search size={22} className="sm:w-6 sm:h-6 text-accent-foreground" />
                     </div>
                     <h3 className="text-foreground font-bold text-xl sm:text-2xl">
                       Track Your Shipment
@@ -332,7 +332,7 @@ const Track = () => {
                       />
                     </div>
                     <button 
-                      className="h-12 sm:h-14 px-8 sm:px-10 text-base font-bold rounded-lg shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] hover:bg-[hsl(45,100%,45%)] hover:shadow-lg disabled:opacity-50 active:scale-[0.98]"
+                      className="h-12 sm:h-14 px-8 sm:px-10 text-base font-bold rounded-full shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg disabled:opacity-50 active:scale-[0.98]"
                       onClick={() => searchShipment()}
                       disabled={isLoading}
                     >
@@ -350,7 +350,7 @@ const Track = () => {
                   
                   {/* Helper text */}
                   <div className="flex items-center justify-center gap-2 text-muted-foreground mt-5 sm:mt-6">
-                    <Package size={16} className="text-[hsl(45,100%,51%)]" />
+                    <Package size={16} className="text-accent" />
                     <p className="text-sm font-medium">
                       Example: <span className="text-foreground font-semibold">RAC + tracking ID</span>
                     </p>
@@ -393,15 +393,15 @@ const Track = () => {
                   <div className="bg-primary p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-[hsl(45,100%,51%)] rounded-2xl flex items-center justify-center">
-                          <ServiceIcon className="text-[hsl(0,0%,13%)]" size={28} />
+                        <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center">
+                          <ServiceIcon className="text-accent-foreground" size={28} />
                         </div>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
                             <h2 className="font-heading font-bold text-xl text-primary-foreground">
                               {shipment.tracking_number}
                             </h2>
-                            <button onClick={copyTrackingNumber} className="text-primary-foreground/60 hover:text-[hsl(45,100%,51%)] transition-colors">
+                            <button onClick={copyTrackingNumber} className="text-primary-foreground/60 hover:text-accent transition-colors">
                               <Copy size={16} />
                             </button>
                           </div>
@@ -492,22 +492,22 @@ const Track = () => {
                     {/* Details Grid */}
                     <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="p-4 bg-muted/50 rounded-xl">
-                        <Calendar className="w-5 h-5 text-[hsl(45,100%,51%)] mb-2" />
+                        <Calendar className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Shipped Date</p>
                         <p className="font-semibold text-foreground">{formatDate(shipment.created_at)}</p>
                       </div>
                       <div className="p-4 bg-muted/50 rounded-xl">
-                        <Clock className="w-5 h-5 text-[hsl(45,100%,51%)] mb-2" />
+                        <Clock className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Est. Delivery</p>
                         <p className="font-semibold text-foreground">{formatDate(shipment.estimated_delivery)}</p>
                       </div>
                       <div className="p-4 bg-muted/50 rounded-xl">
-                        <Package className="w-5 h-5 text-[hsl(45,100%,51%)] mb-2" />
+                        <Package className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Weight</p>
                         <p className="font-semibold text-foreground">{shipment.weight} KG</p>
                       </div>
                       <div className="p-4 bg-muted/50 rounded-xl">
-                        <ServiceIcon className="w-5 h-5 text-[hsl(45,100%,51%)] mb-2" />
+                        <ServiceIcon className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Service</p>
                         <p className="font-semibold text-foreground capitalize">{shipment.service_type.replace("_", " ")}</p>
                       </div>
@@ -523,8 +523,8 @@ const Track = () => {
                     {/* Email Notification Signup */}
                     <div className="mt-8 p-5 sm:p-6 bg-primary/5 rounded-xl border border-primary/20">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center">
-                          <Bell className="w-5 h-5 text-[hsl(0,0%,13%)]" />
+                        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
+                          <Bell className="w-5 h-5 text-accent-foreground" />
                         </div>
                         <div>
                           <h4 className="font-heading font-bold text-foreground">Get Status Updates</h4>

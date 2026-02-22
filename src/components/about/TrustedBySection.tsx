@@ -2,27 +2,9 @@ import { Quote, Star } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const testimonials = [
-  {
-    quote: "RAC Logistics transformed our supply chain operations. Their reliability and professionalism are unmatched in the industry.",
-    author: "James Anderson",
-    role: "CEO, TechFlow Industries",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop",
-    rating: 5,
-  },
-  {
-    quote: "We've reduced shipping costs by 30% while improving delivery times. The team at RAC truly understands global logistics.",
-    author: "Maria Santos",
-    role: "Operations Director, Global Retail Co.",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop",
-    rating: 5,
-  },
-  {
-    quote: "Their customs clearance expertise saved us weeks of delays. Highly recommend for any international shipping needs.",
-    author: "David Kim",
-    role: "Founder, AsiaConnect Trading",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
-    rating: 5,
-  },
+  { quote: "RAC Logistics transformed our supply chain operations. Their reliability and professionalism are unmatched in the industry.", author: "James Anderson", role: "CEO, TechFlow Industries", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop", rating: 5 },
+  { quote: "We've reduced shipping costs by 30% while improving delivery times. The team at RAC truly understands global logistics.", author: "Maria Santos", role: "Operations Director, Global Retail Co.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop", rating: 5 },
+  { quote: "Their customs clearance expertise saved us weeks of delays. Highly recommend for any international shipping needs.", author: "David Kim", role: "Founder, AsiaConnect Trading", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop", rating: 5 },
 ];
 
 const trustedLogos = [
@@ -40,17 +22,16 @@ const TrustedBySection = () => {
   return (
     <section ref={ref} className="section-padding bg-primary relative overflow-hidden">
       <div className="section-container relative z-10">
-        {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-[hsl(45,100%,51%)]/20 text-[hsl(45,100%,51%)] transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent/20 text-accent transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             TRUSTED WORLDWIDE
           </span>
           <h2
-            className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white mb-4 md:mb-6 transition-all duration-700 delay-100 ${
+            className={`text-white mb-4 md:mb-6 transition-all duration-700 delay-100 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -65,74 +46,41 @@ const TrustedBySection = () => {
           </p>
         </div>
 
-        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.author}
               className={`group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 md:p-8 hover:bg-white/15 transition-all duration-500 hover:-translate-y-2 ${
-                isInView
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-10"
+                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              {/* Quote Icon */}
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-[hsl(45,100%,51%)]/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <Quote size={20} className="text-[hsl(45,100%,51%)] md:w-6 md:h-6" />
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-accent/20 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <Quote size={20} className="text-accent md:w-6 md:h-6" />
               </div>
-
-              {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} size={16} className="text-[hsl(45,100%,51%)] fill-[hsl(45,100%,51%)]" />
+                  <Star key={i} size={16} className="text-accent fill-accent" />
                 ))}
               </div>
-
-              {/* Quote Text */}
-              <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6 italic">
-                "{testimonial.quote}"
-              </p>
-
-              {/* Author */}
+              <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6 italic">"{testimonial.quote}"</p>
               <div className="flex items-center gap-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.author}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/30"
-                  loading="lazy"
-                />
+                <img src={testimonial.image} alt={testimonial.author} className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/30" loading="lazy" />
                 <div>
-                  <h4 className="text-white font-semibold text-sm md:text-base">
-                    {testimonial.author}
-                  </h4>
-                  <p className="text-white/60 text-xs md:text-sm">
-                    {testimonial.role}
-                  </p>
+                  <h4 className="text-white font-semibold text-sm md:text-base">{testimonial.author}</h4>
+                  <p className="text-white/60 text-xs md:text-sm">{testimonial.role}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Trusted Logos */}
-        <div
-          className={`transition-all duration-700 delay-500 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <p className="text-center text-white/60 text-sm mb-6 md:mb-8 uppercase tracking-wider">
-            Trusted by leading companies worldwide
-          </p>
+        <div className={`transition-all duration-700 delay-500 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <p className="text-center text-white/60 text-sm mb-6 md:mb-8 uppercase tracking-wider">Trusted by leading companies worldwide</p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-            {trustedLogos.map((logo, index) => (
-              <div
-                key={logo.name}
-                className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <span className="text-white/70 font-heading font-bold text-lg md:text-xl">
-                  {logo.initial}
-                </span>
+            {trustedLogos.map((logo) => (
+              <div key={logo.name} className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors">
+                <span className="text-white/70 font-bold text-lg md:text-xl">{logo.initial}</span>
               </div>
             ))}
           </div>

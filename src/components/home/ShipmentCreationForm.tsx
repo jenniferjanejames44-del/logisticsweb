@@ -131,7 +131,7 @@ const ShipmentCreationForm = () => {
 
       <div className="section-container relative z-10">
         <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-sm">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
             <Package className="w-4 h-4" />
             Quick Shipping
           </span>
@@ -252,8 +252,8 @@ const ShipmentCreationForm = () => {
                       {/* Destination Card */}
                       <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
                         <div className="flex items-center gap-3 mb-5">
-                          <div className="w-10 h-10 bg-[hsl(45,100%,51%)] rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
-                            <MapPin className="w-5 h-5 text-[hsl(0,0%,13%)]" />
+                          <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                            <MapPin className="w-5 h-5 text-accent-foreground" />
                           </div>
                           <span className="font-bold text-lg text-foreground">Destination</span>
                         </div>
@@ -298,7 +298,7 @@ const ShipmentCreationForm = () => {
                       <Plane className="w-5 h-5 text-primary -rotate-45" />
                       <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
                       <div className="text-center">
-                        <div className="w-3 h-3 rounded-full bg-[hsl(45,100%,51%)] mx-auto mb-1" />
+                        <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
                         <span className="text-xs text-muted-foreground">{formData.destination_city || "Destination"}</span>
                       </div>
                     </div>
@@ -308,7 +308,7 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep1Complete}
                         onClick={() => setStep(2)}
-                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                       >
                         Continue
                         <ArrowRight className="w-4 h-4" />
@@ -341,8 +341,8 @@ const ShipmentCreationForm = () => {
                       </div>
                       <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-[hsl(45,100%,51%)] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Truck className="w-4 h-4 text-[hsl(0,0%,13%)]" />
+                          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <Truck className="w-4 h-4 text-accent-foreground" />
                           </div>
                           <span className="font-semibold">Service Type</span>
                         </Label>
@@ -388,7 +388,7 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(1)}
-                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
                       >
                         Back
                       </button>
@@ -396,7 +396,7 @@ const ShipmentCreationForm = () => {
                         type="button" 
                         disabled={!isStep2Complete}
                         onClick={() => setStep(3)}
-                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                       >
                         Review
                         <ArrowRight className="w-4 h-4" />
@@ -467,14 +467,14 @@ const ShipmentCreationForm = () => {
                       <button 
                         type="button" 
                         onClick={() => setStep(2)}
-                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
                       >
                         Back
                       </button>
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-lg shadow-md transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] disabled:opacity-50 active:scale-[0.98] uppercase tracking-wide"
+                        className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                       >
                         {isSubmitting ? "Creating..." : "Create Shipment"}
                         <ArrowRight className="w-4 h-4" />

@@ -20,17 +20,17 @@ const AboutCTASection = () => {
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] w-full sm:w-auto"
             >
               Contact Us
               <ArrowRight size={16} />
             </Link>
             <Link 
               to="/services"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-sm rounded-lg transition-all duration-200 bg-transparent text-primary border border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm rounded-full shadow-sm transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98] w-full sm:w-auto"
             >
               View Services
               <ArrowRight size={16} />

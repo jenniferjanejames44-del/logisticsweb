@@ -131,82 +131,56 @@ const Blog = () => {
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-28 pb-16 sm:pt-32 sm:pb-20 md:pt-44 md:pb-28 overflow-hidden"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
-          {/* Background Image */}
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80)',
             }}
           />
-          {/* Dark Overlay - Using primary green */}
-          <div className="absolute inset-0 bg-primary opacity-90" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-block px-6 py-3 bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] rounded-full text-sm font-bold tracking-wider uppercase mb-8">
+            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Blog & Resources
               </span>
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
+              <h1 className="text-white mb-6 leading-tight">
                 Insights & Updates
               </h1>
-              <p className="text-lg md:text-xl text-white/90 font-medium leading-relaxed max-w-2xl mx-auto" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.3)' }}>
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Featured Posts Slider */}
+        {/* Featured Posts */}
         <section className="section-padding bg-muted/30">
           <div className="section-container">
-            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-10">
-              Featured Articles
-            </h2>
+            <h2 className="text-foreground mb-10">Featured Articles</h2>
             <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-              {featuredPosts.map((post, index) => (
+              {featuredPosts.map((post) => (
                 <Card 
                   key={post.id} 
                   className="group relative overflow-hidden border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
                 >
-                  {/* Top accent bar */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
-                  
                   <div className="aspect-video relative overflow-hidden">
-                    <img 
-                      src={post.image} 
-                      alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
-                    <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground font-bold">
-                      {post.category}
-                    </Badge>
+                    <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground font-bold">{post.category}</Badge>
                   </div>
                   <CardContent className="p-6 md:p-8">
-                    <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-5 line-clamp-2 leading-relaxed">
-                      {post.excerpt}
-                    </p>
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+                    <p className="text-muted-foreground mb-5 line-clamp-2 leading-relaxed">{post.excerpt}</p>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1.5 font-medium">
-                          <User className="w-4 h-4 text-primary" />
-                          {post.author}
-                        </span>
-                        <span className="flex items-center gap-1.5 font-medium">
-                          <Calendar className="w-4 h-4 text-primary" />
-                          {post.date}
-                        </span>
+                        <span className="flex items-center gap-1.5 font-medium"><User className="w-4 h-4 text-primary" />{post.author}</span>
+                        <span className="flex items-center gap-1.5 font-medium"><Calendar className="w-4 h-4 text-primary" />{post.date}</span>
                       </div>
-                      <span className="flex items-center gap-1.5 font-medium">
-                        <Clock className="w-4 h-4 text-primary" />
-                        {post.readTime}
-                      </span>
+                      <span className="flex items-center gap-1.5 font-medium"><Clock className="w-4 h-4 text-primary" />{post.readTime}</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -219,24 +193,21 @@ const Blog = () => {
         <section className="py-10 md:py-12 bg-background border-b border-border/50">
           <div className="section-container">
             <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
-              {/* Search */}
               <div className="relative w-full md:w-auto md:min-w-[320px]">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <Input
                   placeholder="Search articles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 h-12 rounded-xl border-2 border-border focus:border-primary"
+                  className="pl-12 h-12 rounded-full border-2 border-border focus:border-primary"
                 />
               </div>
-              
-              {/* Categories */}
               <div className="flex flex-wrap gap-2 justify-center md:justify-end">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 ${
+                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 ${
                       selectedCategory === category
                         ? 'bg-primary text-primary-foreground shadow-md'
                         : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
@@ -261,37 +232,18 @@ const Blog = () => {
                     className="group relative overflow-hidden border border-border/50 rounded-2xl hover:border-primary/40 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
-                    {/* Top accent bar */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
-                    
                     <div className="aspect-video relative overflow-hidden">
-                      <img 
-                        src={post.image} 
-                        alt={post.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                       <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
-                      <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground font-bold">
-                        {post.category}
-                      </Badge>
+                      <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground font-bold">{post.category}</Badge>
                     </div>
                     <CardContent className="p-6">
-                      <h3 className="font-heading text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">
-                        {post.excerpt}
-                      </p>
+                      <h3 className="text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">{post.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed">{post.excerpt}</p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 font-medium">
-                        <span className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-primary" />
-                          {post.date}
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5 text-primary" />
-                          {post.readTime}
-                        </span>
+                        <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5 text-primary" />{post.date}</span>
+                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-primary" />{post.readTime}</span>
                       </div>
                       <span className="inline-flex items-center gap-2 font-bold text-sm text-primary group-hover:gap-3 transition-all duration-300 cursor-pointer">
                         Read More <ArrowRight className="w-4 h-4" />
@@ -304,7 +256,7 @@ const Blog = () => {
               <div className="text-center py-16">
                 <p className="text-muted-foreground text-lg font-medium">No articles found matching your criteria.</p>
                 <button 
-                  className="mt-6 inline-flex items-center justify-center gap-2.5 px-6 py-3 font-bold text-sm rounded-xl transition-all duration-300 ease-out border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.97]"
+                  className="mt-6 inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm rounded-full transition-all duration-200 border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                   onClick={() => { setSelectedCategory("All"); setSearchQuery(""); }}
                 >
                   Clear Filters
@@ -315,19 +267,13 @@ const Blog = () => {
             {/* Pagination */}
             {filteredPosts.length > 0 && (
               <div className="flex items-center justify-center gap-2 mt-14">
-                <button className="w-11 h-11 rounded-xl border-2 border-border flex items-center justify-center text-muted-foreground opacity-50 cursor-not-allowed" disabled>
+                <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-muted-foreground opacity-50 cursor-not-allowed" disabled>
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <button className="w-11 h-11 rounded-xl bg-primary text-primary-foreground font-bold shadow-md">
-                  1
-                </button>
-                <button className="w-11 h-11 rounded-xl border-2 border-border text-foreground font-bold hover:border-primary/50 hover:bg-primary/10 transition-all">
-                  2
-                </button>
-                <button className="w-11 h-11 rounded-xl border-2 border-border text-foreground font-bold hover:border-primary/50 hover:bg-primary/10 transition-all">
-                  3
-                </button>
-                <button className="w-11 h-11 rounded-xl border-2 border-border flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all">
+                <button className="w-11 h-11 rounded-full bg-primary text-primary-foreground font-bold shadow-md">1</button>
+                <button className="w-11 h-11 rounded-full border-2 border-border text-foreground font-bold hover:border-primary/50 hover:bg-primary/10 transition-all">2</button>
+                <button className="w-11 h-11 rounded-full border-2 border-border text-foreground font-bold hover:border-primary/50 hover:bg-primary/10 transition-all">3</button>
+                <button className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-all">
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -338,19 +284,17 @@ const Blog = () => {
         {/* Newsletter CTA */}
         <section className="section-padding bg-primary relative overflow-hidden">
           <div className="section-container text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
-              Subscribe to Our Newsletter
-            </h2>
-            <p className="text-lg md:text-xl text-white/90 font-medium mb-10 max-w-2xl mx-auto leading-relaxed" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
+            <h2 className="text-white mb-6">Subscribe to Our Newsletter</h2>
+            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-xl"
+                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white rounded-full"
               />
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-bold text-base rounded-xl transition-all duration-300 ease-out bg-[hsl(45,100%,51%)] text-[hsl(0,0%,13%)] shadow-lg hover:bg-[hsl(45,100%,45%)] hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.97] active:translate-y-0">
+              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3 font-extrabold text-base rounded-full transition-all duration-200 bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]">
                 Subscribe
               </button>
             </div>
