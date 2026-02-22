@@ -54,7 +54,7 @@ const Header = () => {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center group text-foreground">
-          <Logo className="h-10 sm:h-12" />
+          <Logo className="h-11 sm:h-12 md:h-14" />
         </Link>
 
         {/* Desktop Navigation */}
