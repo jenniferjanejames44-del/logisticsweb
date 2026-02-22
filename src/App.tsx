@@ -38,6 +38,7 @@ import AdminInvoices from "./pages/admin/AdminInvoices";
 import Invoices from "./pages/dashboard/Invoices";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
+import DesignSystem from "./pages/DesignSystem";
 const queryClient = new QueryClient();
 
 // Component that uses the login tracking hook
@@ -89,6 +90,8 @@ const App = () => (
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
+              {/* Design System */}
+              <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
