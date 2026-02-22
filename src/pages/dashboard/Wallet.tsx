@@ -91,7 +91,7 @@ const Wallet = () => {
         <div className="space-y-6">
           {/* Balance Cards */}
           <div className="grid md:grid-cols-3 gap-6">
-            <Card className="border-border/50 bg-gradient-to-br from-secondary/10 to-secondary/5">
+            <Card className="border-border/50 bg-gradient-to-br from-primary/10 to-primary/5">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -100,8 +100,8 @@ const Wallet = () => {
                       ${balance.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-14 h-14 bg-secondary/20 rounded-xl flex items-center justify-center">
-                    <WalletIcon className="w-7 h-7 text-secondary" />
+                  <div className="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center">
+                    <WalletIcon className="w-7 h-7 text-primary" />
                   </div>
                 </div>
               </CardContent>

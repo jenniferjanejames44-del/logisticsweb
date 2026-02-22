@@ -66,12 +66,12 @@ const DashboardSidebar = () => {
         {/* Logo Section */}
         <div className="p-4 sm:p-6 border-b border-primary-foreground/10">
           <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group" onClick={() => setIsMobileOpen(false)}>
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary rounded-xl flex items-center justify-center font-heading font-bold text-primary text-xl sm:text-2xl shadow-lg group-hover:scale-105 transition-transform duration-300">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-xl flex items-center justify-center font-heading font-bold text-primary text-xl sm:text-2xl shadow-lg group-hover:scale-105 transition-transform duration-300">
               R
             </div>
             <div>
               <span className="font-heading font-bold text-lg sm:text-xl block">
-                RAC <span className="text-secondary">Logistics</span>
+                RAC <span className="text-accent">Logistics</span>
               </span>
               <span className="text-[10px] sm:text-xs text-primary-foreground/60">Customer Portal</span>
             </div>
@@ -92,14 +92,14 @@ const DashboardSidebar = () => {
                 onClick={() => setIsMobileOpen(false)}
                 className={`group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden touch-target ${
                   isActive
-                    ? "bg-secondary text-secondary-foreground shadow-lg"
+                    ? "bg-accent text-accent-foreground shadow-lg"
                     : "text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 }`}
               >
                 {isActive && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-secondary/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent" />
                 )}
-                <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 relative z-10 flex-shrink-0 ${isActive ? "text-secondary-foreground" : ""}`} />
+                <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 relative z-10 flex-shrink-0 ${isActive ? "text-accent-foreground" : ""}`} />
                 <span className="font-medium relative z-10 text-sm sm:text-base">{item.label}</span>
                 {isActive && <ChevronRight className="w-4 h-4 ml-auto relative z-10 flex-shrink-0" />}
               </Link>
@@ -115,7 +115,7 @@ const DashboardSidebar = () => {
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 bg-secondary/20 text-secondary hover:bg-secondary/30 border border-secondary/30 touch-target"
+                className="group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3 sm:py-3.5 rounded-xl transition-all duration-300 bg-accent/20 text-accent hover:bg-accent/30 border border-accent/30 touch-target"
               >
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span className="font-medium text-sm sm:text-base">Admin Dashboard</span>

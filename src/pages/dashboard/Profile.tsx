@@ -120,8 +120,8 @@ const Profile = () => {
         {/* Profile Card */}
         <Card className="border-border/50 lg:col-span-1 card-premium">
           <CardContent className="p-4 sm:p-6 text-center">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-              <User className="w-10 h-10 sm:w-12 sm:h-12 text-secondary" />
+            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <User className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
             </div>
             <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground">
               {formData.full_name || "User"}

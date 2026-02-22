@@ -115,8 +115,8 @@ const Overview = () => {
                 <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Shipments</p>
                 <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.total}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Package className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Package className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
             </div>
           </CardContent>
@@ -157,8 +157,8 @@ const Overview = () => {
                 <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Spent</p>
                 <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">${totalSpent.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               </div>
             </div>
           </CardContent>
@@ -170,7 +170,7 @@ const Overview = () => {
         <Card className="border-border/50 card-premium hover:border-secondary/50 hover:shadow-card-hover transition-all duration-300 cursor-pointer group">
           <CardContent className="p-4 sm:p-6">
             <Link to="/dashboard/shipments" className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-secondary text-secondary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent text-accent-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
                 <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0">
@@ -214,7 +214,7 @@ const Overview = () => {
       <Card className="border-border/50 card-premium">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 sm:p-6">
           <CardTitle className="font-heading text-lg sm:text-xl">Recent Shipments</CardTitle>
-          <Button variant="link" className="text-secondary p-0 h-auto justify-start sm:justify-end" asChild>
+          <Button variant="link" className="text-accent p-0 h-auto justify-start sm:justify-end" asChild>
             <Link to="/dashboard/shipments">
               View All <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
@@ -229,8 +229,8 @@ const Overview = () => {
                   className="flex items-center justify-between p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors gap-3"
                 >
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="font-medium text-foreground text-sm sm:text-base truncate">{shipment.tracking_number}</p>

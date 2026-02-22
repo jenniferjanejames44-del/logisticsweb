@@ -221,7 +221,7 @@ const AuthForm = () => {
 
                     <Button
                       type="submit"
-                      variant="default"
+                      variant="accent"
                       size="lg"
                       className="w-full"
                       disabled={isLoading}
@@ -364,7 +364,7 @@ const AuthForm = () => {
 
                   <Button
                     type="submit"
-                    variant="default"
+                    variant="accent"
                     size="lg"
                     className="w-full mt-2"
                     disabled={isLoading}
