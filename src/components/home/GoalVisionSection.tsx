@@ -44,7 +44,7 @@ const GoalVisionSection = () => {
             <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
             
             <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-7 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-              <img src={goalIcon} alt="Goal" className="w-8 h-8 object-contain brightness-0 contrast-200" />
+              <img src={goalIcon} alt="Goal" className="w-8 h-8 object-contain" />
             </div>
             
             <span className="inline-flex items-center gap-2 text-primary font-bold text-sm tracking-wide uppercase mb-4">
