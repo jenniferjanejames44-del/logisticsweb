@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import Logo from "./Logo";
 
 const Footer = () => {
   const companyLinks = [
@@ -35,12 +36,7 @@ const Footer = () => {
           {/* Left Side - Company Info */}
           <div className="space-y-7">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center font-extrabold text-xl text-primary bg-white group-hover:scale-105 transition-transform">
-                R
-              </div>
-              <span className="font-extrabold text-xl text-white tracking-tight">
-                RAC <span className="text-white/80">Logistics</span>
-              </span>
+              <Logo className="h-10 sm:h-12 md:h-14 text-white" />
             </Link>
             <p className="text-white/75 leading-relaxed max-w-md text-[15px]">
               Your trusted partner for global logistics solutions. Delivering excellence across continents with speed, security, and reliability.
