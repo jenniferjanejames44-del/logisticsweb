@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
-import logisLogo from "@/assets/logis_logo.jpg";
+import logisLogo from "@/assets/logis_logo_clean.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
