@@ -4,6 +4,7 @@ import LiveChat from "@/components/LiveChat";
 import AboutHeroSection from "@/components/about/AboutHeroSection";
 import MissionVisionSection from "@/components/about/MissionVisionSection";
 import CompanyStorySection from "@/components/about/CompanyStorySection";
+import CoreValuesSection from "@/components/home/CoreValuesSection";
 import LeadershipSection from "@/components/about/LeadershipSection";
 import TrustedBySection from "@/components/about/TrustedBySection";
 import AboutCTASection from "@/components/about/AboutCTASection";
@@ -16,6 +17,7 @@ const About = () => {
         <AboutHeroSection />
         <MissionVisionSection />
         <CompanyStorySection />
+        <CoreValuesSection />
         <LeadershipSection />
         <TrustedBySection />
         <AboutCTASection />
