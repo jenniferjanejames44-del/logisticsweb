@@ -242,7 +242,7 @@ const LiveChat = () => {
           "fixed bottom-6 right-4 sm:right-6 w-14 h-14 rounded-xl shadow-lg z-[9999] flex items-center justify-center transition-all duration-300",
           isOpen
             ? "bg-muted text-foreground"
-            : "bg-primary text-primary-foreground hover:bg-[hsl(45,100%,51%)] hover:text-[hsl(0,0%,13%)] hover:shadow-xl",
+            : "bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-xl",
           isVisible || isOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
