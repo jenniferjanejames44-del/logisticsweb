@@ -160,11 +160,11 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors bg-muted text-foreground"
+          className="lg:hidden w-11 h-11 rounded-xl flex items-center justify-center transition-colors bg-primary text-primary-foreground font-bold shadow-sm"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          {isMobileMenuOpen ? <X size={24} strokeWidth={3} /> : <Menu size={24} strokeWidth={3} />}
         </button>
       </div>
 
