@@ -7,38 +7,38 @@
 
 @layer base {
   :root {
-    /* Primary Brand Color - Deep Navy Blue #0A1B2E */
-    --primary: 212 65% 11%;
+    /* Primary Brand Color - Dark Navy Blue #1E3A8A */
+    --primary: 224 76% 33%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 212 65% 8%;
+    --primary-hover: 224 76% 28%;
     
-    /* Accent / CTA - Professional Yellow #FACC15 */
-    --accent-orange: 48 96% 53%;
-    --accent-orange-hover: 48 96% 45%;
-    --accent-orange-foreground: 212 65% 11%;
+    /* Accent / CTA - Sharp Orange #F97316 */
+    --accent-orange: 25 95% 53%;
+    --accent-orange-hover: 25 95% 46%;
+    --accent-orange-foreground: 0 0% 100%;
     
-    /* Main Background - #F8FAFC */
-    --background: 210 40% 98%;
-    --foreground: 220 26% 14%;
+    /* Main Background - #F9FAFB */
+    --background: 210 20% 98%;
+    --foreground: 221 39% 11%;
     
     /* Card Background - #FFFFFF */
     --card: 0 0% 100%;
-    --card-foreground: 220 26% 14%;
+    --card-foreground: 221 39% 11%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 220 26% 14%;
+    --popover-foreground: 221 39% 11%;
     
     /* Secondary - Neutral */
     --secondary: 220 14% 96%;
-    --secondary-foreground: 220 26% 14%;
+    --secondary-foreground: 221 39% 11%;
     
     /* Muted */
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
     
-    /* Accent - Yellow for highlights */
-    --accent: 48 96% 53%;
-    --accent-foreground: 212 65% 11%;
+    /* Accent - Orange for highlights */
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
     
     /* Destructive */
     --destructive: 0 84% 50%;
@@ -47,7 +47,7 @@
     /* Borders */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 48 96% 53%;
+    --ring: 224 76% 33%;
     
     --radius: 0.5rem;
     
@@ -56,55 +56,55 @@
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --info: 212 65% 30%;
+    --info: 224 76% 48%;
     --info-foreground: 0 0% 100%;
     
-    /* Sidebar - Deep Navy */
-    --sidebar-background: 212 65% 11%;
+    /* Sidebar - Dark Navy */
+    --sidebar-background: 224 76% 33%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 48 96% 53%;
-    --sidebar-primary-foreground: 212 65% 11%;
-    --sidebar-accent: 212 65% 18%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 76% 42%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.15;
-    --sidebar-ring: 48 96% 53%;
+    --sidebar-ring: 25 95% 53%;
     
     /* Chart Colors */
-    --chart-1: 212 65% 11%;
-    --chart-2: 48 96% 53%;
-    --chart-3: 212 65% 25%;
-    --chart-4: 212 65% 40%;
-    --chart-5: 48 96% 65%;
+    --chart-1: 224 76% 33%;
+    --chart-2: 25 95% 53%;
+    --chart-3: 224 76% 48%;
+    --chart-4: 224 76% 60%;
+    --chart-5: 38 92% 50%;
     
     /* Section Backgrounds */
-    --section-light: 210 40% 97%;
+    --section-light: 210 20% 97%;
   }
   
   .dark {
-    --primary: 212 65% 16%;
+    --primary: 224 76% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 212 65% 12%;
-    --accent-orange: 48 96% 53%;
-    --accent-orange-hover: 48 96% 45%;
-    --accent-orange-foreground: 212 65% 11%;
-    --background: 215 50% 4%;
+    --primary-hover: 224 76% 38%;
+    --accent-orange: 25 95% 53%;
+    --accent-orange-hover: 25 95% 46%;
+    --accent-orange-foreground: 0 0% 100%;
+    --background: 222 47% 6%;
     --foreground: 0 0% 98%;
-    --card: 215 50% 8%;
+    --card: 222 47% 10%;
     --card-foreground: 0 0% 98%;
-    --popover: 215 50% 8%;
+    --popover: 222 47% 10%;
     --popover-foreground: 0 0% 98%;
-    --secondary: 215 50% 12%;
+    --secondary: 222 47% 15%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 215 50% 12%;
+    --muted: 222 47% 15%;
     --muted-foreground: 0 0% 65%;
-    --accent: 48 96% 53%;
-    --accent-foreground: 212 65% 11%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 215 50% 16%;
-    --input: 215 50% 16%;
-    --ring: 48 96% 53%;
-    --section-light: 215 50% 6%;
+    --border: 222 47% 18%;
+    --input: 222 47% 18%;
+    --ring: 224 76% 45%;
+    --section-light: 222 47% 8%;
   }
 }
 
