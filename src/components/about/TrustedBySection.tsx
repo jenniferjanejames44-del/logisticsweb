@@ -24,7 +24,7 @@ const TrustedBySection = () => {
       <div className="section-container relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <span
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent/20 text-accent transition-all duration-700 ${
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground transition-all duration-700 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >

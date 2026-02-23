@@ -247,7 +247,7 @@ const Pricing = () => {
         <section className="section-padding bg-muted">
           <div className="section-container">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 text-accent rounded-full text-sm font-bold mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
                 Value
               </span>
               <h2 className="text-foreground">What's Included</h2>

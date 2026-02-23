@@ -46,7 +46,7 @@ const FounderSection = () => {
               isInView ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
             }`}
           >
-            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-accent/15 text-accent">
+            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 bg-accent text-accent-foreground">
               Leadership
             </span>
             <h2 className="text-foreground mb-7">
