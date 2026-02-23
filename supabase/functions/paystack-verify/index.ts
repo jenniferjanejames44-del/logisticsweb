@@ -68,12 +68,55 @@ Deno.serve(async (req) => {
     }
 
     const txn = paystackData.data;
+    const metadata = txn.metadata || {};
     const adminClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Find the invoice by paystack_reference
+    // Handle wallet top-up verification
+    if (metadata.type === "wallet_topup") {
+      if (metadata.user_id !== userId) {
+        return new Response(
+          JSON.stringify({ error: "Access denied" }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (txn.status === "success") {
+        const paidAmountNGN = txn.amount / 100;
+
+        // Check for duplicate
+        const { data: existingTxn } = await adminClient
+          .from("wallet_transactions")
+          .select("id")
+          .eq("reference_id", reference)
+          .single();
+
+        if (!existingTxn) {
+          // Credit wallet
+          await adminClient.from("wallet_transactions").insert({
+            user_id: userId,
+            amount: paidAmountNGN,
+            type: "credit",
+            description: `Wallet top-up via Paystack`,
+            reference_id: reference,
+          });
+        }
+
+        return new Response(
+          JSON.stringify({ status: "success", message: "Wallet funded successfully!", type: "wallet_topup" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      } else {
+        return new Response(
+          JSON.stringify({ status: "failed", message: `Payment status: ${txn.status}`, type: "wallet_topup" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    // Handle invoice payment verification (existing flow)
     const { data: invoice, error: invError } = await adminClient
       .from("invoices")
       .select("*")
@@ -87,7 +130,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Verify ownership
     if (invoice.user_id !== userId) {
       return new Response(
         JSON.stringify({ error: "Access denied" }),
@@ -95,7 +137,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Prevent duplicate updates
     if (invoice.status === "paid") {
       return new Response(
         JSON.stringify({ status: "success", message: "Already paid" }),
@@ -104,7 +145,6 @@ Deno.serve(async (req) => {
     }
 
     if (txn.status === "success") {
-      // Verify amount matches (Paystack returns in kobo)
       const paidAmountNGN = txn.amount / 100;
       const expectedAmount = Number(invoice.amount);
 
@@ -116,7 +156,6 @@ Deno.serve(async (req) => {
         );
       }
 
-      // Update invoice - this triggers invoice_paid_update_shipment
       await adminClient
         .from("invoices")
         .update({
@@ -127,7 +166,6 @@ Deno.serve(async (req) => {
         })
         .eq("id", invoice.id);
 
-      // Log payment in payments table
       await adminClient.from("payments").insert({
         user_id: userId,
         shipment_id: invoice.shipment_id,

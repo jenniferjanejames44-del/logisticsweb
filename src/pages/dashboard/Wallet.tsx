@@ -148,10 +148,10 @@ const Wallet = () => {
                   <CreditCard className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-1">Add Funds to Your Wallet</h3>
+                  <h3 className="font-semibold text-foreground mb-1">Fund Your Wallet Instantly</h3>
                   <p className="text-sm text-muted-foreground">
-                    Contact our support team to add funds to your wallet. Once funds are added, 
-                    you can use your balance to pay for shipments directly.
+                    Click "Add Funds" to top up your wallet via Paystack. Pay securely with card, 
+                    bank transfer, or USSD. Your balance updates instantly after payment.
                   </p>
                 </div>
               </div>

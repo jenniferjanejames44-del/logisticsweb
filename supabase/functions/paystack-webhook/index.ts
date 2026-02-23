@@ -42,13 +42,44 @@ Deno.serve(async (req) => {
     if (event.event === "charge.success") {
       const txn = event.data;
       const reference = txn.reference;
+      const metadata = txn.metadata || {};
 
       const adminClient = createClient(
         Deno.env.get("SUPABASE_URL")!,
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
       );
 
-      // Find invoice by paystack_reference
+      // Check if this is a wallet top-up
+      if (metadata.type === "wallet_topup" && metadata.user_id) {
+        const paidAmountNGN = txn.amount / 100;
+        const userId = metadata.user_id;
+
+        // Check for duplicate: look for existing wallet transaction with this reference
+        const { data: existingTxn } = await adminClient
+          .from("wallet_transactions")
+          .select("id")
+          .eq("reference_id", reference)
+          .single();
+
+        if (existingTxn) {
+          console.log("Wallet topup already processed:", reference);
+          return new Response("OK", { status: 200 });
+        }
+
+        // Credit wallet
+        await adminClient.from("wallet_transactions").insert({
+          user_id: userId,
+          amount: paidAmountNGN,
+          type: "credit",
+          description: `Wallet top-up via Paystack`,
+          reference_id: reference,
+        });
+
+        console.log("Webhook: Wallet topped up successfully for user:", userId, "amount:", paidAmountNGN);
+        return new Response("OK", { status: 200 });
+      }
+
+      // Otherwise, handle as invoice payment
       const { data: invoice, error: invError } = await adminClient
         .from("invoices")
         .select("*")
@@ -75,7 +106,7 @@ Deno.serve(async (req) => {
         return new Response("OK", { status: 200 });
       }
 
-      // Update invoice - triggers invoice_paid_update_shipment
+      // Update invoice
       await adminClient
         .from("invoices")
         .update({
