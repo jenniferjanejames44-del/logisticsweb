@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
-import { Menu, X, User, Shield, ChevronDown, Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Package, Earth, Container, FileCheck, ArrowRight } from "lucide-react";
 import Logo from "@/components/layout/Logo";
 import {
   DropdownMenu,
@@ -36,12 +36,12 @@ const Header = () => {
   ];
 
   const serviceLinks = [
-    { name: "Air Shipping", href: "/services/air-shipping", icon: Plane },
-    { name: "Ocean Shipping", href: "/services/ocean-shipping", icon: Ship },
+    { name: "Air Shipping", href: "/services/air-shipping", icon: PlaneTakeoff },
+    { name: "Ocean Shipping", href: "/services/ocean-shipping", icon: Anchor },
     { name: "Personal Shopping", href: "/services/personal-shopping", icon: ShoppingBag },
     { name: "Procurement", href: "/services/procurement", icon: Package },
-    { name: "Import/Export", href: "/services/import-export", icon: Globe },
-    { name: "Warehousing", href: "/services/warehousing", icon: Warehouse },
+    { name: "Import/Export", href: "/services/import-export", icon: Earth },
+    { name: "Warehousing", href: "/services/warehousing", icon: Container },
     { name: "Customs Clearance", href: "/services/customs-clearance", icon: FileCheck },
   ];
 

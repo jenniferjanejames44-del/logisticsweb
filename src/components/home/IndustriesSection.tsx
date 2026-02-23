@@ -1,34 +1,34 @@
-import { ShoppingCart, Factory, Pill, Laptop, Utensils, Car } from "lucide-react";
+import { Store, Cog, Syringe, Cpu, UtensilsCrossed, CarFront } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const industries = [
   {
-    icon: ShoppingCart,
+    icon: Store,
     title: "E-Commerce",
     description: "Fast, reliable shipping for online retailers worldwide.",
   },
   {
-    icon: Factory,
+    icon: Cog,
     title: "Manufacturing",
     description: "Supply chain solutions for industrial operations.",
   },
   {
-    icon: Pill,
+    icon: Syringe,
     title: "Healthcare",
     description: "Temperature-controlled logistics for pharmaceuticals.",
   },
   {
-    icon: Laptop,
+    icon: Cpu,
     title: "Technology",
     description: "Secure handling for sensitive electronics.",
   },
   {
-    icon: Utensils,
+    icon: UtensilsCrossed,
     title: "Food & Beverage",
     description: "Cold chain logistics for perishable goods.",
   },
   {
-    icon: Car,
+    icon: CarFront,
     title: "Automotive",
     description: "Parts logistics and just-in-time delivery.",
   },

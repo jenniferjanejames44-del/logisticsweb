@@ -1,4 +1,4 @@
-import { ArrowRight, Plane, Ship, Warehouse } from "lucide-react";
+import { ArrowRight, PlaneTakeoff, Anchor, Container } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Link } from "react-router-dom";
 
@@ -8,21 +8,21 @@ const services = [
     description: "Express delivery worldwide with real-time tracking and priority handling for urgent shipments.",
     href: "/services/air-shipping",
     image: "https://images.unsplash.com/photo-1566140967404-b8b3932483f5?w=600&q=80",
-    icon: Plane,
+    icon: PlaneTakeoff,
   },
   {
     title: "Ocean Shipping",
     description: "Cost-effective sea freight for large shipments across all major international ports.",
     href: "/services/ocean-shipping",
     image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80",
-    icon: Ship,
+    icon: Anchor,
   },
   {
     title: "Warehousing",
     description: "Secure storage facilities with advanced inventory management systems.",
     href: "/services/warehousing",
     image: "https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80",
-    icon: Warehouse,
+    icon: Container,
   },
 ];
 
