@@ -181,7 +181,7 @@ const Notifications = () => {
         <div className="flex justify-end mb-4">
           <Button 
             variant="outline" 
-            size="sm" 
+            className="h-11 sm:h-12 px-6"
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
           >
@@ -235,19 +235,19 @@ const Notifications = () => {
                         </span>
                         <div className="flex gap-1">
                           {!notification.read && (
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                              onClick={() => markAsRead(notification.id)}
-                            >
-                              <CheckCircle size={16} className="text-muted-foreground hover:text-accent" />
-                            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-10 w-10 sm:h-11 sm:w-11"
+              onClick={() => markAsRead(notification.id)}
+            >
+              <CheckCircle size={16} className="text-muted-foreground hover:text-accent" />
+            </Button>
                           )}
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8"
+                            className="h-10 w-10 sm:h-11 sm:w-11"
                             onClick={() => deleteNotification(notification.id)}
                           >
                             <Trash2 size={16} className="text-muted-foreground hover:text-destructive" />

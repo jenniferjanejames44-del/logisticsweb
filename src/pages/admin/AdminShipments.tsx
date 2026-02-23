@@ -213,17 +213,17 @@ const AdminShipments = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 pt-1 border-t border-border/50">
-                      <Button variant="outline" size="sm" className="flex-1 h-9" onClick={() => openPriceDialog(shipment)}>
+                      <Button variant="outline" className="flex-1 h-11" onClick={() => openPriceDialog(shipment)}>
                         <DollarSign className="w-3.5 h-3.5 mr-1" />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                        <SelectTrigger className="flex-1 h-9"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="flex-1 h-11"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-9 w-9 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
+                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-11 w-11 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -323,8 +323,8 @@ const AdminShipments = () => {
               )}
             </div>
             <DialogFooter className="flex-col sm:flex-row gap-2">
-              <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="w-full sm:w-auto">Cancel</Button>
-              <Button onClick={handleSetPrice} disabled={settingPrice} className="w-full sm:w-auto">
+              <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
+              <Button onClick={handleSetPrice} disabled={settingPrice} className="w-full sm:w-auto h-11 sm:h-12">
                 {settingPrice ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Setting...</> : <><DollarSign className="w-4 h-4 mr-2" />Set Price</>}
               </Button>
             </DialogFooter>

@@ -263,7 +263,7 @@ const Shipments = () => {
               <p className="text-lg sm:text-xl font-bold text-foreground">₦{balance.toFixed(2)}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="w-full sm:w-auto" onClick={() => window.location.href = "/dashboard/wallet"}>
+          <Button variant="outline" className="w-full sm:w-auto h-11 sm:h-12 px-6" onClick={() => window.location.href = "/dashboard/wallet"}>
             Manage Wallet
           </Button>
         </CardContent>
@@ -277,11 +277,11 @@ const Shipments = () => {
             placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 sm:pl-10 h-9 sm:h-10 text-sm"
+            className="pl-9 sm:pl-10 h-11 sm:h-12 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[160px] h-9 sm:h-10">
+          <SelectTrigger className="w-full sm:w-[160px] h-11 sm:h-12">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -295,7 +295,7 @@ const Shipments = () => {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="cta" className="w-full sm:w-auto h-9 sm:h-10">
+            <Button variant="cta" className="w-full sm:w-auto" size="lg">
               <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="sm:inline">New Shipment</span>
             </Button>
@@ -402,7 +402,7 @@ const Shipments = () => {
                 />
               </div>
 
-              <Button type="submit" variant="cta" className="w-full" disabled={isSubmitting}>
+              <Button type="submit" variant="cta" className="w-full" size="lg" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <div className="w-5 h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
                 ) : (
@@ -462,8 +462,8 @@ const Shipments = () => {
                           </Badge>
                         ) : (
                           <Button
-                            size="sm"
                             variant="cta"
+                            className="h-11 sm:h-12 px-6"
                             onClick={() => openPaymentDialog(shipment)}
                           >
                             <DollarSign className="w-4 h-4 mr-1" />
