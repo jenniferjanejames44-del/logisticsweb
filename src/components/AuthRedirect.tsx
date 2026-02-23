@@ -63,8 +63,11 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
           console.log("AuthRedirect: Redirecting to /admin");
           navigate("/admin", { replace: true });
         } else {
-          console.log("AuthRedirect: Redirecting to /dashboard");
-          navigate("/dashboard", { replace: true });
+          // Check if there's a pending shipment - redirect to shipments page
+          const hasPending = localStorage.getItem("pending_shipment_data");
+          const redirectTo = hasPending ? "/dashboard/shipments" : "/dashboard";
+          console.log("AuthRedirect: Redirecting to", redirectTo);
+          navigate(redirectTo, { replace: true });
         }
       } catch (err) {
         console.error("AuthRedirect: Unexpected error:", err);
