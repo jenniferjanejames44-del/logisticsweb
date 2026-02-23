@@ -36,6 +36,7 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import Invoices from "./pages/dashboard/Invoices";
+import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
 import DesignSystem from "./pages/DesignSystem";
@@ -79,6 +80,7 @@ const App = () => (
               <Route path="/dashboard/shipments" element={<Shipments />} />
               <Route path="/dashboard/invoices" element={<Invoices />} />
               <Route path="/dashboard/payments" element={<Payments />} />
+              <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
               {/* Admin Dashboard */}

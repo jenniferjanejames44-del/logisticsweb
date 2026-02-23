@@ -21,7 +21,10 @@ export type Database = {
           due_date: string | null
           id: string
           invoice_number: string
+          paid_at: string | null
+          payment_channel: string | null
           payment_reference: string | null
+          paystack_reference: string | null
           pdf_url: string | null
           shipment_id: string
           status: string
@@ -34,7 +37,10 @@ export type Database = {
           due_date?: string | null
           id?: string
           invoice_number: string
+          paid_at?: string | null
+          payment_channel?: string | null
           payment_reference?: string | null
+          paystack_reference?: string | null
           pdf_url?: string | null
           shipment_id: string
           status?: string
@@ -47,7 +53,10 @@ export type Database = {
           due_date?: string | null
           id?: string
           invoice_number?: string
+          paid_at?: string | null
+          payment_channel?: string | null
           payment_reference?: string | null
+          paystack_reference?: string | null
           pdf_url?: string | null
           shipment_id?: string
           status?: string
