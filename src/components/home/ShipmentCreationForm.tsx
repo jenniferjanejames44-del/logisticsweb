@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { calculateShipmentPrice, savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -55,10 +56,11 @@ const ShipmentCreationForm = () => {
     e.preventDefault();
     
     if (!user) {
+      // Save shipment data to localStorage before redirecting to login
+      savePendingShipment(formData);
       toast({
         title: "Login Required",
-        description: "Please log in to create a shipment.",
-        variant: "destructive",
+        description: "Please log in to complete your shipment. Your data has been saved.",
       });
       navigate("/auth");
       return;
@@ -70,6 +72,12 @@ const ShipmentCreationForm = () => {
                           formData.service_type.includes("ocean") ? 25 : 7;
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + estimatedDays);
+
+    // Auto-calculate price from pricing plans
+    const calculatedPrice = await calculateShipmentPrice(
+      formData.service_type,
+      parseFloat(formData.weight)
+    );
 
     const { error } = await supabase.from("shipments").insert({
       user_id: user.id,
@@ -83,6 +91,7 @@ const ShipmentCreationForm = () => {
       status: "pending",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
+      price: calculatedPrice,
     });
 
     if (error) {
@@ -94,7 +103,7 @@ const ShipmentCreationForm = () => {
     } else {
       toast({
         title: "Shipment Created!",
-        description: "Your shipment has been created successfully. Check your dashboard for tracking details.",
+        description: "Your shipment has been created successfully. Proceed to payment.",
       });
       setFormData({
         origin_country: "",
