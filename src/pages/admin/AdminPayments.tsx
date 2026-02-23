@@ -103,7 +103,7 @@ const AdminPayments = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalRevenue.toLocaleString()}</p>
                 </div>
                 <div className="p-2.5 sm:p-3 rounded-lg bg-success/10"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
               </div>
@@ -114,7 +114,7 @@ const AdminPayments = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs sm:text-sm text-muted-foreground">Pending Payments</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">${pendingAmount.toLocaleString()}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">₦{pendingAmount.toLocaleString()}</p>
                 </div>
                 <div className="p-2.5 sm:p-3 rounded-lg bg-warning/10"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
               </div>
@@ -167,7 +167,7 @@ const AdminPayments = () => {
                 {filteredPayments.map((payment) => (
                   <div key={payment.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-foreground">${Number(payment.amount).toLocaleString()} {payment.currency}</span>
+                      <span className="font-medium text-foreground">₦{Number(payment.amount).toLocaleString()} {payment.currency}</span>
                       <Badge className={getStatusColor(payment.status)}>{payment.status}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
@@ -214,7 +214,7 @@ const AdminPayments = () => {
                     {filteredPayments.map((payment) => (
                       <TableRow key={payment.id}>
                         <TableCell className="font-mono">{payment.transaction_id || "N/A"}</TableCell>
-                        <TableCell className="font-medium">${Number(payment.amount).toLocaleString()} {payment.currency}</TableCell>
+                        <TableCell className="font-medium">₦{Number(payment.amount).toLocaleString()} {payment.currency}</TableCell>
                         <TableCell className="capitalize">{payment.payment_method || "N/A"}</TableCell>
                         <TableCell>{payment.description || "N/A"}</TableCell>
                         <TableCell><Badge className={getStatusColor(payment.status)}>{payment.status}</Badge></TableCell>

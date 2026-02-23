@@ -208,7 +208,7 @@ const AdminShipments = () => {
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Price</p>
                         <p className="text-foreground font-medium">
-                          {shipment.price !== null ? `$${Number(shipment.price).toFixed(2)}` : "Not set"}
+                          {shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}
                         </p>
                       </div>
                     </div>
@@ -258,7 +258,7 @@ const AdminShipments = () => {
                         <TableCell className="capitalize">{shipment.service_type.replace("_", " ")}</TableCell>
                         <TableCell>
                           {shipment.price !== null ? (
-                            <span className="font-medium">${Number(shipment.price).toFixed(2)}</span>
+                            <span className="font-medium">₦{Number(shipment.price).toFixed(2)}</span>
                           ) : (
                             <Button variant="outline" size="sm" onClick={() => openPriceDialog(shipment)}>
                               <DollarSign className="w-3 h-3 mr-1" />Set Price

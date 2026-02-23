@@ -107,7 +107,7 @@ const Payments = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Paid</p>
-                <p className="text-3xl font-bold text-green-500">${totalPaid.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-green-500">₦{totalPaid.toLocaleString()}</p>
               </div>
               <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
                 <CheckCircle className="w-6 h-6 text-green-500" />
@@ -121,7 +121,7 @@ const Payments = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending</p>
-                <p className="text-3xl font-bold text-accent">${pendingAmount.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-accent">₦{pendingAmount.toLocaleString()}</p>
               </div>
               <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                 <Clock className="w-6 h-6 text-accent" />
@@ -188,7 +188,7 @@ const Payments = () => {
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-semibold text-foreground">
-                          ${Number(payment.amount).toLocaleString()} {payment.currency}
+                          ₦{Number(payment.amount).toLocaleString()} {payment.currency}
                         </h3>
                         {getStatusBadge(payment.status)}
                       </div>

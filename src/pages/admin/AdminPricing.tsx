@@ -175,11 +175,11 @@ const AdminPricing = () => {
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Base Price</p>
-                        <p className="text-foreground font-medium">${Number(plan.base_price).toFixed(2)}</p>
+                        <p className="text-foreground font-medium">₦{Number(plan.base_price).toFixed(2)}</p>
                       </div>
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Per KG</p>
-                        <p className="text-foreground font-medium">${Number(plan.price_per_kg).toFixed(2)}</p>
+                        <p className="text-foreground font-medium">₦{Number(plan.price_per_kg).toFixed(2)}</p>
                       </div>
                       <div className="col-span-2">
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Service Type</p>
@@ -214,8 +214,8 @@ const AdminPricing = () => {
                       <TableRow key={plan.id}>
                         <TableCell className="font-medium">{plan.name}</TableCell>
                         <TableCell>{plan.description || "N/A"}</TableCell>
-                        <TableCell>${Number(plan.base_price).toFixed(2)}</TableCell>
-                        <TableCell>${Number(plan.price_per_kg).toFixed(2)}</TableCell>
+                        <TableCell>₦{Number(plan.base_price).toFixed(2)}</TableCell>
+                        <TableCell>₦{Number(plan.price_per_kg).toFixed(2)}</TableCell>
                         <TableCell className="capitalize">{plan.service_type.replace("_", " ")}</TableCell>
                         <TableCell>
                           <Badge variant={plan.is_active ? "default" : "secondary"}
