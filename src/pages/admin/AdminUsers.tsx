@@ -241,7 +241,7 @@ const AdminUsers = () => {
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button className="w-full sm:w-auto"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
+                    <Button className="w-full sm:w-auto h-11 sm:h-12 px-6"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
@@ -263,8 +263,8 @@ const AdminUsers = () => {
                       </div>
                     </div>
                     <DialogFooter className="flex-col sm:flex-row gap-2">
-                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="w-full sm:w-auto">Cancel</Button>
-                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="w-full sm:w-auto">
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="w-full sm:w-auto h-11 sm:h-12">
                         {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
                       </Button>
                     </DialogFooter>
@@ -313,21 +313,21 @@ const AdminUsers = () => {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/50">
                       <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
-                        <SelectTrigger className="w-24 h-8"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="w-28 h-11"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="customer">Customer</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
-                        <Wallet className="w-3.5 h-3.5 text-success" />
+                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                        <Wallet className="w-4 h-4 text-success" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
-                        <KeyRound className="w-3.5 h-3.5" />
+                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                        <KeyRound className="w-4 h-4" />
                       </Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => fetchLoginHistory(user.user_id)}>
+                          <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => fetchLoginHistory(user.user_id)}>
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
                         </DialogTrigger>

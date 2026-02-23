@@ -181,12 +181,12 @@ const AdminNotifications = () => {
                   <div className="flex items-center justify-between pt-2 border-t border-border/50">
                     <span className="text-xs text-muted-foreground">{format(new Date(sub.created_at), "MMM d, yyyy")}</span>
                     <div className="flex items-center gap-1.5">
-                      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
+                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
                         {sub.is_active ? <ToggleRight className="w-4 h-4 text-success" /> : <ToggleLeft className="w-4 h-4 text-muted-foreground" />}
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                          <Button variant="ghost" size="icon" className="h-11 w-11"><Trash2 className="w-4 h-4 text-destructive" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>

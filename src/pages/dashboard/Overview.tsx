@@ -249,7 +249,7 @@ const Overview = () => {
             <div className="text-center py-6 sm:py-8">
               <Package className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
               <p className="text-muted-foreground text-sm sm:text-base">No shipments yet</p>
-              <Button variant="cta" className="mt-3 sm:mt-4" size="sm" asChild>
+              <Button variant="cta" className="mt-3 sm:mt-4" size="lg" asChild>
                 <Link to="/dashboard/shipments">Create Your First Shipment</Link>
               </Button>
             </div>

@@ -221,11 +221,11 @@ const AdminInvoices = () => {
                     </div>
                     <div className="flex items-center gap-2 pt-2 border-t border-border/50">
                       {invoice.status === "unpaid" && (
-                        <Button variant="default" size="sm" className="flex-1 h-9" onClick={() => openPayDialog(invoice)}>
+                        <Button variant="default" className="flex-1 h-11" onClick={() => openPayDialog(invoice)}>
                           <CheckCircle className="w-3.5 h-3.5 mr-1" />Mark Paid
                         </Button>
                       )}
-                      <Button variant="outline" size="sm" className="flex-1 h-9" onClick={() => handleDownload(invoice)}>
+                      <Button variant="outline" className="flex-1 h-11" onClick={() => handleDownload(invoice)}>
                         <Download className="w-3.5 h-3.5 mr-1" />View
                       </Button>
                     </div>
@@ -294,8 +294,8 @@ const AdminInvoices = () => {
               </div>
             </div>
             <DialogFooter className="flex-col sm:flex-row gap-2">
-              <Button variant="outline" onClick={() => setPayDialogOpen(false)} className="w-full sm:w-auto">Cancel</Button>
-              <Button onClick={handleMarkPaid} disabled={marking} className="w-full sm:w-auto">
+              <Button variant="outline" onClick={() => setPayDialogOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
+              <Button onClick={handleMarkPaid} disabled={marking} className="w-full sm:w-auto h-11 sm:h-12">
                 {marking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Processing...</> : <><CheckCircle className="w-4 h-4 mr-2" />Confirm Payment</>}
               </Button>
             </DialogFooter>

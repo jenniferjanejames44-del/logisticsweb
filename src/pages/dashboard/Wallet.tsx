@@ -90,50 +90,50 @@ const Wallet = () => {
       ) : (
         <div className="space-y-6">
           {/* Balance Cards */}
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
             <Card className="border-border/50 bg-gradient-to-br from-primary/10 to-primary/5">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Current Balance</p>
-                    <p className="text-3xl font-bold text-foreground">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Current Balance</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-foreground truncate">
                       ₦{balance.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center">
-                    <WalletIcon className="w-7 h-7 text-primary" />
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <WalletIcon className="w-5 h-5 sm:w-7 sm:h-7 text-primary" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-border/50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Total Deposits</p>
-                    <p className="text-2xl font-bold text-green-600">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Deposits</p>
+                    <p className="text-xl sm:text-2xl font-bold text-green-600 truncate">
                       +₦{totalCredits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center">
-                    <ArrowUpCircle className="w-7 h-7 text-green-500" />
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <ArrowUpCircle className="w-5 h-5 sm:w-7 sm:h-7 text-green-500" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-border/50">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-1">Total Spent</p>
-                    <p className="text-2xl font-bold text-orange-600">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Spent</p>
+                    <p className="text-xl sm:text-2xl font-bold text-orange-600 truncate">
                       -₦{totalDebits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center">
-                    <ArrowDownCircle className="w-7 h-7 text-orange-500" />
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <ArrowDownCircle className="w-5 h-5 sm:w-7 sm:h-7 text-orange-500" />
                   </div>
                 </div>
               </CardContent>
@@ -142,14 +142,14 @@ const Wallet = () => {
 
           {/* Info Card */}
           <Card className="border-border/50 bg-muted/30">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-5 h-5 text-primary" />
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-1">Fund Your Wallet Instantly</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">Fund Your Wallet Instantly</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     Click "Add Funds" to top up your wallet via Paystack. Pay securely with card, 
                     bank transfer, or USSD. Your balance updates instantly after payment.
                   </p>
@@ -160,13 +160,13 @@ const Wallet = () => {
 
           {/* Transactions */}
           <Card className="border-border/50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                 Transaction History
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
               {transactions.length === 0 ? (
                 <div className="text-center py-8">
                   <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
@@ -176,38 +176,38 @@ const Wallet = () => {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors"
+                      className="flex items-center justify-between p-3 sm:p-4 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors gap-3"
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                             transaction.type === "credit"
                               ? "bg-green-500/10"
                               : "bg-orange-500/10"
                           }`}
                         >
                           {transaction.type === "credit" ? (
-                            <ArrowUpCircle className="w-5 h-5 text-green-500" />
+                            <ArrowUpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
                           ) : (
-                            <ArrowDownCircle className="w-5 h-5 text-orange-500" />
+                            <ArrowDownCircle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
                           )}
                         </div>
-                        <div>
-                          <p className="font-medium text-foreground">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-foreground text-sm sm:text-base truncate">
                             {transaction.description || (transaction.type === "credit" ? "Deposit" : "Payment")}
                           </p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-xs sm:text-sm text-muted-foreground">
                             {format(new Date(transaction.created_at), "MMM dd, yyyy 'at' hh:mm a")}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex-shrink-0">
                         <p
-                          className={`font-semibold ${
+                          className={`font-semibold text-sm sm:text-base ${
                             transaction.type === "credit" ? "text-green-600" : "text-orange-600"
                           }`}
                         >
@@ -215,7 +215,7 @@ const Wallet = () => {
                         </p>
                         <Badge
                           variant={transaction.type === "credit" ? "outline" : "secondary"}
-                          className="text-xs"
+                          className="text-[10px] sm:text-xs"
                         >
                           {transaction.type}
                         </Badge>

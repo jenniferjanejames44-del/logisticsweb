@@ -162,7 +162,7 @@ const Profile = () => {
                       value={formData.full_name}
                       onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                       placeholder="John Doe"
-                      className="pl-9 sm:pl-10 h-9 sm:h-10"
+                      className="pl-9 sm:pl-10 h-11 sm:h-12"
                     />
                   </div>
                 </div>
@@ -176,7 +176,7 @@ const Profile = () => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+1 234 567 8900"
-                      className="pl-9 sm:pl-10 h-9 sm:h-10"
+                      className="pl-9 sm:pl-10 h-11 sm:h-12"
                     />
                   </div>
                 </div>
@@ -191,7 +191,7 @@ const Profile = () => {
                     value={formData.company_name}
                     onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                     placeholder="Your Company Inc."
-                    className="pl-9 sm:pl-10 h-9 sm:h-10"
+                    className="pl-9 sm:pl-10 h-11 sm:h-12"
                   />
                 </div>
               </div>
@@ -218,7 +218,7 @@ const Profile = () => {
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="New York"
-                    className="h-9 sm:h-10"
+                    className="h-11 sm:h-12"
                   />
                 </div>
 
@@ -228,7 +228,7 @@ const Profile = () => {
                     value={formData.country}
                     onValueChange={(value) => setFormData({ ...formData, country: value })}
                   >
-                    <SelectTrigger id="country" className="h-9 sm:h-10">
+                    <SelectTrigger id="country" className="h-11 sm:h-12">
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
@@ -240,7 +240,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <Button type="submit" variant="cta" className="w-full sm:w-auto" disabled={saving}>
+              <Button type="submit" variant="cta" className="w-full sm:w-auto" size="lg" disabled={saving}>
                 {saving ? (
                   <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-secondary-foreground/30 border-t-secondary-foreground rounded-full animate-spin" />
                 ) : (
