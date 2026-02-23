@@ -92,16 +92,16 @@ const ServicePageTemplate = ({
               <h1 className="text-white mb-6 leading-tight">{title}</h1>
               <p className="text-base sm:text-lg md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">{description}</p>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-row items-center justify-start gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Get a Quote
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
                 >
                   Contact Us
                 </Link>
@@ -218,16 +218,16 @@ const ServicePageTemplate = ({
             <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-row items-center justify-center gap-4">
               <Link 
                 to="/pricing"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 Get a Quote
               </Link>
               <Link 
                 to="/contact"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 Contact Sales
               </Link>

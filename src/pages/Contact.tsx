@@ -267,17 +267,17 @@ const Contact = () => {
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-row items-center justify-center gap-4">
               <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 View Resources
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]">
+              <button className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]">
                 Start Live Chat
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
