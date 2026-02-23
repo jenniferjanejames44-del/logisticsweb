@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ const PaymentCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { balance, loading: balanceLoading, refetch: refetchBalance } = useWalletBalance(user?.id);
   const [status, setStatus] = useState<"verifying" | "success" | "failed">("verifying");
   const [message, setMessage] = useState("Verifying your payment...");
   const [paymentType, setPaymentType] = useState<string | null>(null);
@@ -35,6 +37,7 @@ const PaymentCallback = () => {
           if (data.type === "wallet_topup") {
             setPaymentType("wallet_topup");
             setMessage(data.message || "Your wallet has been funded successfully!");
+            refetchBalance();
           } else {
             setMessage(data.message || "Payment successful! Your invoice has been marked as paid.");
           }
@@ -77,6 +80,14 @@ const PaymentCallback = () => {
                   {isWalletTopup ? "Wallet Funded!" : "Payment Successful!"}
                 </h2>
                 <p className="text-muted-foreground">{message}</p>
+                {isWalletTopup && !balanceLoading && (
+                  <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20">
+                    <p className="text-sm text-muted-foreground mb-1">Updated Balance</p>
+                    <p className="text-2xl font-bold text-green-600">
+                      ₦{balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+                    </p>
+                  </div>
+                )}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   {isWalletTopup ? (
                     <>

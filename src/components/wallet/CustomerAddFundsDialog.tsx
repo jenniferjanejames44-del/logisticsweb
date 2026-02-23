@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useWalletBalance } from "@/hooks/useWalletBalance";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { CreditCard, Loader2, Wallet, Shield } from "lucide-react";
+import { CreditCard, Loader2, Wallet, Shield, ArrowRight } from "lucide-react";
 
 interface CustomerAddFundsDialogProps {
   open: boolean;
@@ -24,8 +25,11 @@ const quickAmounts = [1000, 2500, 5000, 10000, 25000, 50000];
 
 const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogProps) => {
   const { user } = useAuth();
+  const { balance, loading: balanceLoading } = useWalletBalance(user?.id);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
+  const parsedAmount = parseFloat(amount) || 0;
+  const newBalance = balance + parsedAmount;
 
   const handleClose = () => {
     setAmount("");
@@ -84,6 +88,17 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
         </DialogHeader>
 
         <div className="space-y-6 py-4">
+          {/* Current Balance Indicator */}
+          <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/10">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-muted-foreground">Current Balance</span>
+            </div>
+            <span className="text-lg font-bold text-foreground">
+              {balanceLoading ? "..." : `₦${balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`}
+            </span>
+          </div>
+
           {/* Amount Input */}
           <div className="space-y-2">
             <Label htmlFor="topup-amount">Amount (₦)</Label>
@@ -121,6 +136,19 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
               ))}
             </div>
           </div>
+
+          {/* New Balance Preview */}
+          {parsedAmount >= 100 && (
+            <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/5 border border-green-500/20">
+              <div className="flex items-center gap-2">
+                <ArrowRight className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-muted-foreground">New Balance</span>
+              </div>
+              <span className="text-lg font-bold text-green-600">
+                ₦{newBalance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+          )}
 
           {/* Security Note */}
           <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
