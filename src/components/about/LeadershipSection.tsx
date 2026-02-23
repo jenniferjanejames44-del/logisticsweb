@@ -15,7 +15,7 @@ const LeadershipSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding bg-background">
+    <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16">
           <span
