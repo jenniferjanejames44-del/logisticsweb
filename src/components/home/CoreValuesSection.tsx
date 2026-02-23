@@ -1,29 +1,29 @@
-import { Shield, Eye, Zap, Lock, HeartHandshake } from "lucide-react";
+import { ShieldCheck, ScanEye, Timer, KeyRound, HandHeart } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const values = [
   {
-    icon: Shield,
+    icon: ShieldCheck,
     title: "Reliability",
     description: "Consistently delivering on our promises with dependable service you can trust.",
   },
   {
-    icon: Eye,
+    icon: ScanEye,
     title: "Transparency",
     description: "Real-time tracking and clear communication throughout your shipment journey.",
   },
   {
-    icon: Zap,
+    icon: Timer,
     title: "Speed",
     description: "Express delivery options ensuring your packages arrive on time, every time.",
   },
   {
-    icon: Lock,
+    icon: KeyRound,
     title: "Security",
     description: "Advanced handling protocols and insurance for complete peace of mind.",
   },
   {
-    icon: HeartHandshake,
+    icon: HandHeart,
     title: "Customer-Centric",
     description: "24/7 support and personalized solutions tailored to your unique needs.",
   },

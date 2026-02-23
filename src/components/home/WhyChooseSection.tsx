@@ -1,19 +1,19 @@
 import { useInView } from "@/hooks/useInView";
-import { Globe, Zap, HeadphonesIcon, CheckCircle } from "lucide-react";
+import { Network, BrainCircuit, Headset, BadgeCheck } from "lucide-react";
 
 const differentiators = [
   {
-    icon: Globe,
+    icon: Network,
     title: "Global Network",
     description: "Connected to every corner of the world through our extensive logistics network spanning 150+ countries.",
   },
   {
-    icon: Zap,
+    icon: BrainCircuit,
     title: "Smart Technology",
     description: "AI-powered tracking and route optimization for faster, more efficient deliveries every time.",
   },
   {
-    icon: HeadphonesIcon,
+    icon: Headset,
     title: "24/7 Support",
     description: "Round-the-clock customer service with dedicated agents ready to assist you anytime.",
   },
@@ -32,7 +32,7 @@ const WhyChooseSection = () => {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            <CheckCircle size={14} />
+            <BadgeCheck size={14} />
             Our Advantage
           </span>
           <h2
@@ -74,7 +74,7 @@ const WhyChooseSection = () => {
                 {item.description}
               </p>
               <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                <CheckCircle size={16} />
+                <BadgeCheck size={16} />
                 <span>Guaranteed</span>
               </div>
             </div>

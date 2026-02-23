@@ -1,4 +1,4 @@
-import { Quote } from "lucide-react";
+import { MessageSquareQuote } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -30,7 +30,7 @@ const FounderSection = () => {
               
               {/* Quote Badge */}
               <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
-                <Quote size={28} className="text-primary-foreground" />
+                <MessageSquareQuote size={28} className="text-primary-foreground" />
               </div>
               
               {/* Badge */}

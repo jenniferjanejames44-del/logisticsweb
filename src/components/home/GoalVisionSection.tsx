@@ -1,4 +1,4 @@
-import { Eye, Sparkles, TrendingUp, Globe, Rocket, Target } from "lucide-react";
+import { Telescope, Award, TrendingUp, Earth, Rocket, Crosshair } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const GoalVisionSection = () => {
@@ -43,7 +43,7 @@ const GoalVisionSection = () => {
             <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
             
             <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-7 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-              <Target size={30} className="text-accent-foreground" />
+              <Crosshair size={30} className="text-accent-foreground" />
             </div>
             
             <span className="inline-flex items-center gap-2 text-primary font-bold text-sm tracking-wide uppercase mb-4">
@@ -62,7 +62,7 @@ const GoalVisionSection = () => {
             
             <div className="flex items-center gap-3 text-foreground font-bold">
               <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shadow-sm">
-                <Sparkles size={20} className="text-primary" />
+                <Award size={20} className="text-primary" />
               </div>
               <span>Committed to Your Success</span>
             </div>
@@ -79,11 +79,11 @@ const GoalVisionSection = () => {
             <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
             
             <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-7 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:shadow-lg">
-              <Eye size={30} className="text-accent-foreground" />
+              <Telescope size={30} className="text-accent-foreground" />
             </div>
             
             <span className="inline-flex items-center gap-2 text-primary font-bold text-sm tracking-wide uppercase mb-4">
-              <Globe size={16} className="text-accent" />
+              <Earth size={16} className="text-accent" />
               Our Vision
             </span>
             

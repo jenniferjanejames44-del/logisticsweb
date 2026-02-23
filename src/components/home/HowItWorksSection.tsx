@@ -1,27 +1,27 @@
-import { Package, MapPin, Truck, CheckCircle, ArrowRight } from "lucide-react";
+import { ClipboardCheck, LocateFixed, Route, PackageCheck, ArrowRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const steps = [
   {
-    icon: Package,
+    icon: ClipboardCheck,
     title: "Book Shipment",
     description: "Create your shipment order online or contact our team for personalized assistance.",
     step: "01",
   },
   {
-    icon: MapPin,
+    icon: LocateFixed,
     title: "Package Pickup",
     description: "We collect your package from your location at your preferred time.",
     step: "02",
   },
   {
-    icon: Truck,
+    icon: Route,
     title: "In Transit",
     description: "Track your shipment in real-time as it moves securely to its destination.",
     step: "03",
   },
   {
-    icon: CheckCircle,
+    icon: PackageCheck,
     title: "Delivered",
     description: "Safe and timely delivery with proof of delivery notification sent to you.",
     step: "04",
