@@ -148,7 +148,7 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Unpaid</p>
-                <p className="text-2xl sm:text-3xl font-bold text-accent">${totalUnpaid.toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-accent">₦{totalUnpaid.toLocaleString()}</p>
               </div>
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center">
                 <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
@@ -161,7 +161,7 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Paid</p>
-                <p className="text-2xl sm:text-3xl font-bold text-green-500">${totalPaid.toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-green-500">₦{totalPaid.toLocaleString()}</p>
               </div>
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
                 <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
@@ -217,7 +217,7 @@ const Invoices = () => {
                         )}
                         <span className="flex items-center gap-1">
                           <DollarSign className="w-3 h-3" />
-                          ${Number(invoice.amount).toFixed(2)}
+                          ₦{Number(invoice.amount).toFixed(2)}
                         </span>
                         {invoice.due_date && (
                           <span className="flex items-center gap-1">

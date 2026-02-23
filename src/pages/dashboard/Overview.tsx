@@ -155,7 +155,7 @@ const Overview = () => {
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
                 <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Spent</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">${totalSpent.toLocaleString()}</p>
+                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">₦{totalSpent.toLocaleString()}</p>
               </div>
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
                 <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />

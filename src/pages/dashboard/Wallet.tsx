@@ -97,7 +97,7 @@ const Wallet = () => {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Current Balance</p>
                     <p className="text-3xl font-bold text-foreground">
-                      ${balance.toFixed(2)}
+                      ₦{balance.toFixed(2)}
                     </p>
                   </div>
                   <div className="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center">
@@ -113,7 +113,7 @@ const Wallet = () => {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Total Deposits</p>
                     <p className="text-2xl font-bold text-green-600">
-                      +${totalCredits.toFixed(2)}
+                      +₦{totalCredits.toFixed(2)}
                     </p>
                   </div>
                   <div className="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center">
@@ -129,7 +129,7 @@ const Wallet = () => {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Total Spent</p>
                     <p className="text-2xl font-bold text-orange-600">
-                      -${totalDebits.toFixed(2)}
+                      -₦{totalDebits.toFixed(2)}
                     </p>
                   </div>
                   <div className="w-14 h-14 bg-orange-500/10 rounded-xl flex items-center justify-center">
@@ -211,7 +211,7 @@ const Wallet = () => {
                             transaction.type === "credit" ? "text-green-600" : "text-orange-600"
                           }`}
                         >
-                          {transaction.type === "credit" ? "+" : "-"}${Number(transaction.amount).toFixed(2)}
+                          {transaction.type === "credit" ? "+" : "-"}₦{Number(transaction.amount).toFixed(2)}
                         </p>
                         <Badge
                           variant={transaction.type === "credit" ? "outline" : "secondary"}

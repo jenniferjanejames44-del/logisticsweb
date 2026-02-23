@@ -210,7 +210,7 @@ const Shipments = () => {
             </div>
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground">Wallet Balance</p>
-              <p className="text-lg sm:text-xl font-bold text-foreground">${balance.toFixed(2)}</p>
+              <p className="text-lg sm:text-xl font-bold text-foreground">₦{balance.toFixed(2)}</p>
             </div>
           </div>
           <Button variant="outline" size="sm" className="w-full sm:w-auto" onClick={() => window.location.href = "/dashboard/wallet"}>
@@ -405,7 +405,7 @@ const Shipments = () => {
                   <div className="text-right space-y-2">
                     {shipment.price !== null && (
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-semibold text-foreground">${Number(shipment.price).toFixed(2)}</span>
+                        <span className="font-semibold text-foreground">₦{Number(shipment.price).toFixed(2)}</span>
                         {shipment.payment_status === "paid" ? (
                           <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/30">
                             Paid

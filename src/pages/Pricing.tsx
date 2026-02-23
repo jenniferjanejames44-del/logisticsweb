@@ -181,7 +181,7 @@ const Pricing = () => {
                           </div>
                         ) : calculatedPrice !== null ? (
                           <span className="text-4xl md:text-5xl font-bold text-primary">
-                            ${calculatedPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            ₦{calculatedPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </span>
                         ) : (
                           <span className="text-muted-foreground text-sm">Fill in the form to get a quote</span>
@@ -199,16 +199,16 @@ const Pricing = () => {
                           
                           <div className="pt-4 border-t border-border space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Base Rate ({weight} KG × ${selectedServiceData.baseRate}/KG)</span>
-                              <span>${(parseFloat(weight) * selectedServiceData.baseRate).toFixed(2)}</span>
+                              <span>Base Rate ({weight} KG × ₦{selectedServiceData.baseRate}/KG)</span>
+                              <span>₦{(parseFloat(weight) * selectedServiceData.baseRate).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
                               <span>Handling Fee</span>
-                              <span>$15.00</span>
+                              <span>₦15.00</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
                               <span>Insurance (2%)</span>
-                              <span>${(calculatedPrice * 0.02).toFixed(2)}</span>
+                              <span>₦{(calculatedPrice * 0.02).toFixed(2)}</span>
                             </div>
                           </div>
                           
@@ -216,7 +216,7 @@ const Pricing = () => {
                             Proceed to Payment
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
-                          <p className="text-xs text-muted-foreground mt-2">Secure payment via Stripe/PayPal</p>
+                          <p className="text-xs text-muted-foreground mt-2">Secure payment via Paystack</p>
                         </div>
                       )}
                     </div>
