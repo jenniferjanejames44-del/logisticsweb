@@ -75,7 +75,7 @@ const FounderSection = () => {
             
             <Link 
               to="/about"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 font-bold text-sm sm:text-base rounded-full transition-all duration-300 ease-out bg-primary text-primary-foreground shadow-lg hover:shadow-xl hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 font-bold text-sm sm:text-base rounded-full transition-all duration-300 ease-out bg-accent text-accent-foreground shadow-lg hover:shadow-xl hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md group"
             >
               Learn More
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
