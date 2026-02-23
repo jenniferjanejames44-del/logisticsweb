@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
@@ -37,11 +38,21 @@ const services = [
 
 const Pricing = () => {
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
   const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+
+  const handleProceedToPayment = () => {
+    if (user) {
+      navigate("/dashboard/shipments");
+    } else {
+      navigate("/auth");
+    }
+  };
 
   useEffect(() => {
     if (selectedCountry && weight && selectedService && parseFloat(weight) > 0) {
@@ -212,8 +223,8 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="accent" className="w-full mt-4" size="lg">
-                            Proceed to Payment
+                          <Button variant="accent" className="w-full mt-4" size="lg" onClick={handleProceedToPayment}>
+                            {user ? "Create Shipment & Pay" : "Sign In to Pay"}
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                           <p className="text-xs text-muted-foreground mt-2">Secure payment via Paystack</p>
