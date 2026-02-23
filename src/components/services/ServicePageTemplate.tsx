@@ -132,7 +132,7 @@ const ServicePageTemplate = ({
         <section ref={workflowRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 text-accent rounded-full text-sm font-bold mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
                 Process
               </span>
               <h2 className="text-foreground">How It Works</h2>
@@ -183,7 +183,7 @@ const ServicePageTemplate = ({
         <section ref={benefitsRef} className="section-padding bg-muted">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 text-accent rounded-full text-sm font-bold mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
                 Benefits
               </span>
               <h2 className="text-foreground">Why Choose Our {title}</h2>
