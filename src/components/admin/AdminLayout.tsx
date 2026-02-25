@@ -28,13 +28,13 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
 
   if (authLoading || roleLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-muted/30 via-background to-muted/50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
-            <Shield className="absolute inset-0 m-auto w-6 h-6 text-primary animate-pulse" />
+            <div className="w-12 h-12 border-3 border-primary/20 border-t-primary rounded-full animate-spin" />
+            <Shield className="absolute inset-0 m-auto w-5 h-5 text-primary animate-pulse" />
           </div>
-          <p className="text-muted-foreground font-medium">Loading admin panel...</p>
+          <p className="text-muted-foreground text-sm font-medium">Loading admin panel...</p>
         </div>
       </div>
     );
@@ -45,23 +45,23 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-muted/30 via-background to-muted/50 flex">
+    <div className="min-h-screen bg-background flex">
       <AdminSidebar />
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 ml-0 md:ml-72 pt-16 sm:pt-18 md:pt-8 overflow-auto">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 ml-0 md:ml-72 overflow-auto">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pt-16 sm:pt-18 md:pt-8">
           {title && (
-            <div className="mb-6 sm:mb-8 pb-4 sm:pb-6 border-b border-border/50">
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-1 sm:mb-2">
-                <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <div className="mb-8 sm:mb-10">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3 tracking-wide uppercase font-medium">
+                <Shield className="w-3.5 h-3.5" />
                 <span>Admin Panel</span>
-                <span>/</span>
-                <span className="text-foreground font-medium truncate">{title}</span>
+                <span className="text-border">/</span>
+                <span className="text-foreground">{title}</span>
               </div>
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              <h1 className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold text-foreground tracking-tight leading-tight">
                 {title}
               </h1>
               {description && (
-                <p className="text-muted-foreground mt-1 sm:mt-2 text-sm sm:text-base lg:text-lg line-clamp-2">{description}</p>
+                <p className="text-muted-foreground mt-1.5 text-[0.9375rem] leading-relaxed">{description}</p>
               )}
             </div>
           )}

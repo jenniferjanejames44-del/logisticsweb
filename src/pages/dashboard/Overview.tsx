@@ -44,7 +44,6 @@ const Overview = () => {
     const fetchData = async () => {
       if (!user) return;
 
-      // Fetch shipments
       const { data: shipments } = await supabase
         .from("shipments")
         .select("*")
@@ -61,7 +60,6 @@ const Overview = () => {
         setRecentShipments(shipments.slice(0, 5));
       }
 
-      // Fetch payments
       const { data: payments } = await supabase
         .from("payments")
         .select("amount")
@@ -89,7 +87,7 @@ const Overview = () => {
     const config = statusConfig[status] || statusConfig.pending;
     const Icon = config.icon;
     return (
-      <Badge variant={config.variant} className="gap-1">
+      <Badge variant={config.variant} className="gap-1 text-[11px]">
         <Icon className="w-3 h-3" />
         {status.replace("_", " ")}
       </Badge>
@@ -106,150 +104,97 @@ const Overview = () => {
 
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
-      {/* Stats Grid - Enhanced & Responsive */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
-        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Shipments</p>
-                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.total}</p>
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Package className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">In Transit</p>
-                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.inTransit}</p>
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Truck className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Delivered</p>
-                <p className="text-2xl sm:text-3xl font-bold text-foreground">{stats.delivered}</p>
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 card-premium hover:shadow-card-hover transition-all duration-300">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Total Spent</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">₦{totalSpent.toLocaleString()}</p>
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-8 lg:mb-10">
+        {[
+          { label: "Total Shipments", value: stats.total, icon: Package, iconBg: "bg-primary/8" , iconColor: "text-primary" },
+          { label: "In Transit", value: stats.inTransit, icon: Truck, iconBg: "bg-primary/8", iconColor: "text-primary" },
+          { label: "Delivered", value: stats.delivered, icon: CheckCircle, iconBg: "bg-success/8", iconColor: "text-success" },
+          { label: "Total Spent", value: `₦${totalSpent.toLocaleString()}`, icon: CreditCard, iconBg: "bg-accent/10", iconColor: "text-accent" },
+        ].map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={stat.label} className="border-border/40 hover:border-border transition-colors">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1">{stat.label}</p>
+                    <p className="text-[1.375rem] sm:text-[1.625rem] font-bold text-foreground tracking-tight truncate">
+                      {stat.value}
+                    </p>
+                  </div>
+                  <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                    <Icon className={`w-5 h-5 ${stat.iconColor}`} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Quick Actions - Enhanced & Responsive */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
-        <Card className="border-border/50 card-premium hover:border-secondary/50 hover:shadow-card-hover transition-all duration-300 cursor-pointer group">
-          <CardContent className="p-4 sm:p-6">
-            <Link to="/dashboard/shipments" className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent text-accent-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <Plus className="w-5 h-5 sm:w-6 sm:h-6" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-semibold text-foreground text-sm sm:text-base">Create Shipment</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Start a new shipment</p>
-              </div>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 card-premium hover:border-primary/50 hover:shadow-card-hover transition-all duration-300 cursor-pointer group">
-          <CardContent className="p-4 sm:p-6">
-            <Link to="/pricing" className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-semibold text-foreground text-sm sm:text-base">Get Quote</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Calculate shipping cost</p>
-              </div>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50 card-premium hover:border-muted-foreground/30 hover:shadow-card-hover transition-all duration-300 cursor-pointer group sm:col-span-2 lg:col-span-1">
-          <CardContent className="p-4 sm:p-6">
-            <Link to="/contact" className="flex items-center gap-3 sm:gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-muted text-foreground rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <Package className="w-5 h-5 sm:w-6 sm:h-6" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-semibold text-foreground text-sm sm:text-base">Contact Support</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground truncate">Get help with shipments</p>
-              </div>
-            </Link>
-          </CardContent>
-        </Card>
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-8 lg:mb-10">
+        {[
+          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/dashboard/shipments", iconBg: "bg-accent", iconColor: "text-accent-foreground" },
+          { label: "Get Quote", desc: "Calculate shipping cost", icon: CreditCard, href: "/pricing", iconBg: "bg-primary", iconColor: "text-primary-foreground" },
+          { label: "Contact Support", desc: "Get help with shipments", icon: Package, href: "/contact", iconBg: "bg-muted", iconColor: "text-foreground" },
+        ].map((action) => {
+          const Icon = action.icon;
+          return (
+            <Card key={action.label} className="border-border/40 hover:border-border hover:shadow-xs transition-all cursor-pointer group">
+              <CardContent className="p-4 sm:p-5">
+                <Link to={action.href} className="flex items-center gap-3.5">
+                  <div className={`w-10 h-10 sm:w-11 sm:h-11 ${action.iconBg} rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0`}>
+                    <Icon className={`w-5 h-5 ${action.iconColor}`} />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-foreground text-[0.9375rem]">{action.label}</h3>
+                    <p className="text-[13px] text-muted-foreground">{action.desc}</p>
+                  </div>
+                </Link>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Recent Shipments - Enhanced & Responsive */}
-      <Card className="border-border/50 card-premium">
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 sm:p-6">
-          <CardTitle className="font-heading text-lg sm:text-xl">Recent Shipments</CardTitle>
-          <Button variant="link" className="text-accent p-0 h-auto justify-start sm:justify-end" asChild>
+      {/* Recent Shipments */}
+      <Card className="border-border/40">
+        <CardHeader className="flex flex-row items-center justify-between p-5 sm:p-6">
+          <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold">Recent Shipments</CardTitle>
+          <Button variant="link" className="text-accent p-0 h-auto text-[0.875rem]" asChild>
             <Link to="/dashboard/shipments">
               View All <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </Button>
         </CardHeader>
-        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+        <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
           {recentShipments.length > 0 ? (
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-2.5">
               {recentShipments.map((shipment) => (
                 <div
                   key={shipment.id}
-                  className="flex items-center justify-between p-3 sm:p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors gap-3"
+                  className="flex items-center justify-between p-3.5 bg-muted/40 rounded-lg hover:bg-muted/70 transition-colors gap-3"
                 >
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                    <div className="w-9 h-9 bg-primary/8 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Package className="w-4 h-4 text-primary" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-medium text-foreground text-sm sm:text-base truncate">{shipment.tracking_number}</p>
-                      <p className="text-xs sm:text-sm text-muted-foreground truncate">
-                        To: {shipment.destination_country}
-                      </p>
+                      <p className="font-medium text-foreground text-[0.875rem] truncate">{shipment.tracking_number}</p>
+                      <p className="text-[12px] text-muted-foreground truncate">To: {shipment.destination_country}</p>
                     </div>
                   </div>
-                  <div className="flex-shrink-0">
-                    {getStatusBadge(shipment.status)}
-                  </div>
+                  <div className="flex-shrink-0">{getStatusBadge(shipment.status)}</div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-6 sm:py-8">
-              <Package className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
-              <p className="text-muted-foreground text-sm sm:text-base">No shipments yet</p>
-              <Button variant="cta" className="mt-3 sm:mt-4" size="lg" asChild>
+            <div className="text-center py-10">
+              <Package className="w-10 h-10 text-muted-foreground/50 mx-auto mb-3" />
+              <p className="text-muted-foreground text-[0.9375rem] mb-4">No shipments yet</p>
+              <Button variant="cta" size="lg" asChild>
                 <Link to="/dashboard/shipments">Create Your First Shipment</Link>
               </Button>
             </div>
