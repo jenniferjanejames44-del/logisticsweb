@@ -48,5 +48,5 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
           local-dir: ./dist/   # Change to ./build/ if CRA
-          server-dir: domains/raclogisticltd.com/public_html/
+          server-dir: domains/raclogisticltd.com/
           dangerous-clean-slate: true
