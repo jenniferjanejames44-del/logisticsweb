@@ -7,15 +7,15 @@
 
 @layer base {
   :root {
-    /* Primary Brand Color - Deep Blue #0B1F4A */
-    --primary: 220 75% 17%;
+    /* Primary Brand Color - Deep Navy #061043 */
+    --primary: 233 90% 14%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 220 75% 13%;
+    --primary-hover: 233 90% 10%;
     
-    /* Accent / CTA - Golden Yellow #FFD700 */
-    --accent-orange: 51 100% 50%;
-    --accent-orange-hover: 51 100% 42%;
-    --accent-orange-foreground: 220 75% 17%;
+    /* Accent / CTA - Deep Navy #061043 */
+    --accent-orange: 233 90% 14%;
+    --accent-orange-hover: 233 90% 10%;
+    --accent-orange-foreground: 0 0% 100%;
     
     /* Main Background - #F8FAFC */
     --background: 210 40% 98%;
@@ -36,9 +36,9 @@
     --muted: 220 14% 96%;
     --muted-foreground: 220 9% 46%;
     
-    /* Accent - Golden Yellow */
-    --accent: 51 100% 50%;
-    --accent-foreground: 220 75% 17%;
+    /* Accent - Deep Navy #061043 */
+    --accent: 233 90% 14%;
+    --accent-foreground: 0 0% 100%;
     
     /* Destructive */
     --destructive: 0 84% 50%;
@@ -47,7 +47,7 @@
     /* Borders */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 51 100% 50%;
+    --ring: 233 90% 14%;
     
     --radius: 0.5rem;
     
@@ -56,37 +56,37 @@
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --info: 220 75% 30%;
+    --info: 233 90% 22%;
     --info-foreground: 0 0% 100%;
     
-    /* Sidebar - Deep Blue */
-    --sidebar-background: 220 75% 17%;
+    /* Sidebar - Deep Navy */
+    --sidebar-background: 233 90% 14%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 51 100% 50%;
-    --sidebar-primary-foreground: 220 75% 17%;
-    --sidebar-accent: 220 75% 24%;
+    --sidebar-primary: 233 90% 25%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 233 90% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 0 0% 100% / 0.15;
-    --sidebar-ring: 51 100% 50%;
+    --sidebar-ring: 233 90% 25%;
     
     /* Chart Colors */
-    --chart-1: 220 75% 17%;
-    --chart-2: 51 100% 50%;
-    --chart-3: 220 75% 30%;
-    --chart-4: 220 75% 45%;
-    --chart-5: 38 92% 50%;
+    --chart-1: 233 90% 14%;
+    --chart-2: 233 90% 25%;
+    --chart-3: 233 90% 35%;
+    --chart-4: 233 90% 45%;
+    --chart-5: 233 90% 55%;
     
     /* Section Backgrounds */
     --section-light: 210 40% 97%;
   }
   
   .dark {
-    --primary: 220 75% 25%;
+    --primary: 233 90% 20%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 220 75% 20%;
-    --accent-orange: 51 100% 50%;
-    --accent-orange-hover: 51 100% 42%;
-    --accent-orange-foreground: 220 75% 17%;
+    --primary-hover: 233 90% 16%;
+    --accent-orange: 233 90% 20%;
+    --accent-orange-hover: 233 90% 16%;
+    --accent-orange-foreground: 0 0% 100%;
     --background: 222 47% 6%;
     --foreground: 0 0% 98%;
     --card: 222 47% 10%;
@@ -97,13 +97,13 @@
     --secondary-foreground: 0 0% 98%;
     --muted: 222 47% 15%;
     --muted-foreground: 0 0% 65%;
-    --accent: 51 100% 50%;
-    --accent-foreground: 220 75% 17%;
+    --accent: 233 90% 20%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 222 47% 18%;
     --input: 222 47% 18%;
-    --ring: 51 100% 50%;
+    --ring: 233 90% 20%;
     --section-light: 222 47% 8%;
   }
 }
