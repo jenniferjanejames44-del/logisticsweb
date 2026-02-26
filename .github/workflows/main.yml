@@ -10,34 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Build React app
       - name: Build app
         run: |
           if [ -f package.json ]; then
             if grep -q "vite" package.json; then
               npm run build
-              echo "Vite/Lovable detected, using dist/ as build output"
+              echo "Vite/Lovable detected, build output: dist/"
             else
               npm run build
-              echo "CRA detected, using build/ as build output"
+              echo "CRA detected, build output: build/"
             fi
           fi
 
-      # 5️⃣ Add SPA fallback for React Router
       - name: Create .htaccess for SPA routing
         run: |
           echo "RewriteEngine On" > ./dist/.htaccess
@@ -47,8 +42,7 @@ jobs:
           echo "RewriteCond %{REQUEST_FILENAME} !-d" >> ./dist/.htaccess
           echo "RewriteRule . /index.html [L]" >> ./dist/.htaccess
 
-      # 6️⃣ Deploy to Hostinger public_html
-      - name: Deploy to Hostinger
+      - name: Deploy to Hostinger FTP root
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -56,6 +50,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: ./dist/   # Change to ./build/ if CRA
-          server-dir: public_html/
+          local-dir: ./dist/   # change to ./build/ if CRA
+          server-dir: ./       # deploy directly to root, NOT public_html
           dangerous-clean-slate: true
