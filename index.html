@@ -28,6 +28,25 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // SPA redirect handler: restores the original path from 404.html redirect
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+      (function() {
+        var l = window.location;
+        if (l.search[1] === 'p' && l.search[2] === '=') {
+          var decoded = l.search.slice(4).split('&q=');
+          var path = decoded[0].replace(/~and~/g, '&');
+          var query = decoded.length > 1 ? ('?' + decoded[1].replace(/~and~/g, '&')) : '';
+          window.history.replaceState(null, null, '/' + path + query + l.hash);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
