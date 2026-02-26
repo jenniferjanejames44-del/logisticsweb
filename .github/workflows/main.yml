@@ -1,21 +1,61 @@
-name: Deploy to Hostinger
+name: Build and Deploy React App to Hostinger
 
 on:
   push:
     branches:
-      - main   # or master, depending on your repo
+      - main
 
 jobs:
-  ftp-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Upload to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+    steps:
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Build React app
+      - name: Build app
+        run: |
+          if [ -f package.json ]; then
+            if grep -q "vite" package.json; then
+              npm run build
+              echo "Vite/Lovable detected, using dist/ as build output"
+            else
+              npm run build
+              echo "CRA detected, using build/ as build output"
+            fi
+          fi
+
+      # 5️⃣ Add SPA fallback for React Router
+      - name: Create .htaccess for SPA routing
+        run: |
+          echo "RewriteEngine On" > ./dist/.htaccess
+          echo "RewriteBase /" >> ./dist/.htaccess
+          echo "RewriteRule ^index\\.html$ - [L]" >> ./dist/.htaccess
+          echo "RewriteCond %{REQUEST_FILENAME} !-f" >> ./dist/.htaccess
+          echo "RewriteCond %{REQUEST_FILENAME} !-d" >> ./dist/.htaccess
+          echo "RewriteRule . /index.html [L]" >> ./dist/.htaccess
+
+      # 6️⃣ Deploy to Hostinger public_html
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftp
+          local-dir: ./dist/   # Change to ./build/ if CRA
+          server-dir: public_html/
+          dangerous-clean-slate: true
