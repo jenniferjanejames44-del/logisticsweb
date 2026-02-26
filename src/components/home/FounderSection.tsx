@@ -33,10 +33,6 @@ const FounderSection = () => {
                 <MessageSquareQuote size={28} className="text-primary-foreground" />
               </div>
               
-              {/* Badge */}
-              <div className="absolute bottom-6 left-6 bg-card/90 backdrop-blur-sm border border-border px-4 py-2.5 rounded-full">
-                <span className="text-primary font-bold text-sm">🚢 Ocean Shipping</span>
-              </div>
             </div>
           </div>
 
