@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout code
+      # 1️⃣ Checkout the repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
+      # 2️⃣ Set up Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -24,11 +24,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Build production app
+      # 4️⃣ Build the React app
       - name: Build app
-        run: npm run build
+        run: |
+          # Use dist if Vite/Lovable, build if CRA
+          if [ -f package.json ]; then
+            if grep -q "vite" package.json; then
+              npm run build
+              echo "Using Vite/Lovable, build output in dist/"
+            else
+              npm run build
+              echo "Using CRA, build output in build/"
+            fi
+          fi
 
-      # 5️⃣ Deploy to Hostinger via FTP/SFTP
+      # 5️⃣ Deploy to Hostinger domain-specific folder
       - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -37,6 +47,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: ./dist/
+          local-dir: ./dist/   # Change to ./build/ if CRA
           server-dir: domains/raclogisticltd.com/public_html/
           dangerous-clean-slate: true
