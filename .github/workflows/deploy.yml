@@ -54,4 +54,4 @@ jobs:
           server-dir: /home/u816393804/domains/raclogisticltd.com/public_html/      # deploy directly to root, NOT public_html
           dangerous-clean-slate: true
 
-/home/u816393804/domains/raclogisticltd.com/public_html/.
+/home/u816393804/domains/raclogisticltd.com/public_html/
