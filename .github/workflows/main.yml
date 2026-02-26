@@ -51,5 +51,5 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
           local-dir: ./dist/   # change to ./build/ if CRA
-          server-dir: ./       # deploy directly to root, NOT public_html
+          server-dir: raclogisticltd.com/     # deploy directly to root, NOT public_html
           dangerous-clean-slate: true
