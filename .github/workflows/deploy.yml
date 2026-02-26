@@ -1,4 +1,4 @@
-name: Deploy React App to Hostinger
+name: Build and Deploy React App to Hostinger
 
 on:
   push:
@@ -10,25 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # 1️⃣ Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node
+      # 2️⃣ Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # 4️⃣ Build production app
       - name: Build app
         run: npm run build
 
-      - name: Deploy via FTP
+      # 5️⃣ Deploy to Hostinger via FTP/SFTP
+      - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftp
           local-dir: ./dist/
           server-dir: domains/raclogisticltd.com/public_html/
+          dangerous-clean-slate: true
