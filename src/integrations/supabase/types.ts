@@ -16,52 +16,85 @@ export type Database = {
     Tables: {
       invoices: {
         Row: {
+          additional_charges: number | null
           amount: number
+          clearing_rate: number | null
           created_at: string
+          currency: string | null
+          delivery_rate: number | null
+          dimensions: string | null
           due_date: string | null
           id: string
+          insurance_charges: number | null
           invoice_number: string
           paid_at: string | null
           payment_channel: string | null
           payment_reference: string | null
           paystack_reference: string | null
           pdf_url: string | null
+          pickup_charges: number | null
           shipment_id: string
+          shipping_rate: number | null
           status: string
+          storage_charges: number | null
+          subtotal: number | null
           updated_at: string
           user_id: string
+          weight_value: number | null
         }
         Insert: {
+          additional_charges?: number | null
           amount?: number
+          clearing_rate?: number | null
           created_at?: string
+          currency?: string | null
+          delivery_rate?: number | null
+          dimensions?: string | null
           due_date?: string | null
           id?: string
+          insurance_charges?: number | null
           invoice_number: string
           paid_at?: string | null
           payment_channel?: string | null
           payment_reference?: string | null
           paystack_reference?: string | null
           pdf_url?: string | null
+          pickup_charges?: number | null
           shipment_id: string
+          shipping_rate?: number | null
           status?: string
+          storage_charges?: number | null
+          subtotal?: number | null
           updated_at?: string
           user_id: string
+          weight_value?: number | null
         }
         Update: {
+          additional_charges?: number | null
           amount?: number
+          clearing_rate?: number | null
           created_at?: string
+          currency?: string | null
+          delivery_rate?: number | null
+          dimensions?: string | null
           due_date?: string | null
           id?: string
+          insurance_charges?: number | null
           invoice_number?: string
           paid_at?: string | null
           payment_channel?: string | null
           payment_reference?: string | null
           paystack_reference?: string | null
           pdf_url?: string | null
+          pickup_charges?: number | null
           shipment_id?: string
+          shipping_rate?: number | null
           status?: string
+          storage_charges?: number | null
+          subtotal?: number | null
           updated_at?: string
           user_id?: string
+          weight_value?: number | null
         }
         Relationships: [
           {

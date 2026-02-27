@@ -177,6 +177,21 @@ Deno.serve(async (req) => {
         description: `Paystack payment for invoice ${invoice.invoice_number}`,
       });
 
+      // Auto-generate invoice PDF after successful payment
+      try {
+        const funcUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/generate-invoice-pdf`;
+        await fetch(funcUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+          },
+          body: JSON.stringify({ invoice_id: invoice.id }),
+        });
+      } catch (pdfErr) {
+        console.error("Invoice PDF generation failed (non-blocking):", pdfErr);
+      }
+
       return new Response(
         JSON.stringify({ status: "success", message: "Payment verified and recorded" }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
