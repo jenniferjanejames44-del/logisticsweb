@@ -7,6 +7,22 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-paystack-signature",
 };
 
+async function sendNotificationEmail(supabaseUrl: string, serviceKey: string, type: string, data: Record<string, any>) {
+  try {
+    const funcUrl = `${supabaseUrl}/functions/v1/send-notification-email`;
+    await fetch(funcUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${serviceKey}`,
+      },
+      body: JSON.stringify({ type, data }),
+    });
+  } catch (err) {
+    console.error("Email notification failed (non-blocking):", err);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -18,7 +34,6 @@ Deno.serve(async (req) => {
       throw new Error("PAYSTACK_SECRET_KEY is not configured");
     }
 
-    // Validate Paystack signature
     const body = await req.text();
     const signature = req.headers.get("x-paystack-signature");
 
@@ -44,17 +59,15 @@ Deno.serve(async (req) => {
       const reference = txn.reference;
       const metadata = txn.metadata || {};
 
-      const adminClient = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-      );
+      const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+      const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+      const adminClient = createClient(supabaseUrl, serviceKey);
 
-      // Check if this is a wallet top-up
+      // Wallet top-up
       if (metadata.type === "wallet_topup" && metadata.user_id) {
         const paidAmountNGN = txn.amount / 100;
         const userId = metadata.user_id;
 
-        // Check for duplicate: look for existing wallet transaction with this reference
         const { data: existingTxn } = await adminClient
           .from("wallet_transactions")
           .select("id")
@@ -66,7 +79,6 @@ Deno.serve(async (req) => {
           return new Response("OK", { status: 200 });
         }
 
-        // Credit wallet
         await adminClient.from("wallet_transactions").insert({
           user_id: userId,
           amount: paidAmountNGN,
@@ -75,11 +87,25 @@ Deno.serve(async (req) => {
           reference_id: reference,
         });
 
-        console.log("Webhook: Wallet topped up successfully for user:", userId, "amount:", paidAmountNGN);
+        // Fetch profile for email
+        const { data: profile } = await adminClient
+          .from("profiles")
+          .select("full_name, email")
+          .eq("user_id", userId)
+          .single();
+
+        sendNotificationEmail(supabaseUrl, serviceKey, "wallet_topup", {
+          user_name: profile?.full_name,
+          user_email: profile?.email,
+          amount: paidAmountNGN,
+          reference,
+        });
+
+        console.log("Webhook: Wallet topped up for user:", userId);
         return new Response("OK", { status: 200 });
       }
 
-      // Otherwise, handle as invoice payment
+      // Invoice payment
       const { data: invoice, error: invError } = await adminClient
         .from("invoices")
         .select("*")
@@ -91,13 +117,11 @@ Deno.serve(async (req) => {
         return new Response("OK", { status: 200 });
       }
 
-      // Prevent duplicate updates
       if (invoice.status === "paid") {
         console.log("Invoice already paid:", invoice.id);
         return new Response("OK", { status: 200 });
       }
 
-      // Verify amount
       const paidAmountNGN = txn.amount / 100;
       const expectedAmount = Number(invoice.amount);
 
@@ -106,7 +130,6 @@ Deno.serve(async (req) => {
         return new Response("OK", { status: 200 });
       }
 
-      // Update invoice
       await adminClient
         .from("invoices")
         .update({
@@ -117,7 +140,6 @@ Deno.serve(async (req) => {
         })
         .eq("id", invoice.id);
 
-      // Log payment
       await adminClient.from("payments").insert({
         user_id: invoice.user_id,
         shipment_id: invoice.shipment_id,
@@ -127,6 +149,46 @@ Deno.serve(async (req) => {
         payment_method: txn.channel || "paystack",
         transaction_id: reference,
         description: `Paystack webhook payment for invoice ${invoice.invoice_number}`,
+      });
+
+      // Get user profile and shipment for email
+      const { data: profile } = await adminClient
+        .from("profiles")
+        .select("full_name, email")
+        .eq("user_id", invoice.user_id)
+        .single();
+
+      const { data: shipment } = await adminClient
+        .from("shipments")
+        .select("tracking_number")
+        .eq("id", invoice.shipment_id)
+        .single();
+
+      // Auto-generate invoice PDF
+      try {
+        const funcUrl = `${supabaseUrl}/functions/v1/generate-invoice-pdf`;
+        await fetch(funcUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${serviceKey}`,
+          },
+          body: JSON.stringify({ invoice_id: invoice.id }),
+        });
+      } catch (pdfErr) {
+        console.error("Invoice PDF gen failed (non-blocking):", pdfErr);
+      }
+
+      // Send payment confirmation email
+      sendNotificationEmail(supabaseUrl, serviceKey, "payment_confirmation", {
+        user_name: profile?.full_name,
+        user_email: profile?.email,
+        amount: expectedAmount,
+        currency: invoice.currency || "NGN",
+        invoice_number: invoice.invoice_number,
+        tracking_number: shipment?.tracking_number,
+        payment_channel: txn.channel || "paystack",
+        reference,
       });
 
       console.log("Webhook: Invoice paid successfully:", invoice.id);

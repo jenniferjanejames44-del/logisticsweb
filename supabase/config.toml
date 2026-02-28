@@ -8,3 +8,12 @@ verify_jwt = false
 
 [functions.paystack-webhook]
 verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false
+
+[functions.notify-shipment-created]
+verify_jwt = false
+
+[functions.send-shipment-notification]
+verify_jwt = false
