@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAIL = "rex@raclogisticltd.com";
-const FROM_EMAIL = "RAC Logistics <notifications@raclogisticltd.com>";
+const FROM_EMAIL = "RAC Logistics <onboarding@resend.dev>";
 const SITE_URL = "https://logisticsweb.lovable.app";
 
 interface EmailRequest {
