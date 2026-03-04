@@ -130,6 +130,8 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
 <html>
 <head>
 <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${isPaid ? 'Receipt' : 'Invoice'} ${invoice.invoice_number}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -223,6 +225,55 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   .footer p { font-size: 10px; color: #666; margin-bottom: 3px; }
   .footer .brand { font-size: 13px; font-weight: 900; color: ${BLUE}; letter-spacing: 1px; }
   
+  /* Mobile responsive */
+  @media screen and (max-width: 768px) {
+    .page { width: 100%; min-height: auto; padding: 12px; }
+    
+    /* Header stacks vertically */
+    .header-table, .header-table tbody, .header-table tr, .header-table td { display: block; width: 100%; }
+    .logo-cell { margin-bottom: 10px; }
+    .codes-cell { text-align: left; margin-bottom: 8px; }
+    .qr-cell { text-align: left; margin-bottom: 8px; }
+    .qr-img { width: 80px; height: 80px; }
+    .company-name { font-size: 16px; }
+    
+    .doc-title { font-size: 22px; text-align: center; }
+    
+    /* Address stacks */
+    .addr-table, .addr-table tbody, .addr-table tr, .addr-table td { display: block; width: 100% !important; padding: 0 !important; }
+    .addr-table td { margin-bottom: 10px; }
+    
+    /* Charges table scrolls horizontally */
+    .charges-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; }
+    .charges { margin-bottom: 0; min-width: 600px; }
+    .charges th, .charges td { font-size: 9px; padding: 5px 4px; }
+    
+    .addl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 14px; }
+    .addl { margin-bottom: 0; min-width: 400px; }
+    
+    /* Bottom stacks */
+    .bottom-table, .bottom-table tbody, .bottom-table tr, .bottom-table td { display: block; width: 100% !important; padding: 0 !important; }
+    .bottom-table td { margin-bottom: 10px; }
+    .bottom-table td:first-child { padding-right: 0 !important; }
+    
+    .summary-tbl .lbl { white-space: normal; }
+    
+    .footer { margin-top: 14px; }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .page { padding: 8px; }
+    .company-name { font-size: 14px; }
+    .company-details { font-size: 9px; }
+    .doc-title { font-size: 18px; letter-spacing: 1px; }
+    .bar { font-size: 10px; padding: 4px 8px; }
+    .bar-sm { font-size: 9px; }
+    .info-tbl td { font-size: 10px; padding: 4px 6px; }
+    .addr-content { font-size: 10px; padding: 6px 8px; min-height: auto; }
+    .summary-tbl td { font-size: 10px; padding: 4px 8px; }
+    .payment-content { font-size: 9px; padding: 8px; }
+  }
+
   @media print {
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { padding: 10mm 12mm; width: 100%; min-height: auto; }
@@ -314,6 +365,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   </table>
 
   <!-- SHIPMENT CHARGES TABLE -->
+  <div class="charges-wrap">
   <table class="charges">
     <thead>
       <tr>
@@ -342,8 +394,10 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
       </tr>
     </tbody>
   </table>
+  </div>
 
   <!-- ADDITIONAL SERVICES -->
+  <div class="addl-wrap">
   <table class="addl">
     <thead>
       <tr>
@@ -371,6 +425,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
       </tr>
     </tbody>
   </table>
+  </div>
 
   <!-- BOTTOM: PAYMENT INSTRUCTIONS + SUMMARY -->
   <table class="bottom-table">
