@@ -79,13 +79,14 @@ Deno.serve(async (req) => {
   }
 });
 
+function fmt(val: number, symbol: string): string {
+  return symbol + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
-  const date = new Date(invoice.created_at).toLocaleDateString('en-US', {
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  });
-  const dueDate = invoice.due_date ? new Date(invoice.due_date).toLocaleDateString('en-US', {
-    year: 'numeric', month: '2-digit', day: '2-digit'
-  }) : 'N/A';
+  const date = new Date(invoice.created_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  const dueDate = invoice.due_date ? new Date(invoice.due_date).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) : 'N/A';
+  const paidDate = invoice.paid_at ? new Date(invoice.paid_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) : date;
 
   const isPaid = invoice.status === 'paid';
   const amount = Number(invoice.amount);
@@ -101,208 +102,308 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const amountPaid = isPaid ? totalAmount : 0;
   const totalDue = totalAmount - amountPaid;
   const currency = invoice.currency || 'NGN';
-  const currencySymbol = currency === 'NGN' ? '₦' : '$';
+  const cs = currency === 'NGN' ? '₦' : '$';
   const weight = shipment?.weight || invoice.weight_value || 0;
   const dimensions = invoice.dimensions || shipment?.description || 'N/A';
   const serviceType = shipment?.service_type?.replace(/[-_]/g, ' ') || 'N/A';
+  const trackingNumber = shipment?.tracking_number || 'N/A';
+
+  const senderName = profile?.full_name || 'Customer';
+  const senderCountry = profile?.country || '';
+  const senderCity = profile?.city || '';
+  const senderAddress = profile?.address || '';
+
+  const destCity = shipment?.destination_city || '';
+  const destCountry = shipment?.destination_country || '';
+
+  // QR code via public API
+  const qrData = encodeURIComponent(`https://logisticsweb.lovable.app/track?tracking=${trackingNumber}`);
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${qrData}`;
+
+  const BLUE = '#003399';
+  const LIGHT_BLUE = '#e8eef7';
+  const DARK = '#1a1a2e';
+  const BORDER = '#c0c8d8';
+  const WHITE = '#ffffff';
 
   return `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Invoice ${invoice.invoice_number}</title>
+<title>${isPaid ? 'Receipt' : 'Invoice'} ${invoice.invoice_number}</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; background: #fff; font-size: 13px; }
-  .invoice { max-width: 800px; margin: 0 auto; padding: 30px 40px; }
+  body { font-family: 'Inter', 'Helvetica', 'Arial', sans-serif; color: ${DARK}; background: #fff; font-size: 12px; line-height: 1.4; }
+  .page { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 18mm 15mm 15mm 15mm; }
+  
+  table { border-collapse: collapse; }
   
   /* Header */
-  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 4px solid #061043; }
-  .company-logo { display: flex; align-items: center; gap: 12px; }
-  .logo-icon { width: 60px; height: 60px; background: #061043; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-  .logo-icon svg { width: 40px; height: 40px; }
-  .company-info h1 { font-size: 22px; color: #061043; font-weight: 900; letter-spacing: -0.5px; }
-  .company-info p { font-size: 11px; color: #555; line-height: 1.5; }
-  .header-right { text-align: right; }
-  .header-right .codes { font-size: 11px; color: #555; margin-bottom: 4px; }
+  .header-table { width: 100%; margin-bottom: 6px; }
+  .header-table td { vertical-align: top; padding: 0; }
+  .logo-cell { width: 50%; }
+  .codes-cell { width: 25%; text-align: center; padding-top: 4px; }
+  .qr-cell { width: 25%; text-align: right; }
   
-  /* Receipt Title */
-  .receipt-title { text-align: center; margin: 15px 0; }
-  .receipt-title h2 { font-size: 28px; color: #FF4D00; font-weight: 700; letter-spacing: 2px; }
+  .company-name { font-size: 20px; font-weight: 900; color: ${BLUE}; letter-spacing: -0.3px; margin-bottom: 2px; }
+  .company-subtitle { font-size: 9px; color: #666; font-style: italic; margin-bottom: 4px; }
+  .company-details { font-size: 10px; color: #444; line-height: 1.6; }
   
-  /* Info Sections */
-  .info-bar { background: #061043; color: #fff; padding: 6px 12px; font-size: 12px; font-weight: 700; margin-bottom: 0; }
-  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-  .info-table td { padding: 6px 12px; border: 1px solid #ddd; font-size: 12px; }
-  .info-table td:first-child { font-weight: 600; width: 30%; background: #f8f9fb; }
+  .codes-box { font-size: 10px; color: #333; }
+  .codes-box strong { display: block; margin-bottom: 2px; }
   
-  /* Address Section */
-  .address-section { display: flex; gap: 0; margin-bottom: 15px; }
-  .address-box { flex: 1; }
-  .address-header { background: #061043; color: #fff; padding: 6px 12px; font-size: 12px; font-weight: 700; }
-  .address-content { border: 1px solid #ddd; padding: 10px 12px; font-size: 12px; line-height: 1.6; min-height: 80px; }
+  .qr-img { width: 110px; height: 110px; }
   
-  /* Charges Table */
-  .charges-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-  .charges-table th { background: #061043; color: #fff; padding: 8px 10px; text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
-  .charges-table td { padding: 8px 10px; border: 1px solid #ddd; font-size: 12px; text-align: center; }
-  .charges-table tr:nth-child(even) { background: #f9f9fb; }
+  /* Divider */
+  .blue-divider { height: 4px; background: ${BLUE}; margin: 8px 0 12px 0; }
   
-  /* Additional Services */
-  .additional-header { background: #061043; color: #fff; }
+  /* Receipt title */
+  .doc-title { text-align: right; font-size: 32px; font-weight: 900; color: ${BLUE}; letter-spacing: 3px; margin-bottom: 14px; }
   
-  /* Summary Section */
-  .summary-section { display: flex; justify-content: space-between; gap: 20px; margin-top: 15px; }
-  .payment-instructions { flex: 1; }
-  .payment-instructions .title { background: #061043; color: #fff; padding: 6px 12px; font-size: 12px; font-weight: 700; }
-  .payment-instructions .content { border: 1px solid #ddd; padding: 10px 12px; font-size: 11px; line-height: 1.6; }
-  .summary-table { width: 280px; border-collapse: collapse; }
-  .summary-table td { padding: 5px 12px; font-size: 12px; border: 1px solid #ddd; }
-  .summary-table td:first-child { font-weight: 600; background: #f8f9fb; }
-  .summary-table td:last-child { text-align: right; font-weight: 600; }
-  .summary-table .highlight { background: #FF4D00; color: #fff; font-weight: 700; }
-  .summary-table .highlight td { background: #FF4D00; color: #fff; border-color: #FF4D00; }
-  .summary-table .paid-row td { background: #d4edda; color: #155724; font-weight: 700; }
+  /* Blue bar header */
+  .bar { background: ${BLUE}; color: ${WHITE}; font-size: 11px; font-weight: 700; padding: 5px 10px; letter-spacing: 0.3px; }
+  .bar-sm { background: ${BLUE}; color: ${WHITE}; font-size: 10px; font-weight: 700; padding: 4px 8px; }
   
-  /* Paid Stamp */
-  .paid-stamp { position: relative; }
-  .paid-stamp::after { 
-    content: 'PAID'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg);
-    font-size: 80px; font-weight: 900; color: rgba(40, 167, 69, 0.15); letter-spacing: 10px;
-    pointer-events: none; z-index: 1;
-  }
+  /* Info table */
+  .info-tbl { width: 100%; border: 1px solid ${BORDER}; margin-bottom: 14px; }
+  .info-tbl td { padding: 5px 10px; font-size: 11px; border: 1px solid ${BORDER}; }
+  .info-tbl .lbl { font-weight: 700; width: 28%; background: ${LIGHT_BLUE}; }
+  .info-tbl .val { width: 72%; }
+  
+  /* Address section */
+  .addr-table { width: 100%; margin-bottom: 14px; }
+  .addr-table td { vertical-align: top; }
+  .addr-box { border: 1px solid ${BORDER}; }
+  .addr-content { padding: 8px 10px; font-size: 11px; line-height: 1.7; min-height: 75px; }
+  
+  /* Charges table */
+  .charges { width: 100%; border: 1px solid ${BORDER}; margin-bottom: 14px; }
+  .charges th { background: ${BLUE}; color: ${WHITE}; padding: 7px 6px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; text-align: center; border: 1px solid ${BLUE}; }
+  .charges td { padding: 7px 6px; font-size: 11px; text-align: center; border: 1px solid ${BORDER}; }
+  .charges .amt { font-weight: 700; }
+  
+  /* Additional services */
+  .addl { width: 100%; border: 1px solid ${BORDER}; margin-bottom: 14px; }
+  .addl th { background: ${BLUE}; color: ${WHITE}; padding: 6px 8px; font-size: 9.5px; font-weight: 700; text-transform: uppercase; text-align: center; border: 1px solid ${BLUE}; }
+  .addl td { padding: 6px 8px; font-size: 11px; text-align: center; border: 1px solid ${BORDER}; }
+  
+  /* Bottom section */
+  .bottom-table { width: 100%; margin-top: 4px; }
+  .bottom-table > tbody > tr > td { vertical-align: top; }
+  
+  .payment-box { border: 1px solid ${BORDER}; }
+  .payment-content { padding: 10px; font-size: 10px; line-height: 1.7; color: #444; }
+  
+  .summary-tbl { border: 1px solid ${BORDER}; }
+  .summary-tbl td { padding: 5px 10px; font-size: 11px; border: 1px solid ${BORDER}; }
+  .summary-tbl .lbl { font-weight: 600; background: ${LIGHT_BLUE}; white-space: nowrap; }
+  .summary-tbl .val { text-align: right; font-weight: 700; min-width: 80px; }
+  .summary-tbl .total-row td { background: ${BLUE}; color: ${WHITE}; font-weight: 800; font-size: 12px; }
+  .summary-tbl .paid-row td { background: #d4edda; color: #155724; font-weight: 700; }
+  
+  /* Paid stamp */
+  ${isPaid ? `.page { position: relative; }
+  .page::after {
+    content: 'PAID';
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    font-size: 120px;
+    font-weight: 900;
+    color: rgba(0, 153, 51, 0.08);
+    letter-spacing: 20px;
+    pointer-events: none;
+    z-index: 0;
+  }` : ''}
   
   /* Footer */
-  .footer { margin-top: 30px; padding-top: 15px; border-top: 4px solid #061043; text-align: center; }
-  .footer p { font-size: 11px; color: #666; margin-bottom: 4px; }
-  .footer .brand { font-size: 14px; font-weight: 800; color: #061043; }
+  .footer { margin-top: 20px; padding-top: 10px; border-top: 3px solid ${BLUE}; text-align: center; }
+  .footer p { font-size: 10px; color: #666; margin-bottom: 3px; }
+  .footer .brand { font-size: 13px; font-weight: 900; color: ${BLUE}; letter-spacing: 1px; }
   
-  @media print { 
-    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } 
-    .invoice { padding: 15px; } 
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 10mm 12mm; width: 100%; min-height: auto; }
   }
 </style>
 </head>
 <body>
-<div class="invoice ${isPaid ? 'paid-stamp' : ''}">
-  
-  <!-- Header -->
-  <div class="header">
-    <div class="company-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 4C4 4 14 2 24 8C29 11 31 15 31 15L19 15C12 15 7 11 4 4Z" fill="white"/>
-          <rect x="4" y="17" width="13" height="13" rx="2" fill="white"/>
-          <path d="M19 17H29C29 17 33 17 33 23C33 29 29 30 26 30H19V17Z" fill="white"/>
-          <circle cx="20" cy="27" r="3.5" fill="#FF4D00"/>
-        </svg>
-      </div>
-      <div class="company-info">
-        <h1>RAC LOGISTICS LTD</h1>
-        <p>29b Osolo Way, Opposite Polaris Bank<br>
-        Ajao Estate, Isolo, Lagos State<br>
-        info@raclogistics.com<br>
-        www.raclogistics.com</p>
-      </div>
-    </div>
-    <div class="header-right">
-      <div class="codes">RC: XXXXXXX</div>
-    </div>
-  </div>
-  
-  <!-- Receipt Title -->
-  <div class="receipt-title">
-    <h2>${isPaid ? 'RECEIPT' : 'INVOICE'}</h2>
-  </div>
-  
-  <!-- Payment Date -->
-  <div class="info-bar">Payment date &nbsp;&nbsp;&nbsp; ${isPaid && invoice.paid_at ? new Date(invoice.paid_at).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) : date}</div>
-  
-  <!-- Invoice Details -->
-  <table class="info-table">
-    <tr><td>Invoice Date</td><td>${date}</td></tr>
-    <tr><td>Invoice No.</td><td>${invoice.invoice_number}</td></tr>
-    <tr><td>Shipment No.</td><td>${shipment?.tracking_number || 'N/A'}</td></tr>
-    <tr><td>Shipment Type</td><td style="text-transform: capitalize;">${serviceType}</td></tr>
+<div class="page">
+
+  <!-- HEADER -->
+  <table class="header-table">
+    <tr>
+      <td class="logo-cell">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:55px;height:55px;background:${BLUE};border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;">
+              <path d="M4 4C4 4 14 2 24 8C29 11 31 15 31 15L19 15C12 15 7 11 4 4Z" fill="white"/>
+              <rect x="4" y="17" width="13" height="13" rx="2" fill="white"/>
+              <path d="M19 17H29C29 17 33 17 33 23C33 29 29 30 26 30H19V17Z" fill="white"/>
+              <circle cx="20" cy="27" r="3.5" fill="#FF4D00"/>
+            </svg>
+          </div>
+          <div>
+            <div class="company-name">RAC LOGISTICS LTD</div>
+            <div class="company-subtitle">Courier &amp; Freight Services</div>
+            <div class="company-details">
+              29b Osolo Way, Opposite Polaris Bank<br>
+              Ajao Estate, Isolo, Lagos State<br>
+              +234 818 595 6707<br>
+              info@raclogistics.com<br>
+              www.raclogistics.com
+            </div>
+          </div>
+        </div>
+      </td>
+      <td class="codes-cell">
+        <div class="codes-box" style="margin-top:10px;">
+          <strong style="font-size:11px;">RC: XXXXXXX</strong>
+        </div>
+      </td>
+      <td class="qr-cell">
+        <img src="${qrUrl}" class="qr-img" alt="QR Code" />
+      </td>
+    </tr>
   </table>
-  
-  <!-- Addresses -->
-  <div class="address-section">
-    <div class="address-box">
-      <div class="address-header">Sender Address</div>
-      <div class="address-content">
-        ${profile?.full_name || 'Customer'}<br>
-        ${profile?.country || ''}<br>
-        ${profile?.city || ''}${profile?.country ? ', ' + profile.country : ''}<br>
-        ${profile?.address || ''}
-      </div>
-    </div>
-    <div class="address-box">
-      <div class="address-header">Delivery Address</div>
-      <div class="address-content">
-        ${shipment ? `${shipment.destination_city}, ${shipment.destination_country}<br>
-        29B OSOLO WAY OPPOSITE POLARIS BANK AJAO<br>ESTATE ISOLO` : 'N/A'}
-      </div>
-    </div>
-  </div>
-  
-  <!-- Charges Table -->
-  <table class="charges-table">
+
+  <div class="blue-divider"></div>
+
+  <!-- TITLE -->
+  <div class="doc-title">${isPaid ? 'RECEIPT' : 'INVOICE'}</div>
+
+  <!-- PAYMENT DATE BAR -->
+  <div class="bar">Payment Date &nbsp;&nbsp;&nbsp;&nbsp; ${paidDate}</div>
+
+  <!-- INVOICE DETAILS -->
+  <table class="info-tbl">
+    <tr><td class="lbl">Invoice Date</td><td class="val">${date}</td></tr>
+    <tr><td class="lbl">Invoice No.</td><td class="val">${invoice.invoice_number}</td></tr>
+    <tr><td class="lbl">Shipment No.</td><td class="val">${trackingNumber}</td></tr>
+    <tr><td class="lbl">Shipment Type</td><td class="val" style="text-transform:capitalize;">${serviceType}</td></tr>
+  </table>
+
+  <!-- ADDRESSES -->
+  <table class="addr-table">
+    <tr>
+      <td style="width:50%;padding-right:0;">
+        <div class="addr-box">
+          <div class="bar-sm">Sender Address</div>
+          <div class="addr-content">
+            <strong>${senderName}</strong><br>
+            ${senderCountry}<br>
+            ${senderCity}${senderCountry ? ', ' + senderCountry : ''}<br>
+            ${senderAddress}
+          </div>
+        </div>
+      </td>
+      <td style="width:50%;padding-left:0;">
+        <div class="addr-box">
+          <div class="bar-sm">Delivery Address</div>
+          <div class="addr-content">
+            ${shipment ? `<strong>${destCity}, ${destCountry}</strong><br>
+            ${destCountry}<br>
+            ${destCity}, ${destCountry}<br>
+            29B Osolo Way, Opposite Polaris Bank,<br>Ajao Estate, Isolo` : 'N/A'}
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- SHIPMENT CHARGES TABLE -->
+  <table class="charges">
     <thead>
       <tr>
         <th>Tracking ID</th>
         <th>Weight (KG)</th>
-        <th>Dimensions</th>
-        <th>Shipping Rate</th>
-        <th>Clearing Rate</th>
-        <th>Delivery Rate</th>
-        <th>Storage</th>
-        <th>Insurance</th>
+        <th>Dimensions /<br>Cubic Volume</th>
+        <th>Shipping<br>Rate</th>
+        <th>Clearing<br>Rate</th>
+        <th>Delivery<br>Rate</th>
+        <th>Storage<br>Rate</th>
+        <th>Insurance<br>Charge</th>
         <th>Amount</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>${shipment?.tracking_number || 'N/A'}</td>
+        <td>${trackingNumber}</td>
         <td>${weight}</td>
         <td>${dimensions}</td>
-        <td>${currencySymbol}${shippingRate.toFixed(2)}</td>
-        <td>${currencySymbol}${clearingRate.toFixed(2)}</td>
-        <td>${currencySymbol}${deliveryRate.toFixed(2)}</td>
-        <td>${currencySymbol}${storageCharges.toFixed(2)}</td>
-        <td>${currencySymbol}${insuranceCharges.toFixed(2)}</td>
-        <td><strong>${currencySymbol}${subtotal.toFixed(2)}</strong></td>
+        <td>${fmt(shippingRate, cs)}</td>
+        <td>${fmt(clearingRate, cs)}</td>
+        <td>${fmt(deliveryRate, cs)}</td>
+        <td>${fmt(storageCharges, cs)}</td>
+        <td>${fmt(insuranceCharges, cs)}</td>
+        <td class="amt">${fmt(subtotal, cs)}</td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Summary -->
-  <div class="summary-section">
-    <div class="payment-instructions">
-      <div class="title">Payment Instructions</div>
-      <div class="content">
-        Log into your RAC Logistics account dashboard to make your payment. 
-        Note: There is a 5% late payment fee on the total invoice value for payments 
-        not made before the vessel arrives at the destination port.
-        <br><br>
-        <strong>Due Date:</strong> ${dueDate}
-      </div>
-    </div>
-    <table class="summary-table">
-      <tr><td>Additional Charges</td><td>${currencySymbol}${additionalCharges.toFixed(2)}</td></tr>
-      <tr><td>Pickup Charges</td><td>${currencySymbol}${pickupCharges.toFixed(2)}</td></tr>
-      <tr class="${isPaid ? 'paid-row' : ''}"><td>Amount Paid (${currency})</td><td>${currencySymbol}${amountPaid.toFixed(2)}</td></tr>
-      <tr class="highlight"><td>Total Due (${currency})</td><td>${currencySymbol}${totalDue.toFixed(2)}</td></tr>
-    </table>
-  </div>
-  
-  <!-- Footer -->
+  <!-- ADDITIONAL SERVICES -->
+  <table class="addl">
+    <thead>
+      <tr>
+        <th style="width:25%;">Additional Service</th>
+        <th style="width:35%;">Description</th>
+        <th style="width:13%;">Quantity</th>
+        <th style="width:13%;">Rate</th>
+        <th style="width:14%;">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Additional Charges</td>
+        <td>Extra service charges</td>
+        <td>1</td>
+        <td>${fmt(additionalCharges, cs)}</td>
+        <td>${fmt(additionalCharges, cs)}</td>
+      </tr>
+      <tr>
+        <td>Pickup</td>
+        <td>Pickup service</td>
+        <td>1</td>
+        <td>${fmt(pickupCharges, cs)}</td>
+        <td>${fmt(pickupCharges, cs)}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- BOTTOM: PAYMENT INSTRUCTIONS + SUMMARY -->
+  <table class="bottom-table">
+    <tr>
+      <td style="width:55%;padding-right:10px;">
+        <div class="payment-box">
+          <div class="bar-sm">Payment Instructions</div>
+          <div class="payment-content">
+            Log into your RAC Logistics account dashboard to make your payment.
+            Note: There is a <strong>5% late payment fee</strong> on the total invoice value
+            for payments not made before the vessel arrives at the destination port.<br><br>
+            <strong>Due Date:</strong> ${dueDate}
+          </div>
+        </div>
+      </td>
+      <td style="width:45%;">
+        <table class="summary-tbl" style="width:100%;">
+          <tr><td class="lbl">Additional Charges</td><td class="val">${fmt(additionalCharges, cs)}</td></tr>
+          <tr><td class="lbl">Pickup Charges</td><td class="val">${fmt(pickupCharges, cs)}</td></tr>
+          <tr class="${isPaid ? 'paid-row' : ''}"><td class="lbl">Amount Paid (${currency})</td><td class="val">${fmt(amountPaid, cs)}</td></tr>
+          <tr class="total-row"><td class="lbl">Total Due (${currency})</td><td class="val">${fmt(totalDue, cs)}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
   <div class="footer">
     <p class="brand">RAC LOGISTICS LTD</p>
     <p>Thank you for choosing RAC Logistics</p>
     <p>For questions about this invoice, contact us at info@raclogistics.com</p>
   </div>
-  
+
 </div>
 </body>
 </html>`;
