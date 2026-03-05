@@ -395,6 +395,36 @@ export type Database = {
         }
         Relationships: []
       }
+      shipping_routes: {
+        Row: {
+          created_at: string
+          destination_country: string
+          id: string
+          is_active: boolean
+          origin_country: string
+          price_per_kg: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          destination_country: string
+          id?: string
+          is_active?: boolean
+          origin_country: string
+          price_per_kg?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          destination_country?: string
+          id?: string
+          is_active?: boolean
+          origin_country?: string
+          price_per_kg?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
