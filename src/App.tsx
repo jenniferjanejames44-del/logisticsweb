@@ -40,6 +40,7 @@ import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
+import Shipping from "./pages/Shipping";
 import DesignSystem from "./pages/DesignSystem";
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/track" element={<Track />} />
+              <Route path="/shipping" element={<Shipping />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
