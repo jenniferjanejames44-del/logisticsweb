@@ -37,20 +37,26 @@ interface Shipment {
 }
 
 const statusOptions = [
-  { value: "pending", label: "Pending" },
-  { value: "processing", label: "Processing" },
+  { value: "shipment_created", label: "Shipment Created" },
+  { value: "awaiting_warehouse", label: "Awaiting Warehouse Arrival" },
+  { value: "received_warehouse", label: "Received at Warehouse" },
+  { value: "processing", label: "Processing Shipment" },
   { value: "in_transit", label: "In Transit" },
-  { value: "out_for_delivery", label: "Out for Delivery" },
+  { value: "arrived_nigeria", label: "Arrived Nigeria" },
+  { value: "ready_for_pickup", label: "Ready for Pickup" },
   { value: "delivered", label: "Delivered" },
   { value: "cancelled", label: "Cancelled" },
 ];
 
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
-    pending: "bg-warning/10 text-warning",
+    shipment_created: "bg-primary/10 text-primary",
+    awaiting_warehouse: "bg-warning/10 text-warning",
+    received_warehouse: "bg-primary/10 text-primary",
     processing: "bg-primary/10 text-primary",
     in_transit: "bg-primary/10 text-primary",
-    out_for_delivery: "bg-warning/10 text-warning",
+    arrived_nigeria: "bg-warning/10 text-warning",
+    ready_for_pickup: "bg-warning/10 text-warning",
     delivered: "bg-success/10 text-success",
     cancelled: "bg-destructive/10 text-destructive",
   };
@@ -190,7 +196,7 @@ const AdminShipments = () => {
                   <div key={shipment.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
                     <div className="flex items-center justify-between">
                       <span className="font-mono font-medium text-sm text-foreground">{shipment.tracking_number}</span>
-                      <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace("_", " ")}</Badge>
+                      <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
@@ -271,7 +277,7 @@ const AdminShipments = () => {
                             {shipment.payment_status}
                           </Badge>
                         </TableCell>
-                        <TableCell><Badge className={getStatusColor(shipment.status)}>{shipment.status.replace("_", " ")}</Badge></TableCell>
+                        <TableCell><Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge></TableCell>
                         <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
