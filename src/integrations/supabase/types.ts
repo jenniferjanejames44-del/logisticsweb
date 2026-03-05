@@ -14,6 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
+      extra_charges: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          price?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      heavy_weight_pricing: {
+        Row: {
+          created_at: string
+          id: string
+          max_weight: number
+          min_weight: number
+          price_per_kg: number
+          updated_at: string
+          zone_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_weight: number
+          min_weight: number
+          price_per_kg?: number
+          updated_at?: string
+          zone_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_weight?: number
+          min_weight?: number
+          price_per_kg?: number
+          updated_at?: string
+          zone_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "heavy_weight_pricing_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoices: {
         Row: {
           additional_charges: number | null
@@ -260,6 +325,36 @@ export type Database = {
         }
         Relationships: []
       }
+      processing_fees: {
+        Row: {
+          created_at: string
+          fee_type: string
+          fee_value: number
+          id: string
+          max_value: number
+          min_value: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          fee_type?: string
+          fee_value?: number
+          id?: string
+          max_value: number
+          min_value: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          fee_type?: string
+          fee_value?: number
+          id?: string
+          max_value?: number
+          min_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
@@ -485,6 +580,33 @@ export type Database = {
         }
         Relationships: []
       }
+      tax_settings: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          rate: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          rate?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          rate?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -533,6 +655,133 @@ export type Database = {
           reference_id?: string | null
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      warehouses: {
+        Row: {
+          address: string
+          country: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          country: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          country?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      weight_pricing: {
+        Row: {
+          created_at: string
+          id: string
+          max_weight: number
+          min_weight: number
+          price: number
+          updated_at: string
+          zone_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_weight: number
+          min_weight: number
+          price?: number
+          updated_at?: string
+          zone_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_weight?: number
+          min_weight?: number
+          price?: number
+          updated_at?: string
+          zone_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weight_pricing_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      zone_countries: {
+        Row: {
+          country: string
+          created_at: string
+          id: string
+          zone_id: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          id?: string
+          zone_id: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          id?: string
+          zone_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "zone_countries_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      zones: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }

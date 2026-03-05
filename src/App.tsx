@@ -36,6 +36,8 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
+import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
+import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import NotFound from "./pages/NotFound";
@@ -99,6 +101,8 @@ const App = () => (
               <Route path="/admin/payments" element={<AdminPayments />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
+              <Route path="/admin/pricing-engine" element={<AdminPricingEngine />} />
+              <Route path="/admin/warehouses" element={<AdminWarehouses />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />
