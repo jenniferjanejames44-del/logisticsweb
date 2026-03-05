@@ -53,6 +53,13 @@ const buttonVariants = cva(
         quote: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98]",
         quotePrimary: "bg-accent text-accent-foreground shadow-md hover:bg-accent/90 active:scale-[0.98]",
         quoteAccent: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98] font-extrabold",
+
+        /* Dashboard-specific variants — rounded-[10px], h-12, font-semibold */
+        dashPrimary: "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-[0.98] shadow-sm rounded-[10px] font-semibold",
+        dashAccent: "bg-accent text-accent-foreground hover:bg-accent/90 active:scale-[0.98] shadow-sm rounded-[10px] font-semibold",
+        dashOutline: "bg-background text-foreground border border-border hover:bg-muted active:scale-[0.98] rounded-[10px] font-semibold",
+        dashGhost: "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground active:scale-[0.98] rounded-[10px] font-semibold",
+        dashDestructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98] rounded-[10px] font-semibold",
       },
       size: {
         default: "h-11 px-6 py-2.5 text-sm",
@@ -61,6 +68,8 @@ const buttonVariants = cva(
         xl: "h-14 px-10 py-4 text-base font-extrabold",
         icon: "h-11 w-11",
         nav: "h-10 px-5 py-2.5 text-sm",
+        dash: "h-12 px-5 py-3 text-sm",
+        dashSm: "h-10 px-4 py-2.5 text-sm",
       },
     },
     defaultVariants: {

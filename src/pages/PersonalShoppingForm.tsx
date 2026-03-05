@@ -247,6 +247,8 @@ const PersonalShoppingForm = () => {
                 </div>
 
                 <Button
+                  variant="dashAccent"
+                  size="dash"
                   className="w-full gap-2"
                   disabled={!canProceedStep1}
                   onClick={() => setStep(2)}
@@ -294,10 +296,10 @@ const PersonalShoppingForm = () => {
                 </div>
 
                 <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1 gap-2" onClick={() => setStep(1)}>
+                  <Button variant="dashOutline" size="dash" className="flex-1 gap-2" onClick={() => setStep(1)}>
                     <ArrowLeft className="w-4 h-4" /> Back
                   </Button>
-                  <Button className="flex-1 gap-2" onClick={() => setStep(3)}>
+                  <Button variant="dashAccent" size="dash" className="flex-1 gap-2" onClick={() => setStep(3)}>
                     Review <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
@@ -359,10 +361,12 @@ const PersonalShoppingForm = () => {
                 )}
 
                 <div className="flex gap-3">
-                  <Button variant="outline" className="flex-1 gap-2" onClick={() => setStep(2)}>
+                  <Button variant="dashOutline" size="dash" className="flex-1 gap-2" onClick={() => setStep(2)}>
                     <ArrowLeft className="w-4 h-4" /> Back
                   </Button>
                   <Button
+                    variant="dashAccent"
+                    size="dash"
                     className="flex-1 gap-2"
                     disabled={submitting}
                     onClick={handleSubmit}
