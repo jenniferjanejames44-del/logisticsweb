@@ -79,7 +79,7 @@ const Wallet = () => {
       title="Wallet" 
       description="Manage your account balance and view transactions"
       action={
-        <Button variant="cta" onClick={() => setAddFundsOpen(true)}>
+        <Button variant="dashAccent" size="dash" onClick={() => setAddFundsOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Funds
         </Button>

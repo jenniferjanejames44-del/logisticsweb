@@ -304,37 +304,39 @@ const Shipping = () => {
 
           <div className="section-container relative z-10">
             <div className="max-w-4xl mx-auto">
-              {/* Progress Bar */}
+              {/* Progress Bar — scrollable on mobile */}
               <div className="bg-card rounded-2xl border border-border/50 shadow-xl overflow-hidden">
-                <div className="bg-muted/80 border-b border-border/50 p-4 sm:p-6">
-                  <div className="flex items-center justify-between max-w-2xl mx-auto">
-                    {progressSteps.map((s, i) => {
-                      const isActive = step >= s.num;
-                      const isCurrent = step === s.num;
-                      const isComplete = step > s.num;
-                      const StepIcon = s.icon;
-                      return (
-                        <div key={s.num} className="flex items-center gap-1 sm:gap-2">
-                          <div className="flex flex-col items-center gap-1">
-                            <div
-                              className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
-                                isActive ? "bg-primary text-primary-foreground shadow-lg" : "bg-background border-2 border-border text-muted-foreground"
-                              } ${isCurrent ? "ring-4 ring-primary/20 scale-110" : ""}`}
-                            >
-                              {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" /> : <StepIcon className="w-4 h-4 sm:w-5 sm:h-5" />}
+                <div className="bg-muted/80 border-b border-border/50 p-3 sm:p-6">
+                  <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
+                    <div className="flex items-center justify-between min-w-[420px] max-w-2xl mx-auto">
+                      {progressSteps.map((s, i) => {
+                        const isActive = step >= s.num;
+                        const isCurrent = step === s.num;
+                        const isComplete = step > s.num;
+                        const StepIcon = s.icon;
+                        return (
+                          <div key={s.num} className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex flex-col items-center gap-1">
+                              <div
+                                className={`w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all duration-300 ${
+                                  isActive ? "bg-primary text-primary-foreground shadow-lg" : "bg-background border-2 border-border text-muted-foreground"
+                                } ${isCurrent ? "ring-4 ring-primary/20 scale-110" : ""}`}
+                              >
+                                {isComplete ? <CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5" /> : <StepIcon className="w-3.5 h-3.5 sm:w-5 sm:h-5" />}
+                              </div>
+                              <span className={`text-[9px] sm:text-xs font-semibold transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                                {s.label}
+                              </span>
                             </div>
-                            <span className={`text-[10px] sm:text-xs font-semibold transition-colors hidden sm:block ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                              {s.label}
-                            </span>
+                            {i < progressSteps.length - 1 && (
+                              <div className="w-3 sm:w-8 lg:w-12 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
+                                <div className={`h-full bg-primary rounded-full transition-all duration-500 ${step > s.num ? "w-full" : "w-0"}`} />
+                              </div>
+                            )}
                           </div>
-                          {i < progressSteps.length - 1 && (
-                            <div className="w-4 sm:w-8 lg:w-12 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
-                              <div className={`h-full bg-primary rounded-full transition-all duration-500 ${step > s.num ? "w-full" : "w-0"}`} />
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
 
@@ -692,7 +694,8 @@ const Shipping = () => {
                   <div className="flex justify-between pt-6 mt-6 border-t border-border/50">
                     <Button
                       type="button"
-                      variant="outline"
+                      variant="dashOutline"
+                      size="dash"
                       onClick={() => setStep(Math.max(1, step - 1))}
                       disabled={step === 1}
                       className="gap-2"
@@ -703,7 +706,8 @@ const Shipping = () => {
                     {step < TOTAL_STEPS ? (
                       <Button
                         type="button"
-                        variant="cta"
+                        variant="dashAccent"
+                        size="dash"
                         disabled={!canProceed(step)}
                         onClick={() => setStep(step + 1)}
                         className="gap-2"
@@ -713,7 +717,8 @@ const Shipping = () => {
                     ) : (
                       <Button
                         type="button"
-                        variant="cta"
+                        variant="dashAccent"
+                        size="dash"
                         disabled={isSubmitting}
                         onClick={handleSubmit}
                         className="gap-2"
