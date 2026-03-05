@@ -108,7 +108,7 @@ const Shipments = () => {
             weight: parseFloat(pending.weight),
             service_type: pending.service_type,
             description: pending.description || null,
-            status: "pending",
+      status: "shipment_created",
             estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
             tracking_number: "",
             price: calculatedPrice,
@@ -174,7 +174,7 @@ const Shipments = () => {
       weight: parseFloat(formData.weight),
       service_type: formData.service_type,
       description: formData.description || null,
-      status: "pending",
+      status: "shipment_created",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
       price: calculatedPrice,
@@ -209,12 +209,17 @@ const Shipments = () => {
 
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any; color: string }> = {
-      pending: { variant: "secondary", icon: Clock, color: "text-warning" },
-      in_transit: { variant: "default", icon: Truck, color: "text-blue-500" },
+      shipment_created: { variant: "secondary", icon: Package, color: "text-primary" },
+      awaiting_warehouse: { variant: "secondary", icon: Clock, color: "text-warning" },
+      received_warehouse: { variant: "default", icon: Package, color: "text-primary" },
+      processing: { variant: "default", icon: Clock, color: "text-primary" },
+      in_transit: { variant: "default", icon: Truck, color: "text-primary" },
+      arrived_nigeria: { variant: "secondary", icon: MapPin, color: "text-warning" },
+      ready_for_pickup: { variant: "outline", icon: CheckCircle, color: "text-warning" },
       delivered: { variant: "outline", icon: CheckCircle, color: "text-success" },
       cancelled: { variant: "destructive", icon: AlertCircle, color: "text-destructive" },
     };
-    const config = statusConfig[status] || statusConfig.pending;
+    const config = statusConfig[status] || statusConfig.shipment_created;
     const Icon = config.icon;
     return (
       <Badge variant={config.variant} className="gap-1 capitalize">
@@ -286,8 +291,13 @@ const Shipments = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="shipment_created">Shipment Created</SelectItem>
+            <SelectItem value="awaiting_warehouse">Awaiting Warehouse</SelectItem>
+            <SelectItem value="received_warehouse">Received at Warehouse</SelectItem>
+            <SelectItem value="processing">Processing</SelectItem>
             <SelectItem value="in_transit">In Transit</SelectItem>
+            <SelectItem value="arrived_nigeria">Arrived Nigeria</SelectItem>
+            <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
             <SelectItem value="delivered">Delivered</SelectItem>
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>

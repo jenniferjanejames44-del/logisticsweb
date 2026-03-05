@@ -158,7 +158,7 @@ const ShipmentCreationForm = () => {
       description: formData.description || null,
       warehouse_location: formData.warehouse_location || null,
       pickup_prepaid: prepayPickup,
-      status: "pending",
+      status: "shipment_created",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
       price: finalPrice,
