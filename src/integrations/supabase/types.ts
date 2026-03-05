@@ -350,6 +350,7 @@ export type Database = {
           tracking_number: string
           updated_at: string
           user_id: string
+          warehouse_location: string | null
           weight: number
         }
         Insert: {
@@ -369,6 +370,7 @@ export type Database = {
           tracking_number: string
           updated_at?: string
           user_id: string
+          warehouse_location?: string | null
           weight: number
         }
         Update: {
@@ -388,6 +390,7 @@ export type Database = {
           tracking_number?: string
           updated_at?: string
           user_id?: string
+          warehouse_location?: string | null
           weight?: number
         }
         Relationships: []

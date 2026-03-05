@@ -18,6 +18,7 @@ import {
   Scale,
   FileText,
   CheckCircle2,
+  Warehouse,
 } from "lucide-react";
 
 const countries = [
@@ -32,6 +33,12 @@ const serviceTypes = [
   { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, description: "20-30 days" },
   { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, description: "25-35 days" },
   { id: "road-freight", name: "Road Freight", icon: Truck, description: "3-10 days" },
+];
+
+const warehouseLocations = [
+  { id: "usa_warehouse", name: "USA Warehouse" },
+  { id: "uk_warehouse", name: "UK Warehouse" },
+  { id: "china_warehouse", name: "China Warehouse" },
 ];
 
 const ShipmentCreationForm = () => {
@@ -50,6 +57,7 @@ const ShipmentCreationForm = () => {
     weight: "",
     service_type: "",
     description: "",
+    warehouse_location: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,11 +96,12 @@ const ShipmentCreationForm = () => {
       weight: parseFloat(formData.weight),
       service_type: formData.service_type,
       description: formData.description || null,
+      warehouse_location: formData.warehouse_location || null,
       status: "pending",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
       price: calculatedPrice,
-    });
+    } as any);
 
     if (error) {
       toast({
@@ -113,6 +122,7 @@ const ShipmentCreationForm = () => {
         weight: "",
         service_type: "",
         description: "",
+        warehouse_location: "",
       });
       setStep(1);
       navigate("/dashboard/shipments");
@@ -393,6 +403,33 @@ const ShipmentCreationForm = () => {
                       />
                     </div>
 
+                    <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <Label className="flex items-center gap-2 text-muted-foreground mb-3">
+                        <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <Warehouse className="w-4 h-4 text-accent-foreground" />
+                        </div>
+                        <span className="font-semibold">Warehouse Location</span>
+                      </Label>
+                      <Select
+                        value={formData.warehouse_location}
+                        onValueChange={(value) => setFormData({ ...formData, warehouse_location: value })}
+                      >
+                        <SelectTrigger className="h-12 bg-card border-border text-foreground hover:border-primary/50 transition-colors">
+                          <SelectValue placeholder="Select warehouse" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border-border">
+                          {warehouseLocations.map((wh) => (
+                            <SelectItem key={wh.id} value={wh.id}>
+                              <div className="flex items-center gap-2">
+                                <Warehouse className="w-4 h-4 text-primary" />
+                                <span>{wh.name}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     <div className="flex justify-between pt-4">
                       <button 
                         type="button" 
@@ -452,6 +489,15 @@ const ShipmentCreationForm = () => {
                           <p className="font-bold text-foreground capitalize">{formData.service_type.replace("-", " ")}</p>
                         </div>
                       </div>
+
+                      {formData.warehouse_location && (
+                        <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
+                          <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                            <Warehouse className="w-3 h-3" /> Warehouse
+                          </p>
+                          <p className="font-bold text-foreground capitalize">{warehouseLocations.find(w => w.id === formData.warehouse_location)?.name}</p>
+                        </div>
+                      )}
 
                       {formData.description && (
                         <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
