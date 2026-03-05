@@ -18,6 +18,8 @@ import {
   Bell,
   FileText,
   ShoppingBag,
+  Warehouse,
+  Calculator,
 } from "lucide-react";
 
 const AdminSidebar = () => {
@@ -33,7 +35,9 @@ const AdminSidebar = () => {
     { name: "Payments", href: "/admin/payments", icon: DollarSign },
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Pricing", href: "/admin/pricing", icon: Settings },
+    { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
     { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Package },
+    { name: "Warehouses", href: "/admin/warehouses", icon: Warehouse },
     { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   ];
