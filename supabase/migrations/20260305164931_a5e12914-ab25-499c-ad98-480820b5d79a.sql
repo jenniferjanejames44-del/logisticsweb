@@ -1,0 +1,1 @@
+ALTER TABLE public.shipments ADD COLUMN pickup_prepaid boolean NOT NULL DEFAULT false;

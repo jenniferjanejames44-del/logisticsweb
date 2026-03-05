@@ -344,6 +344,7 @@ export type Database = {
           origin_city: string
           origin_country: string
           payment_status: string
+          pickup_prepaid: boolean
           price: number | null
           service_type: string
           status: string
@@ -364,6 +365,7 @@ export type Database = {
           origin_city: string
           origin_country: string
           payment_status?: string
+          pickup_prepaid?: boolean
           price?: number | null
           service_type: string
           status?: string
@@ -384,6 +386,7 @@ export type Database = {
           origin_city?: string
           origin_country?: string
           payment_status?: string
+          pickup_prepaid?: boolean
           price?: number | null
           service_type?: string
           status?: string

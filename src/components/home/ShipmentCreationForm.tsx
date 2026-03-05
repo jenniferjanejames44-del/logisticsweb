@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import {
   Package,
@@ -56,6 +57,7 @@ const ShipmentCreationForm = () => {
   const [step, setStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
+  const [prepayPickup, setPrepayPickup] = useState(false);
 
   const [formData, setFormData] = useState({
     origin_country: "",
@@ -101,6 +103,22 @@ const ShipmentCreationForm = () => {
     return route ? Number(route.price_per_kg) : null;
   }, [formData.origin_country, formData.destination_country, routePrices]);
 
+  // Calculate pickup fee based on weight
+  const pickupFee = useMemo(() => {
+    const weightNum = parseFloat(formData.weight);
+    if (!weightNum || weightNum <= 0) return 0;
+    if (weightNum <= 4) return 70;
+    // Convert KG to pounds (1 KG ≈ 2.20462 lbs) then $6/lb
+    const weightLbs = weightNum * 2.20462;
+    return Math.round(weightLbs * 6 * 100) / 100;
+  }, [formData.weight]);
+
+  // Total price including optional pickup
+  const totalPrice = useMemo(() => {
+    if (estimatedCost === null) return null;
+    return prepayPickup ? estimatedCost + pickupFee : estimatedCost;
+  }, [estimatedCost, prepayPickup, pickupFee]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -123,10 +141,11 @@ const ShipmentCreationForm = () => {
     estimatedDelivery.setDate(estimatedDelivery.getDate() + estimatedDays);
 
     // Use route-based price if available, fallback to pricing_plans
-    const finalPrice = estimatedCost ?? await calculateShipmentPrice(
+    const shippingOnly = estimatedCost ?? await calculateShipmentPrice(
       formData.service_type,
       parseFloat(formData.weight)
     );
+    const finalPrice = shippingOnly !== null && prepayPickup ? shippingOnly + pickupFee : shippingOnly;
 
     const { error } = await supabase.from("shipments").insert({
       user_id: user.id,
@@ -138,6 +157,7 @@ const ShipmentCreationForm = () => {
       service_type: formData.service_type,
       description: formData.description || null,
       warehouse_location: formData.warehouse_location || null,
+      pickup_prepaid: prepayPickup,
       status: "pending",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
@@ -166,6 +186,7 @@ const ShipmentCreationForm = () => {
         warehouse_location: "",
       });
       setStep(1);
+      setPrepayPickup(false);
       navigate("/dashboard/shipments");
     }
 
@@ -438,12 +459,47 @@ const ShipmentCreationForm = () => {
                           <span className="font-bold text-lg text-foreground">Estimated Shipping Cost</span>
                         </div>
                         {estimatedCost !== null ? (
-                          <div className="space-y-2">
-                            <div className="text-3xl font-bold text-primary">
-                              ${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          <div className="space-y-3">
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-sm text-muted-foreground">
+                                <span>Shipping ({formData.weight} KG × ${matchedRate?.toFixed(2)}/KG)</span>
+                                <span>${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                              </div>
+                              {prepayPickup && (
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                  <span>Pickup / Delivery Fee</span>
+                                  <span>${pickupFee.toFixed(2)}</span>
+                                </div>
+                              )}
                             </div>
-                            <div className="text-sm text-muted-foreground">
-                              {formData.weight} KG × ${matchedRate?.toFixed(2)}/KG ({formData.origin_country} → {formData.destination_country})
+                            <div className="border-t border-primary/20 pt-2 flex justify-between items-center">
+                              <span className="font-bold text-foreground">Total Payment</span>
+                              <span className="text-3xl font-bold text-primary">
+                                ${totalPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              </span>
+                            </div>
+
+                            {/* Prepay Pickup Checkbox */}
+                            <div className="mt-3 p-4 rounded-lg border border-border bg-card">
+                              <div className="flex items-start gap-3">
+                                <Checkbox
+                                  id="prepay-pickup"
+                                  checked={prepayPickup}
+                                  onCheckedChange={(checked) => setPrepayPickup(checked === true)}
+                                  className="mt-0.5"
+                                />
+                                <div className="space-y-1">
+                                  <label htmlFor="prepay-pickup" className="text-sm font-semibold text-foreground cursor-pointer">
+                                    Prepay Pickup / Delivery Fee
+                                  </label>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">
+                                    If you pay this now, you will not pay any pickup fee when collecting your shipment.
+                                    {parseFloat(formData.weight) <= 4
+                                      ? ` (Flat fee: $70 for shipments ≤ 4 KG)`
+                                      : ` ($6/lb — ${(parseFloat(formData.weight) * 2.20462).toFixed(1)} lbs = $${pickupFee.toFixed(2)})`}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         ) : (
@@ -560,10 +616,25 @@ const ShipmentCreationForm = () => {
                       {estimatedCost !== null && (
                         <div className="mt-4 group bg-primary/10 rounded-xl p-4 border border-primary/30">
                           <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                            <DollarSign className="w-3 h-3" /> Estimated Shipping Cost
+                            <DollarSign className="w-3 h-3" /> Shipping Cost
                           </p>
-                          <p className="font-bold text-primary text-xl">${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                          <p className="font-bold text-primary text-lg">${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                           <p className="text-xs text-muted-foreground mt-1">{formData.weight} KG × ${matchedRate?.toFixed(2)}/KG</p>
+                          {prepayPickup && (
+                            <div className="mt-3 pt-3 border-t border-primary/20 space-y-1">
+                              <div className="flex justify-between text-sm text-muted-foreground">
+                                <span>Pickup / Delivery Fee</span>
+                                <span>${pickupFee.toFixed(2)}</span>
+                              </div>
+                              <div className="flex justify-between font-bold text-foreground">
+                                <span>Total Payment</span>
+                                <span className="text-primary">${totalPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                              </div>
+                            </div>
+                          )}
+                          {!prepayPickup && (
+                            <p className="text-xs text-muted-foreground mt-2 italic">Pickup fee will be paid on collection.</p>
+                          )}
                         </div>
                       )}
 
