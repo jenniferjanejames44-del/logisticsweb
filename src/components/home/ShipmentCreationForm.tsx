@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +19,7 @@ import {
   FileText,
   CheckCircle2,
   Warehouse,
+  DollarSign,
 } from "lucide-react";
 
 const countries = [
@@ -41,6 +42,12 @@ const warehouseLocations = [
   { id: "china_warehouse", name: "China Warehouse" },
 ];
 
+interface RoutePrice {
+  origin_country: string;
+  destination_country: string;
+  price_per_kg: number;
+}
+
 const ShipmentCreationForm = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -48,6 +55,7 @@ const ShipmentCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
+  const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
 
   const [formData, setFormData] = useState({
     origin_country: "",
@@ -59,6 +67,39 @@ const ShipmentCreationForm = () => {
     description: "",
     warehouse_location: "",
   });
+
+  // Fetch shipping routes from database
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      const { data } = await supabase
+        .from("shipping_routes")
+        .select("origin_country, destination_country, price_per_kg")
+        .eq("is_active", true);
+      if (data) setRoutePrices(data);
+    };
+    fetchRoutes();
+  }, []);
+
+  // Calculate estimated shipping cost dynamically
+  const estimatedCost = useMemo(() => {
+    const weightNum = parseFloat(formData.weight);
+    if (!formData.origin_country || !formData.destination_country || !weightNum || weightNum <= 0) {
+      return null;
+    }
+    const route = routePrices.find(
+      (r) => r.origin_country === formData.origin_country && r.destination_country === formData.destination_country
+    );
+    if (!route) return null;
+    return Number(route.price_per_kg) * weightNum;
+  }, [formData.origin_country, formData.destination_country, formData.weight, routePrices]);
+
+  const matchedRate = useMemo(() => {
+    if (!formData.origin_country || !formData.destination_country) return null;
+    const route = routePrices.find(
+      (r) => r.origin_country === formData.origin_country && r.destination_country === formData.destination_country
+    );
+    return route ? Number(route.price_per_kg) : null;
+  }, [formData.origin_country, formData.destination_country, routePrices]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,8 +122,8 @@ const ShipmentCreationForm = () => {
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + estimatedDays);
 
-    // Auto-calculate price from pricing plans
-    const calculatedPrice = await calculateShipmentPrice(
+    // Use route-based price if available, fallback to pricing_plans
+    const finalPrice = estimatedCost ?? await calculateShipmentPrice(
       formData.service_type,
       parseFloat(formData.weight)
     );
@@ -100,7 +141,7 @@ const ShipmentCreationForm = () => {
       status: "pending",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
-      price: calculatedPrice,
+      price: finalPrice,
     } as any);
 
     if (error) {
@@ -387,6 +428,32 @@ const ShipmentCreationForm = () => {
                       </div>
                     </div>
 
+                    {/* Estimated Shipping Cost */}
+                    {formData.weight && parseFloat(formData.weight) > 0 && (
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5 transition-all duration-300">
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                            <DollarSign className="w-5 h-5 text-primary-foreground" />
+                          </div>
+                          <span className="font-bold text-lg text-foreground">Estimated Shipping Cost</span>
+                        </div>
+                        {estimatedCost !== null ? (
+                          <div className="space-y-2">
+                            <div className="text-3xl font-bold text-primary">
+                              ${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {formData.weight} KG × ${matchedRate?.toFixed(2)}/KG ({formData.origin_country} → {formData.destination_country})
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">
+                            No route pricing found for {formData.origin_country || "origin"} → {formData.destination_country || "destination"}. Price will be set by admin.
+                          </p>
+                        )}
+                      </div>
+                    )}
+
                     <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
                       <Label className="flex items-center gap-2 text-muted-foreground mb-3">
                         <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -489,6 +556,16 @@ const ShipmentCreationForm = () => {
                           <p className="font-bold text-foreground capitalize">{formData.service_type.replace("-", " ")}</p>
                         </div>
                       </div>
+
+                      {estimatedCost !== null && (
+                        <div className="mt-4 group bg-primary/10 rounded-xl p-4 border border-primary/30">
+                          <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
+                            <DollarSign className="w-3 h-3" /> Estimated Shipping Cost
+                          </p>
+                          <p className="font-bold text-primary text-xl">${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{formData.weight} KG × ${matchedRate?.toFixed(2)}/KG</p>
+                        </div>
+                      )}
 
                       {formData.warehouse_location && (
                         <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
