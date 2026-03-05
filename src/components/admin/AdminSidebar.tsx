@@ -32,6 +32,7 @@ const AdminSidebar = () => {
     { name: "Payments", href: "/admin/payments", icon: DollarSign },
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Pricing", href: "/admin/pricing", icon: Settings },
+    { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Package },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   ];
 

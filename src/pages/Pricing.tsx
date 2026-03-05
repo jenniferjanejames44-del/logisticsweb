@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
@@ -13,28 +14,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calculator, Plane, Ship, ShoppingBag, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 const countries = [
-  { code: "US", name: "United States", airMultiplier: 1.0, oceanMultiplier: 1.0 },
-  { code: "UK", name: "United Kingdom", airMultiplier: 1.1, oceanMultiplier: 1.05 },
-  { code: "DE", name: "Germany", airMultiplier: 1.15, oceanMultiplier: 1.1 },
-  { code: "FR", name: "France", airMultiplier: 1.12, oceanMultiplier: 1.08 },
-  { code: "CN", name: "China", airMultiplier: 0.9, oceanMultiplier: 0.85 },
-  { code: "JP", name: "Japan", airMultiplier: 1.2, oceanMultiplier: 1.15 },
-  { code: "AU", name: "Australia", airMultiplier: 1.3, oceanMultiplier: 1.2 },
-  { code: "CA", name: "Canada", airMultiplier: 1.05, oceanMultiplier: 1.02 },
-  { code: "NG", name: "Nigeria", airMultiplier: 1.25, oceanMultiplier: 1.18 },
-  { code: "AE", name: "United Arab Emirates", airMultiplier: 1.1, oceanMultiplier: 1.0 },
-  { code: "SG", name: "Singapore", airMultiplier: 1.15, oceanMultiplier: 1.05 },
-  { code: "IN", name: "India", airMultiplier: 0.95, oceanMultiplier: 0.9 },
+  { code: "US", name: "United States" },
+  { code: "UK", name: "United Kingdom" },
+  { code: "DE", name: "Germany" },
+  { code: "FR", name: "France" },
+  { code: "CN", name: "China" },
+  { code: "JP", name: "Japan" },
+  { code: "AU", name: "Australia" },
+  { code: "CA", name: "Canada" },
+  { code: "NG", name: "Nigeria" },
+  { code: "AE", name: "United Arab Emirates" },
+  { code: "SG", name: "Singapore" },
+  { code: "IN", name: "India" },
 ];
 
 const services = [
-  { id: "air-express", name: "Air Express", icon: Plane, baseRate: 25, description: "1-3 days delivery" },
-  { id: "air-standard", name: "Air Standard", icon: Plane, baseRate: 18, description: "3-5 days delivery" },
-  { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, baseRate: 8, description: "15-30 days delivery" },
-  { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, baseRate: 5, description: "20-35 days delivery" },
-  { id: "personal-shopping", name: "Personal Shopping", icon: ShoppingBag, baseRate: 15, description: "Varies by source" },
-  { id: "procurement", name: "Procurement", icon: Package, baseRate: 12, description: "Custom timeline" },
+  { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "1-3 days delivery" },
+  { id: "air-standard", name: "Air Standard", icon: Plane, fallbackRate: 18, description: "3-5 days delivery" },
+  { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, fallbackRate: 8, description: "15-30 days delivery" },
+  { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, fallbackRate: 5, description: "20-35 days delivery" },
+  { id: "personal-shopping", name: "Personal Shopping", icon: ShoppingBag, fallbackRate: 15, description: "Varies by source" },
+  { id: "procurement", name: "Procurement", icon: Package, fallbackRate: 12, description: "Custom timeline" },
 ];
+
+interface RoutePrice {
+  origin_country: string;
+  destination_country: string;
+  price_per_kg: number;
+}
 
 const Pricing = () => {
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
@@ -45,6 +52,20 @@ const Pricing = () => {
   const [selectedService, setSelectedService] = useState<string>("");
   const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
+  const [routeRate, setRouteRate] = useState<number | null>(null);
+
+  // Fetch route-based prices from database
+  useEffect(() => {
+    const fetchRoutes = async () => {
+      const { data } = await supabase
+        .from("shipping_routes")
+        .select("origin_country, destination_country, price_per_kg")
+        .eq("is_active", true);
+      if (data) setRoutePrices(data);
+    };
+    fetchRoutes();
+  }, []);
 
   const handleProceedToPayment = () => {
     if (user) {
@@ -63,11 +84,15 @@ const Pricing = () => {
         const service = services.find(s => s.id === selectedService);
         
         if (country && service) {
-          const multiplier = selectedService.includes("ocean") 
-            ? country.oceanMultiplier 
-            : country.airMultiplier;
+          // Look for a route-based price (origin: Nigeria → destination)
+          const route = routePrices.find(
+            r => r.origin_country === "Nigeria" && r.destination_country === country.name
+          );
           
-          const basePrice = service.baseRate * parseFloat(weight) * multiplier;
+          const ratePerKg = route ? Number(route.price_per_kg) : service.fallbackRate;
+          setRouteRate(route ? Number(route.price_per_kg) : null);
+          
+          const basePrice = ratePerKg * parseFloat(weight);
           const handlingFee = 15;
           const insuranceFee = basePrice * 0.02;
           const totalPrice = basePrice + handlingFee + insuranceFee;
@@ -80,8 +105,9 @@ const Pricing = () => {
       return () => clearTimeout(timer);
     } else {
       setCalculatedPrice(null);
+      setRouteRate(null);
     }
-  }, [selectedCountry, weight, selectedService]);
+  }, [selectedCountry, weight, selectedService, routePrices]);
 
   const selectedServiceData = services.find(s => s.id === selectedService);
 
@@ -210,8 +236,8 @@ const Pricing = () => {
                           
                           <div className="pt-4 border-t border-border space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Base Rate ({weight} KG × ₦{selectedServiceData.baseRate}/KG)</span>
-                              <span>₦{(parseFloat(weight) * selectedServiceData.baseRate).toFixed(2)}</span>
+                              <span>Base Rate ({weight} KG × ₦{routeRate ?? selectedServiceData.fallbackRate}/KG{routeRate ? " (route price)" : ""})</span>
+                              <span>₦{(parseFloat(weight) * (routeRate ?? selectedServiceData.fallbackRate)).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
                               <span>Handling Fee</span>
