@@ -428,6 +428,63 @@ export type Database = {
         }
         Relationships: []
       }
+      shopping_orders: {
+        Row: {
+          additional_notes: string | null
+          created_at: string
+          id: string
+          item_description: string
+          item_value: number
+          order_number: string
+          payment_status: string
+          processing_fee: number
+          product_image_url: string | null
+          product_link: string | null
+          product_name: string
+          quantity: number
+          status: string
+          total_cost: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          item_description: string
+          item_value: number
+          order_number: string
+          payment_status?: string
+          processing_fee?: number
+          product_image_url?: string | null
+          product_link?: string | null
+          product_name: string
+          quantity?: number
+          status?: string
+          total_cost?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          additional_notes?: string | null
+          created_at?: string
+          id?: string
+          item_description?: string
+          item_value?: number
+          order_number?: string
+          payment_status?: string
+          processing_fee?: number
+          product_image_url?: string | null
+          product_link?: string | null
+          product_name?: string
+          quantity?: number
+          status?: string
+          total_cost?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -17,6 +17,7 @@ import {
   Shield,
   Bell,
   FileText,
+  ShoppingBag,
 } from "lucide-react";
 
 const AdminSidebar = () => {
@@ -33,6 +34,7 @@ const AdminSidebar = () => {
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Pricing", href: "/admin/pricing", icon: Settings },
     { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Package },
+    { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   ];
 
