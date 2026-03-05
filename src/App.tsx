@@ -41,6 +41,9 @@ import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
 import Shipping from "./pages/Shipping";
+import PersonalShoppingForm from "./pages/PersonalShoppingForm";
+import ShoppingOrders from "./pages/dashboard/ShoppingOrders";
+import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
 import DesignSystem from "./pages/DesignSystem";
 const queryClient = new QueryClient();
 
@@ -86,6 +89,8 @@ const App = () => (
               <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
+              <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
+              <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
               {/* Admin Dashboard */}
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/users" element={<AdminUsers />} />
@@ -96,6 +101,7 @@ const App = () => (
               <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
+              <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
