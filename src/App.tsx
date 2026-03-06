@@ -38,6 +38,8 @@ import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
 import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
+import AdminPackaging from "./pages/admin/AdminPackaging";
+import AdminDeliveryMethods from "./pages/admin/AdminDeliveryMethods";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import NotFound from "./pages/NotFound";
@@ -103,6 +105,8 @@ const App = () => (
               <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
               <Route path="/admin/pricing-engine" element={<AdminPricingEngine />} />
               <Route path="/admin/warehouses" element={<AdminWarehouses />} />
+              <Route path="/admin/packaging" element={<AdminPackaging />} />
+              <Route path="/admin/delivery-methods" element={<AdminDeliveryMethods />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />

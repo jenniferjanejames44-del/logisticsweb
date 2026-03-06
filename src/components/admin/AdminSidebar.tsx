@@ -21,6 +21,7 @@ import {
   Warehouse,
   Calculator,
   Route,
+  Truck,
 } from "lucide-react";
 
 interface NavSection {
@@ -50,6 +51,8 @@ const navSections: NavSection[] = [
     items: [
       { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Route },
       { name: "Warehouses", href: "/admin/warehouses", icon: Warehouse },
+      { name: "Packaging", href: "/admin/packaging", icon: Package },
+      { name: "Delivery Methods", href: "/admin/delivery-methods", icon: Truck },
     ],
   },
   {
