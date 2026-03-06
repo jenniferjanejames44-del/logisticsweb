@@ -38,6 +38,7 @@ interface Shipment {
 const Shipments = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { balance, refetch: refetchBalance } = useWalletBalance(user?.id);
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,6 +46,21 @@ const Shipments = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
+
+  // Auto-open payment dialog if ?pay=shipmentId is in URL
+  useEffect(() => {
+    const payId = searchParams.get("pay");
+    if (payId && shipments.length > 0) {
+      const shipment = shipments.find((s) => s.id === payId);
+      if (shipment && shipment.payment_status !== "paid") {
+        setSelectedShipment(shipment);
+        setPaymentDialogOpen(true);
+        // Clear the param
+        searchParams.delete("pay");
+        setSearchParams(searchParams, { replace: true });
+      }
+    }
+  }, [shipments, searchParams]);
 
   useEffect(() => {
     if (user) {
