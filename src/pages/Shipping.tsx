@@ -594,7 +594,29 @@ const Shipping = () => {
                               );
                             })}
                           </div>
-                        </div>
+
+                          {/* Pickup Fee Option */}
+                          {isPickupMethod && deliveryFee > 0 && (
+                            <div className="p-4 rounded-xl border border-border bg-card mt-3">
+                              <div className="flex items-start gap-3">
+                                <Checkbox
+                                  checked={pickupFeePrepaid}
+                                  onCheckedChange={(checked) => setPickupFeePrepaid(!!checked)}
+                                  className="mt-0.5"
+                                />
+                                <div className="flex-1">
+                                  <p className="text-sm font-medium text-foreground">
+                                    Pay pickup handling fee now — ₦{deliveryFee.toLocaleString()}
+                                  </p>
+                                  {!pickupFeePrepaid && (
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                      Pickup fee will be paid at the office during collection.
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
                       )}
 
                       {/* Shipping Speed */}
