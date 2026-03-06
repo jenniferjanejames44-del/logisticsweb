@@ -792,10 +792,16 @@ const Shipping = () => {
                                 <span className="font-semibold text-foreground">₦{packagingCost.toLocaleString()}</span>
                               </div>
                             )}
-                            {deliveryFee > 0 && (
+                            {deliveryFee > 0 && !isPickupMethod && (
                               <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">Delivery Fee ({selectedDeliveryMethodData?.name})</span>
                                 <span className="font-semibold text-foreground">₦{deliveryFee.toLocaleString()}</span>
+                              </div>
+                            )}
+                            {isPickupMethod && deliveryFee > 0 && (
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">Pickup Handling Fee {pickupFeePrepaid ? "(Prepaid)" : "(Pay at office)"}</span>
+                                <span className={`font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>₦{deliveryFee.toLocaleString()}</span>
                               </div>
                             )}
                             <div className="border-t border-primary/20 pt-3 flex justify-between items-center">
