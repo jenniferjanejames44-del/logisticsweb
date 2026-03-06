@@ -617,6 +617,7 @@ const Shipping = () => {
                               </div>
                             </div>
                           )}
+                        </div>
                       )}
 
                       {/* Shipping Speed */}
