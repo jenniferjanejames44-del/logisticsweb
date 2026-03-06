@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +13,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const AuthForm = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -154,7 +157,7 @@ const AuthForm = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-32 px-4 bg-muted">
+      <main className="flex-1 flex items-start justify-center pt-24 sm:pt-32 pb-16 px-4 bg-muted">
         <Card className="w-full max-w-md border-border shadow-lg">
           <CardHeader className="text-center pb-2">
             <div className="w-14 h-14 bg-primary rounded-lg flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">

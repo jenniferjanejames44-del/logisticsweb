@@ -45,7 +45,7 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-muted/30 flex">
       <AdminSidebar />
       <main className="flex-1 ml-0 md:ml-72 overflow-auto">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pt-16 sm:pt-18 md:pt-8">
