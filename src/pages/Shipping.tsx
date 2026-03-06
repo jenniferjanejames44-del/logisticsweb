@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Package, MapPin, Truck, ArrowRight, ArrowLeft, Scale, CheckCircle2,
   Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
-  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search,
+  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus,
 } from "lucide-react";
 
 const TOTAL_STEPS = 5;
@@ -30,30 +30,38 @@ const progressSteps = [
   { num: 5, label: "Summary", icon: CheckCircle2 },
 ];
 
-// Simple searchable input component
+const ALL_COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Azerbaijan",
+  "Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia",
+  "Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon",
+  "Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica",
+  "Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominican Republic","Ecuador","Egypt",
+  "El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
+  "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Guatemala","Guinea","Guinea-Bissau","Guyana",
+  "Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy",
+  "Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia",
+  "Lebanon","Lesotho","Liberia","Libya","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives",
+  "Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Morocco",
+  "Mozambique","Myanmar","Namibia","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria",
+  "North Korea","North Macedonia","Norway","Oman","Pakistan","Panama","Papua New Guinea","Paraguay","Peru",
+  "Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saudi Arabia","Senegal","Serbia",
+  "Sierra Leone","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","South Sudan",
+  "Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania",
+  "Thailand","Togo","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Uganda","Ukraine",
+  "United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Venezuela","Vietnam",
+  "Yemen","Zambia","Zimbabwe",
+];
+
+const WAREHOUSE_COUNTRIES = ["China", "United States", "United Kingdom"];
+
 const SearchableInput = ({
-  value,
-  onChange,
-  placeholder,
-  className,
-}: {
-  value: string;
-  onChange: (val: string) => void;
-  placeholder: string;
-  className?: string;
-}) => {
-  return (
-    <div className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-      <Input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className={`pl-9 ${className || ""}`}
-      />
-    </div>
-  );
-};
+  value, onChange, placeholder, className,
+}: { value: string; onChange: (val: string) => void; placeholder: string; className?: string }) => (
+  <div className="relative">
+    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+    <Input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={`pl-9 ${className || ""}`} />
+  </div>
+);
 
 const Shipping = () => {
   const { user } = useAuth();
@@ -69,57 +77,42 @@ const Shipping = () => {
   const [warehouses, setWarehouses] = useState<any[]>([]);
   const [extraCharges, setExtraCharges] = useState<any[]>([]);
   const [activeRoutes, setActiveRoutes] = useState<any[]>([]);
+  const [packagingMaterials, setPackagingMaterials] = useState<any[]>([]);
+  const [deliveryMethods, setDeliveryMethods] = useState<any[]>([]);
   const [priceBreakdown, setPriceBreakdown] = useState<PriceBreakdown | null>(null);
   const [priceLoading, setPriceLoading] = useState(false);
 
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
-  const [deliveryMethod, setDeliveryMethod] = useState("pickup");
+  const [packagingQuantities, setPackagingQuantities] = useState<Record<string, number>>({});
+  const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<string>("");
   const [shippingSpeed, setShippingSpeed] = useState("standard");
 
   const [formData, setFormData] = useState({
-    // Sender
-    sender_name: "",
-    sender_email: "",
-    sender_phone: "",
-    sender_address: "",
-    sender_city: "",
-    sender_state: "",
-    sender_country: "",
-    // Receiver
-    receiver_name: "",
-    receiver_phone: "",
-    receiver_email: "",
-    receiver_address: "",
-    receiver_city: "",
-    receiver_state: "",
-    receiver_country: "",
-    receiver_postal_code: "",
-    // Package
-    description: "",
-    category: "",
-    weight: "",
-    quantity: "1",
-    declared_value: "",
-    // Shipping
-    origin_country: "",
-    destination_country: "",
-    warehouse_location: "",
+    sender_name: "", sender_email: "", sender_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
+    receiver_name: "", receiver_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
+    description: "", category: "", weight: "", quantity: "1", declared_value: "",
+    origin_country: "", destination_country: "", warehouse_location: "",
   });
 
-  const updateField = (field: string, value: string) =>
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const updateField = (field: string, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
 
-  // Fetch warehouses, extra charges, and active routes
+  // Fetch all DB data
   useEffect(() => {
     const fetchData = async () => {
-      const [whRes, ecRes, routeRes] = await Promise.all([
+      const [whRes, ecRes, routeRes, pkgRes, dmRes] = await Promise.all([
         (supabase as any).from("warehouses").select("*").eq("is_active", true),
         (supabase as any).from("extra_charges").select("*").eq("is_active", true),
         supabase.from("shipping_routes").select("origin_country, destination_country").eq("is_active", true),
+        (supabase as any).from("packaging_materials").select("*").eq("is_active", true).order("name"),
+        (supabase as any).from("delivery_methods").select("*").eq("is_active", true).order("fee"),
       ]);
       setWarehouses(whRes.data || []);
       setExtraCharges(ecRes.data || []);
       setActiveRoutes(routeRes.data || []);
+      setPackagingMaterials(pkgRes.data || []);
+      const methods = dmRes.data || [];
+      setDeliveryMethods(methods);
+      if (methods.length > 0 && !selectedDeliveryMethod) setSelectedDeliveryMethod(methods[0].id);
     };
     fetchData();
   }, []);
@@ -141,7 +134,7 @@ const Shipping = () => {
     }
   }, [searchParams]);
 
-  // Pre-fill sender info from profile
+  // Pre-fill sender from profile
   useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("full_name, email, phone, address, city, country").eq("user_id", user.id).single().then(({ data }) => {
@@ -158,7 +151,21 @@ const Shipping = () => {
     });
   }, [user]);
 
-  // Calculate price when moving to step 5
+  // Packaging cost calculation
+  const packagingCost = useMemo(() => {
+    return packagingMaterials.reduce((total, pkg) => {
+      const qty = packagingQuantities[pkg.id] || 0;
+      return total + qty * Number(pkg.price);
+    }, 0);
+  }, [packagingQuantities, packagingMaterials]);
+
+  // Delivery fee
+  const deliveryFee = useMemo(() => {
+    const method = deliveryMethods.find((m: any) => m.id === selectedDeliveryMethod);
+    return method ? Number(method.fee) : 0;
+  }, [selectedDeliveryMethod, deliveryMethods]);
+
+  // Calculate price on step 5
   const calculatePrice = useCallback(async () => {
     const weightNum = parseFloat(formData.weight);
     if (!formData.destination_country || !weightNum || weightNum <= 0) return;
@@ -173,6 +180,12 @@ const Shipping = () => {
     if (step === 5) calculatePrice();
   }, [step, calculatePrice]);
 
+  // Grand total = pricing engine total + packaging + delivery fee
+  const grandTotal = useMemo(() => {
+    const engineTotal = priceBreakdown?.total || 0;
+    return engineTotal + packagingCost + deliveryFee;
+  }, [priceBreakdown, packagingCost, deliveryFee]);
+
   // Route validation
   const isRouteValid = useMemo(() => {
     if (!formData.origin_country || !formData.destination_country) return true;
@@ -181,15 +194,16 @@ const Shipping = () => {
     );
   }, [formData.origin_country, formData.destination_country, activeRoutes]);
 
-  // Get unique countries from routes
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
-  const destinationCountries = useMemo(() => {
-    if (!formData.origin_country) return [...new Set(activeRoutes.map((r: any) => r.destination_country))].sort();
-    return activeRoutes
-      .filter((r: any) => r.origin_country === formData.origin_country)
-      .map((r: any) => r.destination_country)
-      .sort();
-  }, [formData.origin_country, activeRoutes]);
+
+  // Destination: show ALL countries, but validate route
+  const filteredWarehouses = useMemo(() => {
+    if (!formData.destination_country) return [];
+    if (WAREHOUSE_COUNTRIES.includes(formData.destination_country)) {
+      return warehouses.filter((w: any) => w.country === formData.destination_country);
+    }
+    return warehouses;
+  }, [formData.destination_country, warehouses]);
 
   const selectedWarehouse = useMemo(() =>
     warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
@@ -203,6 +217,18 @@ const Shipping = () => {
   const toggleExtra = (id: string) => {
     setSelectedExtras((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
   };
+
+  const updatePackagingQty = (id: string, delta: number) => {
+    setPackagingQuantities((prev) => {
+      const current = prev[id] || 0;
+      const next = Math.max(0, current + delta);
+      return { ...prev, [id]: next };
+    });
+  };
+
+  const selectedDeliveryMethodData = useMemo(() =>
+    deliveryMethods.find((m: any) => m.id === selectedDeliveryMethod), [selectedDeliveryMethod, deliveryMethods]
+  );
 
   const handleSubmit = async () => {
     if (!user) {
@@ -227,9 +253,11 @@ const Shipping = () => {
     if (formData.declared_value) descParts.push(`Declared Value: $${formData.declared_value}`);
     if (formData.category) descParts.push(`Category: ${formData.category}`);
     if (formData.quantity && formData.quantity !== "1") descParts.push(`Quantity: ${formData.quantity}`);
-    descParts.push(`Delivery: ${deliveryMethod}`);
+    descParts.push(`Delivery: ${selectedDeliveryMethodData?.name || "Pickup"}`);
     descParts.push(`Speed: ${shippingSpeed}`);
     if (priceBreakdown?.extraCharges.length) descParts.push(`Extras: ${priceBreakdown.extraCharges.map(e => e.name).join(", ")}`);
+    const pkgItems = packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => `${p.name} x${packagingQuantities[p.id]}`);
+    if (pkgItems.length) descParts.push(`Packaging: ${pkgItems.join(", ")}`);
 
     const { error } = await supabase.from("shipments").insert({
       user_id: user.id,
@@ -241,11 +269,11 @@ const Shipping = () => {
       service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
       description: descParts.filter(Boolean).join(" | ") || null,
       warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
-      pickup_prepaid: deliveryMethod === "door_delivery",
+      pickup_prepaid: selectedDeliveryMethodData?.name?.toLowerCase().includes("door") || false,
       status: "shipment_created",
       estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
       tracking_number: "",
-      price: priceBreakdown?.total || null,
+      price: grandTotal || null,
     } as any);
 
     if (error) {
@@ -257,7 +285,6 @@ const Shipping = () => {
     setIsSubmitting(false);
   };
 
-  // Validation per step
   const isStep1Complete = formData.sender_name && formData.sender_phone;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
@@ -406,7 +433,12 @@ const Shipping = () => {
                         </div>
                         <div className="col-span-2 sm:col-span-1 space-y-2">
                           <Label className="text-sm font-medium">Country *</Label>
-                          <Input value={formData.receiver_country} onChange={(e) => updateField("receiver_country", e.target.value)} placeholder="Country" className={inputClass} />
+                          <Select value={formData.receiver_country} onValueChange={(v) => updateField("receiver_country", v)}>
+                            <SelectTrigger className={inputClass}><SelectValue placeholder="Select country" /></SelectTrigger>
+                            <SelectContent className="bg-card border-border max-h-60">
+                              {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -490,16 +522,18 @@ const Shipping = () => {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">Origin Country *</Label>
-                          <Select value={formData.origin_country} onValueChange={(v) => { updateField("origin_country", v); updateField("destination_country", ""); }}>
+                          <Select value={formData.origin_country} onValueChange={(v) => { updateField("origin_country", v); updateField("destination_country", ""); updateField("warehouse_location", ""); }}>
                             <SelectTrigger className={inputClass}><SelectValue placeholder="Select origin" /></SelectTrigger>
                             <SelectContent className="bg-card border-border">{originCountries.map((c: string) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
                           </Select>
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">Destination Country *</Label>
-                          <Select value={formData.destination_country} onValueChange={(v) => updateField("destination_country", v)}>
+                          <Select value={formData.destination_country} onValueChange={(v) => { updateField("destination_country", v); updateField("warehouse_location", ""); }}>
                             <SelectTrigger className={inputClass}><SelectValue placeholder="Select destination" /></SelectTrigger>
-                            <SelectContent className="bg-card border-border">{destinationCountries.map((c: string) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
+                            <SelectContent className="bg-card border-border max-h-60">
+                              {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                            </SelectContent>
                           </Select>
                         </div>
                       </div>
@@ -516,7 +550,7 @@ const Shipping = () => {
                         <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
                           <SelectTrigger className={inputClass}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
                           <SelectContent className="bg-card border-border">
-                            {warehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name}</SelectItem>)}
+                            {(filteredWarehouses.length > 0 ? filteredWarehouses : warehouses).map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
                           </SelectContent>
                         </Select>
                       </div>
@@ -528,27 +562,31 @@ const Shipping = () => {
                         </div>
                       )}
 
-                      {/* Delivery Method */}
-                      <div className="space-y-3">
-                        <Label className="text-sm font-medium">Delivery Method</Label>
-                        <div className="grid sm:grid-cols-2 gap-3">
-                          {[
-                            { value: "pickup", label: "Pickup", desc: "Pick up from warehouse", icon: MapPinned },
-                            { value: "door_delivery", label: "Door Delivery", desc: "Deliver to your address", icon: Truck },
-                          ].map((opt) => (
-                            <button key={opt.value} type="button" onClick={() => setDeliveryMethod(opt.value)}
-                              className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${deliveryMethod === opt.value ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
-                              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${deliveryMethod === opt.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                                <opt.icon className="w-4 h-4" />
-                              </div>
-                              <div>
-                                <p className="font-semibold text-sm text-foreground">{opt.label}</p>
-                                <p className="text-xs text-muted-foreground">{opt.desc}</p>
-                              </div>
-                            </button>
-                          ))}
+                      {/* Delivery Method - from DB */}
+                      {deliveryMethods.length > 0 && (
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium">Delivery Method</Label>
+                          <div className="grid sm:grid-cols-2 gap-3">
+                            {deliveryMethods.map((dm: any) => {
+                              const isPickup = dm.name.toLowerCase().includes("pickup");
+                              const Icon = isPickup ? MapPinned : Truck;
+                              return (
+                                <button key={dm.id} type="button" onClick={() => setSelectedDeliveryMethod(dm.id)}
+                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${selectedDeliveryMethod === dm.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
+                                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${selectedDeliveryMethod === dm.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                    <Icon className="w-4 h-4" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="font-semibold text-sm text-foreground">{dm.name}</p>
+                                    <p className="text-xs text-muted-foreground">{dm.description || (Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`)}</p>
+                                  </div>
+                                  <span className="text-sm font-bold text-foreground">{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       {/* Shipping Speed */}
                       <div className="space-y-3">
@@ -571,6 +609,38 @@ const Shipping = () => {
                           ))}
                         </div>
                       </div>
+
+                      {/* Packaging Materials */}
+                      {packagingMaterials.length > 0 && (
+                        <div className="space-y-3">
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials (Optional)</Label>
+                          <div className="space-y-2">
+                            {packagingMaterials.map((pkg: any) => {
+                              const qty = packagingQuantities[pkg.id] || 0;
+                              return (
+                                <div key={pkg.id} className="flex items-center justify-between p-3 rounded-xl border border-border bg-card">
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-foreground">{pkg.name}</p>
+                                    <p className="text-xs text-muted-foreground">₦{Number(pkg.price).toLocaleString()} each</p>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <button type="button" onClick={() => updatePackagingQty(pkg.id, -1)} disabled={qty === 0}
+                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-30 transition-colors">
+                                      <Minus className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className="w-8 text-center font-semibold text-sm text-foreground">{qty}</span>
+                                    <button type="button" onClick={() => updatePackagingQty(pkg.id, 1)}
+                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors">
+                                      <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                    {qty > 0 && <span className="text-xs font-bold text-primary ml-2">₦{(qty * Number(pkg.price)).toLocaleString()}</span>}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
 
                       {/* Extra Services */}
                       {extraCharges.length > 0 && (
@@ -602,7 +672,6 @@ const Shipping = () => {
 
                       {/* Details cards */}
                       <div className="space-y-4">
-                        {/* Sender & Receiver */}
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div className="p-4 rounded-xl bg-muted/80 border border-border/50">
                             <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Sender</p>
@@ -618,7 +687,6 @@ const Shipping = () => {
                           </div>
                         </div>
 
-                        {/* Shipment info */}
                         <div className="p-4 rounded-xl bg-muted/80 border border-border/50">
                           <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Shipment Details</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -626,7 +694,7 @@ const Shipping = () => {
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
                               { label: "Weight", value: `${formData.weight} KG` },
                               { label: "Warehouse", value: selectedWarehouse?.name || "—" },
-                              { label: "Delivery", value: deliveryMethod === "door_delivery" ? "Door Delivery" : "Pickup" },
+                              { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
                             ].map((item) => (
@@ -637,49 +705,75 @@ const Shipping = () => {
                             ))}
                           </div>
                         </div>
+
+                        {/* Packaging summary */}
+                        {packagingCost > 0 && (
+                          <div className="p-4 rounded-xl bg-muted/80 border border-border/50">
+                            <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Packaging</p>
+                            {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
+                              <div key={p.id} className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
+                                <span className="font-semibold text-foreground">₦{(packagingQuantities[p.id] * Number(p.price)).toLocaleString()}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       {/* Pricing */}
                       <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
                         {priceLoading ? (
                           <p className="text-sm text-muted-foreground text-center py-4">Calculating price...</p>
-                        ) : priceBreakdown && priceBreakdown.shippingCost > 0 ? (
+                        ) : (
                           <div className="space-y-2.5">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">Shipping Cost {priceBreakdown.zone && `(${priceBreakdown.zone})`}</span>
-                              <span className="font-semibold text-foreground">₦{priceBreakdown.shippingCost.toLocaleString()}</span>
-                            </div>
-                            {priceBreakdown.extraCharges.map((ec) => (
-                              <div key={ec.name} className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">{ec.name}</span>
-                                <span className="font-semibold text-foreground">₦{ec.price.toLocaleString()}</span>
-                              </div>
-                            ))}
-                            {priceBreakdown.processingFee > 0 && (
+                            {priceBreakdown && priceBreakdown.shippingCost > 0 && (
+                              <>
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-muted-foreground">Shipping Cost {priceBreakdown.zone && `(${priceBreakdown.zone})`}</span>
+                                  <span className="font-semibold text-foreground">₦{priceBreakdown.shippingCost.toLocaleString()}</span>
+                                </div>
+                                {priceBreakdown.extraCharges.map((ec) => (
+                                  <div key={ec.name} className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">{ec.name}</span>
+                                    <span className="font-semibold text-foreground">₦{ec.price.toLocaleString()}</span>
+                                  </div>
+                                ))}
+                                {priceBreakdown.processingFee > 0 && (
+                                  <div className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">Processing Fee</span>
+                                    <span className="font-semibold text-foreground">₦{priceBreakdown.processingFee.toLocaleString()}</span>
+                                  </div>
+                                )}
+                                {priceBreakdown.taxes.map((t) => (
+                                  <div key={t.name} className="flex justify-between text-sm">
+                                    <span className="text-muted-foreground">{t.name} ({t.rate}%)</span>
+                                    <span className="font-semibold text-foreground">₦{Math.round(t.amount).toLocaleString()}</span>
+                                  </div>
+                                ))}
+                              </>
+                            )}
+                            {packagingCost > 0 && (
                               <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Processing Fee</span>
-                                <span className="font-semibold text-foreground">₦{priceBreakdown.processingFee.toLocaleString()}</span>
+                                <span className="text-muted-foreground">Packaging Materials</span>
+                                <span className="font-semibold text-foreground">₦{packagingCost.toLocaleString()}</span>
                               </div>
                             )}
-                            <div className="border-t border-primary/20 pt-2 flex justify-between text-sm">
-                              <span className="text-muted-foreground">Subtotal</span>
-                              <span className="font-semibold text-foreground">₦{priceBreakdown.subtotal.toLocaleString()}</span>
-                            </div>
-                            {priceBreakdown.taxes.map((t) => (
-                              <div key={t.name} className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">{t.name} ({t.rate}%)</span>
-                                <span className="font-semibold text-foreground">₦{Math.round(t.amount).toLocaleString()}</span>
+                            {deliveryFee > 0 && (
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">Delivery Fee ({selectedDeliveryMethodData?.name})</span>
+                                <span className="font-semibold text-foreground">₦{deliveryFee.toLocaleString()}</span>
                               </div>
-                            ))}
+                            )}
                             <div className="border-t border-primary/20 pt-3 flex justify-between items-center">
                               <span className="font-bold text-foreground text-lg">Total</span>
-                              <span className="text-3xl font-bold text-primary">₦{Math.round(priceBreakdown.total).toLocaleString()}</span>
+                              <span className="text-3xl font-bold text-primary">₦{Math.round(grandTotal).toLocaleString()}</span>
                             </div>
+                            {grandTotal === 0 && (
+                              <p className="text-sm text-muted-foreground text-center pt-1">
+                                No pricing configured for this route/weight. Admin will set the price after review.
+                              </p>
+                            )}
                           </div>
-                        ) : (
-                          <p className="text-sm text-muted-foreground text-center py-2">
-                            No pricing configured for this destination/weight. Admin will set the price after review.
-                          </p>
                         )}
                       </div>
 
@@ -692,16 +786,16 @@ const Shipping = () => {
 
                   {/* Navigation */}
                   <div className="flex justify-between pt-6 mt-6 border-t border-border/50">
-                    <Button type="button" variant="dashOutline" size="dash" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1} className="gap-2">
+                    <Button type="button" variant="outline" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1} className="gap-2">
                       <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
-                      <Button type="button" variant="dashAccent" size="dash" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2">
+                      <Button type="button" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2">
                         Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
                       <div className="flex gap-3">
-                        <Button type="button" variant="dashPrimary" size="dash" disabled={isSubmitting} onClick={handleSubmit} className="gap-2">
+                        <Button type="button" disabled={isSubmitting} onClick={handleSubmit} className="gap-2">
                           {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                         </Button>
                       </div>
