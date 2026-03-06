@@ -86,6 +86,7 @@ const Shipping = () => {
   const [packagingQuantities, setPackagingQuantities] = useState<Record<string, number>>({});
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState<string>("");
   const [shippingSpeed, setShippingSpeed] = useState("standard");
+  const [pickupFeePrepaid, setPickupFeePrepaid] = useState(false);
 
   const [formData, setFormData] = useState({
     sender_name: "", sender_email: "", sender_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
@@ -165,6 +166,12 @@ const Shipping = () => {
     return method ? Number(method.fee) : 0;
   }, [selectedDeliveryMethod, deliveryMethods]);
 
+  // Pickup fee logic: if Office Pickup is selected AND user opts to prepay
+  const isPickupMethod = useMemo(() => {
+    const method = deliveryMethods.find((m: any) => m.id === selectedDeliveryMethod);
+    return method?.name?.toLowerCase().includes("pickup");
+  }, [selectedDeliveryMethod, deliveryMethods]);
+
   // Calculate price on step 5
   const calculatePrice = useCallback(async () => {
     const weightNum = parseFloat(formData.weight);
@@ -180,11 +187,13 @@ const Shipping = () => {
     if (step === 5) calculatePrice();
   }, [step, calculatePrice]);
 
-  // Grand total = pricing engine total + packaging + delivery fee
+  // Grand total = pricing engine total + packaging + delivery fee + pickup fee (if prepaid)
   const grandTotal = useMemo(() => {
     const engineTotal = priceBreakdown?.total || 0;
-    return engineTotal + packagingCost + deliveryFee;
-  }, [priceBreakdown, packagingCost, deliveryFee]);
+    const pickupFeeAmount = isPickupMethod && pickupFeePrepaid ? deliveryFee : 0;
+    const nonPickupDeliveryFee = !isPickupMethod ? deliveryFee : 0;
+    return engineTotal + packagingCost + nonPickupDeliveryFee + pickupFeeAmount;
+  }, [priceBreakdown, packagingCost, deliveryFee, isPickupMethod, pickupFeePrepaid]);
 
   // Route validation
   const isRouteValid = useMemo(() => {
