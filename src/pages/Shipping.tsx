@@ -19,6 +19,7 @@ import {
   Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
   MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus,
 } from "lucide-react";
+import LocationPicker from "@/components/shipments/LocationPicker";
 
 const TOTAL_STEPS = 5;
 
@@ -54,6 +55,7 @@ const ALL_COUNTRIES = [
 
 const WAREHOUSE_COUNTRIES = ["China", "United States", "United Kingdom"];
 
+// SearchableInput kept for backward compat but LocationPicker is preferred
 const SearchableInput = ({
   value, onChange, placeholder, className,
 }: { value: string; onChange: (val: string) => void; placeholder: string; className?: string }) => (
@@ -205,14 +207,8 @@ const Shipping = () => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Destination: show ALL countries, but validate route
-  const filteredWarehouses = useMemo(() => {
-    if (!formData.destination_country) return [];
-    if (WAREHOUSE_COUNTRIES.includes(formData.destination_country)) {
-      return warehouses.filter((w: any) => w.country === formData.destination_country);
-    }
-    return warehouses;
-  }, [formData.destination_country, warehouses]);
+  // Always show all warehouses
+  const filteredWarehouses = warehouses;
 
   const selectedWarehouse = useMemo(() =>
     warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
@@ -389,7 +385,18 @@ const Shipping = () => {
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Address</Label>
-                        <SearchableInput value={formData.sender_address} onChange={(v) => updateField("sender_address", v)} placeholder="Search or type your address" className={inputClass} />
+                        <LocationPicker
+                          value={formData.sender_address}
+                          onChange={(v) => updateField("sender_address", v)}
+                          onLocationSelect={(loc) => {
+                            updateField("sender_address", loc.address);
+                            if (loc.city) updateField("sender_city", loc.city);
+                            if (loc.state) updateField("sender_state", loc.state);
+                            if (loc.country) updateField("sender_country", loc.country);
+                          }}
+                          placeholder="Search your address"
+                          className={inputClass}
+                        />
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <div className="space-y-2">
@@ -431,7 +438,18 @@ const Shipping = () => {
                       </div>
                       <div className="space-y-2">
                         <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Destination Address</Label>
-                        <SearchableInput value={formData.receiver_address} onChange={(v) => updateField("receiver_address", v)} placeholder="Search or type destination address" className={inputClass} />
+                        <LocationPicker
+                          value={formData.receiver_address}
+                          onChange={(v) => updateField("receiver_address", v)}
+                          onLocationSelect={(loc) => {
+                            updateField("receiver_address", loc.address);
+                            if (loc.city) updateField("receiver_city", loc.city);
+                            if (loc.state) updateField("receiver_state", loc.state);
+                            if (loc.country) updateField("receiver_country", loc.country);
+                          }}
+                          placeholder="Search destination address"
+                          className={inputClass}
+                        />
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         <div className="space-y-2">
