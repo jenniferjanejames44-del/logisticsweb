@@ -207,14 +207,8 @@ const Shipping = () => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Destination: show ALL countries, but validate route
-  const filteredWarehouses = useMemo(() => {
-    if (!formData.destination_country) return [];
-    if (WAREHOUSE_COUNTRIES.includes(formData.destination_country)) {
-      return warehouses.filter((w: any) => w.country === formData.destination_country);
-    }
-    return warehouses;
-  }, [formData.destination_country, warehouses]);
+  // Always show all warehouses
+  const filteredWarehouses = warehouses;
 
   const selectedWarehouse = useMemo(() =>
     warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
