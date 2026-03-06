@@ -39,7 +39,7 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
   }
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="min-h-screen flex bg-muted/30">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto ml-0 lg:ml-0">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pt-16 lg:pt-8">

@@ -20,31 +20,62 @@ import {
   ShoppingBag,
   Warehouse,
   Calculator,
+  Route,
 } from "lucide-react";
+
+interface NavSection {
+  label: string;
+  items: { name: string; href: string; icon: any }[];
+}
+
+const navSections: NavSection[] = [
+  {
+    label: "Main",
+    items: [
+      { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { name: "Users", href: "/admin/users", icon: Users },
+      { name: "Shipments", href: "/admin/shipments", icon: Package },
+      { name: "Invoices", href: "/admin/invoices", icon: FileText },
+      { name: "Payments", href: "/admin/payments", icon: DollarSign },
+      { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
+    ],
+  },
+  {
+    label: "Logistics",
+    items: [
+      { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Route },
+      { name: "Warehouses", href: "/admin/warehouses", icon: Warehouse },
+    ],
+  },
+  {
+    label: "Pricing",
+    items: [
+      { name: "Pricing Plans", href: "/admin/pricing", icon: Settings },
+      { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { name: "Notifications", href: "/admin/notifications", icon: Bell },
+      { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+    ],
+  },
+];
 
 const AdminSidebar = () => {
   const location = useLocation();
   const { signOut } = useAuth();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  const navItems = [
-    { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Users", href: "/admin/users", icon: Users },
-    { name: "Shipments", href: "/admin/shipments", icon: Package },
-    { name: "Invoices", href: "/admin/invoices", icon: FileText },
-    { name: "Payments", href: "/admin/payments", icon: DollarSign },
-    { name: "Notifications", href: "/admin/notifications", icon: Bell },
-    { name: "Pricing", href: "/admin/pricing", icon: Settings },
-    { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
-    { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Package },
-    { name: "Warehouses", href: "/admin/warehouses", icon: Warehouse },
-    { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
-    { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  ];
-
   const isActive = (href: string) => {
     if (href === "/admin") return location.pathname === "/admin";
-    return location.pathname.startsWith(href);
+    return location.pathname === href || location.pathname.startsWith(href + "/");
   };
 
   const NavContent = () => (
@@ -66,30 +97,36 @@ const AdminSidebar = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest px-3 pb-2 pt-1">
-          Management
-        </p>
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.href);
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              onClick={() => setIsMobileOpen(false)}
-              className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-[0.875rem] ${
-                active
-                  ? "bg-primary text-primary-foreground font-semibold"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
-              }`}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" />
-              <span>{item.name}</span>
-              {active && <ChevronRight className="w-4 h-4 ml-auto" />}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 px-3 py-4 space-y-5 overflow-y-auto">
+        {navSections.map((section) => (
+          <div key={section.label}>
+            <p className="text-[10px] font-semibold text-muted-foreground/60 uppercase tracking-widest px-3 pb-2">
+              {section.label}
+            </p>
+            <div className="space-y-0.5">
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                const active = isActive(item.href);
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-[0.875rem] ${
+                      active
+                        ? "bg-primary text-primary-foreground font-semibold"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
+                    }`}
+                  >
+                    <Icon className="w-[18px] h-[18px] flex-shrink-0" />
+                    <span>{item.name}</span>
+                    {active && <ChevronRight className="w-4 h-4 ml-auto" />}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Footer */}
