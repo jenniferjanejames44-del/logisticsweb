@@ -63,11 +63,18 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
           console.log("AuthRedirect: Redirecting to /admin");
           navigate("/admin", { replace: true });
         } else {
-          // Check if there's a pending shipment - redirect to shipments page
-          const hasPending = localStorage.getItem("pending_shipment_data");
-          const redirectTo = hasPending ? "/dashboard/shipments" : "/dashboard";
-          console.log("AuthRedirect: Redirecting to", redirectTo);
-          navigate(redirectTo, { replace: true });
+          // Check for pending shipment redirect (from homepage form)
+          const pendingRedirect = localStorage.getItem("pending_shipment_redirect");
+          if (pendingRedirect) {
+            localStorage.removeItem("pending_shipment_redirect");
+            console.log("AuthRedirect: Redirecting to pending shipment:", pendingRedirect);
+            navigate(pendingRedirect, { replace: true });
+          } else {
+            const hasPending = localStorage.getItem("pending_shipment_data");
+            const redirectTo = hasPending ? "/dashboard/shipments" : "/dashboard";
+            console.log("AuthRedirect: Redirecting to", redirectTo);
+            navigate(redirectTo, { replace: true });
+          }
         }
       } catch (err) {
         console.error("AuthRedirect: Unexpected error:", err);

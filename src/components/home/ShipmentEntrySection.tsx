@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +22,7 @@ interface RoutePrice {
 
 const ShipmentEntrySection = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [weight, setWeight] = useState("");
@@ -48,6 +50,16 @@ const ShipmentEntrySection = () => {
   }, [origin, destination, weight, routePrices]);
 
   const handleContinue = () => {
+    if (!user) {
+      // Save form data to localStorage so it persists through login
+      const params = new URLSearchParams();
+      if (origin) params.set("origin", origin);
+      if (destination) params.set("destination", destination);
+      if (weight) params.set("weight", weight);
+      localStorage.setItem("pending_shipment_redirect", `/shipping?${params.toString()}`);
+      navigate("/auth");
+      return;
+    }
     const params = new URLSearchParams();
     if (origin) params.set("origin", origin);
     if (destination) params.set("destination", destination);
