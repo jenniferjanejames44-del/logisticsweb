@@ -19,6 +19,7 @@ import {
   Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
   MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus,
 } from "lucide-react";
+import LocationPicker from "@/components/shipments/LocationPicker";
 
 const TOTAL_STEPS = 5;
 
@@ -54,6 +55,7 @@ const ALL_COUNTRIES = [
 
 const WAREHOUSE_COUNTRIES = ["China", "United States", "United Kingdom"];
 
+// SearchableInput kept for backward compat but LocationPicker is preferred
 const SearchableInput = ({
   value, onChange, placeholder, className,
 }: { value: string; onChange: (val: string) => void; placeholder: string; className?: string }) => (
