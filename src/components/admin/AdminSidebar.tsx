@@ -21,6 +21,7 @@ import {
   Warehouse,
   Calculator,
   Route,
+  Truck,
 } from "lucide-react";
 
 interface NavSection {
