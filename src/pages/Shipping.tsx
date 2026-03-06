@@ -251,46 +251,48 @@ const Shipping = () => {
     const estimatedDelivery = new Date();
     estimatedDelivery.setDate(estimatedDelivery.getDate() + (shippingSpeed === "express" ? 7 : 14));
 
-    const descParts = [formData.description];
-    if (formData.sender_name) descParts.push(`Sender: ${formData.sender_name}`);
-    if (formData.sender_phone) descParts.push(`Sender Phone: ${formData.sender_phone}`);
-    if (formData.sender_address) descParts.push(`Sender Address: ${formData.sender_address}, ${formData.sender_city}, ${formData.sender_state}`);
-    if (formData.receiver_name) descParts.push(`Receiver: ${formData.receiver_name}`);
-    if (formData.receiver_phone) descParts.push(`Receiver Phone: ${formData.receiver_phone}`);
-    if (formData.receiver_address) descParts.push(`Receiver Address: ${formData.receiver_address}, ${formData.receiver_city}, ${formData.receiver_state}, ${formData.receiver_country}`);
-    if (formData.receiver_postal_code) descParts.push(`Postal Code: ${formData.receiver_postal_code}`);
-    if (formData.declared_value) descParts.push(`Declared Value: $${formData.declared_value}`);
-    if (formData.category) descParts.push(`Category: ${formData.category}`);
-    if (formData.quantity && formData.quantity !== "1") descParts.push(`Quantity: ${formData.quantity}`);
-    descParts.push(`Delivery: ${selectedDeliveryMethodData?.name || "Pickup"}`);
-    descParts.push(`Speed: ${shippingSpeed}`);
-    if (priceBreakdown?.extraCharges.length) descParts.push(`Extras: ${priceBreakdown.extraCharges.map(e => e.name).join(", ")}`);
-    const pkgItems = packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => `${p.name} x${packagingQuantities[p.id]}`);
-    if (pkgItems.length) descParts.push(`Packaging: ${pkgItems.join(", ")}`);
+      const descParts = [formData.description];
+      if (formData.sender_name) descParts.push(`Sender: ${formData.sender_name}`);
+      if (formData.sender_phone) descParts.push(`Sender Phone: ${formData.sender_phone}`);
+      if (formData.sender_address) descParts.push(`Sender Address: ${formData.sender_address}, ${formData.sender_city}, ${formData.sender_state}`);
+      if (formData.receiver_name) descParts.push(`Receiver: ${formData.receiver_name}`);
+      if (formData.receiver_phone) descParts.push(`Receiver Phone: ${formData.receiver_phone}`);
+      if (formData.receiver_address) descParts.push(`Receiver Address: ${formData.receiver_address}, ${formData.receiver_city}, ${formData.receiver_state}, ${formData.receiver_country}`);
+      if (formData.receiver_postal_code) descParts.push(`Postal Code: ${formData.receiver_postal_code}`);
+      if (formData.declared_value) descParts.push(`Declared Value: $${formData.declared_value}`);
+      if (formData.category) descParts.push(`Category: ${formData.category}`);
+      if (formData.quantity && formData.quantity !== "1") descParts.push(`Quantity: ${formData.quantity}`);
+      descParts.push(`Delivery: ${selectedDeliveryMethodData?.name || "Pickup"}`);
+      descParts.push(`Speed: ${shippingSpeed}`);
+      if (priceBreakdown?.extraCharges.length) descParts.push(`Extras: ${priceBreakdown.extraCharges.map(e => e.name).join(", ")}`);
+      const pkgItems = packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => `${p.name} x${packagingQuantities[p.id]}`);
+      if (pkgItems.length) descParts.push(`Packaging: ${pkgItems.join(", ")}`);
+      if (isPickupMethod && !pickupFeePrepaid && deliveryFee > 0) descParts.push(`Pickup fee ₦${deliveryFee.toLocaleString()} to be paid at office`);
 
-    const { error } = await supabase.from("shipments").insert({
-      user_id: user.id,
-      origin_country: formData.origin_country,
-      origin_city: formData.sender_city || formData.origin_country,
-      destination_country: formData.destination_country,
-      destination_city: formData.receiver_city || formData.destination_country,
-      weight: parseFloat(formData.weight),
-      service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
-      description: descParts.filter(Boolean).join(" | ") || null,
-      warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
-      pickup_prepaid: selectedDeliveryMethodData?.name?.toLowerCase().includes("door") || false,
-      status: "shipment_created",
-      estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
-      tracking_number: "",
-      price: grandTotal || null,
-    } as any);
+      const { data: shipmentData, error } = await supabase.from("shipments").insert({
+        user_id: user.id,
+        origin_country: formData.origin_country,
+        origin_city: formData.sender_city || formData.origin_country,
+        destination_country: formData.destination_country,
+        destination_city: formData.receiver_city || formData.destination_country,
+        weight: parseFloat(formData.weight),
+        service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
+        description: descParts.filter(Boolean).join(" | ") || null,
+        warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
+        pickup_prepaid: isPickupMethod ? pickupFeePrepaid : false,
+        status: "shipment_created",
+        estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
+        tracking_number: "",
+        price: grandTotal || null,
+      } as any).select("id").single();
 
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Shipment Created!", description: "Proceed to payment from your dashboard." });
-      navigate("/dashboard/shipments");
-    }
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Shipment Created!", description: "Redirecting to payment..." });
+        // Redirect to shipments page with auto-pay param
+        navigate(`/dashboard/shipments?pay=${shipmentData?.id}`);
+      }
     setIsSubmitting(false);
   };
 
