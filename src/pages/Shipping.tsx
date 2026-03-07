@@ -94,9 +94,23 @@ const Shipping = () => {
   const [formData, setFormData] = useState({
     sender_name: "", sender_email: "", sender_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
     receiver_name: "", receiver_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
-    description: "", category: "", weight: "", quantity: "1", declared_value: "",
+    description: "", category: "", weight: "", length_cm: "", width_cm: "", height_cm: "", quantity: "1", declared_value: "",
     origin_country: "", destination_country: "", warehouse_location: "",
   });
+
+  // Volumetric & chargeable weight
+  const volumetricWeight = useMemo(() => {
+    const l = parseFloat(formData.length_cm);
+    const w = parseFloat(formData.width_cm);
+    const h = parseFloat(formData.height_cm);
+    if (l > 0 && w > 0 && h > 0) return (l * w * h) / 5000;
+    return 0;
+  }, [formData.length_cm, formData.width_cm, formData.height_cm]);
+
+  const chargeableWeight = useMemo(() => {
+    const actual = parseFloat(formData.weight) || 0;
+    return Math.max(actual, volumetricWeight);
+  }, [formData.weight, volumetricWeight]);
 
   const updateField = (field: string, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -175,14 +189,13 @@ const Shipping = () => {
 
   // Calculate price on step 5
   const calculatePrice = useCallback(async () => {
-    const weightNum = parseFloat(formData.weight);
-    if (!formData.destination_country || !weightNum || weightNum <= 0) return;
+    if (!formData.destination_country || chargeableWeight <= 0) return;
     setPriceLoading(true);
     const declaredVal = parseFloat(formData.declared_value) || 0;
-    const result = await calculateShippingCost(formData.destination_country, weightNum, selectedExtras, declaredVal);
+    const result = await calculateShippingCost(formData.destination_country, chargeableWeight, selectedExtras, declaredVal);
     setPriceBreakdown(result);
     setPriceLoading(false);
-  }, [formData.destination_country, formData.weight, formData.declared_value, selectedExtras]);
+  }, [formData.destination_country, chargeableWeight, formData.declared_value, selectedExtras]);
 
   useEffect(() => {
     if (step === 5) calculatePrice();
@@ -296,6 +309,9 @@ const Shipping = () => {
         destination_country: formData.destination_country,
         destination_city: formData.receiver_city || formData.destination_country,
         weight: parseFloat(formData.weight),
+        length_cm: parseFloat(formData.length_cm) || null,
+        width_cm: parseFloat(formData.width_cm) || null,
+        height_cm: parseFloat(formData.height_cm) || null,
         service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
         description: descParts.filter(Boolean).join(" | ") || null,
         warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
@@ -543,22 +559,54 @@ const Shipping = () => {
                         <Textarea value={formData.description} onChange={(e) => updateField("description", e.target.value)} placeholder="Describe the contents of your package" rows={3} className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground" />
                       </div>
 
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">Category</Label>
-                          <Select value={formData.category} onValueChange={(v) => updateField("category", v)}>
-                            <SelectTrigger className={inputClass}><SelectValue placeholder="Select category" /></SelectTrigger>
-                            <SelectContent className="bg-card border-border">
-                              {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                            </SelectContent>
-                          </Select>
-                        </div>
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Category</Label>
+                        <Select value={formData.category} onValueChange={(v) => updateField("category", v)}>
+                          <SelectTrigger className={inputClass}><SelectValue placeholder="Select category" /></SelectTrigger>
+                          <SelectContent className="bg-card border-border">
+                            {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Scale className="w-3 h-3" /> Weight (KG) *</Label>
                           <Input type="number" min="0.1" step="0.1" value={formData.weight} onChange={(e) => updateField("weight", e.target.value)} placeholder="e.g. 5" className={`${inputClass} ${showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
                           {showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Length (cm)</Label>
+                          <Input type="number" min="0" step="0.1" value={formData.length_cm} onChange={(e) => updateField("length_cm", e.target.value)} placeholder="e.g. 50" className={inputClass} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Width (cm)</Label>
+                          <Input type="number" min="0" step="0.1" value={formData.width_cm} onChange={(e) => updateField("width_cm", e.target.value)} placeholder="e.g. 40" className={inputClass} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium">Height (cm)</Label>
+                          <Input type="number" min="0" step="0.1" value={formData.height_cm} onChange={(e) => updateField("height_cm", e.target.value)} placeholder="e.g. 30" className={inputClass} />
+                        </div>
                       </div>
+
+                      {/* Weight breakdown */}
+                      {volumetricWeight > 0 && (
+                        <div className="p-4 rounded-xl bg-muted/60 border border-border/40 space-y-1.5">
+                          <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2">Weight Breakdown</p>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Actual Weight</span>
+                            <span className="font-semibold text-foreground">{parseFloat(formData.weight || "0").toFixed(2)} kg</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Volumetric Weight</span>
+                            <span className="font-semibold text-foreground">{volumetricWeight.toFixed(2)} kg</span>
+                          </div>
+                          <div className="flex justify-between text-sm border-t border-border/40 pt-1.5">
+                            <span className="font-semibold text-foreground">Chargeable Weight</span>
+                            <span className="font-bold text-primary">{chargeableWeight.toFixed(2)} kg</span>
+                          </div>
+                        </div>
+                      )}
 
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -831,7 +879,12 @@ const Shipping = () => {
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
-                              { label: "Weight", value: `${formData.weight} KG` },
+                              { label: "Actual Weight", value: `${formData.weight} KG` },
+                              ...(volumetricWeight > 0 ? [
+                                { label: "Dimensions", value: `${formData.length_cm}×${formData.width_cm}×${formData.height_cm} cm` },
+                                { label: "Volumetric Weight", value: `${volumetricWeight.toFixed(2)} KG` },
+                                { label: "Chargeable Weight", value: `${chargeableWeight.toFixed(2)} KG` },
+                              ] : []),
                               { label: "Warehouse", value: selectedWarehouse?.name || "—" },
                               { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },

@@ -12,7 +12,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -24,6 +24,9 @@ interface Shipment {
   destination_city: string;
   destination_country: string;
   weight: number;
+  length_cm: number | null;
+  width_cm: number | null;
+  height_cm: number | null;
   service_type: string;
   status: string;
   created_at: string;
@@ -32,6 +35,14 @@ interface Shipment {
   payment_status: string;
   user_id: string;
 }
+
+const calcVolWeight = (l: number | null, w: number | null, h: number | null) => {
+  if (l && w && h && l > 0 && w > 0 && h > 0) return (l * w * h) / 5000;
+  return 0;
+};
+const calcChargeableWeight = (actual: number, l: number | null, w: number | null, h: number | null) => {
+  return Math.max(actual, calcVolWeight(l, w, h));
+};
 
 const statusOptions = [
   { value: "shipment_created", label: "Shipment Created" },
@@ -66,8 +77,11 @@ const AdminShipments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priceDialogOpen, setPriceDialogOpen] = useState(false);
+  const [dimensionDialogOpen, setDimensionDialogOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
   const [priceInput, setPriceInput] = useState("");
+  const [dimInputs, setDimInputs] = useState({ weight: "", length_cm: "", width_cm: "", height_cm: "" });
+  const [settingDims, setSettingDims] = useState(false);
   const [settingPrice, setSettingPrice] = useState(false);
   const isMobile = useIsMobile();
 
@@ -125,6 +139,41 @@ const AdminShipments = () => {
     setSelectedShipment(shipment);
     setPriceInput(shipment.price?.toString() || "");
     setPriceDialogOpen(true);
+  };
+
+  const openDimensionDialog = (shipment: Shipment) => {
+    setSelectedShipment(shipment);
+    setDimInputs({
+      weight: shipment.weight.toString(),
+      length_cm: shipment.length_cm?.toString() || "",
+      width_cm: shipment.width_cm?.toString() || "",
+      height_cm: shipment.height_cm?.toString() || "",
+    });
+    setDimensionDialogOpen(true);
+  };
+
+  const handleSaveDimensions = async () => {
+    if (!selectedShipment) return;
+    const weight = parseFloat(dimInputs.weight);
+    if (isNaN(weight) || weight <= 0) { toast.error("Please enter a valid weight"); return; }
+    setSettingDims(true);
+    try {
+      const { error } = await supabase.from("shipments").update({
+        weight,
+        length_cm: parseFloat(dimInputs.length_cm) || null,
+        width_cm: parseFloat(dimInputs.width_cm) || null,
+        height_cm: parseFloat(dimInputs.height_cm) || null,
+      } as any).eq("id", selectedShipment.id);
+      if (error) throw error;
+      toast.success("Dimensions updated successfully");
+      setDimensionDialogOpen(false);
+      fetchShipments();
+    } catch (error) {
+      console.error("Error updating dimensions:", error);
+      toast.error("Failed to update dimensions");
+    } finally {
+      setSettingDims(false);
+    }
   };
 
   const handleSetPrice = async () => {
@@ -214,19 +263,34 @@ const AdminShipments = () => {
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
                         <p className="text-foreground">{shipment.weight} kg</p>
+                        {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
+                          <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
+                        )}
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
-                        <p className="text-foreground font-semibold">
-                          {shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
+                        <p className="text-foreground">
+                          {shipment.length_cm && shipment.width_cm && shipment.height_cm
+                            ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
+                            : "—"}
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 pt-1 border-t border-border/50">
+                    <div className="text-sm">
+                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
+                      <p className="text-foreground font-semibold">{shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border/50">
                       <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
                         <DollarSign className="w-3.5 h-3.5 mr-1" />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
+                      <Button variant="outline" className="flex-1 h-11 rounded-[10px]" onClick={() => openDimensionDialog(shipment)}>
+                        <Ruler className="w-3.5 h-3.5 mr-1" />
+                        Edit Dims
+                      </Button>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                         <SelectTrigger className="flex-1 h-11 rounded-[10px]"><SelectValue /></SelectTrigger>
                         <SelectContent>
@@ -270,6 +334,17 @@ const AdminShipments = () => {
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
                           <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
+                          {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
+                            <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
+                          )}
+                        </div>
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
+                          <p className="text-foreground font-medium mt-1">
+                            {shipment.length_cm && shipment.width_cm && shipment.height_cm
+                              ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
+                              : "—"}
+                          </p>
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
@@ -281,6 +356,10 @@ const AdminShipments = () => {
                         <Button variant="dashAccent" size="dashSm" className="h-11 rounded-[10px] px-4 shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30" onClick={() => openPriceDialog(shipment)}>
                           <DollarSign className="w-3.5 h-3.5 mr-1" />
                           {shipment.price !== null ? "Edit Price" : "Set Price"}
+                        </Button>
+                        <Button variant="outline" size="dashSm" className="h-11 rounded-[10px] px-4" onClick={() => openDimensionDialog(shipment)}>
+                          <Ruler className="w-3.5 h-3.5 mr-1" />
+                          Edit Dims
                         </Button>
                         <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                           <SelectTrigger className="h-11 rounded-[10px] flex-1"><SelectValue /></SelectTrigger>
@@ -328,6 +407,57 @@ const AdminShipments = () => {
               <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
               <Button onClick={handleSetPrice} disabled={settingPrice} className="w-full sm:w-auto h-11 sm:h-12">
                 {settingPrice ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Setting...</> : <><DollarSign className="w-4 h-4 mr-2" />Set Price</>}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        {/* Edit Dimensions Dialog */}
+        <Dialog open={dimensionDialogOpen} onOpenChange={setDimensionDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Edit Dimensions</DialogTitle>
+              <DialogDescription>Update dimensions for {selectedShipment?.tracking_number}</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Weight (kg) *</Label>
+                  <Input type="number" min="0.1" step="0.1" value={dimInputs.weight} onChange={(e) => setDimInputs(p => ({ ...p, weight: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Length (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.length_cm} onChange={(e) => setDimInputs(p => ({ ...p, length_cm: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Width (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.width_cm} onChange={(e) => setDimInputs(p => ({ ...p, width_cm: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Height (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.height_cm} onChange={(e) => setDimInputs(p => ({ ...p, height_cm: e.target.value }))} />
+                </div>
+              </div>
+              {(() => {
+                const l = parseFloat(dimInputs.length_cm);
+                const w = parseFloat(dimInputs.width_cm);
+                const h = parseFloat(dimInputs.height_cm);
+                const wt = parseFloat(dimInputs.weight);
+                const vol = (l > 0 && w > 0 && h > 0) ? (l * w * h) / 5000 : 0;
+                const chg = Math.max(wt || 0, vol);
+                if (vol > 0) return (
+                  <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-1">
+                    <p><span className="text-muted-foreground">Actual Weight:</span> {(wt || 0).toFixed(2)} kg</p>
+                    <p><span className="text-muted-foreground">Volumetric Weight:</span> {vol.toFixed(2)} kg</p>
+                    <p className="font-semibold"><span className="text-muted-foreground">Chargeable Weight:</span> {chg.toFixed(2)} kg</p>
+                  </div>
+                );
+                return null;
+              })()}
+            </div>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setDimensionDialogOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
+              <Button onClick={handleSaveDimensions} disabled={settingDims} className="w-full sm:w-auto h-11 sm:h-12">
+                {settingDims ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</> : <><Ruler className="w-4 h-4 mr-2" />Save Dimensions</>}
               </Button>
             </DialogFooter>
           </DialogContent>

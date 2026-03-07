@@ -492,7 +492,9 @@ export type Database = {
           destination_city: string
           destination_country: string
           estimated_delivery: string | null
+          height_cm: number | null
           id: string
+          length_cm: number | null
           origin_city: string
           origin_country: string
           payment_status: string
@@ -505,6 +507,7 @@ export type Database = {
           user_id: string
           warehouse_location: string | null
           weight: number
+          width_cm: number | null
         }
         Insert: {
           actual_delivery?: string | null
@@ -513,7 +516,9 @@ export type Database = {
           destination_city: string
           destination_country: string
           estimated_delivery?: string | null
+          height_cm?: number | null
           id?: string
+          length_cm?: number | null
           origin_city: string
           origin_country: string
           payment_status?: string
@@ -526,6 +531,7 @@ export type Database = {
           user_id: string
           warehouse_location?: string | null
           weight: number
+          width_cm?: number | null
         }
         Update: {
           actual_delivery?: string | null
@@ -534,7 +540,9 @@ export type Database = {
           destination_city?: string
           destination_country?: string
           estimated_delivery?: string | null
+          height_cm?: number | null
           id?: string
+          length_cm?: number | null
           origin_city?: string
           origin_country?: string
           payment_status?: string
@@ -547,6 +555,7 @@ export type Database = {
           user_id?: string
           warehouse_location?: string | null
           weight?: number
+          width_cm?: number | null
         }
         Relationships: []
       }
