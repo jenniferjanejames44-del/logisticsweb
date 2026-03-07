@@ -305,7 +305,7 @@ const Shipping = () => {
     return true;
   };
 
-  const inputClass = "h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors";
+  const inputClass = "h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200 rounded-[10px]";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -326,12 +326,14 @@ const Shipping = () => {
           </div>
         </section>
 
-        <section className="section-padding bg-muted relative overflow-hidden">
+        <section className="section-padding bg-muted/50 relative overflow-hidden">
+          {/* Subtle background texture */}
+          <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '24px 24px' }} />
           <div className="section-container relative z-10">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-card rounded-2xl border border-border/50 shadow-xl overflow-hidden">
+              <div className="bg-card rounded-2xl border border-border/40 shadow-xl shadow-primary/[0.03] overflow-hidden">
                 {/* Progress */}
-                <div className="bg-muted/80 border-b border-border/50 p-3 sm:p-5">
+                <div className="bg-gradient-to-r from-muted/80 to-muted/40 border-b border-border/40 p-3 sm:p-5 backdrop-blur-sm">
                   <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
                     <div className="flex items-center justify-between min-w-[380px] max-w-3xl mx-auto">
                       {progressSteps.map((s, i) => {
@@ -342,7 +344,7 @@ const Shipping = () => {
                         return (
                           <div key={s.num} className="flex items-center gap-0.5 sm:gap-1.5">
                             <div className="flex flex-col items-center gap-1">
-                              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-lg" : "bg-background border-2 border-border text-muted-foreground"} ${isCurrent ? "ring-4 ring-primary/20 scale-110" : ""}`}>
+                              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "bg-background border-2 border-border text-muted-foreground"} ${isCurrent ? "ring-4 ring-primary/15 scale-110" : ""}`}>
                                 {isComplete ? <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <StepIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                               </div>
                               <span className={`text-[8px] sm:text-xs font-semibold transition-colors whitespace-nowrap ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
@@ -364,10 +366,10 @@ const Shipping = () => {
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
-                    <div className="space-y-5 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md"><User className="w-5 h-5 text-primary-foreground" /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Sender Details</h3><p className="text-sm text-muted-foreground">Who is sending this package?</p></div>
+                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-border/30">
+                        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" /></div>
+                        <div><h3 className="font-bold text-lg text-foreground tracking-tight">Sender Details</h3><p className="text-sm text-muted-foreground">Who is sending this package?</p></div>
                       </div>
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -417,10 +419,10 @@ const Shipping = () => {
 
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
-                    <div className="space-y-5 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md"><Send className="w-5 h-5 text-primary-foreground" /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
+                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-border/30">
+                        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" /></div>
+                        <div><h3 className="font-bold text-lg text-foreground tracking-tight">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -479,10 +481,10 @@ const Shipping = () => {
 
                   {/* ===== STEP 3: Package ===== */}
                   {step === 3 && (
-                    <div className="space-y-5 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-md"><Package className="w-5 h-5 text-accent-foreground" /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Package Details</h3><p className="text-sm text-muted-foreground">What are you shipping?</p></div>
+                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-border/30">
+                        <div className="w-11 h-11 bg-accent rounded-xl flex items-center justify-center shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" /></div>
+                        <div><h3 className="font-bold text-lg text-foreground tracking-tight">Package Details</h3><p className="text-sm text-muted-foreground">What are you shipping?</p></div>
                       </div>
 
                       <div className="space-y-2">
@@ -541,10 +543,10 @@ const Shipping = () => {
 
                   {/* ===== STEP 4: Shipping Options ===== */}
                   {step === 4 && (
-                    <div className="space-y-5 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md"><Truck className="w-5 h-5 text-primary-foreground" /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Shipping Options</h3><p className="text-sm text-muted-foreground">Choose your route, warehouse, and delivery preferences</p></div>
+                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-border/30">
+                        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" /></div>
+                        <div><h3 className="font-bold text-lg text-foreground tracking-tight">Shipping Options</h3><p className="text-sm text-muted-foreground">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
                       {/* Route */}
@@ -601,15 +603,15 @@ const Shipping = () => {
                               const Icon = isPickup ? MapPinned : Truck;
                               return (
                                 <button key={dm.id} type="button" onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${selectedDeliveryMethod === dm.id ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
-                                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${selectedDeliveryMethod === dm.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                                    <Icon className="w-4 h-4" />
+                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${selectedDeliveryMethod === dm.id ? "border-primary bg-primary/[0.04] shadow-sm shadow-primary/10" : "border-border hover:border-primary/30 hover:shadow-sm"}`}>
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${selectedDeliveryMethod === dm.id ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25" : "bg-muted text-muted-foreground"}`}>
+                                    <Icon className="w-4.5 h-4.5" />
                                   </div>
                                   <div className="flex-1">
                                     <p className="font-semibold text-sm text-foreground">{dm.name}</p>
                                     <p className="text-xs text-muted-foreground">{dm.description || (Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`)}</p>
                                   </div>
-                                  <span className="text-sm font-bold text-foreground">{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
+                                  <span className={`text-sm font-bold ${selectedDeliveryMethod === dm.id ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
                                 </button>
                               );
                             })}
@@ -649,8 +651,8 @@ const Shipping = () => {
                             { value: "express", label: "Express", desc: "5–7 business days", icon: Zap },
                           ].map((opt) => (
                             <button key={opt.value} type="button" onClick={() => setShippingSpeed(opt.value)}
-                              className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${shippingSpeed === opt.value ? "border-primary bg-primary/5" : "border-border hover:border-primary/30"}`}>
-                              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                              className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.04] shadow-sm shadow-primary/10" : "border-border hover:border-primary/30 hover:shadow-sm"}`}>
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25" : "bg-muted text-muted-foreground"}`}>
                                 <opt.icon className="w-4 h-4" />
                               </div>
                               <div>
@@ -670,22 +672,27 @@ const Shipping = () => {
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className="flex items-center justify-between p-3 rounded-xl border border-border bg-card">
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-foreground">{pkg.name}</p>
-                                    <p className="text-xs text-muted-foreground">₦{Number(pkg.price).toLocaleString()} each</p>
+                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border transition-all duration-200 ${qty > 0 ? "border-primary/30 bg-primary/[0.03] shadow-sm" : "border-border bg-card hover:border-border/80"}`}>
+                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${qty > 0 ? "bg-primary/10" : "bg-muted"}`}>
+                                      <Box className={`w-4 h-4 ${qty > 0 ? "text-primary" : "text-muted-foreground"}`} />
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-semibold text-foreground">{pkg.name}</p>
+                                      <p className="text-xs text-muted-foreground">₦{Number(pkg.price).toLocaleString()} / unit</p>
+                                    </div>
                                   </div>
-                                  <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-1.5">
                                     <button type="button" onClick={() => updatePackagingQty(pkg.id, -1)} disabled={qty === 0}
-                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-30 transition-colors">
+                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/30 disabled:opacity-25 disabled:hover:bg-transparent transition-all duration-150">
                                       <Minus className="w-3.5 h-3.5" />
                                     </button>
-                                    <span className="w-8 text-center font-semibold text-sm text-foreground">{qty}</span>
+                                    <span className={`w-8 text-center font-bold text-sm ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
                                     <button type="button" onClick={() => updatePackagingQty(pkg.id, 1)}
-                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-muted transition-colors">
+                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-150">
                                       <Plus className="w-3.5 h-3.5" />
                                     </button>
-                                    {qty > 0 && <span className="text-xs font-bold text-primary ml-2">₦{(qty * Number(pkg.price)).toLocaleString()}</span>}
+                                    {qty > 0 && <span className="text-xs font-bold text-primary ml-2 bg-primary/10 px-2 py-0.5 rounded-md">₦{(qty * Number(pkg.price)).toLocaleString()}</span>}
                                   </div>
                                 </div>
                               );
@@ -717,9 +724,9 @@ const Shipping = () => {
                   {/* ===== STEP 5: Summary ===== */}
                   {step === 5 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md"><CheckCircle2 className="w-5 h-5 text-primary-foreground" /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-border/30">
+                        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><CheckCircle2 className="w-5 h-5 text-primary-foreground" /></div>
+                        <div><h3 className="font-bold text-lg text-foreground tracking-tight">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
                       {/* Details cards */}
@@ -843,17 +850,17 @@ const Shipping = () => {
                   )}
 
                   {/* Navigation */}
-                  <div className="flex justify-between pt-6 mt-6 border-t border-border/50">
-                    <Button type="button" variant="outline" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1} className="gap-2">
+                  <div className="flex justify-between pt-6 mt-8 border-t border-border/40">
+                    <Button type="button" variant="dashOutline" size="dash" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1} className="gap-2">
                       <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
-                      <Button type="button" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2">
+                      <Button type="button" variant="dashPrimary" size="dash" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2 min-w-[140px]">
                         Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
                       <div className="flex gap-3">
-                        <Button type="button" disabled={isSubmitting} onClick={handleSubmit} className="gap-2">
+                        <Button type="button" variant="dashAccent" size="dash" disabled={isSubmitting} onClick={handleSubmit} className="gap-2 min-w-[160px]">
                           {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                         </Button>
                       </div>
