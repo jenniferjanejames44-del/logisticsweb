@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -22,10 +22,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "in", href: "#", label: "LinkedIn" },
-    { name: "𝕏", href: "#", label: "Twitter" },
-    { name: "f", href: "#", label: "Facebook" },
-    { name: "📷", href: "#", label: "Instagram" },
+    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: Facebook },
+    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: Twitter },
+    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: Linkedin },
+    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: Instagram },
   ];
 
   return (
@@ -44,16 +44,21 @@ const Footer = () => {
             
             {/* Social Links */}
             <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-accent-foreground bg-accent hover:bg-white hover:text-primary transition-all duration-200"
-                >
-                  {social.name}
-                </a>
-              ))}
+              {socialLinks.map((social) => {
+                const SocialIcon = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="w-11 h-11 rounded-xl flex items-center justify-center text-accent-foreground bg-accent hover:bg-white hover:text-primary transition-all duration-200 hover:scale-110 shadow-md"
+                  >
+                    <SocialIcon className="w-5 h-5" strokeWidth={2.5} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -69,7 +74,7 @@ const Footer = () => {
                       to={link.href}
                       className="inline-flex items-center gap-2 group transition-colors duration-200 text-white/65 hover:text-white text-[15px]"
                     >
-                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" strokeWidth={2.5} />
                       {link.name}
                     </Link>
                   </li>
@@ -87,7 +92,7 @@ const Footer = () => {
                       to={service.href}
                       className="inline-flex items-center gap-2 group transition-colors duration-200 text-white/65 hover:text-white text-[15px]"
                     >
-                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
+                      <ArrowRight size={12} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" strokeWidth={2.5} />
                       {service.name}
                     </Link>
                   </li>
@@ -101,19 +106,19 @@ const Footer = () => {
               <div className="space-y-4">
                 <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 transition-colors duration-200 text-white/65 hover:text-white">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10">
-                    <Mail size={16} className="text-white" />
+                    <Mail size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">info@raclogistics.com</span>
                 </a>
                 <a href="tel:+2348185956707" className="flex items-center gap-3 transition-colors duration-200 text-white/65 hover:text-white">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/10">
-                    <Phone size={16} className="text-white" />
+                    <Phone size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">+234 818 595 6707</span>
                 </a>
                 <div className="flex items-start gap-3 text-white/65">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-white/10">
-                    <MapPin size={16} className="text-white" />
+                    <MapPin size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State</span>
                 </div>
