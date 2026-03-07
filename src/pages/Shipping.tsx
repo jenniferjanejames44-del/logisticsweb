@@ -234,6 +234,25 @@ const Shipping = () => {
     deliveryMethods.find((m: any) => m.id === selectedDeliveryMethod), [selectedDeliveryMethod, deliveryMethods]
   );
 
+  const packagingSelectionRequired = packagingMaterials.length > 0;
+  const hasPackagingSelection = Object.values(packagingQuantities).some((qty) => qty > 0);
+
+  useEffect(() => {
+    if (showStepValidation) {
+      setShowStepValidation(false);
+    }
+  }, [
+    step,
+    formData.origin_country,
+    formData.destination_country,
+    formData.warehouse_location,
+    selectedDeliveryMethod,
+    isRouteValid,
+    hasPackagingSelection,
+    showStepValidation,
+  ]);
+
+
   const handleSubmit = async () => {
     if (!user) {
       savePendingShipment(formData as any);
