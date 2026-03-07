@@ -745,7 +745,7 @@ const Shipping = () => {
                               Please select a delivery method to continue.
                             </p>
                           )}
-                          <div className="grid sm:grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {deliveryMethods.map((dm: any) => {
                               const isSelected = selectedDeliveryMethod === dm.id;
                               const isPickup = dm.name.toLowerCase().includes("pickup");
@@ -756,19 +756,19 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm"}`}
+                                  className={`group flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"}`}
                                 >
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                                    <Icon className="w-[18px] h-[18px]" />
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                                    <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
                                   </div>
-                                  <div className="flex-1">
+                                  <div className="flex-1 min-w-0">
                                     <p className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
-                                    <p className="text-xs text-muted-foreground">{dm.description || (Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`)}</p>
+                                    <p className="text-xs text-muted-foreground truncate">{dm.description || (Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`)}</p>
                                   </div>
-                                  <div className="flex items-center gap-2">
-                                    <span className={`text-sm font-bold ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
-                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
-                                      <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} />
+                                  <div className="flex items-center gap-2 self-end sm:self-center">
+                                    <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
+                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
+                                      <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
                                     </div>
                                   </div>
                                 </button>
@@ -826,37 +826,52 @@ const Shipping = () => {
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
                         <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
-                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials *</Label>
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
                               Select at least one packaging material to continue.
                             </p>
                           )}
-                          <div className="space-y-2">
+                          <div className="space-y-3">
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/[0.08] ring-1 ring-primary/15" : "border-border/50 bg-card hover:border-primary/25 hover:shadow-sm"}`}>
-                                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
-                                      <Box className="w-4 h-4" />
+                                <div key={pkg.id} className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/[0.08] ring-1 ring-primary/15" : "border-border/50 bg-card hover:border-primary/25 hover:shadow-sm"}`}>
+                                  <div className="flex items-center gap-3 flex-1 min-w-0 w-full sm:w-auto">
+                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
+                                      <Box className="w-4 h-4" strokeWidth={2.5} />
                                     </div>
-                                    <div>
+                                    <div className="flex-1 min-w-0">
                                       <p className="text-sm font-semibold text-foreground">{pkg.name}</p>
                                       <p className="text-xs text-muted-foreground">₦{Number(pkg.price).toLocaleString()} / unit</p>
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-1.5">
-                                    <button type="button" onClick={() => updatePackagingQty(pkg.id, -1)} disabled={qty === 0}
-                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/30 disabled:opacity-25 disabled:hover:bg-transparent transition-all duration-150">
-                                      <Minus className="w-3.5 h-3.5" />
-                                    </button>
-                                    <span className={`w-8 text-center font-bold text-sm ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
-                                    <button type="button" onClick={() => updatePackagingQty(pkg.id, 1)}
-                                      className="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-150">
-                                      <Plus className="w-3.5 h-3.5" />
-                                    </button>
-                                    {qty > 0 && <span className="text-xs font-bold text-primary ml-2 bg-primary/10 px-2 py-0.5 rounded-md">₦{(qty * Number(pkg.price)).toLocaleString()}</span>}
+                                  <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                                    <div className="flex items-center gap-2">
+                                      <button
+                                        type="button"
+                                        onClick={() => updatePackagingQty(pkg.id, -1)}
+                                        disabled={qty === 0}
+                                        className={`w-9 h-9 rounded-lg border-2 flex items-center justify-center transition-all duration-150 ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
+                                        aria-label="Decrease quantity"
+                                      >
+                                        <Minus className="w-4 h-4" strokeWidth={2.5} />
+                                      </button>
+                                      <span className={`w-10 text-center font-bold text-base ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
+                                      <button
+                                        type="button"
+                                        onClick={() => updatePackagingQty(pkg.id, 1)}
+                                        className="w-9 h-9 rounded-lg border-2 border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95 transition-all duration-150"
+                                        aria-label="Increase quantity"
+                                      >
+                                        <Plus className="w-4 h-4" strokeWidth={2.5} />
+                                      </button>
+                                    </div>
+                                    {qty > 0 && (
+                                      <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-lg whitespace-nowrap">
+                                        ₦{(qty * Number(pkg.price)).toLocaleString()}
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
                               );
@@ -1028,9 +1043,16 @@ const Shipping = () => {
                   )}
 
                   {/* Navigation */}
-                  <div className="flex justify-between items-center pt-7 mt-8 border-t border-border/30">
-                    <Button type="button" variant="dashOutline" size="dash" onClick={() => setStep(Math.max(1, step - 1))} disabled={step === 1} className="gap-2 shadow-sm">
-                      <ArrowLeft className="w-4 h-4" /> Back
+                  <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4 pt-7 mt-8 border-t border-border/30">
+                    <Button
+                      type="button"
+                      variant="dashOutline"
+                      size="dash"
+                      onClick={() => setStep(Math.max(1, step - 1))}
+                      disabled={step === 1}
+                      className="gap-2 shadow-sm order-2 sm:order-1 min-h-[44px]"
+                    >
+                      <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
                       <Button
@@ -1050,13 +1072,20 @@ const Shipping = () => {
                             variant: "destructive",
                           });
                         }}
-                        className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20"
+                        className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 order-1 sm:order-2 min-h-[44px]"
                       >
-                        Continue <ArrowRight className="w-4 h-4" />
+                        Continue <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
                     ) : (
-                      <Button type="button" variant="dashAccent" size="dash" disabled={isSubmitting} onClick={handleSubmit} className="gap-2 min-w-[170px] shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20">
-                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
+                      <Button
+                        type="button"
+                        variant="dashAccent"
+                        size="dash"
+                        disabled={isSubmitting}
+                        onClick={handleSubmit}
+                        className="gap-2 min-w-[170px] shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20 order-1 sm:order-2 min-h-[44px]"
+                      >
+                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
                     )}
                   </div>
