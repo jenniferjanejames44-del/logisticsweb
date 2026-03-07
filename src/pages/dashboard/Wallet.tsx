@@ -91,16 +91,16 @@ const Wallet = () => {
         <div className="space-y-6">
           {/* Balance Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-            <Card className="border-border/50 bg-gradient-to-br from-primary/10 to-primary/5">
-              <CardContent className="p-4 sm:p-6">
+            <Card className="border-primary/15 bg-gradient-to-br from-primary/[0.08] via-primary/[0.04] to-transparent shadow-sm shadow-primary/[0.04]">
+              <CardContent className="p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Current Balance</p>
-                    <p className="text-2xl sm:text-3xl font-bold text-foreground truncate">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-1.5 font-medium">Current Balance</p>
+                    <p className="text-2xl sm:text-[2rem] font-bold text-foreground truncate tracking-tight">
                       ₦{balance.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] bg-primary/12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
                     <WalletIcon className="w-5 h-5 sm:w-7 sm:h-7 text-primary" />
                   </div>
                 </div>
