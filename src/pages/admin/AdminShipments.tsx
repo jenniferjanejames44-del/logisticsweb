@@ -244,68 +244,60 @@ const AdminShipments = () => {
                 ))}
               </div>
             ) : (
-              /* Desktop Table View */
-              <div className="overflow-x-auto -mx-6">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Tracking #</TableHead>
-                      <TableHead>Origin</TableHead>
-                      <TableHead>Destination</TableHead>
-                      <TableHead>Weight</TableHead>
-                      <TableHead>Service</TableHead>
-                      <TableHead>Price</TableHead>
-                      <TableHead>Payment</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Created</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredShipments.map((shipment) => (
-                      <TableRow key={shipment.id}>
-                        <TableCell className="font-mono font-medium">{shipment.tracking_number}</TableCell>
-                        <TableCell>{shipment.origin_city}, {shipment.origin_country}</TableCell>
-                        <TableCell>{shipment.destination_city}, {shipment.destination_country}</TableCell>
-                        <TableCell>{shipment.weight} kg</TableCell>
-                        <TableCell className="capitalize">{shipment.service_type.replace("_", " ")}</TableCell>
-                        <TableCell>
-                          {shipment.price !== null ? (
-                            <span className="font-medium">₦{Number(shipment.price).toFixed(2)}</span>
-                          ) : (
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
-                              <DollarSign className="w-3 h-3 mr-1" />Set Price
-                            </Button>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant={shipment.payment_status === "paid" ? "default" : "secondary"}
-                            className={shipment.payment_status === "paid" ? "bg-success/10 text-success" : ""}>
-                            {shipment.payment_status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell><Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge></TableCell>
-                        <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
-                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit Price" : "Set Price"}
-                            </Button>
-                            <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                              <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
-                              <SelectContent>
-                                {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                              </SelectContent>
-                            </Select>
-                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive" onClick={() => handleDelete(shipment.id)}>
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                {filteredShipments.map((shipment) => (
+                  <Card key={shipment.id} className="border-border/40 shadow-sm hover:shadow-md hover:shadow-primary/[0.06] hover:border-primary/25 transition-all duration-200">
+                    <CardContent className="p-4 sm:p-5 space-y-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                            <Package className="w-4 h-4 text-primary" />
                           </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          <div className="min-w-0">
+                            <p className="font-mono font-semibold text-sm text-foreground truncate">{shipment.tracking_number}</p>
+                            <p className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                        <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Origin</p>
+                          <p className="text-foreground font-medium mt-1">{shipment.origin_city}, {shipment.origin_country}</p>
+                        </div>
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Destination</p>
+                          <p className="text-foreground font-medium mt-1">{shipment.destination_city}, {shipment.destination_country}</p>
+                        </div>
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
+                          <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
+                        </div>
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
+                          <p className="text-foreground font-semibold mt-1">{shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1 border-t border-border/40">
+                        <Button variant="dashAccent" size="dashSm" className="h-11 rounded-[10px] px-4 shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30" onClick={() => openPriceDialog(shipment)}>
+                          <DollarSign className="w-3.5 h-3.5 mr-1" />
+                          {shipment.price !== null ? "Edit Price" : "Set Price"}
+                        </Button>
+                        <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
+                          <SelectTrigger className="h-11 rounded-[10px] flex-1"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-11 w-11 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             )}
           </CardContent>
