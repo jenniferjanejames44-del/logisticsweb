@@ -157,20 +157,22 @@ const AdminShipments = () => {
           <p className="text-muted-foreground mt-1 text-sm sm:text-base">Track and manage all customer shipments</p>
         </div>
 
-        <Card className="border-border/50">
+        <Card className="border-border/50 shadow-sm shadow-primary/[0.03]">
           <CardHeader className="pb-3 sm:pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                </span>
                 All Shipments ({filteredShipments.length})
               </CardTitle>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search shipments..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search shipments..." className="pl-10 h-11 rounded-[10px]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40">
+                  <SelectTrigger className="w-full sm:w-40 h-11 rounded-[10px]">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
