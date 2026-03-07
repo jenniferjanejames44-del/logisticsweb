@@ -24,6 +24,9 @@ interface Shipment {
   destination_city: string;
   destination_country: string;
   weight: number;
+  length_cm: number | null;
+  width_cm: number | null;
+  height_cm: number | null;
   service_type: string;
   status: string;
   created_at: string;
@@ -32,6 +35,14 @@ interface Shipment {
   payment_status: string;
   user_id: string;
 }
+
+const calcVolWeight = (l: number | null, w: number | null, h: number | null) => {
+  if (l && w && h && l > 0 && w > 0 && h > 0) return (l * w * h) / 5000;
+  return 0;
+};
+const calcChargeableWeight = (actual: number, l: number | null, w: number | null, h: number | null) => {
+  return Math.max(actual, calcVolWeight(l, w, h));
+};
 
 const statusOptions = [
   { value: "shipment_created", label: "Shipment Created" },
@@ -66,8 +77,11 @@ const AdminShipments = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priceDialogOpen, setPriceDialogOpen] = useState(false);
+  const [dimensionDialogOpen, setDimensionDialogOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
   const [priceInput, setPriceInput] = useState("");
+  const [dimInputs, setDimInputs] = useState({ weight: "", length_cm: "", width_cm: "", height_cm: "" });
+  const [settingDims, setSettingDims] = useState(false);
   const [settingPrice, setSettingPrice] = useState(false);
   const isMobile = useIsMobile();
 
