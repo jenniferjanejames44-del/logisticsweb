@@ -74,6 +74,7 @@ const Shipping = () => {
   const [step, setStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showStepValidation, setShowStepValidation] = useState(false);
 
   // DB data
   const [warehouses, setWarehouses] = useState<any[]>([]);
