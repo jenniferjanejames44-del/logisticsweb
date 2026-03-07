@@ -525,6 +525,12 @@ const Shipping = () => {
                         <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Package Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">What are you shipping?</p></div>
                       </div>
+                      {showStepValidation && !isStep3Complete && (
+                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
+                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <span>Please complete all required fields before continuing.</span>
+                        </div>
+                      )}
 
                       <div className="space-y-2">
                         <Label className="text-sm font-medium">Package Description</Label>
