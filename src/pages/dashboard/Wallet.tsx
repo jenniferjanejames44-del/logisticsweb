@@ -190,16 +190,16 @@ const Wallet = () => {
                     >
                       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 border ${
                             transaction.type === "credit"
-                              ? "bg-green-500/10"
-                              : "bg-orange-500/10"
+                              ? "bg-success/10 border-success/20"
+                              : "bg-warning/10 border-warning/20"
                           }`}
                         >
                           {transaction.type === "credit" ? (
-                            <ArrowUpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                            <ArrowUpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
                           ) : (
-                            <ArrowDownCircle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                            <ArrowDownCircle className="w-4 h-4 sm:w-5 sm:h-5 text-warning" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -214,7 +214,7 @@ const Wallet = () => {
                       <div className="text-right flex-shrink-0">
                         <p
                           className={`font-semibold text-sm sm:text-base ${
-                            transaction.type === "credit" ? "text-green-600" : "text-orange-600"
+                            transaction.type === "credit" ? "text-success" : "text-warning"
                           }`}
                         >
                           {transaction.type === "credit" ? "+" : "-"}₦{Number(transaction.amount).toFixed(2)}
