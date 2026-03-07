@@ -160,9 +160,10 @@ const Overview = () => {
       </div>
 
       {/* Wallet Feature Card */}
-      <Card className="mb-7 lg:mb-8 border-primary/30 bg-gradient-to-br from-primary/[0.16] via-primary/[0.07] to-accent/[0.08] shadow-lg shadow-primary/[0.10] relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-44 h-44 bg-primary/[0.08] rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-28 h-28 bg-accent/[0.08] rounded-full translate-y-1/2 -translate-x-1/2" />
+      <Card className="mb-7 lg:mb-8 border-primary/35 bg-gradient-to-br from-primary/[0.2] via-primary/[0.09] to-accent/[0.1] shadow-xl shadow-primary/[0.14] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.1] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/[0.1] rounded-full translate-y-1/2 -translate-x-1/2" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         <CardContent className="p-5 sm:p-7 relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div className="flex items-center gap-5">
@@ -170,18 +171,18 @@ const Overview = () => {
                 <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-muted-foreground font-semibold tracking-wide uppercase">Wallet Balance</p>
-                <p className="text-[1.875rem] sm:text-[2.35rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
+                <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance</p>
+                <p className="text-[2rem] sm:text-[2.45rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
               </div>
             </div>
             <div className="flex gap-2.5 sm:gap-3">
-              <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20">
+              <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30">
                 <Link to="/dashboard/wallet">
                   <ArrowUpCircle className="w-4 h-4" />
                   Add Funds
                 </Link>
               </Button>
-              <Button variant="dashPrimary" size="dash" asChild className="shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20">
+              <Button variant="dashPrimary" size="dash" asChild className="border border-primary/25 bg-primary/95 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30">
                 <Link to="/dashboard/wallet">Manage Wallet</Link>
               </Button>
             </div>
