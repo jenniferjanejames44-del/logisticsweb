@@ -334,6 +334,17 @@ const AdminShipments = () => {
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
                           <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
+                          {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
+                            <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
+                          )}
+                        </div>
+                        <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
+                          <p className="text-foreground font-medium mt-1">
+                            {shipment.length_cm && shipment.width_cm && shipment.height_cm
+                              ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
+                              : "—"}
+                          </p>
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
@@ -345,6 +356,10 @@ const AdminShipments = () => {
                         <Button variant="dashAccent" size="dashSm" className="h-11 rounded-[10px] px-4 shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30" onClick={() => openPriceDialog(shipment)}>
                           <DollarSign className="w-3.5 h-3.5 mr-1" />
                           {shipment.price !== null ? "Edit Price" : "Set Price"}
+                        </Button>
+                        <Button variant="outline" size="dashSm" className="h-11 rounded-[10px] px-4" onClick={() => openDimensionDialog(shipment)}>
+                          <Ruler className="w-3.5 h-3.5 mr-1" />
+                          Edit Dims
                         </Button>
                         <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                           <SelectTrigger className="h-11 rounded-[10px] flex-1"><SelectValue /></SelectTrigger>
