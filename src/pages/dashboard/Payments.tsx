@@ -101,44 +101,44 @@ const Payments = () => {
   return (
     <DashboardLayout title="Payments" description="View your payment history and invoices">
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Total Paid</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-success">₦{totalPaid.toLocaleString()}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-6 sm:mb-8">
+        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Total Paid</p>
+                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{totalPaid.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-success/10 rounded-xl flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-success" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Pending</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-warning">₦{pendingAmount.toLocaleString()}</p>
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-warning/10 rounded-xl flex items-center justify-center">
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-warning" />
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-green-500/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <CheckCircle className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm text-muted-foreground">Total Transactions</p>
-                <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">{payments.length}</p>
+        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Pending</p>
+                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{pendingAmount.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-warning/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <Clock className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-warning" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
+          <CardContent className="p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Total Transactions</p>
+                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{payments.length}</p>
+              </div>
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                <CreditCard className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-primary" />
               </div>
             </div>
           </CardContent>
@@ -148,16 +148,16 @@ const Payments = () => {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search by transaction ID or tracking..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 sm:pl-10 h-10 sm:h-11 text-sm"
+            className="pl-9 h-12 text-sm rounded-[10px]"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[160px] h-10 sm:h-11">
+          <SelectTrigger className="w-full sm:w-[160px] h-12 rounded-[10px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -176,14 +176,14 @@ const Payments = () => {
           <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
         </div>
       ) : filteredPayments.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid gap-3 sm:gap-4">
           {filteredPayments.map((payment) => (
-            <Card key={payment.id} className="border-border/50 hover:shadow-card transition-shadow">
-              <CardContent className="p-4 sm:p-6">
+            <Card key={payment.id} className="border-border/40 hover:border-border/70 hover:shadow-md transition-all duration-200">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <CreditCard className="w-6 h-6 text-primary" />
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-11 h-11 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <div className="flex items-center gap-3 mb-2">

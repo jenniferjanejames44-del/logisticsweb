@@ -162,15 +162,15 @@ const Shipments = () => {
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
       {/* Balance Card */}
-      <Card className="mb-4 sm:mb-6 border-border/50 bg-gradient-to-r from-primary/10 to-primary/5">
-        <CardContent className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-              <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+      <Card className="mb-5 sm:mb-7 border-primary/15 bg-gradient-to-br from-primary/[0.07] via-primary/[0.03] to-transparent shadow-sm">
+        <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/15 to-primary/8 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner border border-primary/10">
+              <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm text-muted-foreground">Wallet Balance</p>
-              <p className="text-lg sm:text-xl font-bold text-foreground">₦{balance.toFixed(2)}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
+              <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
             </div>
           </div>
           <Button variant="dashOutline" size="dashSm" className="w-full sm:w-auto" onClick={() => window.location.href = "/dashboard/wallet"}>
@@ -220,7 +220,7 @@ const Shipments = () => {
       {filteredShipments.length > 0 ? (
         <div className="grid gap-3 sm:gap-4">
           {filteredShipments.map((shipment) => (
-            <Card key={shipment.id} className="border-border/50 hover:shadow-md transition-shadow">
+            <Card key={shipment.id} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   {/* Left side */}
