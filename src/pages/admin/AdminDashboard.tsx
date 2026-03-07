@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Package, DollarSign, TrendingUp, Clock, CheckCircle } from "lucide-react";
+import { Users, Package, DollarSign, TrendingUp, Clock, CheckCircle, Activity } from "lucide-react";
 
 interface DashboardStats {
   totalUsers: number;
@@ -78,9 +78,9 @@ const AdminDashboard = () => {
   const statCards = [
     { title: "Total Users", value: stats.totalUsers, icon: Users, color: "text-primary", bgColor: "bg-primary/8" },
     { title: "Total Shipments", value: stats.totalShipments, icon: Package, color: "text-accent", bgColor: "bg-accent/10" },
-    { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-success", bgColor: "bg-success/8" },
+    { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-green-600", bgColor: "bg-green-500/8" },
     { title: "Pending", value: stats.pendingShipments, icon: Clock, color: "text-warning", bgColor: "bg-warning/8" },
-    { title: "Completed", value: stats.completedShipments, icon: CheckCircle, color: "text-success", bgColor: "bg-success/8" },
+    { title: "Completed", value: stats.completedShipments, icon: CheckCircle, color: "text-green-600", bgColor: "bg-green-500/8" },
     { title: "Growth Rate", value: "+12.5%", icon: TrendingUp, color: "text-primary", bgColor: "bg-primary/8" },
   ];
 
@@ -89,10 +89,19 @@ const AdminDashboard = () => {
       pending: "bg-warning/10 text-warning",
       processing: "bg-primary/10 text-primary",
       in_transit: "bg-primary/10 text-primary",
-      delivered: "bg-success/10 text-success",
+      delivered: "bg-green-500/10 text-green-600",
       cancelled: "bg-destructive/10 text-destructive",
     };
     return colors[status] || "bg-muted text-muted-foreground";
+  };
+
+  const getStatusIcon = (status: string) => {
+    const icons: Record<string, any> = {
+      pending: Clock,
+      in_transit: Package,
+      delivered: CheckCircle,
+    };
+    return icons[status] || Package;
   };
 
   return (
@@ -103,16 +112,16 @@ const AdminDashboard = () => {
           {statCards.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="border-border/40 hover:border-border hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
+              <Card key={stat.title} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
                 <CardContent className="p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1">{stat.title}</p>
+                      <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">{stat.title}</p>
                       <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">
                         {loading ? "..." : stat.value}
                       </p>
                     </div>
-                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center flex-shrink-0`}>
+                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                       <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.color}`} />
                     </div>
                   </div>
@@ -125,33 +134,48 @@ const AdminDashboard = () => {
         {/* Recent Activity */}
         <Card className="border-border/40">
           <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
-            <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold">Recent Activity</CardTitle>
+            <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-primary/8 rounded-lg flex items-center justify-center">
+                <Activity className="w-4 h-4 text-primary" />
+              </div>
+              Recent Activity
+            </CardTitle>
           </CardHeader>
           <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6">
             {loading ? (
               <p className="text-muted-foreground text-[0.875rem]">Loading...</p>
             ) : stats.recentActivity.length > 0 ? (
               <div className="space-y-1">
-                {stats.recentActivity.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between py-3 border-b border-border/30 last:border-0 gap-3"
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-                      <span className="text-foreground text-[0.875rem] font-medium truncate">{activity.description}</span>
+                {stats.recentActivity.map((activity, index) => {
+                  const StatusIcon = getStatusIcon(activity.status);
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between py-3.5 border-b border-border/25 last:border-0 gap-3 hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors duration-150"
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
+                        <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0">
+                          <StatusIcon className="w-4 h-4 text-primary" />
+                        </div>
+                        <span className="text-foreground text-[0.875rem] font-medium truncate">{activity.description}</span>
+                      </div>
+                      <div className="flex items-center gap-2.5 flex-shrink-0">
+                        <Badge className={`${getStatusColor(activity.status)} text-[11px] hidden sm:inline-flex`}>
+                          {activity.status.replace("_", " ")}
+                        </Badge>
+                        <span className="text-[12px] text-muted-foreground">{activity.time}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2.5 flex-shrink-0">
-                      <Badge className={`${getStatusColor(activity.status)} text-[11px] hidden sm:inline-flex`}>
-                        {activity.status.replace("_", " ")}
-                      </Badge>
-                      <span className="text-[12px] text-muted-foreground">{activity.time}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
-              <p className="text-muted-foreground text-[0.875rem]">No recent activity</p>
+              <div className="text-center py-10">
+                <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                  <Activity className="w-6 h-6 text-muted-foreground/50" />
+                </div>
+                <p className="text-muted-foreground text-[0.875rem]">No recent activity</p>
+              </div>
             )}
           </CardContent>
         </Card>
