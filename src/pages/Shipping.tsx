@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Package, MapPin, Truck, ArrowRight, ArrowLeft, Scale, CheckCircle2,
   Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
-  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle,
+  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
 
@@ -378,23 +378,23 @@ const Shipping = () => {
               <div className="bg-card rounded-2xl border border-border/50 shadow-xl shadow-primary/[0.04] overflow-hidden">
                 {/* Progress */}
                 <div className="bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 border-b border-border/40 p-3 sm:p-6 backdrop-blur-sm">
-                  <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
-                    <div className="flex items-center justify-between min-w-[320px] max-w-3xl mx-auto">
+                  <div className="overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent -mx-1 px-1">
+                    <div className="flex items-center justify-between min-w-[600px] sm:min-w-[650px] max-w-3xl mx-auto">
                       {progressSteps.map((s, i) => {
                         const isActive = step >= s.num;
                         const isCurrent = step === s.num;
                         const isComplete = step > s.num;
                         const StepIcon = s.icon;
                         return (
-                          <div key={s.num} className="flex items-center gap-0.5 sm:gap-1.5">
-                            <div className="flex flex-col items-center gap-0.5 sm:gap-1">
-                              <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border-2 border-border/60 text-muted-foreground"} ${isCurrent ? "ring-2 sm:ring-[3px] ring-primary/15 scale-105" : ""}`}>
-                                {isComplete ? <CheckCircle2 className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px]" /> : <StepIcon className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px]" />}
+                          <div key={s.num} className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex flex-col items-center gap-1 sm:gap-1.5">
+                              <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border-2 border-border/60 text-muted-foreground"} ${isCurrent ? "ring-2 sm:ring-[3px] ring-primary/15 scale-105" : ""}`}>
+                                {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} /> : <StepIcon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />}
                               </div>
-                              <span className={`text-[8px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
+                              <span className={`text-[9px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
                             </div>
                             {i < progressSteps.length - 1 && (
-                              <div className="w-3 sm:w-8 lg:w-12 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
+                              <div className="w-6 sm:w-10 lg:w-14 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
                                 <div className={`h-full bg-primary rounded-full transition-all duration-500 ${step > s.num ? "w-full" : "w-0"}`} />
                               </div>
                             )}
@@ -412,7 +412,7 @@ const Shipping = () => {
                   {step === 1 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" /></div>
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Sender Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who is sending this package?</p></div>
                       </div>
                       {showStepValidation && !isStep1Complete && (
@@ -423,22 +423,22 @@ const Shipping = () => {
                       )}
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Full Name *</Label>
+                          <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" strokeWidth={2.5} /> Full Name *</Label>
                           <Input value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${showStepValidation && !formData.sender_name ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
                           {showStepValidation && !formData.sender_name && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone Number *</Label>
+                          <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" strokeWidth={2.5} /> Phone Number *</Label>
                           <Input type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${showStepValidation && !formData.sender_phone ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
                           {showStepValidation && !formData.sender_phone && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" /> Email</Label>
+                        <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" strokeWidth={2.5} /> Email</Label>
                         <Input type="email" value={formData.sender_email} onChange={(e) => updateField("sender_email", e.target.value)} placeholder="Email address" className={inputClass} />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Address</Label>
+                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} /> Address</Label>
                         <LocationPicker
                           value={formData.sender_address}
                           onChange={(v) => updateField("sender_address", v)}
@@ -473,7 +473,7 @@ const Shipping = () => {
                   {step === 2 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" /></div>
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Receiver Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
@@ -544,7 +544,7 @@ const Shipping = () => {
                   {step === 3 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
-                        <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" /></div>
+                        <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Package Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">What are you shipping?</p></div>
                       </div>
                       {showStepValidation && !isStep3Complete && (
@@ -614,9 +614,45 @@ const Shipping = () => {
                           <Input type="number" min="1" step="1" value={formData.quantity} onChange={(e) => updateField("quantity", e.target.value)} placeholder="1" className={inputClass} />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium flex items-center gap-1"><DollarSign className="w-3 h-3" /> Declared Value (USD)</Label>
+                          <Label className="text-sm font-medium flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} /> Declared Value (USD)</Label>
                           <Input type="number" min="0" step="0.01" value={formData.declared_value} onChange={(e) => updateField("declared_value", e.target.value)} placeholder="e.g. 500" className={inputClass} />
                         </div>
+                      </div>
+
+                      {/* Insurance Option */}
+                      <div className="p-4 rounded-xl border border-border bg-card space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                              <Shield className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                            </div>
+                            <div>
+                              <Label className="text-sm font-semibold cursor-pointer">Shipment Insurance</Label>
+                              <p className="text-xs text-muted-foreground">Protect your package against loss or damage</p>
+                            </div>
+                          </div>
+                          <Checkbox
+                            checked={formData.insurance_required === "true"}
+                            onCheckedChange={(checked) => updateField("insurance_required", checked ? "true" : "false")}
+                          />
+                        </div>
+                        {formData.insurance_required === "true" && (
+                          <div className="pl-13 space-y-2">
+                            <p className="text-xs text-muted-foreground">Insurance coverage based on declared value</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Shipment Notes */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium flex items-center gap-1"><FileText className="w-3 h-3" strokeWidth={2.5} /> Shipment Notes (Optional)</Label>
+                        <Textarea
+                          value={formData.notes || ""}
+                          onChange={(e) => updateField("notes", e.target.value)}
+                          placeholder="Add any special instructions or notes for this shipment..."
+                          rows={3}
+                          className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground"
+                        />
                       </div>
 
                       {/* File Upload */}
@@ -645,7 +681,7 @@ const Shipping = () => {
                   {step === 4 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" /></div>
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
@@ -853,7 +889,7 @@ const Shipping = () => {
                   {step === 5 && (
                     <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
-                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><CheckCircle2 className="w-5 h-5 text-primary-foreground" /></div>
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><CheckCircle2 className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipment Summary</h3><p className="text-[13px] text-muted-foreground mt-0.5">Review your details and confirm</p></div>
                       </div>
 
@@ -889,6 +925,9 @@ const Shipping = () => {
                               { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
+                              { label: "Quantity", value: formData.quantity || "1" },
+                              { label: "Declared Value", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
+                              { label: "Insurance", value: formData.insurance_required === "true" ? "Yes" : "No" },
                             ].map((item) => (
                               <div key={item.label}>
                                 <p className="text-xs text-muted-foreground">{item.label}</p>
@@ -896,6 +935,12 @@ const Shipping = () => {
                               </div>
                             ))}
                           </div>
+                          {formData.notes && (
+                            <div className="mt-4 pt-4 border-t border-border/40">
+                              <p className="text-xs text-muted-foreground mb-1">Shipment Notes</p>
+                              <p className="text-sm text-foreground">{formData.notes}</p>
+                            </div>
+                          )}
                         </div>
 
                         {/* Packaging summary */}
