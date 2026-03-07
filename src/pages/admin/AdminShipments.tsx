@@ -276,11 +276,21 @@ const AdminShipments = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 pt-1 border-t border-border/50">
+                    <div className="text-sm">
+                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
+                      <p className="text-foreground font-semibold">{shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border/50">
                       <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
                         <DollarSign className="w-3.5 h-3.5 mr-1" />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
+                      <Button variant="outline" className="flex-1 h-11 rounded-[10px]" onClick={() => openDimensionDialog(shipment)}>
+                        <Ruler className="w-3.5 h-3.5 mr-1" />
+                        Edit Dims
+                      </Button>
+                    </div>
+                    <div className="flex items-center gap-2">
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                         <SelectTrigger className="flex-1 h-11 rounded-[10px]"><SelectValue /></SelectTrigger>
                         <SelectContent>
