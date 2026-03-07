@@ -141,11 +141,11 @@ const Wallet = () => {
           </div>
 
           {/* Info Card */}
-          <Card className="border-border/50 bg-muted/30">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-start gap-3 sm:gap-4">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+          <Card className="border-border/40 bg-muted/30">
+            <CardContent className="p-4 sm:p-5">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-[18px] h-[18px] text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">Fund Your Wallet Instantly</h3>
@@ -159,28 +159,32 @@ const Wallet = () => {
           </Card>
 
           {/* Transactions */}
-          <Card className="border-border/50">
-            <CardHeader className="p-4 sm:p-6">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Card className="border-border/40">
+            <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
+              <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
+                <div className="w-8 h-8 bg-primary/8 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-primary" />
+                </div>
                 Transaction History
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+            <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6">
               {transactions.length === 0 ? (
-                <div className="text-center py-8">
-                  <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                  <p className="text-muted-foreground">No transactions yet</p>
-                  <p className="text-sm text-muted-foreground">
+                <div className="text-center py-10">
+                  <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <Clock className="w-6 h-6 text-muted-foreground/50" />
+                  </div>
+                  <p className="text-muted-foreground text-[0.875rem]">No transactions yet</p>
+                  <p className="text-sm text-muted-foreground mt-1">
                     Your transaction history will appear here
                   </p>
                 </div>
               ) : (
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-1">
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="flex items-center justify-between p-3 sm:p-4 rounded-lg border border-border/50 hover:bg-muted/30 transition-colors gap-3"
+                      className="flex items-center justify-between py-3.5 border-b border-border/25 last:border-0 gap-3 hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors duration-150"
                     >
                       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div

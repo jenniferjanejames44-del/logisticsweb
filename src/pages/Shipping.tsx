@@ -337,9 +337,9 @@ const Shipping = () => {
             <div className="max-w-4xl mx-auto">
               <div className="bg-card rounded-2xl border border-border/50 shadow-xl shadow-primary/[0.04] overflow-hidden">
                 {/* Progress */}
-                <div className="bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 border-b border-border/40 p-4 sm:p-6 backdrop-blur-sm">
+                <div className="bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 border-b border-border/40 p-3 sm:p-6 backdrop-blur-sm">
                   <div className="overflow-x-auto scrollbar-hide -mx-1 px-1">
-                    <div className="flex items-center justify-between min-w-[380px] max-w-3xl mx-auto">
+                    <div className="flex items-center justify-between min-w-[320px] max-w-3xl mx-auto">
                       {progressSteps.map((s, i) => {
                         const isActive = step >= s.num;
                         const isCurrent = step === s.num;
@@ -347,14 +347,14 @@ const Shipping = () => {
                         const StepIcon = s.icon;
                         return (
                           <div key={s.num} className="flex items-center gap-0.5 sm:gap-1.5">
-                            <div className="flex flex-col items-center gap-1">
-                              <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border-2 border-border/60 text-muted-foreground"} ${isCurrent ? "ring-[3px] ring-primary/15 scale-105" : ""}`}>
-                                {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" /> : <StepIcon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />}
+                            <div className="flex flex-col items-center gap-0.5 sm:gap-1">
+                              <div className={`w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border-2 border-border/60 text-muted-foreground"} ${isCurrent ? "ring-2 sm:ring-[3px] ring-primary/15 scale-105" : ""}`}>
+                                {isComplete ? <CheckCircle2 className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px]" /> : <StepIcon className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px]" />}
                               </div>
-                              <span className={`text-[9px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
+                              <span className={`text-[8px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
                             </div>
                             {i < progressSteps.length - 1 && (
-                              <div className="w-4 sm:w-8 lg:w-12 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
+                              <div className="w-3 sm:w-8 lg:w-12 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
                                 <div className={`h-full bg-primary rounded-full transition-all duration-500 ${step > s.num ? "w-full" : "w-0"}`} />
                               </div>
                             )}
