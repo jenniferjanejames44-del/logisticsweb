@@ -556,6 +556,16 @@ const Shipping = () => {
                         <Textarea value={formData.description} onChange={(e) => updateField("description", e.target.value)} placeholder="Describe the contents of your package" rows={3} className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground" />
                       </div>
 
+                      <div className="space-y-2">
+                        <Label className="text-sm font-medium">Category</Label>
+                        <Select value={formData.category} onValueChange={(v) => updateField("category", v)}>
+                          <SelectTrigger className={inputClass}><SelectValue placeholder="Select category" /></SelectTrigger>
+                          <SelectContent className="bg-card border-border">
+                            {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
                       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Scale className="w-3 h-3" /> Weight (KG) *</Label>
