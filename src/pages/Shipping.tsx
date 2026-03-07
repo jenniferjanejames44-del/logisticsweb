@@ -708,13 +708,18 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div className="space-y-3">
-                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials (Optional)</Label>
+                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials *</Label>
+                          {!hasPackagingSelection && (
+                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
+                              Select at least one packaging material to continue.
+                            </p>
+                          )}
                           <div className="space-y-2">
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary/40 bg-primary/[0.05] shadow-md shadow-primary/[0.06] ring-1 ring-primary/10" : "border-border/50 bg-card hover:border-border/80"}`}>
+                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary/40 bg-primary/[0.06] shadow-md shadow-primary/[0.06] ring-1 ring-primary/10" : "border-border/50 bg-card hover:border-border/80"}`}>
                                   <div className="flex items-center gap-3 flex-1 min-w-0">
                                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" />
