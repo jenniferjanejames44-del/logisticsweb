@@ -146,16 +146,16 @@ const PayShipmentDialog = ({
             <p className="text-sm font-semibold text-foreground">Payment Method</p>
 
             <Button
-              variant="dashOutline"
+              variant="dashPrimary"
               size="dash"
-              className="w-full justify-start gap-3"
+              className="w-full justify-start gap-3 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/25"
               onClick={handlePaystackPayment}
               disabled={paystackLoading || loading}
             >
               {paystackLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                <CreditCard className="w-4 h-4 text-primary" />
+                <CreditCard className="w-4 h-4" />
               )}
               {paystackLoading ? "Redirecting..." : "Pay with Paystack"}
               <Badge variant="secondary" className="ml-auto text-[10px]">Card / Bank / USSD</Badge>
