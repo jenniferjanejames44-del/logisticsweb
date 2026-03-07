@@ -139,17 +139,17 @@ const Overview = () => {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} className="border-border/40 hover:border-border transition-colors">
+            <Card key={stat.label} className="border-border/40 hover:border-border hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1">{stat.label}</p>
+                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5">{stat.label}</p>
                     <p className="text-[1.375rem] sm:text-[1.625rem] font-bold text-foreground tracking-tight truncate">
                       {stat.value}
                     </p>
                   </div>
-                  <div className={`w-10 h-10 sm:w-11 sm:h-11 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
-                    <Icon className={`w-5 h-5 ${stat.iconColor}`} />
+                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.iconColor}`} />
                   </div>
                 </div>
               </CardContent>
@@ -159,16 +159,16 @@ const Overview = () => {
       </div>
 
       {/* Wallet Feature Card */}
-      <Card className="mb-6 lg:mb-8 border-border/40 bg-gradient-to-r from-primary/8 to-primary/3">
+      <Card className="mb-6 lg:mb-8 border-primary/15 bg-gradient-to-br from-primary/[0.06] via-primary/[0.03] to-transparent shadow-sm shadow-primary/[0.04]">
         <CardContent className="p-5 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/15 rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-13 h-13 sm:w-[60px] sm:h-[60px] bg-primary/12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
                 <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
               </div>
               <div>
                 <p className="text-xs sm:text-sm text-muted-foreground font-medium">Wallet Balance</p>
-                <p className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">₦{balance.toFixed(2)}</p>
+                <p className="text-2xl sm:text-[2rem] font-bold text-foreground tracking-tight">₦{balance.toFixed(2)}</p>
               </div>
             </div>
             <div className="flex gap-2 sm:gap-3">
@@ -195,10 +195,10 @@ const Overview = () => {
         ].map((action) => {
           const Icon = action.icon;
           return (
-            <Card key={action.label} className="border-border/40 hover:border-border hover:shadow-sm transition-all cursor-pointer group">
+            <Card key={action.label} className="border-border/40 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.04] transition-all duration-200 cursor-pointer group">
               <CardContent className="p-4 sm:p-5">
                 <Link to={action.href} className="flex items-center gap-3.5">
-                  <div className={`w-10 h-10 sm:w-11 sm:h-11 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0`}>
+                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0`}>
                     <Icon className={`w-5 h-5 ${action.iconColor}`} />
                   </div>
                   <div className="min-w-0">

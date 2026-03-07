@@ -103,7 +103,7 @@ const AdminDashboard = () => {
           {statCards.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="border-border/40 hover:border-border transition-colors">
+              <Card key={stat.title} className="border-border/40 hover:border-border hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
                 <CardContent className="p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
@@ -112,8 +112,8 @@ const AdminDashboard = () => {
                         {loading ? "..." : stat.value}
                       </p>
                     </div>
-                    <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-lg ${stat.bgColor} flex items-center justify-center flex-shrink-0`}>
-                      <Icon className={`w-5 h-5 ${stat.color}`} />
+                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.color}`} />
                     </div>
                   </div>
                 </CardContent>
