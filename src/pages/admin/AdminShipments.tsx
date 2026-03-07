@@ -193,7 +193,7 @@ const AdminShipments = () => {
               /* Mobile Card View */
               <div className="space-y-3">
                 {filteredShipments.map((shipment) => (
-                  <div key={shipment.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                  <div key={shipment.id} className="border border-border/40 rounded-xl p-4 space-y-3 bg-card shadow-sm hover:shadow-md hover:border-border/60 transition-all duration-200">
                     <div className="flex items-center justify-between">
                       <span className="font-mono font-medium text-sm text-foreground">{shipment.tracking_number}</span>
                       <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
@@ -219,7 +219,7 @@ const AdminShipments = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 pt-1 border-t border-border/50">
-                      <Button variant="outline" className="flex-1 h-11" onClick={() => openPriceDialog(shipment)}>
+                      <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
                         <DollarSign className="w-3.5 h-3.5 mr-1" />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
@@ -266,7 +266,7 @@ const AdminShipments = () => {
                           {shipment.price !== null ? (
                             <span className="font-medium">₦{Number(shipment.price).toFixed(2)}</span>
                           ) : (
-                            <Button variant="outline" size="sm" onClick={() => openPriceDialog(shipment)}>
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
                               <DollarSign className="w-3 h-3 mr-1" />Set Price
                             </Button>
                           )}
@@ -281,7 +281,7 @@ const AdminShipments = () => {
                         <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm" onClick={() => openPriceDialog(shipment)}>
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
                               <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit" : "Set"}
                             </Button>
                             <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>

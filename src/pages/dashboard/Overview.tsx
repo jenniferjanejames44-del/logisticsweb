@@ -160,26 +160,28 @@ const Overview = () => {
       </div>
 
       {/* Wallet Feature Card */}
-      <Card className="mb-7 lg:mb-8 border-primary/15 bg-gradient-to-br from-primary/[0.07] via-primary/[0.03] to-transparent shadow-sm">
-        <CardContent className="p-5 sm:p-7">
+      <Card className="mb-7 lg:mb-8 border-primary/20 bg-gradient-to-br from-primary/[0.10] via-primary/[0.05] to-accent/[0.03] shadow-md shadow-primary/[0.06] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 bg-primary/[0.04] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-accent/[0.04] rounded-full translate-y-1/2 -translate-x-1/2" />
+        <CardContent className="p-5 sm:p-7 relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div className="flex items-center gap-5">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/15 to-primary/8 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner border border-primary/10">
-                <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20 border border-primary/20">
+                <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
-                <p className="text-2xl sm:text-[2.125rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground font-semibold tracking-wide uppercase">Wallet Balance</p>
+                <p className="text-[1.75rem] sm:text-[2.25rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
               </div>
             </div>
             <div className="flex gap-2.5 sm:gap-3">
-              <Button variant="dashPrimary" size="dash" asChild className="shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/15">
+              <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20">
                 <Link to="/dashboard/wallet">
                   <ArrowUpCircle className="w-4 h-4" />
                   Add Funds
                 </Link>
               </Button>
-              <Button variant="dashOutline" size="dash" asChild>
+              <Button variant="dashOutline" size="dash" asChild className="border-primary/30 hover:border-primary hover:bg-primary hover:text-primary-foreground">
                 <Link to="/dashboard/wallet">Manage Wallet</Link>
               </Button>
             </div>
