@@ -65,7 +65,7 @@ const WhyChooseSection = () => {
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
 
               <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-7 shadow-sm transition-all duration-400 group-hover:scale-110 group-hover:bg-primary/15">
-                <item.icon size={28} className="text-primary" />
+                <item.icon size={28} className="text-primary" strokeWidth={2.5} />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                 {item.title}

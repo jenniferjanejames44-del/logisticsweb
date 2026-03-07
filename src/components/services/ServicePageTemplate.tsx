@@ -82,7 +82,7 @@ const ServicePageTemplate = ({
               
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20 shadow-lg">
-                  <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
+                  <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" strokeWidth={2.5} />
                 </div>
                 <span className="inline-flex items-center px-4 py-2 bg-accent text-accent-foreground rounded-lg text-xs sm:text-sm font-semibold shadow-md">
                   {subtitle}
@@ -120,7 +120,7 @@ const ServicePageTemplate = ({
                   className="flex items-center gap-3 p-3.5 sm:p-4 bg-background rounded-lg border border-border/50 transition-shadow duration-200 hover:shadow-md"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
                   <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
                 </div>
               ))}
@@ -199,8 +199,8 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardContent className="p-5 sm:p-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-all duration-200 group-hover:scale-110">
-                      <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-all duration-200 group-hover:scale-110 shadow-sm">
+                      <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{benefit.title}</h3>
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{benefit.description}</p>

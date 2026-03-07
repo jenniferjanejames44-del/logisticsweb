@@ -134,7 +134,7 @@ const Services = () => {
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   <CardContent className="p-6 md:p-8">
                     <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 group-hover:bg-primary/15 shadow-sm transition-all duration-300">
-                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                       {service.title}

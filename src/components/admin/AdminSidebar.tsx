@@ -121,9 +121,9 @@ const AdminSidebar = () => {
                         : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
                     }`}
                   >
-                    <Icon className="w-[18px] h-[18px] flex-shrink-0" />
+                    <Icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={2.5} />
                     <span>{item.name}</span>
-                    {active && <ChevronRight className="w-4 h-4 ml-auto" />}
+                    {active && <ChevronRight className="w-4 h-4 ml-auto" strokeWidth={2.5} />}
                   </Link>
                 );
               })}

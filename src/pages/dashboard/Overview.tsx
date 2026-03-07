@@ -149,8 +149,8 @@ const Overview = () => {
                       {stat.value}
                     </p>
                   </div>
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
-                    <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.iconColor}`} />
+                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all duration-200 shadow-sm`}>
+                    <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.iconColor}`} strokeWidth={2.5} />
                   </div>
                 </div>
               </CardContent>
@@ -202,8 +202,8 @@ const Overview = () => {
             <Card key={action.label} className="border-border/40 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.04] transition-all duration-200 cursor-pointer group">
               <CardContent className="p-5 sm:p-5">
                 <Link to={action.href} className="flex items-center gap-4">
-                  <div className={`w-12 h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0 shadow-sm`}>
-                    <Icon className={`w-5 h-5 ${action.iconColor}`} />
+                  <div className={`w-12 h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0 shadow-md`}>
+                    <Icon className={`w-5 h-5 ${action.iconColor}`} strokeWidth={2.5} />
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-semibold text-foreground text-[0.9375rem]">{action.label}</h3>

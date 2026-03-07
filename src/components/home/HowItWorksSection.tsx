@@ -81,7 +81,7 @@ const HowItWorksSection = () => {
 
                 {/* Icon */}
                 <div className="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6 shadow-sm transition-all duration-400 group-hover:scale-110 group-hover:bg-white/25 border border-white/20">
-                  <step.icon className="w-7 h-7 text-white" />
+                  <step.icon className="w-7 h-7 text-white" strokeWidth={2.5} />
                 </div>
 
                 {/* Content */}

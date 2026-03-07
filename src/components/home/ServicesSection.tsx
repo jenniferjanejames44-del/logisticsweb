@@ -82,7 +82,7 @@ const ServicesSection = () => {
 
                   {/* Icon Badge */}
                   <div className="absolute bottom-4 right-4 w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
-                    <ServiceIcon className="w-6 h-6 text-primary" />
+                    <ServiceIcon className="w-6 h-6 text-primary" strokeWidth={2.5} />
                   </div>
                 </div>
 

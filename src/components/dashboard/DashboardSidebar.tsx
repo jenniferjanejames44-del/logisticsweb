@@ -98,9 +98,9 @@ const DashboardSidebar = () => {
                     : "text-primary-foreground/90 hover:bg-primary-foreground/10 hover:text-primary-foreground font-semibold"
                 }`}
               >
-                <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-accent-foreground" : ""}`} />
+                <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-accent-foreground" : ""}`} strokeWidth={2.5} />
                 <span>{item.label}</span>
-                {isActive && <ChevronRight className="w-4 h-4 ml-auto" />}
+                {isActive && <ChevronRight className="w-4 h-4 ml-auto" strokeWidth={2.5} />}
               </Link>
             );
           })}

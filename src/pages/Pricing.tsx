@@ -190,7 +190,7 @@ const Pricing = () => {
                         >
                           <service.icon className={`w-5 h-5 mb-2 transition-colors ${
                             selectedService === service.id ? 'text-primary' : 'text-muted-foreground'
-                          }`} />
+                          }`} strokeWidth={2.5} />
                           <div className={`font-semibold text-sm transition-colors ${
                             selectedService === service.id ? 'text-foreground' : 'text-foreground/80'
                           }`}>{service.name}</div>
@@ -228,7 +228,7 @@ const Pricing = () => {
                       {calculatedPrice !== null && selectedServiceData && (
                         <div className="mt-5 space-y-4">
                           <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
-                            <selectedServiceData.icon className="w-4 h-4" />
+                            <selectedServiceData.icon className="w-4 h-4" strokeWidth={2.5} />
                             <span>{selectedServiceData.name}</span>
                             <span>•</span>
                             <span>{selectedServiceData.description}</span>

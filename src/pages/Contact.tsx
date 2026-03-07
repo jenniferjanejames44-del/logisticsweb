@@ -215,8 +215,8 @@ const Contact = () => {
                   <Card key={info.title} className="border-border hover:shadow-md transition-shadow">
                     <CardContent className="p-5">
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
-                          <info.icon className="w-5 h-5 text-accent-foreground" />
+                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <info.icon className="w-5 h-5 text-primary" strokeWidth={2.5} />
                         </div>
                         <div>
                           <h3 className="font-semibold text-foreground mb-1 text-sm">{info.title}</h3>
@@ -238,10 +238,10 @@ const Contact = () => {
                         <a
                           key={social.label}
                           href={social.href}
-                          className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                          className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110 shadow-sm"
                           aria-label={social.label}
                         >
-                          <social.icon className="w-4 h-4" />
+                          <social.icon className="w-4 h-4" strokeWidth={2.5} />
                         </a>
                       ))}
                     </div>
