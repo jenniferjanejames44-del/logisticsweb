@@ -571,6 +571,13 @@ const Shipping = () => {
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
+                      {showStepValidation && (
+                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
+                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <span>Please complete all required selections before continuing.</span>
+                        </div>
+                      )}
+
                       {/* Route */}
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
