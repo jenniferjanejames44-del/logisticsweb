@@ -549,7 +549,8 @@ const Shipping = () => {
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Scale className="w-3 h-3" /> Weight (KG) *</Label>
-                          <Input type="number" min="0.1" step="0.1" value={formData.weight} onChange={(e) => updateField("weight", e.target.value)} placeholder="e.g. 5" className={inputClass} />
+                          <Input type="number" min="0.1" step="0.1" value={formData.weight} onChange={(e) => updateField("weight", e.target.value)} placeholder="e.g. 5" className={`${inputClass} ${showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
+                          {showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
 
