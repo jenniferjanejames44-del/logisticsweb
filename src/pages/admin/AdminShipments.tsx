@@ -12,7 +12,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -263,11 +263,16 @@ const AdminShipments = () => {
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
                         <p className="text-foreground">{shipment.weight} kg</p>
+                        {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
+                          <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
+                        )}
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
-                        <p className="text-foreground font-semibold">
-                          {shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
+                        <p className="text-foreground">
+                          {shipment.length_cm && shipment.width_cm && shipment.height_cm
+                            ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
+                            : "—"}
                         </p>
                       </div>
                     </div>
