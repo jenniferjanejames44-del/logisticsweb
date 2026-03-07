@@ -19,6 +19,8 @@ import {
   ArrowRight,
   Wallet,
   ArrowUpCircle,
+  ShoppingBag,
+  Headphones,
 } from "lucide-react";
 
 interface ShipmentStats {
@@ -72,7 +74,6 @@ const Overview = () => {
         });
         setRecentShipments(shipments.slice(0, 5));
 
-        // Build activity timeline from shipments + payments
         const shipmentActivities: ActivityItem[] = shipments.slice(0, 8).map((s) => ({
           id: s.id,
           icon: s.status === "delivered" ? CheckCircle : s.status === "in_transit" ? Truck : Package,
@@ -130,7 +131,7 @@ const Overview = () => {
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-6 lg:mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-7 lg:mb-8">
         {[
           { label: "Total Shipments", value: stats.total, icon: Package, iconBg: "bg-primary/8", iconColor: "text-primary" },
           { label: "In Transit", value: stats.inTransit, icon: Truck, iconBg: "bg-primary/8", iconColor: "text-primary" },
@@ -139,16 +140,16 @@ const Overview = () => {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} className="border-border/40 hover:border-border hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
+            <Card key={stat.label} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5">{stat.label}</p>
+                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">{stat.label}</p>
                     <p className="text-[1.375rem] sm:text-[1.625rem] font-bold text-foreground tracking-tight truncate">
                       {stat.value}
                     </p>
                   </div>
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                     <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.iconColor}`} />
                   </div>
                 </div>
@@ -159,20 +160,20 @@ const Overview = () => {
       </div>
 
       {/* Wallet Feature Card */}
-      <Card className="mb-6 lg:mb-8 border-primary/15 bg-gradient-to-br from-primary/[0.06] via-primary/[0.03] to-transparent shadow-sm shadow-primary/[0.04]">
-        <CardContent className="p-5 sm:p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-13 h-13 sm:w-[60px] sm:h-[60px] bg-primary/12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
+      <Card className="mb-7 lg:mb-8 border-primary/15 bg-gradient-to-br from-primary/[0.07] via-primary/[0.03] to-transparent shadow-sm">
+        <CardContent className="p-5 sm:p-7">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary/15 to-primary/8 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner border border-primary/10">
                 <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-muted-foreground font-medium">Wallet Balance</p>
-                <p className="text-2xl sm:text-[2rem] font-bold text-foreground tracking-tight">₦{balance.toFixed(2)}</p>
+                <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
+                <p className="text-2xl sm:text-[2.125rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
               </div>
             </div>
-            <div className="flex gap-2 sm:gap-3">
-              <Button variant="dashPrimary" size="dash" asChild>
+            <div className="flex gap-2.5 sm:gap-3">
+              <Button variant="dashPrimary" size="dash" asChild className="shadow-md shadow-primary/10 hover:shadow-lg hover:shadow-primary/15">
                 <Link to="/dashboard/wallet">
                   <ArrowUpCircle className="w-4 h-4" />
                   Add Funds
@@ -187,18 +188,18 @@ const Overview = () => {
       </Card>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-6 lg:mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-7 lg:mb-8">
         {[
-          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping", iconBg: "bg-accent", iconColor: "text-accent-foreground" },
-          { label: "Get Quote", desc: "Calculate shipping cost", icon: CreditCard, href: "/pricing", iconBg: "bg-primary", iconColor: "text-primary-foreground" },
-          { label: "Contact Support", desc: "Get help with shipments", icon: Package, href: "/contact", iconBg: "bg-muted", iconColor: "text-foreground" },
+          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping", iconBg: "bg-gradient-to-br from-accent to-accent/80", iconColor: "text-accent-foreground" },
+          { label: "Get Quote", desc: "Calculate shipping cost", icon: ShoppingBag, href: "/pricing", iconBg: "bg-gradient-to-br from-primary to-primary/80", iconColor: "text-primary-foreground" },
+          { label: "Contact Support", desc: "Get help with shipments", icon: Headphones, href: "/contact", iconBg: "bg-gradient-to-br from-muted-foreground/20 to-muted-foreground/10", iconColor: "text-foreground" },
         ].map((action) => {
           const Icon = action.icon;
           return (
-            <Card key={action.label} className="border-border/40 hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardContent className="p-4 sm:p-5">
-                <Link to={action.href} className="flex items-center gap-3.5">
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0`}>
+            <Card key={action.label} className="border-border/40 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.04] transition-all duration-200 cursor-pointer group">
+              <CardContent className="p-5 sm:p-5">
+                <Link to={action.href} className="flex items-center gap-4">
+                  <div className={`w-12 h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0 shadow-sm`}>
                     <Icon className={`w-5 h-5 ${action.iconColor}`} />
                   </div>
                   <div className="min-w-0">
@@ -229,14 +230,14 @@ const Overview = () => {
                 {recentShipments.map((shipment) => (
                   <div
                     key={shipment.id}
-                    className="flex items-center justify-between p-3.5 bg-muted/40 rounded-lg hover:bg-muted/70 transition-colors gap-3"
+                    className="flex items-center justify-between p-3.5 bg-muted/40 rounded-xl hover:bg-muted/60 transition-all duration-150 gap-3 border border-transparent hover:border-border/30"
                   >
                     <div className="flex items-center gap-3.5 min-w-0 flex-1">
-                      <div className="w-9 h-9 bg-primary/8 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Package className="w-4 h-4 text-primary" />
+                      <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Package className="w-[18px] h-[18px] text-primary" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-foreground text-[0.875rem] truncate">{shipment.tracking_number || "Pending"}</p>
+                        <p className="font-semibold text-foreground text-[0.875rem] truncate">{shipment.tracking_number || "Pending"}</p>
                         <p className="text-[12px] text-muted-foreground truncate">To: {shipment.destination_country}</p>
                       </div>
                     </div>
@@ -245,9 +246,11 @@ const Overview = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10">
-                <Package className="w-10 h-10 text-muted-foreground/50 mx-auto mb-3" />
-                <p className="text-muted-foreground text-[0.9375rem] mb-4">No shipments yet</p>
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Package className="w-7 h-7 text-muted-foreground/50" />
+                </div>
+                <p className="text-muted-foreground text-[0.9375rem] font-medium mb-4">No shipments yet</p>
                 <Button variant="dashAccent" size="dash" asChild>
                   <Link to="/shipping">Create Your First Shipment</Link>
                 </Button>
@@ -264,14 +267,14 @@ const Overview = () => {
           <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
             {activities.length > 0 ? (
               <div className="relative">
-                <div className="absolute left-[15px] top-2 bottom-2 w-px bg-border/60" />
+                <div className="absolute left-[17px] top-2 bottom-2 w-px bg-border/50" />
                 <div className="space-y-4">
                   {activities.slice(0, 6).map((activity) => {
                     const Icon = activity.icon;
                     return (
-                      <div key={activity.id} className="flex gap-3 relative">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 z-10">
-                          <Icon className="w-3.5 h-3.5 text-primary" />
+                      <div key={activity.id} className="flex gap-3.5 relative">
+                        <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 z-10 border border-primary/5">
+                          <Icon className="w-4 h-4 text-primary" />
                         </div>
                         <div className="min-w-0 flex-1 pt-1">
                           <p className="text-[13px] text-foreground leading-snug">{activity.message}</p>
@@ -283,8 +286,10 @@ const Overview = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-8">
-                <Clock className="w-8 h-8 text-muted-foreground/50 mx-auto mb-2" />
+              <div className="text-center py-10">
+                <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                  <Clock className="w-6 h-6 text-muted-foreground/50" />
+                </div>
                 <p className="text-sm text-muted-foreground">No activity yet</p>
               </div>
             )}
