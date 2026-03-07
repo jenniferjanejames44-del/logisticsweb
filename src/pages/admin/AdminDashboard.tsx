@@ -112,7 +112,8 @@ const AdminDashboard = () => {
           {statCards.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
+              <Card key={stat.title} className="border-border/40 hover:border-primary/25 hover:shadow-lg hover:shadow-primary/[0.05] transition-all duration-200 group relative overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 <CardContent className="p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
@@ -121,7 +122,7 @@ const AdminDashboard = () => {
                         {loading ? "..." : stat.value}
                       </p>
                     </div>
-                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
+                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} border border-border/40 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                       <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.color}`} />
                     </div>
                   </div>
