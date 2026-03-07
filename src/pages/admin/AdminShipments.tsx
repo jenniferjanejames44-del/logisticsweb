@@ -15,7 +15,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, CalendarDays, CheckCircle2 } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
