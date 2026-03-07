@@ -313,7 +313,7 @@ const Shipping = () => {
   const isStep1Complete = formData.sender_name && formData.sender_phone;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
-  const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod;
+  const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const canProceed = (s: number) => {
     if (s === 1) return !!isStep1Complete;
