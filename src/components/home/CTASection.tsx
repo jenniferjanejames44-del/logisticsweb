@@ -9,9 +9,9 @@ const CTASection = () => {
     <section ref={ref} className="section-padding relative overflow-hidden bg-primary">
       {/* Background Image */}
       <div className="absolute inset-0 opacity-15">
-        <img 
-          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80" 
-          alt="Cargo logistics"
+        <img
+          src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80"
+          alt="Global logistics network"
           className="w-full h-full object-cover"
         />
       </div>

@@ -71,16 +71,16 @@ export default {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0.75rem",
+        md: "0.5rem",
+        sm: "0.375rem",
         xl: "1rem",
         "2xl": "1.25rem",
         "3xl": "1.5rem",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        heading: ["Poppins", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        heading: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
         button: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
       fontSize: {

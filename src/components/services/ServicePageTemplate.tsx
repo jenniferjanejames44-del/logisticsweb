@@ -29,13 +29,13 @@ interface ServicePageProps {
 }
 
 const serviceImages: Record<string, string> = {
-  "Air Shipping": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&q=80",
-  "Ocean Shipping": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80",
-  "Personal Shopping": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1920&q=80",
-  "Procurement": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80",
-  "Import & Export": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80",
-  "Warehousing": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80",
-  "Customs Clearance": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80",
+  "Air Shipping": "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=1920&q=80",
+  "Ocean Shipping": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80",
+  "Personal Shopping": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1920&q=80",
+  "Procurement Services": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80",
+  "Import/Export Services": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80",
+  "Warehousing & Storage": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80",
+  "Customs Clearance": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80",
 };
 
 const ServicePageTemplate = ({
@@ -81,10 +81,10 @@ const ServicePageTemplate = ({
               </Link>
               
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-accent/20 rounded-xl flex items-center justify-center">
-                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-accent" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20 shadow-lg">
+                  <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" />
                 </div>
-                <span className="inline-flex items-center px-4 py-2 bg-accent text-accent-foreground rounded-full text-xs sm:text-sm font-bold">
+                <span className="inline-flex items-center px-4 py-2 bg-accent text-accent-foreground rounded-lg text-xs sm:text-sm font-semibold shadow-md">
                   {subtitle}
                 </span>
               </div>
@@ -199,10 +199,10 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardContent className="p-5 sm:p-6">
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 bg-accent/15 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/25 transition-colors">
-                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-all duration-200 group-hover:scale-110">
+                      <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">{benefit.title}</h3>
+                    <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{benefit.title}</h3>
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{benefit.description}</p>
                   </CardContent>
                 </Card>

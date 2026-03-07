@@ -75,20 +75,20 @@ const HowItWorksSection = () => {
                 <div className="absolute top-0 left-0 right-0 h-1 bg-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                 
                 {/* Step Number */}
-                <div className="absolute top-6 right-6 w-10 h-10 bg-accent rounded-xl flex items-center justify-center font-extrabold text-sm text-accent-foreground shadow-md">
+                <div className="absolute top-6 right-6 w-10 h-10 bg-accent rounded-lg flex items-center justify-center font-bold text-sm text-accent-foreground shadow-md">
                   {step.step}
                 </div>
 
                 {/* Icon */}
-                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mb-6 shadow-md transition-all duration-400 group-hover:scale-110 group-hover:bg-accent">
-                  <step.icon className="w-6 h-6 text-white group-hover:text-accent-foreground" />
+                <div className="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-xl flex items-center justify-center mb-6 shadow-sm transition-all duration-400 group-hover:scale-110 group-hover:bg-white/25 border border-white/20">
+                  <step.icon className="w-7 h-7 text-white" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-bold text-white mb-3 pr-12 transition-colors duration-300">
+                <h3 className="text-lg font-semibold text-white mb-3 pr-12 transition-colors duration-300">
                   {step.title}
                 </h3>
-                <p className="text-[15px] text-white/70 leading-relaxed">
+                <p className="text-white/75 leading-relaxed">
                   {step.description}
                 </p>
               </div>

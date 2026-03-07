@@ -7,14 +7,14 @@ const services = [
     title: "Express Delivery",
     description: "Express delivery worldwide with real-time tracking and priority handling for urgent shipments.",
     href: "/services/air-shipping",
-    image: "https://images.unsplash.com/photo-1566140967404-b8b3932483f5?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=600&q=80",
     icon: PlaneTakeoff,
   },
   {
     title: "Ocean Shipping",
     description: "Cost-effective sea freight for large shipments across all major international ports.",
     href: "/services/ocean-shipping",
-    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80",
+    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=80",
     icon: Anchor,
   },
   {
@@ -72,17 +72,17 @@ const ServicesSection = () => {
               >
                 {/* Service Image */}
                 <div className="relative w-full h-52 overflow-hidden">
-                  <img 
-                    src={service.image} 
+                  <img
+                    src={service.image}
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-foreground/30 group-hover:bg-foreground/20 transition-colors duration-300" />
-                  
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-foreground/20 to-transparent group-hover:from-foreground/30 transition-all duration-300" />
+
                   {/* Icon Badge */}
-                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-accent rounded-xl flex items-center justify-center shadow-lg">
-                    <ServiceIcon className="w-5 h-5 text-accent-foreground" />
+                  <div className="absolute bottom-4 right-4 w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+                    <ServiceIcon className="w-6 h-6 text-primary" />
                   </div>
                 </div>
 

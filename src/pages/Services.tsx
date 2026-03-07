@@ -131,19 +131,19 @@ const Services = () => {
                   }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   <CardContent className="p-6 md:p-8">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-accent rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 shadow-md transition-all duration-300">
-                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-accent-foreground" />
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 group-hover:bg-primary/15 shadow-sm transition-all duration-300">
+                      <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed font-medium">{service.description}</p>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
                     <ul className="space-y-2.5 mb-6">
                       {service.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2.5 text-sm text-muted-foreground font-medium">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0" />
+                        <li key={feature} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
