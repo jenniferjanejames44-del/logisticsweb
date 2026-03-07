@@ -617,10 +617,12 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div className="space-y-3">
+                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {!selectedDeliveryMethod && (
-                            <p className="text-xs text-muted-foreground">Please select a delivery method to continue.</p>
+                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
+                              Please select a delivery method to continue.
+                            </p>
                           )}
                           <div className="grid sm:grid-cols-2 gap-3">
                             {deliveryMethods.map((dm: any) => {
@@ -629,8 +631,8 @@ const Shipping = () => {
                               const Icon = isPickup ? MapPinned : Truck;
                               return (
                                 <button key={dm.id} type="button" onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.06] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 hover:border-primary/30 hover:shadow-sm bg-card"}`}>
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25" : "bg-muted text-muted-foreground"}`}>
+                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 hover:border-primary/30 hover:shadow-sm bg-card"}`}>
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground"}`}>
                                     <Icon className="w-[18px] h-[18px]" />
                                   </div>
                                   <div className="flex-1">
