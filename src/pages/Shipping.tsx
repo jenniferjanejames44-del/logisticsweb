@@ -393,14 +393,22 @@ const Shipping = () => {
                         <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Sender Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who is sending this package?</p></div>
                       </div>
+                      {showStepValidation && !isStep1Complete && (
+                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
+                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <span>Please complete all required fields before continuing.</span>
+                        </div>
+                      )}
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Full Name *</Label>
-                          <Input value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={inputClass} />
+                          <Input value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${showStepValidation && !formData.sender_name ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
+                          {showStepValidation && !formData.sender_name && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone Number *</Label>
-                          <Input type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={inputClass} />
+                          <Input type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${showStepValidation && !formData.sender_phone ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
+                          {showStepValidation && !formData.sender_phone && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
