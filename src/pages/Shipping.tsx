@@ -243,6 +243,12 @@ const Shipping = () => {
     }
   }, [
     step,
+    formData.sender_name,
+    formData.sender_phone,
+    formData.receiver_name,
+    formData.receiver_phone,
+    formData.receiver_country,
+    formData.weight,
     formData.origin_country,
     formData.destination_country,
     formData.warehouse_location,
