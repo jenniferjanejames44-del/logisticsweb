@@ -133,10 +133,10 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <Card className="border-border/40">
+        <Card className="border-border/40 shadow-sm shadow-primary/[0.03]">
           <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
             <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-primary/8 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center">
                 <Activity className="w-4 h-4 text-primary" />
               </div>
               Recent Activity
