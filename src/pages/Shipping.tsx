@@ -94,9 +94,23 @@ const Shipping = () => {
   const [formData, setFormData] = useState({
     sender_name: "", sender_email: "", sender_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
     receiver_name: "", receiver_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
-    description: "", category: "", weight: "", quantity: "1", declared_value: "",
+    description: "", category: "", weight: "", length_cm: "", width_cm: "", height_cm: "", quantity: "1", declared_value: "",
     origin_country: "", destination_country: "", warehouse_location: "",
   });
+
+  // Volumetric & chargeable weight
+  const volumetricWeight = useMemo(() => {
+    const l = parseFloat(formData.length_cm);
+    const w = parseFloat(formData.width_cm);
+    const h = parseFloat(formData.height_cm);
+    if (l > 0 && w > 0 && h > 0) return (l * w * h) / 5000;
+    return 0;
+  }, [formData.length_cm, formData.width_cm, formData.height_cm]);
+
+  const chargeableWeight = useMemo(() => {
+    const actual = parseFloat(formData.weight) || 0;
+    return Math.max(actual, volumetricWeight);
+  }, [formData.weight, volumetricWeight]);
 
   const updateField = (field: string, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -175,14 +189,13 @@ const Shipping = () => {
 
   // Calculate price on step 5
   const calculatePrice = useCallback(async () => {
-    const weightNum = parseFloat(formData.weight);
-    if (!formData.destination_country || !weightNum || weightNum <= 0) return;
+    if (!formData.destination_country || chargeableWeight <= 0) return;
     setPriceLoading(true);
     const declaredVal = parseFloat(formData.declared_value) || 0;
-    const result = await calculateShippingCost(formData.destination_country, weightNum, selectedExtras, declaredVal);
+    const result = await calculateShippingCost(formData.destination_country, chargeableWeight, selectedExtras, declaredVal);
     setPriceBreakdown(result);
     setPriceLoading(false);
-  }, [formData.destination_country, formData.weight, formData.declared_value, selectedExtras]);
+  }, [formData.destination_country, chargeableWeight, formData.declared_value, selectedExtras]);
 
   useEffect(() => {
     if (step === 5) calculatePrice();
