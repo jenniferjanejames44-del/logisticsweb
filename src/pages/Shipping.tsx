@@ -902,7 +902,25 @@ const Shipping = () => {
                       <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
-                      <Button type="button" variant="dashPrimary" size="dash" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20">
+                      <Button
+                        type="button"
+                        variant="dashPrimary"
+                        size="dash"
+                        onClick={() => {
+                          if (canProceed(step)) {
+                            setShowStepValidation(false);
+                            setStep(step + 1);
+                            return;
+                          }
+                          setShowStepValidation(true);
+                          toast({
+                            title: "Complete required fields",
+                            description: "Please complete all required selections before continuing.",
+                            variant: "destructive",
+                          });
+                        }}
+                        className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20"
+                      >
                         Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
