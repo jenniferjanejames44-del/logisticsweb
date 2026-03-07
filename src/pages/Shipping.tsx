@@ -879,7 +879,12 @@ const Shipping = () => {
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
-                              { label: "Weight", value: `${formData.weight} KG` },
+                              { label: "Actual Weight", value: `${formData.weight} KG` },
+                              ...(volumetricWeight > 0 ? [
+                                { label: "Dimensions", value: `${formData.length_cm}×${formData.width_cm}×${formData.height_cm} cm` },
+                                { label: "Volumetric Weight", value: `${volumetricWeight.toFixed(2)} KG` },
+                                { label: "Chargeable Weight", value: `${chargeableWeight.toFixed(2)} KG` },
+                              ] : []),
                               { label: "Warehouse", value: selectedWarehouse?.name || "—" },
                               { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
