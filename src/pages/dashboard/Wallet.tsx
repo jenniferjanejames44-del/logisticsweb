@@ -91,49 +91,51 @@ const Wallet = () => {
         <div className="space-y-6">
           {/* Balance Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-            <Card className="border-primary/15 bg-gradient-to-br from-primary/[0.08] via-primary/[0.04] to-transparent shadow-sm shadow-primary/[0.04]">
-              <CardContent className="p-5 sm:p-6">
+            <Card className="relative overflow-hidden border-primary/25 bg-gradient-to-br from-primary/[0.14] via-primary/[0.06] to-accent/[0.08] shadow-lg shadow-primary/[0.1]">
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+              <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-primary/[0.1]" />
+              <CardContent className="p-5 sm:p-6 relative z-10">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-1.5 font-medium">Current Balance</p>
+                    <p className="text-xs sm:text-sm text-foreground/80 mb-1.5 font-semibold tracking-wide uppercase">Current Balance</p>
                     <p className="text-2xl sm:text-[2rem] font-bold text-foreground truncate tracking-tight">
                       ₦{balance.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] bg-primary/12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner">
-                    <WalletIcon className="w-5 h-5 sm:w-7 sm:h-7 text-primary" />
+                  <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] bg-primary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/30 border border-primary/30">
+                    <WalletIcon className="w-5 h-5 sm:w-7 sm:h-7 text-primary-foreground" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50">
+            <Card className="border-border/50 shadow-sm">
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Deposits</p>
-                    <p className="text-xl sm:text-2xl font-bold text-green-600 truncate">
+                    <p className="text-xl sm:text-2xl font-bold text-success truncate">
                       +₦{totalCredits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-green-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <ArrowUpCircle className="w-5 h-5 sm:w-7 sm:h-7 text-green-500" />
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-success/20">
+                    <ArrowUpCircle className="w-5 h-5 sm:w-7 sm:h-7 text-success" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50">
+            <Card className="border-border/50 shadow-sm">
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Spent</p>
-                    <p className="text-xl sm:text-2xl font-bold text-orange-600 truncate">
+                    <p className="text-xl sm:text-2xl font-bold text-warning truncate">
                       -₦{totalDebits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-orange-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <ArrowDownCircle className="w-5 h-5 sm:w-7 sm:h-7 text-orange-500" />
+                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-warning/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-warning/20">
+                    <ArrowDownCircle className="w-5 h-5 sm:w-7 sm:h-7 text-warning" />
                   </div>
                 </div>
               </CardContent>
@@ -188,16 +190,16 @@ const Wallet = () => {
                     >
                       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 border ${
                             transaction.type === "credit"
-                              ? "bg-green-500/10"
-                              : "bg-orange-500/10"
+                              ? "bg-success/10 border-success/20"
+                              : "bg-warning/10 border-warning/20"
                           }`}
                         >
                           {transaction.type === "credit" ? (
-                            <ArrowUpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                            <ArrowUpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
                           ) : (
-                            <ArrowDownCircle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                            <ArrowDownCircle className="w-4 h-4 sm:w-5 sm:h-5 text-warning" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -212,7 +214,7 @@ const Wallet = () => {
                       <div className="text-right flex-shrink-0">
                         <p
                           className={`font-semibold text-sm sm:text-base ${
-                            transaction.type === "credit" ? "text-green-600" : "text-orange-600"
+                            transaction.type === "credit" ? "text-success" : "text-warning"
                           }`}
                         >
                           {transaction.type === "credit" ? "+" : "-"}₦{Number(transaction.amount).toFixed(2)}
