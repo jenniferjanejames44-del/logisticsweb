@@ -141,6 +141,41 @@ const AdminShipments = () => {
     setPriceDialogOpen(true);
   };
 
+  const openDimensionDialog = (shipment: Shipment) => {
+    setSelectedShipment(shipment);
+    setDimInputs({
+      weight: shipment.weight.toString(),
+      length_cm: shipment.length_cm?.toString() || "",
+      width_cm: shipment.width_cm?.toString() || "",
+      height_cm: shipment.height_cm?.toString() || "",
+    });
+    setDimensionDialogOpen(true);
+  };
+
+  const handleSaveDimensions = async () => {
+    if (!selectedShipment) return;
+    const weight = parseFloat(dimInputs.weight);
+    if (isNaN(weight) || weight <= 0) { toast.error("Please enter a valid weight"); return; }
+    setSettingDims(true);
+    try {
+      const { error } = await supabase.from("shipments").update({
+        weight,
+        length_cm: parseFloat(dimInputs.length_cm) || null,
+        width_cm: parseFloat(dimInputs.width_cm) || null,
+        height_cm: parseFloat(dimInputs.height_cm) || null,
+      } as any).eq("id", selectedShipment.id);
+      if (error) throw error;
+      toast.success("Dimensions updated successfully");
+      setDimensionDialogOpen(false);
+      fetchShipments();
+    } catch (error) {
+      console.error("Error updating dimensions:", error);
+      toast.error("Failed to update dimensions");
+    } finally {
+      setSettingDims(false);
+    }
+  };
+
   const handleSetPrice = async () => {
     if (!selectedShipment) return;
     const price = parseFloat(priceInput);
