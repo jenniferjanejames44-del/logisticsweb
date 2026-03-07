@@ -273,7 +273,7 @@ const AdminShipments = () => {
                           {shipment.price !== null ? (
                             <span className="font-medium">₦{Number(shipment.price).toFixed(2)}</span>
                           ) : (
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
                               <DollarSign className="w-3 h-3 mr-1" />Set Price
                             </Button>
                           )}
