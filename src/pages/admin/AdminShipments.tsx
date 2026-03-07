@@ -411,6 +411,57 @@ const AdminShipments = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        {/* Edit Dimensions Dialog */}
+        <Dialog open={dimensionDialogOpen} onOpenChange={setDimensionDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Edit Dimensions</DialogTitle>
+              <DialogDescription>Update dimensions for {selectedShipment?.tracking_number}</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Weight (kg) *</Label>
+                  <Input type="number" min="0.1" step="0.1" value={dimInputs.weight} onChange={(e) => setDimInputs(p => ({ ...p, weight: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Length (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.length_cm} onChange={(e) => setDimInputs(p => ({ ...p, length_cm: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Width (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.width_cm} onChange={(e) => setDimInputs(p => ({ ...p, width_cm: e.target.value }))} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Height (cm)</Label>
+                  <Input type="number" min="0" step="0.1" value={dimInputs.height_cm} onChange={(e) => setDimInputs(p => ({ ...p, height_cm: e.target.value }))} />
+                </div>
+              </div>
+              {(() => {
+                const l = parseFloat(dimInputs.length_cm);
+                const w = parseFloat(dimInputs.width_cm);
+                const h = parseFloat(dimInputs.height_cm);
+                const wt = parseFloat(dimInputs.weight);
+                const vol = (l > 0 && w > 0 && h > 0) ? (l * w * h) / 5000 : 0;
+                const chg = Math.max(wt || 0, vol);
+                if (vol > 0) return (
+                  <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-1">
+                    <p><span className="text-muted-foreground">Actual Weight:</span> {(wt || 0).toFixed(2)} kg</p>
+                    <p><span className="text-muted-foreground">Volumetric Weight:</span> {vol.toFixed(2)} kg</p>
+                    <p className="font-semibold"><span className="text-muted-foreground">Chargeable Weight:</span> {chg.toFixed(2)} kg</p>
+                  </div>
+                );
+                return null;
+              })()}
+            </div>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setDimensionDialogOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
+              <Button onClick={handleSaveDimensions} disabled={settingDims} className="w-full sm:w-auto h-11 sm:h-12">
+                {settingDims ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</> : <><Ruler className="w-4 h-4 mr-2" />Save Dimensions</>}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
