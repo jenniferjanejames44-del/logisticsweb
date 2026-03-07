@@ -804,19 +804,26 @@ const Shipping = () => {
                       {/* Shipping Speed */}
                       <div className="space-y-3">
                         <Label className="text-sm font-medium">Shipping Speed</Label>
-                        <div className="grid sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {[
                             { value: "standard", label: "Standard", desc: "10–14 business days", icon: Package },
                             { value: "express", label: "Express", desc: "5–7 business days", icon: Zap },
                           ].map((opt) => (
-                            <button key={opt.value} type="button" onClick={() => setShippingSpeed(opt.value)}
-                              className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.04] shadow-sm shadow-primary/10" : "border-border hover:border-primary/30 hover:shadow-sm"}`}>
-                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25" : "bg-muted text-muted-foreground"}`}>
-                                <opt.icon className="w-4 h-4" />
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => setShippingSpeed(opt.value)}
+                              className={`group flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"}`}
+                            >
+                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-md shadow-primary/25" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                                <opt.icon className="w-4 h-4" strokeWidth={2.5} />
                               </div>
-                              <div>
-                                <p className="font-semibold text-sm text-foreground">{opt.label}</p>
+                              <div className="flex-1">
+                                <p className={`font-semibold text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
                                 <p className="text-xs text-muted-foreground">{opt.desc}</p>
+                              </div>
+                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${shippingSpeed === opt.value ? "bg-primary" : "bg-muted"}`}>
+                                <CheckCircle2 className={`w-3.5 h-3.5 ${shippingSpeed === opt.value ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
                               </div>
                             </button>
                           ))}
@@ -1048,7 +1055,10 @@ const Shipping = () => {
                       type="button"
                       variant="dashOutline"
                       size="dash"
-                      onClick={() => setStep(Math.max(1, step - 1))}
+                      onClick={() => {
+                        setStep(Math.max(1, step - 1));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
                       disabled={step === 1}
                       className="gap-2 shadow-sm order-2 sm:order-1 min-h-[44px]"
                     >
@@ -1063,6 +1073,8 @@ const Shipping = () => {
                           if (canProceed(step)) {
                             setShowStepValidation(false);
                             setStep(step + 1);
+                            // Smooth scroll to top of form
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
                             return;
                           }
                           setShowStepValidation(true);
