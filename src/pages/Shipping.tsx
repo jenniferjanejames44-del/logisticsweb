@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Package, MapPin, Truck, ArrowRight, ArrowLeft, Scale, CheckCircle2,
   Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
-  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus,
+  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
 
@@ -74,6 +74,7 @@ const Shipping = () => {
   const [step, setStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showStepValidation, setShowStepValidation] = useState(false);
 
   // DB data
   const [warehouses, setWarehouses] = useState<any[]>([]);
@@ -233,6 +234,25 @@ const Shipping = () => {
     deliveryMethods.find((m: any) => m.id === selectedDeliveryMethod), [selectedDeliveryMethod, deliveryMethods]
   );
 
+  const packagingSelectionRequired = packagingMaterials.length > 0;
+  const hasPackagingSelection = Object.values(packagingQuantities).some((qty) => qty > 0);
+
+  useEffect(() => {
+    if (showStepValidation) {
+      setShowStepValidation(false);
+    }
+  }, [
+    step,
+    formData.origin_country,
+    formData.destination_country,
+    formData.warehouse_location,
+    selectedDeliveryMethod,
+    isRouteValid,
+    hasPackagingSelection,
+    showStepValidation,
+  ]);
+
+
   const handleSubmit = async () => {
     if (!user) {
       savePendingShipment(formData as any);
@@ -293,7 +313,7 @@ const Shipping = () => {
   const isStep1Complete = formData.sender_name && formData.sender_phone;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
-  const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod;
+  const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const canProceed = (s: number) => {
     if (s === 1) return !!isStep1Complete;
@@ -551,6 +571,13 @@ const Shipping = () => {
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
+                      {showStepValidation && (
+                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
+                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                          <span>Please complete all required selections before continuing.</span>
+                        </div>
+                      )}
+
                       {/* Route */}
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -597,10 +624,12 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div className="space-y-3">
+                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {!selectedDeliveryMethod && (
-                            <p className="text-xs text-muted-foreground">Please select a delivery method to continue.</p>
+                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
+                              Please select a delivery method to continue.
+                            </p>
                           )}
                           <div className="grid sm:grid-cols-2 gap-3">
                             {deliveryMethods.map((dm: any) => {
@@ -609,8 +638,8 @@ const Shipping = () => {
                               const Icon = isPickup ? MapPinned : Truck;
                               return (
                                 <button key={dm.id} type="button" onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.06] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 hover:border-primary/30 hover:shadow-sm bg-card"}`}>
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-sm shadow-primary/25" : "bg-muted text-muted-foreground"}`}>
+                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 hover:border-primary/30 hover:shadow-sm bg-card"}`}>
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground"}`}>
                                     <Icon className="w-[18px] h-[18px]" />
                                   </div>
                                   <div className="flex-1">
@@ -679,13 +708,18 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div className="space-y-3">
-                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials (Optional)</Label>
+                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials *</Label>
+                          {!hasPackagingSelection && (
+                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
+                              Select at least one packaging material to continue.
+                            </p>
+                          )}
                           <div className="space-y-2">
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary/40 bg-primary/[0.05] shadow-md shadow-primary/[0.06] ring-1 ring-primary/10" : "border-border/50 bg-card hover:border-border/80"}`}>
+                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary/40 bg-primary/[0.06] shadow-md shadow-primary/[0.06] ring-1 ring-primary/10" : "border-border/50 bg-card hover:border-border/80"}`}>
                                   <div className="flex items-center gap-3 flex-1 min-w-0">
                                     <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" />
@@ -868,7 +902,25 @@ const Shipping = () => {
                       <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
-                      <Button type="button" variant="dashPrimary" size="dash" disabled={!canProceed(step)} onClick={() => setStep(step + 1)} className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20">
+                      <Button
+                        type="button"
+                        variant="dashPrimary"
+                        size="dash"
+                        onClick={() => {
+                          if (canProceed(step)) {
+                            setShowStepValidation(false);
+                            setStep(step + 1);
+                            return;
+                          }
+                          setShowStepValidation(true);
+                          toast({
+                            title: "Complete required fields",
+                            description: "Please complete all required selections before continuing.",
+                            variant: "destructive",
+                          });
+                        }}
+                        className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20"
+                      >
                         Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (

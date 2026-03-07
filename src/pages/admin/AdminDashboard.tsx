@@ -76,12 +76,12 @@ const AdminDashboard = () => {
   }, []);
 
   const statCards = [
-    { title: "Total Users", value: stats.totalUsers, icon: Users, color: "text-primary", bgColor: "bg-primary/8" },
-    { title: "Total Shipments", value: stats.totalShipments, icon: Package, color: "text-accent", bgColor: "bg-accent/10" },
-    { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-green-600", bgColor: "bg-green-500/8" },
-    { title: "Pending", value: stats.pendingShipments, icon: Clock, color: "text-warning", bgColor: "bg-warning/8" },
-    { title: "Completed", value: stats.completedShipments, icon: CheckCircle, color: "text-green-600", bgColor: "bg-green-500/8" },
-    { title: "Growth Rate", value: "+12.5%", icon: TrendingUp, color: "text-primary", bgColor: "bg-primary/8" },
+    { title: "Total Users", value: stats.totalUsers, icon: Users, color: "text-primary", bgColor: "bg-primary/10" },
+    { title: "Total Shipments", value: stats.totalShipments, icon: Package, color: "text-accent", bgColor: "bg-accent/12" },
+    { title: "Total Revenue", value: `$${stats.totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-success", bgColor: "bg-success/12" },
+    { title: "Pending", value: stats.pendingShipments, icon: Clock, color: "text-warning", bgColor: "bg-warning/12" },
+    { title: "Completed", value: stats.completedShipments, icon: CheckCircle, color: "text-success", bgColor: "bg-success/12" },
+    { title: "Growth Rate", value: "+12.5%", icon: TrendingUp, color: "text-primary", bgColor: "bg-primary/10" },
   ];
 
   const getStatusColor = (status: string) => {
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
       pending: "bg-warning/10 text-warning",
       processing: "bg-primary/10 text-primary",
       in_transit: "bg-primary/10 text-primary",
-      delivered: "bg-green-500/10 text-green-600",
+      delivered: "bg-success/10 text-success",
       cancelled: "bg-destructive/10 text-destructive",
     };
     return colors[status] || "bg-muted text-muted-foreground";
@@ -112,7 +112,8 @@ const AdminDashboard = () => {
           {statCards.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
+              <Card key={stat.title} className="border-border/40 hover:border-primary/25 hover:shadow-lg hover:shadow-primary/[0.05] transition-all duration-200 group relative overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 <CardContent className="p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
@@ -121,7 +122,7 @@ const AdminDashboard = () => {
                         {loading ? "..." : stat.value}
                       </p>
                     </div>
-                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
+                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} border border-border/40 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                       <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.color}`} />
                     </div>
                   </div>
@@ -132,10 +133,10 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <Card className="border-border/40">
+        <Card className="border-border/40 shadow-sm shadow-primary/[0.03]">
           <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
             <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-primary/8 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center">
                 <Activity className="w-4 h-4 text-primary" />
               </div>
               Recent Activity

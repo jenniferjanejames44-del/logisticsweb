@@ -15,7 +15,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2 } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -157,20 +157,22 @@ const AdminShipments = () => {
           <p className="text-muted-foreground mt-1 text-sm sm:text-base">Track and manage all customer shipments</p>
         </div>
 
-        <Card className="border-border/50">
+        <Card className="border-border/50 shadow-sm shadow-primary/[0.03]">
           <CardHeader className="pb-3 sm:pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                </span>
                 All Shipments ({filteredShipments.length})
               </CardTitle>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search shipments..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search shipments..." className="pl-10 h-11 rounded-[10px]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40">
+                  <SelectTrigger className="w-full sm:w-40 h-11 rounded-[10px]">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -193,38 +195,43 @@ const AdminShipments = () => {
               /* Mobile Card View */
               <div className="space-y-3">
                 {filteredShipments.map((shipment) => (
-                  <div key={shipment.id} className="border border-border/40 rounded-xl p-4 space-y-3 bg-card shadow-sm hover:shadow-md hover:border-border/60 transition-all duration-200">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono font-medium text-sm text-foreground">{shipment.tracking_number}</span>
+                  <div key={shipment.id} className="border border-border/40 rounded-2xl p-4 space-y-3 bg-card shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-200">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <Package className="w-4 h-4 text-primary" />
+                        </div>
+                        <span className="font-mono font-semibold text-sm text-foreground truncate">{shipment.tracking_number}</span>
+                      </div>
                       <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Origin</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Origin</p>
                         <p className="text-foreground">{shipment.origin_city}, {shipment.origin_country}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Destination</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Destination</p>
                         <p className="text-foreground">{shipment.destination_city}, {shipment.destination_country}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Weight</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
                         <p className="text-foreground">{shipment.weight} kg</p>
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Price</p>
-                        <p className="text-foreground font-medium">
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
+                        <p className="text-foreground font-semibold">
                           {shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 pt-1 border-t border-border/50">
-                      <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
+                      <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
                         <DollarSign className="w-3.5 h-3.5 mr-1" />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                        <SelectTrigger className="flex-1 h-11"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="flex-1 h-11 rounded-[10px]"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -266,7 +273,7 @@ const AdminShipments = () => {
                           {shipment.price !== null ? (
                             <span className="font-medium">₦{Number(shipment.price).toFixed(2)}</span>
                           ) : (
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
                               <DollarSign className="w-3 h-3 mr-1" />Set Price
                             </Button>
                           )}
@@ -281,8 +288,8 @@ const AdminShipments = () => {
                         <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
-                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit" : "Set"}
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
+                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit Price" : "Set Price"}
                             </Button>
                             <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                               <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
