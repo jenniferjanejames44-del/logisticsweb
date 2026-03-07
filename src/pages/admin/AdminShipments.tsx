@@ -288,8 +288,8 @@ const AdminShipments = () => {
                         <TableCell>{new Date(shipment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px]" onClick={() => openPriceDialog(shipment)}>
-                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit" : "Set"}
+                            <Button variant="dashAccent" size="dashSm" className="rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
+                              <DollarSign className="w-3 h-3 mr-1" />{shipment.price !== null ? "Edit Price" : "Set Price"}
                             </Button>
                             <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
                               <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
