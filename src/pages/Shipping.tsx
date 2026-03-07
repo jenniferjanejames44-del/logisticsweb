@@ -637,9 +637,14 @@ const Shipping = () => {
                               const isPickup = dm.name.toLowerCase().includes("pickup");
                               const Icon = isPickup ? MapPinned : Truck;
                               return (
-                                <button key={dm.id} type="button" onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 hover:border-primary/30 hover:shadow-sm bg-card"}`}>
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground"}`}>
+                                <button
+                                  key={dm.id}
+                                  type="button"
+                                  aria-pressed={isSelected}
+                                  onClick={() => setSelectedDeliveryMethod(dm.id)}
+                                  className={`group flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm"}`}
+                                >
+                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                     <Icon className="w-[18px] h-[18px]" />
                                   </div>
                                   <div className="flex-1">
@@ -648,11 +653,9 @@ const Shipping = () => {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     <span className={`text-sm font-bold ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
-                                    {isSelected && (
-                                      <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-primary-foreground" />
-                                      </div>
-                                    )}
+                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
+                                      <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} />
+                                    </div>
                                   </div>
                                 </button>
                               );
@@ -719,9 +722,9 @@ const Shipping = () => {
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary/40 bg-primary/[0.06] shadow-md shadow-primary/[0.06] ring-1 ring-primary/10" : "border-border/50 bg-card hover:border-border/80"}`}>
+                                <div key={pkg.id} className={`flex items-center justify-between p-3.5 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/[0.08] ring-1 ring-primary/15" : "border-border/50 bg-card hover:border-primary/25 hover:shadow-sm"}`}>
                                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm" : "bg-muted text-muted-foreground"}`}>
+                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" />
                                     </div>
                                     <div>
