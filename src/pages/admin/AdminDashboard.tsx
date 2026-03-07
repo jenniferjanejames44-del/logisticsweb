@@ -89,7 +89,7 @@ const AdminDashboard = () => {
       pending: "bg-warning/10 text-warning",
       processing: "bg-primary/10 text-primary",
       in_transit: "bg-primary/10 text-primary",
-      delivered: "bg-green-500/10 text-green-600",
+      delivered: "bg-success/10 text-success",
       cancelled: "bg-destructive/10 text-destructive",
     };
     return colors[status] || "bg-muted text-muted-foreground";
