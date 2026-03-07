@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, ArrowRight, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -22,10 +23,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: Facebook },
-    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: Twitter },
-    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: Linkedin },
-    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: Instagram },
+    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: FaFacebookF },
+    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: FaTwitter },
+    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: FaLinkedinIn },
+    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: FaInstagram },
   ];
 
   return (
@@ -55,7 +56,7 @@ const Footer = () => {
                     aria-label={social.label}
                     className="w-11 h-11 rounded-xl flex items-center justify-center text-accent-foreground bg-accent hover:bg-white hover:text-primary transition-all duration-200 hover:scale-110 shadow-md"
                   >
-                    <SocialIcon className="w-5 h-5" strokeWidth={2.5} />
+                    <SocialIcon className="w-5 h-5" />
                   </a>
                 );
               })}
