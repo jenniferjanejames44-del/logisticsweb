@@ -115,7 +115,10 @@ const Support = () => {
         .select()
         .single();
 
-      if (ticketError) throw ticketError;
+      if (ticketError) {
+        console.error("Ticket creation error:", ticketError);
+        throw ticketError;
+      }
 
       // Create initial message
       const { error: messageError } = await supabase
