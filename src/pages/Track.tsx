@@ -443,7 +443,6 @@ const Track = () => {
                         createdAt={shipment.created_at}
                         updatedAt={shipment.updated_at}
                       />
-                      </div>
                     </div>
 
                     {/* Details Grid */}
