@@ -41,25 +41,48 @@ const AdminSupport = () => {
   const fetchTickets = async () => {
     setLoading(true);
 
-    let query = supabase
+    const { data: ticketsData, error: ticketsError } = await supabase
       .from("support_tickets")
-      .select(`
-        *,
-        profiles:user_id (
-          full_name,
-          email
-        )
-      `)
+      .select("*")
       .order("created_at", { ascending: false });
 
-    const { data, error } = await query;
-
-    if (error) {
-      console.error("Error fetching tickets:", error);
-    } else {
-      setTickets(data || []);
+    if (ticketsError) {
+      console.error("Error fetching tickets:", ticketsError);
+      setTickets([]);
+      setLoading(false);
+      return;
     }
 
+    const userIds = Array.from(new Set((ticketsData || []).map((ticket) => ticket.user_id)));
+
+    if (userIds.length === 0) {
+      setTickets([]);
+      setLoading(false);
+      return;
+    }
+
+    const { data: profilesData, error: profilesError } = await supabase
+      .from("profiles")
+      .select("user_id, full_name, email")
+      .in("user_id", userIds);
+
+    if (profilesError) {
+      console.error("Error fetching ticket profiles:", profilesError);
+    }
+
+    const profilesMap = new Map(
+      (profilesData || []).map((profile) => [
+        profile.user_id,
+        { full_name: profile.full_name || "Unknown", email: profile.email || "N/A" },
+      ])
+    );
+
+    const mergedTickets = (ticketsData || []).map((ticket) => ({
+      ...ticket,
+      profiles: profilesMap.get(ticket.user_id),
+    }));
+
+    setTickets(mergedTickets);
     setLoading(false);
   };
 
