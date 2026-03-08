@@ -96,6 +96,7 @@ const Shipping = () => {
     receiver_name: "", receiver_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
     description: "", category: "", weight: "", length_cm: "", width_cm: "", height_cm: "", quantity: "1", declared_value: "",
     origin_country: "", destination_country: "", warehouse_location: "",
+    insurance_required: "false", notes: "",
   });
 
   // Volumetric & chargeable weight
