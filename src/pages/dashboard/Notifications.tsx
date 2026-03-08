@@ -213,7 +213,7 @@ const Notifications = () => {
             <Card 
               key={notification.id} 
               className={`border-border/50 card-premium hover:shadow-card-hover transition-all duration-300 ${
-                !notification.read ? 'border-l-4 border-l-accent bg-accent/5' : ''
+                !notification.is_read ? 'border-l-4 border-l-accent bg-accent/5' : ''
               }`}
             >
               <CardContent className="p-4 sm:p-6">

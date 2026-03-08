@@ -316,7 +316,7 @@ const AdminRefunds = () => {
             </p>
           </div>
           
-          <Dialog open={isDialogOpen} onValueChange={setIsDialogOpen}>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="dashAccent" size="dash" className="shadow-md shadow-accent/20">
                 <Plus className="w-4 h-4" strokeWidth={2.5} />
