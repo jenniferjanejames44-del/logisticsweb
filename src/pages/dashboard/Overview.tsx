@@ -168,7 +168,7 @@ const Overview = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/30 border border-primary/30">
-                <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
+                <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" strokeWidth={2.5} />
               </div>
               <div>
                 <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance</p>
@@ -176,13 +176,13 @@ const Overview = () => {
               </div>
             </div>
             <div className="flex gap-2.5 sm:gap-3">
-              <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30">
+              <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200">
                 <Link to="/dashboard/wallet">
-                  <ArrowUpCircle className="w-4 h-4" />
+                  <ArrowUpCircle className="w-4 h-4" strokeWidth={2.5} />
                   Add Funds
                 </Link>
               </Button>
-              <Button variant="dashPrimary" size="dash" asChild className="border border-primary/25 bg-primary/95 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30">
+              <Button variant="dashPrimary" size="dash" asChild className="border border-primary/25 bg-primary/95 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all duration-200">
                 <Link to="/dashboard/wallet">Manage Wallet</Link>
               </Button>
             </div>
@@ -221,9 +221,9 @@ const Overview = () => {
         <Card className="border-border/40 lg:col-span-3">
           <CardHeader className="flex flex-row items-center justify-between p-5 sm:p-6">
             <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold">Recent Shipments</CardTitle>
-            <Button variant="link" className="text-accent p-0 h-auto text-[0.875rem]" asChild>
+            <Button variant="link" className="text-accent p-0 h-auto text-[0.875rem] hover:text-accent/80 transition-colors" asChild>
               <Link to="/dashboard/shipments">
-                View All <ArrowRight className="w-4 h-4 ml-1" />
+                View All <ArrowRight className="w-4 h-4 ml-1" strokeWidth={2.5} />
               </Link>
             </Button>
           </CardHeader>
@@ -237,7 +237,7 @@ const Overview = () => {
                   >
                     <div className="flex items-center gap-3.5 min-w-0 flex-1">
                       <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Package className="w-[18px] h-[18px] text-primary" />
+                        <Package className="w-[18px] h-[18px] text-primary" strokeWidth={2.5} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-semibold text-foreground text-[0.875rem] truncate">{shipment.tracking_number || "Pending"}</p>
@@ -251,10 +251,10 @@ const Overview = () => {
             ) : (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Package className="w-7 h-7 text-muted-foreground/50" />
+                  <Package className="w-7 h-7 text-muted-foreground/50" strokeWidth={2.5} />
                 </div>
                 <p className="text-muted-foreground text-[0.9375rem] font-medium mb-4">No shipments yet</p>
-                <Button variant="dashAccent" size="dash" asChild>
+                <Button variant="dashAccent" size="dash" asChild className="shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200">
                   <Link to="/shipping">Create Your First Shipment</Link>
                 </Button>
               </div>
@@ -277,7 +277,7 @@ const Overview = () => {
                     return (
                       <div key={activity.id} className="flex gap-3.5 relative">
                         <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 z-10 border border-primary/5">
-                          <Icon className="w-4 h-4 text-primary" />
+                          <Icon className="w-4 h-4 text-primary" strokeWidth={2.5} />
                         </div>
                         <div className="min-w-0 flex-1 pt-1">
                           <p className="text-[13px] text-foreground leading-snug">{activity.message}</p>
@@ -291,7 +291,7 @@ const Overview = () => {
             ) : (
               <div className="text-center py-10">
                 <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                  <Clock className="w-6 h-6 text-muted-foreground/50" />
+                  <Clock className="w-6 h-6 text-muted-foreground/50" strokeWidth={2.5} />
                 </div>
                 <p className="text-sm text-muted-foreground">No activity yet</p>
               </div>

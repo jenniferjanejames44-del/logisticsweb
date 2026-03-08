@@ -166,14 +166,14 @@ const Shipments = () => {
         <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/15 to-primary/8 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner border border-primary/10">
-              <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-primary" strokeWidth={2.5} />
             </div>
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
               <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
             </div>
           </div>
-          <Button variant="dashOutline" size="dashSm" className="w-full sm:w-auto" onClick={() => window.location.href = "/dashboard/wallet"}>
+          <Button variant="dashOutline" size="dashSm" className="w-full sm:w-auto hover:bg-primary/5 hover:border-primary/40 transition-all duration-200" onClick={() => window.location.href = "/dashboard/wallet"}>
             Manage Wallet
           </Button>
         </CardContent>
@@ -182,16 +182,16 @@ const Shipments = () => {
       {/* Actions Bar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mb-4 sm:mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
           <Input
             placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-12 text-sm rounded-[10px]"
+            className="pl-9 h-12 text-sm rounded-xl border-border/60 hover:border-primary/40 focus:border-primary transition-colors"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[160px] h-12 rounded-[10px]">
+          <SelectTrigger className="w-full sm:w-[180px] h-12 rounded-xl border-border/60 hover:border-primary/40 font-medium transition-colors">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -208,9 +208,9 @@ const Shipments = () => {
           </SelectContent>
         </Select>
 
-        <Button variant="dashAccent" size="dash" className="w-full sm:w-auto" asChild>
+        <Button variant="dashAccent" size="dash" className="w-full sm:w-auto shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200" asChild>
           <a href="/shipping">
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4" strokeWidth={2.5} />
             New Shipment
           </a>
         </Button>
@@ -225,8 +225,8 @@ const Shipments = () => {
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   {/* Left side */}
                   <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Package className="w-5 h-5 text-primary" />
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                     </div>
                     <div className="min-w-0 flex-1 space-y-2">
                       <div className="flex flex-wrap items-center gap-2">
