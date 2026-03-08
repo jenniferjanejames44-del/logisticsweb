@@ -16,6 +16,7 @@ import {
   Wallet,
   FileText,
   ShoppingBag,
+  MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -25,6 +26,7 @@ const navItems = [
   { icon: Package, label: "Shipments", href: "/dashboard/shipments" },
   { icon: FileText, label: "Invoices", href: "/dashboard/invoices" },
   { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
+  { icon: MessageSquare, label: "Support", href: "/dashboard/support" },
   { icon: User, label: "Profile", href: "/dashboard/profile" },
   { icon: ShoppingBag, label: "Shopping Orders", href: "/dashboard/shopping-orders" },
   { icon: Bell, label: "Notifications", href: "/dashboard/notifications" },

@@ -22,6 +22,8 @@ import {
   Calculator,
   Route,
   Truck,
+  MessageSquare,
+  RefreshCw,
 } from "lucide-react";
 
 interface NavSection {
@@ -44,6 +46,8 @@ const navSections: NavSection[] = [
       { name: "Invoices", href: "/admin/invoices", icon: FileText },
       { name: "Payments", href: "/admin/payments", icon: DollarSign },
       { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
+      { name: "Support Tickets", href: "/admin/support", icon: MessageSquare },
+      { name: "Refunds", href: "/admin/refunds", icon: RefreshCw },
     ],
   },
   {
