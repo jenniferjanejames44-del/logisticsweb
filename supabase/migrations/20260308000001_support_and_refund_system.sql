@@ -1,5 +1,5 @@
 -- Support Tickets System
-CREATE TABLE public.support_tickets (
+CREATE TABLE IF NOT EXISTS public.support_tickets (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   ticket_number TEXT NOT NULL UNIQUE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -7,7 +7,7 @@ CREATE TABLE public.support_tickets (
   category TEXT NOT NULL CHECK (category IN ('shipment_issue', 'payment_issue', 'refund_request', 'general_inquiry')),
   status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'in_progress', 'waiting_for_customer', 'resolved', 'closed')),
   priority TEXT NOT NULL DEFAULT 'normal' CHECK (priority IN ('low', 'normal', 'high', 'urgent')),
-  shipment_id UUID REFERENCES public.shipments(id) ON DELETE SET NULL,
+  shipment_id UUID,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
   resolved_at TIMESTAMP WITH TIME ZONE,
@@ -15,7 +15,7 @@ CREATE TABLE public.support_tickets (
 );
 
 -- Support Ticket Messages
-CREATE TABLE public.support_ticket_messages (
+CREATE TABLE IF NOT EXISTS public.support_ticket_messages (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   ticket_id UUID NOT NULL REFERENCES public.support_tickets(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -25,7 +25,7 @@ CREATE TABLE public.support_ticket_messages (
 );
 
 -- Support Ticket Attachments
-CREATE TABLE public.support_ticket_attachments (
+CREATE TABLE IF NOT EXISTS public.support_ticket_attachments (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   ticket_id UUID NOT NULL REFERENCES public.support_tickets(id) ON DELETE CASCADE,
   message_id UUID REFERENCES public.support_ticket_messages(id) ON DELETE CASCADE,
@@ -38,11 +38,11 @@ CREATE TABLE public.support_ticket_attachments (
 );
 
 -- Refunds Table
-CREATE TABLE public.refunds (
+CREATE TABLE IF NOT EXISTS public.refunds (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   refund_number TEXT NOT NULL UNIQUE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  shipment_id UUID REFERENCES public.shipments(id) ON DELETE SET NULL,
+  shipment_id UUID,
   ticket_id UUID REFERENCES public.support_tickets(id) ON DELETE SET NULL,
   amount NUMERIC NOT NULL,
   refund_type TEXT NOT NULL CHECK (refund_type IN ('wallet', 'payment_method', 'manual_adjustment')),
@@ -56,7 +56,7 @@ CREATE TABLE public.refunds (
 );
 
 -- User Notifications Table
-CREATE TABLE public.user_notifications (
+CREATE TABLE IF NOT EXISTS public.user_notifications (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   type TEXT NOT NULL CHECK (type IN ('ticket_reply', 'ticket_status_change', 'refund_issued', 'shipment_update', 'payment_received', 'general')),
@@ -66,7 +66,7 @@ CREATE TABLE public.user_notifications (
   is_read BOOLEAN NOT NULL DEFAULT false,
   ticket_id UUID REFERENCES public.support_tickets(id) ON DELETE CASCADE,
   refund_id UUID REFERENCES public.refunds(id) ON DELETE CASCADE,
-  shipment_id UUID REFERENCES public.shipments(id) ON DELETE CASCADE,
+  shipment_id UUID,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
