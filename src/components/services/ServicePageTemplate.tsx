@@ -53,13 +53,13 @@ const ServicePageTemplate = ({
   const { ref: benefitsRef, isInView: benefitsInView } = useInView({ threshold: 0.1 });
 
   return (
-    <div className="page-shell">
+    <div className="min-h-screen">
       <Header />
       <main>
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="page-hero pb-20 md:pb-24"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
           <div className="absolute inset-0">
             <img 
@@ -70,10 +70,9 @@ const ServicePageTemplate = ({
               className="w-full h-full object-cover opacity-15"
             />
           </div>
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.2),rgba(6,16,67,0.88))]" />
           
           <div className="section-container relative z-10">
-            <div className={`mx-auto max-w-4xl rounded-[32px] border border-white/12 bg-white/8 px-6 py-10 backdrop-blur-sm transition-all duration-500 sm:px-8 md:px-10 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className={`mx-auto max-w-4xl transition-all duration-500 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <Link 
                 to="/services" 
                 className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary-foreground/70 transition-colors hover:text-accent"
@@ -83,7 +82,7 @@ const ServicePageTemplate = ({
               </Link>
               
               <div className="mb-6 flex flex-wrap items-center gap-3 sm:gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-[24px] border border-white/20 bg-white/12 shadow-lg backdrop-blur-sm sm:h-16 sm:w-16">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm sm:h-16 sm:w-16">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" strokeWidth={2.5} />
                 </div>
                 <span className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-md sm:text-sm">
@@ -113,7 +112,7 @@ const ServicePageTemplate = ({
               {features.map((feature, index) => (
                 <Card
                   key={feature}
-                  className="flex items-center gap-3 border-border/60 bg-background transition-shadow duration-200 hover:border-primary/15 hover:shadow-[0_18px_36px_rgba(15,23,42,0.06)]"
+                  className="flex items-center gap-3 border-border/60 bg-background transition-shadow duration-200 hover:border-primary/15"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
@@ -128,7 +127,7 @@ const ServicePageTemplate = ({
         <section ref={workflowRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="section-kicker mb-4">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
                 Process
               </span>
               <h2 className="text-foreground">How It Works</h2>
@@ -149,7 +148,7 @@ const ServicePageTemplate = ({
                     <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-md">
                       {step.step}
                     </div>
-                    <Card className="flex-1 border-border/60 transition-all duration-300 hover:border-primary/20 hover:shadow-[0_16px_35px_rgba(15,23,42,0.06)]">
+                    <Card className="flex-1 border-border/60 transition-all duration-300 hover:border-primary/20">
                       <CardContent className="p-4 sm:p-6">
                         <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
@@ -158,7 +157,7 @@ const ServicePageTemplate = ({
                   </div>
 
                   <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right pr-16' : 'order-2 pl-16'}`}>
-                    <Card className="inline-block text-left border-border/60 transition-all duration-300 hover:border-primary/20 hover:shadow-[0_16px_35px_rgba(15,23,42,0.06)]">
+                    <Card className="inline-block text-left border-border/60 transition-all duration-300 hover:border-primary/20">
                       <CardContent className="p-6">
                         <h3 className="text-xl font-bold text-foreground mb-2">{step.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">{step.description}</p>
@@ -179,7 +178,7 @@ const ServicePageTemplate = ({
         <section ref={benefitsRef} className="section-padding bg-section-light">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="section-kicker mb-4">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
                 Benefits
               </span>
               <h2 className="text-foreground">Why Choose Our {title}</h2>
@@ -195,7 +194,7 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardContent className="p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-110 group-hover:bg-primary/15 sm:h-14 sm:w-14">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-110 group-hover:bg-primary/15 sm:h-14 sm:w-14">
                       <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{benefit.title}</h3>

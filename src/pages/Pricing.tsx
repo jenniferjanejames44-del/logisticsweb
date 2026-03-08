@@ -112,13 +112,13 @@ const Pricing = () => {
   const selectedServiceData = services.find(s => s.id === selectedService);
 
   return (
-    <div className="page-shell">
+    <div className="min-h-screen">
       <Header />
       <main>
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="page-hero pb-20 md:pb-24"
+          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
@@ -126,18 +126,17 @@ const Pricing = () => {
               backgroundImage: 'url(https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80)',
             }}
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.2),rgba(6,16,67,0.88))]" />
           
           <div className="section-container relative z-10">
-            <div className={`mx-auto max-w-4xl rounded-[32px] border border-white/12 bg-white/8 px-6 py-10 text-center backdrop-blur-sm transition-all duration-500 sm:px-8 md:px-10 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 text-sm font-bold text-white/90">
+            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Transparent Pricing
               </span>
-              <h1 className="mt-6 mb-4 text-white leading-tight">
+              <h1 className="text-white mb-4 leading-tight">
                 Calculate Your Shipping Cost
               </h1>
-              <p className="mx-auto max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
                 Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
               </p>
             </div>
@@ -149,10 +148,10 @@ const Pricing = () => {
           <div className="section-container">
             <div className="grid lg:grid-cols-2 gap-8 items-start">
               {/* Calculator Form */}
-              <Card className="border-border/70 shadow-[0_18px_50px_rgba(15,23,42,0.07)]">
+              <Card className="border-border shadow-lg">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 text-lg">
-                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent shadow-[0_14px_28px_rgba(223,81,1,0.18)]">
+                   <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                       <Calculator className="w-5 h-5 text-accent-foreground" />
                     </div>
                     Price Calculator
@@ -185,7 +184,7 @@ const Pricing = () => {
                           onClick={() => setSelectedService(service.id)}
                           className={`p-4 rounded-lg border text-left transition-all duration-200 hover:border-primary/50 ${
                             selectedService === service.id
-                              ? 'border-primary bg-primary/5 shadow-[0_16px_36px_rgba(6,16,67,0.08)]'
+                              ? 'border-primary bg-primary/5'
                               : 'border-border bg-background hover:bg-muted/50'
                           }`}
                         >
@@ -263,15 +262,15 @@ const Pricing = () => {
 
                 {/* Features */}
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="flex flex-col items-center rounded-2xl border border-border/70 bg-muted/55 p-3 text-center">
+                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
                     <Zap className="w-5 h-5 text-accent mb-1" />
                     <span className="text-xs font-medium text-foreground">Instant Quote</span>
                   </div>
-                  <div className="flex flex-col items-center rounded-2xl border border-border/70 bg-muted/55 p-3 text-center">
+                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
                     <Shield className="w-5 h-5 text-accent mb-1" />
                     <span className="text-xs font-medium text-foreground">Secure Payment</span>
                   </div>
-                  <div className="flex flex-col items-center rounded-2xl border border-border/70 bg-muted/55 p-3 text-center">
+                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
                     <Clock className="w-5 h-5 text-accent mb-1" />
                     <span className="text-xs font-medium text-foreground">24/7 Support</span>
                   </div>
@@ -285,7 +284,7 @@ const Pricing = () => {
         <section className="section-padding bg-muted">
           <div className="section-container">
             <div className="text-center mb-10">
-              <span className="section-kicker mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
                 Value
               </span>
               <h2 className="text-foreground">What's Included</h2>
@@ -304,7 +303,7 @@ const Pricing = () => {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 rounded-2xl border border-border/70 bg-card p-4 transition-shadow hover:shadow-[0_16px_30px_rgba(15,23,42,0.06)]"
+                  className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border hover:shadow-md transition-shadow"
                 >
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
                   <span className="font-medium text-foreground text-sm">{feature}</span>
@@ -323,7 +322,7 @@ const Pricing = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-sm font-extrabold text-accent-foreground shadow-[0_14px_34px_rgba(223,81,1,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-[0_20px_40px_rgba(223,81,1,0.24)] active:scale-[0.98] sm:text-base"
+              className="btn btn-primary btn-lg"
             >
               Contact Sales
               <ArrowRight className="w-4 h-4" />

@@ -29,11 +29,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="mt-8 bg-primary text-white">
+    <footer className="bg-primary">
       {/* Main Footer */}
-      <div className="section-container px-4 pb-12 pt-16 sm:px-6 md:pt-20">
-        <div className="mb-10 rounded-[32px] border border-white/10 bg-white/5 p-8 shadow-[0_24px_60px_rgba(0,0,0,0.16)] backdrop-blur-sm md:p-10">
-          <div className="grid grid-cols-1 gap-14 md:grid-cols-[1.15fr_0.85fr]">
+      <div className="section-container px-4 pb-12 pt-20 sm:px-6 md:pt-24">
+        <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
           {/* Left Side - Company Info */}
           <div className="space-y-8">
             <Link to="/" className="flex items-center gap-3 group">
@@ -54,7 +53,7 @@ const Footer = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:bg-accent hover:text-accent-foreground"
+                    className="flex h-11 w-11 items-center justify-center rounded-md border border-white/12 bg-white/8 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/60 hover:bg-accent hover:text-accent-foreground"
                   >
                     <SocialIcon className="w-5 h-5" />
                   </a>
@@ -105,20 +104,20 @@ const Footer = () => {
             <div className="col-span-2 sm:col-span-1">
               <h4 className="mb-6 text-base font-extrabold text-white">Contact</h4>
               <div className="space-y-4">
-                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/6 p-3.5 text-white/70 transition-colors duration-200 hover:text-white">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                <a href="mailto:info@raclogistics.com" className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 text-white/70 transition-colors duration-200 hover:text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
                     <Mail size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">info@raclogistics.com</span>
                 </a>
-                <a href="tel:+2348185956707" className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/6 p-3.5 text-white/70 transition-colors duration-200 hover:text-white">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+                <a href="tel:+2348185956707" className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3 text-white/70 transition-colors duration-200 hover:text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10">
                     <Phone size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">+234 818 595 6707</span>
                 </a>
-                <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/6 p-3.5 text-white/70">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-white/10">
+                <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-3 text-white/70">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-white/10">
                     <MapPin size={16} className="text-white" strokeWidth={2.5} />
                   </div>
                   <span className="text-[15px]">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State</span>
@@ -126,7 +125,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
 
