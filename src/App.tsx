@@ -42,12 +42,17 @@ import AdminPackaging from "./pages/admin/AdminPackaging";
 import AdminDeliveryMethods from "./pages/admin/AdminDeliveryMethods";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
+import Support from "./pages/dashboard/Support";
+import SupportTicketDetail from "./pages/dashboard/SupportTicketDetail";
 import NotFound from "./pages/NotFound";
 import Track from "./pages/Track";
 import Shipping from "./pages/Shipping";
 import PersonalShoppingForm from "./pages/PersonalShoppingForm";
 import ShoppingOrders from "./pages/dashboard/ShoppingOrders";
 import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
+import AdminSupport from "./pages/admin/AdminSupport";
+import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
+import AdminRefunds from "./pages/admin/AdminRefunds";
 import DesignSystem from "./pages/DesignSystem";
 const queryClient = new QueryClient();
 
@@ -93,6 +98,8 @@ const App = () => (
               <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
+              <Route path="/dashboard/support" element={<Support />} />
+              <Route path="/dashboard/support/:id" element={<SupportTicketDetail />} />
               <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
               <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
               {/* Admin Dashboard */}
@@ -110,6 +117,9 @@ const App = () => (
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />
+              <Route path="/admin/support" element={<AdminSupport />} />
+              <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
+              <Route path="/admin/refunds" element={<AdminRefunds />} />
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
