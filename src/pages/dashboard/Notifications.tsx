@@ -13,11 +13,14 @@ import { useToast } from "@/hooks/use-toast";
 interface Notification {
   id: string;
   user_id: string;
-  shipment_id: string | null;
   type: string;
   title: string;
   message: string;
-  read: boolean;
+  link: string | null;
+  is_read: boolean;
+  ticket_id: string | null;
+  refund_id: string | null;
+  shipment_id: string | null;
   created_at: string;
 }
 
@@ -25,12 +28,17 @@ const getNotificationIcon = (type: string) => {
   switch (type) {
     case "shipment_update":
       return Package;
-    case "payment":
+    case "payment_received":
       return CreditCard;
-    case "alert":
-      return AlertCircle;
-    default:
+    case "ticket_reply":
+    case "ticket_status_change":
+      return Bell;
+    case "refund_issued":
+      return CheckCircle;
+    case "general":
       return Info;
+    default:
+      return Bell;
   }
 };
 
@@ -38,12 +46,17 @@ const getNotificationIconColor = (type: string) => {
   switch (type) {
     case "shipment_update":
       return "text-primary";
-    case "payment":
+    case "payment_received":
       return "text-success";
-    case "alert":
-      return "text-warning";
-    default:
+    case "ticket_reply":
+    case "ticket_status_change":
+      return "text-accent";
+    case "refund_issued":
+      return "text-green-600";
+    case "general":
       return "text-info";
+    default:
+      return "text-muted-foreground";
   }
 };
 
@@ -70,9 +83,9 @@ const Notifications = () => {
 
   const fetchNotifications = async () => {
     if (!user) return;
-    
+
     const { data, error } = await supabase
-      .from("notifications")
+      .from("user_notifications")
       .select("*")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
@@ -90,13 +103,13 @@ const Notifications = () => {
 
     // Subscribe to real-time notifications
     const channel = supabase
-      .channel('notifications')
+      .channel('user_notifications')
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'notifications',
+          table: 'user_notifications',
           filter: `user_id=eq.${user?.id}`,
         },
         (payload) => {
@@ -116,28 +129,28 @@ const Notifications = () => {
 
   const markAsRead = async (id: string) => {
     const { error } = await supabase
-      .from("notifications")
-      .update({ read: true })
+      .from("user_notifications")
+      .update({ is_read: true })
       .eq("id", id);
 
     if (!error) {
       setNotifications(prev =>
-        prev.map(n => n.id === id ? { ...n, read: true } : n)
+        prev.map(n => n.id === id ? { ...n, is_read: true } : n)
       );
     }
   };
 
   const markAllAsRead = async () => {
-    const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
+    const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
     if (unreadIds.length === 0) return;
 
     const { error } = await supabase
-      .from("notifications")
-      .update({ read: true })
+      .from("user_notifications")
+      .update({ is_read: true })
       .in("id", unreadIds);
 
     if (!error) {
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
       toast({
         title: "All notifications marked as read",
       });
@@ -146,7 +159,7 @@ const Notifications = () => {
 
   const deleteNotification = async (id: string) => {
     const { error } = await supabase
-      .from("notifications")
+      .from("user_notifications")
       .delete()
       .eq("id", id);
 
@@ -158,7 +171,7 @@ const Notifications = () => {
     }
   };
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.is_read).length;
 
   if (loading) {
     return (
@@ -206,7 +219,7 @@ const Notifications = () => {
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
                   <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    !notification.read ? 'bg-accent/10' : 'bg-muted'
+                    !notification.is_read ? 'bg-accent/10' : 'bg-muted'
                   }`}>
                     <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor}`} />
                   </div>
@@ -215,17 +228,18 @@ const Notifications = () => {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
                           <h3 className="font-semibold text-foreground text-sm sm:text-base">{notification.title}</h3>
-                          {!notification.read && (
+                          {!notification.is_read && (
                             <Badge variant="secondary" className="text-xs">New</Badge>
                           )}
                         </div>
                         <p className="text-muted-foreground text-xs sm:text-sm">{notification.message}</p>
-                        {notification.shipment_id && (
-                          <Link 
-                            to={`/dashboard/shipments`}
+                        {notification.link && (
+                          <Link
+                            to={notification.link}
                             className="text-accent text-xs sm:text-sm hover:underline mt-1 inline-block"
+                            onClick={() => markAsRead(notification.id)}
                           >
-                            View shipment →
+                            View details →
                           </Link>
                         )}
                       </div>
@@ -234,7 +248,7 @@ const Notifications = () => {
                           {formatTimeAgo(notification.created_at)}
                         </span>
                         <div className="flex gap-1">
-                          {!notification.read && (
+                          {!notification.is_read && (
             <Button
               variant="ghost"
               size="icon"
