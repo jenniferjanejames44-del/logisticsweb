@@ -673,6 +673,207 @@ export type Database = {
         }
         Relationships: []
       }
+      support_tickets: {
+        Row: {
+          id: string
+          ticket_number: string
+          user_id: string
+          subject: string
+          category: 'shipment_issue' | 'payment_issue' | 'refund_request' | 'general_inquiry'
+          status: 'open' | 'in_progress' | 'waiting_for_customer' | 'resolved' | 'closed'
+          priority: 'low' | 'normal' | 'high' | 'urgent'
+          shipment_id: string | null
+          created_at: string
+          updated_at: string
+          resolved_at: string | null
+          closed_at: string | null
+        }
+        Insert: {
+          id?: string
+          ticket_number: string
+          user_id: string
+          subject: string
+          category: 'shipment_issue' | 'payment_issue' | 'refund_request' | 'general_inquiry'
+          status?: 'open' | 'in_progress' | 'waiting_for_customer' | 'resolved' | 'closed'
+          priority?: 'low' | 'normal' | 'high' | 'urgent'
+          shipment_id?: string | null
+          created_at?: string
+          updated_at?: string
+          resolved_at?: string | null
+          closed_at?: string | null
+        }
+        Update: {
+          id?: string
+          ticket_number?: string
+          user_id?: string
+          subject?: string
+          category?: 'shipment_issue' | 'payment_issue' | 'refund_request' | 'general_inquiry'
+          status?: 'open' | 'in_progress' | 'waiting_for_customer' | 'resolved' | 'closed'
+          priority?: 'low' | 'normal' | 'high' | 'urgent'
+          shipment_id?: string | null
+          created_at?: string
+          updated_at?: string
+          resolved_at?: string | null
+          closed_at?: string | null
+        }
+        Relationships: []
+      }
+      support_ticket_messages: {
+        Row: {
+          id: string
+          ticket_id: string
+          user_id: string
+          message: string
+          is_admin: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          ticket_id: string
+          user_id: string
+          message: string
+          is_admin?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          ticket_id?: string
+          user_id?: string
+          message?: string
+          is_admin?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+      support_ticket_attachments: {
+        Row: {
+          id: string
+          ticket_id: string
+          message_id: string | null
+          file_name: string
+          file_url: string
+          file_size: number | null
+          file_type: string | null
+          uploaded_by: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          ticket_id: string
+          message_id?: string | null
+          file_name: string
+          file_url: string
+          file_size?: number | null
+          file_type?: string | null
+          uploaded_by: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          ticket_id?: string
+          message_id?: string | null
+          file_name?: string
+          file_url?: string
+          file_size?: number | null
+          file_type?: string | null
+          uploaded_by?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      refunds: {
+        Row: {
+          id: string
+          refund_number: string
+          user_id: string
+          shipment_id: string | null
+          ticket_id: string | null
+          amount: number
+          refund_type: 'wallet' | 'payment_method' | 'manual_adjustment'
+          refund_reason: string
+          status: 'pending' | 'processing' | 'completed' | 'failed'
+          processed_by: string | null
+          transaction_reference: string | null
+          notes: string | null
+          created_at: string
+          processed_at: string | null
+        }
+        Insert: {
+          id?: string
+          refund_number: string
+          user_id: string
+          shipment_id?: string | null
+          ticket_id?: string | null
+          amount: number
+          refund_type: 'wallet' | 'payment_method' | 'manual_adjustment'
+          refund_reason: string
+          status?: 'pending' | 'processing' | 'completed' | 'failed'
+          processed_by?: string | null
+          transaction_reference?: string | null
+          notes?: string | null
+          created_at?: string
+          processed_at?: string | null
+        }
+        Update: {
+          id?: string
+          refund_number?: string
+          user_id?: string
+          shipment_id?: string | null
+          ticket_id?: string | null
+          amount?: number
+          refund_type?: 'wallet' | 'payment_method' | 'manual_adjustment'
+          refund_reason?: string
+          status?: 'pending' | 'processing' | 'completed' | 'failed'
+          processed_by?: string | null
+          transaction_reference?: string | null
+          notes?: string | null
+          created_at?: string
+          processed_at?: string | null
+        }
+        Relationships: []
+      }
+      user_notifications: {
+        Row: {
+          id: string
+          user_id: string
+          type: 'ticket_reply' | 'ticket_status_change' | 'refund_issued' | 'shipment_update' | 'payment_received' | 'general'
+          title: string
+          message: string
+          link: string | null
+          is_read: boolean
+          ticket_id: string | null
+          refund_id: string | null
+          shipment_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: 'ticket_reply' | 'ticket_status_change' | 'refund_issued' | 'shipment_update' | 'payment_received' | 'general'
+          title: string
+          message: string
+          link?: string | null
+          is_read?: boolean
+          ticket_id?: string | null
+          refund_id?: string | null
+          shipment_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: 'ticket_reply' | 'ticket_status_change' | 'refund_issued' | 'shipment_update' | 'payment_received' | 'general'
+          title?: string
+          message?: string
+          link?: string | null
+          is_read?: boolean
+          ticket_id?: string | null
+          refund_id?: string | null
+          shipment_id?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
