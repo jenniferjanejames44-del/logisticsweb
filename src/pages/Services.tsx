@@ -64,13 +64,13 @@ const Services = () => {
   const { ref: servicesRef, isInView: servicesInView } = useInView({ threshold: 0.1 });
 
   return (
-    <div className="min-h-screen">
+    <div className="page-shell">
       <Header />
       <main>
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
+          className="page-hero pb-20 md:pb-24"
         >
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
@@ -78,30 +78,31 @@ const Services = () => {
               backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80)',
             }}
           />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.2),rgba(6,16,67,0.88))]" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+            <div className={`mx-auto max-w-4xl rounded-[32px] border border-white/12 bg-white/8 px-6 py-10 text-center backdrop-blur-sm transition-all duration-500 sm:px-8 md:px-10 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 text-sm font-bold text-white/90">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Our Services
               </span>
-              <h1 className="text-white mb-6 leading-tight">
+              <h1 className="mt-6 mb-6 text-white leading-tight">
                 Comprehensive Logistics Solutions
               </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto">
+              <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
-              <div className="flex flex-row justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Link 
                   to="/pricing"
-                  className="inline-flex items-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-sm font-extrabold text-accent-foreground shadow-[0_14px_34px_rgba(223,81,1,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-[0_20px_40px_rgba(223,81,1,0.24)] active:scale-[0.98] sm:text-base"
                 >
                   Get a Quote
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Link>
                 <Link 
                   to="/contact"
-                  className="inline-flex items-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-extrabold text-primary shadow-[0_14px_34px_rgba(255,255,255,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/92 hover:shadow-[0_18px_40px_rgba(255,255,255,0.16)] active:scale-[0.98] sm:text-base"
                 >
                   Contact Us
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -114,10 +115,11 @@ const Services = () => {
         <section ref={servicesRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-              <h2 className="text-foreground mb-5">
+              <span className="section-kicker mb-5">Explore</span>
+              <h2 className="section-title mb-5">
                 Explore Our <span className="text-primary">Services</span>
               </h2>
-              <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
+              <p className="section-copy font-medium">
                 Comprehensive logistics solutions designed for your business needs.
               </p>
             </div>
@@ -126,14 +128,14 @@ const Services = () => {
               {services.map((service, index) => (
                 <Card
                   key={service.title}
-                  className={`group relative overflow-hidden bg-card border border-border/50 rounded-2xl hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
+                    className={`group relative overflow-hidden rounded-[28px] border border-border/60 bg-card transition-all duration-500 hover:-translate-y-2 hover:border-primary/20 hover:shadow-[0_24px_55px_rgba(15,23,42,0.1)] ${
                     servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   <CardContent className="p-6 md:p-8">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 group-hover:bg-primary/15 shadow-sm transition-all duration-300">
+                      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-primary/15 md:mb-6 md:h-16 md:w-16">
                       <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
@@ -163,7 +165,7 @@ const Services = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="section-padding bg-primary relative overflow-hidden">
+        <section className="section-padding relative overflow-hidden bg-primary">
           <div className="section-container text-center relative z-10">
             <h2 className="text-white mb-6">Need a Custom Logistics Solution?</h2>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -171,7 +173,7 @@ const Services = () => {
             </p>
             <Link 
               to="/contact"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+              className="inline-flex items-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-sm font-extrabold text-accent-foreground shadow-[0_14px_34px_rgba(223,81,1,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-[0_20px_40px_rgba(223,81,1,0.24)] active:scale-[0.98] sm:text-base"
             >
               Get in Touch
               <ArrowRight className="w-5 h-5" />

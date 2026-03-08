@@ -69,32 +69,32 @@ const ShipmentEntrySection = () => {
 
   const isComplete = origin && destination && weight && parseFloat(weight) > 0;
 
-  const inputClass = "h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors";
+  const inputClass = "h-12 rounded-2xl bg-card text-foreground placeholder:text-muted-foreground transition-colors hover:border-primary/25 focus:border-primary";
 
   return (
-    <section className="section-padding bg-muted relative overflow-hidden">
+    <section className="relative z-20 -mt-16 overflow-hidden px-4 pb-10 sm:px-6 md:-mt-20 lg:px-8">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="section-container relative z-10">
-        <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
-            <Package className="w-4 h-4" />
-            Quick Shipping
-          </span>
-          <h2 className="text-foreground mb-4">
-            Start Your <span className="text-primary">Shipment</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-            Quickly create a shipment and calculate your delivery cost.
-          </p>
-        </div>
+        <div className="surface-panel px-6 py-8 sm:px-8 sm:py-10 lg:px-10">
+          <div className="mb-8 text-center lg:mb-10">
+            <span className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-sm">
+              <Package className="w-4 h-4" />
+              Quick Shipping
+            </span>
+            <h2 className="mt-5 mb-4 text-foreground">
+              Start Your <span className="text-primary">Shipment</span>
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
+              Quickly create a shipment and calculate your delivery cost.
+            </p>
+          </div>
 
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-card rounded-2xl border border-border/50 shadow-xl p-6 sm:p-8 lg:p-10">
-            <div className="grid sm:grid-cols-3 gap-5">
+          <div className="mx-auto max-w-5xl">
+            <div className="grid gap-5 lg:grid-cols-[1fr_1fr_0.8fr_auto]">
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5" /> Origin Country
@@ -141,11 +141,24 @@ const ShipmentEntrySection = () => {
                   className={inputClass}
                 />
               </div>
+
+              <div className="flex items-end">
+                <Button
+                  variant="cta"
+                  size="lg"
+                  disabled={!isComplete}
+                  onClick={handleContinue}
+                  className="h-12 w-full gap-2 px-8 lg:w-auto"
+                >
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Instant price preview */}
             {estimatedCost !== null && (
-              <div className="mt-5 p-4 rounded-xl border border-primary/30 bg-primary/5 flex items-center justify-between">
+              <div className="mt-5 flex items-center justify-between rounded-[24px] border border-primary/20 bg-primary/5 p-4">
                 <div className="flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-primary" />
                   <span className="text-sm font-semibold text-foreground">Estimated Cost</span>
@@ -156,17 +169,9 @@ const ShipmentEntrySection = () => {
               </div>
             )}
 
-            <div className="mt-6 flex justify-center">
-              <Button
-                variant="cta"
-                size="lg"
-                disabled={!isComplete}
-                onClick={handleContinue}
-                className="gap-2"
-              >
-                Continue Shipment
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-border/70 bg-muted/55 px-4 py-3">
+              <p className="text-sm text-muted-foreground">Door-to-door shipping workflow with fast quote setup.</p>
+              <p className="text-sm font-semibold text-foreground">Flexible routes • instant estimate preview.</p>
             </div>
           </div>
         </div>

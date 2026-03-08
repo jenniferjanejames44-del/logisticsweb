@@ -133,14 +133,14 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
     >
       {/* Main Card */}
       <div 
-        className={`relative rounded-xl overflow-hidden transition-all duration-300 bg-card border border-border ${
-          isFocused ? "shadow-lg" : "shadow-md"
+        className={`relative overflow-hidden rounded-[30px] border border-white/55 bg-white/96 transition-all duration-300 ${
+          isFocused ? "shadow-[0_24px_60px_rgba(15,23,42,0.16)]" : "shadow-[0_20px_55px_rgba(15,23,42,0.12)]"
         }`}
       >
-        <div className="p-4 sm:p-6">
+        <div className="p-5 sm:p-7">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-accent">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent shadow-[0_14px_30px_rgba(223,81,1,0.18)] sm:h-12 sm:w-12">
               <Search size={18} className="sm:hidden text-accent-foreground" />
               <Search size={20} className="hidden sm:block text-accent-foreground" />
             </div>
@@ -154,7 +154,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
           </div>
           
           {/* Input Group */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <div className="relative flex-1">
               <Input
                 value={trackingNumber}
@@ -163,10 +163,10 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Enter tracking number"
-                className={`h-11 sm:h-12 pl-4 pr-12 text-sm font-medium bg-muted/50 border text-foreground placeholder:text-muted-foreground rounded-lg transition-all duration-200 ${
+                className={`h-12 rounded-2xl border bg-muted/50 pl-4 pr-12 text-sm font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
                   isFocused 
                     ? "border-primary ring-2 ring-primary/10 bg-background" 
-                    : "border-border hover:border-primary/50"
+                    : "border-border hover:border-primary/30"
                 }`}
               />
               {isLoading && (
@@ -178,7 +178,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
             <button 
               onClick={handleTrackClick}
               disabled={isLoading}
-              className="h-11 sm:h-12 px-6 font-bold text-sm rounded-full shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg active:scale-[0.98]"
+              className="flex h-12 items-center justify-center gap-2 rounded-full bg-accent px-6 text-sm font-bold text-accent-foreground shadow-[0_14px_30px_rgba(223,81,1,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-[0_18px_36px_rgba(223,81,1,0.22)] active:scale-[0.98]"
             >
               Track Now
               <ArrowRight size={16} />
@@ -189,18 +189,18 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
           {(shipmentData || error) && trackingNumber.length >= 6 && (
             <div className="mt-4 animate-fade-in-up">
               {error ? (
-                <div className="bg-destructive/5 rounded-lg p-3 flex items-center gap-3 border border-destructive/20">
-                  <div className="w-9 h-9 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 rounded-2xl border border-destructive/20 bg-destructive/5 p-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-destructive/10">
                     <AlertCircle size={16} className="text-destructive" />
                   </div>
                   <span className="text-destructive text-sm font-medium">{error}</span>
                 </div>
               ) : shipmentData && (
-                <div className="bg-muted/50 rounded-lg p-4 border border-border">
+                <div className="rounded-[24px] border border-border bg-muted/45 p-4">
                   {/* Shipment Header */}
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shrink-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_12px_24px_rgba(6,16,67,0.14)]">
                         {(() => {
                           const ServiceIcon = getServiceIcon(shipmentData.service_type);
                           return <ServiceIcon size={18} className="text-primary-foreground" />;
@@ -217,7 +217,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                   </div>
                   
                   {/* Route Display */}
-                  <div className="flex items-center gap-2 text-sm mb-4 p-3 bg-background rounded-lg border border-border">
+                  <div className="mb-4 flex items-center gap-2 rounded-2xl border border-border bg-background p-3 text-sm">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
                       <span className="truncate font-medium text-foreground">{shipmentData.origin_city}</span>

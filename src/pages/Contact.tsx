@@ -109,13 +109,13 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="page-shell">
       <Header />
       <main>
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
+          className="page-hero pb-20 md:pb-24"
         >
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
@@ -123,17 +123,18 @@ const Contact = () => {
               backgroundImage: 'url(https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80)',
             }}
           />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.2),rgba(6,16,67,0.88))]" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+            <div className={`mx-auto max-w-4xl rounded-[32px] border border-white/12 bg-white/8 px-6 py-10 text-center backdrop-blur-sm transition-all duration-500 sm:px-8 md:px-10 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/12 px-4 py-2 text-sm font-bold text-white/90">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Get in Touch
               </span>
-              <h1 className="text-white mb-4 leading-tight">
+              <h1 className="mt-6 mb-4 text-white leading-tight">
                 Contact RAC Logistics
               </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+              <p className="mx-auto max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
                 Have questions? Need a quote? We're here to help. Reach out to our team and we'll respond within 24 hours.
               </p>
             </div>
@@ -146,7 +147,7 @@ const Contact = () => {
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <Card className="border-border shadow-lg">
+                <Card className="border-border/70 shadow-[0_18px_50px_rgba(15,23,42,0.07)]">
                   <CardContent className="p-6 md:p-8">
                     <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
                       Send Us a Message
@@ -212,10 +213,10 @@ const Contact = () => {
               {/* Contact Info */}
               <div className="space-y-4">
                 {contactInfo.map((info) => (
-                  <Card key={info.title} className="border-border hover:shadow-md transition-shadow">
+                  <Card key={info.title} className="border-border/70 transition-shadow hover:shadow-[0_16px_35px_rgba(15,23,42,0.07)]">
                     <CardContent className="p-5">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 shadow-sm">
                           <info.icon className="w-5 h-5 text-primary" strokeWidth={2.5} />
                         </div>
                         <div>
@@ -230,7 +231,7 @@ const Contact = () => {
                 ))}
 
                 {/* Social Links */}
-                <Card className="border-border">
+                <Card className="border-border/70">
                   <CardContent className="p-5">
                     <h3 className="font-semibold text-foreground mb-4 text-sm">Follow Us</h3>
                     <div className="flex gap-3">
@@ -238,7 +239,7 @@ const Contact = () => {
                         <a
                           key={social.label}
                           href={social.href}
-                          className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110 shadow-sm"
+                          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary shadow-sm transition-all duration-200 hover:scale-110 hover:bg-primary hover:text-primary-foreground"
                           aria-label={social.label}
                         >
                           <social.icon className="w-4 h-4" strokeWidth={2.5} />
@@ -256,13 +257,13 @@ const Contact = () => {
         <section className="section-padding bg-muted">
           <div className="section-container">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
+              <span className="section-kicker mb-4">
                 Location
               </span>
               <h2 className="text-foreground">Visit Our Office</h2>
             </div>
             
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-[400px] bg-card border border-border">
+            <div className="relative h-[400px] overflow-hidden rounded-[30px] border border-border/70 bg-card shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.8!2d3.3282!3d6.5282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzEnNDEuNSJOIDPCsDE5JzQxLjUiRQ!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng&q=29b+Osolo+Way+Ajao+Estate+Isolo+Lagos"
                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="RAC Logistics Office Location" className="absolute inset-0"
@@ -273,7 +274,7 @@ const Contact = () => {
                 href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 font-extrabold text-sm rounded-full shadow-sm transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-extrabold text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/92 hover:shadow-[0_18px_36px_rgba(6,16,67,0.2)] active:scale-[0.98]"
               >
                 Open in Google Maps
                 <ArrowRight className="w-4 h-4" />
@@ -289,15 +290,15 @@ const Contact = () => {
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-row items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <Link 
                 to="/blog"
-                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-full bg-accent px-8 py-3.5 text-sm font-extrabold text-accent-foreground shadow-[0_14px_34px_rgba(223,81,1,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90 hover:shadow-[0_20px_40px_rgba(223,81,1,0.24)] active:scale-[0.98] sm:px-10 sm:py-4 sm:text-base"
               >
                 View Resources
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]">
+              <button className="inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-8 py-3.5 text-sm font-extrabold text-primary shadow-[0_14px_34px_rgba(255,255,255,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/92 hover:shadow-[0_18px_40px_rgba(255,255,255,0.16)] active:scale-[0.98] sm:px-10 sm:py-4 sm:text-base">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
