@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import PayShipmentDialog from "@/components/shipments/PayShipmentDialog";
+import StatusBadge from "@/components/shipments/StatusBadge";
+import EmptyState from "@/components/ui/EmptyState";
 import {
   Package, Plus, Search, Truck, Clock, CheckCircle, AlertCircle,
   MapPin, Calendar, DollarSign, Wallet,
@@ -112,27 +114,7 @@ const Shipments = () => {
     setLoading(false);
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any }> = {
-      shipment_created: { variant: "secondary", icon: Package },
-      awaiting_warehouse: { variant: "secondary", icon: Clock },
-      received_warehouse: { variant: "default", icon: Package },
-      processing: { variant: "default", icon: Clock },
-      in_transit: { variant: "default", icon: Truck },
-      arrived_nigeria: { variant: "secondary", icon: MapPin },
-      ready_for_pickup: { variant: "outline", icon: CheckCircle },
-      delivered: { variant: "outline", icon: CheckCircle },
-      cancelled: { variant: "destructive", icon: AlertCircle },
-    };
-    const config = statusConfig[status] || statusConfig.shipment_created;
-    const Icon = config.icon;
-    return (
-      <Badge variant={config.variant} className="gap-1 capitalize">
-        <Icon className="w-3 h-3" />
-        {status.replace(/_/g, " ")}
-      </Badge>
-    );
-  };
+
 
   const filteredShipments = shipments.filter((shipment) => {
     const matchesSearch = shipment.tracking_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -231,7 +213,7 @@ const Shipments = () => {
                     <div className="min-w-0 flex-1 space-y-2">
                       <div className="flex flex-wrap items-center gap-2">
                         <h3 className="font-semibold text-foreground text-sm sm:text-base">{shipment.tracking_number || "Pending"}</h3>
-                        {getStatusBadge(shipment.status)}
+                        <StatusBadge status={shipment.status} size="md" />
                       </div>
                       <div className="flex flex-col sm:flex-row sm:flex-wrap gap-1.5 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
                         <span className="flex items-center gap-1 truncate">
@@ -286,25 +268,23 @@ const Shipments = () => {
           ))}
         </div>
       ) : (
-        <Card className="border-border/50">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Package className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No Shipments Found</h3>
-            <p className="text-muted-foreground mb-4">
-              {searchQuery || statusFilter !== "all"
-                ? "Try adjusting your search or filters"
-                : "Create your first shipment to get started"}
-            </p>
-            {!searchQuery && statusFilter === "all" && (
-              <Button variant="dashAccent" size="dash" asChild>
-                <a href="/shipping">
-                  <Plus className="w-5 h-5" />
-                  Create Shipment
-                </a>
-              </Button>
-            )}
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={Package}
+          title="No Shipments Found"
+          description={
+            searchQuery || statusFilter !== "all"
+              ? "Try adjusting your search or filters to find what you're looking for."
+              : "Create your first shipment to start tracking your deliveries and managing your logistics."
+          }
+          action={
+            !searchQuery && statusFilter === "all"
+              ? {
+                  label: "Create Shipment",
+                  href: "/shipping",
+                }
+              : undefined
+          }
+        />
       )}
 
       {/* Payment Dialog */}

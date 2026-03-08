@@ -8,6 +8,7 @@ import { OverviewSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import StatusBadge from "@/components/shipments/StatusBadge";
 import {
   Package,
   CreditCard,
@@ -101,24 +102,7 @@ const Overview = () => {
     fetchData();
   }, [user]);
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any; className?: string }> = {
-      pending: { variant: "secondary", icon: Clock },
-      shipment_created: { variant: "secondary", icon: Package, className: "bg-primary/10 text-primary border-primary/20" },
-      in_transit: { variant: "default", icon: Truck },
-      ready_for_pickup: { variant: "outline", icon: AlertCircle, className: "bg-accent/10 text-accent border-accent/30" },
-      delivered: { variant: "outline", icon: CheckCircle, className: "bg-green-500/10 text-green-600 border-green-500/30" },
-      cancelled: { variant: "destructive", icon: AlertCircle },
-    };
-    const config = statusConfig[status] || statusConfig.pending;
-    const Icon = config.icon;
-    return (
-      <Badge variant={config.variant} className={`gap-1 text-[11px] ${config.className || ""}`}>
-        <Icon className="w-3 h-3" />
-        {status.replace(/_/g, " ")}
-      </Badge>
-    );
-  };
+
 
   if (loading) {
     return (
@@ -244,7 +228,7 @@ const Overview = () => {
                         <p className="text-[12px] text-muted-foreground truncate">To: {shipment.destination_country}</p>
                       </div>
                     </div>
-                    <div className="flex-shrink-0">{getStatusBadge(shipment.status)}</div>
+                    <div className="flex-shrink-0"><StatusBadge status={shipment.status} size="sm" /></div>
                   </div>
                 ))}
               </div>

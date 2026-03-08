@@ -9,6 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useInView } from "@/hooks/useInView";
+import ShipmentTimeline from "@/components/shipments/ShipmentTimeline";
+import StatusBadge from "@/components/shipments/StatusBadge";
 import { 
   Search, 
   Package, 
@@ -48,13 +50,7 @@ interface ShipmentData {
   description: string | null;
 }
 
-const trackingSteps = [
-  { status: "pending", label: "Order Placed", description: "Shipment created" },
-  { status: "processing", label: "Processing", description: "Being prepared" },
-  { status: "in_transit", label: "In Transit", description: "On the way" },
-  { status: "out_for_delivery", label: "Out for Delivery", description: "Near destination" },
-  { status: "delivered", label: "Delivered", description: "Successfully delivered" },
-];
+
 
 const emailSchema = z.string().email("Please enter a valid email address");
 
@@ -150,11 +146,7 @@ const Track = () => {
     }
   };
 
-  const getStatusIndex = (status: string) => {
-    const normalizedStatus = status.toLowerCase().replace(" ", "_");
-    const index = trackingSteps.findIndex(step => step.status === normalizedStatus);
-    return index >= 0 ? index : 0;
-  };
+
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -446,46 +438,11 @@ const Track = () => {
                     {/* Timeline */}
                     <div className="mb-8">
                       <h3 className="font-heading font-bold text-lg text-foreground mb-6">Tracking Timeline</h3>
-                      <div className="relative">
-                        {/* Progress Line */}
-                        <div className="absolute left-[23px] top-0 bottom-0 w-0.5 bg-border" />
-                        <div 
-                          className="absolute left-[23px] top-0 w-0.5 bg-primary transition-all duration-500"
-                          style={{ height: `${(getStatusIndex(shipment.status) / (trackingSteps.length - 1)) * 100}%` }}
-                        />
-                        
-                        {trackingSteps.map((step, index) => {
-                          const currentIndex = getStatusIndex(shipment.status);
-                          const isCompleted = index <= currentIndex;
-                          const isCurrent = index === currentIndex;
-                          
-                          return (
-                            <div key={step.status} className="relative flex gap-4 pb-8 last:pb-0">
-                              <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 z-10 transition-all ${
-                                isCompleted 
-                                  ? 'bg-primary text-primary-foreground' 
-                                  : 'bg-muted text-muted-foreground'
-                              } ${isCurrent ? 'ring-4 ring-primary/20' : ''}`}>
-                                {isCompleted ? (
-                                  <CheckCircle2 size={20} />
-                                ) : (
-                                  <Clock size={20} />
-                                )}
-                              </div>
-                              <div className="flex-1 pt-2">
-                                <h4 className={`font-semibold ${isCompleted ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                  {step.label}
-                                </h4>
-                                <p className="text-sm text-muted-foreground">{step.description}</p>
-                                {isCurrent && (
-                                  <p className="text-xs text-primary mt-1">
-                                    Updated {new Date(shipment.updated_at).toLocaleString()}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
+                      <ShipmentTimeline
+                        currentStatus={shipment.status}
+                        createdAt={shipment.created_at}
+                        updatedAt={shipment.updated_at}
+                      />
                       </div>
                     </div>
 
