@@ -60,8 +60,8 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "h-[76px] border-b border-border/80 bg-white/95 shadow-[0_10px_24px_rgba(15,23,42,0.06)] backdrop-blur-xl"
-          : "h-20 border-b border-border/70 bg-white/98"
+          ? "h-20 border-b border-border/80 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+          : "h-20 border-b border-border/70 bg-white"
       }`}
     >
       <div className="section-container flex h-full items-center justify-between gap-6 px-4 sm:px-6">
@@ -71,7 +71,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-2 rounded-2xl border border-border/70 bg-white px-3 py-2 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
+        <nav className="hidden lg:flex items-center gap-2">
           {navLinks.slice(0, 2).map((link) => (
             <NavLink
               key={link.name}
