@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface WorkflowStep {
   step: number;
@@ -71,20 +72,20 @@ const ServicePageTemplate = ({
           </div>
           
           <div className="section-container relative z-10">
-            <div className={`max-w-4xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className={`mx-auto max-w-4xl transition-all duration-500 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <Link 
                 to="/services" 
-                className="inline-flex items-center gap-2 text-primary-foreground/70 hover:text-accent transition-colors mb-6 text-sm font-medium"
+                className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary-foreground/70 transition-colors hover:text-accent"
               >
                 <ArrowRight className="w-4 h-4 rotate-180" />
                 Back to Services
               </Link>
               
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center border border-white/20 shadow-lg">
+              <div className="mb-6 flex flex-wrap items-center gap-3 sm:gap-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm sm:h-16 sm:w-16">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" strokeWidth={2.5} />
                 </div>
-                <span className="inline-flex items-center px-4 py-2 bg-accent text-accent-foreground rounded-lg text-xs sm:text-sm font-semibold shadow-md">
+                <span className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-md sm:text-sm">
                   {subtitle}
                 </span>
               </div>
@@ -92,37 +93,31 @@ const ServicePageTemplate = ({
               <h1 className="text-white mb-6 leading-tight">{title}</h1>
               <p className="text-base sm:text-lg md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">{description}</p>
               
-              <div className="flex flex-row items-center justify-start gap-4">
-                <Link 
-                  to="/pricing"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  Get a Quote
-                </Link>
-                <Link 
-                  to="/contact"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-                >
-                  Contact Us
-                </Link>
+              <div className="flex flex-wrap items-center justify-start gap-4">
+                <Button asChild variant="heroPrimary" size="lg">
+                  <Link to="/pricing">Get a Quote</Link>
+                </Button>
+                <Button asChild variant="heroSecondary" size="lg">
+                  <Link to="/contact">Contact Us</Link>
+                </Button>
               </div>
             </div>
           </div>
         </section>
 
         {/* Features Grid */}
-        <section className="py-10 sm:py-16 bg-muted">
+        <section className="bg-section-light py-10 sm:py-16">
           <div className="section-container">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 lg:gap-6">
               {features.map((feature, index) => (
-                <div
+                <Card
                   key={feature}
-                  className="flex items-center gap-3 p-3.5 sm:p-4 bg-background rounded-lg border border-border/50 transition-shadow duration-200 hover:shadow-md"
+                  className="flex items-center gap-3 border-border/60 bg-background transition-shadow duration-200 hover:border-primary/15"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
                   <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
-                </div>
+                </Card>
               ))}
             </div>
           </div>
@@ -132,7 +127,7 @@ const ServicePageTemplate = ({
         <section ref={workflowRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
                 Process
               </span>
               <h2 className="text-foreground">How It Works</h2>
@@ -150,11 +145,11 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <div className="flex items-start gap-4 w-full md:hidden">
-                    <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm shrink-0 mt-1">
+                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-md">
                       {step.step}
                     </div>
-                    <Card className="flex-1 border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
-                      <CardContent className="p-4 sm:p-5">
+                    <Card className="flex-1 border-border/60 transition-all duration-300 hover:border-primary/20">
+                      <CardContent className="p-4 sm:p-6">
                         <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
                       </CardContent>
@@ -162,7 +157,7 @@ const ServicePageTemplate = ({
                   </div>
 
                   <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right pr-16' : 'order-2 pl-16'}`}>
-                    <Card className="inline-block text-left border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+                    <Card className="inline-block text-left border-border/60 transition-all duration-300 hover:border-primary/20">
                       <CardContent className="p-6">
                         <h3 className="text-xl font-bold text-foreground mb-2">{step.title}</h3>
                         <p className="text-muted-foreground leading-relaxed">{step.description}</p>
@@ -170,7 +165,7 @@ const ServicePageTemplate = ({
                     </Card>
                   </div>
                   
-                  <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-primary text-primary-foreground rounded-full items-center justify-center font-bold text-lg shadow-lg z-10">
+                  <div className="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-lg md:flex">
                     {step.step}
                   </div>
                 </div>
@@ -180,26 +175,26 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Benefits */}
-        <section ref={benefitsRef} className="section-padding bg-muted">
+        <section ref={benefitsRef} className="section-padding bg-section-light">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
                 Benefits
               </span>
               <h2 className="text-foreground">Why Choose Our {title}</h2>
             </div>
             
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
               {benefits.map((benefit, index) => (
                 <Card
                   key={benefit.title}
-                  className={`group border-border/50 hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-500 ${
-                    benefitsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                  className={`group border-border/60 transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 ${
+                    benefitsInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                   }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <CardContent className="p-5 sm:p-6">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-all duration-200 group-hover:scale-110 shadow-sm">
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-110 group-hover:bg-primary/15 sm:h-14 sm:w-14">
                       <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{benefit.title}</h3>
@@ -218,19 +213,13 @@ const ServicePageTemplate = ({
             <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
-            <div className="flex flex-row items-center justify-center gap-4">
-              <Link 
-                to="/pricing"
-                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
-              >
-                Get a Quote
-              </Link>
-              <Link 
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-              >
-                Contact Sales
-              </Link>
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Button asChild variant="heroPrimary" size="lg">
+                <Link to="/pricing">Get a Quote</Link>
+              </Button>
+              <Button asChild variant="heroSecondary" size="lg">
+                <Link to="/contact">Contact Sales</Link>
+              </Button>
             </div>
           </div>
         </section>

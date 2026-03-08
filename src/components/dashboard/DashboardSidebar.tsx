@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Button } from "@/components/ui/button";
+import Logo from "@/components/layout/Logo";
 import {
   LayoutDashboard,
   Package,
@@ -47,7 +48,7 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-3 left-3 z-50 p-2.5 bg-primary text-primary-foreground rounded-lg shadow-md transition-all duration-200 active:scale-95"
+        className="lg:hidden fixed left-3 top-3 z-50 rounded-md bg-primary p-2.5 text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.18)] transition-all duration-200 active:scale-95"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -56,35 +57,35 @@ const DashboardSidebar = () => {
       {/* Overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-foreground/20 backdrop-blur-sm z-40"
+          className="lg:hidden fixed inset-0 z-40 bg-foreground/20 backdrop-blur-sm"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen min-h-screen w-[272px] bg-primary text-primary-foreground flex flex-col z-50 transition-transform duration-300 ${
+        className={`fixed lg:sticky top-0 left-0 z-50 flex h-screen min-h-screen w-[280px] flex-col border-r border-white/10 bg-primary text-primary-foreground transition-transform duration-300 ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo */}
-        <div className="px-5 py-5 border-b border-primary-foreground/10">
+        <div className="border-b border-primary-foreground/10 px-5 py-6">
           <Link to="/" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-            <div className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center font-bold text-lg">
-              R
+            <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 shadow-[0_10px_24px_rgba(0,0,0,0.12)]">
+              <Logo className="h-7 text-white" />
             </div>
             <div>
-              <span className="font-bold text-base block leading-tight">
+              <span className="block text-base font-bold leading-tight">
                 RAC <span className="text-accent">Logistics</span>
               </span>
-              <span className="text-[11px] text-primary-foreground/50 leading-none">Customer Portal</span>
+              <span className="text-[11px] leading-none text-primary-foreground/60">Customer Portal</span>
             </div>
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          <p className="text-[11px] font-bold text-primary-foreground/60 uppercase tracking-widest px-3 pb-2 pt-1">
+        <nav className="flex-1 space-y-0.5 overflow-y-auto px-4 py-5">
+          <p className="px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-foreground/60">
             Main Menu
           </p>
           {navItems.map((item) => {
@@ -94,10 +95,10 @@ const DashboardSidebar = () => {
                 key={item.href}
                 to={item.href}
                 onClick={() => setIsMobileOpen(false)}
-                className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-[0.9375rem] ${
+                className={`group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 text-[0.9375rem] ${
                   isActive
-                    ? "bg-accent text-accent-foreground font-bold"
-                    : "text-primary-foreground/90 hover:bg-primary-foreground/10 hover:text-primary-foreground font-semibold"
+                    ? "bg-accent text-accent-foreground font-bold shadow-[0_12px_24px_rgba(223,81,1,0.22)]"
+                    : "font-semibold text-primary-foreground/90 hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 }`}
               >
                 <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-accent-foreground" : ""}`} strokeWidth={2.5} />
@@ -110,13 +111,13 @@ const DashboardSidebar = () => {
           {isAdmin && (
             <>
               <div className="my-3 border-t border-primary-foreground/10" />
-              <p className="text-[11px] font-bold text-primary-foreground/60 uppercase tracking-widest px-3 pb-2 pt-1">
+              <p className="px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-foreground/60">
                 Administration
               </p>
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 bg-accent/15 text-accent hover:bg-accent/25 border border-accent/20 text-[0.875rem] font-medium"
+                className="group flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/12 px-4 py-3 text-[0.875rem] font-medium text-accent transition-all duration-200 hover:bg-accent/20"
               >
                 <Shield className="w-[18px] h-[18px] flex-shrink-0" />
                 <span>Admin Dashboard</span>
@@ -127,14 +128,14 @@ const DashboardSidebar = () => {
         </nav>
 
         {/* Footer */}
-        <div className="px-3 py-4 border-t border-primary-foreground/10 space-y-2">
-          <div className="px-3 py-2.5 bg-primary-foreground/5 rounded-lg">
+        <div className="space-y-3 border-t border-primary-foreground/10 px-4 py-4">
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
             <p className="text-[13px] font-semibold text-primary-foreground">Welcome back!</p>
-            <p className="text-[11px] text-primary-foreground/70">Manage your shipments</p>
+            <p className="text-[11px] text-primary-foreground/70">Manage your shipments in one place</p>
           </div>
           <Button
             variant="ghost"
-            className="w-full justify-start gap-3 text-primary-foreground/80 hover:text-primary-foreground hover:bg-destructive/20 rounded-lg py-2.5 h-auto text-[0.9375rem] font-semibold"
+            className="h-auto w-full justify-start gap-3 rounded-xl border border-white/10 bg-white/5 py-3 text-[0.9375rem] font-semibold text-primary-foreground/80 hover:bg-white/10 hover:text-primary-foreground"
             onClick={handleSignOut}
           >
             <LogOut className="w-[18px] h-[18px] flex-shrink-0" />

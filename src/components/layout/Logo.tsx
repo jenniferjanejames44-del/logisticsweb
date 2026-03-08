@@ -18,7 +18,7 @@ const Logo = ({ className = "h-10 sm:h-12" }: { className?: string }) => (
       fill="currentColor"
     />
     {/* Orange dot */}
-    <circle cx="40" cy="54" r="7" fill="#F97316" />
+    <circle cx="40" cy="54" r="7" fill="#DF5101" />
     {/* RAC text */}
     <text
       x="80"

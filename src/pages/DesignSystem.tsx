@@ -55,7 +55,7 @@ const DesignSystem = () => {
             Brand &amp; Design System
           </h1>
           <p className="text-primary-foreground/80 max-w-2xl mx-auto text-lg">
-            The official Deep Blue &amp; Golden Yellow design system for RAC
+            The official Navy &amp; Orange design system for RAC
             Logistics. Every component, color, and typographic choice enforced
             globally.
           </p>
@@ -73,20 +73,20 @@ const DesignSystem = () => {
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
               <ColorSwatch
-                name="Primary (Deep Blue)"
+                name="Primary (Navy)"
                 variable="--primary"
-                hex="#0B1F4A"
+                hex="#061043"
               />
               <ColorSwatch
-                name="Accent (Golden Yellow)"
+                name="Accent (Orange)"
                 variable="--accent"
-                hex="#FFD700"
+                hex="#DF5101"
                 textClass="text-accent-foreground"
               />
               <ColorSwatch
                 name="Background"
                 variable="--background"
-                hex="#F8FAFC"
+                hex="#FFFFFF"
                 textClass="text-foreground"
               />
               <ColorSwatch
@@ -98,7 +98,7 @@ const DesignSystem = () => {
               <ColorSwatch
                 name="Muted"
                 variable="--muted"
-                hex="#F1F5F9"
+                hex="#F7F8FA"
                 textClass="text-muted-foreground"
               />
             </div>
@@ -129,8 +129,8 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Typography</h2>
             <p className="mb-8">
-              Plus Jakarta Sans is used globally with a bold, high‑impact
-              hierarchy.
+              Plus Jakarta Sans is used globally with a clean SaaS hierarchy and
+              strong readability across dashboard and marketing surfaces.
             </p>
 
             <Card>
@@ -183,18 +183,19 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Button System</h2>
             <p className="mb-8">
-              Pill‑shaped buttons with consistent sizing and brand colors.
+              Rounded app-style buttons with a clear orange primary and navy
+              secondary hierarchy.
             </p>
 
             <div className="space-y-10">
               {/* Primary variants */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Primary &amp; Accent Buttons</CardTitle>
+                  <CardTitle>Primary CTA Buttons</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4">
-                  <Button variant="default">Default (Navy)</Button>
-                  <Button variant="accent">Accent (Gold CTA)</Button>
+                  <Button variant="default">Default (Orange)</Button>
+                  <Button variant="accent">Accent CTA</Button>
                   <Button variant="cta">CTA Button</Button>
                   <Button variant="heroPrimary">Hero Primary</Button>
                 </CardContent>
@@ -348,7 +349,7 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Form Elements</h2>
             <p className="mb-8">
-              Inputs use a golden‑yellow focus ring for brand consistency.
+              Inputs use the orange accent focus ring for brand consistency.
             </p>
 
             <Card>
@@ -422,7 +423,7 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Iconography</h2>
             <p className="mb-8">
-              Lucide icons in accent gold for emphasis, primary navy for neutral
+              Lucide icons in accent orange for emphasis, primary navy for neutral
               contexts.
             </p>
 
@@ -456,7 +457,7 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Sidebar Preview</h2>
             <p className="mb-8">
-              Dashboard sidebar uses Deep Blue with golden‑yellow active states.
+              Dashboard sidebar uses navy with orange active states and soft app-like panels.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6">
