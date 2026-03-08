@@ -244,61 +244,79 @@ const AdminShipments = () => {
                   <div key={shipment.id} className="border border-border/40 rounded-2xl p-4 space-y-3 bg-card shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-200">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                          <Package className="w-4 h-4 text-primary" />
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 shadow-sm">
+                          <Package className="w-4 h-4 text-primary" strokeWidth={2.5} />
                         </div>
-                        <span className="font-mono font-semibold text-sm text-foreground truncate">{shipment.tracking_number}</span>
+                        <div className="min-w-0">
+                          <span className="font-mono font-bold text-base text-foreground truncate block">{shipment.tracking_number}</span>
+                          <span className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</span>
+                        </div>
                       </div>
-                      <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
+                      <Badge className={`${getStatusColor(shipment.status)} font-semibold`}>{shipment.status.replace(/_/g, " ")}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Origin</p>
-                        <p className="text-foreground">{shipment.origin_city}, {shipment.origin_country}</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Origin</p>
+                        <p className="text-foreground font-medium">{shipment.origin_city}, {shipment.origin_country}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Destination</p>
-                        <p className="text-foreground">{shipment.destination_city}, {shipment.destination_country}</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Destination</p>
+                        <p className="text-foreground font-medium">{shipment.destination_city}, {shipment.destination_country}</p>
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
-                        <p className="text-foreground">{shipment.weight} kg</p>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" strokeWidth={2.5} />Weight</p>
+                        <p className="text-foreground font-medium">{shipment.weight} kg</p>
                         {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
                           <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
                         )}
                       </div>
                       <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
-                        <p className="text-foreground">
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" strokeWidth={2.5} />Dimensions</p>
+                        <p className="text-foreground font-medium">
                           {shipment.length_cm && shipment.width_cm && shipment.height_cm
                             ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
                             : "—"}
                         </p>
                       </div>
                     </div>
-                    <div className="text-sm">
-                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
-                      <p className="text-foreground font-semibold">{shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}</p>
+                    <div className="text-sm p-3 rounded-xl border border-border/40 bg-muted/25">
+                      <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
+                      <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
+                        {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
+                      </p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-border/50">
-                      <Button variant="dashAccent" className="flex-1 h-11 rounded-[10px] shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25" onClick={() => openPriceDialog(shipment)}>
-                        <DollarSign className="w-3.5 h-3.5 mr-1" />
+                    <div className="flex flex-col sm:flex-row items-stretch gap-2 pt-2 border-t border-border/50">
+                      <Button
+                        variant="dashAccent"
+                        className="flex-1 h-11 rounded-xl shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 font-semibold transition-all duration-200"
+                        onClick={() => openPriceDialog(shipment)}
+                      >
+                        <DollarSign className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
                         {shipment.price !== null ? "Edit Price" : "Set Price"}
                       </Button>
-                      <Button variant="outline" className="flex-1 h-11 rounded-[10px]" onClick={() => openDimensionDialog(shipment)}>
-                        <Ruler className="w-3.5 h-3.5 mr-1" />
+                      <Button
+                        variant="dashOutline"
+                        className="flex-1 h-11 rounded-xl font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-200"
+                        onClick={() => openDimensionDialog(shipment)}
+                      >
+                        <Ruler className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
                         Edit Dims
                       </Button>
                     </div>
                     <div className="flex items-center gap-2">
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                        <SelectTrigger className="flex-1 h-11 rounded-[10px]"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="flex-1 h-11 rounded-xl font-medium border-border/60 hover:border-primary/40 transition-colors"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-11 w-11 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
-                        <Trash2 className="w-4 h-4" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:text-destructive hover:bg-destructive/10 h-11 w-11 flex-shrink-0 rounded-xl transition-all duration-200"
+                        onClick={() => handleDelete(shipment.id)}
+                      >
+                        <Trash2 className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
                     </div>
                   </div>
@@ -311,35 +329,35 @@ const AdminShipments = () => {
                     <CardContent className="p-4 sm:p-5 space-y-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                            <Package className="w-4 h-4 text-primary" />
+                          <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 shadow-sm">
+                            <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                           </div>
                           <div className="min-w-0">
-                            <p className="font-mono font-semibold text-sm text-foreground truncate">{shipment.tracking_number}</p>
+                            <p className="font-mono font-bold text-base text-foreground truncate">{shipment.tracking_number}</p>
                             <p className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</p>
                           </div>
                         </div>
-                        <Badge className={getStatusColor(shipment.status)}>{shipment.status.replace(/_/g, " ")}</Badge>
+                        <Badge className={`${getStatusColor(shipment.status)} font-semibold`}>{shipment.status.replace(/_/g, " ")}</Badge>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Origin</p>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Origin</p>
                           <p className="text-foreground font-medium mt-1">{shipment.origin_city}, {shipment.origin_country}</p>
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" />Destination</p>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Destination</p>
                           <p className="text-foreground font-medium mt-1">{shipment.destination_city}, {shipment.destination_country}</p>
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" />Weight</p>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" strokeWidth={2.5} />Weight</p>
                           <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
                           {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
                             <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
                           )}
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" />Dimensions</p>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" strokeWidth={2.5} />Dimensions</p>
                           <p className="text-foreground font-medium mt-1">
                             {shipment.length_cm && shipment.width_cm && shipment.height_cm
                               ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
@@ -347,28 +365,45 @@ const AdminShipments = () => {
                           </p>
                         </div>
                         <div className="rounded-xl border border-border/40 bg-muted/25 p-3">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" />Price</p>
-                          <p className="text-foreground font-semibold mt-1">{shipment.price !== null ? `₦${Number(shipment.price).toFixed(2)}` : "Not set"}</p>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
+                          <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
+                            {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
+                          </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-1 border-t border-border/40">
-                        <Button variant="dashAccent" size="dashSm" className="h-11 rounded-[10px] px-4 shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30" onClick={() => openPriceDialog(shipment)}>
-                          <DollarSign className="w-3.5 h-3.5 mr-1" />
+                      <div className="flex items-center gap-2 pt-2 border-t border-border/40">
+                        <Button
+                          variant="dashAccent"
+                          size="dashSm"
+                          className="h-11 rounded-xl px-4 shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 font-semibold transition-all duration-200"
+                          onClick={() => openPriceDialog(shipment)}
+                        >
+                          <DollarSign className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
                           {shipment.price !== null ? "Edit Price" : "Set Price"}
                         </Button>
-                        <Button variant="outline" size="dashSm" className="h-11 rounded-[10px] px-4" onClick={() => openDimensionDialog(shipment)}>
-                          <Ruler className="w-3.5 h-3.5 mr-1" />
+                        <Button
+                          variant="dashOutline"
+                          size="dashSm"
+                          className="h-11 rounded-xl px-4 font-semibold hover:bg-primary/5 hover:border-primary/40 transition-all duration-200"
+                          onClick={() => openDimensionDialog(shipment)}
+                        >
+                          <Ruler className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
                           Edit Dims
                         </Button>
                         <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                          <SelectTrigger className="h-11 rounded-[10px] flex-1"><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-11 rounded-xl flex-1 font-medium border-border/60 hover:border-primary/40 transition-colors"><SelectValue /></SelectTrigger>
                           <SelectContent>
                             {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                           </SelectContent>
                         </Select>
-                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive h-11 w-11 flex-shrink-0" onClick={() => handleDelete(shipment.id)}>
-                          <Trash2 className="w-4 h-4" />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10 h-11 w-11 flex-shrink-0 rounded-xl transition-all duration-200"
+                          onClick={() => handleDelete(shipment.id)}
+                        >
+                          <Trash2 className="w-4 h-4" strokeWidth={2.5} />
                         </Button>
                       </div>
                     </CardContent>
