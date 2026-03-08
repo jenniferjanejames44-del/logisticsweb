@@ -206,19 +206,24 @@ const AdminShipments = () => {
         <Card className="border-border/50 shadow-sm shadow-primary/[0.03]">
           <CardHeader className="pb-3 sm:pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <span className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Package className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              <CardTitle className="flex items-center gap-2.5 text-base sm:text-lg font-bold">
+                <span className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-sm">
+                  <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                 </span>
                 All Shipments ({filteredShipments.length})
               </CardTitle>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                <div className="relative flex-1 sm:max-w-[280px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search shipments..." className="pl-10 h-11 rounded-[10px]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                <div className="relative flex-1 sm:max-w-[320px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
+                  <Input
+                    placeholder="Search by tracking number, city..."
+                    className="pl-10 h-11 rounded-xl border-border/60 hover:border-primary/40 focus:border-primary transition-colors"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40 h-11 rounded-[10px]">
+                  <SelectTrigger className="w-full sm:w-48 h-11 rounded-xl border-border/60 hover:border-primary/40 font-medium transition-colors">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -231,7 +236,24 @@ const AdminShipments = () => {
           </CardHeader>
           <CardContent className="p-3 sm:p-6">
             {loading ? (
-              <p className="text-center text-muted-foreground py-8 text-sm">Loading shipments...</p>
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="border border-border/40 rounded-2xl p-4 space-y-3 bg-card animate-pulse">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-muted" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-muted rounded w-1/3" />
+                        <div className="h-3 bg-muted rounded w-1/4" />
+                      </div>
+                      <div className="h-6 w-20 bg-muted rounded-full" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="h-12 bg-muted rounded-xl" />
+                      <div className="h-12 bg-muted rounded-xl" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : filteredShipments.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                 <Package className="w-12 h-12 mb-4 opacity-50" />
