@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
+import { SiFacebook, SiInstagram, SiLinkedin, SiX } from "react-icons/si";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -23,10 +23,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: FaFacebookF },
-    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: FaXTwitter },
-    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: FaLinkedinIn },
-    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: FaInstagram },
+    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: SiFacebook, iconClassName: "text-[#1877F2]" },
+    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: SiX, iconClassName: "text-[#111111]" },
+    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: SiLinkedin, iconClassName: "text-[#0A66C2]" },
+    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: SiInstagram, iconClassName: "text-[#E4405F]" },
   ];
 
   return (
@@ -54,9 +54,9 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/14"
+                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03]"
                     >
-                      <SocialIcon className="h-[18px] w-[18px]" />
+                      <SocialIcon className={`h-[20px] w-[20px] ${social.iconClassName}`} />
                     </a>
                   );
                 })}
