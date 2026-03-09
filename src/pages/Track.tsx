@@ -301,13 +301,13 @@ const Track = () => {
 
               {/* Tracking Card */}
               <div className="relative max-w-2xl mx-auto">
-                <div className="relative bg-card rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl border border-border">
+                <div className="relative rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:p-8 lg:p-10">
                   {/* Header */}
-                  <div className="flex items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-accent rounded-xl flex items-center justify-center">
+                  <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:h-14 sm:w-14">
                       <Search size={22} className="sm:w-6 sm:h-6 text-accent-foreground" />
                     </div>
-                    <h3 className="text-foreground font-bold text-xl sm:text-2xl">
+                    <h3 className="text-foreground sm:text-[1.625rem]">
                       Track Your Shipment
                     </h3>
                   </div>
@@ -320,11 +320,11 @@ const Track = () => {
                         onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                         onKeyDown={(e) => e.key === "Enter" && searchShipment()}
                         placeholder="Enter tracking number"
-                        className="h-12 sm:h-14 text-base px-5"
+                        className="h-12 rounded-lg px-5 text-base sm:h-14"
                       />
                     </div>
                     <button 
-                      className="h-12 sm:h-14 px-8 sm:px-10 text-base font-bold rounded-full shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg disabled:opacity-50 active:scale-[0.98]"
+                      className="flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-8 text-base font-semibold text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-200 hover:brightness-[1.03] disabled:opacity-50 active:scale-[0.98] sm:h-14 sm:px-10"
                       onClick={() => searchShipment()}
                       disabled={isLoading}
                     >
@@ -358,8 +358,8 @@ const Track = () => {
           <div className="section-container">
             {/* Error State */}
             {error && !isLoading && (
-              <Card className="max-w-2xl mx-auto border-destructive/50 bg-destructive/5">
-                <CardContent className="p-6 flex items-center gap-4">
+              <Card className="mx-auto max-w-2xl border-destructive/40 bg-destructive/5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                <CardContent className="flex items-center gap-4 p-6">
                   <AlertCircle className="text-destructive shrink-0" size={24} />
                   <div>
                     <h3 className="font-semibold text-foreground">Tracking Not Found</h3>
@@ -381,11 +381,11 @@ const Track = () => {
             {shipment && !isLoading && (
               <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header Card */}
-                <Card className="border-border/50 overflow-hidden">
+                <Card className="overflow-hidden border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                   <div className="bg-primary p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-accent shadow-[0_8px_24px_rgba(0,0,0,0.16)]">
                           <ServiceIcon className="text-accent-foreground" size={28} />
                         </div>
                         <div>
@@ -417,7 +417,7 @@ const Track = () => {
                   
                   <CardContent className="p-6 sm:p-8">
                     {/* Route */}
-                    <div className="flex items-center justify-between mb-8 p-4 bg-muted/50 rounded-xl">
+                    <div className="mb-8 flex items-center justify-between rounded-lg border border-border bg-muted/30 p-5">
                       <div className="text-center flex-1">
                         <MapPin className="w-5 h-5 text-primary mx-auto mb-1" />
                         <p className="font-semibold text-foreground">{shipment.origin_city}</p>
@@ -437,7 +437,7 @@ const Track = () => {
 
                     {/* Timeline */}
                     <div className="mb-8">
-                      <h3 className="font-heading font-bold text-lg text-foreground mb-6">Tracking Timeline</h3>
+                      <h3 className="mb-6 text-lg text-foreground">Tracking Timeline</h3>
                       <ShipmentTimeline
                         currentStatus={shipment.status}
                         createdAt={shipment.created_at}
@@ -446,23 +446,23 @@ const Track = () => {
                     </div>
 
                     {/* Details Grid */}
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="p-4 bg-muted/50 rounded-xl">
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <Calendar className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Shipped Date</p>
                         <p className="font-semibold text-foreground">{formatDate(shipment.created_at)}</p>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl">
+                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <Clock className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Est. Delivery</p>
                         <p className="font-semibold text-foreground">{formatDate(shipment.estimated_delivery)}</p>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl">
+                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <Package className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Weight</p>
                         <p className="font-semibold text-foreground">{shipment.weight} KG</p>
                       </div>
-                      <div className="p-4 bg-muted/50 rounded-xl">
+                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <ServiceIcon className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Service</p>
                         <p className="font-semibold text-foreground capitalize">{shipment.service_type.replace("_", " ")}</p>
@@ -470,16 +470,16 @@ const Track = () => {
                     </div>
 
                     {shipment.description && (
-                      <div className="mt-6 p-4 bg-muted/50 rounded-xl">
+                      <div className="mt-6 rounded-lg border border-border bg-muted/30 p-5">
                         <p className="text-sm text-muted-foreground mb-1">Package Description</p>
                         <p className="text-foreground">{shipment.description}</p>
                       </div>
                     )}
 
                     {/* Email Notification Signup */}
-                    <div className="mt-8 p-5 sm:p-6 bg-primary/5 rounded-xl border border-primary/20">
+                    <div className="mt-8 rounded-lg border border-primary/20 bg-primary/5 p-5 sm:p-6">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
                           <Bell className="w-5 h-5 text-accent-foreground" />
                         </div>
                         <div>
@@ -489,7 +489,7 @@ const Track = () => {
                       </div>
                       
                       {isSubscribed ? (
-                        <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-xl border border-primary/20">
+                        <div className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/10 p-4">
                           <CheckCircle className="w-5 h-5 text-primary shrink-0" />
                           <div>
                             <p className="font-medium text-foreground">You're subscribed!</p>
@@ -510,14 +510,14 @@ const Track = () => {
                                   setEmailError(null);
                                 }}
                                 onKeyDown={(e) => e.key === "Enter" && handleEmailSubscribe()}
-                                className={`pl-12 h-12 rounded-xl ${emailError ? 'border-destructive focus:ring-destructive/20' : ''}`}
+                                className={`h-12 rounded-lg pl-12 ${emailError ? 'border-destructive focus:ring-destructive/20' : ''}`}
                               />
                             </div>
                             <Button
                               variant="cta"
                               onClick={handleEmailSubscribe}
                               disabled={isSubscribing || !notifyEmail}
-                              className="h-12 px-6 rounded-xl"
+                              className="h-12 rounded-lg px-6"
                             >
                               {isSubscribing ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -545,9 +545,9 @@ const Track = () => {
                 </Card>
 
                 {/* Help Section */}
-                <Card className="border-border/50">
+                <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                   <CardContent className="p-6 text-center">
-                    <h3 className="font-heading font-bold text-lg text-foreground mb-2">Need Help?</h3>
+                    <h3 className="mb-2 text-lg text-foreground">Need Help?</h3>
                     <p className="text-muted-foreground mb-4">
                       Our support team is available 24/7 to assist you with any questions.
                     </p>
@@ -567,7 +567,7 @@ const Track = () => {
             {/* Empty State */}
             {!shipment && !error && !isLoading && (
               <div className="max-w-2xl mx-auto text-center py-12">
-                <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-lg bg-muted">
                   <Package className="w-12 h-12 text-muted-foreground" />
                 </div>
                 <h3 className="font-heading text-2xl font-bold text-foreground mb-3">

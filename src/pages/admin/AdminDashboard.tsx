@@ -108,21 +108,21 @@ const AdminDashboard = () => {
     <AdminLayout title="Admin Dashboard" description="Welcome back! Here's an overview of your logistics operations.">
       <div className="space-y-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 lg:gap-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           {statCards.map((stat) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.title} className="border-border/40 hover:border-primary/25 hover:shadow-lg hover:shadow-primary/[0.05] transition-all duration-200 group relative overflow-hidden">
+              <Card key={stat.title} className="group relative overflow-hidden border-border transition-all duration-200 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                <CardContent className="p-4 sm:p-5">
+                <CardContent className="p-6">
                   <div className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">{stat.title}</p>
+                      <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">{stat.title}</p>
                       <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">
                         {loading ? "..." : stat.value}
                       </p>
                     </div>
-                    <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${stat.bgColor} border border-border/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all duration-200 shadow-sm`}>
+                    <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-border/40 ${stat.bgColor} shadow-sm transition-all duration-200 group-hover:scale-105`}>
                       <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.color}`} strokeWidth={2.5} />
                     </div>
                   </div>
@@ -133,16 +133,16 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <Card className="border-border/40 shadow-sm shadow-primary/[0.03]">
-          <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-4">
             <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/20 bg-primary/10">
                 <Activity className="w-4 h-4 text-primary" />
               </div>
               Recent Activity
             </CardTitle>
           </CardHeader>
-          <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6">
+          <CardContent className="px-6 pb-6">
             {loading ? (
               <p className="text-muted-foreground text-[0.875rem]">Loading...</p>
             ) : stats.recentActivity.length > 0 ? (
@@ -152,10 +152,10 @@ const AdminDashboard = () => {
                   return (
                     <div
                       key={index}
-                      className="flex items-center justify-between py-3.5 border-b border-border/25 last:border-0 gap-3 hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors duration-150"
+                      className="-mx-2 flex items-center justify-between gap-3 rounded-lg border-b border-border/25 px-2 py-4 transition-colors duration-150 last:border-0 hover:bg-muted/30"
                     >
                       <div className="flex items-center gap-3.5 min-w-0">
-                        <div className="w-9 h-9 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0">
+                        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
                           <StatusIcon className="w-4 h-4 text-primary" />
                         </div>
                         <span className="text-foreground text-[0.875rem] font-medium truncate">{activity.description}</span>
@@ -171,8 +171,8 @@ const AdminDashboard = () => {
                 })}
               </div>
             ) : (
-              <div className="text-center py-10">
-                <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <div className="py-10 text-center">
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-muted/60">
                   <Activity className="w-6 h-6 text-muted-foreground/50" />
                 </div>
                 <p className="text-muted-foreground text-[0.875rem]">No recent activity</p>

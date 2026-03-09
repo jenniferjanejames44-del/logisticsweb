@@ -96,22 +96,22 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
-          <Card className="w-full max-w-md border-border shadow-lg">
-            <CardHeader className="text-center pb-2">
-              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
+        <main className="flex-1 flex items-center justify-center bg-section-light px-4 py-32 sm:px-6">
+          <Card className="w-full max-w-md rounded-lg border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardHeader className="p-6 pb-3 text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary font-bold text-xl text-primary-foreground shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
                 R
               </div>
-              <CardTitle className="text-xl font-semibold">Invalid Link</CardTitle>
-              <CardDescription className="text-sm">
+              <CardTitle className="text-foreground">Invalid Link</CardTitle>
+              <CardDescription className="text-sm leading-relaxed">
                 This password reset link is invalid or has expired. Please request a new one.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-6 pb-6">
               <Button
                 variant="default"
                 size="lg"
-                className="w-full"
+                className="w-full rounded-lg"
                 onClick={() => navigate("/auth")}
               >
                 Back to Login
@@ -128,14 +128,14 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
-          <Card className="w-full max-w-md border-border shadow-lg">
-            <CardHeader className="text-center pb-2">
-              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+        <main className="flex-1 flex items-center justify-center bg-section-light px-4 py-32 sm:px-6">
+          <Card className="w-full max-w-md rounded-lg border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardHeader className="p-6 pb-3 text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
                 <CheckCircle2 className="w-7 h-7 text-primary-foreground" />
               </div>
-              <CardTitle className="text-xl font-semibold">Password Reset!</CardTitle>
-              <CardDescription className="text-sm">
+              <CardTitle className="text-foreground">Password Reset!</CardTitle>
+              <CardDescription className="text-sm leading-relaxed">
                 Your password has been updated successfully. Redirecting to login...
               </CardDescription>
             </CardHeader>
@@ -149,18 +149,18 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-center justify-center py-32 px-4 sm:px-6 bg-muted">
-        <Card className="w-full max-w-md border-border shadow-lg">
-          <CardHeader className="text-center pb-2">
-            <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
+      <main className="flex-1 flex items-center justify-center bg-section-light px-4 py-32 sm:px-6">
+        <Card className="w-full max-w-md rounded-lg border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-3 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary font-bold text-xl text-primary-foreground shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
               R
             </div>
-            <CardTitle className="text-xl font-semibold">Reset Password</CardTitle>
-            <CardDescription className="text-sm">
+            <CardTitle className="text-foreground">Reset Password</CardTitle>
+            <CardDescription className="text-sm leading-relaxed">
               Enter your new password below
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-6 pb-6">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium">New Password</Label>
@@ -172,7 +172,7 @@ const ResetPassword = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10"
+                    className="h-11 rounded-lg pl-10 pr-10"
                     required
                     minLength={6}
                   />
@@ -196,7 +196,7 @@ const ResetPassword = () => {
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10 pr-10"
+                    className="h-11 rounded-lg pl-10 pr-10"
                     required
                     minLength={6}
                   />
@@ -214,7 +214,7 @@ const ResetPassword = () => {
                 type="submit"
                 variant="default"
                 size="lg"
-                className="w-full mt-2"
+                className="mt-2 w-full rounded-lg"
                 disabled={isLoading}
               >
                 {isLoading ? (

@@ -171,7 +171,7 @@ const SupportTicketDetail = () => {
       <div className="space-y-6">
         {/* Back Button */}
         <Button
-          variant="ghost"
+          variant="dashOutline"
           onClick={() => navigate("/dashboard/support")}
           className="mb-4"
         >
@@ -180,11 +180,11 @@ const SupportTicketDetail = () => {
         </Button>
 
         {/* Ticket Info Card */}
-        <Card className="border-border/40">
-          <CardHeader>
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <CardTitle className="text-xl mb-2">{ticket.subject}</CardTitle>
+                <CardTitle className="mb-3 text-foreground">{ticket.subject}</CardTitle>
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">{ticket.ticket_number}</Badge>
                   <Badge variant="secondary" className="capitalize">
@@ -207,7 +207,7 @@ const SupportTicketDetail = () => {
                   </Badge>
                 </div>
               </div>
-              <div className="text-sm text-muted-foreground text-right">
+              <div className="text-right text-sm text-muted-foreground">
                 <p>Created: {new Date(ticket.created_at).toLocaleString()}</p>
                 <p>Updated: {new Date(ticket.updated_at).toLocaleString()}</p>
               </div>
@@ -216,11 +216,11 @@ const SupportTicketDetail = () => {
         </Card>
 
         {/* Messages Thread */}
-        <Card className="border-border/40">
-          <CardHeader>
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-4">
             <CardTitle className="text-lg">Conversation</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-6 pb-6">
             <ScrollArea className="h-[500px] pr-4">
               <div className="space-y-4">
                 {messages.map((msg) => (
@@ -229,7 +229,7 @@ const SupportTicketDetail = () => {
                     className={`flex gap-3 ${msg.is_admin ? "flex-row" : "flex-row-reverse"}`}
                   >
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${
                         msg.is_admin
                           ? "bg-primary/10 text-primary"
                           : "bg-accent/10 text-accent"
@@ -243,7 +243,7 @@ const SupportTicketDetail = () => {
                     </div>
                     <div className={`flex-1 ${msg.is_admin ? "text-left" : "text-right"}`}>
                       <div
-                        className={`inline-block max-w-[80%] p-4 rounded-2xl ${
+                        className={`inline-block max-w-[80%] rounded-lg p-4 ${
                           msg.is_admin
                             ? "bg-muted text-foreground"
                             : "bg-primary text-primary-foreground"
@@ -262,19 +262,19 @@ const SupportTicketDetail = () => {
 
             {/* Attachments */}
             {attachments.length > 0 && (
-              <div className="mt-6 pt-6 border-t">
-                <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+              <div className="mt-6 border-t pt-6">
+                <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold">
                   <Paperclip className="w-4 h-4" />
                   Attachments ({attachments.length})
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {attachments.map((att) => (
                     <a
                       key={att.id}
                       href={att.file_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 p-3 rounded-lg border border-border/40 hover:border-primary/40 hover:bg-muted/50 transition-colors"
+                      className="flex items-center gap-3 rounded-lg border border-border bg-background p-4 transition-colors hover:border-primary/25 hover:bg-muted/30"
                     >
                       <Download className="w-4 h-4 text-muted-foreground" />
                       <div className="flex-1 min-w-0">
@@ -293,19 +293,18 @@ const SupportTicketDetail = () => {
 
             {/* Reply Box */}
             {ticket.status !== "closed" && (
-              <div className="mt-6 pt-6 border-t space-y-3">
+              <div className="mt-6 space-y-3 border-t pt-6">
                 <Textarea
                   placeholder="Type your reply..."
                   value={replyMessage}
                   onChange={(e) => setReplyMessage(e.target.value)}
-                  className="min-h-[100px] rounded-xl"
+                  className="min-h-[100px] rounded-lg"
                 />
                 <div className="flex justify-end">
                   <Button
                     onClick={handleSendReply}
                     disabled={isSending || !replyMessage.trim()}
                     variant="dashAccent"
-                    className="shadow-md shadow-accent/20"
                   >
                     {isSending ? (
                       <>
@@ -324,8 +323,8 @@ const SupportTicketDetail = () => {
             )}
 
             {ticket.status === "closed" && (
-              <div className="mt-6 pt-6 border-t">
-                <div className="p-4 rounded-xl bg-muted/50 border border-border/40 text-center">
+              <div className="mt-6 border-t pt-6">
+                <div className="rounded-lg border border-border bg-muted/50 p-5 text-center">
                   <p className="text-sm text-muted-foreground">
                     This ticket has been closed. Please create a new ticket if you need further assistance.
                   </p>

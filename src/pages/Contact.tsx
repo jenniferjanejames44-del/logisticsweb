@@ -143,12 +143,12 @@ const Contact = () => {
         {/* Contact Form & Info */}
         <section className="section-padding bg-background">
           <div className="section-container">
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <Card className="border-border shadow-lg">
+                <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                   <CardContent className="p-6 md:p-8">
-                    <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-6">
+                    <h2 className="mb-6 text-foreground">
                       Send Us a Message
                     </h2>
                     
@@ -212,16 +212,16 @@ const Contact = () => {
               {/* Contact Info */}
               <div className="space-y-4">
                 {contactInfo.map((info) => (
-                  <Card key={info.title} className="border-border hover:shadow-md transition-shadow">
-                    <CardContent className="p-5">
+                  <Card key={info.title} className="border-border transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                    <CardContent className="p-6">
                       <div className="flex items-start gap-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 shadow-sm">
                           <info.icon className="w-5 h-5 text-primary" strokeWidth={2.5} />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground mb-1 text-sm">{info.title}</h3>
+                          <h3 className="mb-2 text-base font-semibold text-foreground">{info.title}</h3>
                           {info.details.map((detail, i) => (
-                            <p key={i} className="text-muted-foreground text-sm">{detail}</p>
+                            <p key={i} className="text-sm text-muted-foreground">{detail}</p>
                           ))}
                         </div>
                       </div>
@@ -231,14 +231,14 @@ const Contact = () => {
 
                 {/* Social Links */}
                 <Card className="border-border">
-                  <CardContent className="p-5">
-                    <h3 className="font-semibold text-foreground mb-4 text-sm">Follow Us</h3>
+                  <CardContent className="p-6">
+                    <h3 className="mb-4 text-base font-semibold text-foreground">Follow Us</h3>
                     <div className="flex gap-3">
                       {socialLinks.map((social) => (
                         <a
                           key={social.label}
                           href={social.href}
-                          className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110 shadow-sm"
+                          className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-200 hover:scale-105 hover:bg-primary hover:text-primary-foreground"
                           aria-label={social.label}
                         >
                           <social.icon className="w-4 h-4" strokeWidth={2.5} />
@@ -255,14 +255,14 @@ const Contact = () => {
         {/* Map Section */}
         <section className="section-padding bg-muted">
           <div className="section-container">
-            <div className="text-center mb-10">
+            <div className="mb-10 text-center">
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-4">
                 Location
               </span>
               <h2 className="text-foreground">Visit Our Office</h2>
             </div>
             
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-[400px] bg-card border border-border">
+            <div className="relative h-[400px] overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.8!2d3.3282!3d6.5282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMzEnNDEuNSJOIDPCsDE5JzQxLjUiRQ!5e0!3m2!1sen!2sng!4v1700000000000!5m2!1sen!2sng&q=29b+Osolo+Way+Ajao+Estate+Isolo+Lagos"
                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="RAC Logistics Office Location" className="absolute inset-0"
@@ -289,7 +289,7 @@ const Contact = () => {
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-row items-center justify-center gap-4">
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link 
                 to="/blog"
                 className="btn btn-primary btn-lg"

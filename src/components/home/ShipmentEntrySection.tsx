@@ -79,7 +79,7 @@ const ShipmentEntrySection = () => {
       </div>
 
       <div className="section-container relative z-10">
-        <div className="text-center mb-10">
+        <div className="mb-10 text-center">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
             <Package className="w-4 h-4" />
             Quick Shipping
@@ -87,14 +87,14 @@ const ShipmentEntrySection = () => {
           <h2 className="text-foreground mb-4">
             Start Your <span className="text-primary">Shipment</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">
             Quickly create a shipment and calculate your delivery cost.
           </p>
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <div className="bg-card rounded-2xl border border-border/50 shadow-xl p-6 sm:p-8 lg:p-10">
-            <div className="grid sm:grid-cols-3 gap-5">
+          <div className="rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:p-8">
+            <div className="grid gap-5 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5" /> Origin Country
@@ -145,10 +145,10 @@ const ShipmentEntrySection = () => {
 
             {/* Instant price preview */}
             {estimatedCost !== null && (
-              <div className="mt-5 p-4 rounded-xl border border-primary/30 bg-primary/5 flex items-center justify-between">
+              <div className="mt-5 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 p-5">
                 <div className="flex items-center gap-2">
                   <DollarSign className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-semibold text-foreground">Estimated Cost</span>
+                  <span className="text-base font-semibold text-foreground">Estimated Cost</span>
                 </div>
                 <span className="text-2xl font-bold text-primary">
                   ${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

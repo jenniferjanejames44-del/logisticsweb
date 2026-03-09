@@ -177,24 +177,24 @@ const Pricing = () => {
 
                   <div className="space-y-3">
                     <Label className="font-medium text-sm">Service Type</Label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       {services.map((service) => (
                         <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
-                          className={`p-4 rounded-lg border text-left transition-all duration-200 hover:border-primary/50 ${
+                          className={`rounded-lg border bg-white p-6 text-left shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-200 hover:border-primary/40 ${
                             selectedService === service.id
                               ? 'border-primary bg-primary/5'
-                              : 'border-border bg-background hover:bg-muted/50'
+                              : 'border-border hover:bg-muted/30'
                           }`}
                         >
                           <service.icon className={`w-5 h-5 mb-2 transition-colors ${
                             selectedService === service.id ? 'text-primary' : 'text-muted-foreground'
                           }`} strokeWidth={2.5} />
-                          <div className={`font-semibold text-sm transition-colors ${
+                          <div className={`text-base font-semibold transition-colors ${
                             selectedService === service.id ? 'text-foreground' : 'text-foreground/80'
                           }`}>{service.name}</div>
-                          <div className="text-xs text-muted-foreground">{service.description}</div>
+                          <div className="text-sm text-muted-foreground">{service.description}</div>
                         </button>
                       ))}
                     </div>
@@ -261,18 +261,18 @@ const Pricing = () => {
                 </Card>
 
                 {/* Features */}
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div className="flex flex-col items-center rounded-lg border border-border bg-white p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                     <Zap className="w-5 h-5 text-accent mb-1" />
-                    <span className="text-xs font-medium text-foreground">Instant Quote</span>
+                    <span className="text-sm font-medium text-foreground">Instant Quote</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
+                  <div className="flex flex-col items-center rounded-lg border border-border bg-white p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                     <Shield className="w-5 h-5 text-accent mb-1" />
-                    <span className="text-xs font-medium text-foreground">Secure Payment</span>
+                    <span className="text-sm font-medium text-foreground">Secure Payment</span>
                   </div>
-                  <div className="flex flex-col items-center text-center p-3 bg-muted rounded-lg">
+                  <div className="flex flex-col items-center rounded-lg border border-border bg-white p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                     <Clock className="w-5 h-5 text-accent mb-1" />
-                    <span className="text-xs font-medium text-foreground">24/7 Support</span>
+                    <span className="text-sm font-medium text-foreground">24/7 Support</span>
                   </div>
                 </div>
               </div>
@@ -303,7 +303,7 @@ const Pricing = () => {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border hover:shadow-md transition-shadow"
+                  className="flex items-center gap-3 rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                 >
                   <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
                   <span className="font-medium text-foreground text-sm">{feature}</span>

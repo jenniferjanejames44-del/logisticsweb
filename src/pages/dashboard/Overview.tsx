@@ -115,7 +115,7 @@ const Overview = () => {
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 mb-7 lg:mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
         {[
           { label: "Total Shipments", value: stats.total, icon: Package, iconBg: "bg-primary/8", iconColor: "text-primary" },
           { label: "In Transit", value: stats.inTransit, icon: Truck, iconBg: "bg-primary/8", iconColor: "text-primary" },
@@ -124,16 +124,16 @@ const Overview = () => {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
-              <CardContent className="p-4 sm:p-5">
+            <Card key={stat.label} className="group border-border hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-all duration-200">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">{stat.label}</p>
+                    <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">{stat.label}</p>
                     <p className="text-[1.375rem] sm:text-[1.625rem] font-bold text-foreground tracking-tight truncate">
                       {stat.value}
                     </p>
                   </div>
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 ${stat.iconBg} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-all duration-200 shadow-sm`}>
+                  <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg ${stat.iconBg} shadow-sm transition-all duration-200 group-hover:scale-105`}>
                     <Icon className={`w-5 h-5 sm:w-[22px] sm:h-[22px] ${stat.iconColor}`} strokeWidth={2.5} />
                   </div>
                 </div>
@@ -144,11 +144,11 @@ const Overview = () => {
       </div>
 
       {/* Wallet Feature Card */}
-      <Card className="mb-7 lg:mb-8 border-primary/35 bg-gradient-to-br from-primary/[0.2] via-primary/[0.09] to-accent/[0.1] shadow-xl shadow-primary/[0.14] relative overflow-hidden">
+      <Card className="relative mb-8 overflow-hidden border-primary/25 bg-gradient-to-br from-primary/[0.12] via-background to-accent/[0.08]">
         <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.1] rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/[0.1] rounded-full translate-y-1/2 -translate-x-1/2" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-        <CardContent className="p-5 sm:p-7 relative z-10">
+        <CardContent className="relative z-10 p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div className="flex items-center gap-5">
               <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/30 border border-primary/30">
@@ -175,7 +175,7 @@ const Overview = () => {
       </Card>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-7 lg:mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
         {[
           { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping", iconBg: "bg-gradient-to-br from-accent to-accent/80", iconColor: "text-accent-foreground" },
           { label: "Get Quote", desc: "Calculate shipping cost", icon: ShoppingBag, href: "/pricing", iconBg: "bg-gradient-to-br from-primary to-primary/80", iconColor: "text-primary-foreground" },
@@ -183,15 +183,15 @@ const Overview = () => {
         ].map((action) => {
           const Icon = action.icon;
           return (
-            <Card key={action.label} className="border-border/40 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.04] transition-all duration-200 cursor-pointer group">
-              <CardContent className="p-5 sm:p-5">
+            <Card key={action.label} className="group cursor-pointer border-border transition-all duration-200 hover:border-primary/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+              <CardContent className="p-6">
                 <Link to={action.href} className="flex items-center gap-4">
-                  <div className={`w-12 h-12 ${action.iconBg} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200 flex-shrink-0 shadow-md`}>
+                  <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg ${action.iconBg} shadow-md transition-transform duration-200 group-hover:scale-105`}>
                     <Icon className={`w-5 h-5 ${action.iconColor}`} strokeWidth={2.5} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-semibold text-foreground text-[0.9375rem]">{action.label}</h3>
-                    <p className="text-[13px] text-muted-foreground">{action.desc}</p>
+                      <h3 className="text-base font-semibold text-foreground">{action.label}</h3>
+                      <p className="text-sm text-muted-foreground">{action.desc}</p>
                   </div>
                 </Link>
               </CardContent>

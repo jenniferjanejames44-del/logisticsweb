@@ -106,13 +106,13 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Features Grid */}
-        <section className="bg-section-light py-10 sm:py-16">
+        <section className="section-padding bg-section-light">
           <div className="section-container">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4 lg:gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 lg:gap-6">
               {features.map((feature, index) => (
                 <Card
                   key={feature}
-                  className="flex items-center gap-3 border-border/60 bg-background transition-shadow duration-200 hover:border-primary/15"
+                  className="flex items-center gap-3 border-border bg-background p-6 transition-shadow duration-200 hover:border-primary/15"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
@@ -148,19 +148,19 @@ const ServicePageTemplate = ({
                     <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-md">
                       {step.step}
                     </div>
-                    <Card className="flex-1 border-border/60 transition-all duration-300 hover:border-primary/20">
-                      <CardContent className="p-4 sm:p-6">
+                    <Card className="flex-1 border-border transition-all duration-300 hover:border-primary/20">
+                      <CardContent className="p-6">
                         <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+                        <p className="text-muted-foreground text-base leading-relaxed">{step.description}</p>
                       </CardContent>
                     </Card>
                   </div>
 
                   <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right pr-16' : 'order-2 pl-16'}`}>
-                    <Card className="inline-block text-left border-border/60 transition-all duration-300 hover:border-primary/20">
+                    <Card className="inline-block text-left border-border transition-all duration-300 hover:border-primary/20">
                       <CardContent className="p-6">
-                        <h3 className="text-xl font-bold text-foreground mb-2">{step.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                        <h3 className="mb-2 text-foreground">{step.title}</h3>
+                        <p className="text-base leading-relaxed text-muted-foreground">{step.description}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -188,17 +188,17 @@ const ServicePageTemplate = ({
               {benefits.map((benefit, index) => (
                 <Card
                   key={benefit.title}
-                  className={`group border-border/60 transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 ${
+                  className={`group border-border transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 ${
                     benefitsInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
                   }`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardContent className="p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-110 group-hover:bg-primary/15 sm:h-14 sm:w-14">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-primary/15 sm:h-14 sm:w-14">
                       <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">{benefit.title}</h3>
-                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">{benefit.description}</p>
+                    <h3 className="mb-2 text-foreground">{benefit.title}</h3>
+                    <p className="text-base leading-relaxed text-muted-foreground">{benefit.description}</p>
                   </CardContent>
                 </Card>
               ))}

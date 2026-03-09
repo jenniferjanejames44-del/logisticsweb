@@ -101,43 +101,43 @@ const Payments = () => {
   return (
     <DashboardLayout title="Payments" description="View your payment history and invoices">
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-6 sm:mb-8">
-        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
-          <CardContent className="p-4 sm:p-5">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
+        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Total Paid</p>
+                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Total Paid</p>
                 <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{totalPaid.toLocaleString()}</p>
               </div>
-              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-green-500/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-green-500/8 transition-transform duration-200 group-hover:scale-105">
                 <CheckCircle className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
-          <CardContent className="p-4 sm:p-5">
+        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Pending</p>
+                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Pending</p>
                 <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{pendingAmount.toLocaleString()}</p>
               </div>
-              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-warning/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-warning/8 transition-transform duration-200 group-hover:scale-105">
                 <Clock className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-warning" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200 group">
-          <CardContent className="p-4 sm:p-5">
+        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-[12px] sm:text-[13px] text-muted-foreground font-medium mb-1.5 tracking-wide">Total Transactions</p>
+                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Total Transactions</p>
                 <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{payments.length}</p>
               </div>
-              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8 transition-transform duration-200 group-hover:scale-105">
                 <CreditCard className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-primary" />
               </div>
             </div>
@@ -146,18 +146,19 @@ const Payments = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
+      <Card className="mb-6 border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search by transaction ID or tracking..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-12 text-sm rounded-[10px]"
+            className="h-12 rounded-lg pl-9 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[160px] h-12 rounded-[10px]">
+          <SelectTrigger className="h-12 w-full rounded-lg sm:w-[180px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -168,7 +169,8 @@ const Payments = () => {
             <SelectItem value="refunded">Refunded</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+        </CardContent>
+      </Card>
 
       {/* Payments List */}
       {loading ? (
@@ -176,13 +178,13 @@ const Payments = () => {
           <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
         </div>
       ) : filteredPayments.length > 0 ? (
-        <div className="grid gap-3 sm:gap-4">
+        <div className="grid gap-4">
           {filteredPayments.map((payment) => (
-            <Card key={payment.id} className="border-border/40 hover:border-border/70 hover:shadow-md transition-all duration-200">
-              <CardContent className="p-4 sm:p-5">
+            <Card key={payment.id} className="border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+              <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-start gap-3.5">
-                    <div className="w-11 h-11 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
                       <CreditCard className="w-5 h-5 text-primary" />
                     </div>
                     <div>
@@ -220,7 +222,7 @@ const Payments = () => {
           ))}
         </div>
       ) : (
-        <Card className="border-border/50">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <CreditCard className="w-16 h-16 text-muted-foreground mb-4" />
             <h3 className="font-heading text-xl font-semibold text-foreground mb-2">No Payments Found</h3>

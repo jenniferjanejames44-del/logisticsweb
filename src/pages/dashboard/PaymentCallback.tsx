@@ -59,36 +59,36 @@ const PaymentCallback = () => {
 
   return (
     <DashboardLayout title="Payment Status" description="Payment verification result">
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <Card className="border-border/50 max-w-md w-full">
-          <CardContent className="p-8 text-center space-y-6">
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Card className="w-full max-w-xl border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardContent className="space-y-6 p-8 text-center">
             {status === "verifying" && (
               <>
-                <Loader2 className="w-16 h-16 text-primary mx-auto animate-spin" />
-                <h2 className="text-xl font-semibold text-foreground">Verifying Payment</h2>
+                <Loader2 className="mx-auto h-16 w-16 animate-spin text-primary" />
+                <h2 className="text-foreground">Verifying Payment</h2>
                 <p className="text-muted-foreground">{message}</p>
               </>
             )}
             {status === "success" && (
               <>
                 {isWalletTopup ? (
-                  <Wallet className="w-16 h-16 text-green-500 mx-auto" />
+                  <Wallet className="mx-auto h-16 w-16 text-green-500" />
                 ) : (
-                  <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+                  <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
                 )}
-                <h2 className="text-xl font-semibold text-foreground">
+                <h2 className="text-foreground">
                   {isWalletTopup ? "Wallet Funded!" : "Payment Successful!"}
                 </h2>
                 <p className="text-muted-foreground">{message}</p>
                 {isWalletTopup && !balanceLoading && (
-                  <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20">
-                    <p className="text-sm text-muted-foreground mb-1">Updated Balance</p>
+                  <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-5">
+                    <p className="mb-2 text-sm text-muted-foreground">Updated Balance</p>
                     <p className="text-2xl font-bold text-green-600">
                       ₦{balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
                     </p>
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <div className="flex flex-col justify-center gap-3 sm:flex-row">
                   {isWalletTopup ? (
                     <>
                       <Button variant="cta" onClick={() => navigate("/dashboard/wallet")}>
@@ -113,10 +113,10 @@ const PaymentCallback = () => {
             )}
             {status === "failed" && (
               <>
-                <XCircle className="w-16 h-16 text-destructive mx-auto" />
-                <h2 className="text-xl font-semibold text-foreground">Payment Failed</h2>
+                <XCircle className="mx-auto h-16 w-16 text-destructive" />
+                <h2 className="text-foreground">Payment Failed</h2>
                 <p className="text-muted-foreground">{message}</p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <div className="flex flex-col justify-center gap-3 sm:flex-row">
                   <Button onClick={() => navigate(isWalletTopup ? "/dashboard/wallet" : "/dashboard/shipments")}>
                     {isWalletTopup ? "Back to Wallet" : "Back to Shipments"}
                   </Button>

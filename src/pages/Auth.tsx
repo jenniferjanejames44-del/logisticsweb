@@ -157,20 +157,20 @@ const AuthForm = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-start justify-center pt-24 sm:pt-32 pb-16 px-4 bg-muted">
-        <Card className="w-full max-w-md border-border shadow-lg">
-          <CardHeader className="text-center pb-2">
-            <div className="w-14 h-14 bg-primary rounded-lg flex items-center justify-center font-bold text-primary-foreground text-xl mx-auto mb-4">
+      <main className="flex-1 flex items-start justify-center bg-section-light px-4 pb-16 pt-24 sm:px-6 sm:pt-32">
+        <Card className="w-full max-w-md rounded-lg border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-3 text-center">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary font-bold text-xl text-primary-foreground shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
               R
             </div>
-            <CardTitle className="text-xl font-semibold">
+            <CardTitle className="text-foreground">
               {isForgotPassword 
                 ? "Reset Password" 
                 : isLogin 
                   ? "Welcome Back" 
                   : "Create Account"}
             </CardTitle>
-            <CardDescription className="text-sm">
+            <CardDescription className="mx-auto max-w-sm text-sm leading-relaxed">
               {isForgotPassword
                 ? "Enter your email to receive a reset link"
                 : isLogin
@@ -178,17 +178,17 @@ const AuthForm = () => {
                   : "Join RAC Logistics today"}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-6 pb-6">
             {/* Forgot Password Form */}
             {isForgotPassword ? (
               <>
                 {resetEmailSent ? (
-                  <div className="text-center py-4">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="py-4 text-center">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10">
                       <CheckCircle2 className="w-7 h-7 text-primary" />
                     </div>
-                    <h3 className="font-semibold text-base mb-2">Check Your Email</h3>
-                    <p className="text-muted-foreground text-sm mb-6">
+                    <h3 className="mb-2 text-base font-semibold text-foreground">Check Your Email</h3>
+                    <p className="mb-6 text-sm text-muted-foreground">
                       We've sent a password reset link to <strong>{email}</strong>. 
                       Please check your inbox and spam folder.
                     </p>
@@ -216,7 +216,7 @@ const AuthForm = () => {
                           placeholder="you@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="pl-10"
+                          className="h-11 rounded-lg pl-10"
                           required
                         />
                       </div>
@@ -258,7 +258,7 @@ const AuthForm = () => {
               <>
                 {/* Email Verification Message */}
                 {showVerificationMessage && (
-                  <div className="mb-5 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                  <div className="mb-5 rounded-lg border border-primary/20 bg-primary/5 p-5">
                     <div className="flex items-start gap-3">
                       {isLogin ? (
                         <AlertCircle className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
@@ -281,7 +281,7 @@ const AuthForm = () => {
                           size="sm"
                           onClick={handleResendVerification}
                           disabled={isResending}
-                          className="text-xs"
+                          className="text-sm"
                         >
                           {isResending ? (
                             <div className="w-3 h-3 border-2 border-current/30 border-t-current rounded-full animate-spin mr-2" />
@@ -307,7 +307,7 @@ const AuthForm = () => {
                           placeholder="John Doe"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="pl-10"
+                          className="h-11 rounded-lg pl-10"
                           required={!isLogin}
                         />
                       </div>
@@ -324,7 +324,7 @@ const AuthForm = () => {
                         placeholder="you@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="pl-10"
+                        className="h-11 rounded-lg pl-10"
                         required
                       />
                     </div>
@@ -351,7 +351,7 @@ const AuthForm = () => {
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="pl-10 pr-10"
+                        className="h-11 rounded-lg pl-10 pr-10"
                         required
                         minLength={6}
                       />

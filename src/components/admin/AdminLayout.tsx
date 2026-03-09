@@ -48,20 +48,18 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
     <div className="min-h-screen bg-muted/30 flex">
       <AdminSidebar />
       <main className="flex-1 ml-0 md:ml-72 overflow-auto">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pt-16 sm:pt-18 md:pt-8">
+        <div className="section-container py-8 pt-16 md:pt-8">
           {title && (
-            <div className="mb-8 sm:mb-10">
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3 tracking-wide uppercase font-medium">
+            <div className="mb-8 rounded-lg border border-border bg-background p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:mb-10">
+              <div className="mb-3 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 <Shield className="w-3.5 h-3.5" />
                 <span>Admin Panel</span>
                 <span className="text-border">/</span>
-                <span className="text-foreground">{title}</span>
+                <span className="text-primary">{title}</span>
               </div>
-              <h1 className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-bold text-foreground tracking-tight leading-tight">
-                {title}
-              </h1>
+              <h1>{title}</h1>
               {description && (
-                <p className="text-muted-foreground mt-1.5 text-[0.9375rem] leading-relaxed">{description}</p>
+                <p className="mt-2 text-base leading-relaxed text-muted-foreground">{description}</p>
               )}
             </div>
           )}

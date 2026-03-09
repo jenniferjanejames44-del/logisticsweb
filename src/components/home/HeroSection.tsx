@@ -29,7 +29,7 @@ const HeroSection = () => {
         <source src={heroVideo} type="video/mp4" />
       </video>
 
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 relative z-10 pt-32 sm:pt-36 pb-20 md:py-40">
+      <div className="section-container relative z-10 pt-32 pb-20 sm:pt-36 md:py-40">
         <div className="max-w-[800px] mx-auto text-center">
           {/* Badge */}
           <div className={`mb-6 transition-all duration-500 ${

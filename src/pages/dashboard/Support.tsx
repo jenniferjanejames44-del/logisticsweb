@@ -189,27 +189,27 @@ const Support = () => {
     <DashboardLayout title="Support Center" description="Get help with your shipments and account">
       <div className="space-y-6">
         {/* Header with Create Button */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">My Support Tickets</h2>
-            <p className="text-sm text-muted-foreground mt-1">
+            <h2 className="text-foreground">My Support Tickets</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
               View and manage your support requests
             </p>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="dashAccent" size="dash" className="shadow-md shadow-accent/20">
+              <Button variant="dashAccent" size="dash">
                 <Plus className="w-4 h-4" strokeWidth={2.5} />
                 New Ticket
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto rounded-lg border border-border bg-background p-0">
               <DialogHeader>
-                <DialogTitle>Create Support Ticket</DialogTitle>
+                  <DialogTitle className="px-6 pt-6 text-foreground">Create Support Ticket</DialogTitle>
               </DialogHeader>
               
-              <div className="space-y-4 py-4">
+              <div className="space-y-4 px-6 pb-6 pt-4">
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject *</Label>
                   <Input
@@ -217,14 +217,14 @@ const Support = () => {
                     placeholder="Brief description of your issue"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="h-11 rounded-xl"
+                    className="h-11 rounded-lg"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="category">Issue Category *</Label>
                   <Select value={category} onValueChange={setCategory}>
-                    <SelectTrigger id="category" className="h-11 rounded-xl">
+                    <SelectTrigger id="category" className="h-11 rounded-lg">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -240,7 +240,7 @@ const Support = () => {
                   <div className="space-y-2">
                     <Label htmlFor="shipment">Related Shipment (Optional)</Label>
                     <Select value={shipmentId} onValueChange={setShipmentId}>
-                      <SelectTrigger id="shipment" className="h-11 rounded-xl">
+                      <SelectTrigger id="shipment" className="h-11 rounded-lg">
                         <SelectValue placeholder="Select shipment" />
                       </SelectTrigger>
                       <SelectContent>
@@ -261,7 +261,7 @@ const Support = () => {
                     placeholder="Describe your issue in detail..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="min-h-[120px] rounded-xl"
+                    className="min-h-[120px] rounded-lg"
                   />
                 </div>
 
@@ -273,7 +273,7 @@ const Support = () => {
                       type="file"
                       accept="image/*,.pdf,.doc,.docx"
                       onChange={(e) => setAttachment(e.target.files?.[0] || null)}
-                      className="h-11 rounded-xl"
+                      className="h-11 rounded-lg"
                     />
                     {attachment && (
                       <Button
@@ -296,7 +296,7 @@ const Support = () => {
                 <Button
                   onClick={handleCreateTicket}
                   disabled={isCreating || !subject || !category || !message}
-                  className="w-full h-11 rounded-xl"
+                  className="h-11 w-full rounded-lg"
                   variant="dashAccent"
                 >
                   {isCreating ? (
@@ -319,9 +319,9 @@ const Support = () => {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : tickets.length === 0 ? (
-          <Card className="border-border/40">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="text-center py-12">
-              <div className="w-16 h-16 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-muted/60">
                 <MessageSquare className="w-8 h-8 text-muted-foreground/50" strokeWidth={2} />
               </div>
               <h3 className="font-bold text-xl text-foreground mb-2">No Support Tickets</h3>
@@ -339,10 +339,10 @@ const Support = () => {
             {tickets.map((ticket) => (
               <Card
                 key={ticket.id}
-                className="border-border/40 hover:border-primary/25 hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="cursor-pointer border-border transition-all duration-200 hover:border-primary/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                 onClick={() => window.location.href = `/dashboard/support/${ticket.id}`}
               >
-                <CardHeader className="pb-3">
+                <CardHeader className="p-6 pb-3">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <CardTitle className="text-base sm:text-lg mb-2">{ticket.subject}</CardTitle>
@@ -370,8 +370,8 @@ const Support = () => {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <CardContent className="px-6 pb-6">
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>Created {new Date(ticket.created_at).toLocaleDateString()}</span>
                     <span>Updated {new Date(ticket.updated_at).toLocaleDateString()}</span>
                   </div>

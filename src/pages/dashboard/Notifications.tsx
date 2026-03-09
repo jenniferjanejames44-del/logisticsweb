@@ -191,10 +191,10 @@ const Notifications = () => {
     >
       {/* Actions Bar */}
       {notifications.length > 0 && (
-        <div className="flex justify-end mb-4">
+        <div className="mb-6 flex justify-end">
           <Button 
             variant="outline" 
-            className="h-11 sm:h-12 px-6"
+            className="h-11 rounded-lg px-6"
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
           >
@@ -212,13 +212,13 @@ const Notifications = () => {
           return (
             <Card 
               key={notification.id} 
-              className={`border-border/50 card-premium hover:shadow-card-hover transition-all duration-300 ${
+              className={`border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
                 !notification.is_read ? 'border-l-4 border-l-accent bg-accent/5' : ''
               }`}
             >
-              <CardContent className="p-4 sm:p-6">
+              <CardContent className="p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${
                     !notification.is_read ? 'bg-accent/10' : 'bg-muted'
                   }`}>
                     <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor}`} />
@@ -252,7 +252,7 @@ const Notifications = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-10 w-10 sm:h-11 sm:w-11"
+                              className="h-10 w-10 rounded-lg"
               onClick={() => markAsRead(notification.id)}
             >
               <CheckCircle size={16} className="text-muted-foreground hover:text-accent" />
@@ -261,7 +261,7 @@ const Notifications = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-10 w-10 sm:h-11 sm:w-11"
+                            className="h-10 w-10 rounded-lg"
                             onClick={() => deleteNotification(notification.id)}
                           >
                             <Trash2 size={16} className="text-muted-foreground hover:text-destructive" />
@@ -277,10 +277,10 @@ const Notifications = () => {
         })}
 
         {notifications.length === 0 && (
-          <Card className="border-border/50 card-premium">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="flex flex-col items-center justify-center py-10 sm:py-12">
               <Bell className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mb-3 sm:mb-4" />
-              <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-2">No Notifications</h3>
+              <h3 className="mb-2 text-foreground">No Notifications</h3>
               <p className="text-muted-foreground text-sm sm:text-base text-center">
                 You're all caught up! We'll notify you when there are updates to your shipments.
               </p>

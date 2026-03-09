@@ -131,36 +131,36 @@ const AdminSupport = () => {
     <AdminLayout title="Support Tickets" description="Manage customer support requests">
       <div className="space-y-6">
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="border-border/40">
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground mb-1">Total Tickets</p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
+              <p className="mb-2 text-sm text-muted-foreground">Total Tickets</p>
               <p className="text-2xl font-bold text-foreground">{stats.total}</p>
             </CardContent>
           </Card>
-          <Card className="border-border/40">
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground mb-1">Open</p>
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
+              <p className="mb-2 text-sm text-muted-foreground">Open</p>
               <p className="text-2xl font-bold text-blue-600">{stats.open}</p>
             </CardContent>
           </Card>
-          <Card className="border-border/40">
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground mb-1">In Progress</p>
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
+              <p className="mb-2 text-sm text-muted-foreground">In Progress</p>
               <p className="text-2xl font-bold text-orange-600">{stats.inProgress}</p>
             </CardContent>
           </Card>
-          <Card className="border-border/40">
-            <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground mb-1">Resolved</p>
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
+              <p className="mb-2 text-sm text-muted-foreground">Resolved</p>
               <p className="text-2xl font-bold text-green-600">{stats.resolved}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Filters */}
-        <Card className="border-border/40">
-          <CardContent className="p-4">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardContent className="p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
@@ -168,12 +168,12 @@ const AdminSupport = () => {
                   placeholder="Search tickets..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 rounded-xl"
+                  className="h-11 rounded-lg pl-10"
                 />
               </div>
 
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="h-11 rounded-xl">
+                <SelectTrigger className="h-11 rounded-lg">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -187,7 +187,7 @@ const AdminSupport = () => {
               </Select>
 
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="h-11 rounded-xl">
+                <SelectTrigger className="h-11 rounded-lg">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -200,7 +200,7 @@ const AdminSupport = () => {
               </Select>
 
               <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-                <SelectTrigger className="h-11 rounded-xl">
+                <SelectTrigger className="h-11 rounded-lg">
                   <SelectValue placeholder="Priority" />
                 </SelectTrigger>
                 <SelectContent>
@@ -221,10 +221,10 @@ const AdminSupport = () => {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : filteredTickets.length === 0 ? (
-          <Card className="border-border/40">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="text-center py-12">
               <MessageSquare className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <h3 className="font-bold text-xl mb-2">No Tickets Found</h3>
+              <h3 className="mb-2 text-foreground">No Tickets Found</h3>
               <p className="text-muted-foreground">
                 {searchQuery || statusFilter !== "all" || categoryFilter !== "all"
                   ? "Try adjusting your filters"
@@ -237,10 +237,10 @@ const AdminSupport = () => {
             {filteredTickets.map((ticket) => (
               <Card
                 key={ticket.id}
-                className="border-border/40 hover:border-primary/25 hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="cursor-pointer border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
                 onClick={() => navigate(`/admin/support/${ticket.id}`)}
               >
-                <CardHeader className="pb-3">
+                <CardHeader className="p-6 pb-3">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <CardTitle className="text-base sm:text-lg mb-2">{ticket.subject}</CardTitle>
@@ -265,7 +265,7 @@ const AdminSupport = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>Created {new Date(ticket.created_at).toLocaleDateString()}</span>
                     <span>Updated {new Date(ticket.updated_at).toLocaleDateString()}</span>
                   </div>

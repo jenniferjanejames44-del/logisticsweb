@@ -228,8 +228,8 @@ const AdminUsers = () => {
   return (
     <AdminLayout title="User Management" description="Manage customer accounts, permissions, and view activity">
       <div className="space-y-6 sm:space-y-8">
-        <Card className="border-border/50">
-          <CardHeader className="pb-3 sm:pb-4">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />All Users ({filteredUsers.length})
@@ -237,34 +237,34 @@ const AdminUsers = () => {
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search users..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search users..." className="h-11 rounded-lg pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button className="w-full sm:w-auto h-11 sm:h-12 px-6"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
+                    <Button className="h-11 w-full rounded-lg px-6 sm:w-auto"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Add New Admin</DialogTitle>
+                  <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+                    <DialogHeader className="px-6 pt-6">
+                      <DialogTitle className="text-foreground">Add New Admin</DialogTitle>
                       <DialogDescription>Create a new admin account with full dashboard access.</DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4 py-4">
+                    <div className="space-y-4 px-6 py-4">
                       <div className="space-y-2">
                         <Label htmlFor="admin-name">Full Name</Label>
-                        <Input id="admin-name" placeholder="Enter full name" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
+                        <Input id="admin-name" placeholder="Enter full name" className="h-11 rounded-lg" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-email">Email *</Label>
-                        <Input id="admin-email" type="email" placeholder="Enter email address" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
+                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-11 rounded-lg" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-password">Password *</Label>
-                        <Input id="admin-password" type="password" placeholder="Min 6 characters" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
+                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-11 rounded-lg" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
                       </div>
                     </div>
-                    <DialogFooter className="flex-col sm:flex-row gap-2">
-                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="w-full sm:w-auto h-11 sm:h-12">Cancel</Button>
-                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="w-full sm:w-auto h-11 sm:h-12">
+                    <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-11 w-full rounded-lg sm:w-auto">
                         {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
                       </Button>
                     </DialogFooter>
@@ -285,7 +285,7 @@ const AdminUsers = () => {
               /* Mobile Card View */
               <div className="space-y-3">
                 {filteredUsers.map((user) => (
-                  <div key={user.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                  <div key={user.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
                         <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
@@ -311,40 +311,40 @@ const AdminUsers = () => {
                         <p className="text-foreground">{format(new Date(user.created_at), "MMM dd, yyyy")}</p>
                       </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/50">
+                    <div className="flex flex-wrap items-center gap-2 border-t border-border/50 pt-3">
                       <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
-                        <SelectTrigger className="w-28 h-11"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-10 w-28 rounded-lg"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="customer">Customer</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
                         </SelectContent>
                       </Select>
-                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                      <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
                         <Wallet className="w-4 h-4 text-success" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                      <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
                         <KeyRound className="w-4 h-4" />
                       </Button>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => fetchLoginHistory(user.user_id)}>
+                          <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => fetchLoginHistory(user.user_id)}>
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-lg">
-                          <DialogHeader>
+                        <DialogContent className="sm:max-w-lg rounded-lg border border-border bg-background p-0">
+                          <DialogHeader className="px-6 pt-6">
                             <DialogTitle className="text-base">Login Activity - {user.full_name || user.email}</DialogTitle>
                             <DialogDescription>Recent login history</DialogDescription>
                           </DialogHeader>
-                          <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                          <div className="max-h-[400px] space-y-3 overflow-y-auto px-6 pb-6">
                             {historyLoading ? (
                               <p className="text-center text-muted-foreground py-4 text-sm">Loading...</p>
                             ) : selectedUserHistory.length === 0 ? (
                               <p className="text-center text-muted-foreground py-4 text-sm">No login history found</p>
                             ) : (
                               selectedUserHistory.map((h) => (
-                                <div key={h.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border">
-                                  <div className="p-2 rounded-full bg-primary/10 flex-shrink-0">{getDeviceIcon(h.device_type)}</div>
+                                <div key={h.id} className="flex items-start gap-3 rounded-lg border border-border bg-muted/30 p-4">
+                                  <div className="flex-shrink-0 rounded-lg bg-primary/10 p-2">{getDeviceIcon(h.device_type)}</div>
                                   <div className="flex-1 space-y-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
                                       <span className="font-medium text-sm">{h.device_type || "Unknown"}</span>
@@ -363,7 +363,7 @@ const AdminUsers = () => {
                       </Dialog>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="icon" className="h-8 w-8 ml-auto" disabled={deletingUserId === user.user_id}>
+                          <Button variant="destructive" size="icon" className="ml-auto h-10 w-10 rounded-lg" disabled={deletingUserId === user.user_id}>
                             <Trash2 className="w-3.5 h-3.5" />
                           </Button>
                         </AlertDialogTrigger>
@@ -384,7 +384,8 @@ const AdminUsers = () => {
               </div>
             ) : (
               /* Desktop Table View */
-              <div className="overflow-x-auto -mx-6">
+              <div className="-mx-6 overflow-x-auto px-6">
+                <div className="min-w-[980px] overflow-hidden rounded-lg border border-border bg-background">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -415,7 +416,7 @@ const AdminUsers = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">${(user.balance || 0).toFixed(2)}</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
                               <Wallet className="w-4 h-4 text-success" />
                             </Button>
                           </div>
@@ -429,24 +430,24 @@ const AdminUsers = () => {
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="sm" onClick={() => fetchLoginHistory(user.user_id)}>
+                              <Button variant="outline" size="sm" className="rounded-lg" onClick={() => fetchLoginHistory(user.user_id)}>
                                 <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-lg">
-                              <DialogHeader>
+                            <DialogContent className="max-w-lg rounded-lg border border-border bg-background p-0">
+                              <DialogHeader className="px-6 pt-6">
                                 <DialogTitle>Login Activity - {user.full_name || user.email}</DialogTitle>
                                 <DialogDescription>Recent login history and device information</DialogDescription>
                               </DialogHeader>
-                              <div className="space-y-4 max-h-[400px] overflow-y-auto">
+                              <div className="max-h-[400px] space-y-4 overflow-y-auto px-6 pb-6">
                                 {historyLoading ? (
                                   <p className="text-center text-muted-foreground py-4">Loading...</p>
                                 ) : selectedUserHistory.length === 0 ? (
                                   <p className="text-center text-muted-foreground py-4">No login history found</p>
                                 ) : (
                                   selectedUserHistory.map((h) => (
-                                    <div key={h.id} className="flex items-start gap-4 p-3 rounded-lg bg-muted/50 border border-border">
-                                      <div className="p-2 rounded-full bg-primary/10">{getDeviceIcon(h.device_type)}</div>
+                                    <div key={h.id} className="flex items-start gap-4 rounded-lg border border-border bg-muted/30 p-4">
+                                      <div className="rounded-lg bg-primary/10 p-2">{getDeviceIcon(h.device_type)}</div>
                                       <div className="flex-1 space-y-1">
                                         <div className="flex items-center gap-2">
                                           <span className="font-medium text-sm">{h.device_type || "Unknown Device"}</span>
@@ -467,18 +468,18 @@ const AdminUsers = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
-                              <SelectTrigger className="w-28"><SelectValue /></SelectTrigger>
+                              <SelectTrigger className="h-10 w-28 rounded-lg"><SelectValue /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="customer">Customer</SelectItem>
                                 <SelectItem value="admin">Admin</SelectItem>
                               </SelectContent>
                             </Select>
-                            <Button variant="outline" size="icon" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                            <Button variant="outline" size="icon" className="h-10 w-10 rounded-lg" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
                               <KeyRound className="w-4 h-4" />
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="icon" disabled={deletingUserId === user.user_id} title="Delete User">
+                                <Button variant="destructive" size="icon" className="h-10 w-10 rounded-lg" disabled={deletingUserId === user.user_id} title="Delete User">
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
                               </AlertDialogTrigger>
@@ -501,6 +502,7 @@ const AdminUsers = () => {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             )}
           </CardContent>
@@ -508,24 +510,24 @@ const AdminUsers = () => {
 
         {/* Reset Password Dialog */}
         <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Reset Password</DialogTitle>
+          <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+            <DialogHeader className="px-6 pt-6">
+              <DialogTitle className="text-foreground">Reset Password</DialogTitle>
               <DialogDescription>Set a new password for {resetPasswordUserName}</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 py-4">
+            <div className="space-y-4 px-6 py-4">
               <div className="space-y-2">
                 <Label htmlFor="new-password">New Password *</Label>
-                <Input id="new-password" type="password" placeholder="Min 6 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <Input id="new-password" type="password" className="h-11 rounded-lg" placeholder="Min 6 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">Confirm Password *</Label>
-                <Input id="confirm-password" type="password" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                <Input id="confirm-password" type="password" className="h-11 rounded-lg" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
-            <DialogFooter className="flex-col sm:flex-row gap-2">
-              <Button variant="outline" onClick={() => setResetPasswordOpen(false)} className="w-full sm:w-auto">Cancel</Button>
-              <Button onClick={handleResetPassword} disabled={resettingPassword} className="w-full sm:w-auto">
+            <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
+              <Button variant="outline" onClick={() => setResetPasswordOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
+              <Button onClick={handleResetPassword} disabled={resettingPassword} className="h-11 w-full rounded-lg sm:w-auto">
                 {resettingPassword ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Resetting...</> : <><KeyRound className="w-4 h-4 mr-2" />Reset Password</>}
               </Button>
             </DialogFooter>

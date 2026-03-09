@@ -129,7 +129,7 @@
   /* Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    @apply text-foreground;
+    color: hsl(var(--primary));
     text-rendering: optimizeLegibility;
     letter-spacing: -0.02em;
   }
@@ -137,15 +137,15 @@
   h1 {
     @apply font-extrabold;
     font-weight: 800;
-    font-size: clamp(2.25rem, 1.95rem + 1vw, 2.75rem);
-    line-height: 1.1;
+    font-size: 2.5rem;
+    line-height: 1.15;
     letter-spacing: -0.025em;
   }
 
   h2 {
     @apply font-bold;
     font-weight: 700;
-    font-size: clamp(1.75rem, 1.55rem + 0.75vw, 2rem);
+    font-size: 2rem;
     line-height: 1.2;
     letter-spacing: -0.02em;
   }
@@ -153,14 +153,14 @@
   h3 {
     @apply font-bold;
     font-weight: 600;
-    font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+    font-size: 1.5rem;
     line-height: 1.3;
     letter-spacing: -0.015em;
   }
 
   h4 {
     font-weight: 600;
-    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+    font-size: 1.25rem;
     line-height: 1.4;
     letter-spacing: -0.01em;
   }
@@ -179,6 +179,11 @@
     font-size: 0.875rem;
   }
 
+  small, .text-small {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
   .font-display {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     letter-spacing: -0.01em;
@@ -187,7 +192,7 @@
   /* Mobile text optimization */
   @media (max-width: 768px) {
     h1 { font-size: 2rem; line-height: 1.1; }
-    h2 { font-size: 1.625rem; line-height: 1.15; }
+    h2 { font-size: 1.75rem; line-height: 1.15; }
     h3 { font-size: 1.25rem; }
     h4 { font-size: 1.125rem; }
     p { font-size: 1rem; line-height: 1.65; }
@@ -277,21 +282,22 @@
   
   /* Section Padding */
   .section-padding {
-    @apply py-16 md:py-20 lg:py-24 px-4 sm:px-6 lg:px-8;
+    @apply py-20;
   }
 
   .section-container {
-    @apply max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8;
+    @apply w-full max-w-[1280px] mx-auto;
+    padding-left: 24px;
+    padding-right: 24px;
   }
   
   /* Professional Button System */
   .btn {
-    padding: 0.875rem 1.5rem;
-    border-radius: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    font-size: 0.9375rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -308,14 +314,13 @@
   .btn-primary {
     background: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
-    border: 1px solid hsl(var(--accent) / 0.9);
-    box-shadow: 0 10px 24px rgba(223, 81, 1, 0.16);
+    border: 1px solid hsl(var(--accent));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
   
   .btn-primary:hover {
     background: hsl(var(--accent-orange-hover));
-    transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(223, 81, 1, 0.2);
+    filter: brightness(1.03);
   }
   
   .btn-primary:active {
@@ -326,14 +331,13 @@
   .btn-secondary {
     background: hsl(var(--background));
     color: hsl(var(--primary));
-    border: 1px solid hsl(var(--primary) / 0.12);
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+    border: 1px solid hsl(var(--primary) / 0.22);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
   
   .btn-secondary:hover {
-    background: hsl(var(--secondary));
+    background: hsl(var(--primary) / 0.04);
     color: hsl(var(--primary));
-    transform: translateY(-1px);
   }
   
   .btn-secondary:active {
@@ -360,9 +364,9 @@
   }
   
   .btn-lg {
-    padding: 1rem 2rem;
+    padding: 0.75rem 1.25rem;
     font-size: 1rem;
-    min-height: 52px;
+    min-height: 44px;
   }
   
   /* Mobile Responsive */

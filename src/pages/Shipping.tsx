@@ -346,7 +346,7 @@ const Shipping = () => {
     return true;
   };
 
-  const inputClass = "h-12 bg-card border-border/60 text-foreground placeholder:text-muted-foreground/60 hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200 rounded-[10px] shadow-sm shadow-primary/[0.02]";
+  const inputClass = "h-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-200 hover:border-primary/35 focus:border-primary focus:ring-2 focus:ring-primary/10";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -376,9 +376,9 @@ const Shipping = () => {
           <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
           <div className="section-container relative z-10">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-card rounded-2xl border border-border/50 shadow-xl shadow-primary/[0.04] overflow-hidden">
+              <div className="overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                 {/* Progress */}
-                <div className="bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 border-b border-border/40 p-3 sm:p-6 backdrop-blur-sm">
+                <div className="border-b border-border bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 p-4 sm:p-6 backdrop-blur-sm">
                   <div className="overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent -mx-1 px-1">
                     <div className="flex items-center justify-between min-w-[600px] sm:min-w-[650px] max-w-3xl mx-auto">
                       {progressSteps.map((s, i) => {
@@ -389,7 +389,7 @@ const Shipping = () => {
                         return (
                           <div key={s.num} className="flex items-center gap-1 sm:gap-2">
                             <div className="flex flex-col items-center gap-1 sm:gap-1.5">
-                              <div className={`w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center transition-all duration-300 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background border-2 border-border/60 text-muted-foreground"} ${isCurrent ? "ring-2 sm:ring-[3px] ring-primary/15 scale-105" : ""}`}>
+                              <div className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-300 sm:h-11 sm:w-11 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "border border-border bg-background text-muted-foreground"} ${isCurrent ? "scale-105 ring-2 ring-primary/15 sm:ring-[3px]" : ""}`}>
                                 {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} /> : <StepIcon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />}
                               </div>
                               <span className={`text-[9px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
@@ -592,7 +592,7 @@ const Shipping = () => {
 
                       {/* Weight breakdown */}
                       {volumetricWeight > 0 && (
-                        <div className="p-4 rounded-xl bg-muted/60 border border-border/40 space-y-1.5">
+                        <div className="space-y-1.5 rounded-lg border border-border bg-muted/30 p-5">
                           <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2">Weight Breakdown</p>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Actual Weight</span>
@@ -621,10 +621,10 @@ const Shipping = () => {
                       </div>
 
                       {/* Insurance Option */}
-                      <div className="p-4 rounded-xl border border-border bg-card space-y-3">
+                      <div className="space-y-3 rounded-lg border border-border bg-card p-5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                               <Shield className="w-5 h-5 text-primary" strokeWidth={2.5} />
                             </div>
                             <div>
@@ -661,13 +661,13 @@ const Shipping = () => {
                         <Label className="text-sm font-medium">Upload Package Photos (Optional)</Label>
                         <p className="text-xs text-muted-foreground">Max 5 files. Images or PDF only.</p>
                         <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf" onChange={handleFileChange} className="hidden" />
-                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-[10px] border border-dashed border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 transition-colors">
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-dashed border-primary/40 bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10">
                           <Upload className="w-4 h-4" /> Choose Files
                         </button>
                         {uploadedFiles.length > 0 && (
                           <div className="mt-2 space-y-1.5">
                             {uploadedFiles.map((file, idx) => (
-                              <div key={idx} className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted border border-border text-sm">
+                              <div key={idx} className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm">
                                 <span className="text-foreground truncate max-w-[200px] sm:max-w-none">{file.name}</span>
                                 <button type="button" onClick={() => removeFile(idx)} className="text-destructive hover:text-destructive/80 text-xs font-semibold ml-2 shrink-0">Remove</button>
                               </div>
@@ -739,7 +739,7 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
+                        <div className={`space-y-3 rounded-lg border p-5 ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border bg-card"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {!selectedDeliveryMethod && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
@@ -757,9 +757,9 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${isSelected ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"}`}
+                                  className={`group flex flex-col items-start gap-3 rounded-lg border text-left transition-all duration-200 sm:flex-row sm:items-center p-5 ${isSelected ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/20" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] active:scale-[0.98]"}`}
                                 >
-                                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                     <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
                                   </div>
                                   <div className="flex-1 min-w-0">
@@ -768,7 +768,7 @@ const Shipping = () => {
                                   </div>
                                   <div className="flex items-center gap-2 self-end sm:self-center">
                                     <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
-                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
+                                    <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
                                       <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
                                     </div>
                                   </div>
@@ -779,7 +779,7 @@ const Shipping = () => {
 
                           {/* Pickup Fee Option */}
                           {isPickupMethod && deliveryFee > 0 && (
-                            <div className="p-4 rounded-xl border border-border bg-card mt-3">
+                            <div className="mt-3 rounded-lg border border-border bg-card p-5">
                               <div className="flex items-start gap-3">
                                 <Checkbox
                                   checked={pickupFeePrepaid}
@@ -814,16 +814,16 @@ const Shipping = () => {
                               key={opt.value}
                               type="button"
                               onClick={() => setShippingSpeed(opt.value)}
-                              className={`group flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.1] shadow-md shadow-primary/10 ring-1 ring-primary/20" : "border-border/60 bg-card hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"}`}
+                              className={`group flex items-center gap-3 rounded-lg border p-5 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/20" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] active:scale-[0.98]"}`}
                             >
-                              <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-md shadow-primary/25" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-md shadow-primary/25" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                 <opt.icon className="w-4 h-4" strokeWidth={2.5} />
                               </div>
                               <div className="flex-1">
                                 <p className={`font-semibold text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
                                 <p className="text-xs text-muted-foreground">{opt.desc}</p>
                               </div>
-                              <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${shippingSpeed === opt.value ? "bg-primary" : "bg-muted"}`}>
+                              <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${shippingSpeed === opt.value ? "bg-primary" : "bg-muted"}`}>
                                 <CheckCircle2 className={`w-3.5 h-3.5 ${shippingSpeed === opt.value ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
                               </div>
                             </button>
@@ -833,7 +833,7 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div className={`space-y-3 rounded-2xl p-4 sm:p-5 border ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/50 bg-card"}`}>
+                        <div className={`space-y-3 rounded-lg border p-5 ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border bg-card"}`}>
                           <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
@@ -844,9 +844,9 @@ const Shipping = () => {
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-md shadow-primary/[0.08] ring-1 ring-primary/15" : "border-border/50 bg-card hover:border-primary/25 hover:shadow-sm"}`}>
+                                <div key={pkg.id} className={`flex flex-col items-start gap-3 rounded-lg border p-5 transition-all duration-200 sm:flex-row sm:items-center ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/15" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)]"}`}>
                                   <div className="flex items-center gap-3 flex-1 min-w-0 w-full sm:w-auto">
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
+                                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" strokeWidth={2.5} />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -860,7 +860,7 @@ const Shipping = () => {
                                         type="button"
                                         onClick={() => updatePackagingQty(pkg.id, -1)}
                                         disabled={qty === 0}
-                                        className={`w-9 h-9 rounded-lg border-2 flex items-center justify-center transition-all duration-150 ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
+                                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-150 ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
                                         aria-label="Decrease quantity"
                                       >
                                         <Minus className="w-4 h-4" strokeWidth={2.5} />
@@ -869,7 +869,7 @@ const Shipping = () => {
                                       <button
                                         type="button"
                                         onClick={() => updatePackagingQty(pkg.id, 1)}
-                                        className="w-9 h-9 rounded-lg border-2 border-border flex items-center justify-center text-foreground hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95 transition-all duration-150"
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-all duration-150 hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95"
                                         aria-label="Increase quantity"
                                       >
                                         <Plus className="w-4 h-4" strokeWidth={2.5} />
@@ -894,7 +894,7 @@ const Shipping = () => {
                           <Label className="text-sm font-medium">Extra Services</Label>
                           <div className="grid sm:grid-cols-2 gap-3">
                             {extraCharges.map((ec: any) => (
-                              <div key={ec.id} className="flex items-center gap-3 p-3 rounded-xl border border-border bg-card hover:border-primary/30 transition-colors cursor-pointer" onClick={() => toggleExtra(ec.id)}>
+                              <div key={ec.id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/25" onClick={() => toggleExtra(ec.id)}>
                                 <Checkbox checked={selectedExtras.includes(ec.id)} onCheckedChange={() => toggleExtra(ec.id)} />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-foreground">{ec.name}</p>
@@ -919,13 +919,13 @@ const Shipping = () => {
                       {/* Details cards */}
                       <div className="space-y-4">
                         <div className="grid sm:grid-cols-2 gap-4">
-                       <div className="p-5 rounded-xl bg-muted/60 border border-border/40">
+                       <div className="rounded-lg border border-border bg-muted/30 p-5">
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
                             <p className="font-semibold text-sm text-foreground">{formData.sender_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.sender_phone}</p>
                             {formData.sender_address && <p className="text-xs text-muted-foreground mt-1">{formData.sender_address}, {formData.sender_city}</p>}
                           </div>
-                          <div className="p-5 rounded-xl bg-muted/60 border border-border/40">
+                          <div className="rounded-lg border border-border bg-muted/30 p-5">
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Receiver</p>
                             <p className="font-semibold text-sm text-foreground">{formData.receiver_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.receiver_phone}</p>
@@ -933,7 +933,7 @@ const Shipping = () => {
                           </div>
                         </div>
 
-                        <div className="p-5 rounded-xl bg-muted/60 border border-border/40">
+                        <div className="rounded-lg border border-border bg-muted/30 p-5">
                           <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">Shipment Details</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[
@@ -968,7 +968,7 @@ const Shipping = () => {
 
                         {/* Packaging summary */}
                         {packagingCost > 0 && (
-                          <div className="p-4 rounded-xl bg-muted/80 border border-border/50">
+                          <div className="rounded-lg border border-border bg-muted/30 p-5">
                             <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Packaging</p>
                             {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
                               <div key={p.id} className="flex justify-between text-sm">
@@ -981,7 +981,7 @@ const Shipping = () => {
                       </div>
 
                       {/* Pricing */}
-                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                      <div className="rounded-lg border border-primary/20 bg-primary/5 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
                         {priceLoading ? (
                           <p className="text-sm text-muted-foreground text-center py-4">Calculating price...</p>
                         ) : (
@@ -1043,8 +1043,8 @@ const Shipping = () => {
                         )}
                       </div>
 
-                      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0"><Shield className="w-4 h-4 text-primary" /></div>
+                      <div className="flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 p-5">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"><Shield className="w-4 h-4 text-primary" /></div>
                         <p className="text-sm text-muted-foreground">By confirming, you agree to our shipping terms. You can pay immediately or save and pay later from your dashboard.</p>
                       </div>
                     </div>
@@ -1111,12 +1111,12 @@ const Shipping = () => {
         {/* How Shipping Works */}
         <section className="section-padding bg-background">
           <div className="section-container">
-            <div className="text-center mb-12">
+            <div className="mb-12 text-center">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm"><Truck className="w-4 h-4" />Process</span>
               <h2 className="text-foreground mb-4">How <span className="text-primary">Shipping Works</span></h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">From booking to delivery in five simple steps.</p>
+              <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">From booking to delivery in five simple steps.</p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-5">
               {[
                 { num: 1, title: "Create your shipment online", icon: ClipboardList },
                 { num: 2, title: "Send package to our warehouse", icon: Package },
@@ -1124,8 +1124,8 @@ const Shipping = () => {
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },
               ].map((s) => (
-                <div key={s.num} className="group relative flex flex-col items-center text-center p-5 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                  <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
+                <div key={s.num} className="group relative flex flex-col items-center rounded-lg border border-border bg-card p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary shadow-lg transition-transform group-hover:scale-105"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
                   <span className="text-xs font-bold text-primary mb-2">Step {s.num}</span>
                   <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
                 </div>

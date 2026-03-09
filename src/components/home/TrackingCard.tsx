@@ -133,11 +133,11 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
     >
       {/* Main Card */}
       <div 
-        className={`relative rounded-xl overflow-hidden transition-all duration-300 bg-card border border-border ${
+        className={`relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 ${
           isFocused ? "shadow-lg" : "shadow-md"
         }`}
       >
-        <div className="p-4 sm:p-6">
+        <div className="p-6">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-accent">
@@ -163,7 +163,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Enter tracking number"
-                className={`h-11 sm:h-12 pl-4 pr-12 text-sm font-medium bg-muted/50 border text-foreground placeholder:text-muted-foreground rounded-lg transition-all duration-200 ${
+                className={`h-11 sm:h-12 rounded-lg border bg-muted/50 pl-4 pr-12 text-base font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
                   isFocused 
                     ? "border-primary ring-2 ring-primary/10 bg-background" 
                     : "border-border hover:border-primary/50"
@@ -178,7 +178,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
             <button 
               onClick={handleTrackClick}
               disabled={isLoading}
-              className="h-11 sm:h-12 px-6 font-bold text-sm rounded-full shadow-md transition-all duration-200 flex items-center justify-center gap-2 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg active:scale-[0.98]"
+              className="flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-base font-semibold text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-200 hover:brightness-[1.03] active:scale-[0.98] sm:h-12"
             >
               Track Now
               <ArrowRight size={16} />
@@ -189,14 +189,14 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
           {(shipmentData || error) && trackingNumber.length >= 6 && (
             <div className="mt-4 animate-fade-in-up">
               {error ? (
-                <div className="bg-destructive/5 rounded-lg p-3 flex items-center gap-3 border border-destructive/20">
-                  <div className="w-9 h-9 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 rounded-lg border border-destructive/20 bg-destructive/5 p-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
                     <AlertCircle size={16} className="text-destructive" />
                   </div>
-                  <span className="text-destructive text-sm font-medium">{error}</span>
+                  <span className="text-sm font-medium text-destructive">{error}</span>
                 </div>
               ) : shipmentData && (
-                <div className="bg-muted/50 rounded-lg p-4 border border-border">
+                <div className="rounded-lg border border-border bg-muted/30 p-5">
                   {/* Shipment Header */}
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
@@ -211,13 +211,13 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                         <p className="text-xs text-muted-foreground capitalize">{shipmentData.service_type.replace(/_/g, " ")} Shipping</p>
                       </div>
                     </div>
-                    <div className={`px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide border ${getStatusBgColor(shipmentData.status)} ${getStatusColor(shipmentData.status)}`}>
+                    <div className={`rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide ${getStatusBgColor(shipmentData.status)} ${getStatusColor(shipmentData.status)}`}>
                       {shipmentData.status.replace("_", " ")}
                     </div>
                   </div>
                   
                   {/* Route Display */}
-                  <div className="flex items-center gap-2 text-sm mb-4 p-3 bg-background rounded-lg border border-border">
+                  <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-background p-4 text-sm">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
                       <span className="truncate font-medium text-foreground">{shipmentData.origin_city}</span>

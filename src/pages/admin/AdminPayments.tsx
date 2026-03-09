@@ -89,63 +89,61 @@ const AdminPayments = () => {
   const pendingAmount = payments.filter((p) => p.status === "pending").reduce((sum, p) => sum + Number(p.amount), 0);
 
   return (
-    <AdminLayout>
+    <AdminLayout title="Payment Management" description="Track and manage all customer payments">
       <div className="space-y-6 sm:space-y-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground">Payment Management</h1>
-          <p className="text-muted-foreground mt-1 text-sm sm:text-base">Track and manage all customer payments</p>
-        </div>
-
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-          <Card className="border-border/50">
-            <CardContent className="p-4 sm:p-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Total Revenue</p>
+                  <p className="mb-2 text-sm text-muted-foreground">Total Revenue</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalRevenue.toLocaleString()}</p>
                 </div>
-                <div className="p-2.5 sm:p-3 rounded-lg bg-success/10"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
+                <div className="rounded-lg bg-success/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border/50">
-            <CardContent className="p-4 sm:p-6">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Pending Payments</p>
+                  <p className="mb-2 text-sm text-muted-foreground">Pending Payments</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">₦{pendingAmount.toLocaleString()}</p>
                 </div>
-                <div className="p-2.5 sm:p-3 rounded-lg bg-warning/10"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
+                <div className="rounded-lg bg-warning/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border/50">
-            <CardContent className="p-4 sm:p-6">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Total Transactions</p>
+                  <p className="mb-2 text-sm text-muted-foreground">Total Transactions</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">{payments.length}</p>
                 </div>
-                <div className="p-2.5 sm:p-3 rounded-lg bg-primary/10"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
+                <div className="rounded-lg bg-primary/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-border/50">
-          <CardHeader className="pb-3 sm:pb-4">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardHeader className="p-6 pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />All Payments ({filteredPayments.length})
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                All Payments ({filteredPayments.length})
               </CardTitle>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search payments..." className="pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search payments..." className="h-11 rounded-lg pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
+                  <SelectTrigger className="h-11 w-full rounded-lg sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
                     {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
@@ -165,7 +163,7 @@ const AdminPayments = () => {
             ) : isMobile ? (
               <div className="space-y-3">
                 {filteredPayments.map((payment) => (
-                  <div key={payment.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                  <div key={payment.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                     <div className="flex items-center justify-between">
                       <span className="font-medium text-foreground">₦{Number(payment.amount).toLocaleString()} {payment.currency}</span>
                       <Badge className={getStatusColor(payment.status)}>{payment.status}</Badge>
@@ -187,7 +185,7 @@ const AdminPayments = () => {
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <span className="text-xs text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</span>
                       <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                        <SelectTrigger className="w-32 h-8"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-9 w-32 rounded-lg"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -197,7 +195,8 @@ const AdminPayments = () => {
                 ))}
               </div>
             ) : (
-              <div className="overflow-x-auto -mx-6">
+              <div className="-mx-6 overflow-x-auto px-6">
+                <div className="min-w-[860px] overflow-hidden rounded-lg border border-border bg-background">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -221,7 +220,7 @@ const AdminPayments = () => {
                         <TableCell>{new Date(payment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                            <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
+                            <SelectTrigger className="h-10 w-32 rounded-lg"><SelectValue /></SelectTrigger>
                             <SelectContent>
                               {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                             </SelectContent>
@@ -231,6 +230,7 @@ const AdminPayments = () => {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </div>
             )}
           </CardContent>

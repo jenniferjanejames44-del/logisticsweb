@@ -129,41 +129,41 @@ const Invoices = () => {
   return (
     <DashboardLayout title="Invoices" description="View and download your invoices">
       {/* Stats */}
-      <div className="grid sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
+      <div className="mb-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Invoices</p>
                 <p className="text-2xl sm:text-3xl font-bold text-foreground">{invoices.length}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                 <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Unpaid</p>
                 <p className="text-2xl sm:text-3xl font-bold text-accent">₦{totalUnpaid.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-accent/10 rounded-xl flex items-center justify-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
                 <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-border/50">
-          <CardContent className="p-4 sm:p-6">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Paid</p>
                 <p className="text-2xl sm:text-3xl font-bold text-green-500">₦{totalPaid.toLocaleString()}</p>
               </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500/10 rounded-xl flex items-center justify-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                 <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
               </div>
             </div>
@@ -172,38 +172,40 @@ const Invoices = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search invoice or tracking number..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[160px]">
-            <SelectValue placeholder="Filter status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="unpaid">Unpaid</SelectItem>
-            <SelectItem value="paid">Paid</SelectItem>
-            <SelectItem value="overdue">Overdue</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Card className="mb-6 border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder="Search invoice or tracking number..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-11 rounded-lg pl-9"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="h-11 w-full rounded-lg sm:w-[180px]">
+              <SelectValue placeholder="Filter status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="unpaid">Unpaid</SelectItem>
+              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="overdue">Overdue</SelectItem>
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
 
       {/* Invoice List */}
       {filtered.length > 0 ? (
         <div className="grid gap-4">
           {filtered.map((invoice) => (
-            <Card key={invoice.id} className="border-border/50 hover:shadow-card transition-shadow">
-              <CardContent className="p-4 sm:p-6">
+            <Card key={invoice.id} className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+              <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
                       <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                     </div>
                     <div>
@@ -249,10 +251,10 @@ const Invoices = () => {
           ))}
         </div>
       ) : (
-        <Card className="border-border/50">
+        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <FileText className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="font-heading text-xl font-semibold text-foreground mb-2">No Invoices Found</h3>
+            <h3 className="mb-2 text-foreground">No Invoices Found</h3>
             <p className="text-muted-foreground">
               {searchQuery || statusFilter !== "all"
                 ? "Try adjusting your search or filters"
@@ -264,11 +266,11 @@ const Invoices = () => {
 
       {/* Invoice Viewer Dialog */}
       <Dialog open={!!invoiceHtml} onOpenChange={(open) => !open && setInvoiceHtml(null)}>
-        <DialogContent className="max-w-4xl h-[85vh] flex flex-col p-0">
+        <DialogContent className="flex h-[85vh] max-w-4xl flex-col rounded-lg border border-border bg-background p-0">
           <DialogHeader className="px-6 pt-6 pb-2 flex-shrink-0">
             <div className="flex items-center justify-between">
-              <DialogTitle>Invoice Preview</DialogTitle>
-              <Button size="sm" onClick={handlePrint} className="mr-6">
+              <DialogTitle className="text-foreground">Invoice Preview</DialogTitle>
+              <Button size="sm" onClick={handlePrint} className="mr-6 rounded-lg">
                 Print / Save as PDF
               </Button>
             </div>

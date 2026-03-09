@@ -90,51 +90,51 @@ const Wallet = () => {
       ) : (
         <div className="space-y-6">
           {/* Balance Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-            <Card className="relative overflow-hidden border-primary/25 bg-gradient-to-br from-primary/[0.14] via-primary/[0.06] to-accent/[0.08] shadow-lg shadow-primary/[0.1]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
+            <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.12] via-background to-accent/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
               <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-primary/[0.1]" />
-              <CardContent className="p-5 sm:p-6 relative z-10">
+              <CardContent className="relative z-10 p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-foreground/80 mb-1.5 font-semibold tracking-wide uppercase">Current Balance</p>
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-foreground/80">Current Balance</p>
                     <p className="text-2xl sm:text-[2rem] font-bold text-foreground truncate tracking-tight">
                       ₦{balance.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] bg-primary rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/30 border border-primary/30">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary shadow-lg shadow-primary/20 sm:h-[60px] sm:w-[60px]">
                     <WalletIcon className="w-5 h-5 sm:w-7 sm:h-7 text-primary-foreground" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50 shadow-sm">
-              <CardContent className="p-4 sm:p-6">
+            <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Deposits</p>
+                    <p className="mb-2 text-sm text-muted-foreground">Total Deposits</p>
                     <p className="text-xl sm:text-2xl font-bold text-success truncate">
                       +₦{totalCredits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-success/20">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-success/20 bg-success/10 sm:h-14 sm:w-14">
                     <ArrowUpCircle className="w-5 h-5 sm:w-7 sm:h-7 text-success" />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50 shadow-sm">
-              <CardContent className="p-4 sm:p-6">
+            <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+              <CardContent className="p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Spent</p>
+                    <p className="mb-2 text-sm text-muted-foreground">Total Spent</p>
                     <p className="text-xl sm:text-2xl font-bold text-warning truncate">
                       -₦{totalDebits.toFixed(2)}
                     </p>
                   </div>
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 bg-warning/10 rounded-xl flex items-center justify-center flex-shrink-0 border border-warning/20">
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-warning/20 bg-warning/10 sm:h-14 sm:w-14">
                     <ArrowDownCircle className="w-5 h-5 sm:w-7 sm:h-7 text-warning" />
                   </div>
                 </div>
@@ -143,15 +143,15 @@ const Wallet = () => {
           </div>
 
           {/* Info Card */}
-          <Card className="border-border/40 bg-muted/30">
-            <CardContent className="p-4 sm:p-5">
+          <Card className="border-border bg-muted/30 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardContent className="p-6">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 bg-primary/8 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
                   <CreditCard className="w-[18px] h-[18px] text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground mb-1 text-sm sm:text-base">Fund Your Wallet Instantly</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">
+                  <h3 className="mb-2 text-base font-semibold text-foreground">Fund Your Wallet Instantly</h3>
+                  <p className="text-sm text-muted-foreground">
                     Click "Add Funds" to top up your wallet via Paystack. Pay securely with card, 
                     bank transfer, or USSD. Your balance updates instantly after payment.
                   </p>
@@ -161,19 +161,19 @@ const Wallet = () => {
           </Card>
 
           {/* Transactions */}
-          <Card className="border-border/40">
-            <CardHeader className="p-5 sm:p-6 pb-3 sm:pb-4">
-              <CardTitle className="text-[1.0625rem] sm:text-lg font-semibold flex items-center gap-2.5">
-                <div className="w-8 h-8 bg-primary/8 rounded-lg flex items-center justify-center">
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardHeader className="p-6 pb-4">
+              <CardTitle className="flex items-center gap-2.5 text-lg font-semibold">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/8">
                   <TrendingUp className="w-4 h-4 text-primary" />
                 </div>
                 Transaction History
               </CardTitle>
             </CardHeader>
-            <CardContent className="px-5 sm:px-6 pb-5 sm:pb-6">
+            <CardContent className="px-6 pb-6">
               {transactions.length === 0 ? (
                 <div className="text-center py-10">
-                  <div className="w-14 h-14 bg-muted/60 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-muted/60">
                     <Clock className="w-6 h-6 text-muted-foreground/50" />
                   </div>
                   <p className="text-muted-foreground text-[0.875rem]">No transactions yet</p>
@@ -186,7 +186,7 @@ const Wallet = () => {
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="flex items-center justify-between py-3.5 border-b border-border/25 last:border-0 gap-3 hover:bg-muted/30 -mx-2 px-2 rounded-lg transition-colors duration-150"
+                      className="-mx-2 flex items-center justify-between gap-3 rounded-lg border-b border-border/25 px-2 py-4 transition-colors duration-150 last:border-0 hover:bg-muted/30"
                     >
                       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div

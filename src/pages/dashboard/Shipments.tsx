@@ -200,14 +200,14 @@ const Shipments = () => {
 
       {/* Shipments List — Improved card layout */}
       {filteredShipments.length > 0 ? (
-        <div className="grid gap-3 sm:gap-4">
+        <div className="grid gap-4">
           {filteredShipments.map((shipment) => (
-            <Card key={shipment.id} className="border-border/40 hover:border-border/70 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-200">
-              <CardContent className="p-4 sm:p-5">
+            <Card key={shipment.id} className="border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+              <CardContent className="p-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                   {/* Left side */}
                   <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 shadow-sm">
                       <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                     </div>
                     <div className="min-w-0 flex-1 space-y-2">

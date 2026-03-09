@@ -47,7 +47,7 @@ const ShoppingOrders = () => {
     <DashboardLayout title="Shopping Orders" description="Track your personal shopping requests">
       <div className="space-y-6">
         <div className="flex justify-end">
-          <Button onClick={() => navigate("/personal-shopping/new")} className="gap-2">
+          <Button onClick={() => navigate("/personal-shopping/new")} className="gap-2 rounded-lg">
             <Plus className="w-4 h-4" />
             New Shopping Request
           </Button>
@@ -56,16 +56,16 @@ const ShoppingOrders = () => {
         {loading ? (
           <div className="grid gap-4">
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="animate-pulse"><CardContent className="h-24" /></Card>
+              <Card key={i} className="animate-pulse border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)]"><CardContent className="h-24" /></Card>
             ))}
           </div>
         ) : orders.length === 0 ? (
-          <Card>
+          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
               <ShoppingBag className="w-12 h-12 text-muted-foreground/40 mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">No Shopping Orders Yet</h3>
+              <h3 className="mb-2 text-foreground">No Shopping Orders Yet</h3>
               <p className="text-muted-foreground text-sm mb-4">Submit your first personal shopping request</p>
-              <Button onClick={() => navigate("/personal-shopping/new")} className="gap-2">
+              <Button onClick={() => navigate("/personal-shopping/new")} className="gap-2 rounded-lg">
                 <Plus className="w-4 h-4" />
                 Create Request
               </Button>
@@ -76,11 +76,11 @@ const ShoppingOrders = () => {
             {orders.map((order) => {
               const sc = statusConfig[order.status] || statusConfig.pending_purchase;
               return (
-                <Card key={order.id} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4 sm:p-5">
+                <Card key={order.id} className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                  <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
                           <Package className="w-5 h-5 text-primary" />
                         </div>
                         <div>
@@ -93,7 +93,7 @@ const ShoppingOrders = () => {
                           <p className="font-bold text-foreground">${Number(order.total_cost).toFixed(2)}</p>
                           <Badge variant={sc.variant} className="text-xs">{sc.label}</Badge>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={() => setSelectedOrder(order)}>
+                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => setSelectedOrder(order)}>
                           <Eye className="w-4 h-4" />
                         </Button>
                       </div>
@@ -107,13 +107,13 @@ const ShoppingOrders = () => {
       </div>
 
       <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Order Details</DialogTitle>
+        <DialogContent className="max-w-md rounded-lg border border-border bg-background p-0">
+          <DialogHeader className="px-6 pt-6">
+            <DialogTitle className="text-foreground">Order Details</DialogTitle>
           </DialogHeader>
           {selectedOrder && (
-            <div className="space-y-3 text-sm">
-              <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-4 px-6 pb-6 text-sm">
+              <div className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-muted/30 p-4">
                 <span className="text-muted-foreground">Order #</span>
                 <span className="font-medium">{selectedOrder.order_number}</span>
                 <span className="text-muted-foreground">Product</span>
@@ -136,19 +136,19 @@ const ShoppingOrders = () => {
                 </Badge>
               </div>
               {selectedOrder.item_description && (
-                <div>
+                <div className="rounded-lg border border-border bg-background p-4">
                   <p className="text-muted-foreground mb-1">Description</p>
                   <p className="text-foreground">{selectedOrder.item_description}</p>
                 </div>
               )}
               {selectedOrder.additional_notes && (
-                <div>
+                <div className="rounded-lg border border-border bg-background p-4">
                   <p className="text-muted-foreground mb-1">Notes</p>
                   <p className="text-foreground">{selectedOrder.additional_notes}</p>
                 </div>
               )}
               {selectedOrder.product_image_url && (
-                <div>
+                <div className="rounded-lg border border-border bg-background p-4">
                   <p className="text-muted-foreground mb-1">Product Image</p>
                   <img src={selectedOrder.product_image_url} alt="Product" className="rounded-lg max-h-48 object-cover" />
                 </div>

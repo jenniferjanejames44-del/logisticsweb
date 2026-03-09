@@ -33,9 +33,9 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding bg-muted">
       <div className="section-container">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="mx-auto mb-16 max-w-3xl text-center lg:mb-20">
           <span
-            className={`inline-block px-4 py-2 bg-accent text-accent-foreground rounded-full text-sm font-bold mb-5 transition-all duration-500 ${
+            className={`mb-5 inline-block rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -49,7 +49,7 @@ const ServicesSection = () => {
             Comprehensive Logistics Solutions
           </h2>
           <p
-            className={`text-muted-foreground text-lg md:text-xl leading-relaxed transition-all duration-500 delay-150 ${
+            className={`text-base leading-relaxed text-muted-foreground transition-all duration-500 delay-150 md:text-base ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -58,14 +58,14 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
               <Link
                 key={service.title}
                 to={service.href}
-                className={`group relative overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 ${
+                className={`group relative overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: `${index * 80 + 200}ms` }}
@@ -81,17 +81,17 @@ const ServicesSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-foreground/20 to-transparent group-hover:from-foreground/30 transition-all duration-300" />
 
                   {/* Icon Badge */}
-                  <div className="absolute bottom-4 right-4 w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-200">
+                  <div className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-lg bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-transform duration-200 group-hover:scale-105">
                     <ServiceIcon className="w-6 h-6 text-primary" strokeWidth={2.5} />
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                  <h3 className="mb-3 text-foreground transition-colors group-hover:text-primary">
                     {service.title}
                   </h3>
-                  <p className="text-muted-foreground text-[15px] leading-relaxed mb-5">
+                  <p className="mb-5 text-base leading-relaxed text-muted-foreground">
                     {service.description}
                   </p>
                   <div className="inline-flex items-center gap-2 font-bold text-sm text-primary group-hover:gap-3 transition-all duration-200">
@@ -112,7 +112,7 @@ const ServicesSection = () => {
         >
           <Link 
             to="/services" 
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
+            className="btn btn-primary"
           >
             View All Services
             <ArrowRight size={16} />

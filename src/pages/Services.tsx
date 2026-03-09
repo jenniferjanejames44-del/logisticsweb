@@ -122,24 +122,24 @@ const Services = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
-                  className={`group relative overflow-hidden bg-card border border-border/50 rounded-2xl hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
+                  className={`group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
                     servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
                   <CardContent className="p-6 md:p-8">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-5 md:mb-6 group-hover:scale-110 group-hover:bg-primary/15 shadow-sm transition-all duration-300">
+                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/15 md:mb-6 md:h-16 md:w-16">
                       <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" strokeWidth={2.5} />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">
+                    <h3 className="mb-4 text-foreground transition-colors duration-300 group-hover:text-primary">
                       {service.title}
                     </h3>
-                    <p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
+                    <p className="mb-6 text-base leading-relaxed text-muted-foreground">{service.description}</p>
                     <ul className="space-y-2.5 mb-6">
                       {service.features.map((feature) => (
                         <li key={feature} className="flex items-center gap-2.5 text-sm text-muted-foreground">
