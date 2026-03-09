@@ -70,6 +70,10 @@ const Header = () => {
         ? "bg-muted text-primary after:scale-x-100"
         : "text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:after:scale-x-100",
     );
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    setIsMobileServicesOpen(false);
+  };
 
   return (
     <header
@@ -200,7 +204,7 @@ const Header = () => {
         {/* Mobile Menu Button */}
         <button
           className="lg:hidden flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)]"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <X size={24} strokeWidth={3} /> : <Menu size={24} strokeWidth={3} />}
@@ -210,16 +214,16 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-foreground/20 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 bg-foreground/28 backdrop-blur-sm transition-opacity duration-300"
           style={{ zIndex: 9998 }}
-          onClick={() => setIsMobileMenuOpen(false)}
+          onClick={closeMobileMenu}
           aria-hidden="true"
         />
       )}
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[86%] max-w-sm overflow-y-auto border-l border-border/70 bg-background shadow-[0_24px_60px_rgba(6,16,67,0.14)] transition-all duration-300 ${
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[88%] max-w-sm overflow-y-auto border-l border-border/70 bg-background shadow-[0_24px_60px_rgba(6,16,67,0.14)] transition-all duration-300 ease-out ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
@@ -227,22 +231,17 @@ const Header = () => {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        {/* Header with close button */}
-        <div className="flex items-center justify-between border-b border-border/70 p-5">
-          <div>
-            <span className="block text-lg font-extrabold text-foreground">Menu</span>
-            <span className="text-sm text-muted-foreground">Navigate RAC Logistics</span>
-          </div>
+        <div className="flex justify-end border-b border-border/70 px-4 py-4 sm:px-5">
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-background text-muted-foreground shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:bg-muted/70 hover:text-foreground"
+            onClick={closeMobileMenu}
             aria-label="Close menu"
           >
-            <X size={18} />
+            <X size={18} strokeWidth={2.5} />
           </button>
         </div>
 
-        <nav className="flex flex-col gap-1 p-5">
+        <nav className="flex flex-col gap-1 px-4 pb-5 pt-4 sm:px-5 sm:pb-6">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -255,7 +254,7 @@ const Header = () => {
                     : "text-foreground hover:bg-muted/80 hover:text-primary",
                 )
               }
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               {link.name}
             </NavLink>
@@ -298,7 +297,7 @@ const Header = () => {
                             ? "bg-muted text-foreground"
                             : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                         )}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={closeMobileMenu}
                       >
                         <span className="icon-surface h-8 w-8 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
                           <service.icon className="w-4 h-4 text-primary" />
@@ -324,7 +323,7 @@ const Header = () => {
                     : "text-foreground hover:bg-muted/80 hover:text-primary",
                 )
               }
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               {link.name}
             </NavLink>
@@ -336,14 +335,14 @@ const Header = () => {
               <>
                 {isAdmin && (
                   <Button asChild variant="outline" className="w-full justify-center">
-                    <Link to="/admin" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link to="/admin" onClick={closeMobileMenu}>
                       <Shield className="w-4 h-4" />
                       Admin Panel
                     </Link>
                   </Button>
                 )}
                 <Button asChild variant="secondary" className="w-full justify-center">
-                  <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to="/dashboard" onClick={closeMobileMenu}>
                     <User className="w-4 h-4" />
                     Dashboard
                   </Link>
@@ -352,7 +351,7 @@ const Header = () => {
                   className="flex w-full items-center justify-center gap-2 rounded-md border border-destructive/20 bg-destructive/5 py-3.5 text-sm font-bold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
                   onClick={() => {
                     signOut();
-                    setIsMobileMenuOpen(false);
+                    closeMobileMenu();
                   }}
                 >
                   Sign Out
@@ -361,14 +360,14 @@ const Header = () => {
             ) : (
               <>
                 <Button asChild variant="outline" className="w-full justify-center">
-                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                    Log In
+                  <Link to="/auth" onClick={closeMobileMenu}>
+                    Login
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="default" className="w-full justify-center">
-                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                    Sign Up
+                <Button asChild variant="navCta" className="w-full justify-center">
+                  <Link to="/auth" onClick={closeMobileMenu}>
+                    Join Now
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
