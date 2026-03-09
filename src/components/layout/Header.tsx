@@ -55,6 +55,7 @@ const Header = () => {
   ];
 
   const isServicesRoute = location.pathname === "/services" || location.pathname.startsWith("/services/");
+  const isSecondaryRoute = secondaryNavLinks.some((link) => location.pathname === link.href);
   const navItemClass = (isActive: boolean) =>
     cn(
       "font-display relative rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-3 after:h-0.5 after:w-[calc(100%-24px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
@@ -65,10 +66,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-20 border-b bg-white transition-all duration-300 ${
         isScrolled
-          ? "h-20 border-b border-border/80 bg-white/95 shadow-[0_10px_24px_rgba(15,23,42,0.06)] backdrop-blur-xl"
-          : "h-20 border-b border-border/70 bg-white/92 backdrop-blur-md"
+          ? "border-border/80 shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
+          : "border-border/70 shadow-[0_4px_14px_rgba(15,23,42,0.04)]"
       }`}
     >
       <div className="section-container flex h-full items-center justify-between gap-6 px-4 sm:px-6">
@@ -126,6 +127,46 @@ const Header = () => {
                       <service.icon className="w-4 h-4 text-primary" />
                     </span>
                     <span className="font-medium">{service.name}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <div className="hidden xl:flex items-center gap-2">
+            {secondaryNavLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.href}
+                className={({ isActive }) => navItemClass(isActive)}
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className={cn(
+                  "font-display flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px xl:hidden",
+                  isSecondaryRoute
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                )}
+              >
+                Pages
+                <ChevronDown className="w-4 h-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="animate-fade-in-soft w-56 rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)] xl:hidden">
+              {secondaryNavLinks.map((link) => (
+                <DropdownMenuItem key={link.name} asChild className="p-0">
+                  <Link
+                    to={link.href}
+                    className="flex w-full items-center rounded-lg px-3 py-3 font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
+                  >
+                    {link.name}
                   </Link>
                 </DropdownMenuItem>
               ))}
