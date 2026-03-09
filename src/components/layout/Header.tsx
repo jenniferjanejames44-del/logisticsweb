@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
-import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Package, Earth, Container, FileCheck, ArrowRight } from "lucide-react";
+import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Earth, Container, FileCheck, ArrowRight, Send } from "lucide-react";
 import Logo from "@/components/layout/Logo";
 import { cn } from "@/lib/utils";
 import {
@@ -29,33 +29,40 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const primaryNavLinks = [
+  const mainNavLinks = [
     { name: "Home", href: "/" },
-    { name: "Import", href: "/services/import" },
-    { name: "Export", href: "/services/export" },
-    { name: "Procurement", href: "/services/procurement" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Track Shipment", href: "/track" },
-  ];
-
-  const secondaryNavLinks = [
+    { name: "Blog", href: "/blog" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Blog", href: "/blog" },
   ];
 
-  const serviceLinks = [
-    { name: "Import", href: "/services/import", icon: Earth },
-    { name: "Export", href: "/services/export", icon: PlaneTakeoff },
-    { name: "Buy For Me / Procurement", href: "/services/procurement", icon: ShoppingBag },
-    { name: "Air Shipping", href: "/services/air-shipping", icon: PlaneTakeoff },
-    { name: "Ocean Shipping", href: "/services/ocean-shipping", icon: Anchor },
-    { name: "Warehousing", href: "/services/warehousing", icon: Container },
-    { name: "Customs Clearance", href: "/services/customs-clearance", icon: FileCheck },
+  const serviceGroups = [
+    {
+      heading: "Shipping Services",
+      links: [
+        { name: "Import Shipping", href: "/services/import", icon: Earth },
+        { name: "Export Shipping", href: "/services/export", icon: Send },
+        { name: "Air Freight", href: "/services/air-shipping", icon: PlaneTakeoff },
+        { name: "Ocean Freight", href: "/services/ocean-shipping", icon: Anchor },
+      ],
+    },
+    {
+      heading: "Logistics Services",
+      links: [
+        { name: "Warehousing", href: "/services/warehousing", icon: Container },
+        { name: "Customs Clearance", href: "/services/customs-clearance", icon: FileCheck },
+      ],
+    },
+    {
+      heading: "Shopping Assistance",
+      links: [
+        { name: "Buy For Me / Procurement", href: "/services/procurement", icon: ShoppingBag },
+      ],
+    },
   ];
 
   const isServicesRoute = location.pathname === "/services" || location.pathname.startsWith("/services/");
-  const isSecondaryRoute = secondaryNavLinks.some((link) => location.pathname === link.href);
   const navItemClass = (isActive: boolean) =>
     cn(
       "font-display relative rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-3 after:h-0.5 after:w-[calc(100%-24px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
@@ -80,7 +87,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-2">
-          {primaryNavLinks.map((link) => (
+          {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
@@ -89,7 +96,7 @@ const Header = () => {
               {link.name}
             </NavLink>
           ))}
-          
+
           {/* Services Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -105,73 +112,47 @@ const Header = () => {
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="animate-fade-in-soft w-64 rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
-              <DropdownMenuItem asChild className="p-0 mb-1">
-                <Link
-                  to="/services"
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-3 font-semibold text-primary transition-all duration-200 hover:-translate-y-px hover:bg-primary/5"
-                >
-                  <span className="icon-surface h-9 w-9 border-primary/10 bg-primary/5">
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                  View All Services
-                </Link>
-              </DropdownMenuItem>
-              {serviceLinks.map((service) => (
-                <DropdownMenuItem key={service.name} asChild className="p-0">
-                  <Link
-                    to={service.href}
-                    className="group flex w-full items-center gap-3 rounded-lg px-3 py-3 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
+            <DropdownMenuContent align="center" className="animate-fade-in-soft w-[320px] rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
+              <div className="space-y-1">
+                {serviceGroups.map((group, groupIndex) => (
+                  <div
+                    key={group.heading}
+                    className={cn(
+                      "rounded-lg px-1 py-2",
+                      groupIndex > 0 && "border-t border-border/60 pt-3",
+                    )}
                   >
-                    <span className="icon-surface h-9 w-9 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
-                      <service.icon className="w-4 h-4 text-primary" />
-                    </span>
-                    <span className="font-medium">{service.name}</span>
-                  </Link>
-                </DropdownMenuItem>
-              ))}
+                    <div className="px-2 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+                      {group.heading}
+                    </div>
+                    {group.links.map((service) => (
+                      <DropdownMenuItem key={service.name} asChild className="p-0">
+                        <Link
+                          to={service.href}
+                          className="group flex w-full items-center gap-3 rounded-lg px-3 py-3 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
+                        >
+                          <span className="icon-surface h-9 w-9 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
+                            <service.icon className="w-4 h-4 text-primary" />
+                          </span>
+                          <span className="font-medium">{service.name}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="hidden xl:flex items-center gap-2">
-            {secondaryNavLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.href}
-                className={({ isActive }) => navItemClass(isActive)}
-              >
-                {link.name}
-              </NavLink>
-            ))}
-          </div>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                className={cn(
-                  "font-display flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px xl:hidden",
-                  isSecondaryRoute
-                    ? "bg-muted text-primary"
-                    : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
-                )}
-              >
-                Pages
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="animate-fade-in-soft w-56 rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)] xl:hidden">
-              {secondaryNavLinks.map((link) => (
-                <DropdownMenuItem key={link.name} asChild className="p-0">
-                  <Link
-                    to={link.href}
-                    className="flex w-full items-center rounded-lg px-3 py-3 font-medium text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
-                  >
-                    {link.name}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {mainNavLinks.slice(1).map((link) => (
+            <NavLink
+              key={link.name}
+              to={link.href}
+              className={({ isActive }) => navItemClass(isActive)}
+            >
+              {link.name}
+            </NavLink>
+          ))}
 
         </nav>
 
@@ -262,7 +243,7 @@ const Header = () => {
         </div>
 
         <nav className="flex flex-col gap-1 p-5">
-          {primaryNavLinks.map((link) => (
+          {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
@@ -279,7 +260,7 @@ const Header = () => {
               {link.name}
             </NavLink>
           ))}
-          
+
           {/* Services Accordion */}
           <div className="flex flex-col">
             <button
@@ -294,46 +275,44 @@ const Header = () => {
               Services
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[400px]" : "max-h-0"}`}>
-              <div className="space-y-1 py-2 pl-3">
-                <Link
-                  to="/services"
-                  className={cn(
-                    "font-display flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 hover:-translate-y-px",
-                    isServicesRoute
-                      ? "bg-primary/10 text-primary"
-                      : "bg-primary/5 text-primary hover:bg-primary/10",
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <span className="icon-surface h-8 w-8 border-primary/10 bg-primary/10">
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                  View All Services
-                </Link>
-                {serviceLinks.map((service) => (
-                  <Link
-                    key={service.name}
-                    to={service.href}
+            <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[560px]" : "max-h-0"}`}>
+              <div className="space-y-3 py-2 pl-3">
+                {serviceGroups.map((group, groupIndex) => (
+                  <div
+                    key={group.heading}
                     className={cn(
-                      "group flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
-                      location.pathname === service.href
-                        ? "bg-muted text-foreground"
-                        : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                      "rounded-lg px-1",
+                      groupIndex > 0 && "border-t border-border/60 pt-3",
                     )}
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <span className="icon-surface h-8 w-8 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
-                      <service.icon className="w-4 h-4 text-primary" />
-                    </span>
-                    {service.name}
-                  </Link>
+                    <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+                      {group.heading}
+                    </div>
+                    {group.links.map((service) => (
+                      <Link
+                        key={service.name}
+                        to={service.href}
+                        className={cn(
+                          "group flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
+                          location.pathname === service.href
+                            ? "bg-muted text-foreground"
+                            : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                        )}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <span className="icon-surface h-8 w-8 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
+                          <service.icon className="w-4 h-4 text-primary" />
+                        </span>
+                        {service.name}
+                      </Link>
+                    ))}
+                  </div>
                 ))}
               </div>
             </div>
           </div>
-          
-          {secondaryNavLinks.map((link) => (
+
+          {mainNavLinks.slice(1).map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
