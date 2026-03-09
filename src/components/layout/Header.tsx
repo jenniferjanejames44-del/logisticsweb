@@ -70,6 +70,13 @@ const Header = () => {
         ? "bg-muted text-primary after:scale-x-100"
         : "text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:after:scale-x-100",
     );
+  const mobileNavItemClass = (isActive: boolean) =>
+    cn(
+      "font-display rounded-xl border px-4 py-3.5 text-[15px] font-semibold transition-all duration-200",
+      isActive
+        ? "border-primary/10 bg-primary/5 text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)]"
+        : "border-transparent text-foreground hover:-translate-y-px hover:border-border/70 hover:bg-muted/60 hover:text-primary",
+    );
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsMobileServicesOpen(false);
@@ -214,7 +221,7 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-foreground/28 backdrop-blur-sm transition-opacity duration-300"
+          className="lg:hidden fixed inset-0 bg-primary/30 backdrop-blur-[3px] transition-opacity duration-300"
           style={{ zIndex: 9998 }}
           onClick={closeMobileMenu}
           aria-hidden="true"
@@ -223,7 +230,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[88%] max-w-sm overflow-y-auto border-l border-border/70 bg-background shadow-[0_24px_60px_rgba(6,16,67,0.14)] transition-all duration-300 ease-out ${
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[90%] max-w-[380px] overflow-y-auto overscroll-contain border-l border-border/70 bg-background/98 shadow-[0_24px_60px_rgba(6,16,67,0.16)] backdrop-blur-xl transition-all duration-300 ease-out ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
@@ -231,9 +238,9 @@ const Header = () => {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        <div className="flex justify-end border-b border-border/70 px-4 py-4 sm:px-5">
+        <div className="sticky top-0 z-10 flex justify-end border-b border-border/70 bg-background/95 px-4 py-4 backdrop-blur-xl sm:px-5">
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-background text-muted-foreground shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:bg-muted/70 hover:text-foreground"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-background text-muted-foreground shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:border-primary/15 hover:bg-primary/5 hover:text-foreground"
             onClick={closeMobileMenu}
             aria-label="Close menu"
           >
@@ -241,19 +248,12 @@ const Header = () => {
           </button>
         </div>
 
-        <nav className="flex flex-col gap-1 px-4 pb-5 pt-4 sm:px-5 sm:pb-6">
+        <nav className="flex flex-col gap-1.5 px-4 pb-6 pt-4 sm:px-5 sm:pb-7">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
-              className={({ isActive }) =>
-                cn(
-                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
-                  isActive
-                    ? "bg-muted text-primary"
-                    : "text-foreground hover:bg-muted/80 hover:text-primary",
-                )
-              }
+              className={({ isActive }) => mobileNavItemClass(isActive)}
               onClick={closeMobileMenu}
             >
               {link.name}
@@ -264,18 +264,19 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
+                "font-display flex items-center justify-between rounded-xl border px-4 py-3.5 text-[15px] font-semibold transition-all duration-200",
                 isServicesRoute
-                  ? "bg-muted text-primary"
-                  : "text-foreground hover:bg-muted/80 hover:text-primary",
+                  ? "border-primary/10 bg-primary/5 text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)]"
+                  : "border-transparent text-foreground hover:-translate-y-px hover:border-border/70 hover:bg-muted/60 hover:text-primary",
               )}
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+              aria-expanded={isMobileServicesOpen}
             >
               Services
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[560px]" : "max-h-0"}`}>
-              <div className="space-y-3 py-2 pl-3">
+            <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"}`}>
+              <div className="mt-2 space-y-3 rounded-2xl border border-border/60 bg-muted/25 p-3">
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
@@ -292,10 +293,10 @@ const Header = () => {
                         key={service.name}
                         to={service.href}
                         className={cn(
-                          "group flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
+                          "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
                           location.pathname === service.href
-                            ? "bg-muted text-foreground"
-                            : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                            ? "bg-background text-foreground shadow-[0_10px_22px_rgba(15,23,42,0.05)]"
+                            : "text-muted-foreground hover:bg-background hover:text-foreground",
                         )}
                         onClick={closeMobileMenu}
                       >
@@ -315,14 +316,7 @@ const Header = () => {
             <NavLink
               key={link.name}
               to={link.href}
-              className={({ isActive }) =>
-                cn(
-                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
-                  isActive
-                    ? "bg-muted text-primary"
-                    : "text-foreground hover:bg-muted/80 hover:text-primary",
-                )
-              }
+              className={({ isActive }) => mobileNavItemClass(isActive)}
               onClick={closeMobileMenu}
             >
               {link.name}
@@ -330,7 +324,7 @@ const Header = () => {
           ))}
           
           {/* CTA Buttons */}
-          <div className="mt-4 flex flex-col gap-3 border-t border-border/70 pt-5">
+          <div className="mt-5 flex flex-col gap-3 border-t border-border/70 pt-5">
             {user ? (
               <>
                 {isAdmin && (
