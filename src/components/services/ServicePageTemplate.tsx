@@ -63,13 +63,13 @@ const resolveServiceIcon = (label: string): LucideIcon => {
 };
 
 const serviceImages: Record<string, string> = {
-  "Air Shipping": "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=1920&q=80",
-  "Ocean Shipping": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80",
-  "Personal Shopping": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1920&q=80",
-  "Procurement Services": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80",
-  "Import/Export Services": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80",
-  "Warehousing & Storage": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80",
-  "Customs Clearance": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80",
+  "Air Shipping": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1920&q=80",
+  "Ocean Shipping": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1920&q=80",
+  "Personal Shopping": "https://images.unsplash.com/photo-1607083206968-13611e3d76db?auto=format&fit=crop&w=1920&q=80",
+  "Procurement Services": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1920&q=80",
+  "Import/Export Services": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1920&q=80",
+  "Warehousing & Storage": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1920&q=80",
+  "Customs Clearance": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=80",
 };
 
 const ServicePageTemplate = ({

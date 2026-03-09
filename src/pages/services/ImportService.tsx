@@ -44,10 +44,10 @@ const steps = [
 
 const importHeroImage = "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80";
 
-const warehouseFlagMap: Record<string, { code: string; label: string; image: string }> = {
-  China: { code: "CN", label: "China", image: "https://flagcdn.com/w80/cn.png" },
-  "United States": { code: "US", label: "United States", image: "https://flagcdn.com/w80/us.png" },
-  "United Kingdom": { code: "UK", label: "United Kingdom", image: "https://flagcdn.com/w80/gb.png" },
+const warehouseFlagMap: Record<string, { label: string; image: string }> = {
+  China: { label: "China", image: "https://flagcdn.com/w80/cn.png" },
+  "United States": { label: "United States", image: "https://flagcdn.com/w80/us.png" },
+  "United Kingdom": { label: "United Kingdom", image: "https://flagcdn.com/w80/gb.png" },
 };
 
 const preferredWarehouseCountryOrder = ["China", "United States", "United Kingdom"];
@@ -109,23 +109,22 @@ const ImportService = () => {
                   <Link to="/shipping?flow=import&intent=quote">Get Shipping Quote</Link>
                 </Button>
               </div>
-              <div className="mt-10 grid gap-4 md:grid-cols-[1.3fr_0.85fr_0.85fr]">
-                <div className="rounded-[28px] border border-white/14 bg-white/10 p-5 backdrop-blur-md shadow-[0_18px_40px_rgba(0,0,0,0.16)]">
-                  <p className="text-sm font-medium text-white/72">Supported warehouse countries</p>
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-3">
+              <div className="mt-10 grid gap-4 lg:grid-cols-[1.3fr_0.85fr_0.85fr]">
+                <div className="rounded-2xl border border-white/14 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.08))] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.16)] backdrop-blur-sm sm:p-6">
+                  <p className="text-sm font-semibold tracking-[0.01em] text-white">Supported warehouse countries</p>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                     {featuredWarehouseCountries.map((country) => (
-                      <div key={country} className="flex items-center gap-3 rounded-2xl border border-white/12 bg-white/10 px-3 py-3 shadow-[0_10px_24px_rgba(0,0,0,0.08)]">
+                      <div key={country} className="flex items-center gap-3">
                         <img
                           src={warehouseFlagMap[country].image}
                           alt={`${warehouseFlagMap[country].label} flag`}
-                          className="h-10 w-10 rounded-full border-2 border-white/90 object-cover shadow-[0_6px_16px_rgba(0,0,0,0.14)]"
+                          className="h-6 w-9 rounded-[3px] object-cover shadow-[0_6px_12px_rgba(0,0,0,0.18)]"
                           loading="lazy"
                           decoding="async"
                         />
-                        <div className="min-w-0">
-                          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">{warehouseFlagMap[country].code}</p>
-                          <p className="truncate text-sm font-semibold text-white">{warehouseFlagMap[country].label}</p>
-                        </div>
+                        <p className="text-sm font-semibold text-white sm:text-[15px]">
+                          {warehouseFlagMap[country].label}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -173,15 +172,13 @@ const ImportService = () => {
                 {featuredWarehouseCountries.map((country) => (
                   <Card key={country} className="border-border/60 bg-card shadow-[0_12px_28px_rgba(15,23,42,0.04)]">
                     <CardContent className="flex items-center gap-4 p-5">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/15 bg-accent/10 shadow-[0_8px_20px_rgba(223,81,1,0.08)]">
-                        <img
-                          src={warehouseFlagMap[country].image}
-                          alt={`${warehouseFlagMap[country].label} flag`}
-                          className="h-10 w-10 rounded-full object-cover shadow-[0_6px_14px_rgba(0,0,0,0.12)]"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
+                      <img
+                        src={warehouseFlagMap[country].image}
+                        alt={`${warehouseFlagMap[country].label} flag`}
+                        className="h-7 w-10 rounded-[3px] object-cover shadow-[0_6px_14px_rgba(15,23,42,0.12)]"
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <div>
                         <p className="font-semibold text-foreground">{warehouseFlagMap[country]?.label ?? country}</p>
                         <p className="text-sm text-muted-foreground">Active RAC warehouse location</p>
