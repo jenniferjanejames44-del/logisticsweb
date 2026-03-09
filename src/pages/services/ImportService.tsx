@@ -181,7 +181,6 @@ const ImportService = () => {
                       />
                       <div>
                         <p className="font-semibold text-foreground">{warehouseFlagMap[country]?.label ?? country}</p>
-                        <p className="text-sm text-muted-foreground">Active RAC warehouse location</p>
                       </div>
                     </CardContent>
                   </Card>
