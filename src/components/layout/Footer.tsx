@@ -23,10 +23,38 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", href: "https://facebook.com/raclogistics", label: "Facebook", icon: SiFacebook, iconClassName: "text-[#1877F2]" },
-    { name: "Twitter", href: "https://twitter.com/raclogistics", label: "Twitter", icon: SiX, iconClassName: "text-[#111111]" },
-    { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", label: "LinkedIn", icon: SiLinkedin, iconClassName: "text-[#0A66C2]" },
-    { name: "Instagram", href: "https://instagram.com/raclogistics", label: "Instagram", icon: SiInstagram, iconClassName: "text-[#E4405F]" },
+    {
+      name: "Facebook",
+      href: "https://facebook.com/raclogistics",
+      label: "Facebook",
+      icon: SiFacebook,
+      iconClassName: "text-white",
+      badgeClassName: "bg-[#1877F2]",
+    },
+    {
+      name: "Instagram",
+      href: "https://instagram.com/raclogistics",
+      label: "Instagram",
+      icon: SiInstagram,
+      iconClassName: "text-white",
+      badgeClassName: "bg-[linear-gradient(135deg,#F58529_0%,#DD2A7B_45%,#8134AF_70%,#515BD4_100%)]",
+    },
+    {
+      name: "Twitter",
+      href: "https://twitter.com/raclogistics",
+      label: "Twitter",
+      icon: SiX,
+      iconClassName: "text-white",
+      badgeClassName: "bg-[#111111]",
+    },
+    {
+      name: "LinkedIn",
+      href: "https://linkedin.com/company/raclogistics",
+      label: "LinkedIn",
+      icon: SiLinkedin,
+      iconClassName: "text-white",
+      badgeClassName: "bg-[#0A66C2]",
+    },
   ];
 
   return (
@@ -54,9 +82,13 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-1 hover:scale-[1.03]"
+                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/10 p-1.5 shadow-[0_10px_24px_rgba(0,0,0,0.2)] ring-1 ring-white/10 transition-all duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:bg-white/15"
                     >
-                      <SocialIcon className={`h-[20px] w-[20px] ${social.iconClassName}`} />
+                      <span
+                        className={`flex h-full w-full items-center justify-center rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] ${social.badgeClassName}`}
+                      >
+                        <SocialIcon className={`h-[18px] w-[18px] ${social.iconClassName}`} />
+                      </span>
                     </a>
                   );
                 })}
