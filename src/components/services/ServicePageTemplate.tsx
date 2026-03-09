@@ -1,5 +1,20 @@
 import { Link } from "react-router-dom";
-import { LucideIcon, CheckCircle, ArrowRight } from "lucide-react";
+import {
+  LucideIcon,
+  CheckCircle,
+  ArrowRight,
+  PlaneTakeoff,
+  Globe2,
+  Thermometer,
+  ShieldCheck,
+  Truck,
+  Warehouse,
+  FileCheck,
+  Box,
+  BadgeDollarSign,
+  Leaf,
+  Search,
+} from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import LiveChat from "@/components/LiveChat";
@@ -28,6 +43,24 @@ interface ServicePageProps {
   benefits: Benefit[];
   features: string[];
 }
+
+const resolveServiceIcon = (label: string): LucideIcon => {
+  const value = label.toLowerCase();
+
+  if (value.includes("express") || value.includes("fast") || value.includes("priority") || value.includes("air")) return PlaneTakeoff;
+  if (value.includes("global") || value.includes("world") || value.includes("coverage") || value.includes("destination") || value.includes("country")) return Globe2;
+  if (value.includes("track") || value.includes("visibility") || value.includes("real-time") || value.includes("monitor")) return Search;
+  if (value.includes("temperature") || value.includes("climate")) return Thermometer;
+  if (value.includes("security") || value.includes("secure") || value.includes("dangerous") || value.includes("assurance")) return ShieldCheck;
+  if (value.includes("delivery") || value.includes("pickup") || value.includes("door") || value.includes("transit")) return Truck;
+  if (value.includes("warehouse") || value.includes("storage") || value.includes("inventory") || value.includes("fulfillment")) return Warehouse;
+  if (value.includes("customs") || value.includes("document") || value.includes("compliance") || value.includes("broker") || value.includes("classification")) return FileCheck;
+  if (value.includes("cost") || value.includes("savings") || value.includes("price") || value.includes("duty")) return BadgeDollarSign;
+  if (value.includes("eco") || value.includes("sustainability")) return Leaf;
+  if (value.includes("cargo") || value.includes("container") || value.includes("bulk") || value.includes("goods") || value.includes("handling")) return Box;
+
+  return CheckCircle;
+};
 
 const serviceImages: Record<string, string> = {
   "Air Shipping": "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=1920&q=80",
@@ -112,18 +145,22 @@ const ServicePageTemplate = ({
         <section className="section-padding section-alt">
           <div className="section-container">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 lg:gap-6">
-              {features.map((feature, index) => (
-                <Card
-                  key={feature}
-                  className="flex items-center gap-3 border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/15"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <span className="icon-surface h-10 w-10 flex-shrink-0 border-primary/10 bg-primary/5">
-                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
-                  </span>
-                  <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
-                </Card>
-              ))}
+              {features.map((feature, index) => {
+                const FeatureIcon = resolveServiceIcon(feature);
+
+                return (
+                  <Card
+                    key={feature}
+                    className="flex items-center gap-3 border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/15"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 text-primary shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
+                      <FeatureIcon className="h-6 w-6 flex-shrink-0" strokeWidth={2.3} />
+                    </span>
+                    <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -190,23 +227,27 @@ const ServicePageTemplate = ({
             </div>
             
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
-              {benefits.map((benefit, index) => (
-                <Card
-                  key={benefit.title}
-                  className={`group border-border transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 ${
-                    benefitsInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-                  }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <CardContent className="p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 shadow-[0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:bg-primary/15 sm:h-14 sm:w-14">
-                      <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
-                    </div>
-                    <h3 className="mb-2 text-foreground">{benefit.title}</h3>
-                    <p className="text-base leading-relaxed text-muted-foreground">{benefit.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {benefits.map((benefit, index) => {
+                const BenefitIcon = resolveServiceIcon(`${benefit.title} ${benefit.description}`);
+
+                return (
+                  <Card
+                    key={benefit.title}
+                    className={`group border-border transition-all duration-500 hover:-translate-y-1 hover:border-primary/20 ${
+                      benefitsInView ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                    }`}
+                    style={{ transitionDelay: `${index * 100}ms` }}
+                  >
+                    <CardContent className="p-6">
+                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 shadow-[0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:bg-primary/10 sm:h-14 sm:w-14">
+                        <BenefitIcon className="h-6 w-6 text-primary sm:h-7 sm:w-7" strokeWidth={2.3} />
+                      </div>
+                      <h3 className="mb-2 text-foreground">{benefit.title}</h3>
+                      <p className="text-base leading-relaxed text-muted-foreground">{benefit.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>

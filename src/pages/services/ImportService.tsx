@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Globe, Warehouse, Clock3, ArrowRight, ClipboardList, CheckCircle2 } from "lucide-react";
+import { Globe, Warehouse, Clock3, ArrowRight, ClipboardList, PackageCheck, Route, FileCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -11,9 +11,21 @@ import { Button } from "@/components/ui/button";
 const fallbackWarehouseCountries = ["China", "United Kingdom", "United States"];
 
 const importHighlights = [
-  "Ship from our overseas warehouse locations into your destination market.",
-  "We coordinate warehouse intake, labeling, export dispatch, and final-mile handoff.",
-  "You can move straight into the existing shipment flow for booking or quote generation.",
+  {
+    title: "Warehouse-ready intake",
+    description: "Ship from our overseas warehouse locations into your destination market.",
+    icon: PackageCheck,
+  },
+  {
+    title: "Coordinated movement",
+    description: "We coordinate warehouse intake, labeling, export dispatch, and final-mile handoff.",
+    icon: Route,
+  },
+  {
+    title: "Fast workflow entry",
+    description: "You can move straight into the existing shipment flow for booking or quote generation.",
+    icon: FileCheck,
+  },
 ];
 
 const timeline = [
@@ -29,6 +41,14 @@ const steps = [
   { title: "Review charges and documentation", description: "Confirm declared value, packaging extras, and any notes before submission." },
   { title: "Track delivery to completion", description: "Once booked, your shipment moves through customs, line-haul, and final delivery with live tracking." },
 ];
+
+const importHeroImage = "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80";
+
+const warehouseFlagMap: Record<string, { flag: string; label: string }> = {
+  China: { flag: "🇨🇳", label: "China" },
+  "United States": { flag: "🇺🇸", label: "United States" },
+  "United Kingdom": { flag: "🇬🇧", label: "United Kingdom" },
+};
 
 const ImportService = () => {
   const [warehouseCountries, setWarehouseCountries] = useState<string[]>(fallbackWarehouseCountries);
@@ -52,12 +72,25 @@ const ImportService = () => {
     [warehouseCountries.length],
   );
 
+  const featuredWarehouseCountries = useMemo(
+    () => warehouseCountries.filter((country) => country in warehouseFlagMap),
+    [warehouseCountries],
+  );
+
+  const additionalWarehouseCountries = useMemo(
+    () => warehouseCountries.filter((country) => !(country in warehouseFlagMap)),
+    [warehouseCountries],
+  );
+
   return (
     <div className="min-h-screen">
       <Header />
       <main>
-        <section className="hero-gradient relative overflow-hidden bg-primary pb-20 pt-32 md:pb-24 md:pt-40">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.18),transparent_32%)]" />
+        <section className="hero-gradient relative flex min-h-[520px] items-center overflow-hidden bg-primary pb-16 pt-28 md:pb-20 md:pt-32">
+          <div className="absolute inset-0">
+            <img src={importHeroImage} alt="Import logistics containers arriving at port" className="h-full w-full object-cover" loading="eager" decoding="async" />
+          </div>
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.52),rgba(6,16,67,0.72)),radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_34%)]" />
           <div className="section-container relative z-10 max-w-6xl">
             <div className="max-w-4xl">
               <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm">
@@ -77,7 +110,7 @@ const ImportService = () => {
               </div>
               <div className="mt-10 grid gap-4 md:grid-cols-3">
                 {introStats.map((item) => (
-                  <div key={item.label} className="rounded-2xl border border-white/10 bg-white/10 p-5 backdrop-blur-sm">
+                  <div key={item.label} className="rounded-2xl border border-white/12 bg-white/10 p-5 backdrop-blur-sm shadow-[0_16px_40px_rgba(0,0,0,0.12)]">
                     <p className="text-sm text-white/70">{item.label}</p>
                     <p className="mt-2 text-lg font-semibold text-white">{item.value}</p>
                   </div>
@@ -90,12 +123,15 @@ const ImportService = () => {
         <section className="section-padding section-alt">
           <div className="section-container grid gap-6 lg:grid-cols-3">
             {importHighlights.map((item) => (
-              <Card key={item} className="border-border/60 bg-background shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+              <Card key={item.title} className="border-border/60 bg-background shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
                 <CardContent className="flex gap-4 p-6">
-                  <span className="icon-surface h-11 w-11 shrink-0 border-primary/10 bg-primary/5">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 text-primary shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
+                    <item.icon className="h-6 w-6" strokeWidth={2.3} />
                   </span>
-                  <p className="text-base leading-relaxed text-muted-foreground">{item}</p>
+                  <div>
+                    <p className="font-semibold text-foreground">{item.title}</p>
+                    <p className="mt-1 text-base leading-relaxed text-muted-foreground">{item.description}</p>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -113,12 +149,34 @@ const ImportService = () => {
                 </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {warehouseCountries.map((country) => (
-                  <Card key={country} className="border-border/60 bg-card">
-                    <CardContent className="p-5 font-medium text-foreground">{country}</CardContent>
+                {featuredWarehouseCountries.map((country) => (
+                  <Card key={country} className="border-border/60 bg-card shadow-[0_12px_28px_rgba(15,23,42,0.04)]">
+                    <CardContent className="flex items-center gap-4 p-5">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-accent/15 bg-accent/10 text-2xl shadow-[0_8px_20px_rgba(223,81,1,0.08)]">
+                        {warehouseFlagMap[country]?.flag}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-foreground">{warehouseFlagMap[country]?.label ?? country}</p>
+                        <p className="text-sm text-muted-foreground">Active RAC warehouse location</p>
+                      </div>
+                    </CardContent>
                   </Card>
                 ))}
               </div>
+              {additionalWarehouseCountries.length > 0 && (
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {additionalWarehouseCountries.map((country) => (
+                    <Card key={country} className="border-border/60 bg-card">
+                      <CardContent className="flex items-center gap-3 p-4 text-sm font-medium text-foreground">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/10 bg-primary/5 text-primary">
+                          <Globe className="h-5 w-5" />
+                        </span>
+                        {country}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-[0_14px_34px_rgba(15,23,42,0.04)]">

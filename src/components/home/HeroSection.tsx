@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import TrackingCard from "./TrackingCard";
 import heroVideo from "@/assets/hero-logistics-video.mp4";
 import heroPoster from "@/assets/hero-logistics.jpg";
@@ -62,23 +63,21 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`flex flex-row items-center justify-center gap-4 mb-12 transition-all duration-700 delay-300 ${
+          <div className={`mb-12 flex flex-col items-center justify-center gap-4 transition-all duration-700 delay-300 sm:flex-row ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <Link 
-              to="/pricing"
-              className="btn btn-primary btn-lg"
-            >
-              Get Quote
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </Link>
-            <Link 
-              to="/auth"
-              className="btn btn-secondary btn-lg"
-            >
-              Sign Up
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </Link>
+            <Button asChild variant="heroPrimary" size="xl" className="w-full sm:w-auto">
+              <Link to="/pricing">
+                Get Quote
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </Link>
+            </Button>
+            <Button asChild variant="heroSecondary" size="xl" className="w-full sm:w-auto">
+              <Link to="/auth">
+                Sign Up
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              </Link>
+            </Button>
           </div>
 
           {/* Tracking Card Component */}

@@ -36,8 +36,8 @@ const buttonVariants = cva(
         navOutline: "bg-transparent text-primary border border-primary/18 hover:-translate-y-px hover:bg-primary/5 active:scale-[0.98]",
 
         /* Hero variants */
-        heroPrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_16px_34px_rgba(223,81,1,0.24)] active:scale-[0.98] active:translate-y-0",
-        heroSecondary: "border border-white/80 bg-white/95 text-primary shadow-[0_10px_24px_rgba(0,0,0,0.12)] hover:-translate-y-px hover:bg-white hover:text-primary hover:shadow-[0_14px_28px_rgba(255,255,255,0.18)] active:scale-[0.98] active:translate-y-0",
+        heroPrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-[0_16px_34px_rgba(6,16,67,0.24)] active:scale-[0.98] active:translate-y-0",
+        heroSecondary: "border border-white/80 bg-white text-primary shadow-[0_10px_24px_rgba(0,0,0,0.12)] hover:-translate-y-px hover:border-accent hover:bg-accent hover:text-accent-foreground hover:shadow-[0_16px_34px_rgba(223,81,1,0.22)] active:scale-[0.98] active:translate-y-0",
         heroOutline: "bg-transparent text-white border border-white/55 hover:-translate-y-px hover:bg-white/10 hover:border-white active:scale-[0.98]",
 
         /* CTA variants - Orange for high-intent actions */

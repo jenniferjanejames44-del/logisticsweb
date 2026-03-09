@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Send, Globe2, ShieldCheck, Box, ArrowRight, ClipboardList } from "lucide-react";
+import { Send, Globe2, ShieldCheck, Box, ArrowRight, ClipboardList, FileCheck, PackageCheck, Boxes } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,15 +9,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const shippingRules = [
-  "Use accurate product descriptions and declared values for all export items.",
-  "Avoid prohibited or restricted goods for the selected destination country.",
-  "Make sure sender and receiver contact details are complete before dispatch.",
+  {
+    title: "Declare items accurately",
+    description: "Use accurate product descriptions and declared values for all export items.",
+    icon: FileCheck,
+  },
+  {
+    title: "Follow destination restrictions",
+    description: "Avoid prohibited or restricted goods for the selected destination country.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Confirm shipment details",
+    description: "Make sure sender and receiver contact details are complete before dispatch.",
+    icon: PackageCheck,
+  },
 ];
 
 const packagingGuidelines = [
-  { title: "Protect fragile items", detail: "Use cushioning, reinforced corners, and inner box support for sensitive cargo." },
-  { title: "Seal and label clearly", detail: "Apply durable outer packaging and ensure destination labels remain visible throughout transit." },
-  { title: "Separate mixed items", detail: "Group SKUs and quantities clearly so customs checks and delivery handling stay accurate." },
+  { title: "Protect fragile items", detail: "Use cushioning, reinforced corners, and inner box support for sensitive cargo.", icon: Box },
+  { title: "Seal and label clearly", detail: "Apply durable outer packaging and ensure destination labels remain visible throughout transit.", icon: FileCheck },
+  { title: "Separate mixed items", detail: "Group SKUs and quantities clearly so customs checks and delivery handling stay accurate.", icon: Boxes },
 ];
 
 const exportSteps = [
@@ -26,6 +38,8 @@ const exportSteps = [
   { title: "Dispatch from origin", description: "We process the export booking, line-haul arrangement, and route your package internationally." },
   { title: "Track to delivery", description: "Monitor your shipment from export pickup to destination clearance and final delivery." },
 ];
+
+const exportHeroImage = "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80";
 
 const ExportService = () => {
   const [destinations, setDestinations] = useState<string[]>([]);
@@ -45,8 +59,11 @@ const ExportService = () => {
     <div className="min-h-screen">
       <Header />
       <main>
-        <section className="hero-gradient relative overflow-hidden bg-primary pb-20 pt-32 md:pb-24 md:pt-40">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.18),transparent_32%)]" />
+        <section className="hero-gradient relative flex min-h-[520px] items-center overflow-hidden bg-primary pb-16 pt-28 md:pb-20 md:pt-32">
+          <div className="absolute inset-0">
+            <img src={exportHeroImage} alt="Export cargo leaving port" className="h-full w-full object-cover" loading="eager" decoding="async" />
+          </div>
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.52),rgba(6,16,67,0.72)),radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_34%)]" />
           <div className="section-container relative z-10 max-w-6xl">
             <div className="max-w-4xl">
               <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm">
@@ -67,10 +84,15 @@ const ExportService = () => {
         <section className="section-padding section-alt">
           <div className="section-container grid gap-6 lg:grid-cols-3">
             {shippingRules.map((rule) => (
-              <Card key={rule} className="border-border/60 bg-background shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
+              <Card key={rule.title} className="border-border/60 bg-background shadow-[0_12px_30px_rgba(15,23,42,0.04)]">
                 <CardContent className="flex gap-4 p-6">
-                  <span className="icon-surface h-11 w-11 shrink-0 border-primary/10 bg-primary/5"><ShieldCheck className="h-5 w-5 text-primary" /></span>
-                  <p className="text-base leading-relaxed text-muted-foreground">{rule}</p>
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-primary/10 bg-primary/5 text-primary shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
+                    <rule.icon className="h-6 w-6" strokeWidth={2.3} />
+                  </span>
+                  <div>
+                    <p className="font-semibold text-foreground">{rule.title}</p>
+                    <p className="mt-1 text-base leading-relaxed text-muted-foreground">{rule.description}</p>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -111,8 +133,15 @@ const ExportService = () => {
               <div className="space-y-4">
                 {packagingGuidelines.map((item) => (
                   <div key={item.title} className="rounded-2xl border border-border/60 bg-background p-4">
-                    <p className="font-semibold text-foreground">{item.title}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
+                    <div className="flex items-start gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/10 text-accent shadow-[0_8px_20px_rgba(223,81,1,0.08)]">
+                        <item.icon className="h-5 w-5" strokeWidth={2.3} />
+                      </span>
+                      <div>
+                        <p className="font-semibold text-foreground">{item.title}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
