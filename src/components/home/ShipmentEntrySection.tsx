@@ -69,19 +69,22 @@ const ShipmentEntrySection = () => {
 
   const isComplete = origin && destination && weight && parseFloat(weight) > 0;
 
-  const inputClass = "h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors";
+  const inputClass = "h-12 rounded-lg bg-card border-border text-foreground placeholder:text-muted-foreground shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:border-primary/25 focus:border-primary";
 
   return (
-    <section className="section-padding bg-muted relative overflow-hidden">
+    <section className="section-padding bg-background relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.08),transparent_48%)]" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="section-container relative z-10">
-        <div className="mb-10 text-center">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
-            <Package className="w-4 h-4" />
+        <div className="mb-10 text-center animate-fade-in-soft">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.16)]">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-foreground/15">
+              <Package className="w-4 h-4" />
+            </span>
             Quick Shipping
           </span>
           <h2 className="text-foreground mb-4">
@@ -93,11 +96,14 @@ const ShipmentEntrySection = () => {
         </div>
 
         <div className="max-w-3xl mx-auto">
-          <div className="rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:p-8">
+          <div className="rounded-lg border border-border bg-card p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05),0_2px_8px_rgba(15,23,42,0.03)] transition-all duration-300 hover:shadow-[0_18px_40px_rgba(15,23,42,0.08),0_6px_14px_rgba(15,23,42,0.05)] sm:p-8">
             <div className="grid gap-5 sm:grid-cols-3">
               <div className="space-y-2">
-                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" /> Origin Country
+                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-2">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/8 text-primary">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </span>
+                  Origin Country
                 </Label>
                 <Select value={origin} onValueChange={setOrigin}>
                   <SelectTrigger className={inputClass}>
@@ -112,8 +118,11 @@ const ShipmentEntrySection = () => {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" /> Destination Country
+                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-2">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/8 text-primary">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </span>
+                  Destination Country
                 </Label>
                 <Select value={destination} onValueChange={setDestination}>
                   <SelectTrigger className={inputClass}>
@@ -128,8 +137,11 @@ const ShipmentEntrySection = () => {
               </div>
 
               <div className="space-y-2">
-                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1.5">
-                  <Scale className="w-3.5 h-3.5" /> Weight (KG)
+                <Label className="text-muted-foreground text-sm font-medium flex items-center gap-2">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/8 text-primary">
+                    <Scale className="w-3.5 h-3.5" />
+                  </span>
+                  Weight (KG)
                 </Label>
                 <Input
                   type="number"
@@ -145,9 +157,11 @@ const ShipmentEntrySection = () => {
 
             {/* Instant price preview */}
             {estimatedCost !== null && (
-              <div className="mt-5 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 p-5">
+              <div className="mt-5 flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 p-5 animate-fade-in-soft">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-primary" />
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <DollarSign className="w-5 h-5 text-primary" />
+                  </span>
                   <span className="text-base font-semibold text-foreground">Estimated Cost</span>
                 </div>
                 <span className="text-2xl font-bold text-primary">

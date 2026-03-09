@@ -30,12 +30,12 @@ const ServicesSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding bg-muted">
+    <section ref={ref} className="section-padding section-alt">
       <div className="section-container">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-3xl text-center lg:mb-20">
           <span
-            className={`mb-5 inline-block rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground transition-all duration-500 ${
+            className={`mb-5 inline-block rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.16)] transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -65,7 +65,7 @@ const ServicesSection = () => {
               <Link
                 key={service.title}
                 to={service.href}
-                className={`group relative overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
+                className={`group relative overflow-hidden rounded-lg border border-border bg-card shadow-[0_10px_30px_rgba(15,23,42,0.05),0_2px_8px_rgba(15,23,42,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_18px_40px_rgba(15,23,42,0.08),0_6px_14px_rgba(15,23,42,0.05)] ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: `${index * 80 + 200}ms` }}
@@ -81,8 +81,10 @@ const ServicesSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-foreground/20 to-transparent group-hover:from-foreground/30 transition-all duration-300" />
 
                   {/* Icon Badge */}
-                  <div className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-lg bg-white shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-transform duration-200 group-hover:scale-105">
-                    <ServiceIcon className="w-6 h-6 text-primary" strokeWidth={2.5} />
+                  <div className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-xl border border-white/50 bg-white/95 shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-[1.03]">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <ServiceIcon className="w-6 h-6 text-primary" strokeWidth={2.5} />
+                    </span>
                   </div>
                 </div>
 

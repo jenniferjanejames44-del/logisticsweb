@@ -5,61 +5,61 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "font-display inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-semibold ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 select-none",
+  "font-display inline-flex transform-gpu select-none items-center justify-center gap-2 whitespace-nowrap rounded-md text-base font-semibold ring-offset-background transition-all duration-200 ease-out will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         /* PRIMARY BUTTON - Brand Orange */
-        default: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:brightness-[1.03] active:scale-[0.98]",
+        default: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
 
         /* SECONDARY BUTTON - Outline Navy */
-        secondary: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
+        secondary: "bg-background text-primary border border-primary/20 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:bg-primary/5 hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)] active:scale-[0.98]",
 
         /* ACCENT BUTTON - Alias of primary CTA */
-        accent: "border border-accent bg-accent text-accent-foreground hover:brightness-[1.03] active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold",
+        accent: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
 
         /* Ghost Button */
-        ghost: "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground active:scale-[0.98]",
+        ghost: "bg-transparent text-muted-foreground hover:-translate-y-px hover:bg-muted hover:text-foreground active:scale-[0.98]",
 
         /* Outline - Navy border */
-        outline: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
+        outline: "bg-background text-primary border border-primary/20 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:bg-primary/5 hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)] active:scale-[0.98]",
 
         /* Destructive */
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]",
+        destructive: "bg-destructive text-destructive-foreground shadow-[0_4px_20px_rgba(220,38,38,0.14)] hover:-translate-y-px hover:bg-destructive/90 hover:shadow-[0_12px_24px_rgba(220,38,38,0.18)] active:scale-[0.98]",
 
         /* Link Style */
         link: "text-primary underline-offset-4 hover:text-accent hover:underline p-0 h-auto font-semibold",
 
         /* Navigation variants */
-        nav: "bg-primary text-primary-foreground hover:bg-[hsl(var(--primary-hover))] active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
-        navSecondary: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
-        navOutline: "bg-transparent text-primary border border-primary/18 hover:bg-primary/5 active:scale-[0.98]",
+        nav: "bg-primary text-primary-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:bg-[hsl(var(--primary-hover))] hover:shadow-[0_14px_30px_rgba(6,16,67,0.16)] active:scale-[0.98]",
+        navSecondary: "bg-background text-primary border border-primary/20 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:bg-primary/5 hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)] active:scale-[0.98]",
+        navOutline: "bg-transparent text-primary border border-primary/18 hover:-translate-y-px hover:bg-primary/5 active:scale-[0.98]",
 
         /* Hero variants */
-        heroPrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:brightness-[1.03] active:scale-[0.98] active:translate-y-0",
-        heroSecondary: "bg-background text-primary border border-white/70 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:bg-white hover:text-primary active:scale-[0.98] active:translate-y-0",
-        heroOutline: "bg-transparent text-white border border-white/55 hover:bg-white/10 hover:border-white active:scale-[0.98]",
+        heroPrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_16px_34px_rgba(223,81,1,0.24)] active:scale-[0.98] active:translate-y-0",
+        heroSecondary: "border border-white/80 bg-white/95 text-primary shadow-[0_10px_24px_rgba(0,0,0,0.12)] hover:-translate-y-px hover:bg-white hover:text-primary hover:shadow-[0_14px_28px_rgba(255,255,255,0.18)] active:scale-[0.98] active:translate-y-0",
+        heroOutline: "bg-transparent text-white border border-white/55 hover:-translate-y-px hover:bg-white/10 hover:border-white active:scale-[0.98]",
 
         /* CTA variants - Orange for high-intent actions */
-        cta: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:brightness-[1.03] active:scale-[0.98] active:translate-y-0",
-        navCta: "border border-accent bg-accent text-accent-foreground hover:brightness-[1.03] active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
-        ctaOutline: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
+        cta: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_16px_34px_rgba(223,81,1,0.24)] active:scale-[0.98] active:translate-y-0",
+        navCta: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
+        ctaOutline: "bg-background text-primary border border-primary/20 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:bg-primary/5 hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)] active:scale-[0.98]",
 
         /* Legacy variants - mapped to new system */
         outlineNavy: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98]",
-        premium: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:brightness-[1.03] active:scale-[0.98]",
-        indigoOutline: "bg-background text-primary border border-primary/20 hover:bg-primary/5 active:scale-[0.98]",
-        dynamic: "bg-primary text-primary-foreground hover:bg-[hsl(var(--primary-hover))] active:scale-[0.98]",
-        quote: "bg-accent text-accent-foreground hover:bg-[hsl(var(--accent-orange-hover))] active:scale-[0.98]",
-        quotePrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:brightness-[1.03] active:scale-[0.98]",
-        quoteAccent: "bg-accent text-accent-foreground hover:bg-[hsl(var(--accent-orange-hover))] active:scale-[0.98] font-semibold",
+        premium: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
+        indigoOutline: "bg-background text-primary border border-primary/20 hover:-translate-y-px hover:bg-primary/5 active:scale-[0.98]",
+        dynamic: "bg-primary text-primary-foreground hover:-translate-y-px hover:bg-[hsl(var(--primary-hover))] active:scale-[0.98]",
+        quote: "bg-accent text-accent-foreground hover:-translate-y-px hover:bg-[hsl(var(--accent-orange-hover))] active:scale-[0.98]",
+        quotePrimary: "border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
+        quoteAccent: "bg-accent text-accent-foreground font-semibold hover:-translate-y-px hover:bg-[hsl(var(--accent-orange-hover))] active:scale-[0.98]",
 
         /* Dashboard-specific variants — rounded-lg, h-12, font-semibold */
-        dashPrimary: "rounded-lg border border-accent bg-accent text-accent-foreground hover:brightness-[1.03] active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold",
-        dashAccent: "rounded-lg border border-accent bg-accent text-accent-foreground hover:brightness-[1.03] active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold",
-        dashOutline: "rounded-lg bg-background text-foreground border border-border hover:bg-muted active:scale-[0.98] font-semibold shadow-[0_4px_20px_rgba(0,0,0,0.05)]",
-        dashGhost: "rounded-lg bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground active:scale-[0.98] font-semibold",
-        dashDestructive: "rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98] font-semibold",
+        dashPrimary: "rounded-lg border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
+        dashAccent: "rounded-lg border border-accent bg-accent text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold hover:-translate-y-px hover:brightness-[1.03] hover:shadow-[0_14px_30px_rgba(223,81,1,0.2)] active:scale-[0.98]",
+        dashOutline: "rounded-lg bg-background text-foreground border border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)] font-semibold hover:-translate-y-px hover:bg-muted hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)] active:scale-[0.98]",
+        dashGhost: "rounded-lg bg-transparent text-muted-foreground font-semibold hover:-translate-y-px hover:bg-muted hover:text-foreground active:scale-[0.98]",
+        dashDestructive: "rounded-lg bg-destructive text-destructive-foreground font-semibold hover:-translate-y-px hover:bg-destructive/90 active:scale-[0.98]",
       },
       size: {
         default: "h-11 px-5 py-3 text-base",

@@ -50,18 +50,18 @@ const Header = () => {
   const isServicesRoute = location.pathname === "/services" || location.pathname.startsWith("/services/");
   const navItemClass = (isActive: boolean) =>
     cn(
-      "font-display rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200",
+      "font-display relative rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-3 after:h-0.5 after:w-[calc(100%-24px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
       isActive
-        ? "bg-muted text-primary"
-        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+        ? "bg-muted text-primary after:scale-x-100"
+        : "text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:after:scale-x-100",
     );
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "h-20 border-b border-border/80 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
-          : "h-20 border-b border-border/70 bg-white"
+          ? "h-20 border-b border-border/80 bg-white/95 shadow-[0_10px_24px_rgba(15,23,42,0.06)] backdrop-blur-xl"
+          : "h-20 border-b border-border/70 bg-white/92 backdrop-blur-md"
       }`}
     >
       <div className="section-container flex h-full items-center justify-between gap-6 px-4 sm:px-6">
@@ -87,22 +87,25 @@ const Header = () => {
             <DropdownMenuTrigger asChild>
               <button 
                 className={cn(
-                  "font-display flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200",
+                  "font-display flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px",
                   isServicesRoute
                     ? "bg-muted text-primary"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                 )}
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-60 rounded-2xl border border-border/80 bg-white p-2 shadow-[0_14px_34px_rgba(15,23,42,0.08)]">
+            <DropdownMenuContent align="center" className="animate-fade-in-soft w-64 rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
               <DropdownMenuItem asChild className="p-0 mb-1">
                 <Link
                   to="/services"
-                  className="flex w-full items-center gap-3 rounded-lg px-3 py-3 font-semibold text-primary transition-colors hover:bg-primary/5"
+                  className="flex w-full items-center gap-3 rounded-lg px-3 py-3 font-semibold text-primary transition-all duration-200 hover:-translate-y-px hover:bg-primary/5"
                 >
+                  <span className="icon-surface h-9 w-9 border-primary/10 bg-primary/5">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                   View All Services
                 </Link>
               </DropdownMenuItem>
@@ -110,9 +113,11 @@ const Header = () => {
                 <DropdownMenuItem key={service.name} asChild className="p-0">
                   <Link
                     to={service.href}
-                    className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="group flex w-full items-center gap-3 rounded-lg px-3 py-3 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
                   >
-                    <service.icon className="w-4 h-4 text-primary" />
+                    <span className="icon-surface h-9 w-9 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
+                      <service.icon className="w-4 h-4 text-primary" />
+                    </span>
                     <span className="font-medium">{service.name}</span>
                   </Link>
                 </DropdownMenuItem>
@@ -174,7 +179,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-colors"
+          className="lg:hidden flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)]"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -224,10 +229,10 @@ const Header = () => {
               to={link.href}
               className={({ isActive }) =>
                 cn(
-                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-colors",
+                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
                   isActive
                     ? "bg-muted text-primary"
-                    : "text-foreground hover:bg-muted hover:text-primary",
+                    : "text-foreground hover:bg-muted/80 hover:text-primary",
                 )
               }
               onClick={() => setIsMobileMenuOpen(false)}
@@ -240,10 +245,10 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-colors",
+                "font-display flex items-center justify-between rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
                 isServicesRoute
                   ? "bg-muted text-primary"
-                  : "text-foreground hover:bg-muted hover:text-primary",
+                  : "text-foreground hover:bg-muted/80 hover:text-primary",
               )}
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
             >
@@ -255,13 +260,16 @@ const Header = () => {
                 <Link
                   to="/services"
                   className={cn(
-                    "font-display flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-colors",
+                    "font-display flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-all duration-200 hover:-translate-y-px",
                     isServicesRoute
                       ? "bg-primary/10 text-primary"
                       : "bg-primary/5 text-primary hover:bg-primary/10",
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <span className="icon-surface h-8 w-8 border-primary/10 bg-primary/10">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
                   View All Services
                 </Link>
                 {serviceLinks.map((service) => (
@@ -269,14 +277,16 @@ const Header = () => {
                     key={service.name}
                     to={service.href}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-colors",
+                      "group flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
                       location.pathname === service.href
                         ? "bg-muted text-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                        : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <service.icon className="w-4 h-4 text-primary" />
+                    <span className="icon-surface h-8 w-8 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
+                      <service.icon className="w-4 h-4 text-primary" />
+                    </span>
                     {service.name}
                   </Link>
                 ))}
@@ -290,10 +300,10 @@ const Header = () => {
               to={link.href}
               className={({ isActive }) =>
                 cn(
-                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-colors",
+                  "font-display rounded-lg px-4 py-3.5 text-[15px] font-semibold transition-all duration-200 hover:-translate-y-px",
                   isActive
                     ? "bg-muted text-primary"
-                    : "text-foreground hover:bg-muted hover:text-primary",
+                    : "text-foreground hover:bg-muted/80 hover:text-primary",
                 )
               }
               onClick={() => setIsMobileMenuOpen(false)}

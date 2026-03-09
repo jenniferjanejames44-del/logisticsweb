@@ -59,7 +59,7 @@ const ServicePageTemplate = ({
         {/* Hero Section */}
         <section
           ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
+          className="hero-gradient relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
         >
           <div className="absolute inset-0">
             <img 
@@ -70,22 +70,25 @@ const ServicePageTemplate = ({
               className="w-full h-full object-cover opacity-15"
             />
           </div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.16),transparent_30%),linear-gradient(180deg,rgba(6,16,67,0.16),rgba(6,16,67,0.42))]" />
           
           <div className="section-container relative z-10">
             <div className={`mx-auto max-w-4xl transition-all duration-500 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <Link 
                 to="/services" 
-                className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary-foreground/70 transition-colors hover:text-accent"
+                className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-primary-foreground/80 shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-px hover:bg-white/10 hover:text-accent"
               >
-                <ArrowRight className="w-4 h-4 rotate-180" />
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
+                  <ArrowRight className="w-4 h-4 rotate-180" />
+                </span>
                 Back to Services
               </Link>
               
               <div className="mb-6 flex flex-wrap items-center gap-3 sm:gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-lg backdrop-blur-sm sm:h-16 sm:w-16">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-[0_14px_30px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-px sm:h-16 sm:w-16">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" strokeWidth={2.5} />
                 </div>
-                <span className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-md sm:text-sm">
+                <span className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.18)] sm:text-sm">
                   {subtitle}
                 </span>
               </div>
@@ -106,16 +109,18 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Features Grid */}
-        <section className="section-padding bg-section-light">
+        <section className="section-padding section-alt">
           <div className="section-container">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 lg:gap-6">
               {features.map((feature, index) => (
                 <Card
                   key={feature}
-                  className="flex items-center gap-3 border-border bg-background p-6 transition-shadow duration-200 hover:border-primary/15"
+                  className="flex items-center gap-3 border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/15"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
+                  <span className="icon-surface h-10 w-10 flex-shrink-0 border-primary/10 bg-primary/5">
+                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" strokeWidth={2.5} />
+                  </span>
                   <span className="font-medium text-foreground text-sm sm:text-base">{feature}</span>
                 </Card>
               ))}
@@ -145,7 +150,7 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <div className="flex items-start gap-4 w-full md:hidden">
-                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-md">
+                    <div className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.16)]">
                       {step.step}
                     </div>
                     <Card className="flex-1 border-border transition-all duration-300 hover:border-primary/20">
@@ -165,7 +170,7 @@ const ServicePageTemplate = ({
                     </Card>
                   </div>
                   
-                  <div className="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-lg md:flex">
+                  <div className="absolute left-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] md:flex">
                     {step.step}
                   </div>
                 </div>
@@ -175,7 +180,7 @@ const ServicePageTemplate = ({
         </section>
 
         {/* Benefits */}
-        <section ref={benefitsRef} className="section-padding bg-section-light">
+        <section ref={benefitsRef} className="section-padding section-alt">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
               <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
@@ -194,7 +199,7 @@ const ServicePageTemplate = ({
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
                   <CardContent className="p-6">
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 shadow-sm transition-all duration-200 group-hover:scale-105 group-hover:bg-primary/15 sm:h-14 sm:w-14">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 shadow-[0_8px_20px_rgba(15,23,42,0.05)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:bg-primary/15 sm:h-14 sm:w-14">
                       <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="mb-2 text-foreground">{benefit.title}</h3>
@@ -207,7 +212,7 @@ const ServicePageTemplate = ({
         </section>
 
         {/* CTA Section */}
-        <section className="section-padding bg-primary">
+        <section className="hero-gradient section-padding bg-primary">
           <div className="section-container text-center">
             <h2 className="text-white mb-6">Ready to Get Started?</h2>
             <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">

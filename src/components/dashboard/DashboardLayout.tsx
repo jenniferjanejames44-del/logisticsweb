@@ -38,18 +38,18 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
   }
 
   return (
-    <div className="min-h-screen flex bg-section-light">
+    <div className="min-h-screen flex bg-[linear-gradient(180deg,hsl(var(--section-light))_0%,hsl(var(--background))_24%)]">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto ml-0 lg:ml-0">
-        <div className="section-container py-8 pt-20 lg:pt-8">
+        <div className="section-container animate-fade-in-soft py-8 pt-20 lg:pt-8">
           {/* Page Header - Clean & Spacious */}
-          <div className="mb-8 rounded-lg border border-border bg-background p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:mb-10">
-            <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-primary/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+          <div className="page-header-surface mb-8 p-6 sm:mb-10">
+            <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full bg-primary/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               <span>Dashboard</span>
               <span className="text-primary/40">/</span>
               <span>{title}</span>
             </div>
-            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div className="relative z-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div className="min-w-0">
                 <h1>{title}</h1>
                 {description && (

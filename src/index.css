@@ -126,6 +126,14 @@
     background-color: hsl(var(--background));
   }
 
+  button,
+  a,
+  [role="button"] {
+    transition-property: transform, box-shadow, background-color, border-color, color, opacity;
+    transition-duration: 220ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   /* Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
@@ -197,6 +205,21 @@
     h4 { font-size: 1.125rem; }
     p { font-size: 1rem; line-height: 1.65; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
 @layer utilities {
@@ -211,6 +234,36 @@
   /* Light Section Background */
   .bg-section-light {
     background: hsl(var(--section-light));
+  }
+
+  .section-alt {
+    background-image: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--section-light)) 100%);
+  }
+
+  .hero-gradient {
+    background-image: linear-gradient(135deg, rgba(6, 16, 67, 0.96) 0%, rgba(6, 16, 67, 0.9) 48%, rgba(223, 81, 1, 0.18) 100%);
+  }
+
+  .icon-surface {
+    @apply inline-flex items-center justify-center rounded-lg border border-border/70 bg-background/95 text-primary;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  }
+
+  .page-header-surface {
+    @apply relative overflow-hidden rounded-lg border border-border bg-background;
+    background-image: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--section-light)) 100%);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05), 0 2px 8px rgba(15, 23, 42, 0.03);
+  }
+
+  .page-header-surface::after {
+    content: "";
+    position: absolute;
+    top: -90px;
+    right: -70px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, hsla(var(--accent), 0.14) 0%, transparent 70%);
+    pointer-events: none;
   }
   
   /* Custom Scrollbar */
@@ -258,11 +311,12 @@
   /* Hover Effects */
   .hover-lift {
     @apply transition-all duration-200 ease-out;
+    will-change: transform, box-shadow;
   }
   
   .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 6px 14px rgba(15, 23, 42, 0.05);
   }
   
   /* Glass Card */
@@ -270,13 +324,13 @@
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border) / 0.7);
     border-radius: 0.75rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05), 0 2px 8px rgba(15, 23, 42, 0.03);
     @apply transition-all duration-200 ease-out;
   }
 
   .glass-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(6, 16, 67, 0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 6px 14px rgba(15, 23, 42, 0.05);
     border-color: hsl(var(--border));
   }
   
@@ -303,11 +357,12 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.2s ease-out;
+    transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     border: none;
     cursor: pointer;
     min-height: 44px;
     white-space: nowrap;
+    will-change: transform, box-shadow;
   }
   
   /* Primary Button - Orange */
@@ -321,6 +376,8 @@
   .btn-primary:hover {
     background: hsl(var(--accent-orange-hover));
     filter: brightness(1.03);
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(223, 81, 1, 0.2);
   }
   
   .btn-primary:active {
@@ -338,6 +395,8 @@
   .btn-secondary:hover {
     background: hsl(var(--primary) / 0.04);
     color: hsl(var(--primary));
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
   }
   
   .btn-secondary:active {
@@ -354,6 +413,7 @@
   .btn-ghost:hover {
     background: hsl(var(--muted));
     color: hsl(var(--foreground));
+    transform: translateY(-1px);
   }
   
   /* Size Variants */
@@ -383,6 +443,21 @@
     @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium;
     background: hsl(var(--accent) / 0.12);
     color: hsl(var(--primary));
+  }
+
+  @keyframes fadeInSoft {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-soft {
+    animation: fadeInSoft 0.55s ease-out forwards;
   }
   
   /* Scroll Reveal Animation */
