@@ -63,9 +63,13 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
           console.log("AuthRedirect: Redirecting to /admin");
           navigate("/admin", { replace: true });
         } else {
-          // Check for pending shipment redirect (from homepage form)
-          const pendingRedirect = localStorage.getItem("pending_shipment_redirect");
+          // Check for pending redirect (shipment/procurement/public workflow)
+          const postAuthRedirect = localStorage.getItem("post_auth_redirect");
+          const pendingRedirect = postAuthRedirect || localStorage.getItem("pending_shipment_redirect");
           if (pendingRedirect) {
+            if (postAuthRedirect) {
+              localStorage.removeItem("post_auth_redirect");
+            }
             localStorage.removeItem("pending_shipment_redirect");
             console.log("AuthRedirect: Redirecting to pending shipment:", pendingRedirect);
             navigate(pendingRedirect, { replace: true });

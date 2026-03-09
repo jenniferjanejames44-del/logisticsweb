@@ -29,20 +29,27 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
+  const primaryNavLinks = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
+    { name: "Import", href: "/services/import" },
+    { name: "Export", href: "/services/export" },
+    { name: "Procurement", href: "/services/procurement" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Blog", href: "/blog" },
+    { name: "Track Shipment", href: "/track" },
+  ];
+
+  const secondaryNavLinks = [
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const serviceLinks = [
+    { name: "Import", href: "/services/import", icon: Earth },
+    { name: "Export", href: "/services/export", icon: PlaneTakeoff },
+    { name: "Buy For Me / Procurement", href: "/services/procurement", icon: ShoppingBag },
     { name: "Air Shipping", href: "/services/air-shipping", icon: PlaneTakeoff },
     { name: "Ocean Shipping", href: "/services/ocean-shipping", icon: Anchor },
-    { name: "Personal Shopping", href: "/services/personal-shopping", icon: ShoppingBag },
-    { name: "Procurement", href: "/services/procurement", icon: Package },
-    { name: "Import/Export", href: "/services/import-export", icon: Earth },
     { name: "Warehousing", href: "/services/warehousing", icon: Container },
     { name: "Customs Clearance", href: "/services/customs-clearance", icon: FileCheck },
   ];
@@ -72,7 +79,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-2">
-          {navLinks.slice(0, 2).map((link) => (
+          {primaryNavLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
@@ -125,15 +132,6 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {navLinks.slice(2).map((link) => (
-            <NavLink
-              key={link.name}
-              to={link.href}
-              className={({ isActive }) => navItemClass(isActive)}
-            >
-              {link.name}
-            </NavLink>
-          ))}
         </nav>
 
         {/* CTA Buttons */}
@@ -223,7 +221,7 @@ const Header = () => {
         </div>
 
         <nav className="flex flex-col gap-1 p-5">
-          {navLinks.slice(0, 2).map((link) => (
+          {primaryNavLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.href}
@@ -294,7 +292,7 @@ const Header = () => {
             </div>
           </div>
           
-          {navLinks.slice(2).map((link) => (
+          {secondaryNavLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.href}

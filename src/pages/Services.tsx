@@ -5,7 +5,7 @@ import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Ship, ShoppingBag, Package, Globe, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight } from "lucide-react";
 
 const services = [
   {
@@ -23,25 +23,25 @@ const services = [
     features: ["FCL & LCL Options", "Worldwide Ports", "Bulk Cargo", "Container Tracking"]
   },
   {
-    icon: ShoppingBag,
-    title: "Personal Shopping",
-    description: "Shop from any store worldwide and we'll deliver to your doorstep. Personal shopper service included.",
-    link: "/services/personal-shopping",
-    features: ["Buy Anywhere", "Price Comparison", "Quality Check", "Consolidated Shipping"]
-  },
-  {
-    icon: Package,
-    title: "Procurement",
-    description: "End-to-end procurement services for businesses. Supplier sourcing, negotiation, and delivery.",
-    link: "/services/procurement",
-    features: ["Supplier Sourcing", "Price Negotiation", "Quality Assurance", "Bulk Ordering"]
-  },
-  {
     icon: Globe,
-    title: "Import/Export",
-    description: "Complete import and export solutions with customs clearance, documentation, and compliance.",
-    link: "/services/import-export",
-    features: ["Customs Clearance", "Documentation", "Compliance", "Trade Consulting"]
+    title: "Import",
+    description: "Ship from supported RAC warehouse countries into your destination market with a guided import workflow.",
+    link: "/services/import",
+    features: ["Warehouse Countries", "Import Workflow", "Delivery Timeline", "Shipment Booking"]
+  },
+  {
+    icon: Send,
+    title: "Export",
+    description: "Ship items internationally with supported destination guidance, packaging rules, and export steps.",
+    link: "/services/export",
+    features: ["Supported Destinations", "Packaging Guidance", "Export Rules", "Shipment Creation"]
+  },
+  {
+    icon: ShoppingBag,
+    title: "Buy For Me / Procurement",
+    description: "Submit product links publicly and let RAC purchase items on your behalf using the existing procurement system.",
+    link: "/services/procurement",
+    features: ["Public Request Form", "Admin Fee Bands", "File Upload", "Existing Procurement Queue"]
   },
   {
     icon: Warehouse,

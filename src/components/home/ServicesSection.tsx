@@ -1,21 +1,28 @@
-import { ArrowRight, PlaneTakeoff, Anchor, Container } from "lucide-react";
+import { ArrowRight, Globe, Send, ShoppingBag, Container } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Link } from "react-router-dom";
 
 const services = [
   {
-    title: "Express Delivery",
-    description: "Express delivery worldwide with real-time tracking and priority handling for urgent shipments.",
-    href: "/services/air-shipping",
-    image: "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=600&q=80",
-    icon: PlaneTakeoff,
+    title: "Import Service",
+    description: "Bring goods in from RAC warehouse countries with a guided import workflow and clear next steps.",
+    href: "/services/import",
+    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80",
+    icon: Globe,
   },
   {
-    title: "Ocean Shipping",
-    description: "Cost-effective sea freight for large shipments across all major international ports.",
-    href: "/services/ocean-shipping",
-    image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=80",
-    icon: Anchor,
+    title: "Export Service",
+    description: "Send items internationally with destination guidance, packaging rules, and a clear export process.",
+    href: "/services/export",
+    image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=600&q=80",
+    icon: Send,
+  },
+  {
+    title: "Buy For Me",
+    description: "Share a product link and let RAC purchase on your behalf through the existing procurement workflow.",
+    href: "/services/procurement",
+    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&q=80",
+    icon: ShoppingBag,
   },
   {
     title: "Warehousing",
@@ -58,7 +65,7 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (

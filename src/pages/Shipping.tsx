@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
@@ -55,6 +55,23 @@ const ALL_COUNTRIES = [
 
 const WAREHOUSE_COUNTRIES = ["China", "United States", "United Kingdom"];
 
+const shipmentWorkflowGuides = {
+  import: {
+    badge: "Import workflow",
+    shipmentTitle: "Start your import shipment",
+    quoteTitle: "Get an import shipping quote",
+    description: "Use this flow when your goods are moving from a supported RAC warehouse country to the final destination.",
+    serviceLink: "/services/import",
+  },
+  export: {
+    badge: "Export workflow",
+    shipmentTitle: "Start your export shipment",
+    quoteTitle: "Calculate your export shipment",
+    description: "Use this flow when you are dispatching goods internationally to an approved destination country.",
+    serviceLink: "/services/export",
+  },
+} as const;
+
 // SearchableInput kept for backward compat but LocationPicker is preferred
 const SearchableInput = ({
   value, onChange, placeholder, className,
@@ -70,6 +87,9 @@ const Shipping = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
+  const flow = searchParams.get("flow");
+  const intent = searchParams.get("intent") === "quote" ? "quote" : "shipment";
+  const workflowGuide = flow === "import" || flow === "export" ? shipmentWorkflowGuides[flow] : null;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -363,11 +383,13 @@ const Shipping = () => {
           <div className="absolute top-0 left-0 w-full h-full opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--primary-foreground)) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
           <div className="section-container text-center relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-5 bg-primary-foreground/10 text-primary-foreground/90 border border-primary-foreground/10 backdrop-blur-sm">
-              <Package className="w-3.5 h-3.5" /> New Shipment
+              <Package className="w-3.5 h-3.5" /> {workflowGuide?.badge || "New Shipment"}
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 tracking-tight">Create a Shipment</h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 tracking-tight">
+              {workflowGuide ? (intent === "quote" ? workflowGuide.quoteTitle : workflowGuide.shipmentTitle) : "Create a Shipment"}
+            </h1>
             <p className="text-primary-foreground/75 text-lg max-w-2xl mx-auto leading-relaxed font-medium">
-              Fill in your details step by step and we'll calculate the cost automatically.
+              {workflowGuide?.description || "Fill in your details step by step and we'll calculate the cost automatically."}
             </p>
           </div>
         </section>
@@ -375,6 +397,19 @@ const Shipping = () => {
         <section className="section-padding bg-muted/40 relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
           <div className="section-container relative z-10">
+            {workflowGuide && (
+              <div className="mx-auto mb-6 max-w-4xl rounded-2xl border border-primary/15 bg-primary/5 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-primary">{workflowGuide.badge}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">Need more context first? Review the dedicated service guide before you complete shipment details.</p>
+                  </div>
+                  <Button asChild variant="dashOutline" size="sm">
+                    <Link to={workflowGuide.serviceLink}>Back to service guide</Link>
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="max-w-4xl mx-auto">
               <div className="overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
                 {/* Progress */}

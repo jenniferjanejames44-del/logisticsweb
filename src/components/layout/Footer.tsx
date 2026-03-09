@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { SiFacebook, SiInstagram, SiLinkedin, SiX } from "react-icons/si";
+import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
+import { FaLinkedinIn } from "react-icons/fa6";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -51,7 +52,7 @@ const Footer = () => {
       name: "LinkedIn",
       href: "https://linkedin.com/company/raclogistics",
       label: "LinkedIn",
-      icon: SiLinkedin,
+      icon: FaLinkedinIn,
       iconClassName: "text-white",
       badgeClassName: "bg-[#0A66C2]",
     },

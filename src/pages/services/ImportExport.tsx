@@ -1,77 +1,60 @@
-import { Globe } from "lucide-react";
-import ServicePageTemplate from "@/components/services/ServicePageTemplate";
+import { Link } from "react-router-dom";
+import { Globe, ArrowRight, Send } from "lucide-react";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import LiveChat from "@/components/LiveChat";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const ImportExport = () => {
   return (
-    <ServicePageTemplate
-      icon={Globe}
-      title="Import/Export Services"
-      subtitle="Trade Solutions"
-      description="Complete import and export solutions with expert customs clearance, documentation, and regulatory compliance. We make international trade simple and efficient."
-      features={[
-        "Customs Clearance",
-        "Trade Documentation",
-        "Regulatory Compliance",
-        "Trade Consulting",
-        "Duty Optimization",
-        "License Management",
-        "Origin Certification",
-        "ATA Carnet"
-      ]}
-      workflowSteps={[
-        {
-          step: 1,
-          title: "Trade Consultation",
-          description: "Our experts review your import/export needs, advise on regulations, and plan the optimal approach."
-        },
-        {
-          step: 2,
-          title: "Documentation Preparation",
-          description: "We prepare all required documents - commercial invoices, certificates, licenses, and customs declarations."
-        },
-        {
-          step: 3,
-          title: "Customs Filing",
-          description: "Electronic submission of customs entries with real-time status monitoring and issue resolution."
-        },
-        {
-          step: 4,
-          title: "Clearance & Inspection",
-          description: "Manage customs inspections, pay duties/taxes, and secure release of your goods."
-        },
-        {
-          step: 5,
-          title: "Delivery Coordination",
-          description: "Coordinate final delivery to your specified location with all documentation completed."
-        }
-      ]}
-      benefits={[
-        {
-          title: "Compliance Expertise",
-          description: "Stay compliant with complex and ever-changing international trade regulations."
-        },
-        {
-          title: "Duty Optimization",
-          description: "Minimize duties and taxes through proper classification and trade agreement utilization."
-        },
-        {
-          title: "Fast Clearance",
-          description: "Established relationships with customs authorities for expedited processing."
-        },
-        {
-          title: "Risk Avoidance",
-          description: "Avoid costly delays, penalties, and seizures with accurate documentation."
-        },
-        {
-          title: "Single Point of Contact",
-          description: "One team manages all aspects of your import/export operations."
-        },
-        {
-          title: "Trade Consulting",
-          description: "Strategic advice on market entry, trade agreements, and supply chain optimization."
-        }
-      ]}
-    />
+    <div className="min-h-screen">
+      <Header />
+      <main>
+        <section className="hero-gradient relative overflow-hidden bg-primary pb-20 pt-32 md:pb-24 md:pt-40">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.18),transparent_32%)]" />
+          <div className="section-container relative z-10 max-w-5xl text-center">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm">
+              <Globe className="h-4 w-4 text-accent" /> Trade Services
+            </span>
+            <h1 className="mb-6 text-white">Choose the right international workflow</h1>
+            <p className="mx-auto mb-8 max-w-3xl text-lg leading-relaxed text-white/80">
+              Import and export now have dedicated service pages so customers can move into the correct shipment workflow with less confusion.
+            </p>
+          </div>
+        </section>
+
+        <section className="section-padding bg-background">
+          <div className="section-container grid gap-6 md:grid-cols-2">
+            {[
+              {
+                title: "Import Service",
+                description: "Use this path when goods are moving from a supported RAC warehouse country into the final destination market.",
+                href: "/services/import",
+              },
+              {
+                title: "Export Service",
+                description: "Use this path when you are shipping internationally to a supported destination country.",
+                href: "/services/export",
+              },
+            ].map((item) => (
+              <Card key={item.title} className="border-border/60 bg-card shadow-[0_14px_34px_rgba(15,23,42,0.04)]">
+                <CardContent className="p-8">
+                  <span className="icon-surface mb-5 h-12 w-12 border-primary/10 bg-primary/5"><Send className="h-5 w-5 text-primary" /></span>
+                  <h2 className="text-foreground">{item.title}</h2>
+                  <p className="mt-3 text-muted-foreground">{item.description}</p>
+                  <Button asChild variant="heroPrimary" className="mt-6">
+                    <Link to={item.href}>Open service page <ArrowRight className="h-4 w-4" /></Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <LiveChat />
+    </div>
   );
 };
 

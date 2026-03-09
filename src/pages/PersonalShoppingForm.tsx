@@ -1,8 +1,13 @@
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { calculateProcessingFee } from "@/lib/shoppingFees";
+import {
+  calculateProcessingFeeFromBands,
+  fetchProcessingFeeBands,
+  formatProcessingFeeBand,
+  type ProcessingFeeBand,
+} from "@/lib/procurementFees";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +38,8 @@ const PersonalShoppingForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [feeBands, setFeeBands] = useState<ProcessingFeeBand[]>([]);
+  const [loadingFees, setLoadingFees] = useState(true);
 
   const [form, setForm] = useState({
     productName: "",
@@ -46,8 +53,15 @@ const PersonalShoppingForm = () => {
   const itemValue = parseFloat(form.itemValue) || 0;
   const quantity = parseInt(form.quantity) || 1;
   const totalItemValue = itemValue * quantity;
-  const processingFee = calculateProcessingFee(totalItemValue);
+  const processingFee = calculateProcessingFeeFromBands(totalItemValue, feeBands);
   const totalCost = totalItemValue + processingFee;
+
+  useEffect(() => {
+    fetchProcessingFeeBands().then((bands) => {
+      setFeeBands(bands);
+      setLoadingFees(false);
+    });
+  }, []);
 
   const updateForm = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -286,13 +300,16 @@ const PersonalShoppingForm = () => {
 
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 text-sm text-muted-foreground">
                   <p className="font-medium text-foreground mb-1">Fee Structure</p>
-                  <ul className="space-y-0.5 text-xs">
-                    <li>$1–$150 → $15 flat fee</li>
-                    <li>$151–$1,000 → 10% of item value</li>
-                    <li>$1,001–$5,000 → 8%</li>
-                    <li>$5,001–$10,000 → 7%</li>
-                    <li>$10,001+ → 5%</li>
-                  </ul>
+                  {loadingFees ? (
+                    <p className="text-xs">Loading current fee bands...</p>
+                  ) : (
+                    <ul className="space-y-0.5 text-xs">
+                      {feeBands.map((band) => {
+                        const { rangeLabel, feeLabel } = formatProcessingFeeBand(band);
+                        return <li key={`${band.min_value}-${band.max_value}`}>{rangeLabel} → {feeLabel}</li>;
+                      })}
+                    </ul>
+                  )}
                 </div>
 
                 <div className="flex gap-3">
@@ -368,10 +385,10 @@ const PersonalShoppingForm = () => {
                     variant="dashAccent"
                     size="dash"
                     className="flex-1 gap-2"
-                    disabled={submitting}
+                    disabled={submitting || loadingFees}
                     onClick={handleSubmit}
                   >
-                    {submitting ? "Submitting..." : "Submit Request"}
+                    {submitting ? "Submitting..." : loadingFees ? "Loading fees..." : "Submit Request"}
                     <CheckCircle className="w-4 h-4" />
                   </Button>
                 </div>

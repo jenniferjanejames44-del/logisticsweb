@@ -14,6 +14,8 @@ import OceanShipping from "./pages/services/OceanShipping";
 import PersonalShopping from "./pages/services/PersonalShopping";
 import Procurement from "./pages/services/Procurement";
 import ImportExport from "./pages/services/ImportExport";
+import ImportService from "./pages/services/ImportService";
+import ExportService from "./pages/services/ExportService";
 import WarehousingPage from "./pages/services/Warehousing";
 import CustomsClearance from "./pages/services/CustomsClearance";
 import Pricing from "./pages/Pricing";
@@ -79,6 +81,8 @@ const App = () => (
               <Route path="/services/ocean-shipping" element={<OceanShipping />} />
               <Route path="/services/personal-shopping" element={<PersonalShopping />} />
               <Route path="/services/procurement" element={<Procurement />} />
+              <Route path="/services/import" element={<ImportService />} />
+              <Route path="/services/export" element={<ExportService />} />
               <Route path="/services/import-export" element={<ImportExport />} />
               <Route path="/services/warehousing" element={<WarehousingPage />} />
               <Route path="/services/customs-clearance" element={<CustomsClearance />} />
