@@ -66,13 +66,13 @@ const HeroSection = () => {
           <div className={`mb-12 flex flex-col items-center justify-center gap-4 transition-all duration-700 delay-300 sm:flex-row ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <Button asChild variant="heroPrimary" size="xl" className="w-full max-w-[220px] sm:w-auto sm:max-w-none">
+            <Button asChild variant="heroPrimary" size="xl" className="w-full max-w-[208px] px-5 sm:w-auto sm:max-w-none sm:px-6">
               <Link to="/pricing">
                 Get Quote
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </Button>
-            <Button asChild variant="heroSecondary" size="xl" className="w-full max-w-[220px] sm:w-auto sm:max-w-none">
+            <Button asChild variant="heroSecondary" size="xl" className="w-full max-w-[208px] px-5 sm:w-auto sm:max-w-none sm:px-6">
               <Link to="/auth">
                 Sign Up
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
