@@ -92,7 +92,7 @@ const AdminPackaging = () => {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => openDialog()} className="w-full sm:w-auto"><Plus className="w-4 h-4 mr-2" />Add Item</Button>
+              <Button onClick={() => openDialog()} className="w-full max-w-[220px] sm:w-auto sm:max-w-none"><Plus className="w-4 h-4 mr-2" />Add Item</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader><DialogTitle>{editing ? "Edit" : "Add"} Packaging Material</DialogTitle></DialogHeader>

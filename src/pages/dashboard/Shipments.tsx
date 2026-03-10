@@ -164,7 +164,7 @@ const Shipments = () => {
               <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
             </div>
           </div>
-          <Button variant="dashOutline" size="dashSm" className="w-full sm:w-auto hover:bg-primary/5 hover:border-primary/40 transition-all duration-200" onClick={() => window.location.href = "/dashboard/wallet"}>
+          <Button variant="dashOutline" size="dashSm" className="w-full max-w-[220px] sm:w-auto sm:max-w-none hover:bg-primary/5 hover:border-primary/40 transition-all duration-200" onClick={() => window.location.href = "/dashboard/wallet"}>
             Manage Wallet
           </Button>
         </CardContent>
@@ -199,7 +199,7 @@ const Shipments = () => {
           </SelectContent>
         </Select>
 
-        <Button variant="dashAccent" size="dash" className="w-full sm:w-auto shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200" asChild>
+        <Button variant="dashAccent" size="dash" className="w-full max-w-[220px] sm:w-auto sm:max-w-none shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200" asChild>
           <a href="/shipping">
             <Plus className="w-4 h-4" strokeWidth={2.5} />
             New Shipment

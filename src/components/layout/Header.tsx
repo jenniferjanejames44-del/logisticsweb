@@ -72,10 +72,10 @@ const Header = () => {
   const isServicesRoute = location.pathname === "/services" || location.pathname.startsWith("/services/");
   const navItemClass = (isActive: boolean) =>
     cn(
-      "font-display relative rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-3 after:h-0.5 after:w-[calc(100%-24px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
+      "font-display relative rounded-lg px-3.5 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-3 after:h-0.5 after:w-[calc(100%-24px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
       isActive
-        ? "bg-muted text-primary after:scale-x-100"
-        : "text-muted-foreground hover:bg-muted/80 hover:text-foreground hover:after:scale-x-100",
+        ? "bg-primary/6 text-primary after:scale-x-100"
+        : "text-muted-foreground hover:bg-primary/5 hover:text-foreground hover:after:scale-x-100",
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
@@ -93,10 +93,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 h-20 border-b bg-white transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 h-20 border-b bg-white/92 backdrop-blur-xl transition-all duration-300 ${
         isScrolled
-          ? "border-border/80 shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
-          : "border-border/70 shadow-[0_4px_14px_rgba(15,23,42,0.04)]"
+          ? "border-border/80 shadow-[0_10px_30px_rgba(15,23,42,0.08)]"
+          : "border-border/60 shadow-[0_4px_14px_rgba(15,23,42,0.04)]"
       }`}
     >
       <div className="section-container flex h-full items-center justify-between gap-6 px-4 sm:px-6">
@@ -124,8 +124,8 @@ const Header = () => {
                 className={cn(
                   "font-display flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-px",
                   isServicesRoute
-                    ? "bg-muted text-primary"
-                    : "text-muted-foreground hover:bg-muted/80 hover:text-foreground",
+                    ? "bg-primary/6 text-primary"
+                    : "text-muted-foreground hover:bg-primary/5 hover:text-foreground",
                 )}
               >
                 Services
@@ -180,7 +180,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="font-display inline-flex items-center gap-2 rounded-full border border-border/70 bg-white px-3.5 py-2 text-sm font-semibold text-foreground shadow-[0_8px_18px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20 hover:text-primary">
+              <button className="font-display inline-flex h-11 items-center gap-2 rounded-lg border border-border/70 bg-white px-4 text-sm font-semibold text-foreground shadow-[0_8px_18px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20 hover:text-primary">
                 <span className="text-base leading-none">{selectedCurrencyMeta.symbol}</span>
                 <span>{selectedCurrency}</span>
                 <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -245,7 +245,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)]"
+          className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)] lg:hidden"
           onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
           aria-label="Toggle menu"
         >

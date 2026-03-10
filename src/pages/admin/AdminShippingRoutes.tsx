@@ -133,7 +133,7 @@ const AdminShippingRoutes = () => {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()} className="w-full sm:w-auto">
+              <Button onClick={() => handleOpenDialog()} className="w-full max-w-[220px] sm:w-auto sm:max-w-none">
                 <Plus className="w-4 h-4 mr-2" />Add Route
               </Button>
             </DialogTrigger>

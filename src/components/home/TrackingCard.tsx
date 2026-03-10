@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, Search, Loader2, AlertCircle, CheckCircle2, Plane, Ship, Truck, MapPin, Package } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -133,14 +134,14 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
     >
       {/* Main Card */}
       <div 
-        className={`relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 ${
-          isFocused ? "shadow-lg" : "shadow-md"
+        className={`relative overflow-hidden rounded-xl border border-white/60 bg-white/95 transition-all duration-300 backdrop-blur-md ${
+          isFocused ? "shadow-[0_18px_36px_rgba(6,16,67,0.16)]" : "shadow-[0_12px_32px_rgba(6,16,67,0.12)]"
         }`}
       >
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center bg-accent">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-[0_10px_20px_rgba(223,81,1,0.2)] sm:h-12 sm:w-12">
               <Search size={18} className="sm:hidden text-accent-foreground" />
               <Search size={20} className="hidden sm:block text-accent-foreground" />
             </div>
@@ -163,10 +164,10 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Enter tracking number"
-                className={`h-11 sm:h-12 rounded-lg border bg-muted/50 pl-4 pr-12 text-base font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
+                className={`h-11 rounded-lg border bg-muted/40 pl-4 pr-12 text-base font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
                   isFocused 
-                    ? "border-primary ring-2 ring-primary/10 bg-background" 
-                    : "border-border hover:border-primary/50"
+                    ? "border-accent ring-2 ring-accent/15 bg-white" 
+                    : "border-[#E5E7EB] hover:border-primary/20"
                 }`}
               />
               {isLoading && (
@@ -175,32 +176,33 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 </div>
               )}
             </div>
-            <button 
+            <Button 
               onClick={handleTrackClick}
               disabled={isLoading}
-              className="flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-base font-semibold text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-200 hover:brightness-[1.03] active:scale-[0.98] sm:h-12"
+              variant="heroPrimary"
+              className="w-full max-w-[220px] self-start sm:w-auto sm:max-w-none"
             >
               Track Now
               <ArrowRight size={16} />
-            </button>
+            </Button>
           </div>
 
           {/* Results Section */}
           {(shipmentData || error) && trackingNumber.length >= 6 && (
             <div className="mt-4 animate-fade-in-up">
               {error ? (
-                <div className="flex items-center gap-3 rounded-lg border border-destructive/20 bg-destructive/5 p-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
+                <div className="flex items-center gap-3 rounded-xl border border-destructive/20 bg-destructive/5 p-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-destructive/10">
                     <AlertCircle size={16} className="text-destructive" />
                   </div>
                   <span className="text-sm font-medium text-destructive">{error}</span>
                 </div>
               ) : shipmentData && (
-                <div className="rounded-lg border border-border bg-muted/30 p-5">
+                <div className="rounded-xl border border-border/80 bg-muted/25 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
                   {/* Shipment Header */}
                   <div className="flex items-start justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shrink-0">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary shadow-[0_10px_20px_rgba(6,16,67,0.16)]">
                         {(() => {
                           const ServiceIcon = getServiceIcon(shipmentData.service_type);
                           return <ServiceIcon size={18} className="text-primary-foreground" />;
@@ -217,7 +219,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                   </div>
                   
                   {/* Route Display */}
-                  <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-background p-4 text-sm">
+                  <div className="mb-4 flex items-center gap-2 rounded-xl border border-border/80 bg-white p-4 text-sm shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <div className="w-2 h-2 rounded-full bg-primary shrink-0" />
                       <span className="truncate font-medium text-foreground">{shipmentData.origin_city}</span>
@@ -279,7 +281,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                   {/* View Details Link */}
                   <button 
                     onClick={handleTrackClick}
-                    className="mt-4 w-full py-2 text-center text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center justify-center gap-2"
+                    className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-accent"
                   >
                     View Full Details
                     <ArrowRight size={14} />

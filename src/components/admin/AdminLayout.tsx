@@ -45,17 +45,17 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen flex bg-[linear-gradient(180deg,hsl(var(--section-light))_0%,hsl(var(--background))_24%)]">
+    <div className="min-h-screen flex bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.05),transparent_18%),linear-gradient(180deg,hsl(var(--section-light))_0%,hsl(var(--background))_28%)]">
       <AdminSidebar />
       <main className="flex-1 ml-0 md:ml-72 overflow-auto">
-        <div className="section-container animate-fade-in-soft py-8 pt-16 md:pt-8">
+        <div className="section-container animate-fade-in-soft py-6 pb-10 pt-16 md:py-8 md:pt-8">
           {title && (
-            <div className="page-header-surface mb-8 p-6 sm:mb-10">
-              <div className="relative z-10 mb-3 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <div className="page-header-surface mb-8 p-6 sm:mb-10 sm:p-8">
+              <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                 <Shield className="w-3.5 h-3.5" />
                 <span>Admin Panel</span>
-                <span className="text-border">/</span>
-                <span className="text-primary">{title}</span>
+                <span className="text-primary/40">/</span>
+                <span>{title}</span>
               </div>
               <h1 className="relative z-10">{title}</h1>
               {description && (

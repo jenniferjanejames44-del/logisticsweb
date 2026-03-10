@@ -17,8 +17,8 @@
     --accent-orange-hover: 22 99% 38%;
     --accent-orange-foreground: 0 0% 100%;
     
-    /* Main Background - #FFFFFF */
-    --background: 0 0% 100%;
+    /* Main Background */
+    --background: 220 33% 99%;
     --foreground: 226 40% 12%;
     
     /* Card Background - #FFFFFF */
@@ -33,7 +33,7 @@
     --secondary-foreground: 230 84% 14%;
     
     /* Muted */
-    --muted: 220 23% 97%;
+    --muted: 220 26% 96%;
     --muted-foreground: 220 11% 43%;
     
     /* Accent - Brand Orange #DF5101 */
@@ -76,8 +76,8 @@
     --chart-4: 220 22% 72%;
     --chart-5: 220 18% 52%;
     
-    /* Section Backgrounds - #F7F8FA */
-    --section-light: 220 23% 97%;
+    /* Section Backgrounds */
+    --section-light: 220 30% 97%;
   }
   
   .dark {
@@ -124,14 +124,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: hsl(var(--background));
+    background-image: radial-gradient(circle at top, rgba(223, 81, 1, 0.05), transparent 18%), linear-gradient(180deg, hsl(var(--section-light)) 0%, hsl(var(--background)) 28%);
   }
 
   button,
   a,
   [role="button"] {
     transition-property: transform, box-shadow, background-color, border-color, color, opacity;
-    transition-duration: 220ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-duration: 200ms;
+    transition-timing-function: ease;
   }
 
   /* Headings */
@@ -245,14 +246,14 @@
   }
 
   .icon-surface {
-    @apply inline-flex items-center justify-center rounded-lg border border-border/70 bg-background/95 text-primary;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    @apply inline-flex items-center justify-center rounded-xl border border-border/80 bg-white text-primary;
+    box-shadow: 0 10px 24px rgba(6, 16, 67, 0.06);
   }
 
   .page-header-surface {
-    @apply relative overflow-hidden rounded-lg border border-border bg-background;
-    background-image: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--section-light)) 100%);
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05), 0 2px 8px rgba(15, 23, 42, 0.03);
+    @apply relative overflow-hidden rounded-xl border border-border/80 bg-white;
+    background-image: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(247,248,250,0.95) 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
   }
 
   .page-header-surface::after {
@@ -315,8 +316,8 @@
   }
   
   .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 6px 14px rgba(15, 23, 42, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(6, 16, 67, 0.08);
   }
   
   /* Glass Card */
@@ -324,19 +325,19 @@
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border) / 0.7);
     border-radius: 0.75rem;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05), 0 2px 8px rgba(15, 23, 42, 0.03);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     @apply transition-all duration-200 ease-out;
   }
 
   .glass-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 6px 14px rgba(15, 23, 42, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(6, 16, 67, 0.08);
     border-color: hsl(var(--border));
   }
   
   /* Section Padding */
   .section-padding {
-    @apply py-20;
+    @apply py-24;
   }
 
   .section-container {
@@ -347,10 +348,10 @@
   
   /* Professional Button System */
   .btn {
-    padding: 0.75rem 1.35rem;
-    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
@@ -358,7 +359,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.2s ease;
     border: none;
     cursor: pointer;
     min-height: 44px;
@@ -375,9 +376,10 @@
   }
   
   .btn-primary:hover {
-    background: hsl(var(--accent-orange-hover));
-    transform: translateY(-2px);
-    box-shadow: 0 18px 36px rgba(223, 81, 1, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    background: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
   
   .btn-primary:active {
@@ -389,16 +391,16 @@
   .btn-secondary {
     background: hsl(var(--background));
     color: hsl(var(--primary));
-    border: 1px solid hsl(var(--primary) / 0.16);
-    box-shadow: 0 12px 24px rgba(6, 16, 67, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 0 10px 24px rgba(6, 16, 67, 0.06);
   }
   
   .btn-secondary:hover {
-    background: hsl(var(--primary) / 0.05);
-    color: hsl(var(--primary));
-    border-color: hsl(var(--primary) / 0.24);
-    transform: translateY(-2px);
-    box-shadow: 0 18px 32px rgba(6, 16, 67, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    border-color: hsl(var(--accent));
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
   
   .btn-secondary:active {

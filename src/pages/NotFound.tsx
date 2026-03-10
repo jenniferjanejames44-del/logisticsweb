@@ -22,7 +22,7 @@ const NotFound = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link to="/">
-            <Button size="lg" className="w-full sm:w-auto gap-2">
+            <Button size="lg" className="w-full max-w-[220px] gap-2 sm:w-auto sm:max-w-none">
               <Home className="w-4 h-4" />
               Go Home
             </Button>
@@ -30,7 +30,7 @@ const NotFound = () => {
           <Button 
             variant="secondary" 
             size="lg" 
-            className="w-full sm:w-auto gap-2"
+            className="w-full max-w-[220px] gap-2 sm:w-auto sm:max-w-none"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="w-4 h-4" />
