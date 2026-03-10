@@ -335,13 +335,12 @@ const Pricing = () => {
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.
             </p>
-            <Link 
-              to="/contact"
-              className="btn btn-primary btn-lg"
-            >
-              Contact Sales
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <Button asChild className="mx-auto">
+              <Link to="/contact">
+                Contact Sales
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
           </div>
         </section>
       </main>

@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { useInView } from "@/hooks/useInView";
 
 const AboutCTASection = () => {
@@ -21,20 +22,18 @@ const AboutCTASection = () => {
             Let's discuss how we can help your business grow.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link 
-              to="/contact"
-              className="inline-flex h-11 w-full max-w-[220px] items-center justify-center gap-2.5 rounded-lg bg-accent px-6 text-sm font-semibold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.18)] transition-all duration-200 hover:-translate-y-px hover:bg-primary hover:shadow-[0_6px_18px_rgba(0,0,0,0.12)] sm:h-11 sm:w-auto sm:max-w-none sm:text-base"
-            >
-              Contact Us
-              <ArrowRight size={16} />
-            </Link>
-            <Link 
-              to="/services"
-              className="inline-flex h-11 w-full max-w-[220px] items-center justify-center gap-2.5 rounded-lg border border-primary bg-white px-6 text-sm font-semibold text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)] transition-all duration-200 hover:-translate-y-px hover:border-accent hover:bg-accent hover:text-accent-foreground hover:shadow-[0_6px_18px_rgba(0,0,0,0.12)] sm:h-11 sm:w-auto sm:max-w-none sm:text-base"
-            >
-              View Services
-              <ArrowRight size={16} />
-            </Link>
+            <Button asChild className="w-full max-w-[208px] sm:w-auto sm:max-w-none">
+              <Link to="/contact">
+                Contact Us
+                <ArrowRight size={16} />
+              </Link>
+            </Button>
+            <Button asChild variant="secondary" className="w-full max-w-[208px] sm:w-auto sm:max-w-none">
+              <Link to="/services">
+                View Services
+                <ArrowRight size={16} />
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

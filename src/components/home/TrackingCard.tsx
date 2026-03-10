@@ -278,14 +278,17 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                     </div>
                   </div>
 
-                  {/* View Details Link */}
-                  <button 
+                  {/* View Details Action */}
+                  <Button
+                    type="button"
                     onClick={handleTrackClick}
-                    className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary transition-colors hover:text-accent"
+                    variant="secondary"
+                    size="sm"
+                    className="mt-4"
                   >
                     View Full Details
                     <ArrowRight size={14} />
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
