@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -46,6 +47,7 @@ interface RoutePrice {
 const Pricing = () => {
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { user } = useAuth();
+  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
@@ -110,6 +112,10 @@ const Pricing = () => {
   }, [selectedCountry, weight, selectedService, routePrices]);
 
   const selectedServiceData = services.find(s => s.id === selectedService);
+  const baseRate = routeRate ?? selectedServiceData?.fallbackRate ?? 0;
+  const baseShippingCost = weight ? parseFloat(weight) * baseRate : 0;
+  const handlingFee = 15;
+  const insuranceFee = baseShippingCost * 0.02;
 
   return (
     <div className="min-h-screen">
@@ -218,7 +224,7 @@ const Pricing = () => {
                           </div>
                         ) : calculatedPrice !== null ? (
                           <span className="text-4xl md:text-5xl font-bold text-primary">
-                            ₦{calculatedPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            {formatUsd(calculatedPrice)}
                           </span>
                         ) : (
                           <span className="text-muted-foreground text-sm">Fill in the form to get a quote</span>
@@ -236,16 +242,16 @@ const Pricing = () => {
                           
                           <div className="pt-4 border-t border-border space-y-2 text-sm">
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Base Rate ({weight} KG × ₦{routeRate ?? selectedServiceData.fallbackRate}/KG{routeRate ? " (route price)" : ""})</span>
-                              <span>₦{(parseFloat(weight) * (routeRate ?? selectedServiceData.fallbackRate)).toFixed(2)}</span>
+                              <span>Base Rate ({weight} KG × {formatUsd(baseRate)}/KG{routeRate ? " (route price)" : ""})</span>
+                              <span>{formatUsd(baseShippingCost)}</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
                               <span>Handling Fee</span>
-                              <span>₦15.00</span>
+                              <span>{formatUsd(handlingFee)}</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
                               <span>Insurance (2%)</span>
-                              <span>₦{(calculatedPrice * 0.02).toFixed(2)}</span>
+                              <span>{formatUsd(insuranceFee)}</span>
                             </div>
                           </div>
                           

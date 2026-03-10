@@ -15,5 +15,8 @@ verify_jwt = false
 [functions.notify-shipment-created]
 verify_jwt = false
 
+[functions.currency-context]
+verify_jwt = false
+
 [functions.send-shipment-notification]
 verify_jwt = false

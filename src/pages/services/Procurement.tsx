@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingBag, Upload, ArrowRight, CheckCircle2, BadgeDollarSign, ClipboardList } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -20,11 +21,9 @@ import {
   type ProcessingFeeBand,
 } from "@/lib/procurementFees";
 
-const formatCurrency = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: value % 1 === 0 ? 0 : 2 }).format(value);
-
 const Procurement = () => {
   const { user } = useAuth();
+  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [feeBands, setFeeBands] = useState<ProcessingFeeBand[]>([]);
@@ -104,8 +103,12 @@ const Procurement = () => {
 
       toast({ title: "Procurement request submitted", description: "Your request has been added to the existing procurement queue." });
       navigate("/dashboard/shopping-orders");
-    } catch (error: any) {
-      toast({ title: "Submission failed", description: error.message || "Please try again.", variant: "destructive" });
+    } catch (error) {
+      toast({
+        title: "Submission failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -176,7 +179,7 @@ const Procurement = () => {
                         <TableRow><TableCell colSpan={2} className="py-8 text-center text-muted-foreground">Loading fee tiers...</TableCell></TableRow>
                       ) : (
                         feeBands.map((band) => {
-                          const { rangeLabel, feeLabel } = formatProcessingFeeBand(band);
+                          const { rangeLabel, feeLabel } = formatProcessingFeeBand(band, formatUsd);
                           return (
                             <TableRow key={`${band.min_value}-${band.max_value}`}>
                               <TableCell className="font-medium">{rangeLabel}</TableCell>
@@ -258,11 +261,11 @@ const Procurement = () => {
                     </div>
                     <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
                       <span>Estimated procurement fee</span>
-                      <span className="font-medium text-foreground">{formatCurrency(processingFee)}</span>
+                      <span className="font-medium text-foreground">{formatUsd(processingFee)}</span>
                     </div>
                     <div className="mt-3 flex items-center justify-between border-t border-primary/10 pt-3 text-base font-semibold text-foreground">
                       <span>Estimated total</span>
-                      <span>{formatCurrency(estimatedTotal)}</span>
+                      <span>{formatUsd(estimatedTotal)}</span>
                     </div>
                   </div>
 

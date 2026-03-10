@@ -79,8 +79,22 @@ Deno.serve(async (req) => {
   }
 });
 
-function fmt(val: number, symbol: string): string {
-  return symbol + val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function fmt(val: number, currency: string): string {
+  const normalizedCurrency = ["USD", "GBP", "NGN", "CNY", "EUR"].includes(currency) ? currency : "USD";
+  const locale = {
+    USD: "en-US",
+    GBP: "en-GB",
+    NGN: "en-NG",
+    CNY: "zh-CN",
+    EUR: "de-DE",
+  }[normalizedCurrency];
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: normalizedCurrency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(val || 0));
 }
 
 function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
@@ -102,7 +116,6 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const amountPaid = isPaid ? totalAmount : 0;
   const totalDue = totalAmount - amountPaid;
   const currency = invoice.currency || 'NGN';
-  const cs = currency === 'NGN' ? '₦' : '$';
   const weight = shipment?.weight || invoice.weight_value || 0;
   const dimensions = invoice.dimensions || shipment?.description || 'N/A';
   const serviceType = shipment?.service_type?.replace(/[-_]/g, ' ') || 'N/A';
@@ -395,12 +408,12 @@ ${isPaid ? `.document::after{
         <td>${trackingNumber}</td>
         <td>${weight}</td>
         <td>${dimensions}</td>
-        <td>${fmt(shippingRate, cs)}</td>
-        <td>${fmt(clearingRate, cs)}</td>
-        <td>${fmt(deliveryRate, cs)}</td>
-        <td>${fmt(storageCharges, cs)}</td>
-        <td>${fmt(insuranceCharges, cs)}</td>
-        <td class="amt">${fmt(subtotal, cs)}</td>
+        <td>${fmt(shippingRate, currency)}</td>
+        <td>${fmt(clearingRate, currency)}</td>
+        <td>${fmt(deliveryRate, currency)}</td>
+        <td>${fmt(storageCharges, currency)}</td>
+        <td>${fmt(insuranceCharges, currency)}</td>
+        <td class="amt">${fmt(subtotal, currency)}</td>
       </tr>
     </tbody>
   </table>
@@ -423,15 +436,15 @@ ${isPaid ? `.document::after{
         <td>Additional Charges</td>
         <td>Extra service charges</td>
         <td>1</td>
-        <td>${fmt(additionalCharges, cs)}</td>
-        <td>${fmt(additionalCharges, cs)}</td>
+        <td>${fmt(additionalCharges, currency)}</td>
+        <td>${fmt(additionalCharges, currency)}</td>
       </tr>
       <tr>
         <td>Pickup</td>
         <td>Pickup service</td>
         <td>1</td>
-        <td>${fmt(pickupCharges, cs)}</td>
-        <td>${fmt(pickupCharges, cs)}</td>
+        <td>${fmt(pickupCharges, currency)}</td>
+        <td>${fmt(pickupCharges, currency)}</td>
       </tr>
     </tbody>
   </table>
@@ -453,10 +466,10 @@ ${isPaid ? `.document::after{
       </td>
       <td style="width:46%;">
         <table class="sum" style="width:100%;">
-          <tr><td class="lbl">Additional Charges</td><td class="val">${fmt(additionalCharges, cs)}</td></tr>
-          <tr><td class="lbl">Pickup Charges</td><td class="val">${fmt(pickupCharges, cs)}</td></tr>
-          <tr class="${isPaid ? 'paid' : ''}"><td class="lbl">Amount Paid (${currency})</td><td class="val">${fmt(amountPaid, cs)}</td></tr>
-          <tr class="total"><td class="lbl">Total Due (${currency})</td><td class="val">${fmt(totalDue, cs)}</td></tr>
+          <tr><td class="lbl">Additional Charges</td><td class="val">${fmt(additionalCharges, currency)}</td></tr>
+          <tr><td class="lbl">Pickup Charges</td><td class="val">${fmt(pickupCharges, currency)}</td></tr>
+          <tr class="${isPaid ? 'paid' : ''}"><td class="lbl">Amount Paid (${currency})</td><td class="val">${fmt(amountPaid, currency)}</td></tr>
+          <tr class="total"><td class="lbl">Total Due (${currency})</td><td class="val">${fmt(totalDue, currency)}</td></tr>
         </table>
       </td>
     </tr>

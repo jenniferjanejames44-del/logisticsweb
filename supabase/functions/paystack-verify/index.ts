@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { buildGatewayQuote } from "../_shared/currency.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -173,9 +174,15 @@ Deno.serve(async (req) => {
 
     if (txn.status === "success") {
       const paidAmountNGN = txn.amount / 100;
-      const expectedAmount = Number(invoice.amount);
+      const fallbackQuote = await buildGatewayQuote({
+        amount: Number(invoice.amount),
+        baseCurrency: invoice.currency || "USD",
+        gateway: "paystack",
+      });
+      const expectedAmount = Number(metadata.gateway_amount || fallbackQuote.payableAmount);
+      const gatewayCurrency = metadata.gateway_currency || txn.currency || "NGN";
 
-      if (paidAmountNGN < expectedAmount) {
+      if (paidAmountNGN + 0.01 < expectedAmount) {
         console.error(`Amount mismatch: paid ${paidAmountNGN}, expected ${expectedAmount}`);
         return new Response(
           JSON.stringify({ error: "Amount mismatch", status: "failed" }),
@@ -193,16 +200,24 @@ Deno.serve(async (req) => {
         })
         .eq("id", invoice.id);
 
-      await adminClient.from("payments").insert({
-        user_id: userId,
-        shipment_id: invoice.shipment_id,
-        amount: expectedAmount,
-        currency: "NGN",
-        status: "completed",
-        payment_method: txn.channel || "paystack",
-        transaction_id: reference,
-        description: `Paystack payment for invoice ${invoice.invoice_number}`,
-      });
+      const { data: existingPayment } = await adminClient
+        .from("payments")
+        .select("id")
+        .eq("transaction_id", reference)
+        .maybeSingle();
+
+      if (!existingPayment) {
+        await adminClient.from("payments").insert({
+          user_id: userId,
+          shipment_id: invoice.shipment_id,
+          amount: paidAmountNGN,
+          currency: gatewayCurrency,
+          status: "completed",
+          payment_method: txn.channel || "paystack",
+          transaction_id: reference,
+          description: `Paystack payment for invoice ${invoice.invoice_number}`,
+        });
+      }
 
       // Get shipment tracking number
       const { data: shipment } = await adminClient
@@ -230,8 +245,8 @@ Deno.serve(async (req) => {
       sendNotificationEmail(supabaseUrl, serviceKey, "payment_confirmation", {
         user_name: profile?.full_name,
         user_email: profile?.email,
-        amount: expectedAmount,
-        currency: invoice.currency || "NGN",
+        amount: paidAmountNGN,
+        currency: gatewayCurrency,
         invoice_number: invoice.invoice_number,
         tracking_number: shipment?.tracking_number,
         payment_channel: txn.channel || "paystack",

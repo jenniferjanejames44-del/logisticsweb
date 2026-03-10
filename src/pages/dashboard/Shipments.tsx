@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { calculateShipmentPrice, getPendingShipment, clearPendingShipment } from "@/lib/pricing";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -35,10 +36,18 @@ interface Shipment {
   created_at: string;
   price: number | null;
   payment_status: string;
+  invoices?: {
+    id: string;
+    invoice_number: string;
+    amount: number;
+    currency: string | null;
+    status: string;
+  }[] | null;
 }
 
 const Shipments = () => {
   const { user } = useAuth();
+  const { formatConverted, formatUsd } = useCurrency();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const { balance, refetch: refetchBalance } = useWalletBalance(user?.id);
@@ -103,7 +112,7 @@ const Shipments = () => {
     if (!user) return;
     const { data, error } = await supabase
       .from("shipments")
-      .select("*")
+      .select("*, invoices(id, invoice_number, amount, currency, status)")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
     if (error) {
@@ -241,7 +250,11 @@ const Shipments = () => {
                   {/* Right side — price + action */}
                   <div className="flex items-center justify-between lg:flex-col lg:items-end gap-3 lg:gap-2 flex-shrink-0 pt-1 lg:pt-0 border-t lg:border-t-0 border-border/30 lg:min-w-[160px]">
                     {shipment.price !== null ? (
-                      <p className="text-base sm:text-lg font-bold text-foreground">₦{Number(shipment.price).toFixed(2)}</p>
+                      <p className="text-base sm:text-lg font-bold text-foreground">
+                        {shipment.invoices?.[0]
+                          ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
+                          : formatUsd(Number(shipment.price))}
+                      </p>
                     ) : (
                       <Badge variant="secondary" className="text-xs">Price Pending</Badge>
                     )}
@@ -293,8 +306,11 @@ const Shipments = () => {
           open={paymentDialogOpen}
           onOpenChange={setPaymentDialogOpen}
           shipmentId={selectedShipment.id}
+          invoiceId={selectedShipment.invoices?.[0]?.id}
+          invoiceNumber={selectedShipment.invoices?.[0]?.invoice_number}
           trackingNumber={selectedShipment.tracking_number}
-          price={Number(selectedShipment.price)}
+          price={Number(selectedShipment.invoices?.[0]?.amount ?? selectedShipment.price)}
+          priceCurrency={selectedShipment.invoices?.[0]?.currency ?? "USD"}
           userBalance={balance}
           userId={user?.id || ""}
           onSuccess={handlePaymentSuccess}

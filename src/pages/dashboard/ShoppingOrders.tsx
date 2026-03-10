@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,12 +23,30 @@ const statusConfig: Record<string, { label: string; variant: "default" | "second
   ready_for_shipment: { label: "Ready for Shipment", variant: "default" },
 };
 
+interface ShoppingOrder {
+  id: string;
+  user_id: string;
+  order_number: string;
+  product_name: string;
+  quantity: number;
+  item_value: number;
+  processing_fee: number;
+  total_cost: number;
+  status: string;
+  payment_status: string;
+  created_at: string;
+  item_description: string | null;
+  additional_notes: string | null;
+  product_image_url: string | null;
+}
+
 const ShoppingOrders = () => {
   const { user } = useAuth();
+  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<ShoppingOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [selectedOrder, setSelectedOrder] = useState<ShoppingOrder | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -90,7 +109,7 @@ const ShoppingOrders = () => {
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="text-right">
-                          <p className="font-bold text-foreground">${Number(order.total_cost).toFixed(2)}</p>
+                          <p className="font-bold text-foreground">{formatUsd(Number(order.total_cost))}</p>
                           <Badge variant={sc.variant} className="text-xs">{sc.label}</Badge>
                         </div>
                         <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => setSelectedOrder(order)}>
@@ -121,11 +140,11 @@ const ShoppingOrders = () => {
                 <span className="text-muted-foreground">Quantity</span>
                 <span className="font-medium">{selectedOrder.quantity}</span>
                 <span className="text-muted-foreground">Item Value</span>
-                <span className="font-medium">${Number(selectedOrder.item_value).toFixed(2)}</span>
+                <span className="font-medium">{formatUsd(Number(selectedOrder.item_value))}</span>
                 <span className="text-muted-foreground">Processing Fee</span>
-                <span className="font-medium">${Number(selectedOrder.processing_fee).toFixed(2)}</span>
+                <span className="font-medium">{formatUsd(Number(selectedOrder.processing_fee))}</span>
                 <span className="text-muted-foreground">Total Cost</span>
-                <span className="font-bold text-primary">${Number(selectedOrder.total_cost).toFixed(2)}</span>
+                <span className="font-bold text-primary">{formatUsd(Number(selectedOrder.total_cost))}</span>
                 <span className="text-muted-foreground">Status</span>
                 <Badge variant={statusConfig[selectedOrder.status]?.variant || "secondary"}>
                   {statusConfig[selectedOrder.status]?.label || selectedOrder.status}

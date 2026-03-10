@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
@@ -22,6 +23,7 @@ import {
   ArrowUpCircle,
   ShoppingBag,
   Headphones,
+  type LucideIcon,
 } from "lucide-react";
 
 interface ShipmentStats {
@@ -41,19 +43,25 @@ interface RecentShipment {
 
 interface ActivityItem {
   id: string;
-  icon: any;
+  icon: LucideIcon;
   message: string;
   time: string;
   type: "shipment" | "payment" | "delivery";
 }
 
+interface CompletedPayment {
+  amount: number;
+  currency: string | null;
+}
+
 const Overview = () => {
   const { user } = useAuth();
   const { balance } = useWalletBalance(user?.id);
+  const { convertAmount, formatMoney, selectedCurrency } = useCurrency();
   const [stats, setStats] = useState<ShipmentStats>({ total: 0, pending: 0, inTransit: 0, delivered: 0 });
   const [recentShipments, setRecentShipments] = useState<RecentShipment[]>([]);
   const [activities, setActivities] = useState<ActivityItem[]>([]);
-  const [totalSpent, setTotalSpent] = useState(0);
+  const [completedPayments, setCompletedPayments] = useState<CompletedPayment[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -87,13 +95,12 @@ const Overview = () => {
 
       const { data: payments } = await supabase
         .from("payments")
-        .select("amount")
+        .select("amount, currency")
         .eq("user_id", user.id)
         .eq("status", "completed");
 
       if (payments) {
-        const total = payments.reduce((sum, p) => sum + Number(p.amount), 0);
-        setTotalSpent(total);
+        setCompletedPayments(payments);
       }
 
       setLoading(false);
@@ -101,6 +108,14 @@ const Overview = () => {
 
     fetchData();
   }, [user]);
+
+  const totalSpent = useMemo(
+    () => completedPayments.reduce(
+      (sum, payment) => sum + convertAmount(Number(payment.amount), payment.currency || "USD"),
+      0,
+    ),
+    [completedPayments, convertAmount],
+  );
 
 
 
@@ -120,7 +135,7 @@ const Overview = () => {
           { label: "Total Shipments", value: stats.total, icon: Package, iconBg: "bg-primary/8", iconColor: "text-primary" },
           { label: "In Transit", value: stats.inTransit, icon: Truck, iconBg: "bg-primary/8", iconColor: "text-primary" },
           { label: "Delivered", value: stats.delivered, icon: CheckCircle, iconBg: "bg-green-500/10", iconColor: "text-green-600" },
-          { label: "Total Spent", value: `₦${totalSpent.toLocaleString()}`, icon: CreditCard, iconBg: "bg-accent/10", iconColor: "text-accent" },
+          { label: "Total Spent", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, iconBg: "bg-accent/10", iconColor: "text-accent" },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
@@ -155,8 +170,8 @@ const Overview = () => {
                 <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance</p>
-                <p className="text-[2rem] sm:text-[2.45rem] font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
+                <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance (NGN)</p>
+                <p className="text-[2rem] sm:text-[2.45rem] font-bold text-foreground tracking-tight mt-0.5">{formatMoney(balance, "NGN")}</p>
               </div>
             </div>
             <div className="flex gap-2.5 sm:gap-3">

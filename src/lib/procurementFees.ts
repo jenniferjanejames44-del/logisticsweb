@@ -39,10 +39,13 @@ export function calculateProcessingFeeFromBands(amount: number, feeBands: Proces
   return band.fee_type === "flat" ? Number(band.fee_value) : (amount * Number(band.fee_value)) / 100;
 }
 
-export function formatProcessingFeeBand(band: ProcessingFeeBand) {
+export function formatProcessingFeeBand(
+  band: ProcessingFeeBand,
+  formatter: (value: number) => string = formatCurrency,
+) {
   const min = Number(band.min_value);
   const max = Number(band.max_value);
-  const rangeLabel = max >= OPEN_ENDED_MAX ? `${formatCurrency(min)}+` : `${formatCurrency(min)}–${formatCurrency(max)}`;
-  const feeLabel = band.fee_type === "flat" ? `${formatCurrency(Number(band.fee_value))} flat fee` : `${Number(band.fee_value)}%`;
+  const rangeLabel = max >= OPEN_ENDED_MAX ? `${formatter(min)}+` : `${formatter(min)}–${formatter(max)}`;
+  const feeLabel = band.fee_type === "flat" ? `${formatter(Number(band.fee_value))} flat fee` : `${Number(band.fee_value)}%`;
   return { rangeLabel, feeLabel };
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ interface RoutePrice {
 const ShipmentEntrySection = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { formatUsd } = useCurrency();
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [weight, setWeight] = useState("");
@@ -165,7 +167,7 @@ const ShipmentEntrySection = () => {
                   <span className="text-base font-semibold text-foreground">Estimated Cost</span>
                 </div>
                 <span className="text-2xl font-bold text-primary">
-                  ${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  {formatUsd(estimatedCost)}
                 </span>
               </div>
             )}

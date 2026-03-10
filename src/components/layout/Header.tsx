@@ -2,14 +2,20 @@ import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Earth, Container, FileCheck, ArrowRight, Send } from "lucide-react";
 import Logo from "@/components/layout/Logo";
+import { CURRENCY_META, SUPPORTED_CURRENCIES } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -18,6 +24,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { selectedCurrency, setCurrency } = useCurrency();
   const { isAdmin } = useUserRole();
   const location = useLocation();
   
@@ -77,6 +84,8 @@ const Header = () => {
         ? "border-primary/12 bg-white text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)]"
         : "border-transparent bg-white text-foreground hover:-translate-y-px hover:border-border/70 hover:bg-white hover:text-primary",
     );
+
+  const selectedCurrencyMeta = CURRENCY_META[selectedCurrency];
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsMobileServicesOpen(false);
@@ -169,6 +178,32 @@ const Header = () => {
 
         {/* CTA Buttons */}
         <div className="hidden lg:flex items-center gap-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="font-display inline-flex items-center gap-2 rounded-full border border-border/70 bg-white px-3.5 py-2 text-sm font-semibold text-foreground shadow-[0_8px_18px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20 hover:text-primary">
+                <span className="text-base leading-none">{selectedCurrencyMeta.symbol}</span>
+                <span>{selectedCurrency}</span>
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52 rounded-xl border border-border/80 bg-white p-2 shadow-[0_18px_40px_rgba(15,23,42,0.1)]">
+              <DropdownMenuLabel className="text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+                Display currency
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup value={selectedCurrency} onValueChange={(value) => setCurrency(value as typeof selectedCurrency)}>
+                {SUPPORTED_CURRENCIES.map((currency) => (
+                  <DropdownMenuRadioItem key={currency} value={currency} className="rounded-lg px-2 py-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="w-5 text-center text-base leading-none">{CURRENCY_META[currency].symbol}</span>
+                      <span className="font-medium">{currency}</span>
+                      <span className="text-xs text-muted-foreground">{CURRENCY_META[currency].label}</span>
+                    </div>
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {user ? (
             <>
               {isAdmin && (
@@ -250,6 +285,31 @@ const Header = () => {
         </div>
 
         <nav className="relative z-10 flex min-h-[calc(100vh-73px)] flex-col gap-1.5 bg-white px-4 pb-6 pt-4 sm:px-5 sm:pb-7">
+          <div className="mb-3 rounded-2xl border border-border/70 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">Display currency</span>
+              <span className="text-sm font-semibold text-primary">{selectedCurrency}</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {SUPPORTED_CURRENCIES.map((currency) => (
+                <button
+                  key={currency}
+                  type="button"
+                  onClick={() => setCurrency(currency)}
+                  className={cn(
+                    "rounded-xl border px-3 py-2.5 text-sm font-semibold transition-all duration-200",
+                    selectedCurrency === currency
+                      ? "border-primary/20 bg-primary/8 text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)]"
+                      : "border-border/60 bg-white text-foreground hover:border-primary/20 hover:text-primary",
+                  )}
+                >
+                  <span className="mr-1.5 text-base leading-none">{CURRENCY_META[currency].symbol}</span>
+                  {currency}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}

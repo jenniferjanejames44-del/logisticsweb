@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,12 +19,14 @@ import {
   CheckCircle,
   Clock,
   AlertTriangle,
+  type LucideIcon,
 } from "lucide-react";
 
 interface Invoice {
   id: string;
   invoice_number: string;
   amount: number;
+  currency: string | null;
   status: string;
   due_date: string | null;
   payment_reference: string | null;
@@ -35,6 +38,7 @@ interface Invoice {
 
 const Invoices = () => {
   const { user } = useAuth();
+  const { convertAmount, formatConverted, formatMoney, selectedCurrency } = useCurrency();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,20 +47,22 @@ const Invoices = () => {
   const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  useEffect(() => {
-    if (user) fetchInvoices();
-  }, [user]);
+  const fetchInvoices = useCallback(async () => {
+    if (!user) return;
 
-  const fetchInvoices = async () => {
     const { data, error } = await supabase
       .from("invoices")
       .select("*, shipments(tracking_number, status, service_type)")
-      .eq("user_id", user!.id)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
     if (!error && data) setInvoices(data as unknown as Invoice[]);
     setLoading(false);
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) fetchInvoices();
+  }, [user, fetchInvoices]);
 
   const handleDownload = async (invoice: Invoice) => {
     setDownloading(invoice.id);
@@ -91,7 +97,7 @@ const Invoices = () => {
   };
 
   const getStatusBadge = (status: string) => {
-    const config: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any }> = {
+    const config: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: LucideIcon }> = {
       unpaid: { variant: "secondary", icon: Clock },
       paid: { variant: "outline", icon: CheckCircle },
       overdue: { variant: "destructive", icon: AlertTriangle },
@@ -106,8 +112,12 @@ const Invoices = () => {
     );
   };
 
-  const totalUnpaid = invoices.filter(i => i.status === 'unpaid').reduce((s, i) => s + Number(i.amount), 0);
-  const totalPaid = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.amount), 0);
+  const totalUnpaid = invoices
+    .filter((i) => i.status === 'unpaid')
+    .reduce((sum, invoice) => sum + convertAmount(Number(invoice.amount), invoice.currency || 'USD'), 0);
+  const totalPaid = invoices
+    .filter((i) => i.status === 'paid')
+    .reduce((sum, invoice) => sum + convertAmount(Number(invoice.amount), invoice.currency || 'USD'), 0);
 
   const filtered = invoices.filter(i => {
     const matchesSearch = i.invoice_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -148,7 +158,7 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Unpaid</p>
-                <p className="text-2xl sm:text-3xl font-bold text-accent">₦{totalUnpaid.toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-accent">{formatMoney(totalUnpaid, selectedCurrency)}</p>
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
                 <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
@@ -161,7 +171,7 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Paid</p>
-                <p className="text-2xl sm:text-3xl font-bold text-green-500">₦{totalPaid.toLocaleString()}</p>
+                <p className="text-2xl sm:text-3xl font-bold text-green-500">{formatMoney(totalPaid, selectedCurrency)}</p>
               </div>
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
                 <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
@@ -219,7 +229,7 @@ const Invoices = () => {
                         )}
                         <span className="flex items-center gap-1">
                           <DollarSign className="w-3 h-3" />
-                          ₦{Number(invoice.amount).toFixed(2)}
+                          {formatConverted(Number(invoice.amount), invoice.currency || 'USD')}
                         </span>
                         {invoice.due_date && (
                           <span className="flex items-center gap-1">

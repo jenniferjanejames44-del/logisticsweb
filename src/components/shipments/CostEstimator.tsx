@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,7 @@ interface RoutePrice {
 }
 
 const CostEstimator = () => {
+  const { formatUsd } = useCurrency();
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
   const [originCountry, setOriginCountry] = useState("");
   const [destinationCountry, setDestinationCountry] = useState("");
@@ -143,7 +145,7 @@ const CostEstimator = () => {
                 <span className="font-semibold text-foreground">Estimated Cost</span>
               </div>
               <span className="text-xl font-bold text-primary">
-                ₦{estimatedCost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {formatUsd(estimatedCost)}
               </span>
             </div>
             <div className="flex items-center justify-between">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { calculateShipmentPrice, savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
@@ -89,6 +90,7 @@ interface RoutePrice {
 
 const ShipmentCreationForm = () => {
   const { user } = useAuth();
+  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -616,20 +618,20 @@ const ShipmentCreationForm = () => {
                             <div className="space-y-3">
                               <div className="space-y-1">
                                 <div className="flex justify-between text-sm text-muted-foreground">
-                                  <span>Shipping ({formData.weight} KG × ${matchedRate?.toFixed(2)}/KG)</span>
-                                  <span>${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                  <span>Shipping ({formData.weight} KG × {formatUsd(matchedRate || 0)}/KG)</span>
+                                  <span>{formatUsd(estimatedCost)}</span>
                                 </div>
                                 {prepayPickup && (
                                   <div className="flex justify-between text-sm text-muted-foreground">
                                     <span>Pickup / Delivery Fee</span>
-                                    <span>${pickupFee.toFixed(2)}</span>
+                                    <span>{formatUsd(pickupFee)}</span>
                                   </div>
                                 )}
                               </div>
                               <div className="border-t border-primary/20 pt-2 flex justify-between items-center">
                                 <span className="font-bold text-foreground">Total Payment</span>
                                 <span className="text-3xl font-bold text-primary">
-                                  ${totalPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                  {formatUsd(totalPrice || 0)}
                                 </span>
                               </div>
 
@@ -649,8 +651,8 @@ const ShipmentCreationForm = () => {
                                     <p className="text-xs text-muted-foreground leading-relaxed">
                                       If you pay this now, you will not pay any pickup fee when collecting your shipment.
                                       {parseFloat(formData.weight) <= 4
-                                        ? ` (Flat fee: $70 for shipments ≤ 4 KG)`
-                                        : ` ($6/lb — ${(parseFloat(formData.weight) * 2.20462).toFixed(1)} lbs = $${pickupFee.toFixed(2)})`}
+                                        ? ` (Flat fee: ${formatUsd(70)} for shipments ≤ 4 KG)`
+                                        : ` (${formatUsd(6)}/lb — ${(parseFloat(formData.weight) * 2.20462).toFixed(1)} lbs = ${formatUsd(pickupFee)})`}
                                     </p>
                                   </div>
                                 </div>
@@ -868,17 +870,17 @@ const ShipmentCreationForm = () => {
                             <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
                               <DollarSign className="w-3 h-3" /> Shipping Cost
                             </p>
-                            <p className="font-bold text-primary text-lg">${estimatedCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{formData.weight} KG × ${matchedRate?.toFixed(2)}/KG</p>
+                            <p className="font-bold text-primary text-lg">{formatUsd(estimatedCost)}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{formData.weight} KG × {formatUsd(matchedRate || 0)}/KG</p>
                             {prepayPickup && (
                               <div className="mt-3 pt-3 border-t border-primary/20 space-y-1">
                                 <div className="flex justify-between text-sm text-muted-foreground">
                                   <span>Pickup / Delivery Fee</span>
-                                  <span>${pickupFee.toFixed(2)}</span>
+                                  <span>{formatUsd(pickupFee)}</span>
                                 </div>
                                 <div className="flex justify-between font-bold text-foreground">
                                   <span>Total Payment</span>
-                                  <span className="text-primary">${totalPrice?.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                  <span className="text-primary">{formatUsd(totalPrice || 0)}</span>
                                 </div>
                               </div>
                             )}

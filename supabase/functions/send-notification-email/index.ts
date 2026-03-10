@@ -180,8 +180,21 @@ function ctaButton(text: string, url: string): string {
 }
 
 function currencyFormat(amount: number, currency = "NGN"): string {
-  const symbol = currency === "NGN" ? "₦" : "$";
-  return `${symbol}${Number(amount || 0).toLocaleString("en-NG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const normalizedCurrency = ["USD", "GBP", "NGN", "CNY", "EUR"].includes(currency) ? currency : "USD";
+  const locale = {
+    USD: "en-US",
+    GBP: "en-GB",
+    NGN: "en-NG",
+    CNY: "zh-CN",
+    EUR: "de-DE",
+  }[normalizedCurrency];
+
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: normalizedCurrency,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(amount || 0));
 }
 
 // ──────────────────────────────────────

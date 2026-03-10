@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
@@ -83,6 +84,7 @@ const SearchableInput = ({
 );
 
 const Shipping = () => {
+  const { formatUsd } = useCurrency();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -313,7 +315,7 @@ const Shipping = () => {
       if (formData.receiver_phone) descParts.push(`Receiver Phone: ${formData.receiver_phone}`);
       if (formData.receiver_address) descParts.push(`Receiver Address: ${formData.receiver_address}, ${formData.receiver_city}, ${formData.receiver_state}, ${formData.receiver_country}`);
       if (formData.receiver_postal_code) descParts.push(`Postal Code: ${formData.receiver_postal_code}`);
-      if (formData.declared_value) descParts.push(`Declared Value: $${formData.declared_value}`);
+      if (formData.declared_value) descParts.push(`Declared Value (USD): $${formData.declared_value}`);
       if (formData.category) descParts.push(`Category: ${formData.category}`);
       if (formData.quantity && formData.quantity !== "1") descParts.push(`Quantity: ${formData.quantity}`);
       descParts.push(`Delivery: ${selectedDeliveryMethodData?.name || "Pickup"}`);
@@ -321,7 +323,7 @@ const Shipping = () => {
       if (priceBreakdown?.extraCharges.length) descParts.push(`Extras: ${priceBreakdown.extraCharges.map(e => e.name).join(", ")}`);
       const pkgItems = packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => `${p.name} x${packagingQuantities[p.id]}`);
       if (pkgItems.length) descParts.push(`Packaging: ${pkgItems.join(", ")}`);
-      if (isPickupMethod && !pickupFeePrepaid && deliveryFee > 0) descParts.push(`Pickup fee ₦${deliveryFee.toLocaleString()} to be paid at office`);
+      if (isPickupMethod && !pickupFeePrepaid && deliveryFee > 0) descParts.push(`Pickup fee USD ${deliveryFee.toFixed(2)} to be paid at office`);
 
       const { data: shipmentData, error } = await supabase.from("shipments").insert({
         user_id: user.id,
@@ -799,10 +801,10 @@ const Shipping = () => {
                                   </div>
                                   <div className="flex-1 min-w-0">
                                     <p className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
-                                    <p className="text-xs text-muted-foreground truncate">{dm.description || (Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`)}</p>
+                                    <p className="text-xs text-muted-foreground truncate">{dm.description || (Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee)))}</p>
                                   </div>
                                   <div className="flex items-center gap-2 self-end sm:self-center">
-                                    <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : `₦${Number(dm.fee).toLocaleString()}`}</span>
+                                    <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee))}</span>
                                     <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
                                       <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
                                     </div>
@@ -823,7 +825,7 @@ const Shipping = () => {
                                 />
                                 <div className="flex-1">
                                   <p className="text-sm font-medium text-foreground">
-                                    Pay pickup handling fee now — ₦{deliveryFee.toLocaleString()}
+                                    Pay pickup handling fee now — {formatUsd(deliveryFee)}
                                   </p>
                                   {!pickupFeePrepaid && (
                                     <p className="text-xs text-muted-foreground mt-1">
@@ -886,7 +888,7 @@ const Shipping = () => {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                       <p className="text-sm font-semibold text-foreground">{pkg.name}</p>
-                                      <p className="text-xs text-muted-foreground">₦{Number(pkg.price).toLocaleString()} / unit</p>
+                                      <p className="text-xs text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
@@ -912,7 +914,7 @@ const Shipping = () => {
                                     </div>
                                     {qty > 0 && (
                                       <span className="text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-lg whitespace-nowrap">
-                                        ₦{(qty * Number(pkg.price)).toLocaleString()}
+                                        {formatUsd(qty * Number(pkg.price))}
                                       </span>
                                     )}
                                   </div>
@@ -933,7 +935,7 @@ const Shipping = () => {
                                 <Checkbox checked={selectedExtras.includes(ec.id)} onCheckedChange={() => toggleExtra(ec.id)} />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-foreground">{ec.name}</p>
-                                  <p className="text-xs text-muted-foreground">₦{Number(ec.price).toLocaleString()}</p>
+                                  <p className="text-xs text-muted-foreground">{formatUsd(Number(ec.price))}</p>
                                 </div>
                               </div>
                             ))}
@@ -984,7 +986,7 @@ const Shipping = () => {
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
                               { label: "Quantity", value: formData.quantity || "1" },
-                              { label: "Declared Value", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
+                              { label: "Declared Value (USD)", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
                               { label: "Insurance", value: formData.insurance_required === "true" ? "Yes" : "No" },
                             ].map((item) => (
                               <div key={item.label}>
@@ -1008,7 +1010,7 @@ const Shipping = () => {
                             {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
                               <div key={p.id} className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
-                                <span className="font-semibold text-foreground">₦{(packagingQuantities[p.id] * Number(p.price)).toLocaleString()}</span>
+                                <span className="font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
                               </div>
                             ))}
                           </div>
@@ -1025,24 +1027,24 @@ const Shipping = () => {
                               <>
                                 <div className="flex justify-between text-sm">
                                   <span className="text-muted-foreground">Shipping Cost {priceBreakdown.zone && `(${priceBreakdown.zone})`}</span>
-                                  <span className="font-semibold text-foreground">₦{priceBreakdown.shippingCost.toLocaleString()}</span>
+                                  <span className="font-semibold text-foreground">{formatUsd(priceBreakdown.shippingCost)}</span>
                                 </div>
                                 {priceBreakdown.extraCharges.map((ec) => (
                                   <div key={ec.name} className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">{ec.name}</span>
-                                    <span className="font-semibold text-foreground">₦{ec.price.toLocaleString()}</span>
+                                    <span className="font-semibold text-foreground">{formatUsd(ec.price)}</span>
                                   </div>
                                 ))}
                                 {priceBreakdown.processingFee > 0 && (
                                   <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Processing Fee</span>
-                                    <span className="font-semibold text-foreground">₦{priceBreakdown.processingFee.toLocaleString()}</span>
+                                    <span className="font-semibold text-foreground">{formatUsd(priceBreakdown.processingFee)}</span>
                                   </div>
                                 )}
                                 {priceBreakdown.taxes.map((t) => (
                                   <div key={t.name} className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">{t.name} ({t.rate}%)</span>
-                                    <span className="font-semibold text-foreground">₦{Math.round(t.amount).toLocaleString()}</span>
+                                    <span className="font-semibold text-foreground">{formatUsd(t.amount)}</span>
                                   </div>
                                 ))}
                               </>
@@ -1050,24 +1052,24 @@ const Shipping = () => {
                             {packagingCost > 0 && (
                               <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">Packaging Materials</span>
-                                <span className="font-semibold text-foreground">₦{packagingCost.toLocaleString()}</span>
+                                <span className="font-semibold text-foreground">{formatUsd(packagingCost)}</span>
                               </div>
                             )}
                             {deliveryFee > 0 && !isPickupMethod && (
                               <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">Delivery Fee ({selectedDeliveryMethodData?.name})</span>
-                                <span className="font-semibold text-foreground">₦{deliveryFee.toLocaleString()}</span>
+                                <span className="font-semibold text-foreground">{formatUsd(deliveryFee)}</span>
                               </div>
                             )}
                             {isPickupMethod && deliveryFee > 0 && (
                               <div className="flex justify-between text-sm">
                                 <span className="text-muted-foreground">Pickup Handling Fee {pickupFeePrepaid ? "(Prepaid)" : "(Pay at office)"}</span>
-                                <span className={`font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>₦{deliveryFee.toLocaleString()}</span>
+                                <span className={`font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>{formatUsd(deliveryFee)}</span>
                               </div>
                             )}
                             <div className="border-t border-primary/20 pt-3 flex justify-between items-center">
                               <span className="font-bold text-foreground text-lg">Total</span>
-                              <span className="text-3xl font-bold text-primary">₦{Math.round(grandTotal).toLocaleString()}</span>
+                              <span className="text-3xl font-bold text-primary">{formatUsd(grandTotal)}</span>
                             </div>
                             {grandTotal === 0 && (
                               <p className="text-sm text-muted-foreground text-center pt-1">

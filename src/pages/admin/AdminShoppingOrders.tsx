@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,11 +26,35 @@ const statusConfig: Record<string, { label: string; variant: "default" | "second
   ready_for_shipment: { label: "Ready for Shipment", variant: "default" },
 };
 
+interface ShoppingOrder {
+  id: string;
+  user_id: string;
+  order_number: string;
+  product_name: string;
+  quantity: number;
+  item_value: number;
+  processing_fee: number;
+  total_cost: number;
+  status: string;
+  payment_status: string;
+  created_at: string;
+  item_description: string | null;
+  additional_notes: string | null;
+  product_image_url: string | null;
+}
+
+interface OrderProfile {
+  user_id: string;
+  full_name: string | null;
+  email: string | null;
+}
+
 const AdminShoppingOrders = () => {
-  const [orders, setOrders] = useState<any[]>([]);
+  const { formatUsd } = useCurrency();
+  const [orders, setOrders] = useState<ShoppingOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
-  const [profiles, setProfiles] = useState<Record<string, any>>({});
+  const [selectedOrder, setSelectedOrder] = useState<ShoppingOrder | null>(null);
+  const [profiles, setProfiles] = useState<Record<string, OrderProfile>>({});
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -42,14 +67,14 @@ const AdminShoppingOrders = () => {
     setOrders(ordersList);
 
     // Fetch profiles for all user_ids
-    const userIds = [...new Set(ordersList.map((o: any) => o.user_id))];
+    const userIds = [...new Set(ordersList.map((order: ShoppingOrder) => order.user_id))];
     if (userIds.length > 0) {
       const { data: profilesData } = await supabase
         .from("profiles")
         .select("user_id, full_name, email")
         .in("user_id", userIds);
-      const map: Record<string, any> = {};
-      profilesData?.forEach((p: any) => { map[p.user_id] = p; });
+      const map: Record<string, OrderProfile> = {};
+      profilesData?.forEach((profile) => { map[profile.user_id] = profile; });
       setProfiles(map);
     }
     setLoading(false);
@@ -126,9 +151,9 @@ const AdminShoppingOrders = () => {
                             </div>
                           </TableCell>
                           <TableCell className="max-w-[150px] truncate">{order.product_name}</TableCell>
-                          <TableCell>${Number(order.item_value).toFixed(2)}</TableCell>
-                          <TableCell>${Number(order.processing_fee).toFixed(2)}</TableCell>
-                          <TableCell className="font-semibold">${Number(order.total_cost).toFixed(2)}</TableCell>
+                          <TableCell>{formatUsd(Number(order.item_value))}</TableCell>
+                          <TableCell>{formatUsd(Number(order.processing_fee))}</TableCell>
+                          <TableCell className="font-semibold">{formatUsd(Number(order.total_cost))}</TableCell>
                           <TableCell>
                             <Badge variant={order.payment_status === "paid" ? "default" : "destructive"} className="text-xs">
                               {order.payment_status}
@@ -177,11 +202,11 @@ const AdminShoppingOrders = () => {
                 <span className="text-muted-foreground">Quantity</span>
                 <span className="font-medium">{selectedOrder.quantity}</span>
                 <span className="text-muted-foreground">Item Value</span>
-                <span className="font-medium">${Number(selectedOrder.item_value).toFixed(2)}</span>
+                <span className="font-medium">{formatUsd(Number(selectedOrder.item_value))}</span>
                 <span className="text-muted-foreground">Processing Fee</span>
-                <span className="font-medium">${Number(selectedOrder.processing_fee).toFixed(2)}</span>
+                <span className="font-medium">{formatUsd(Number(selectedOrder.processing_fee))}</span>
                 <span className="text-muted-foreground">Total</span>
-                <span className="font-bold text-primary">${Number(selectedOrder.total_cost).toFixed(2)}</span>
+                <span className="font-bold text-primary">{formatUsd(Number(selectedOrder.total_cost))}</span>
               </div>
               {selectedOrder.product_link && (
                 <div>

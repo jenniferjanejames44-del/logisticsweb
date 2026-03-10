@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { buildGatewayQuote } from "../_shared/currency.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -81,7 +82,12 @@ Deno.serve(async (req) => {
 
     const email = profile?.email || "";
     const reference = `PAY-${invoice.invoice_number}-${Date.now()}`;
-    const amountInKobo = Math.round(Number(invoice.amount) * 100);
+    const quote = await buildGatewayQuote({
+      amount: Number(invoice.amount),
+      baseCurrency: invoice.currency || "USD",
+      gateway: "paystack",
+    });
+    const amountInKobo = Math.round(quote.payableAmount * 100);
 
     // Initialize Paystack transaction
     const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
@@ -101,6 +107,11 @@ Deno.serve(async (req) => {
           invoice_number: invoice.invoice_number,
           shipment_tracking: invoice.shipments?.tracking_number || "",
           user_id: userId,
+          base_amount: quote.baseAmount,
+          base_currency: quote.baseCurrency,
+          gateway_amount: quote.payableAmount,
+          gateway_currency: quote.gatewayCurrency,
+          exchange_rate: quote.exchangeRate,
         },
       }),
     });
@@ -128,6 +139,8 @@ Deno.serve(async (req) => {
         authorization_url: paystackData.data.authorization_url,
         reference: paystackData.data.reference,
         access_code: paystackData.data.access_code,
+        gateway_amount: quote.payableAmount,
+        gateway_currency: quote.gatewayCurrency,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { PaymentsListSkeleton } from "@/components/dashboard/DashboardSkeletons";
@@ -15,12 +16,13 @@ import {
   Clock,
   AlertCircle,
   Calendar,
+  type LucideIcon,
 } from "lucide-react";
 
 interface Payment {
   id: string;
   amount: number;
-  currency: string;
+  currency: string | null;
   status: string;
   payment_method: string | null;
   transaction_id: string | null;
@@ -31,12 +33,11 @@ interface Payment {
 
 const Payments = () => {
   const { user } = useAuth();
+  const { convertAmount, formatConverted, formatMoney, selectedCurrency } = useCurrency();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [totalPaid, setTotalPaid] = useState(0);
-  const [pendingAmount, setPendingAmount] = useState(0);
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -53,10 +54,6 @@ const Payments = () => {
 
       if (!error && data) {
         setPayments(data);
-        const completed = data.filter((p) => p.status === "completed");
-        const pending = data.filter((p) => p.status === "pending");
-        setTotalPaid(completed.reduce((sum, p) => sum + Number(p.amount), 0));
-        setPendingAmount(pending.reduce((sum, p) => sum + Number(p.amount), 0));
       }
       setLoading(false);
     };
@@ -64,8 +61,22 @@ const Payments = () => {
     fetchPayments();
   }, [user]);
 
+  const totalPaid = useMemo(
+    () => payments
+      .filter((payment) => payment.status === "completed")
+      .reduce((sum, payment) => sum + convertAmount(Number(payment.amount), payment.currency || "USD"), 0),
+    [payments, convertAmount],
+  );
+
+  const pendingAmount = useMemo(
+    () => payments
+      .filter((payment) => payment.status === "pending")
+      .reduce((sum, payment) => sum + convertAmount(Number(payment.amount), payment.currency || "USD"), 0),
+    [payments, convertAmount],
+  );
+
   const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: any }> = {
+    const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: LucideIcon }> = {
       completed: { variant: "outline", icon: CheckCircle },
       pending: { variant: "secondary", icon: Clock },
       failed: { variant: "destructive", icon: AlertCircle },
@@ -107,7 +118,7 @@ const Payments = () => {
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
                 <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Total Paid</p>
-                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{totalPaid.toLocaleString()}</p>
+                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{formatMoney(totalPaid, selectedCurrency)}</p>
               </div>
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-green-500/8 transition-transform duration-200 group-hover:scale-105">
                 <CheckCircle className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-green-600" />
@@ -121,7 +132,7 @@ const Payments = () => {
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
                 <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Pending</p>
-                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">₦{pendingAmount.toLocaleString()}</p>
+                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{formatMoney(pendingAmount, selectedCurrency)}</p>
               </div>
               <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-warning/8 transition-transform duration-200 group-hover:scale-105">
                 <Clock className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-warning" />
@@ -190,11 +201,12 @@ const Payments = () => {
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="font-semibold text-foreground">
-                          ₦{Number(payment.amount).toLocaleString()} {payment.currency}
+                          {formatConverted(Number(payment.amount), payment.currency || "USD")}
                         </h3>
                         {getStatusBadge(payment.status)}
                       </div>
                       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <span>Original: {formatMoney(Number(payment.amount), payment.currency || "USD")}</span>
                         {payment.shipments && (
                           <span>Shipment: {payment.shipments.tracking_number}</span>
                         )}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +13,7 @@ const PaymentCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { formatMoney } = useCurrency();
   const { balance, loading: balanceLoading, refetch: refetchBalance } = useWalletBalance(user?.id);
   const [status, setStatus] = useState<"verifying" | "success" | "failed">("verifying");
   const [message, setMessage] = useState("Verifying your payment...");
@@ -84,7 +86,7 @@ const PaymentCallback = () => {
                   <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-5">
                     <p className="mb-2 text-sm text-muted-foreground">Updated Balance</p>
                     <p className="text-2xl font-bold text-green-600">
-                      ₦{balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+                      {formatMoney(balance, "NGN")}
                     </p>
                   </div>
                 )}

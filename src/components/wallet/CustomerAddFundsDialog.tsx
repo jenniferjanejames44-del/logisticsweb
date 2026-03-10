@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import {
   Dialog,
@@ -25,6 +26,7 @@ const quickAmounts = [1000, 2500, 5000, 10000, 25000, 50000];
 
 const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogProps) => {
   const { user } = useAuth();
+  const { formatMoney } = useCurrency();
   const { balance, loading: balanceLoading } = useWalletBalance(user?.id);
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
   const handleProceedToPayment = async () => {
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 100) {
-      toast.error("Minimum top-up amount is ₦100");
+      toast.error(`Minimum top-up amount is ${formatMoney(100, "NGN")}`);
       return;
     }
 
@@ -67,9 +69,9 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
       } else {
         throw new Error("No authorization URL returned");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error initializing wallet topup:", error);
-      toast.error(error.message || "Failed to initialize payment. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to initialize payment. Please try again.");
       setLoading(false);
     }
   };
@@ -83,7 +85,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
             Add Funds to Wallet
           </DialogTitle>
           <DialogDescription>
-            Fund your wallet instantly via Paystack. Pay with card, bank transfer, or USSD.
+            Fund your NGN wallet instantly via Paystack. Pay with card, bank transfer, or USSD.
           </DialogDescription>
         </DialogHeader>
 
@@ -92,16 +94,16 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
           <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/10">
             <div className="flex items-center gap-2">
               <Wallet className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Current Balance</span>
+              <span className="text-sm font-medium text-muted-foreground">Current Balance (NGN)</span>
             </div>
             <span className="text-lg font-bold text-foreground">
-              {balanceLoading ? "..." : `₦${balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`}
+              {balanceLoading ? "..." : formatMoney(balance, "NGN")}
             </span>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="topup-amount">Amount (₦)</Label>
+            <Label htmlFor="topup-amount">Amount (NGN)</Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₦</span>
               <Input
@@ -115,7 +117,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                 className="pl-8 h-12 text-lg"
               />
             </div>
-            <p className="text-xs text-muted-foreground">Minimum: ₦100</p>
+            <p className="text-xs text-muted-foreground">Minimum: {formatMoney(100, "NGN")}</p>
           </div>
 
           {/* Quick Amount Buttons */}
@@ -131,7 +133,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                   className="h-10"
                   onClick={() => setAmount(qa.toString())}
                 >
-                  ₦{qa.toLocaleString()}
+                  {formatMoney(qa, "NGN")}
                 </Button>
               ))}
             </div>
@@ -145,7 +147,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                 <span className="text-sm font-medium text-muted-foreground">New Balance</span>
               </div>
               <span className="text-lg font-bold text-green-600">
-                ₦{newBalance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}
+                {formatMoney(newBalance, "NGN")}
               </span>
             </div>
           )}
