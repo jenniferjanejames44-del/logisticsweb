@@ -228,22 +228,25 @@ const AdminUsers = () => {
   return (
     <AdminLayout title="User Management" description="Manage customer accounts, permissions, and view activity">
       <div className="space-y-6 sm:space-y-8">
-        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />All Users ({filteredUsers.length})
+              <CardTitle className="flex items-center gap-3 text-base sm:text-lg">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
+                  <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                All Users ({filteredUsers.length})
               </CardTitle>
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search users..." className="h-11 rounded-lg pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search users..." className="h-11 rounded-lg border-border bg-white pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button className="h-11 w-full rounded-lg px-6 sm:w-auto"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
+                    <Button className="h-11 w-full max-w-[220px] rounded-lg px-6 sm:w-auto sm:max-w-none"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+                  <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
                     <DialogHeader className="px-6 pt-6">
                       <DialogTitle className="text-foreground">Add New Admin</DialogTitle>
                       <DialogDescription>Create a new admin account with full dashboard access.</DialogDescription>
@@ -285,7 +288,7 @@ const AdminUsers = () => {
               /* Mobile Card View */
               <div className="space-y-3">
                 {filteredUsers.map((user) => (
-                  <div key={user.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                  <div key={user.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
                         <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
@@ -313,7 +316,7 @@ const AdminUsers = () => {
                     </div>
                     <div className="flex flex-wrap items-center gap-2 border-t border-border/50 pt-3">
                       <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
-                        <SelectTrigger className="h-10 w-28 rounded-lg"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-10 w-28 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="customer">Customer</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
@@ -331,7 +334,7 @@ const AdminUsers = () => {
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-lg rounded-lg border border-border bg-background p-0">
+                        <DialogContent className="sm:max-w-lg rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
                           <DialogHeader className="px-6 pt-6">
                             <DialogTitle className="text-base">Login Activity - {user.full_name || user.email}</DialogTitle>
                             <DialogDescription>Recent login history</DialogDescription>
@@ -343,7 +346,7 @@ const AdminUsers = () => {
                               <p className="text-center text-muted-foreground py-4 text-sm">No login history found</p>
                             ) : (
                               selectedUserHistory.map((h) => (
-                                <div key={h.id} className="flex items-start gap-3 rounded-lg border border-border bg-muted/30 p-4">
+                                <div key={h.id} className="flex items-start gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
                                   <div className="flex-shrink-0 rounded-lg bg-primary/10 p-2">{getDeviceIcon(h.device_type)}</div>
                                   <div className="flex-1 space-y-1 min-w-0">
                                     <div className="flex items-center gap-2 flex-wrap">
@@ -385,7 +388,7 @@ const AdminUsers = () => {
             ) : (
               /* Desktop Table View */
               <div className="-mx-6 overflow-x-auto px-6">
-                <div className="min-w-[980px] overflow-hidden rounded-lg border border-border bg-background">
+                <div className="min-w-[980px]">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -430,11 +433,11 @@ const AdminUsers = () => {
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="sm" className="rounded-lg" onClick={() => fetchLoginHistory(user.user_id)}>
+                              <Button variant="outline" size="sm" className="rounded-lg border-border bg-white" onClick={() => fetchLoginHistory(user.user_id)}>
                                 <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-lg rounded-lg border border-border bg-background p-0">
+                            <DialogContent className="max-w-lg rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
                               <DialogHeader className="px-6 pt-6">
                                 <DialogTitle>Login Activity - {user.full_name || user.email}</DialogTitle>
                                 <DialogDescription>Recent login history and device information</DialogDescription>
@@ -446,7 +449,7 @@ const AdminUsers = () => {
                                   <p className="text-center text-muted-foreground py-4">No login history found</p>
                                 ) : (
                                   selectedUserHistory.map((h) => (
-                                    <div key={h.id} className="flex items-start gap-4 rounded-lg border border-border bg-muted/30 p-4">
+                                    <div key={h.id} className="flex items-start gap-4 rounded-xl border border-border/70 bg-white p-4 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
                                       <div className="rounded-lg bg-primary/10 p-2">{getDeviceIcon(h.device_type)}</div>
                                       <div className="flex-1 space-y-1">
                                         <div className="flex items-center gap-2">
@@ -468,7 +471,7 @@ const AdminUsers = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
-                              <SelectTrigger className="h-10 w-28 rounded-lg"><SelectValue /></SelectTrigger>
+                              <SelectTrigger className="h-10 w-28 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="customer">Customer</SelectItem>
                                 <SelectItem value="admin">Admin</SelectItem>
@@ -510,7 +513,7 @@ const AdminUsers = () => {
 
         {/* Reset Password Dialog */}
         <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
-          <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
             <DialogHeader className="px-6 pt-6">
               <DialogTitle className="text-foreground">Reset Password</DialogTitle>
               <DialogDescription>Set a new password for {resetPasswordUserName}</DialogDescription>

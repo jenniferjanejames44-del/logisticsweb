@@ -368,7 +368,7 @@ const Shipping = () => {
     return true;
   };
 
-  const inputClass = "h-12 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground/60 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-200 hover:border-primary/35 focus:border-primary focus:ring-2 focus:ring-primary/10";
+  const inputClass = "h-12 rounded-lg border border-[#E5E7EB] bg-white px-4 text-foreground placeholder:text-muted-foreground/60 shadow-none transition-all duration-200 hover:border-primary/20 focus:border-accent focus:ring-2 focus:ring-accent/15";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -396,11 +396,11 @@ const Shipping = () => {
           </div>
         </section>
 
-        <section className="section-padding bg-muted/40 relative overflow-hidden">
+        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_35%),linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)]">
           <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
           <div className="section-container relative z-10">
             {workflowGuide && (
-              <div className="mx-auto mb-6 max-w-4xl rounded-2xl border border-primary/15 bg-primary/5 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+              <div className="mx-auto mb-6 max-w-4xl rounded-2xl border border-primary/15 bg-white/90 p-5 shadow-[0_16px_36px_rgba(15,23,42,0.05)] backdrop-blur-sm">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-primary">{workflowGuide.badge}</p>
@@ -412,10 +412,10 @@ const Shipping = () => {
                 </div>
               </div>
             )}
-            <div className="max-w-4xl mx-auto">
-              <div className="overflow-hidden rounded-lg border border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <div className="mx-auto max-w-4xl">
+              <div className="overflow-hidden rounded-2xl border border-border/70 bg-white/95 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
                 {/* Progress */}
-                <div className="border-b border-border bg-gradient-to-r from-muted/60 via-muted/30 to-muted/60 p-4 sm:p-6 backdrop-blur-sm">
+                <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.94))] p-4 sm:p-6">
                   <div className="overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent -mx-1 px-1">
                     <div className="flex items-center justify-between min-w-[600px] sm:min-w-[650px] max-w-3xl mx-auto">
                       {progressSteps.map((s, i) => {
@@ -426,7 +426,7 @@ const Shipping = () => {
                         return (
                           <div key={s.num} className="flex items-center gap-1 sm:gap-2">
                             <div className="flex flex-col items-center gap-1 sm:gap-1.5">
-                              <div className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-300 sm:h-11 sm:w-11 ${isActive ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "border border-border bg-background text-muted-foreground"} ${isCurrent ? "scale-105 ring-2 ring-primary/15 sm:ring-[3px]" : ""}`}>
+                              <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-300 sm:h-11 sm:w-11 ${isActive ? "bg-primary text-primary-foreground shadow-[0_12px_24px_rgba(6,16,67,0.18)]" : "border border-border/70 bg-white text-muted-foreground"} ${isCurrent ? "scale-105 ring-2 ring-primary/15 sm:ring-[3px]" : ""}`}>
                                 {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} /> : <StepIcon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />}
                               </div>
                               <span className={`text-[9px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
@@ -444,7 +444,7 @@ const Shipping = () => {
                 </div>
 
                 {/* Form */}
-                <div className="p-6 sm:p-8 lg:p-10">
+                <div className="bg-white/60 p-6 sm:p-8 lg:p-10">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
@@ -629,7 +629,7 @@ const Shipping = () => {
 
                       {/* Weight breakdown */}
                       {volumetricWeight > 0 && (
-                        <div className="space-y-1.5 rounded-lg border border-border bg-muted/30 p-5">
+                        <div className="space-y-1.5 rounded-xl border border-border/70 bg-muted/[0.18] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2">Weight Breakdown</p>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Actual Weight</span>
@@ -658,10 +658,10 @@ const Shipping = () => {
                       </div>
 
                       {/* Insurance Option */}
-                      <div className="space-y-3 rounded-lg border border-border bg-card p-5">
+                      <div className="space-y-3 rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
                               <Shield className="w-5 h-5 text-primary" strokeWidth={2.5} />
                             </div>
                             <div>
@@ -689,7 +689,7 @@ const Shipping = () => {
                           onChange={(e) => updateField("notes", e.target.value)}
                           placeholder="Add any special instructions or notes for this shipment..."
                           rows={3}
-                          className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground"
+                          className="resize-none border-[#E5E7EB] bg-white text-foreground placeholder:text-muted-foreground"
                         />
                       </div>
 
@@ -698,13 +698,13 @@ const Shipping = () => {
                         <Label className="text-sm font-medium">Upload Package Photos (Optional)</Label>
                         <p className="text-xs text-muted-foreground">Max 5 files. Images or PDF only.</p>
                         <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf" onChange={handleFileChange} className="hidden" />
-                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-dashed border-primary/40 bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10">
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-xl border border-dashed border-primary/35 bg-primary/[0.05] px-4 py-2.5 text-sm font-semibold text-primary shadow-[0_10px_20px_rgba(6,16,67,0.04)] transition-all duration-200 hover:-translate-y-px hover:bg-primary/10">
                           <Upload className="w-4 h-4" /> Choose Files
                         </button>
                         {uploadedFiles.length > 0 && (
                           <div className="mt-2 space-y-1.5">
                             {uploadedFiles.map((file, idx) => (
-                              <div key={idx} className="flex items-center justify-between rounded-lg border border-border bg-muted/30 px-3 py-2 text-sm">
+                              <div key={idx} className="flex items-center justify-between rounded-xl border border-border/70 bg-white px-3 py-2 text-sm shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
                                 <span className="text-foreground truncate max-w-[200px] sm:max-w-none">{file.name}</span>
                                 <button type="button" onClick={() => removeFile(idx)} className="text-destructive hover:text-destructive/80 text-xs font-semibold ml-2 shrink-0">Remove</button>
                               </div>
@@ -767,7 +767,7 @@ const Shipping = () => {
                         </Select>
                       </div>
                       {selectedWarehouse && (
-                        <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+                        <div className="rounded-2xl border border-primary/15 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                           <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
                           <p className="text-sm text-muted-foreground">{selectedWarehouse.address}</p>
                           {selectedWarehouse.phone && <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1"><Phone className="w-3 h-3" /> {selectedWarehouse.phone}</p>}
@@ -776,7 +776,7 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div className={`space-y-3 rounded-lg border p-5 ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border bg-card"}`}>
+                        <div className={`space-y-3 rounded-xl border p-5 ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {!selectedDeliveryMethod && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
@@ -794,9 +794,9 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex flex-col items-start gap-3 rounded-lg border text-left transition-all duration-200 sm:flex-row sm:items-center p-5 ${isSelected ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/20" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] active:scale-[0.98]"}`}
+                                  className={`group flex flex-col items-start gap-3 rounded-xl border p-5 text-left transition-all duration-200 sm:flex-row sm:items-center ${isSelected ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
                                 >
-                                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                     <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
                                   </div>
                                   <div className="flex-1 min-w-0">
@@ -816,7 +816,7 @@ const Shipping = () => {
 
                           {/* Pickup Fee Option */}
                           {isPickupMethod && deliveryFee > 0 && (
-                            <div className="mt-3 rounded-lg border border-border bg-card p-5">
+                            <div className="mt-3 rounded-xl border border-border/70 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                               <div className="flex items-start gap-3">
                                 <Checkbox
                                   checked={pickupFeePrepaid}
@@ -851,9 +851,9 @@ const Shipping = () => {
                               key={opt.value}
                               type="button"
                               onClick={() => setShippingSpeed(opt.value)}
-                              className={`group flex items-center gap-3 rounded-lg border p-5 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/20" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] active:scale-[0.98]"}`}
+                              className={`group flex items-center gap-3 rounded-xl border p-5 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
                             >
-                              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-md shadow-primary/25" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                 <opt.icon className="w-4 h-4" strokeWidth={2.5} />
                               </div>
                               <div className="flex-1">
@@ -870,7 +870,7 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div className={`space-y-3 rounded-lg border p-5 ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border bg-card"}`}>
+                        <div className={`space-y-3 rounded-xl border p-5 ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
                           <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
@@ -881,9 +881,9 @@ const Shipping = () => {
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex flex-col items-start gap-3 rounded-lg border p-5 transition-all duration-200 sm:flex-row sm:items-center ${qty > 0 ? "border-primary bg-primary/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.04)] ring-1 ring-primary/15" : "border-border bg-card hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)]"}`}>
+                                <div key={pkg.id} className={`flex flex-col items-start gap-3 rounded-xl border p-5 transition-all duration-200 sm:flex-row sm:items-center ${qty > 0 ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)]"}`}>
                                   <div className="flex items-center gap-3 flex-1 min-w-0 w-full sm:w-auto">
-                                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30" : "bg-muted text-muted-foreground"}`}>
+                                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" strokeWidth={2.5} />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -931,7 +931,7 @@ const Shipping = () => {
                           <Label className="text-sm font-medium">Extra Services</Label>
                           <div className="grid sm:grid-cols-2 gap-3">
                             {extraCharges.map((ec: any) => (
-                              <div key={ec.id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/25" onClick={() => toggleExtra(ec.id)}>
+                              <div key={ec.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20" onClick={() => toggleExtra(ec.id)}>
                                 <Checkbox checked={selectedExtras.includes(ec.id)} onCheckedChange={() => toggleExtra(ec.id)} />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-foreground">{ec.name}</p>
@@ -956,13 +956,13 @@ const Shipping = () => {
                       {/* Details cards */}
                       <div className="space-y-4">
                         <div className="grid sm:grid-cols-2 gap-4">
-                       <div className="rounded-lg border border-border bg-muted/30 p-5">
+                       <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
                             <p className="font-semibold text-sm text-foreground">{formData.sender_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.sender_phone}</p>
                             {formData.sender_address && <p className="text-xs text-muted-foreground mt-1">{formData.sender_address}, {formData.sender_city}</p>}
                           </div>
-                          <div className="rounded-lg border border-border bg-muted/30 p-5">
+                          <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Receiver</p>
                             <p className="font-semibold text-sm text-foreground">{formData.receiver_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.receiver_phone}</p>
@@ -970,7 +970,7 @@ const Shipping = () => {
                           </div>
                         </div>
 
-                        <div className="rounded-lg border border-border bg-muted/30 p-5">
+                        <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                           <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">Shipment Details</p>
                           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {[
@@ -1005,7 +1005,7 @@ const Shipping = () => {
 
                         {/* Packaging summary */}
                         {packagingCost > 0 && (
-                          <div className="rounded-lg border border-border bg-muted/30 p-5">
+                          <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                             <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Packaging</p>
                             {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
                               <div key={p.id} className="flex justify-between text-sm">
@@ -1018,7 +1018,7 @@ const Shipping = () => {
                       </div>
 
                       {/* Pricing */}
-                      <div className="rounded-lg border border-primary/20 bg-primary/5 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+                      <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-6 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
                         {priceLoading ? (
                           <p className="text-sm text-muted-foreground text-center py-4">Calculating price...</p>
                         ) : (
@@ -1067,7 +1067,7 @@ const Shipping = () => {
                                 <span className={`font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>{formatUsd(deliveryFee)}</span>
                               </div>
                             )}
-                            <div className="border-t border-primary/20 pt-3 flex justify-between items-center">
+                            <div className="flex items-center justify-between rounded-xl border border-primary/10 bg-white/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                               <span className="font-bold text-foreground text-lg">Total</span>
                               <span className="text-3xl font-bold text-primary">{formatUsd(grandTotal)}</span>
                             </div>
@@ -1080,7 +1080,7 @@ const Shipping = () => {
                         )}
                       </div>
 
-                      <div className="flex items-start gap-3 rounded-lg border border-primary/20 bg-primary/5 p-5">
+                      <div className="flex items-start gap-3 rounded-2xl border border-primary/15 bg-white/80 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"><Shield className="w-4 h-4 text-primary" /></div>
                         <p className="text-sm text-muted-foreground">By confirming, you agree to our shipping terms. You can pay immediately or save and pay later from your dashboard.</p>
                       </div>
@@ -1088,7 +1088,7 @@ const Shipping = () => {
                   )}
 
                   {/* Navigation */}
-                  <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-4 pt-7 mt-8 border-t border-border/30">
+                  <div className="mt-8 flex flex-col justify-between gap-3 rounded-2xl border border-border/60 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)] sm:flex-row sm:items-center sm:gap-4">
                     <Button
                       type="button"
                       variant="dashOutline"
@@ -1098,7 +1098,7 @@ const Shipping = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={step === 1}
-                      className="gap-2 shadow-sm order-2 sm:order-1 min-h-[44px]"
+                      className="order-2 min-h-[44px] w-full gap-2 shadow-sm sm:order-1 sm:w-auto"
                     >
                       <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
                     </Button>
@@ -1122,7 +1122,7 @@ const Shipping = () => {
                             variant: "destructive",
                           });
                         }}
-                        className="gap-2 min-w-[150px] shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 order-1 sm:order-2 min-h-[44px]"
+                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 sm:order-2 sm:min-w-[150px] sm:w-auto"
                       >
                         Continue <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
@@ -1133,7 +1133,7 @@ const Shipping = () => {
                         size="dash"
                         disabled={isSubmitting}
                         onClick={handleSubmit}
-                        className="gap-2 min-w-[170px] shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20 order-1 sm:order-2 min-h-[44px]"
+                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20 sm:order-2 sm:min-w-[170px] sm:w-auto"
                       >
                         {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
@@ -1161,8 +1161,8 @@ const Shipping = () => {
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },
               ].map((s) => (
-                <div key={s.num} className="group relative flex flex-col items-center rounded-lg border border-border bg-card p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-primary shadow-lg transition-transform group-hover:scale-105"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
+                <div key={s.num} className="group relative flex flex-col items-center rounded-2xl border border-border/70 bg-white/95 p-6 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_20px_40px_rgba(15,23,42,0.07)]">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary shadow-[0_14px_28px_rgba(6,16,67,0.16)] transition-transform group-hover:scale-105"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
                   <span className="text-xs font-bold text-primary mb-2">Step {s.num}</span>
                   <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
                 </div>

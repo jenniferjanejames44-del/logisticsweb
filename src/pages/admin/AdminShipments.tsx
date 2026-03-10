@@ -198,7 +198,7 @@ const AdminShipments = () => {
   return (
     <AdminLayout title="Shipment Management" description="Track and manage all customer shipments">
       <div className="space-y-6 sm:space-y-8">
-        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2.5 text-base sm:text-lg font-bold">
@@ -212,13 +212,13 @@ const AdminShipments = () => {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
                   <Input
                     placeholder="Search by tracking number, city..."
-                    className="h-11 rounded-lg border-border pl-10 transition-colors hover:border-primary/35 focus:border-primary"
+                    className="h-11 rounded-lg border-border bg-white pl-10 transition-colors hover:border-primary/35 focus:border-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-lg border-border font-medium transition-colors hover:border-primary/35 sm:w-48">
+                  <SelectTrigger className="h-11 w-full rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35 sm:w-48">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -258,7 +258,7 @@ const AdminShipments = () => {
               /* Mobile Card View */
               <div className="space-y-3">
                 {filteredShipments.map((shipment) => (
-                  <div key={shipment.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                  <div key={shipment.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_16px_32px_rgba(15,23,42,0.07)]">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 shadow-sm">
@@ -296,7 +296,7 @@ const AdminShipments = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
+                    <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                       <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
                         {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
@@ -322,7 +322,7 @@ const AdminShipments = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                        <SelectTrigger className="h-11 flex-1 rounded-lg border-border font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-11 flex-1 rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -342,7 +342,7 @@ const AdminShipments = () => {
             ) : (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                 {filteredShipments.map((shipment) => (
-                  <Card key={shipment.id} className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+                  <Card key={shipment.id} className="border-border/70 bg-white/95 shadow-[0_14px_32px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_18px_38px_rgba(15,23,42,0.07)]">
                     <CardContent className="space-y-4 p-5">
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3 min-w-0">
@@ -358,22 +358,22 @@ const AdminShipments = () => {
                       </div>
 
                       <div className="grid grid-cols-2 gap-3 text-sm">
-                        <div className="rounded-lg border border-border bg-muted/30 p-4">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Origin</p>
                           <p className="text-foreground font-medium mt-1">{shipment.origin_city}, {shipment.origin_country}</p>
                         </div>
-                        <div className="rounded-lg border border-border bg-muted/30 p-4">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Destination</p>
                           <p className="text-foreground font-medium mt-1">{shipment.destination_city}, {shipment.destination_country}</p>
                         </div>
-                        <div className="rounded-lg border border-border bg-muted/30 p-4">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" strokeWidth={2.5} />Weight</p>
                           <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
                           {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
                             <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
                           )}
                         </div>
-                        <div className="rounded-lg border border-border bg-muted/30 p-4">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" strokeWidth={2.5} />Dimensions</p>
                           <p className="text-foreground font-medium mt-1">
                             {shipment.length_cm && shipment.width_cm && shipment.height_cm
@@ -381,7 +381,7 @@ const AdminShipments = () => {
                               : "—"}
                           </p>
                         </div>
-                        <div className="rounded-lg border border-border bg-muted/30 p-4">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                           <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
                             {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
@@ -409,7 +409,7 @@ const AdminShipments = () => {
                           Edit Dims
                         </Button>
                         <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                          <SelectTrigger className="h-11 flex-1 rounded-lg border-border font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-11 flex-1 rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
                           <SelectContent>
                             {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                           </SelectContent>
@@ -433,7 +433,7 @@ const AdminShipments = () => {
 
         {/* Set Price Dialog */}
         <Dialog open={priceDialogOpen} onOpenChange={setPriceDialogOpen}>
-          <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
             <DialogHeader className="px-6 pt-6">
               <DialogTitle className="text-foreground">Set Shipment Price</DialogTitle>
               <DialogDescription>Set the price for shipment {selectedShipment?.tracking_number}</DialogDescription>
@@ -448,7 +448,7 @@ const AdminShipments = () => {
                 </div>
               </div>
               {selectedShipment && (
-                <div className="space-y-1 rounded-lg border border-border bg-muted/30 p-4 text-sm">
+                <div className="space-y-1 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                   <p><span className="text-muted-foreground">Route:</span> {selectedShipment.origin_city} → {selectedShipment.destination_city}</p>
                   <p><span className="text-muted-foreground">Weight:</span> {selectedShipment.weight} kg</p>
                   <p><span className="text-muted-foreground">Service:</span> {selectedShipment.service_type}</p>
@@ -465,7 +465,7 @@ const AdminShipments = () => {
         </Dialog>
         {/* Edit Dimensions Dialog */}
         <Dialog open={dimensionDialogOpen} onOpenChange={setDimensionDialogOpen}>
-          <DialogContent className="sm:max-w-md rounded-lg border border-border bg-background p-0">
+          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
             <DialogHeader className="px-6 pt-6">
               <DialogTitle className="text-foreground">Edit Dimensions</DialogTitle>
               <DialogDescription>Update dimensions for {selectedShipment?.tracking_number}</DialogDescription>
@@ -497,7 +497,7 @@ const AdminShipments = () => {
                 const vol = (l > 0 && w > 0 && h > 0) ? (l * w * h) / 5000 : 0;
                 const chg = Math.max(wt || 0, vol);
                 if (vol > 0) return (
-                  <div className="space-y-1 rounded-lg border border-border bg-muted/30 p-4 text-sm">
+                  <div className="space-y-1 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                     <p><span className="text-muted-foreground">Actual Weight:</span> {(wt || 0).toFixed(2)} kg</p>
                     <p><span className="text-muted-foreground">Volumetric Weight:</span> {vol.toFixed(2)} kg</p>
                     <p className="font-semibold"><span className="text-muted-foreground">Chargeable Weight:</span> {chg.toFixed(2)} kg</p>

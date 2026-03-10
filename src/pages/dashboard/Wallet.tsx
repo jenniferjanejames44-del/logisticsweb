@@ -81,7 +81,7 @@ const Wallet = () => {
       title="Wallet" 
       description="Manage your account balance and view transactions"
       action={
-        <Button variant="dashAccent" size="dash" onClick={() => setAddFundsOpen(true)}>
+        <Button variant="dashAccent" size="dash" className="w-full max-w-[220px] sm:w-auto sm:max-w-none" onClick={() => setAddFundsOpen(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Funds
         </Button>
@@ -90,10 +90,10 @@ const Wallet = () => {
       {loading ? (
         <WalletSkeleton />
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Balance Cards */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
-            <Card className="relative overflow-hidden border-primary/20 bg-gradient-to-br from-primary/[0.12] via-background to-accent/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <Card className="relative overflow-hidden border-primary/20 bg-[linear-gradient(135deg,rgba(6,16,67,0.14),rgba(255,255,255,0.98),rgba(223,81,1,0.09))] shadow-[0_22px_48px_rgba(15,23,42,0.1)]">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
               <div className="absolute -top-10 -right-10 w-28 h-28 rounded-full bg-primary/[0.1]" />
               <CardContent className="relative z-10 p-6">
@@ -111,7 +111,7 @@ const Wallet = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -127,7 +127,7 @@ const Wallet = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -145,10 +145,10 @@ const Wallet = () => {
           </div>
 
           {/* Info Card */}
-          <Card className="border-border bg-muted/30 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <Card className="border-border/70 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.92))] shadow-[0_16px_36px_rgba(15,23,42,0.05)]">
             <CardContent className="p-6">
               <div className="flex items-start gap-3.5">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary/8 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
                   <CreditCard className="w-[18px] h-[18px] text-primary" />
                 </div>
                 <div>
@@ -163,10 +163,10 @@ const Wallet = () => {
           </Card>
 
           {/* Transactions */}
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
             <CardHeader className="p-6 pb-4">
               <CardTitle className="flex items-center gap-2.5 text-lg font-semibold">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/8">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/8 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
                   <TrendingUp className="w-4 h-4 text-primary" />
                 </div>
                 Transaction History
@@ -184,11 +184,11 @@ const Wallet = () => {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-1">
+                <div className="space-y-3">
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="-mx-2 flex items-center justify-between gap-3 rounded-lg border-b border-border/25 px-2 py-4 transition-colors duration-150 last:border-0 hover:bg-muted/30"
+                      className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-white/85 px-4 py-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-px hover:border-primary/15 hover:bg-primary/[0.025]"
                     >
                       <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
                         <div

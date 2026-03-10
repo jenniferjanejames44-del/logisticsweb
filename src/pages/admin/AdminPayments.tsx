@@ -93,42 +93,42 @@ const AdminPayments = () => {
       <div className="space-y-6 sm:space-y-8">
         {/* Summary Cards */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-sm text-muted-foreground">Total Revenue</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalRevenue.toLocaleString()}</p>
                 </div>
-                <div className="rounded-lg bg-success/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
+                  <div className="rounded-xl bg-success/10 p-3 shadow-[0_10px_20px_rgba(34,197,94,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-sm text-muted-foreground">Pending Payments</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">₦{pendingAmount.toLocaleString()}</p>
                 </div>
-                <div className="rounded-lg bg-warning/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
+                  <div className="rounded-xl bg-warning/10 p-3 shadow-[0_10px_20px_rgba(245,158,11,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-sm text-muted-foreground">Total Transactions</p>
                   <p className="text-xl sm:text-2xl font-bold text-foreground">{payments.length}</p>
                 </div>
-                <div className="rounded-lg bg-primary/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
+                  <div className="rounded-xl bg-primary/10 p-3 shadow-[0_10px_20px_rgba(6,16,67,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
             <div className="flex flex-col gap-3 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
@@ -140,10 +140,10 @@ const AdminPayments = () => {
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search payments..." className="h-11 rounded-lg pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search payments..." className="h-11 rounded-lg border-border bg-white pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-lg sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
+                  <SelectTrigger className="h-11 w-full rounded-lg border-border bg-white sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
                     {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
@@ -163,7 +163,7 @@ const AdminPayments = () => {
             ) : isMobile ? (
               <div className="space-y-3">
                 {filteredPayments.map((payment) => (
-                  <div key={payment.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                  <div key={payment.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                     <div className="flex items-center justify-between">
                       <span className="font-medium text-foreground">₦{Number(payment.amount).toLocaleString()} {payment.currency}</span>
                       <Badge className={getStatusColor(payment.status)}>{payment.status}</Badge>
@@ -185,7 +185,7 @@ const AdminPayments = () => {
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <span className="text-xs text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</span>
                       <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                        <SelectTrigger className="h-9 w-32 rounded-lg"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-9 w-32 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -196,7 +196,7 @@ const AdminPayments = () => {
               </div>
             ) : (
               <div className="-mx-6 overflow-x-auto px-6">
-                <div className="min-w-[860px] overflow-hidden rounded-lg border border-border bg-background">
+                <div className="min-w-[860px]">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -220,7 +220,7 @@ const AdminPayments = () => {
                         <TableCell>{new Date(payment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                            <SelectTrigger className="h-10 w-32 rounded-lg"><SelectValue /></SelectTrigger>
+                            <SelectTrigger className="h-10 w-32 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
                             <SelectContent>
                               {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                             </SelectContent>
