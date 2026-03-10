@@ -140,18 +140,18 @@ const AdminNotifications = () => {
       </div>
 
       {/* Main Table Card */}
-      <Card className="border-border/50">
-        <CardHeader className="border-b border-border/50 pb-3 sm:pb-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+      <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
+        <CardHeader className="border-b border-border/60 p-6 pb-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
               <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />Email Subscriptions
             </CardTitle>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
               <div className="relative flex-1 sm:flex-none">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9 w-full sm:w-56" />
+                <Input placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)] sm:w-60" />
               </div>
-              <Button variant="outline" size="icon" onClick={fetchSubscriptions} className="flex-shrink-0">
+              <Button variant="outline" size="iconSm" onClick={fetchSubscriptions} className="flex-shrink-0 rounded-[10px] border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]">
                 <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
               </Button>
             </div>
@@ -169,24 +169,24 @@ const AdminNotifications = () => {
           ) : isMobile ? (
             <div className="p-3 space-y-3">
               {filteredSubscriptions.map((sub) => (
-                <div key={sub.id} className="border border-border/50 rounded-xl p-4 space-y-3 bg-card">
+                <div key={sub.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium text-foreground truncate">{sub.email}</span>
-                    <Badge variant={sub.is_active ? "default" : "secondary"}>{sub.is_active ? "Active" : "Inactive"}</Badge>
+                    <Badge variant={sub.is_active ? "successOutline" : "outline"}>{sub.is_active ? "Active" : "Inactive"}</Badge>
                   </div>
                   <div className="text-sm">
                     <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Tracking Number</p>
-                    <code className="px-2 py-1 bg-muted rounded text-xs">{sub.tracking_number}</code>
+                    <code className="rounded-lg border border-border/70 bg-muted/[0.18] px-2.5 py-1 text-xs shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">{sub.tracking_number}</code>
                   </div>
                   <div className="flex items-center justify-between pt-2 border-t border-border/50">
                     <span className="text-xs text-muted-foreground">{format(new Date(sub.created_at), "MMM d, yyyy")}</span>
                     <div className="flex items-center gap-1.5">
-                      <Button variant="ghost" size="icon" className="h-11 w-11" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
+                      <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
                         {sub.is_active ? <ToggleRight className="w-4 h-4 text-success" /> : <ToggleLeft className="w-4 h-4 text-muted-foreground" />}
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-11 w-11"><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                          <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"><Trash2 className="w-4 h-4 text-destructive" /></Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
@@ -219,16 +219,16 @@ const AdminNotifications = () => {
                 {filteredSubscriptions.map((sub) => (
                   <TableRow key={sub.id} className="border-border/50">
                     <TableCell className="font-medium">{sub.email}</TableCell>
-                    <TableCell><code className="px-2 py-1 bg-muted rounded text-sm">{sub.tracking_number}</code></TableCell>
-                    <TableCell><Badge variant={sub.is_active ? "default" : "secondary"}>{sub.is_active ? "Active" : "Inactive"}</Badge></TableCell>
+                    <TableCell><code className="rounded-lg border border-border/70 bg-muted/[0.18] px-2.5 py-1 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">{sub.tracking_number}</code></TableCell>
+                    <TableCell><Badge variant={sub.is_active ? "successOutline" : "outline"}>{sub.is_active ? "Active" : "Inactive"}</Badge></TableCell>
                     <TableCell className="text-muted-foreground">{format(new Date(sub.created_at), "MMM d, yyyy")}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
+                        <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
                           {sub.is_active ? <ToggleRight className="w-4 h-4 text-success" /> : <ToggleLeft className="w-4 h-4 text-muted-foreground" />}
                         </Button>
                         <AlertDialog>
-                          <AlertDialogTrigger asChild><Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button></AlertDialogTrigger>
+                          <AlertDialogTrigger asChild><Button variant="ghost" size="iconSm" className="rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"><Trash2 className="w-4 h-4 text-destructive" /></Button></AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>Delete Subscription</AlertDialogTitle>

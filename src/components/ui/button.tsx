@@ -72,10 +72,12 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-11 px-6 py-3 text-base",
+        compact: "h-10 px-4 py-2.5 text-[15px]",
         sm: "h-11 px-5 py-3 text-[15px]",
         lg: "h-11 px-6 py-3 text-base",
         xl: "h-11 px-6 py-3 text-base font-semibold",
         icon: "h-11 w-11",
+        iconSm: "h-9 w-9",
         nav: "h-11 px-5 py-3 text-base",
         dash: "h-11 px-6 py-3 text-base",
         dashSm: "h-11 px-5 py-3 text-[15px]",

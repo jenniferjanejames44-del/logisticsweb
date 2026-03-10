@@ -130,20 +130,20 @@ const AdminPayments = () => {
 
         <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
-            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex flex-col gap-4 sm:gap-4">
               <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 All Payments ({filteredPayments.length})
               </CardTitle>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search payments..." className="h-11 rounded-lg border-border bg-white pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                    <Input placeholder="Search payments..." className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-lg border-border bg-white sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
+                    <SelectTrigger className="h-11 w-full rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)] sm:w-44"><SelectValue placeholder="Filter status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
                     {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
@@ -166,7 +166,7 @@ const AdminPayments = () => {
                   <div key={payment.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                     <div className="flex items-center justify-between">
                       <span className="font-medium text-foreground">₦{Number(payment.amount).toLocaleString()} {payment.currency}</span>
-                      <Badge className={getStatusColor(payment.status)}>{payment.status}</Badge>
+                      <Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
@@ -185,7 +185,7 @@ const AdminPayments = () => {
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <span className="text-xs text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</span>
                       <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                        <SelectTrigger className="h-9 w-32 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-10 w-32 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -216,11 +216,11 @@ const AdminPayments = () => {
                         <TableCell className="font-medium">₦{Number(payment.amount).toLocaleString()} {payment.currency}</TableCell>
                         <TableCell className="capitalize">{payment.payment_method || "N/A"}</TableCell>
                         <TableCell>{payment.description || "N/A"}</TableCell>
-                        <TableCell><Badge className={getStatusColor(payment.status)}>{payment.status}</Badge></TableCell>
+                        <TableCell><Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge></TableCell>
                         <TableCell>{new Date(payment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                            <SelectTrigger className="h-10 w-32 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
+                            <SelectTrigger className="h-10 w-32 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]"><SelectValue /></SelectTrigger>
                             <SelectContent>
                               {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                             </SelectContent>

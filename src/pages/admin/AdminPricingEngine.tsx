@@ -13,6 +13,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit2, Trash2, Globe, Weight, TrendingUp, Tag, Percent, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 
+const compactAddButtonClass = "rounded-[10px] px-4";
+const compactIconButtonClass = "rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60";
+const compactDeleteButtonClass = "rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive";
+
 // ---- Generic CRUD helpers ----
 function useCrud(table: string) {
   const [items, setItems] = useState<any[]>([]);
@@ -64,7 +68,7 @@ const ZonesTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Zones ({zones.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Zone</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Zone</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -76,7 +80,7 @@ const ZonesTab = () => {
                 <TableCell className="font-medium">{z.name}</TableCell>
                 <TableCell>{z.description || "—"}</TableCell>
                 <TableCell>{z.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(z.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(z.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -118,7 +122,7 @@ const ZoneCountriesTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Zone Countries ({items.length})</h3>
-        <Button size="sm" onClick={() => { setForm({ zone_id: "", country: "" }); setOpen(true); }}><Plus className="w-4 h-4 mr-1" />Map Country</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => { setForm({ zone_id: "", country: "" }); setOpen(true); }}><Plus className="w-4 h-4 mr-1" />Map Country</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -129,7 +133,7 @@ const ZoneCountriesTab = () => {
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.country}</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                <TableCell><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -184,7 +188,7 @@ const WeightPricingTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Weight Pricing ({items.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -196,7 +200,7 @@ const WeightPricingTab = () => {
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
                 <TableCell>₦{Number(i.price).toLocaleString()}</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -250,7 +254,7 @@ const HeavyWeightPricingTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Heavy Weight Pricing ({items.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -262,7 +266,7 @@ const HeavyWeightPricingTab = () => {
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
                 <TableCell>₦{Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -312,7 +316,7 @@ const ExtraChargesTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Extra Charges ({items.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -324,7 +328,7 @@ const ExtraChargesTab = () => {
                 <TableCell className="font-medium">{i.name}</TableCell>
                 <TableCell>₦{Number(i.price).toLocaleString()}</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -371,7 +375,7 @@ const TaxesTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Tax Settings ({items.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -383,7 +387,7 @@ const TaxesTab = () => {
                 <TableCell className="font-medium">{i.name}</TableCell>
                 <TableCell>{i.rate}%</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -430,7 +434,7 @@ const ProcessingFeesTab = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-foreground">Processing Fees ({items.length})</h3>
-        <Button size="sm" onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
+        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
       </div>
       <div className="overflow-x-auto">
         <Table>
@@ -442,7 +446,7 @@ const ProcessingFeesTab = () => {
                 <TableCell>${Number(i.min_value).toLocaleString()}–${Number(i.max_value).toLocaleString()}</TableCell>
                 <TableCell className="capitalize">{i.fee_type}</TableCell>
                 <TableCell>{i.fee_type === "flat" ? `$${i.fee_value}` : `${i.fee_value}%`}</TableCell>
-                <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -474,17 +478,17 @@ const ProcessingFeesTab = () => {
 const AdminPricingEngine = () => {
   return (
     <AdminLayout title="Pricing Engine" description="Manage zones, weight pricing, extra charges, taxes, and processing fees.">
-      <Card className="border-border/50">
+      <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
         <CardContent className="p-4 sm:p-6">
           <Tabs defaultValue="zones" className="space-y-6">
-            <TabsList className="flex flex-wrap h-auto gap-1 bg-muted/50 p-1">
-              <TabsTrigger value="zones" className="gap-1 text-xs sm:text-sm"><Globe className="w-3.5 h-3.5 hidden sm:block" />Zones</TabsTrigger>
-              <TabsTrigger value="countries" className="gap-1 text-xs sm:text-sm"><Globe className="w-3.5 h-3.5 hidden sm:block" />Countries</TabsTrigger>
-              <TabsTrigger value="weight" className="gap-1 text-xs sm:text-sm"><Weight className="w-3.5 h-3.5 hidden sm:block" />Weight</TabsTrigger>
-              <TabsTrigger value="heavy" className="gap-1 text-xs sm:text-sm"><TrendingUp className="w-3.5 h-3.5 hidden sm:block" />Heavy</TabsTrigger>
-              <TabsTrigger value="extras" className="gap-1 text-xs sm:text-sm"><Tag className="w-3.5 h-3.5 hidden sm:block" />Extras</TabsTrigger>
-              <TabsTrigger value="taxes" className="gap-1 text-xs sm:text-sm"><Percent className="w-3.5 h-3.5 hidden sm:block" />Taxes</TabsTrigger>
-              <TabsTrigger value="fees" className="gap-1 text-xs sm:text-sm"><DollarSign className="w-3.5 h-3.5 hidden sm:block" />Fees</TabsTrigger>
+            <TabsList className="flex h-auto flex-wrap gap-1.5 rounded-2xl border border-border/70 bg-muted/[0.18] p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+              <TabsTrigger value="zones" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><Globe className="hidden h-3.5 w-3.5 sm:block" />Zones</TabsTrigger>
+              <TabsTrigger value="countries" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><Globe className="hidden h-3.5 w-3.5 sm:block" />Countries</TabsTrigger>
+              <TabsTrigger value="weight" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><Weight className="hidden h-3.5 w-3.5 sm:block" />Weight</TabsTrigger>
+              <TabsTrigger value="heavy" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><TrendingUp className="hidden h-3.5 w-3.5 sm:block" />Heavy</TabsTrigger>
+              <TabsTrigger value="extras" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><Tag className="hidden h-3.5 w-3.5 sm:block" />Extras</TabsTrigger>
+              <TabsTrigger value="taxes" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><Percent className="hidden h-3.5 w-3.5 sm:block" />Taxes</TabsTrigger>
+              <TabsTrigger value="fees" className="gap-1 rounded-xl px-3.5 py-2 text-xs font-semibold data-[state=active]:shadow-[0_8px_18px_rgba(15,23,42,0.06)] sm:text-sm"><DollarSign className="hidden h-3.5 w-3.5 sm:block" />Fees</TabsTrigger>
             </TabsList>
             <TabsContent value="zones"><ZonesTab /></TabsContent>
             <TabsContent value="countries"><ZoneCountriesTab /></TabsContent>

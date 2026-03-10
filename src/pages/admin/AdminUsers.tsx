@@ -230,44 +230,44 @@ const AdminUsers = () => {
       <div className="space-y-6 sm:space-y-8">
         <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
-            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex flex-col gap-4 sm:gap-4">
               <CardTitle className="flex items-center gap-3 text-base sm:text-lg">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
                   <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 All Users ({filteredUsers.length})
               </CardTitle>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[280px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search users..." className="h-11 rounded-lg border-border bg-white pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search users..." className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button className="h-11 w-full max-w-[220px] rounded-lg px-6 sm:w-auto sm:max-w-none"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
+                    <Button className="h-11 w-full max-w-[220px] rounded-xl px-6 sm:w-auto sm:max-w-none"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
-                    <DialogHeader className="px-6 pt-6">
+                  <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+                    <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
                       <DialogTitle className="text-foreground">Add New Admin</DialogTitle>
                       <DialogDescription>Create a new admin account with full dashboard access.</DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4 px-6 py-4">
+                    <div className="space-y-4 px-6 py-5">
                       <div className="space-y-2">
                         <Label htmlFor="admin-name">Full Name</Label>
-                        <Input id="admin-name" placeholder="Enter full name" className="h-11 rounded-lg" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
+                        <Input id="admin-name" placeholder="Enter full name" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-email">Email *</Label>
-                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-11 rounded-lg" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
+                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="admin-password">Password *</Label>
-                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-11 rounded-lg" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
+                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
                       </div>
                     </div>
-                    <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
-                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
-                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-11 w-full rounded-lg sm:w-auto">
+                    <DialogFooter className="border-t border-border/60 px-6 py-5">
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-11 w-full rounded-xl sm:w-auto">Cancel</Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-11 w-full rounded-xl sm:w-auto">
                         {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
                       </Button>
                     </DialogFooter>
@@ -419,7 +419,7 @@ const AdminUsers = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">${(user.balance || 0).toFixed(2)}</span>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
+                            <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-success/20 bg-success/[0.05] text-success shadow-[0_8px_18px_rgba(34,197,94,0.06)] hover:border-success/30 hover:bg-success/10 hover:text-success" onClick={() => openAddFundsDialog(user.user_id, user.full_name || user.email || "User")} title="Add Funds">
                               <Wallet className="w-4 h-4 text-success" />
                             </Button>
                           </div>
@@ -433,7 +433,7 @@ const AdminUsers = () => {
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="sm" className="rounded-lg border-border bg-white" onClick={() => fetchLoginHistory(user.user_id)}>
+                              <Button variant="outline" size="compact" className="rounded-[10px] border-border bg-white px-4" onClick={() => fetchLoginHistory(user.user_id)}>
                                 <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
@@ -477,12 +477,12 @@ const AdminUsers = () => {
                                 <SelectItem value="admin">Admin</SelectItem>
                               </SelectContent>
                             </Select>
-                            <Button variant="outline" size="icon" className="h-10 w-10 rounded-lg" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                            <Button variant="outline" size="iconSm" className="rounded-[10px] border-border bg-white" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
                               <KeyRound className="w-4 h-4" />
                             </Button>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="icon" className="h-10 w-10 rounded-lg" disabled={deletingUserId === user.user_id} title="Delete User">
+                                <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive" disabled={deletingUserId === user.user_id} title="Delete User">
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
                               </AlertDialogTrigger>
@@ -513,24 +513,24 @@ const AdminUsers = () => {
 
         {/* Reset Password Dialog */}
         <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
-          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
-            <DialogHeader className="px-6 pt-6">
+          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+            <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
               <DialogTitle className="text-foreground">Reset Password</DialogTitle>
               <DialogDescription>Set a new password for {resetPasswordUserName}</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 px-6 py-4">
+            <div className="space-y-4 px-6 py-5">
               <div className="space-y-2">
                 <Label htmlFor="new-password">New Password *</Label>
-                <Input id="new-password" type="password" className="h-11 rounded-lg" placeholder="Min 6 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                <Input id="new-password" type="password" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" placeholder="Min 6 characters" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">Confirm Password *</Label>
-                <Input id="confirm-password" type="password" className="h-11 rounded-lg" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                <Input id="confirm-password" type="password" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
-            <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
-              <Button variant="outline" onClick={() => setResetPasswordOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
-              <Button onClick={handleResetPassword} disabled={resettingPassword} className="h-11 w-full rounded-lg sm:w-auto">
+            <DialogFooter className="border-t border-border/60 px-6 py-5">
+              <Button variant="outline" onClick={() => setResetPasswordOpen(false)} className="h-11 w-full rounded-xl sm:w-auto">Cancel</Button>
+              <Button onClick={handleResetPassword} disabled={resettingPassword} className="h-11 w-full rounded-xl sm:w-auto">
                 {resettingPassword ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Resetting...</> : <><KeyRound className="w-4 h-4 mr-2" />Reset Password</>}
               </Button>
             </DialogFooter>

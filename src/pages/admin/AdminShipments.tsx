@@ -200,25 +200,25 @@ const AdminShipments = () => {
       <div className="space-y-6 sm:space-y-8">
         <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
           <CardHeader className="p-6 pb-4">
-            <div className="flex flex-col gap-3 sm:gap-4">
+              <div className="flex flex-col gap-4 sm:gap-4">
               <CardTitle className="flex items-center gap-2.5 text-base sm:text-lg font-bold">
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 shadow-sm">
                   <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                 </span>
                 All Shipments ({filteredShipments.length})
               </CardTitle>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
                 <div className="relative flex-1 sm:max-w-[320px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
                   <Input
                     placeholder="Search by tracking number, city..."
-                    className="h-11 rounded-lg border-border bg-white pl-10 transition-colors hover:border-primary/35 focus:border-primary"
+                    className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35 focus:border-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35 sm:w-48">
+                  <SelectTrigger className="h-11 w-full rounded-xl border-border/80 bg-white font-medium shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35 sm:w-48">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -269,7 +269,7 @@ const AdminShipments = () => {
                           <span className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</span>
                         </div>
                       </div>
-                      <Badge className={`${getStatusColor(shipment.status)} font-semibold`}>{shipment.status.replace(/_/g, " ")}</Badge>
+                      <Badge className={`${getStatusColor(shipment.status)} font-semibold capitalize`}>{shipment.status.replace(/_/g, " ")}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
@@ -322,15 +322,15 @@ const AdminShipments = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                        <SelectTrigger className="h-11 flex-1 rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-11 flex-1 rounded-xl border-border/80 bg-white font-medium shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
                       <Button
                         variant="ghost"
-                        size="icon"
-                        className="h-11 w-11 flex-shrink-0 rounded-lg text-destructive transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+                        size="iconSm"
+                        className="flex-shrink-0 rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] transition-all duration-200 hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
                         onClick={() => handleDelete(shipment.id)}
                       >
                         <Trash2 className="w-4 h-4" strokeWidth={2.5} />
@@ -354,7 +354,7 @@ const AdminShipments = () => {
                             <p className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</p>
                           </div>
                         </div>
-                        <Badge className={`${getStatusColor(shipment.status)} font-semibold`}>{shipment.status.replace(/_/g, " ")}</Badge>
+                        <Badge className={`${getStatusColor(shipment.status)} font-semibold capitalize`}>{shipment.status.replace(/_/g, " ")}</Badge>
                       </div>
 
                       <div className="grid grid-cols-2 gap-3 text-sm">
@@ -409,15 +409,15 @@ const AdminShipments = () => {
                           Edit Dims
                         </Button>
                         <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                          <SelectTrigger className="h-11 flex-1 rounded-lg border-border bg-white font-medium transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
+                          <SelectTrigger className="h-11 flex-1 rounded-xl border-border/80 bg-white font-medium shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
                           <SelectContent>
                             {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                           </SelectContent>
                         </Select>
                         <Button
                           variant="ghost"
-                          size="icon"
-                          className="h-11 w-11 flex-shrink-0 rounded-lg text-destructive transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
+                          size="iconSm"
+                          className="flex-shrink-0 rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] transition-all duration-200 hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
                           onClick={() => handleDelete(shipment.id)}
                         >
                           <Trash2 className="w-4 h-4" strokeWidth={2.5} />
@@ -433,17 +433,17 @@ const AdminShipments = () => {
 
         {/* Set Price Dialog */}
         <Dialog open={priceDialogOpen} onOpenChange={setPriceDialogOpen}>
-          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
-            <DialogHeader className="px-6 pt-6">
+          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+            <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
               <DialogTitle className="text-foreground">Set Shipment Price</DialogTitle>
               <DialogDescription>Set the price for shipment {selectedShipment?.tracking_number}</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 px-6 py-4">
+            <div className="space-y-4 px-6 py-5">
               <div className="space-y-2">
                 <Label htmlFor="price">Price (USD)</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="price" type="number" min="0" step="0.01" placeholder="0.00" className="h-11 rounded-lg pl-10"
+                  <Input id="price" type="number" min="0" step="0.01" placeholder="0.00" className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)]"
                     value={priceInput} onChange={(e) => setPriceInput(e.target.value)} />
                 </div>
               </div>
@@ -455,9 +455,9 @@ const AdminShipments = () => {
                 </div>
               )}
             </div>
-            <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
-              <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
-              <Button onClick={handleSetPrice} disabled={settingPrice} className="h-11 w-full rounded-lg sm:w-auto">
+            <DialogFooter className="border-t border-border/60 px-6 py-5">
+              <Button variant="outline" onClick={() => setPriceDialogOpen(false)} className="h-11 w-full rounded-xl sm:w-auto">Cancel</Button>
+              <Button onClick={handleSetPrice} disabled={settingPrice} className="h-11 w-full rounded-xl sm:w-auto">
                 {settingPrice ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Setting...</> : <><DollarSign className="w-4 h-4 mr-2" />Set Price</>}
               </Button>
             </DialogFooter>
@@ -465,28 +465,28 @@ const AdminShipments = () => {
         </Dialog>
         {/* Edit Dimensions Dialog */}
         <Dialog open={dimensionDialogOpen} onOpenChange={setDimensionDialogOpen}>
-          <DialogContent className="sm:max-w-md rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
-            <DialogHeader className="px-6 pt-6">
+          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+            <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
               <DialogTitle className="text-foreground">Edit Dimensions</DialogTitle>
               <DialogDescription>Update dimensions for {selectedShipment?.tracking_number}</DialogDescription>
             </DialogHeader>
-            <div className="space-y-4 px-6 py-4">
+            <div className="space-y-4 px-6 py-5">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>Weight (kg) *</Label>
-                  <Input type="number" min="0.1" step="0.1" className="h-11 rounded-lg" value={dimInputs.weight} onChange={(e) => setDimInputs(p => ({ ...p, weight: e.target.value }))} />
+                  <Input type="number" min="0.1" step="0.1" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={dimInputs.weight} onChange={(e) => setDimInputs(p => ({ ...p, weight: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Length (cm)</Label>
-                  <Input type="number" min="0" step="0.1" className="h-11 rounded-lg" value={dimInputs.length_cm} onChange={(e) => setDimInputs(p => ({ ...p, length_cm: e.target.value }))} />
+                  <Input type="number" min="0" step="0.1" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={dimInputs.length_cm} onChange={(e) => setDimInputs(p => ({ ...p, length_cm: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Width (cm)</Label>
-                  <Input type="number" min="0" step="0.1" className="h-11 rounded-lg" value={dimInputs.width_cm} onChange={(e) => setDimInputs(p => ({ ...p, width_cm: e.target.value }))} />
+                  <Input type="number" min="0" step="0.1" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={dimInputs.width_cm} onChange={(e) => setDimInputs(p => ({ ...p, width_cm: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <Label>Height (cm)</Label>
-                  <Input type="number" min="0" step="0.1" className="h-11 rounded-lg" value={dimInputs.height_cm} onChange={(e) => setDimInputs(p => ({ ...p, height_cm: e.target.value }))} />
+                  <Input type="number" min="0" step="0.1" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={dimInputs.height_cm} onChange={(e) => setDimInputs(p => ({ ...p, height_cm: e.target.value }))} />
                 </div>
               </div>
               {(() => {
@@ -506,9 +506,9 @@ const AdminShipments = () => {
                 return null;
               })()}
             </div>
-            <DialogFooter className="flex-col gap-2 px-6 pb-6 sm:flex-row">
-              <Button variant="outline" onClick={() => setDimensionDialogOpen(false)} className="h-11 w-full rounded-lg sm:w-auto">Cancel</Button>
-              <Button onClick={handleSaveDimensions} disabled={settingDims} className="h-11 w-full rounded-lg sm:w-auto">
+            <DialogFooter className="border-t border-border/60 px-6 py-5">
+              <Button variant="outline" onClick={() => setDimensionDialogOpen(false)} className="h-11 w-full rounded-xl sm:w-auto">Cancel</Button>
+              <Button onClick={handleSaveDimensions} disabled={settingDims} className="h-11 w-full rounded-xl sm:w-auto">
                 {settingDims ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</> : <><Ruler className="w-4 h-4 mr-2" />Save Dimensions</>}
               </Button>
             </DialogFooter>
