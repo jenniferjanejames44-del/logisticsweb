@@ -156,7 +156,7 @@ const VideoModal = ({ video, onClose }: { video: GalleryVideo; onClose: () => vo
 
 const Gallery = () => {
   const [activeVideo, setActiveVideo] = useState<GalleryVideo | null>(null);
-  const { ref: gridRef, isInView: gridInView } = useInView({ threshold: 0.05 });
+  const gridRef = useInView({ threshold: 0.05 });
 
   return (
     <div className="min-h-screen">
@@ -165,7 +165,7 @@ const Gallery = () => {
         <GalleryHeroSection />
 
         {/* Video Grid Section */}
-        <section ref={gridRef as unknown as React.RefObject<HTMLDivElement>} className="py-16 md:py-24 bg-background">
+        <section ref={gridRef.ref as React.Ref<HTMLElement>} className="py-16 md:py-24 bg-background">
           <div className="section-container">
             <div
               className={cn(
