@@ -93,7 +93,7 @@ const VideoCard = ({ video, onPlay }: { video: GalleryVideo; onPlay: (video: Gal
 
   return (
     <div
-      ref={ref}
+      ref={ref as React.Ref<HTMLDivElement>}
       className={cn(
         "group rounded-xl border border-border/80 bg-card text-card-foreground shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:border-primary/12 hover:shadow-[0_16px_34px_rgba(6,16,67,0.08)]",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
