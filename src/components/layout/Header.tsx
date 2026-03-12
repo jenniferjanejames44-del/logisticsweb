@@ -101,10 +101,10 @@ const Header = () => {
           : "border-border/60 shadow-[0_4px_14px_rgba(15,23,42,0.04)]"
       }`}
     >
-      <div className="section-container flex h-full items-center justify-between gap-6 px-4 sm:px-6">
+      <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
         {/* Logo */}
         <Link to="/" className="group flex shrink-0 items-center text-foreground">
-          <Logo className="h-11 w-auto text-foreground sm:h-12 md:h-14" />
+          <Logo className="h-[50px] w-auto text-foreground sm:h-[54px] md:h-14" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -247,7 +247,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)] lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)] sm:h-11 sm:w-11 lg:hidden"
           onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
           aria-label="Toggle menu"
         >
