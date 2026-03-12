@@ -104,5 +104,5 @@ export function resolveGatewayCurrency(
 ): SupportedCurrency {
   const supported = PAYMENT_GATEWAY_SUPPORTED_CURRENCIES[gateway];
   const normalized = normalizeCurrency(preferredCurrency);
-  return supported.includes(normalized as (typeof supported)[number]) ? normalized : supported[0];
+  return (supported as readonly string[]).includes(normalized) ? normalized : supported[0];
 }

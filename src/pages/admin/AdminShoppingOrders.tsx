@@ -41,6 +41,7 @@ interface ShoppingOrder {
   item_description: string | null;
   additional_notes: string | null;
   product_image_url: string | null;
+  product_link: string | null;
 }
 
 interface OrderProfile {
