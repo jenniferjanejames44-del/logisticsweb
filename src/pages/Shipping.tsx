@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { Fragment, useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
@@ -97,6 +97,7 @@ const Shipping = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showStepValidation, setShowStepValidation] = useState(false);
+  const fieldRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // DB data
   const [warehouses, setWarehouses] = useState<any[]>([]);
@@ -136,6 +137,13 @@ const Shipping = () => {
   }, [formData.weight, volumetricWeight]);
 
   const updateField = (field: string, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
+
+  const registerFieldRef = useCallback(
+    (field: string) => (node: HTMLDivElement | null) => {
+      fieldRefs.current[field] = node;
+    },
+    [],
+  );
 
   // Fetch all DB data
   useEffect(() => {
@@ -360,6 +368,19 @@ const Shipping = () => {
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
   const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
+  const isSenderNameInvalid = showStepValidation && !formData.sender_name;
+  const isSenderPhoneInvalid = showStepValidation && !formData.sender_phone;
+  const isReceiverNameInvalid = showStepValidation && !formData.receiver_name;
+  const isReceiverPhoneInvalid = showStepValidation && !formData.receiver_phone;
+  const isReceiverCountryInvalid = showStepValidation && !formData.receiver_country;
+  const isWeightInvalid = showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0);
+  const isOriginInvalid = showStepValidation && !formData.origin_country;
+  const isDestinationInvalid = showStepValidation && !formData.destination_country;
+  const isRouteInvalid = showStepValidation && !!formData.origin_country && !!formData.destination_country && !isRouteValid;
+  const isWarehouseInvalid = showStepValidation && !formData.warehouse_location;
+  const isDeliveryInvalid = showStepValidation && !selectedDeliveryMethod;
+  const isPackagingInvalid = showStepValidation && packagingSelectionRequired && !hasPackagingSelection;
+
   const canProceed = (s: number) => {
     if (s === 1) return !!isStep1Complete;
     if (s === 2) return !!isStep2Complete;
@@ -368,7 +389,61 @@ const Shipping = () => {
     return true;
   };
 
+  const getFirstInvalidField = useCallback((currentStep: number) => {
+    if (currentStep === 1) {
+      if (!formData.sender_name) return "sender_name";
+      if (!formData.sender_phone) return "sender_phone";
+      return null;
+    }
+    if (currentStep === 2) {
+      if (!formData.receiver_name) return "receiver_name";
+      if (!formData.receiver_phone) return "receiver_phone";
+      if (!formData.receiver_country) return "receiver_country";
+      return null;
+    }
+    if (currentStep === 3) {
+      if (!formData.weight || parseFloat(formData.weight) <= 0) return "weight";
+      return null;
+    }
+    if (currentStep === 4) {
+      if (!formData.origin_country) return "origin_country";
+      if (!formData.destination_country || !isRouteValid) return "destination_country";
+      if (!formData.warehouse_location) return "warehouse_location";
+      if (!selectedDeliveryMethod) return "delivery_method";
+      if (packagingSelectionRequired && !hasPackagingSelection) return "packaging_materials";
+    }
+    return null;
+  }, [
+    formData.destination_country,
+    formData.origin_country,
+    formData.receiver_country,
+    formData.receiver_name,
+    formData.receiver_phone,
+    formData.sender_name,
+    formData.sender_phone,
+    formData.warehouse_location,
+    formData.weight,
+    hasPackagingSelection,
+    isRouteValid,
+    packagingSelectionRequired,
+    selectedDeliveryMethod,
+  ]);
+
+  const scrollToInvalidField = useCallback((field: string | null) => {
+    if (!field) return;
+    const container = fieldRefs.current[field];
+    if (!container) return;
+    container.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(() => {
+      const focusTarget = container.querySelector("input, textarea, button, [role='combobox']") as HTMLElement | null;
+      focusTarget?.focus();
+    }, 160);
+  }, []);
+
   const inputClass = "h-12 rounded-lg border border-[#E5E7EB] bg-white px-4 text-foreground placeholder:text-muted-foreground/60 shadow-none transition-all duration-200 hover:border-primary/20 focus:border-accent focus:ring-2 focus:ring-accent/15";
+  const invalidFieldClass = "border-destructive/60 ring-2 ring-destructive/10 focus:border-destructive focus:ring-destructive/15";
+  const stepPanelClass = "space-y-6 rounded-[12px] border border-border/70 bg-white p-6 shadow-[0_14px_32px_rgba(15,23,42,0.06)] transition-all duration-200 ease-in-out animate-in fade-in-0 slide-in-from-right-2";
+  const interactiveCardClass = "transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-[0_16px_34px_rgba(15,23,42,0.06)]";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -415,40 +490,49 @@ const Shipping = () => {
             <div className="mx-auto max-w-4xl">
               <div className="overflow-hidden rounded-2xl border border-border/70 bg-white/95 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
                 {/* Progress */}
-                <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.94))] p-4 sm:p-6">
-                  <div className="overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent -mx-1 px-1">
-                    <div className="flex items-center justify-between min-w-[600px] sm:min-w-[650px] max-w-3xl mx-auto">
-                      {progressSteps.map((s, i) => {
-                        const isActive = step >= s.num;
-                        const isCurrent = step === s.num;
-                        const isComplete = step > s.num;
-                        const StepIcon = s.icon;
-                        return (
-                          <div key={s.num} className="flex items-center gap-1 sm:gap-2">
-                            <div className="flex flex-col items-center gap-1 sm:gap-1.5">
-                              <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-all duration-300 sm:h-11 sm:w-11 ${isActive ? "bg-primary text-primary-foreground shadow-[0_12px_24px_rgba(6,16,67,0.18)]" : "border border-border/70 bg-white text-muted-foreground"} ${isCurrent ? "scale-105 ring-2 ring-primary/15 sm:ring-[3px]" : ""}`}>
-                                {isComplete ? <CheckCircle2 className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} /> : <StepIcon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />}
-                              </div>
-                              <span className={`text-[9px] sm:text-xs font-semibold transition-colors whitespace-nowrap tracking-wide ${isActive ? "text-foreground" : "text-muted-foreground"}`}>{s.label}</span>
-                            </div>
-                            {i < progressSteps.length - 1 && (
-                              <div className="w-6 sm:w-10 lg:w-14 h-0.5 rounded-full bg-border overflow-hidden mx-0.5">
-                                <div className={`h-full bg-primary rounded-full transition-all duration-500 ${step > s.num ? "w-full" : "w-0"}`} />
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
+                <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.94))] p-5 sm:p-6">
+                  <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">Shipment progress</p>
+                      <p className="text-xs text-muted-foreground">Step {step} of {TOTAL_STEPS}</p>
                     </div>
+                    <div className="rounded-full border border-primary/10 bg-primary/[0.05] px-3 py-1 text-xs font-semibold text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                      {Math.round((step / TOTAL_STEPS) * 100)}% complete
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    {progressSteps.map((s, i) => {
+                      const isActive = step >= s.num;
+                      const isCurrent = step === s.num;
+                      const isComplete = step > s.num;
+                      const StepIcon = s.icon;
+                      return (
+                        <Fragment key={s.num}>
+                          <div className="flex min-w-0 flex-1 flex-col items-center text-center">
+                            <div className={`mb-2 flex h-10 w-10 items-center justify-center rounded-xl border text-sm transition-all duration-200 ease-in-out sm:h-12 sm:w-12 ${isComplete ? "border-primary bg-primary text-primary-foreground shadow-[0_14px_28px_rgba(6,16,67,0.18)]" : isCurrent ? "border-primary/20 bg-primary/[0.08] text-primary ring-4 ring-primary/10 shadow-[0_12px_24px_rgba(6,16,67,0.12)]" : isActive ? "border-primary/15 bg-primary/[0.05] text-primary" : "border-border/70 bg-white text-muted-foreground"}`}>
+                              {isComplete ? <CheckCircle2 className="h-[18px] w-[18px]" strokeWidth={2.5} /> : <StepIcon className="h-[18px] w-[18px]" strokeWidth={2.5} />}
+                            </div>
+                            <span className={`text-[10px] font-semibold leading-4 tracking-wide sm:text-xs ${isCurrent ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                              {s.label}
+                            </span>
+                          </div>
+                          {i < progressSteps.length - 1 && (
+                            <div className="mt-5 hidden h-1 flex-1 rounded-full bg-border/80 sm:block">
+                              <div className={`h-full rounded-full bg-primary transition-all duration-200 ease-in-out ${step > s.num ? "w-full" : "w-0"}`} />
+                            </div>
+                          )}
+                        </Fragment>
+                      );
+                    })}
                   </div>
                 </div>
 
                 {/* Form */}
-                <div className="bg-white/60 p-6 sm:p-8 lg:p-10">
+                <div className="bg-white/60 p-4 sm:p-6 lg:p-8">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Sender Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who is sending this package?</p></div>
@@ -460,15 +544,15 @@ const Shipping = () => {
                         </div>
                       )}
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("sender_name")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" strokeWidth={2.5} /> Full Name *</Label>
-                          <Input value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${showStepValidation && !formData.sender_name ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
-                          {showStepValidation && !formData.sender_name && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isSenderNameInvalid || undefined} value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${isSenderNameInvalid ? invalidFieldClass : ""}`} />
+                          {isSenderNameInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("sender_phone")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" strokeWidth={2.5} /> Phone Number *</Label>
-                          <Input type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${showStepValidation && !formData.sender_phone ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
-                          {showStepValidation && !formData.sender_phone && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isSenderPhoneInvalid || undefined} type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${isSenderPhoneInvalid ? invalidFieldClass : ""}`} />
+                          {isSenderPhoneInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -509,7 +593,7 @@ const Shipping = () => {
 
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Receiver Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who will receive this package?</p></div>
@@ -521,15 +605,15 @@ const Shipping = () => {
                         </div>
                       )}
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("receiver_name")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Receiver Name *</Label>
-                          <Input value={formData.receiver_name} onChange={(e) => updateField("receiver_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${showStepValidation && !formData.receiver_name ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
-                          {showStepValidation && !formData.receiver_name && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isReceiverNameInvalid || undefined} value={formData.receiver_name} onChange={(e) => updateField("receiver_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${isReceiverNameInvalid ? invalidFieldClass : ""}`} />
+                          {isReceiverNameInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("receiver_phone")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone Number *</Label>
-                          <Input type="tel" value={formData.receiver_phone} onChange={(e) => updateField("receiver_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${showStepValidation && !formData.receiver_phone ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
-                          {showStepValidation && !formData.receiver_phone && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isReceiverPhoneInvalid || undefined} type="tel" value={formData.receiver_phone} onChange={(e) => updateField("receiver_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${isReceiverPhoneInvalid ? invalidFieldClass : ""}`} />
+                          {isReceiverPhoneInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -560,15 +644,15 @@ const Shipping = () => {
                           <Label className="text-sm font-medium">State</Label>
                           <Input value={formData.receiver_state} onChange={(e) => updateField("receiver_state", e.target.value)} placeholder="State" className={inputClass} />
                         </div>
-                        <div className="col-span-2 sm:col-span-1 space-y-2">
+                        <div ref={registerFieldRef("receiver_country")} className="col-span-2 sm:col-span-1 space-y-2">
                           <Label className="text-sm font-medium">Country *</Label>
                           <Select value={formData.receiver_country} onValueChange={(v) => updateField("receiver_country", v)}>
-                            <SelectTrigger className={`${inputClass} ${showStepValidation && !formData.receiver_country ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`}><SelectValue placeholder="Select country" /></SelectTrigger>
+                            <SelectTrigger aria-invalid={isReceiverCountryInvalid || undefined} className={`${inputClass} ${isReceiverCountryInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select country" /></SelectTrigger>
                             <SelectContent className="bg-card border-border max-h-60">
                               {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                             </SelectContent>
                           </Select>
-                          {showStepValidation && !formData.receiver_country && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          {isReceiverCountryInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
@@ -580,7 +664,7 @@ const Shipping = () => {
 
                   {/* ===== STEP 3: Package ===== */}
                   {step === 3 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
                         <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Package Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">What are you shipping?</p></div>
@@ -608,10 +692,10 @@ const Shipping = () => {
                       </div>
 
                       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("weight")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Scale className="w-3 h-3" /> Weight (KG) *</Label>
-                          <Input type="number" min="0.1" step="0.1" value={formData.weight} onChange={(e) => updateField("weight", e.target.value)} placeholder="e.g. 5" className={`${inputClass} ${showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) ? "border-destructive/50 ring-1 ring-destructive/20" : ""}`} />
-                          {showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0) && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isWeightInvalid || undefined} type="number" min="0.1" step="0.1" value={formData.weight} onChange={(e) => updateField("weight", e.target.value)} placeholder="e.g. 5" className={`${inputClass} ${isWeightInvalid ? invalidFieldClass : ""}`} />
+                          {isWeightInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">Length (cm)</Label>
@@ -717,7 +801,7 @@ const Shipping = () => {
 
                   {/* ===== STEP 4: Shipping Options ===== */}
                   {step === 4 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
@@ -732,21 +816,24 @@ const Shipping = () => {
 
                       {/* Route */}
                       <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("origin_country")} className="space-y-2">
                           <Label className="text-sm font-medium">Origin Country *</Label>
                           <Select value={formData.origin_country} onValueChange={(v) => { updateField("origin_country", v); updateField("destination_country", ""); updateField("warehouse_location", ""); }}>
-                            <SelectTrigger className={inputClass}><SelectValue placeholder="Select origin" /></SelectTrigger>
+                            <SelectTrigger aria-invalid={(isOriginInvalid || isRouteInvalid) || undefined} className={`${inputClass} ${(isOriginInvalid || isRouteInvalid) ? invalidFieldClass : ""}`}><SelectValue placeholder="Select origin" /></SelectTrigger>
                             <SelectContent className="bg-card border-border">{originCountries.map((c: string) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
                           </Select>
+                          {isOriginInvalid && <p className="text-xs text-destructive">Please select an origin country to continue.</p>}
                         </div>
-                        <div className="space-y-2">
+                        <div ref={registerFieldRef("destination_country")} className="space-y-2">
                           <Label className="text-sm font-medium">Destination Country *</Label>
                           <Select value={formData.destination_country} onValueChange={(v) => { updateField("destination_country", v); updateField("warehouse_location", ""); }}>
-                            <SelectTrigger className={inputClass}><SelectValue placeholder="Select destination" /></SelectTrigger>
+                            <SelectTrigger aria-invalid={(isDestinationInvalid || isRouteInvalid) || undefined} className={`${inputClass} ${(isDestinationInvalid || isRouteInvalid) ? invalidFieldClass : ""}`}><SelectValue placeholder="Select destination" /></SelectTrigger>
                             <SelectContent className="bg-card border-border max-h-60">
                               {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                             </SelectContent>
                           </Select>
+                          {isDestinationInvalid && <p className="text-xs text-destructive">Please select a destination country to continue.</p>}
+                          {!isDestinationInvalid && isRouteInvalid && <p className="text-xs text-destructive">This route is not currently available. Please choose another route.</p>}
                         </div>
                       </div>
 
@@ -757,14 +844,15 @@ const Shipping = () => {
                       )}
 
                       {/* Warehouse */}
-                      <div className="space-y-2">
+                      <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
                         <Label className="text-sm font-medium flex items-center gap-1.5"><Warehouse className="w-3.5 h-3.5" /> Select Warehouse *</Label>
                         <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
-                          <SelectTrigger className={inputClass}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
+                          <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
                           <SelectContent className="bg-card border-border">
                             {(filteredWarehouses.length > 0 ? filteredWarehouses : warehouses).map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
                           </SelectContent>
                         </Select>
+                        {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
                       </div>
                       {selectedWarehouse && (
                         <div className="rounded-2xl border border-primary/15 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
@@ -776,9 +864,9 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div className={`space-y-3 rounded-xl border p-5 ${showStepValidation && !selectedDeliveryMethod ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
+                        <div ref={registerFieldRef("delivery_method")} className={`space-y-3 rounded-xl border p-5 transition-all duration-200 ease-in-out ${isDeliveryInvalid ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
-                          {!selectedDeliveryMethod && (
+                          {isDeliveryInvalid && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
                               Please select a delivery method to continue.
                             </p>
@@ -794,7 +882,7 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex flex-col items-start gap-3 rounded-xl border p-5 text-left transition-all duration-200 sm:flex-row sm:items-center ${isSelected ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
+                                  className={`group flex flex-col items-start gap-3 rounded-xl border p-5 text-left transition-all duration-200 ease-in-out sm:flex-row sm:items-center ${isSelected ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
                                 >
                                   <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                     <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
@@ -851,7 +939,7 @@ const Shipping = () => {
                               key={opt.value}
                               type="button"
                               onClick={() => setShippingSpeed(opt.value)}
-                              className={`group flex items-center gap-3 rounded-xl border p-5 text-left transition-all duration-200 ${shippingSpeed === opt.value ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
+                              className={`group flex items-center gap-3 rounded-xl border p-5 text-left transition-all duration-200 ease-in-out ${shippingSpeed === opt.value ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)] active:scale-[0.98]"}`}
                             >
                               <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
                                 <opt.icon className="w-4 h-4" strokeWidth={2.5} />
@@ -870,7 +958,7 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div className={`space-y-3 rounded-xl border p-5 ${showStepValidation && !hasPackagingSelection ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
+                        <div ref={registerFieldRef("packaging_materials")} className={`space-y-3 rounded-xl border p-5 transition-all duration-200 ease-in-out ${isPackagingInvalid ? "border-destructive/40 bg-destructive/5" : "border-border/70 bg-white/90 shadow-[0_12px_28px_rgba(15,23,42,0.04)]"}`}>
                           <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
@@ -881,8 +969,8 @@ const Shipping = () => {
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`flex flex-col items-start gap-3 rounded-xl border p-5 transition-all duration-200 sm:flex-row sm:items-center ${qty > 0 ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)]"}`}>
-                                  <div className="flex items-center gap-3 flex-1 min-w-0 w-full sm:w-auto">
+                                <div key={pkg.id} className={`grid gap-4 rounded-xl border p-5 transition-all duration-200 ease-in-out sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center ${qty > 0 ? "border-primary/25 bg-primary/[0.06] shadow-[0_14px_32px_rgba(6,16,67,0.08)] ring-1 ring-primary/10" : "border-border/70 bg-white hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_12px_28px_rgba(15,23,42,0.05)]"}`}>
+                                  <div className="flex min-w-0 items-center gap-3">
                                     <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground"}`}>
                                       <Box className="w-4 h-4" strokeWidth={2.5} />
                                     </div>
@@ -891,13 +979,13 @@ const Shipping = () => {
                                       <p className="text-xs text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
                                     </div>
                                   </div>
-                                  <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-                                    <div className="flex items-center gap-2">
+                                  <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:w-auto sm:flex-nowrap sm:justify-end">
+                                    <div className="inline-flex min-w-[124px] items-center justify-between gap-2 rounded-xl border border-border/70 bg-white/90 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                                       <button
                                         type="button"
                                         onClick={() => updatePackagingQty(pkg.id, -1)}
                                         disabled={qty === 0}
-                                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-150 ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
+                                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-200 ease-in-out ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:-translate-y-px hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
                                         aria-label="Decrease quantity"
                                       >
                                         <Minus className="w-4 h-4" strokeWidth={2.5} />
@@ -906,7 +994,7 @@ const Shipping = () => {
                                       <button
                                         type="button"
                                         onClick={() => updatePackagingQty(pkg.id, 1)}
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-all duration-150 hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95"
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95"
                                         aria-label="Increase quantity"
                                       >
                                         <Plus className="w-4 h-4" strokeWidth={2.5} />
@@ -947,22 +1035,75 @@ const Shipping = () => {
 
                   {/* ===== STEP 5: Summary ===== */}
                   {step === 5 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
                       <div className="flex items-center gap-4 pb-5 border-b border-border/30">
                         <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-md shadow-primary/20"><CheckCircle2 className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
                         <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipment Summary</h3><p className="text-[13px] text-muted-foreground mt-0.5">Review your details and confirm</p></div>
                       </div>
 
+                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_320px]">
+                        <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-6 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
+                          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                            <div className="space-y-3">
+                              <span className="inline-flex w-fit items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                Ready to confirm
+                              </span>
+                              <div>
+                                <p className="text-sm font-semibold text-foreground">{formData.origin_country} → {formData.destination_country}</p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                  {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="rounded-2xl border border-primary/15 bg-white/85 px-4 py-3 text-left shadow-[0_12px_24px_rgba(15,23,42,0.06)] sm:min-w-[180px]">
+                              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Estimated total</p>
+                              <p className="mt-1 text-3xl font-bold text-primary">{formatUsd(grandTotal)}</p>
+                              <p className="text-xs text-muted-foreground">Final confirmation before submission</p>
+                            </div>
+                          </div>
+
+                          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                            {[
+                              { label: "Chargeable Weight", value: `${chargeableWeight.toFixed(2)} KG` },
+                              { label: "Packaging", value: packagingCost > 0 ? formatUsd(packagingCost) : "None selected" },
+                              { label: "Delivery Fee", value: deliveryFee > 0 ? formatUsd(deliveryFee) : "Included / N/A" },
+                            ].map((item) => (
+                              <div key={item.label} className="rounded-xl border border-white/70 bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">{item.value}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-border/70 bg-white/90 p-5 shadow-[0_14px_30px_rgba(15,23,42,0.06)]">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Submission checklist</p>
+                          <div className="mt-4 space-y-3 text-sm">
+                            {[
+                              `Sender and receiver details captured`,
+                              `Route and warehouse selected`,
+                              `${selectedDeliveryMethodData?.name || "Pickup"} delivery method confirmed`,
+                              packagingCost > 0 ? "Packaging materials included" : "No packaging materials selected",
+                            ].map((item) => (
+                              <div key={item} className="flex items-start gap-2 rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                                <span className="text-muted-foreground">{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
                       {/* Details cards */}
                       <div className="space-y-4">
                         <div className="grid sm:grid-cols-2 gap-4">
-                       <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                       <div className={`rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] ${interactiveCardClass}`}>
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
                             <p className="font-semibold text-sm text-foreground">{formData.sender_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.sender_phone}</p>
                             {formData.sender_address && <p className="text-xs text-muted-foreground mt-1">{formData.sender_address}, {formData.sender_city}</p>}
                           </div>
-                          <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                          <div className={`rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] ${interactiveCardClass}`}>
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Receiver</p>
                             <p className="font-semibold text-sm text-foreground">{formData.receiver_name}</p>
                             <p className="text-xs text-muted-foreground">{formData.receiver_phone}</p>
@@ -970,9 +1111,9 @@ const Shipping = () => {
                           </div>
                         </div>
 
-                        <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
+                        <div className={`rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] ${interactiveCardClass}`}>
                           <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">Shipment Details</p>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                             {[
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
                               { label: "Actual Weight", value: `${formData.weight} KG` },
@@ -989,9 +1130,9 @@ const Shipping = () => {
                               { label: "Declared Value (USD)", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
                               { label: "Insurance", value: formData.insurance_required === "true" ? "Yes" : "No" },
                             ].map((item) => (
-                              <div key={item.label}>
-                                <p className="text-xs text-muted-foreground">{item.label}</p>
-                                <p className="font-semibold text-sm text-foreground">{item.value}</p>
+                              <div key={item.label} className="rounded-xl border border-border/60 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
+                                <p className="mt-1 font-semibold text-sm text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
@@ -1005,14 +1146,21 @@ const Shipping = () => {
 
                         {/* Packaging summary */}
                         {packagingCost > 0 && (
-                          <div className="rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
-                            <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">Packaging</p>
-                            {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
-                              <div key={p.id} className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
-                                <span className="font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
-                              </div>
-                            ))}
+                          <div className={`rounded-xl border border-border/70 bg-white/90 p-5 shadow-[0_10px_24px_rgba(15,23,42,0.04)] ${interactiveCardClass}`}>
+                            <div className="mb-3 flex items-center justify-between gap-3">
+                              <p className="text-xs font-semibold text-primary uppercase tracking-wider">Packaging</p>
+                              <span className="rounded-full border border-primary/15 bg-primary/[0.06] px-3 py-1 text-xs font-semibold text-primary">
+                                {formatUsd(packagingCost)}
+                              </span>
+                            </div>
+                            <div className="space-y-2">
+                              {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
+                                <div key={p.id} className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] text-sm">
+                                  <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
+                                  <span className="font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
                       </div>
@@ -1088,7 +1236,7 @@ const Shipping = () => {
                   )}
 
                   {/* Navigation */}
-                  <div className="mt-8 flex flex-col justify-between gap-3 rounded-2xl border border-border/60 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)] sm:flex-row sm:items-center sm:gap-4">
+                  <div className="mt-8 flex flex-col justify-between gap-3 rounded-2xl border border-border/60 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)] transition-all duration-200 ease-in-out sm:flex-row sm:items-center sm:gap-4">
                     <Button
                       type="button"
                       variant="dashOutline"
@@ -1098,7 +1246,7 @@ const Shipping = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={step === 1}
-                      className="order-2 min-h-[44px] w-full gap-2 shadow-sm sm:order-1 sm:w-auto"
+                      className="order-2 min-h-[44px] w-full gap-2 shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-px sm:order-1 sm:w-auto"
                     >
                       <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
                     </Button>
@@ -1116,13 +1264,14 @@ const Shipping = () => {
                             return;
                           }
                           setShowStepValidation(true);
+                          scrollToInvalidField(getFirstInvalidField(step));
                           toast({
                             title: "Complete required fields",
                             description: "Please complete all required selections before continuing.",
                             variant: "destructive",
                           });
                         }}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-primary/15 hover:shadow-lg hover:shadow-primary/20 sm:order-2 sm:min-w-[150px] sm:w-auto"
+                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-primary/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-primary/20 sm:order-2 sm:min-w-[150px] sm:w-auto"
                       >
                         Continue <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>
@@ -1133,7 +1282,7 @@ const Shipping = () => {
                         size="dash"
                         disabled={isSubmitting}
                         onClick={handleSubmit}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20 sm:order-2 sm:min-w-[170px] sm:w-auto"
+                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-accent/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-accent/20 sm:order-2 sm:min-w-[170px] sm:w-auto"
                       >
                         {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
                       </Button>

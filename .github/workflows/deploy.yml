@@ -42,7 +42,7 @@ jobs:
           echo "RewriteCond %{REQUEST_FILENAME} !-d" >> ./dist/.htaccess
           echo "RewriteRule . /index.html [L]" >> ./dist/.htaccess
 
-      - name: Deploy to Hostinger FTP root
+      - name: Deploy to Hostinger public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -50,7 +50,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: ./dist/   # change to ./build/ if CRA
-          server-dir: ./     # deploy directly to root, NOT public_html
+          local-dir: ./dist/
+          server-dir: /home/u816393804/domains/raclogisticltd.com/public_html/
           dangerous-clean-slate: true
 

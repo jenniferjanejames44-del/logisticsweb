@@ -293,7 +293,11 @@ const ShipmentCreationForm = () => {
     { num: 3, label: "Review", icon: CheckCircle2 },
   ];
 
-  const inputClass = "h-12 bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors";
+  const inputClass = "h-12 rounded-xl border border-border/80 bg-white text-foreground placeholder:text-muted-foreground/70 shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-200 ease-in-out hover:border-primary/30 focus:border-primary";
+  const textAreaClass = "resize-none rounded-xl border border-border/80 bg-white text-foreground placeholder:text-muted-foreground/70 shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-200 ease-in-out hover:border-primary/30 focus:border-primary";
+  const stepPanelClass = "space-y-6 rounded-[12px] border border-border/70 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.06)] animate-in fade-in-0 slide-in-from-right-2 duration-200";
+  const sectionCardClass = "group relative rounded-[12px] border border-border/70 bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)] transition-all duration-200 ease-in-out hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_18px_34px_rgba(15,23,42,0.07)]";
+  const actionBarClass = "flex flex-col justify-between gap-3 rounded-2xl border border-border/60 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)] sm:flex-row sm:items-center";
 
   return (
     <>
@@ -320,16 +324,25 @@ const ShipmentCreationForm = () => {
 
           {/* Card Container */}
           <div 
-            className={`relative max-w-4xl mx-auto rounded-2xl overflow-hidden transition-all duration-500 ${
-              isFocused ? "shadow-2xl" : "shadow-xl"
+            className={`relative max-w-4xl mx-auto overflow-hidden rounded-[20px] transition-all duration-200 ease-in-out ${
+              isFocused ? "shadow-[0_28px_60px_rgba(15,23,42,0.14)]" : "shadow-[0_20px_44px_rgba(15,23,42,0.1)]"
             }`}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
           >
-            <div className="relative bg-card rounded-2xl border border-border/50">
+            <div className="relative rounded-[20px] border border-border/60 bg-white/95 backdrop-blur-sm">
               {/* Progress Steps */}
-              <div className="bg-muted/80 border-b border-border/50 p-5 sm:p-8">
-                <div className="flex items-center justify-center gap-2 sm:gap-4">
+              <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.95))] p-5 sm:p-8">
+                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Quick shipment flow</p>
+                    <p className="text-xs text-muted-foreground">Step {step} of {progressSteps.length}</p>
+                  </div>
+                  <div className="rounded-full border border-primary/10 bg-primary/[0.05] px-3 py-1 text-xs font-semibold text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                    {Math.round((step / progressSteps.length) * 100)}% complete
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 sm:gap-3">
                   {progressSteps.map((s, i) => {
                     const isActive = step >= s.num;
                     const isCurrent = step === s.num;
@@ -337,37 +350,37 @@ const ShipmentCreationForm = () => {
                     const StepIcon = s.icon;
 
                     return (
-                      <div key={s.num} className="flex items-center gap-2 sm:gap-4">
-                        <div className="flex flex-col items-center gap-1.5">
+                      <div key={s.num} className="flex flex-1 items-start gap-2 sm:gap-3">
+                        <div className="flex min-w-0 flex-1 flex-col items-center gap-1.5 text-center">
                           <div 
-                            className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-                              isActive 
-                                ? "bg-primary text-primary-foreground shadow-lg" 
-                                : "bg-background border-2 border-border text-muted-foreground"
-                            } ${isCurrent ? "ring-4 ring-primary/20 scale-110" : ""}`}
+                            className={`relative flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200 ease-in-out sm:h-12 sm:w-12 ${
+                              isComplete
+                                ? "border-primary bg-primary text-primary-foreground shadow-[0_14px_28px_rgba(6,16,67,0.18)]"
+                                : isCurrent
+                                  ? "border-primary/20 bg-primary/[0.08] text-primary ring-4 ring-primary/10 shadow-[0_12px_24px_rgba(6,16,67,0.12)]"
+                                  : isActive
+                                    ? "border-primary/15 bg-primary/[0.05] text-primary"
+                                    : "border-border/70 bg-white text-muted-foreground"
+                            }`}
                           >
                             {isComplete ? (
                               <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
                             ) : (
                               <StepIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             )}
-                            
-                            {isCurrent && (
-                              <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
-                            )}
                           </div>
                           
-                          <span className={`text-xs sm:text-sm font-semibold transition-colors ${
-                            isActive ? "text-foreground" : "text-muted-foreground"
+                          <span className={`text-[10px] sm:text-sm font-semibold leading-4 transition-colors ${
+                            isCurrent ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"
                           }`}>
                             {s.label}
                           </span>
                         </div>
 
                         {i < progressSteps.length - 1 && (
-                          <div className="relative w-12 sm:w-20 h-1 rounded-full bg-border overflow-hidden mx-1 sm:mx-2">
+                          <div className="mt-5 hidden h-1 flex-1 rounded-full bg-border/80 sm:block">
                             <div 
-                              className={`absolute inset-y-0 left-0 bg-primary rounded-full transition-all duration-500 ${
+                              className={`h-full rounded-full bg-primary transition-all duration-200 ease-in-out ${
                                 step > s.num ? "w-full" : "w-0"
                               }`}
                             />
@@ -380,17 +393,26 @@ const ShipmentCreationForm = () => {
               </div>
 
               {/* Form Content */}
-              <div className="p-6 sm:p-8 lg:p-10">
+              <div className="p-4 sm:p-6 lg:p-8">
                 <form onSubmit={handleSubmit}>
                   {/* Step 1: Route & Contacts */}
                   {step === 1 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
+                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
+                          <MapPin className="h-5 w-5 text-primary-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-foreground">Route & contact details</h3>
+                          <p className="text-sm text-muted-foreground">Set the shipping path and the key contact information.</p>
+                        </div>
+                      </div>
                       {/* Origin & Destination */}
                       <div className="grid md:grid-cols-2 gap-8">
                         {/* Origin Card */}
-                        <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                        <div className={sectionCardClass}>
                           <div className="flex items-center gap-3 mb-5">
-                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-md transition-transform duration-200 group-hover:scale-105">
                               <MapPin className="w-5 h-5 text-primary-foreground" />
                             </div>
                             <span className="font-bold text-lg text-foreground">Origin</span>
@@ -426,9 +448,9 @@ const ShipmentCreationForm = () => {
                         </div>
 
                         {/* Destination Card */}
-                        <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
+                        <div className={sectionCardClass}>
                           <div className="flex items-center gap-3 mb-5">
-                            <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-md transition-transform duration-200 group-hover:scale-105">
                               <MapPin className="w-5 h-5 text-accent-foreground" />
                             </div>
                             <span className="font-bold text-lg text-foreground">Destination</span>
@@ -465,24 +487,26 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Route Visualization */}
-                      <div className="flex items-center justify-center gap-3 py-4">
-                        <div className="text-center">
-                          <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1" />
-                          <span className="text-xs text-muted-foreground">{formData.origin_city || "Origin"}</span>
-                        </div>
-                        <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
-                        <Plane className="w-5 h-5 text-primary -rotate-45" />
-                        <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
-                        <div className="text-center">
-                          <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
-                          <span className="text-xs text-muted-foreground">{formData.destination_city || "Destination"}</span>
+                      <div className="rounded-[12px] border border-border/70 bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                        <div className="flex items-center justify-center gap-3 py-1">
+                          <div className="text-center">
+                            <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1" />
+                            <span className="text-xs text-muted-foreground">{formData.origin_city || "Origin"}</span>
+                          </div>
+                          <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
+                          <Plane className="w-5 h-5 text-primary -rotate-45" />
+                          <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
+                          <div className="text-center">
+                            <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
+                            <span className="text-xs text-muted-foreground">{formData.destination_city || "Destination"}</span>
+                          </div>
                         </div>
                       </div>
 
                       {/* Sender Information */}
-                      <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <div className={sectionCardClass}>
                         <div className="flex items-center gap-3 mb-5">
-                          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-md">
                             <User className="w-5 h-5 text-primary-foreground" />
                           </div>
                           <span className="font-bold text-lg text-foreground">Sender Information</span>
@@ -504,9 +528,9 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Receiver Information */}
-                      <div className="group relative p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <div className={sectionCardClass}>
                         <div className="flex items-center gap-3 mb-5">
-                          <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-md">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-md">
                             <MapPinned className="w-5 h-5 text-accent-foreground" />
                           </div>
                           <span className="font-bold text-lg text-foreground">Receiver Information</span>
@@ -540,12 +564,13 @@ const ShipmentCreationForm = () => {
                         </div>
                       </div>
 
-                      <div className="flex justify-end pt-4">
+                      <div className={actionBarClass}>
+                        <p className="text-sm text-muted-foreground">Complete the route and contact details to continue.</p>
                         <button 
                           type="button" 
                           disabled={!isStep1Complete}
                           onClick={() => setStep(2)}
-                          className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                         >
                           Continue
                           <ArrowRight className="w-4 h-4" />
@@ -556,11 +581,20 @@ const ShipmentCreationForm = () => {
 
                   {/* Step 2: Package Details */}
                   {step === 2 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
+                    <div className={stepPanelClass}>
+                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 shadow-[0_12px_24px_rgba(223,81,1,0.16)]">
+                          <Scale className="h-5 w-5 text-accent-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-foreground">Package details</h3>
+                          <p className="text-sm text-muted-foreground">Add shipment details, warehouse selection, and optional documents.</p>
+                        </div>
+                      </div>
                       <div className="grid md:grid-cols-2 gap-6">
-                        <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                        <div className={sectionCardClass}>
                           <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary transition-transform duration-200 group-hover:scale-105">
                               <Scale className="w-4 h-4 text-primary-foreground" />
                             </div>
                             <span className="font-semibold">Weight (KG) *</span>
@@ -576,9 +610,9 @@ const ShipmentCreationForm = () => {
                             required
                           />
                         </div>
-                        <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                        <div className={sectionCardClass}>
                           <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent transition-transform duration-200 group-hover:scale-105">
                               <Truck className="w-4 h-4 text-accent-foreground" />
                             </div>
                             <span className="font-semibold">Service Type *</span>
@@ -607,7 +641,7 @@ const ShipmentCreationForm = () => {
 
                       {/* Estimated Shipping Cost */}
                       {formData.weight && parseFloat(formData.weight) > 0 && (
-                        <div className="p-5 rounded-xl border border-primary/30 bg-primary/5 transition-all duration-300">
+                        <div className="rounded-[12px] border border-primary/20 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(255,255,255,0.9))] p-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)] transition-all duration-200 ease-in-out">
                           <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
                               <DollarSign className="w-5 h-5 text-primary-foreground" />
@@ -636,7 +670,7 @@ const ShipmentCreationForm = () => {
                               </div>
 
                               {/* Prepay Pickup Checkbox */}
-                              <div className="mt-3 p-4 rounded-lg border border-border bg-card">
+                              <div className="mt-3 rounded-xl border border-border/70 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                                 <div className="flex items-start gap-3">
                                   <Checkbox
                                     id="prepay-pickup"
@@ -667,9 +701,9 @@ const ShipmentCreationForm = () => {
                       )}
 
                       {/* Item Description */}
-                      <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <div className={sectionCardClass}>
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
                             <FileText className="w-4 h-4 text-primary" />
                           </div>
                           <span className="font-semibold">Item Description</span>
@@ -679,15 +713,15 @@ const ShipmentCreationForm = () => {
                           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                           placeholder="Describe the contents of your shipment"
                           rows={3}
-                          className="resize-none bg-card border-border text-foreground placeholder:text-muted-foreground hover:border-primary/50 focus:border-primary transition-colors"
+                          className={textAreaClass}
                         />
                       </div>
 
                       {/* Declared Value & Special Instructions */}
                       <div className="grid md:grid-cols-2 gap-6">
-                        <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                        <div className={sectionCardClass}>
                           <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
                               <DollarSign className="w-4 h-4 text-primary" />
                             </div>
                             <span className="font-semibold">Declared Value (USD)</span>
@@ -702,9 +736,9 @@ const ShipmentCreationForm = () => {
                             className={inputClass}
                           />
                         </div>
-                        <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                        <div className={sectionCardClass}>
                           <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 transition-transform duration-200 group-hover:scale-105">
                               <MessageSquare className="w-4 h-4 text-accent-foreground" />
                             </div>
                             <span className="font-semibold">Special Instructions</span>
@@ -719,9 +753,9 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Warehouse */}
-                      <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <div className={sectionCardClass}>
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent transition-transform duration-200 group-hover:scale-105">
                             <Warehouse className="w-4 h-4 text-accent-foreground" />
                           </div>
                           <span className="font-semibold">Warehouse Location</span>
@@ -747,9 +781,9 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Upload Documents */}
-                      <div className="group p-5 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-all duration-300">
+                      <div className={sectionCardClass}>
                         <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
                             <Upload className="w-4 h-4 text-primary" />
                           </div>
                           <span className="font-semibold">Upload Documents (Optional)</span>
@@ -768,7 +802,7 @@ const ShipmentCreationForm = () => {
                         <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
-                          className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg border border-dashed border-primary/40 text-primary bg-primary/5 hover:bg-primary/10 transition-colors"
+                          className="inline-flex items-center gap-2 rounded-xl border border-dashed border-primary/40 bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary/10"
                         >
                           <Upload className="w-4 h-4" />
                           Choose Files
@@ -776,7 +810,7 @@ const ShipmentCreationForm = () => {
                         {uploadedFiles.length > 0 && (
                           <div className="mt-3 space-y-2">
                             {uploadedFiles.map((file, idx) => (
-                              <div key={idx} className="flex items-center justify-between px-3 py-2 rounded-lg bg-card border border-border text-sm">
+                              <div key={idx} className="flex items-center justify-between rounded-xl border border-border/70 bg-white px-3 py-2 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                                 <span className="text-foreground truncate max-w-[200px] sm:max-w-none">{file.name}</span>
                                 <button type="button" onClick={() => removeFile(idx)} className="text-destructive hover:text-destructive/80 text-xs font-semibold ml-2 shrink-0">Remove</button>
                               </div>
@@ -785,11 +819,11 @@ const ShipmentCreationForm = () => {
                         )}
                       </div>
 
-                      <div className="flex justify-between pt-4">
+                      <div className={actionBarClass}>
                         <button 
                           type="button" 
                           onClick={() => setStep(1)}
-                          className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
                         >
                           Back
                         </button>
@@ -797,7 +831,7 @@ const ShipmentCreationForm = () => {
                           type="button" 
                           disabled={!isStep2Complete}
                           onClick={() => setStep(3)}
-                          className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                         >
                           Review
                           <ArrowRight className="w-4 h-4" />
@@ -808,137 +842,156 @@ const ShipmentCreationForm = () => {
 
                   {/* Step 3: Review */}
                   {step === 3 && (
-                    <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-4 duration-300">
-                      <div className="relative p-6 rounded-xl bg-muted/80 border border-border/50 overflow-hidden">
-                        <h3 className="font-bold text-xl text-foreground mb-6 flex items-center gap-2">
-                          <CheckCircle2 className="w-5 h-5 text-primary" />
-                          Shipment Summary
-                        </h3>
-                        
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <MapPin className="w-3 h-3" /> From
-                            </p>
-                            <p className="font-bold text-foreground">{formData.origin_city}, {formData.origin_country}</p>
+                    <div className={stepPanelClass}>
+                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
+                          <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-foreground">Review your shipment</h3>
+                          <p className="text-sm text-muted-foreground">A final, polished overview before the shipment is created.</p>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_300px]">
+                        <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-6 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
+                          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                              <span className="inline-flex items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Ready for submission</span>
+                              <p className="mt-3 text-lg font-bold text-foreground">{formData.origin_city}, {formData.origin_country} → {formData.destination_city}, {formData.destination_country}</p>
+                              <p className="mt-1 text-sm text-muted-foreground">{formData.receiver_name} is receiving this shipment via {formData.service_type.replace("-", " ")}.</p>
+                            </div>
+                            <div className="rounded-2xl border border-primary/15 bg-white/85 px-4 py-3 shadow-[0_12px_24px_rgba(15,23,42,0.06)] sm:min-w-[190px]">
+                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Estimated payment</p>
+                              <p className="mt-1 text-3xl font-bold text-primary">{formatUsd(totalPrice ?? estimatedCost ?? 0)}</p>
+                              <p className="text-xs text-muted-foreground">Includes pickup only when prepaid</p>
+                            </div>
                           </div>
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <MapPin className="w-3 h-3" /> To
-                            </p>
-                            <p className="font-bold text-foreground">{formData.destination_city}, {formData.destination_country}</p>
+
+                          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                            {[
+                              { label: "Weight", value: `${formData.weight} KG` },
+                              { label: "Service", value: formData.service_type.replace("-", " ") },
+                              { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "Not selected" },
+                            ].map((item) => (
+                              <div key={item.label} className="rounded-xl border border-white/70 bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
+                                <p className="mt-1 text-sm font-semibold capitalize text-foreground">{item.value}</p>
+                              </div>
+                            ))}
                           </div>
                         </div>
 
-                        {/* Sender & Receiver Summary */}
-                        <div className="grid sm:grid-cols-2 gap-4 mt-4">
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <User className="w-3 h-3" /> Sender
-                            </p>
-                            <p className="font-bold text-foreground">{formData.sender_name}</p>
-                            <p className="text-sm text-muted-foreground">{formData.sender_phone}</p>
-                            {formData.sender_email && <p className="text-sm text-muted-foreground">{formData.sender_email}</p>}
-                          </div>
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <MapPinned className="w-3 h-3" /> Receiver
-                            </p>
-                            <p className="font-bold text-foreground">{formData.receiver_name}</p>
-                            <p className="text-sm text-muted-foreground">{formData.receiver_phone}</p>
-                            {formData.receiver_address && <p className="text-sm text-muted-foreground">{formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}</p>}
+                        <div className="rounded-2xl border border-border/70 bg-white/90 p-5 shadow-[0_14px_30px_rgba(15,23,42,0.06)]">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Review checklist</p>
+                          <div className="mt-4 space-y-3 text-sm">
+                            {[
+                              "Route and warehouse details added",
+                              "Sender and receiver details captured",
+                              prepayPickup ? "Pickup fee prepaid with order" : "Pickup fee payable on collection",
+                              uploadedFiles.length > 0 ? `${uploadedFiles.length} supporting document(s) attached` : "No supporting documents attached",
+                            ].map((item) => (
+                              <div key={item} className="flex items-start gap-2 rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                                <span className="text-muted-foreground">{item}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
+                      </div>
 
-                        <div className="grid sm:grid-cols-2 gap-4 mt-4">
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <Scale className="w-3 h-3" /> Weight
-                            </p>
-                            <p className="font-bold text-foreground">{formData.weight} KG</p>
-                          </div>
-                          <div className="group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <Truck className="w-3 h-3" /> Service
-                            </p>
-                            <p className="font-bold text-foreground capitalize">{formData.service_type.replace("-", " ")}</p>
-                          </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className={sectionCardClass}>
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Sender</p>
+                          <p className="mt-2 text-base font-bold text-foreground">{formData.sender_name}</p>
+                          <p className="text-sm text-muted-foreground">{formData.sender_phone}</p>
+                          {formData.sender_email && <p className="text-sm text-muted-foreground">{formData.sender_email}</p>}
                         </div>
+                        <div className={sectionCardClass}>
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Receiver</p>
+                          <p className="mt-2 text-base font-bold text-foreground">{formData.receiver_name}</p>
+                          <p className="text-sm text-muted-foreground">{formData.receiver_phone}</p>
+                          {formData.receiver_address && <p className="text-sm text-muted-foreground">{formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}</p>}
+                        </div>
+                      </div>
 
-                        {estimatedCost !== null && (
-                          <div className="mt-4 group bg-primary/10 rounded-xl p-4 border border-primary/30">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <DollarSign className="w-3 h-3" /> Shipping Cost
-                            </p>
-                            <p className="font-bold text-primary text-lg">{formatUsd(estimatedCost)}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{formData.weight} KG × {formatUsd(matchedRate || 0)}/KG</p>
-                            {prepayPickup && (
-                              <div className="mt-3 pt-3 border-t border-primary/20 space-y-1">
-                                <div className="flex justify-between text-sm text-muted-foreground">
-                                  <span>Pickup / Delivery Fee</span>
-                                  <span>{formatUsd(pickupFee)}</span>
-                                </div>
-                                <div className="flex justify-between font-bold text-foreground">
-                                  <span>Total Payment</span>
-                                  <span className="text-primary">{formatUsd(totalPrice || 0)}</span>
-                                </div>
+                      <div className={sectionCardClass}>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Shipment details</p>
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                          {[
+                            { label: "Origin", value: `${formData.origin_city}, ${formData.origin_country}` },
+                            { label: "Destination", value: `${formData.destination_city}, ${formData.destination_country}` },
+                            { label: "Service", value: formData.service_type.replace("-", " ") },
+                            { label: "Weight", value: `${formData.weight} KG` },
+                            { label: "Declared Value", value: formData.declared_value ? `$${parseFloat(formData.declared_value).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "—" },
+                            { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "—" },
+                          ].map((item) => (
+                            <div key={item.label} className="rounded-xl border border-border/60 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
+                              <p className="mt-1 text-sm font-semibold capitalize text-foreground">{item.value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {(formData.description || formData.special_instructions || uploadedFiles.length > 0 || estimatedCost !== null) && (
+                        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+                          <div className="space-y-4">
+                            {formData.description && (
+                              <div className={sectionCardClass}>
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Description</p>
+                                <p className="mt-2 text-sm text-foreground">{formData.description}</p>
                               </div>
                             )}
-                            {!prepayPickup && (
-                              <p className="text-xs text-muted-foreground mt-2 italic">Pickup fee will be paid on collection.</p>
+                            {formData.special_instructions && (
+                              <div className={sectionCardClass}>
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Special instructions</p>
+                                <p className="mt-2 text-sm text-foreground">{formData.special_instructions}</p>
+                              </div>
+                            )}
+                            {uploadedFiles.length > 0 && (
+                              <div className={sectionCardClass}>
+                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Uploaded documents</p>
+                                <ul className="mt-3 space-y-2">
+                                  {uploadedFiles.map((f, i) => (
+                                    <li key={i} className="rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">{f.name}</li>
+                                  ))}
+                                </ul>
+                              </div>
                             )}
                           </div>
-                        )}
 
-                        {formData.warehouse_location && (
-                          <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <Warehouse className="w-3 h-3" /> Warehouse
-                            </p>
-                            <p className="font-bold text-foreground capitalize">{warehouseLocations.find(w => w.id === formData.warehouse_location)?.name}</p>
-                          </div>
-                        )}
-
-                        {formData.declared_value && (
-                          <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <DollarSign className="w-3 h-3" /> Declared Value
-                            </p>
-                            <p className="font-bold text-foreground">${parseFloat(formData.declared_value).toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-                          </div>
-                        )}
-
-                        {formData.description && (
-                          <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <FileText className="w-3 h-3" /> Description
-                            </p>
-                            <p className="text-foreground">{formData.description}</p>
-                          </div>
-                        )}
-
-                        {formData.special_instructions && (
-                          <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50 hover:border-primary/30 hover:shadow-md transition-all">
-                            <p className="text-sm text-muted-foreground mb-1 flex items-center gap-1">
-                              <MessageSquare className="w-3 h-3" /> Special Instructions
-                            </p>
-                            <p className="text-foreground">{formData.special_instructions}</p>
-                          </div>
-                        )}
-
-                        {uploadedFiles.length > 0 && (
-                          <div className="mt-4 group bg-card rounded-xl p-4 border border-border/50">
-                            <p className="text-sm text-muted-foreground mb-2 flex items-center gap-1">
-                              <Upload className="w-3 h-3" /> Uploaded Documents ({uploadedFiles.length})
-                            </p>
-                            <ul className="space-y-1">
-                              {uploadedFiles.map((f, i) => (
-                                <li key={i} className="text-sm text-foreground">• {f.name}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+                          {estimatedCost !== null && (
+                            <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-5 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
+                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Pricing summary</p>
+                              <div className="mt-4 space-y-3">
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                  <span>Shipping cost</span>
+                                  <span>{formatUsd(estimatedCost)}</span>
+                                </div>
+                                <div className="flex justify-between text-sm text-muted-foreground">
+                                  <span>Rate applied</span>
+                                  <span>{formatUsd(matchedRate || 0)}/KG</span>
+                                </div>
+                                {prepayPickup ? (
+                                  <div className="flex justify-between text-sm text-muted-foreground">
+                                    <span>Pickup / Delivery fee</span>
+                                    <span>{formatUsd(pickupFee)}</span>
+                                  </div>
+                                ) : (
+                                  <p className="text-xs text-muted-foreground">Pickup fee will be paid on collection.</p>
+                                )}
+                                <div className="rounded-xl border border-primary/15 bg-white/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <span className="text-sm font-bold text-foreground">Total payment</span>
+                                    <span className="text-2xl font-bold text-primary">{formatUsd(totalPrice ?? estimatedCost)}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
                         <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
@@ -949,18 +1002,18 @@ const ShipmentCreationForm = () => {
                         </p>
                       </div>
 
-                      <div className="flex justify-between pt-4">
+                      <div className={actionBarClass}>
                         <button 
                           type="button" 
                           onClick={() => setStep(2)}
-                          className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full transition-all duration-200 bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
                         >
                           Back
                         </button>
                         <button 
                           type="submit" 
                           disabled={isSubmitting}
-                          className="inline-flex items-center gap-2 px-6 py-3 font-bold text-sm rounded-full shadow-md transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                         >
                           {isSubmitting ? "Creating..." : "Create Shipment"}
                           <ArrowRight className="w-4 h-4" />
