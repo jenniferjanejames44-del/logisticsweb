@@ -165,12 +165,12 @@ const Gallery = () => {
         <GalleryHeroSection />
 
         {/* Video Grid Section */}
-        <section ref={gridRef.ref as React.Ref<HTMLElement>} className="py-16 md:py-24 bg-background">
+        <section className="py-16 md:py-24 bg-background">
           <div className="section-container">
             <div
               className={cn(
                 "text-center mb-12 md:mb-16 transition-all duration-700",
-                gridInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                gridRef.isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               )}
             >
               <h2 className="text-foreground mb-4">Our Operations in Action</h2>
