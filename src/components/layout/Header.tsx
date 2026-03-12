@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Earth, Container, FileCheck, ArrowRight, Send } from "lucide-react";
-import Logo from "@/components/layout/Logo";
+import headerLogo from "@/assets/logis_logo_clean.png";
 import { CURRENCY_META, SUPPORTED_CURRENCIES } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import {
@@ -103,8 +103,13 @@ const Header = () => {
     >
       <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
         {/* Logo */}
-        <Link to="/" className="group flex shrink-0 items-center text-foreground">
-          <Logo className="h-[50px] w-auto text-foreground sm:h-[54px] md:h-14" />
+        <Link to="/" className="group flex max-w-[calc(100%-3.5rem)] shrink-0 items-center lg:max-w-none">
+          <img
+            src={headerLogo}
+            alt="RAC Logistics"
+            className="block h-10 w-auto max-w-[172px] object-contain mix-blend-multiply sm:h-11 sm:max-w-[210px] md:h-[50px] md:max-w-[240px]"
+            draggable={false}
+          />
         </Link>
 
         {/* Desktop Navigation */}
