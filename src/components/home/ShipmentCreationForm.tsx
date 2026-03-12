@@ -293,11 +293,11 @@ const ShipmentCreationForm = () => {
     { num: 3, label: "Review", icon: CheckCircle2 },
   ];
 
-  const inputClass = "h-12 rounded-xl border border-border/80 bg-white text-foreground placeholder:text-muted-foreground/70 shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-200 ease-in-out hover:border-primary/30 focus:border-primary";
-  const textAreaClass = "resize-none rounded-xl border border-border/80 bg-white text-foreground placeholder:text-muted-foreground/70 shadow-[0_8px_20px_rgba(15,23,42,0.04)] transition-all duration-200 ease-in-out hover:border-primary/30 focus:border-primary";
-  const stepPanelClass = "space-y-6 rounded-[12px] border border-border/70 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.06)] animate-in fade-in-0 slide-in-from-right-2 duration-200";
-  const sectionCardClass = "group relative rounded-[12px] border border-border/70 bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)] transition-all duration-200 ease-in-out hover:-translate-y-px hover:border-primary/20 hover:shadow-[0_18px_34px_rgba(15,23,42,0.07)]";
-  const actionBarClass = "flex flex-col justify-between gap-3 rounded-2xl border border-border/60 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.05)] sm:flex-row sm:items-center";
+  const inputClass = "h-11 rounded-lg border border-[#E5E7EB] bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 ease-in-out hover:border-primary/25 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
+  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 ease-in-out hover:border-primary/25 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
+  const stepPanelClass = "space-y-5 sm:space-y-6 animate-in fade-in-0 slide-in-from-right-2 duration-200";
+  const sectionCardClass = "group relative rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 transition-colors duration-200 ease-in-out sm:p-5 hover:bg-muted/[0.3]";
+  const actionBarClass = "flex flex-col gap-3 border-t border-border/50 pt-4 sm:flex-row sm:items-center sm:justify-between";
 
   return (
     <>
@@ -330,9 +330,9 @@ const ShipmentCreationForm = () => {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
           >
-            <div className="relative rounded-[20px] border border-border/60 bg-white/95 backdrop-blur-sm">
+            <div className="relative rounded-[20px] bg-white/95 backdrop-blur-sm">
               {/* Progress Steps */}
-              <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.95))] p-5 sm:p-8">
+              <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.95))] p-4 sm:p-6">
                 <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-foreground">Quick shipment flow</p>
@@ -398,8 +398,8 @@ const ShipmentCreationForm = () => {
                   {/* Step 1: Route & Contacts */}
                   {step === 1 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
+                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
                           <MapPin className="h-5 w-5 text-primary-foreground" />
                         </div>
                         <div>
@@ -487,18 +487,18 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       {/* Route Visualization */}
-                      <div className="rounded-[12px] border border-border/70 bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
-                        <div className="flex items-center justify-center gap-3 py-1">
-                          <div className="text-center">
+                      <div className="rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 sm:p-5">
+                        <div className="flex items-center justify-center gap-2 py-1 sm:gap-3">
+                          <div className="min-w-0 text-center">
                             <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1" />
-                            <span className="text-xs text-muted-foreground">{formData.origin_city || "Origin"}</span>
+                            <span className="block max-w-[88px] truncate text-xs text-muted-foreground sm:max-w-none">{formData.origin_city || "Origin"}</span>
                           </div>
                           <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
                           <Plane className="w-5 h-5 text-primary -rotate-45" />
                           <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
-                          <div className="text-center">
+                          <div className="min-w-0 text-center">
                             <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
-                            <span className="text-xs text-muted-foreground">{formData.destination_city || "Destination"}</span>
+                            <span className="block max-w-[88px] truncate text-xs text-muted-foreground sm:max-w-none">{formData.destination_city || "Destination"}</span>
                           </div>
                         </div>
                       </div>
@@ -582,8 +582,8 @@ const ShipmentCreationForm = () => {
                   {/* Step 2: Package Details */}
                   {step === 2 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 shadow-[0_12px_24px_rgba(223,81,1,0.16)]">
+                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 shadow-[0_12px_24px_rgba(223,81,1,0.16)]">
                           <Scale className="h-5 w-5 text-accent-foreground" />
                         </div>
                         <div>
@@ -641,7 +641,7 @@ const ShipmentCreationForm = () => {
 
                       {/* Estimated Shipping Cost */}
                       {formData.weight && parseFloat(formData.weight) > 0 && (
-                        <div className="rounded-[12px] border border-primary/20 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(255,255,255,0.9))] p-5 shadow-[0_16px_34px_rgba(15,23,42,0.06)] transition-all duration-200 ease-in-out">
+                        <div className="rounded-xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(255,255,255,0.92))] p-4 ring-1 ring-primary/10 transition-all duration-200 ease-in-out sm:p-5">
                           <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
                               <DollarSign className="w-5 h-5 text-primary-foreground" />
@@ -843,8 +843,8 @@ const ShipmentCreationForm = () => {
                   {/* Step 3: Review */}
                   {step === 3 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-4 border-b border-border/40 pb-5">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
+                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
                           <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
                         </div>
                         <div>
@@ -853,17 +853,17 @@ const ShipmentCreationForm = () => {
                         </div>
                       </div>
 
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_300px]">
-                        <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-6 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
+                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_300px]">
+                        <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
                           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                            <div>
+                            <div className="min-w-0">
                               <span className="inline-flex items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Ready for submission</span>
-                              <p className="mt-3 text-lg font-bold text-foreground">{formData.origin_city}, {formData.origin_country} → {formData.destination_city}, {formData.destination_country}</p>
-                              <p className="mt-1 text-sm text-muted-foreground">{formData.receiver_name} is receiving this shipment via {formData.service_type.replace("-", " ")}.</p>
+                              <p className="mt-3 break-words text-base font-bold text-foreground sm:text-lg">{formData.origin_city}, {formData.origin_country} → {formData.destination_city}, {formData.destination_country}</p>
+                              <p className="mt-1 break-words text-sm leading-relaxed text-muted-foreground">{formData.receiver_name} is receiving this shipment via {formData.service_type.replace("-", " ")}.</p>
                             </div>
-                            <div className="rounded-2xl border border-primary/15 bg-white/85 px-4 py-3 shadow-[0_12px_24px_rgba(15,23,42,0.06)] sm:min-w-[190px]">
+                            <div className="rounded-2xl bg-white/85 px-4 py-3 ring-1 ring-primary/10 sm:min-w-[190px]">
                               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Estimated payment</p>
-                              <p className="mt-1 text-3xl font-bold text-primary">{formatUsd(totalPrice ?? estimatedCost ?? 0)}</p>
+                              <p className="mt-1 whitespace-nowrap text-2xl font-bold text-primary sm:text-3xl">{formatUsd(totalPrice ?? estimatedCost ?? 0)}</p>
                               <p className="text-xs text-muted-foreground">Includes pickup only when prepaid</p>
                             </div>
                           </div>
@@ -874,15 +874,15 @@ const ShipmentCreationForm = () => {
                               { label: "Service", value: formData.service_type.replace("-", " ") },
                               { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "Not selected" },
                             ].map((item) => (
-                              <div key={item.label} className="rounded-xl border border-white/70 bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                              <div key={item.label} className="rounded-xl bg-white/80 p-4 ring-1 ring-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 text-sm font-semibold capitalize text-foreground">{item.value}</p>
+                                <p className="mt-1 break-words text-sm font-semibold capitalize text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
                         </div>
 
-                        <div className="rounded-2xl border border-border/70 bg-white/90 p-5 shadow-[0_14px_30px_rgba(15,23,42,0.06)]">
+                        <div className="rounded-2xl bg-muted/[0.18] p-5 ring-1 ring-border/50">
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Review checklist</p>
                           <div className="mt-4 space-y-3 text-sm">
                             {[
@@ -891,7 +891,7 @@ const ShipmentCreationForm = () => {
                               prepayPickup ? "Pickup fee prepaid with order" : "Pickup fee payable on collection",
                               uploadedFiles.length > 0 ? `${uploadedFiles.length} supporting document(s) attached` : "No supporting documents attached",
                             ].map((item) => (
-                              <div key={item} className="flex items-start gap-2 rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                              <div key={item} className="flex items-start gap-2 rounded-xl bg-white/80 px-3 py-2.5 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
                                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                                 <span className="text-muted-foreground">{item}</span>
                               </div>
@@ -904,14 +904,14 @@ const ShipmentCreationForm = () => {
                         <div className={sectionCardClass}>
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Sender</p>
                           <p className="mt-2 text-base font-bold text-foreground">{formData.sender_name}</p>
-                          <p className="text-sm text-muted-foreground">{formData.sender_phone}</p>
-                          {formData.sender_email && <p className="text-sm text-muted-foreground">{formData.sender_email}</p>}
+                          <p className="break-words text-sm text-muted-foreground">{formData.sender_phone}</p>
+                          {formData.sender_email && <p className="break-words text-sm text-muted-foreground">{formData.sender_email}</p>}
                         </div>
                         <div className={sectionCardClass}>
                           <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Receiver</p>
                           <p className="mt-2 text-base font-bold text-foreground">{formData.receiver_name}</p>
-                          <p className="text-sm text-muted-foreground">{formData.receiver_phone}</p>
-                          {formData.receiver_address && <p className="text-sm text-muted-foreground">{formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}</p>}
+                          <p className="break-words text-sm text-muted-foreground">{formData.receiver_phone}</p>
+                          {formData.receiver_address && <p className="break-words text-sm leading-relaxed text-muted-foreground">{formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}</p>}
                         </div>
                       </div>
 
@@ -926,9 +926,9 @@ const ShipmentCreationForm = () => {
                             { label: "Declared Value", value: formData.declared_value ? `$${parseFloat(formData.declared_value).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "—" },
                             { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "—" },
                           ].map((item) => (
-                            <div key={item.label} className="rounded-xl border border-border/60 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                            <div key={item.label} className="rounded-xl bg-white/80 p-3 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
                               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                              <p className="mt-1 text-sm font-semibold capitalize text-foreground">{item.value}</p>
+                              <p className="mt-1 break-words text-sm font-semibold capitalize text-foreground">{item.value}</p>
                             </div>
                           ))}
                         </div>
@@ -940,13 +940,13 @@ const ShipmentCreationForm = () => {
                             {formData.description && (
                               <div className={sectionCardClass}>
                                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Description</p>
-                                <p className="mt-2 text-sm text-foreground">{formData.description}</p>
+                                <p className="mt-2 break-words text-sm leading-relaxed text-foreground">{formData.description}</p>
                               </div>
                             )}
                             {formData.special_instructions && (
                               <div className={sectionCardClass}>
                                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Special instructions</p>
-                                <p className="mt-2 text-sm text-foreground">{formData.special_instructions}</p>
+                                <p className="mt-2 break-words text-sm leading-relaxed text-foreground">{formData.special_instructions}</p>
                               </div>
                             )}
                             {uploadedFiles.length > 0 && (
@@ -954,7 +954,7 @@ const ShipmentCreationForm = () => {
                                 <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Uploaded documents</p>
                                 <ul className="mt-3 space-y-2">
                                   {uploadedFiles.map((f, i) => (
-                                    <li key={i} className="rounded-xl border border-border/60 bg-muted/[0.18] px-3 py-2 text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">{f.name}</li>
+                                    <li key={i} className="break-all rounded-xl bg-white/80 px-3 py-2 text-sm text-foreground ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">{f.name}</li>
                                   ))}
                                 </ul>
                               </div>
@@ -962,29 +962,29 @@ const ShipmentCreationForm = () => {
                           </div>
 
                           {estimatedCost !== null && (
-                            <div className="rounded-2xl border border-primary/15 bg-[linear-gradient(180deg,rgba(6,16,67,0.06),rgba(223,81,1,0.04))] p-5 shadow-[0_18px_36px_rgba(15,23,42,0.06)]">
+                            <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10">
                               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Pricing summary</p>
                               <div className="mt-4 space-y-3">
-                                <div className="flex justify-between text-sm text-muted-foreground">
+                                <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
                                   <span>Shipping cost</span>
-                                  <span>{formatUsd(estimatedCost)}</span>
+                                  <span className="whitespace-nowrap">{formatUsd(estimatedCost)}</span>
                                 </div>
-                                <div className="flex justify-between text-sm text-muted-foreground">
+                                <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
                                   <span>Rate applied</span>
-                                  <span>{formatUsd(matchedRate || 0)}/KG</span>
+                                  <span className="whitespace-nowrap">{formatUsd(matchedRate || 0)}/KG</span>
                                 </div>
                                 {prepayPickup ? (
-                                  <div className="flex justify-between text-sm text-muted-foreground">
+                                  <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
                                     <span>Pickup / Delivery fee</span>
-                                    <span>{formatUsd(pickupFee)}</span>
+                                    <span className="whitespace-nowrap">{formatUsd(pickupFee)}</span>
                                   </div>
                                 ) : (
                                   <p className="text-xs text-muted-foreground">Pickup fee will be paid on collection.</p>
                                 )}
-                                <div className="rounded-xl border border-primary/15 bg-white/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                                <div className="rounded-xl bg-white/80 px-4 py-3 ring-1 ring-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                                   <div className="flex items-center justify-between gap-3">
                                     <span className="text-sm font-bold text-foreground">Total payment</span>
-                                    <span className="text-2xl font-bold text-primary">{formatUsd(totalPrice ?? estimatedCost)}</span>
+                                    <span className="whitespace-nowrap text-xl font-bold text-primary sm:text-2xl">{formatUsd(totalPrice ?? estimatedCost)}</span>
                                   </div>
                                 </div>
                               </div>
@@ -993,7 +993,7 @@ const ShipmentCreationForm = () => {
                         </div>
                       )}
 
-                      <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-start gap-3">
+                      <div className="flex items-start gap-3 rounded-xl bg-muted/[0.18] p-4 ring-1 ring-border/50">
                         <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
                           <CheckCircle2 className="w-4 h-4 text-primary" />
                         </div>
@@ -1006,14 +1006,14 @@ const ShipmentCreationForm = () => {
                         <button 
                           type="button" 
                           onClick={() => setStep(2)}
-                          className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98] sm:w-auto"
                         >
                           Back
                         </button>
                         <button 
                           type="submit" 
                           disabled={isSubmitting}
-                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98] sm:w-auto"
                         >
                           {isSubmitting ? "Creating..." : "Create Shipment"}
                           <ArrowRight className="w-4 h-4" />
