@@ -5,7 +5,7 @@ import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight, PackageCheck } from "lucide-react";
 
 const services = [
   {
