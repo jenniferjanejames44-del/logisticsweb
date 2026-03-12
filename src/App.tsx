@@ -19,6 +19,7 @@ import ImportService from "./pages/services/ImportService";
 import ExportService from "./pages/services/ExportService";
 import WarehousingPage from "./pages/services/Warehousing";
 import CustomsClearance from "./pages/services/CustomsClearance";
+import GlobalPickup from "./pages/services/GlobalPickup";
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
@@ -88,6 +89,7 @@ const App = () => (
               <Route path="/services/import-export" element={<ImportExport />} />
               <Route path="/services/warehousing" element={<WarehousingPage />} />
               <Route path="/services/customs-clearance" element={<CustomsClearance />} />
+              <Route path="/services/global-pickup" element={<GlobalPickup />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />

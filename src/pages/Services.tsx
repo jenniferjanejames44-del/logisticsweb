@@ -5,7 +5,7 @@ import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight } from "lucide-react";
+import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight, PackageCheck } from "lucide-react";
 
 const services = [
   {
@@ -42,6 +42,13 @@ const services = [
     description: "Submit product links publicly and let RAC purchase items on your behalf using the existing procurement system.",
     link: "/services/procurement",
     features: ["Public Request Form", "Admin Fee Bands", "File Upload", "Existing Procurement Queue"]
+  },
+  {
+    icon: PackageCheck,
+    title: "Global Pickup",
+    description: "We arrange package pickup from suppliers, warehouses, and businesses globally, transporting items safely to your destination.",
+    link: "/services/global-pickup",
+    features: ["Worldwide Coordination", "Secure Handling", "Fast Shipping", "Real-time Tracking"]
   },
   {
     icon: Warehouse,
