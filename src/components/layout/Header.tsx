@@ -57,6 +57,7 @@ const Header = () => {
     {
       heading: "Logistics Services",
       links: [
+        { name: "Global Pickup", href: "/services/global-pickup", icon: Container },
         { name: "Warehousing", href: "/services/warehousing", icon: Container },
         { name: "Customs Clearance", href: "/services/customs-clearance", icon: FileCheck },
       ],

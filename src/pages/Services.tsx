@@ -44,6 +44,13 @@ const services = [
     features: ["Public Request Form", "Admin Fee Bands", "File Upload", "Existing Procurement Queue"]
   },
   {
+    icon: PackageCheck,
+    title: "Global Pickup",
+    description: "We arrange package pickup from suppliers, warehouses, and businesses globally, transporting items safely to your destination.",
+    link: "/services/global-pickup",
+    features: ["Worldwide Coordination", "Secure Handling", "Fast Shipping", "Real-time Tracking"]
+  },
+  {
     icon: Warehouse,
     title: "Warehousing",
     description: "Secure storage solutions with inventory management. Fulfillment and distribution services.",
