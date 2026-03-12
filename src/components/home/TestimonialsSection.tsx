@@ -119,14 +119,7 @@ const TestimonialsSection = () => {
                     </div>
 
                     {/* Author */}
-                    <div className="flex items-center justify-center gap-4">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-2xl object-cover border-2 border-primary/20 shadow-sm"
-                        loading="lazy"
-                      />
-                      <div className="text-left">
+                    <div className="mx-auto max-w-sm space-y-1 text-center">
                         <h4 className="font-extrabold text-foreground text-lg">
                           {testimonial.name}
                         </h4>
@@ -137,7 +130,6 @@ const TestimonialsSection = () => {
                           {testimonial.company}
                         </p>
                       </div>
-                    </div>
                   </div>
                 </div>
               ))}

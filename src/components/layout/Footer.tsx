@@ -134,11 +134,11 @@ const Footer = () => {
           <div>
             <h4 className="mb-5 text-xs font-bold uppercase tracking-[0.22em] text-white/55">Contact</h4>
             <div className="space-y-4">
-              <a href="mailto:info@raclogistics.com" className="group flex items-start gap-3 text-white/72 transition-colors duration-200 hover:text-white">
+              <a href="mailto:info@raclogistic.com" className="group flex items-start gap-3 text-white/72 transition-colors duration-200 hover:text-white">
                 <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/90 transition-colors duration-200 group-hover:bg-white/14">
                   <Mail size={15} strokeWidth={2.3} />
                 </span>
-                <span className="text-[15px] leading-6">info@raclogistics.com</span>
+                <span className="text-[15px] leading-6">info@raclogistic.com</span>
               </a>
 
               <a href="tel:+2348185956707" className="group flex items-start gap-3 text-white/72 transition-colors duration-200 hover:text-white">

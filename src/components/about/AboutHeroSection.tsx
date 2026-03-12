@@ -27,7 +27,7 @@ const AboutHeroSection = () => {
               Your Trusted Global Partner
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
-              Since 2010, RAC Logistics has been at the forefront of international 
+              Since 2017, RAC Logistics has been at the forefront of international 
               shipping and logistics. We've built our reputation on reliability, 
               innovation, and an unwavering commitment to customer satisfaction.
             </p>

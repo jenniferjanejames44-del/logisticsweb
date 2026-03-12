@@ -102,7 +102,7 @@ const LiveChat = () => {
       const errorMessage: Message = {
         id: `error-${Date.now()}`,
         role: "assistant",
-        content: "I apologize, I'm having trouble connecting. Please try again or contact us directly at support@raclogistics.com",
+        content: "I apologize, I'm having trouble connecting. Please try again or contact us directly at support@raclogistic.com",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

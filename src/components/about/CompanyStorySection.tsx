@@ -4,11 +4,11 @@ const CompanyStorySection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   const timeline = [
-    { year: "2010", title: "Founded", description: "RAC Logistics was established with a vision to revolutionize global shipping." },
-    { year: "2013", title: "Expansion", description: "Expanded operations to 50+ countries across 4 continents." },
-    { year: "2016", title: "Innovation", description: "Launched our AI-powered tracking and route optimization system." },
-    { year: "2019", title: "Recognition", description: "Awarded 'Best Logistics Company' by Global Trade Magazine." },
-    { year: "2022", title: "Sustainability", description: "Committed to carbon-neutral operations by 2030." },
+    { year: "2017", title: "Founded", description: "RAC Logistics was established with a vision to revolutionize global shipping." },
+    { year: "2019", title: "Expansion", description: "Expanded operations to 50+ countries across 4 continents." },
+    { year: "2021", title: "Innovation", description: "Launched our AI-powered tracking and route optimization system." },
+    { year: "2023", title: "Recognition", description: "Since 2017 when we opened our doors to customers, our customers have recognised our significance in the industry.\n\nOur purpose is to grow into a mountain in the industry and not to shrink. This we will achieve through stretching our potential until we achieve that purpose." },
+    { year: "2024", title: "Sustainability", description: "Committed to carbon-neutral operations by 2030." },
     { year: "2026", title: "Global Leader", description: "Serving 150+ countries with over 50,000 shipments delivered." },
   ];
 
@@ -57,7 +57,7 @@ const CompanyStorySection = () => {
                   <div className="bg-card rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
                     <span className="text-primary font-bold text-base sm:text-lg">{item.year}</span>
                     <h3 className="text-lg sm:text-xl font-bold text-foreground mt-1 mb-2">{item.title}</h3>
-                    <p className="text-sm sm:text-base text-muted-foreground">{item.description}</p>
+                    <p className="whitespace-pre-line text-sm sm:text-base text-muted-foreground">{item.description}</p>
                   </div>
                 </div>
                 <div className="w-4 h-4 bg-accent rounded-full border-4 border-background shadow-lg z-10 hidden md:block flex-shrink-0" />

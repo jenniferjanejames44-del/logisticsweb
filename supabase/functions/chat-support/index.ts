@@ -28,7 +28,7 @@ PRICING:
 - Custom quotes available for bulk shipments
 
 CONTACT INFORMATION:
-- Email: support@raclogistics.com
+- Email: support@raclogistic.com
 - Phone: +1 (555) 123-4567
 - Address: 123 Logistics Way, Lagos, Nigeria
 - Operating Hours: Monday-Friday 8AM-6PM, Saturday 9AM-2PM
@@ -104,7 +104,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         error: "Failed to process message",
-        message: "I apologize, I'm experiencing technical difficulties. Please contact our support team directly at support@raclogistics.com or call +1 (555) 123-4567."
+        message: "I apologize, I'm experiencing technical difficulties. Please contact our support team directly at support@raclogistic.com or call +1 (555) 123-4567."
       }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

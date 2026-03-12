@@ -1,4 +1,3 @@
-import { Linkedin, Twitter, Mail } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import founderImage from "@/assets/founder-rex.jpg";
 
@@ -53,22 +52,10 @@ const LeadershipSection = () => {
             >
               <div className="relative overflow-hidden aspect-square">
                 <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                  <a href={member.linkedin} className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                    <Linkedin size={16} className="text-accent-foreground sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                  <a href={member.twitter} className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                    <Twitter size={16} className="text-accent-foreground sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                  <a href={`mailto:${member.name.toLowerCase().replace(" ", ".")}@raclogistics.com`} className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-accent transition-colors">
-                    <Mail size={16} className="text-accent-foreground sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                </div>
               </div>
               <div className="p-4 sm:p-5 md:p-6">
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">{member.name}</h3>
-                <p className="text-primary font-medium text-sm sm:text-base mb-2 sm:mb-3">{member.role}</p>
-                <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">{member.bio}</p>
+                <p className="text-primary font-medium text-sm sm:text-base">{member.role}</p>
               </div>
             </div>
           ))}

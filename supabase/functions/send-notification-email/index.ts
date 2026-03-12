@@ -140,7 +140,7 @@ function emailWrapper(title: string, bodyContent: string): string {
     <td style="background:#f8f9fb;padding:20px 30px;text-align:center;border-top:1px solid #eee;">
       <p style="margin:0 0 4px;color:#061043;font-weight:700;font-size:13px;">RAC LOGISTICS LTD</p>
       <p style="margin:0 0 4px;color:#888;font-size:11px;">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos</p>
-      <p style="margin:0;color:#888;font-size:11px;">info@raclogistics.com | www.raclogistics.com</p>
+      <p style="margin:0;color:#888;font-size:11px;">info@raclogistic.com | www.raclogistics.com</p>
     </td>
   </tr>
 </table>
