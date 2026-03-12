@@ -257,7 +257,7 @@ const Procurement = () => {
                   <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
                       <span>Estimated order value</span>
-                      <span className="font-medium text-foreground">{formatCurrency(estimatedOrderValue)}</span>
+                      <span className="font-medium text-foreground">{formatUsd(estimatedOrderValue)}</span>
                     </div>
                     <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
                       <span>Estimated procurement fee</span>
