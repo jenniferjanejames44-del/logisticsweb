@@ -165,7 +165,7 @@ const Gallery = () => {
         <GalleryHeroSection />
 
         {/* Video Grid Section */}
-        <section ref={gridRef as React.RefObject<HTMLDivElement>} className="py-16 md:py-24 bg-background">
+        <section ref={gridRef as unknown as React.RefObject<HTMLDivElement>} className="py-16 md:py-24 bg-background">
           <div className="section-container">
             <div
               className={cn(
