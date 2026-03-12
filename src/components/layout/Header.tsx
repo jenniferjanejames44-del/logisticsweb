@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Earth, Container, FileCheck, ArrowRight, Send } from "lucide-react";
-import headerLogo from "@/assets/logis_logo_clean.png";
+import headerLogo from "@/assets/logis_logo_header.png";
 import { CURRENCY_META, SUPPORTED_CURRENCIES } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 import {
@@ -107,7 +107,7 @@ const Header = () => {
           <img
             src={headerLogo}
             alt="RAC Logistics"
-            className="block h-10 w-auto max-w-[172px] object-contain mix-blend-multiply sm:h-11 sm:max-w-[210px] md:h-[50px] md:max-w-[240px]"
+            className="block h-10 w-auto max-w-[172px] object-contain sm:h-11 sm:max-w-[210px] md:h-[50px] md:max-w-[240px]"
             draggable={false}
           />
         </Link>
