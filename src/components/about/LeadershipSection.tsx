@@ -1,9 +1,10 @@
 import { useInView } from "@/hooks/useInView";
 import founderImage from "@/assets/founder-rex.jpg";
+import rosecolletImage from "@/assets/rosecollet.jpg";
 
 const teamMembers = [
   { name: "Offor Rex C.K", role: "Founder & CEO", image: founderImage, bio: "Visionary leader with 20+ years in global logistics and supply chain management.", linkedin: "#", twitter: "#" },
-  { name: "Sarah Mitchell", role: "Chief Operations Officer", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop", bio: "Operations expert driving efficiency and excellence across all departments.", linkedin: "#", twitter: "#" },
+  { name: "Rex-Offor Rosecollet C.", role: "Head Customer Relations", image: rosecolletImage, bio: "Dedicated to building lasting client relationships and ensuring exceptional service delivery.", linkedin: "#", twitter: "#" },
   { name: "Michael Chen", role: "Chief Technology Officer", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop", bio: "Tech innovator behind our AI-powered tracking and optimization systems.", linkedin: "#", twitter: "#" },
   { name: "Emily Rodriguez", role: "VP of Customer Success", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop", bio: "Customer champion ensuring exceptional service at every touchpoint.", linkedin: "#", twitter: "#" },
   { name: "David Williams", role: "VP of Global Partnerships", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop", bio: "Building strategic alliances with carriers and partners worldwide.", linkedin: "#", twitter: "#" },
