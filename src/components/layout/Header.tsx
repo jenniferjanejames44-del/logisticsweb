@@ -61,7 +61,7 @@ const Header = () => {
       "font-display relative px-3 py-2 text-sm font-semibold text-primary transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200",
       isActive
         ? "text-accent after:scale-x-100"
-        : "hover:bg-accent hover:text-white hover:after:scale-x-100",
+        : "hover:bg-transparent hover:text-primary hover:after:scale-x-100",
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
@@ -102,10 +102,10 @@ const Header = () => {
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
-                  "font-display flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-primary transition-all duration-200",
+                  "font-display relative flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-primary transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200",
                   isServicesRoute
-                    ? "text-accent"
-                    : "hover:bg-accent hover:text-white",
+                    ? "text-accent after:scale-x-100"
+                    : "hover:bg-transparent hover:text-primary hover:after:scale-x-100",
                 )}
               >
                 Services
@@ -126,10 +126,10 @@ const Header = () => {
                       {group.heading}
                     </div>
                     {group.links.map((service) => (
-                      <DropdownMenuItem key={service.name} asChild className="p-0">
+                      <DropdownMenuItem key={service.name} asChild className="p-0 focus:bg-transparent focus:text-inherit">
                         <Link
                           to={service.href}
-                          className="group flex w-full items-center gap-3 py-2.5 text-primary transition-all duration-200 hover:text-accent"
+                          className="group flex w-full items-center gap-3 py-2.5 text-primary transition-all duration-200 hover:bg-transparent hover:text-accent"
                         >
                           <span className="flex h-8 w-8 items-center justify-center text-primary transition-colors duration-200 group-hover:text-accent">
                             <service.icon className="h-4 w-4" />
@@ -229,10 +229,9 @@ const Header = () => {
       >
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)]" aria-hidden="true" />
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-white/90 px-4 py-4 backdrop-blur-xl sm:px-5">
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">Menu</p>
-            <p className="text-sm font-semibold text-foreground">RAC Logistics</p>
-          </div>
+          <Link to="/" onClick={closeMobileMenu} className="flex items-center">
+            <HeaderLogo className="block h-9 w-auto max-w-[164px]" />
+          </Link>
           <button
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-white text-muted-foreground shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:border-primary/15 hover:bg-white hover:text-foreground"
             onClick={closeMobileMenu}
