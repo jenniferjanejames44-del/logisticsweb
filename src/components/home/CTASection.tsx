@@ -1,12 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useInView } from "@/hooks/useInView";
+import { Button } from "@/components/ui/button";
 
 const CTASection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="section-padding relative overflow-hidden bg-primary">
+    <section ref={ref} className="cta-band section-padding relative overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 opacity-15">
         <img
@@ -32,7 +33,7 @@ const CTASection = () => {
           </h2>
           
           <p 
-            className={`text-lg md:text-xl text-white/80 mb-10 leading-relaxed max-w-2xl mx-auto transition-all duration-500 delay-200 ${
+            className={`mb-10 max-w-2xl text-[1.02rem] leading-relaxed text-white/82 transition-all duration-500 delay-200 sm:text-[1.1rem] ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -40,23 +41,21 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-500 delay-300 ${
+          <div className={`flex flex-col items-stretch justify-center gap-3.5 sm:flex-row sm:items-center transition-all duration-500 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
-            <Link 
-              to="/pricing"
-              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-lg transition-all duration-200 bg-accent text-accent-foreground hover:bg-accent/90 hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98]"
-            >
-              Get Quote
-              <ArrowRight size={18} />
-            </Link>
-            <Link 
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 font-extrabold text-sm sm:text-base rounded-full shadow-sm transition-all duration-200 bg-white text-primary hover:bg-white/90 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98]"
-            >
-              Contact Us
-              <ArrowRight size={18} />
-            </Link>
+            <Button asChild variant="heroPrimary" size="lg" className="w-full sm:w-auto">
+              <Link to="/pricing">
+                Get Quote
+                <ArrowRight size={18} />
+              </Link>
+            </Button>
+            <Button asChild variant="heroOutline" size="lg" className="w-full sm:w-auto">
+              <Link to="/contact">
+                Contact Us
+                <ArrowRight size={18} />
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

@@ -23,12 +23,12 @@ const WhyChooseSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
-    <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
+    <section ref={ref} className="section-padding section-alt relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="mx-auto mb-14 max-w-3xl text-center lg:mb-16">
           <span
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-sm ${
+            className={`section-badge mb-6 border-accent/20 bg-accent text-accent-foreground transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -43,7 +43,7 @@ const WhyChooseSection = () => {
             Why Choose <span className="text-primary">Us</span>
           </h2>
           <p
-            className={`text-muted-foreground text-lg md:text-xl font-medium leading-relaxed transition-all duration-600 delay-200 ${
+            className={`mx-auto max-w-2xl text-base font-medium leading-relaxed text-muted-foreground transition-all duration-600 delay-200 sm:text-lg ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -52,11 +52,11 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-7">
           {differentiators.map((item, index) => (
             <div
               key={item.title}
-              className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-2 ${
+              className={`surface-grid-card group h-full p-6 sm:p-7 lg:p-8 ${
                 isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
               style={{ transitionDelay: `${index * 80 + 150}ms` }}
@@ -64,7 +64,7 @@ const WhyChooseSection = () => {
               {/* Top accent bar on hover */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
 
-              <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-7 shadow-sm transition-all duration-400 group-hover:scale-110 group-hover:bg-primary/15">
+              <div className="icon-tile mb-6 transition-all duration-300 group-hover:scale-[1.04]">
                 <item.icon size={28} className="text-primary" strokeWidth={2.5} />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4 group-hover:text-primary transition-colors duration-300">

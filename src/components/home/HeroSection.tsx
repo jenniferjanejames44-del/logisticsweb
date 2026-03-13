@@ -15,7 +15,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="hero-gradient relative flex min-h-[100vh] items-center justify-center overflow-hidden bg-primary">
+    <section className="hero-gradient relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-primary">
       {/* Background Video */}
       <video
         autoPlay
@@ -32,13 +32,13 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.16),transparent_26%),linear-gradient(180deg,rgba(6,16,67,0.22),rgba(6,16,67,0.5))]" />
 
-      <div className="section-container relative z-10 pb-20 pt-32 sm:pt-36 md:py-40">
-        <div className="mx-auto max-w-[860px] text-center animate-fade-in-soft">
+      <div className="section-container relative z-10 pb-14 pt-28 sm:pb-16 sm:pt-32 md:py-32 lg:py-36">
+        <div className="mx-auto max-w-[820px] text-center animate-fade-in-soft">
           {/* Badge */}
           <div className={`mb-6 transition-all duration-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/15 px-4 py-2 text-sm font-bold text-white/90 shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm">
+            <span className="page-hero-badge">
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               </span>
@@ -55,7 +55,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-lg sm:text-xl md:text-2xl mb-10 sm:mb-12 leading-relaxed font-medium transition-all duration-700 delay-150 text-white/80 max-w-2xl mx-auto ${
+          <p className={`mb-10 max-w-2xl text-[1.05rem] font-medium leading-relaxed text-white/82 transition-all duration-700 delay-150 sm:mb-12 sm:text-[1.125rem] md:text-[1.25rem] ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
@@ -63,16 +63,16 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`mb-12 flex flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 transition-all duration-700 delay-300 ${
+          <div className={`mb-12 flex flex-col items-stretch justify-center gap-3.5 sm:flex-row sm:items-center transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <Button asChild variant="heroPrimary" size="xl" className="min-w-[140px] px-5 sm:min-w-[152px] sm:px-6">
+            <Button asChild variant="heroPrimary" size="xl" className="w-full sm:w-auto">
               <Link to="/pricing">
                 Get Quote
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </Button>
-            <Button asChild variant="heroSecondary" size="xl" className="min-w-[140px] px-5 sm:min-w-[152px] sm:px-6">
+            <Button asChild variant="heroSecondary" size="xl" className="w-full sm:w-auto">
               <Link to="/auth">
                 Sign Up
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />

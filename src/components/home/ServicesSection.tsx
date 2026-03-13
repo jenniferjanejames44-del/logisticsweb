@@ -1,6 +1,7 @@
 import { ArrowRight, Globe, Send, ShoppingBag, Container } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const services = [
   {
@@ -40,9 +41,9 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding section-alt">
       <div className="section-container">
         {/* Header */}
-        <div className="mx-auto mb-16 max-w-3xl text-center lg:mb-20">
+        <div className="mx-auto mb-14 max-w-3xl text-center lg:mb-16">
           <span
-            className={`mb-5 inline-block rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.16)] transition-all duration-500 ${
+            className={`section-badge mb-5 border-accent/20 bg-accent text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.16)] transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -56,7 +57,7 @@ const ServicesSection = () => {
             Comprehensive Logistics Solutions
           </h2>
           <p
-            className={`text-base leading-relaxed text-muted-foreground transition-all duration-500 delay-150 md:text-base ${
+            className={`mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground transition-all duration-500 delay-150 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -65,20 +66,20 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
               <Link
                 key={service.title}
                 to={service.href}
-                className={`group relative overflow-hidden rounded-lg border border-border bg-card shadow-[0_10px_30px_rgba(15,23,42,0.05),0_2px_8px_rgba(15,23,42,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/15 hover:shadow-[0_18px_40px_rgba(15,23,42,0.08),0_6px_14px_rgba(15,23,42,0.05)] ${
+                className={`group surface-grid-card h-full p-0 transition-all duration-300 ${
                   isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: `${index * 80 + 200}ms` }}
               >
                 {/* Service Image */}
-                <div className="relative w-full h-52 overflow-hidden">
+                <div className="relative h-56 w-full overflow-hidden sm:h-60">
                   <img
                     src={service.image}
                     alt={service.title}
@@ -88,15 +89,15 @@ const ServicesSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-foreground/20 to-transparent group-hover:from-foreground/30 transition-all duration-300" />
 
                   {/* Icon Badge */}
-                  <div className="absolute bottom-4 right-4 flex h-14 w-14 items-center justify-center rounded-xl border border-white/50 bg-white/95 shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-[1.03]">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <div className="absolute bottom-4 right-4 rounded-[20px] border border-white/50 bg-white/95 p-2 shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition-all duration-200 group-hover:-translate-y-px group-hover:scale-[1.03]">
+                    <span className="icon-tile h-11 w-11 rounded-[16px]">
                       <ServiceIcon className="w-6 h-6 text-primary" strokeWidth={2.5} />
                     </span>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
+                <div className="p-6 sm:p-7">
                   <h3 className="mb-3 text-foreground transition-colors group-hover:text-primary">
                     {service.title}
                   </h3>
@@ -115,17 +116,16 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div
-          className={`text-center mt-14 transition-all duration-500 delay-400 ${
+          className={`mt-14 text-center transition-all duration-500 delay-400 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <Link 
-            to="/services" 
-            className="btn btn-primary"
-          >
-            View All Services
-            <ArrowRight size={16} />
-          </Link>
+          <Button asChild variant="default" size="lg">
+            <Link to="/services">
+              View All Services
+              <ArrowRight size={16} />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

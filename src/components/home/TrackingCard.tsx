@@ -134,14 +134,14 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
     >
       {/* Main Card */}
       <div 
-        className={`relative overflow-hidden rounded-xl border border-white/60 bg-white/95 transition-all duration-300 backdrop-blur-md ${
+        className={`relative overflow-hidden rounded-[24px] border border-white/60 bg-white/95 transition-all duration-300 backdrop-blur-md ${
           isFocused ? "shadow-[0_18px_36px_rgba(6,16,67,0.16)]" : "shadow-[0_12px_32px_rgba(6,16,67,0.12)]"
         }`}
       >
-        <div className="p-6">
+        <div className="p-6 sm:p-7">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-[0_10px_20px_rgba(223,81,1,0.2)] sm:h-12 sm:w-12">
+            <div className="icon-tile h-11 w-11 rounded-[16px] border-accent/10 bg-accent/[0.08] text-accent shadow-[0_10px_20px_rgba(223,81,1,0.16)] sm:h-12 sm:w-12">
               <Search size={18} className="sm:hidden text-accent-foreground" />
               <Search size={20} className="hidden sm:block text-accent-foreground" />
             </div>
@@ -155,7 +155,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
           </div>
           
           {/* Input Group */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3.5 sm:flex-row">
             <div className="relative flex-1">
               <Input
                 value={trackingNumber}
@@ -164,7 +164,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Enter tracking number"
-                className={`h-11 rounded-lg border bg-muted/40 pl-4 pr-12 text-base font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
+              className={`h-12 rounded-lg border bg-muted/40 pl-4 pr-12 text-base font-medium text-foreground placeholder:text-muted-foreground transition-all duration-200 ${
                   isFocused 
                     ? "border-accent ring-2 ring-accent/15 bg-white" 
                     : "border-[#E5E7EB] hover:border-primary/20"
@@ -180,7 +180,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
               onClick={handleTrackClick}
               disabled={isLoading}
               variant="heroPrimary"
-              className="w-full max-w-[220px] self-start sm:w-auto sm:max-w-none"
+              className="w-full sm:w-auto"
             >
               Track Now
               <ArrowRight size={16} />

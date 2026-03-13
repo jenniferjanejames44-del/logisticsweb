@@ -295,10 +295,10 @@ const Contact = () => {
                 View Resources
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <button className="btn btn-secondary btn-lg">
+              <Button variant="heroOutline" size="lg" type="button">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
+              </Button>
             </div>
           </div>
         </section>
