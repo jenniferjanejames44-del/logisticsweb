@@ -179,15 +179,10 @@ function ctaButton(text: string, url: string): string {
   </div>`;
 }
 
-function currencyFormat(amount: number, currency = "NGN"): string {
-  const normalizedCurrency = ["USD", "GBP", "NGN", "CNY", "EUR"].includes(currency) ? currency : "USD";
-  const locale = {
-    USD: "en-US",
-    GBP: "en-GB",
-    NGN: "en-NG",
-    CNY: "zh-CN",
-    EUR: "de-DE",
-  }[normalizedCurrency];
+function currencyFormat(amount: number, currency = "USD"): string {
+  void currency;
+  const normalizedCurrency = "USD";
+  const locale = "en-US";
 
   return new Intl.NumberFormat(locale, {
     style: "currency",

@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 100) {
       return new Response(
-        JSON.stringify({ error: "Minimum top-up amount is ₦100" }),
+        JSON.stringify({ error: "Minimum top-up amount is $100" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

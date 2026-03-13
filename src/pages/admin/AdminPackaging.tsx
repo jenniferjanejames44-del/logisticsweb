@@ -102,7 +102,7 @@ const AdminPackaging = () => {
                   <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required placeholder="e.g. Small Box" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Price (₦)</Label>
+                  <Label>Price (USD)</Label>
                   <Input type="number" min="0" step="0.01" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required />
                 </div>
                 <div className="flex items-center gap-2">
@@ -136,7 +136,7 @@ const AdminPackaging = () => {
                         {item.is_active ? "Active" : "Inactive"}
                       </Badge>
                     </div>
-                    <p className="text-foreground font-bold text-lg">₦{Number(item.price).toLocaleString()}</p>
+                    <p className="text-foreground font-bold text-lg">${Number(item.price).toLocaleString()}</p>
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                       <div className="flex gap-2">
@@ -157,7 +157,7 @@ const AdminPackaging = () => {
                     {items.map((item) => (
                       <TableRow key={item.id}>
                         <TableCell className="font-medium">{item.name}</TableCell>
-                        <TableCell className="font-bold">₦{Number(item.price).toLocaleString()}</TableCell>
+                        <TableCell className="font-bold">${Number(item.price).toLocaleString()}</TableCell>
                         <TableCell>
                           <Badge variant={item.is_active ? "default" : "secondary"} className={item.is_active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}>
                             {item.is_active ? "Active" : "Inactive"}

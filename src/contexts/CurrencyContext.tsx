@@ -6,7 +6,6 @@ import {
   convertAmount,
   convertFromUsd,
   CURRENCY_CONTEXT_CACHE_KEY,
-  CURRENCY_STORAGE_KEY,
   EXCHANGE_RATE_CACHE_TTL_MS,
   FALLBACK_EXCHANGE_RATES,
   formatMoney,
@@ -69,7 +68,6 @@ function readCachedCurrencyContext(): CachedCurrencyContext | null {
 }
 
 export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
-  const [manualCurrency, setManualCurrency] = useState<SupportedCurrency | null>(null);
   const [detectedCurrency, setDetectedCurrency] = useState<SupportedCurrency>(BASE_CURRENCY);
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates>(FALLBACK_EXCHANGE_RATES);
   const [countryCode, setCountryCode] = useState<string | null>(null);
@@ -79,15 +77,10 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const storedCurrency = window.localStorage.getItem(CURRENCY_STORAGE_KEY);
-    if (isSupportedCurrency(storedCurrency)) {
-      setManualCurrency(storedCurrency);
-    }
-
     const cached = readCachedCurrencyContext();
     if (cached) {
       setExchangeRates(cached.exchangeRates);
-      setDetectedCurrency(cached.detectedCurrency);
+      setDetectedCurrency(BASE_CURRENCY);
       setCountryCode(cached.countryCode);
       setCountryName(cached.countryName);
       setLoading(false);
@@ -102,17 +95,16 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
         if (!isActive || !data) return;
 
         const nextRates = buildExchangeRates(data.rates);
-        const nextDetected = isSupportedCurrency(data.defaultCurrency) ? data.defaultCurrency : BASE_CURRENCY;
         const cachePayload: CachedCurrencyContext = {
           exchangeRates: nextRates,
-          detectedCurrency: nextDetected,
+          detectedCurrency: BASE_CURRENCY,
           countryCode: data.countryCode ?? null,
           countryName: data.countryName ?? null,
           fetchedAt: Date.now(),
         };
 
         setExchangeRates(nextRates);
-        setDetectedCurrency(nextDetected);
+        setDetectedCurrency(BASE_CURRENCY);
         setCountryCode(data.countryCode ?? null);
         setCountryName(data.countryName ?? null);
 
@@ -139,20 +131,12 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const setCurrency = useCallback((currency: SupportedCurrency) => {
-    setManualCurrency(currency);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(CURRENCY_STORAGE_KEY, currency);
-    }
+    void currency;
   }, []);
 
-  const resetCurrencyPreference = useCallback(() => {
-    setManualCurrency(null);
-    if (typeof window !== "undefined") {
-      window.localStorage.removeItem(CURRENCY_STORAGE_KEY);
-    }
-  }, []);
+  const resetCurrencyPreference = useCallback(() => {}, []);
 
-  const selectedCurrency = manualCurrency ?? detectedCurrency;
+  const selectedCurrency = BASE_CURRENCY;
 
   const convertUsdAmount = useCallback(
     (amount: number, targetCurrency: SupportedCurrency = selectedCurrency) => convertFromUsd(amount, targetCurrency, exchangeRates),
@@ -191,7 +175,7 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
       exchangeRates,
       countryCode,
       countryName,
-      hasManualOverride: manualCurrency !== null,
+      hasManualOverride: false,
       loading,
       setCurrency,
       resetCurrencyPreference,
@@ -207,7 +191,6 @@ export const CurrencyProvider = ({ children }: { children: ReactNode }) => {
       exchangeRates,
       countryCode,
       countryName,
-      manualCurrency,
       loading,
       setCurrency,
       resetCurrencyPreference,

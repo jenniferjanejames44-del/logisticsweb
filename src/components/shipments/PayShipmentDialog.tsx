@@ -31,7 +31,7 @@ interface PayShipmentDialogProps {
 interface WalletPaymentPreview {
   status: "preview";
   charged_amount: number;
-  currency: "NGN";
+  currency: string;
   wallet_balance: number;
   has_sufficient_funds: boolean;
   invoice_number?: string;
@@ -52,7 +52,7 @@ const PayShipmentDialog = ({
   userId,
   onSuccess,
 }: PayShipmentDialogProps) => {
-  const { formatConverted, formatMoney } = useCurrency();
+  const { formatConverted } = useCurrency();
   const [loading, setLoading] = useState(false);
   const [paystackLoading, setPaystackLoading] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
@@ -202,13 +202,13 @@ const PayShipmentDialog = ({
               <span className="font-bold text-lg text-foreground">{formatConverted(price, priceCurrency)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Base invoice currency</span>
-              <span className="font-medium text-foreground">{formatMoney(price, priceCurrency)}</span>
+              <span className="text-sm text-muted-foreground">Invoice Amount</span>
+              <span className="font-medium text-foreground">{formatConverted(price, priceCurrency)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-muted-foreground">Paystack checkout</span>
               {payableWithPaystack !== null ? (
-                <span className="font-semibold text-primary">{formatMoney(payableWithPaystack, "NGN")}</span>
+                <span className="font-semibold text-primary">{formatConverted(payableWithPaystack, "NGN")}</span>
               ) : previewLoading ? (
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -221,15 +221,15 @@ const PayShipmentDialog = ({
               )}
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">NGN Wallet Balance</span>
+              <span className="text-sm text-muted-foreground">USD Wallet Balance</span>
               <span className={`font-semibold ${hasSufficientFunds ? "text-green-600" : "text-orange-600"}`}>
-                {formatMoney(walletBalance, "NGN")}
+                {formatConverted(walletBalance, "NGN")}
               </span>
             </div>
             {walletPreview && hasSufficientFunds && (
               <div className="flex justify-between items-center pt-2 border-t border-border/50">
                 <span className="text-sm text-muted-foreground">Wallet balance after payment</span>
-                <span className="font-semibold text-foreground">{formatMoney(walletPreview.wallet_balance - walletPreview.charged_amount, "NGN")}</span>
+                <span className="font-semibold text-foreground">{formatConverted(walletPreview.wallet_balance - walletPreview.charged_amount, "NGN")}</span>
               </div>
             )}
             {invoiceNumber && (
@@ -270,7 +270,7 @@ const PayShipmentDialog = ({
                 <div>
                   <p className="text-sm font-medium text-foreground">Syncing exact wallet quote</p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    We’re confirming the precise NGN debit amount before enabling wallet payment.
+                    We’re confirming the precise USD debit amount before enabling wallet payment.
                   </p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ const PayShipmentDialog = ({
                   <Wallet className="w-4 h-4 text-primary" />
                 )}
                 {loading ? "Processing..." : "Pay from Wallet"}
-                <span className="ml-auto text-xs text-muted-foreground">{formatMoney(walletBalance, "NGN")}</span>
+                <span className="ml-auto text-xs text-muted-foreground">{formatConverted(walletBalance, "NGN")}</span>
               </Button>
             ) : walletPreview ? (
               <div className="p-3 rounded-xl bg-destructive/10 border border-destructive/20 flex items-start gap-3">
@@ -296,7 +296,7 @@ const PayShipmentDialog = ({
                 <div>
                   <p className="text-sm font-medium text-destructive">Insufficient Wallet Balance</p>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    You need {formatMoney(shortfall, "NGN")} more, or pay via Paystack.
+                    You need {formatConverted(shortfall, "NGN")} more, or pay via Paystack.
                   </p>
                 </div>
               </div>

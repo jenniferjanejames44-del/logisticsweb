@@ -161,7 +161,7 @@ const Shipments = () => {
             </div>
             <div>
               <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
-              <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">₦{balance.toFixed(2)}</p>
+              <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">{formatConverted(balance, "NGN")}</p>
             </div>
           </div>
           <Button variant="dashOutline" size="dashSm" className="w-full max-w-[220px] sm:w-auto sm:max-w-none hover:bg-primary/5 hover:border-primary/40 transition-all duration-200" onClick={() => window.location.href = "/dashboard/wallet"}>

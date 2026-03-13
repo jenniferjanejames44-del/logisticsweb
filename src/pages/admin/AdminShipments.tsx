@@ -299,7 +299,7 @@ const AdminShipments = () => {
                     <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                       <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
-                        {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
+                        {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
                       </p>
                     </div>
                     <div className="flex flex-col sm:flex-row items-stretch gap-2 pt-2 border-t border-border/50">
@@ -384,7 +384,7 @@ const AdminShipments = () => {
                         <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                           <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                           <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
-                            {shipment.price !== null ? `₦${Number(shipment.price).toLocaleString()}` : "Not set"}
+                            {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
                           </p>
                         </div>
                       </div>

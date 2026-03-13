@@ -19,7 +19,7 @@ const CostBreakdown = ({
   packagingFee = 0,
   insuranceFee = 0,
   taxRate = 0,
-  currency = "₦",
+  currency = "$",
   weight,
   pricePerKg,
 }: CostBreakdownProps) => {

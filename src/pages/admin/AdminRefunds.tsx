@@ -213,7 +213,7 @@ const AdminRefunds = () => {
           user_id: selectedUserId,
           type: "refund_issued",
           title: "Refund Processed",
-          message: `A refund of ₦${numAmount.toLocaleString()} has been ${
+          message: `A refund of $${numAmount.toLocaleString()} has been ${
             refundType === "wallet" ? "added to your wallet" : "initiated"
           }. Reason: ${refundReason}`,
           link: "/dashboard/wallet",
@@ -302,7 +302,7 @@ const AdminRefunds = () => {
           <Card className="border-border/40">
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground mb-1">Total Amount</p>
-              <p className="text-xl font-bold text-foreground">₦{stats.totalAmount.toLocaleString()}</p>
+              <p className="text-xl font-bold text-foreground">${stats.totalAmount.toLocaleString()}</p>
             </CardContent>
           </Card>
         </div>
@@ -347,7 +347,7 @@ const AdminRefunds = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="amount">Amount (₦) *</Label>
+                    <Label htmlFor="amount">Amount (USD) *</Label>
                     <Input
                       id="amount"
                       type="number"
@@ -539,7 +539,7 @@ const AdminRefunds = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-primary">₦{refund.amount.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-primary">${refund.amount.toLocaleString()}</p>
                     </div>
                   </div>
                 </CardHeader>

@@ -192,14 +192,14 @@ const WeightPricingTab = () => {
       </div>
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price (₦)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price (USD)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
               <TableRow key={i.id}>
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell>₦{Number(i.price).toLocaleString()}</TableCell>
+                <TableCell>${Number(i.price).toLocaleString()}</TableCell>
                 <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
@@ -214,7 +214,7 @@ const WeightPricingTab = () => {
               <div className="space-y-2"><Label>Min Weight (KG)</Label><Input type="number" step="0.1" value={form.min_weight} onChange={e => setForm({...form, min_weight: e.target.value})} required /></div>
               <div className="space-y-2"><Label>Max Weight (KG)</Label><Input type="number" step="0.1" value={form.max_weight} onChange={e => setForm({...form, max_weight: e.target.value})} required /></div>
             </div>
-            <div className="space-y-2"><Label>Price (₦)</Label><Input type="number" step="0.01" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required /></div>
+            <div className="space-y-2"><Label>Price (USD)</Label><Input type="number" step="0.01" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required /></div>
             <Button type="submit" className="w-full">{editing ? "Update" : "Create"}</Button>
           </form>
         </DialogContent>
@@ -258,14 +258,14 @@ const HeavyWeightPricingTab = () => {
       </div>
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price/KG (₦)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price/KG (USD)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
               <TableRow key={i.id}>
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell>₦{Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
+                <TableCell>${Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
                 <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
             ))}
@@ -280,7 +280,7 @@ const HeavyWeightPricingTab = () => {
               <div className="space-y-2"><Label>Min Weight (KG)</Label><Input type="number" step="0.1" value={form.min_weight} onChange={e => setForm({...form, min_weight: e.target.value})} required /></div>
               <div className="space-y-2"><Label>Max Weight (KG)</Label><Input type="number" step="0.1" value={form.max_weight} onChange={e => setForm({...form, max_weight: e.target.value})} required /></div>
             </div>
-            <div className="space-y-2"><Label>Price per KG (₦)</Label><Input type="number" step="0.01" value={form.price_per_kg} onChange={e => setForm({...form, price_per_kg: e.target.value})} required /></div>
+            <div className="space-y-2"><Label>Price per KG (USD)</Label><Input type="number" step="0.01" value={form.price_per_kg} onChange={e => setForm({...form, price_per_kg: e.target.value})} required /></div>
             <Button type="submit" className="w-full">{editing ? "Update" : "Create"}</Button>
           </form>
         </DialogContent>
@@ -320,13 +320,13 @@ const ExtraChargesTab = () => {
       </div>
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Price (₦)</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+        <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Price (USD)</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.name}</TableCell>
-                <TableCell>₦{Number(i.price).toLocaleString()}</TableCell>
+                <TableCell>${Number(i.price).toLocaleString()}</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
                 <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
               </TableRow>
@@ -338,7 +338,7 @@ const ExtraChargesTab = () => {
         <DialogContent className="sm:max-w-md"><DialogHeader><DialogTitle>{editing ? "Edit" : "Add"} Extra Charge</DialogTitle></DialogHeader>
           <form onSubmit={save} className="space-y-4">
             <div className="space-y-2"><Label>Name</Label><Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} required /></div>
-            <div className="space-y-2"><Label>Price (₦)</Label><Input type="number" step="0.01" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required /></div>
+            <div className="space-y-2"><Label>Price (USD)</Label><Input type="number" step="0.01" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required /></div>
             <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={c => setForm({...form, is_active: c})} /><Label>Active</Label></div>
             <Button type="submit" className="w-full">{editing ? "Update" : "Create"}</Button>
           </form>

@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   buildExchangeRates,
   convertAmount,
+  formatMoney,
+  formatUsdForDisplay,
   normalizeCurrency,
   resolveGatewayCurrency,
   roundCurrencyAmount,
@@ -37,5 +39,10 @@ describe("currency helpers", () => {
   it("rounds currency values to 2 decimal places", () => {
     expect(roundCurrencyAmount(12.345)).toBe(12.35);
     expect(roundCurrencyAmount(12.344)).toBe(12.34);
+  });
+
+  it("formats display values in USD", () => {
+    expect(formatUsdForDisplay(100, "NGN")).toContain("$");
+    expect(formatMoney(2500, "NGN")).toContain("$");
   });
 });

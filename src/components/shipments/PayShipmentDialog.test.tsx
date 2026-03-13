@@ -18,8 +18,8 @@ vi.mock("@/integrations/supabase/client", () => ({
 
 vi.mock("@/contexts/CurrencyContext", () => ({
   useCurrency: () => ({
-    formatConverted: (amount: number, currency?: string | null) => `${currency ?? "USD"} ${amount.toFixed(2)}`,
-    formatMoney: (amount: number, currency?: string | null) => `${currency ?? "USD"} ${amount.toFixed(2)}`,
+    formatConverted: (amount: number) => `$${amount.toFixed(2)}`,
+    formatMoney: (amount: number) => `$${amount.toFixed(2)}`,
   }),
 }));
 
@@ -80,8 +80,8 @@ describe("PayShipmentDialog", () => {
       });
     });
 
-    expect(await screen.findByText("NGN 160000.00")).toBeInTheDocument();
-    expect(screen.getAllByText("NGN 200000.00")).toHaveLength(2);
+    expect(await screen.findByText("$160000.00")).toBeInTheDocument();
+    expect(screen.getAllByText("$200000.00")).toHaveLength(2);
 
     fireEvent.click(screen.getByRole("button", { name: /pay from wallet/i }));
 
@@ -127,7 +127,7 @@ describe("PayShipmentDialog", () => {
     );
 
     expect(await screen.findByText(/Insufficient Wallet Balance/i)).toBeInTheDocument();
-    expect(screen.getByText(/NGN 110000.00/)).toBeInTheDocument();
+    expect(screen.getByText(/\$110000.00/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /pay from wallet/i })).not.toBeInTheDocument();
   });
 });

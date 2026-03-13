@@ -76,12 +76,11 @@ export function formatMoney(
   currency: string | null | undefined,
   options: Intl.NumberFormatOptions = {},
 ) {
-  const normalized = normalizeCurrency(currency);
-  const meta = CURRENCY_META[normalized];
+  void currency;
 
-  return new Intl.NumberFormat(meta.locale, {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: normalized,
+    currency: BASE_CURRENCY,
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
     ...options,
@@ -94,8 +93,9 @@ export function formatUsdForDisplay(
   rates: Partial<ExchangeRates> = FALLBACK_EXCHANGE_RATES,
   options: Intl.NumberFormatOptions = {},
 ) {
-  const converted = convertFromUsd(amount, displayCurrency, rates);
-  return formatMoney(converted, displayCurrency, options);
+  void displayCurrency;
+  void rates;
+  return formatMoney(amount, BASE_CURRENCY, options);
 }
 
 export function resolveGatewayCurrency(

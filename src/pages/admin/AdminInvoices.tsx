@@ -134,7 +134,7 @@ const AdminInvoices = () => {
           <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div><p className="text-xs sm:text-sm text-muted-foreground">Paid Revenue</p><p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalRevenue.toLocaleString()}</p></div>
+                <div><p className="text-xs sm:text-sm text-muted-foreground">Paid Revenue</p><p className="text-xl sm:text-2xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p></div>
                 <div className="rounded-lg bg-success/10 p-3"><CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
               </div>
             </CardContent>
@@ -142,7 +142,7 @@ const AdminInvoices = () => {
           <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div><p className="text-xs sm:text-sm text-muted-foreground">Unpaid Invoices</p><p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalUnpaid.toLocaleString()}</p></div>
+                <div><p className="text-xs sm:text-sm text-muted-foreground">Unpaid Invoices</p><p className="text-xl sm:text-2xl font-bold text-foreground">${totalUnpaid.toLocaleString()}</p></div>
                 <div className="rounded-lg bg-warning/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
               </div>
             </CardContent>
@@ -203,7 +203,7 @@ const AdminInvoices = () => {
                       </div>
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Amount</p>
-                        <p className="text-foreground font-medium">₦{Number(invoice.amount).toFixed(2)}</p>
+                        <p className="text-foreground font-medium">${Number(invoice.amount).toFixed(2)}</p>
                       </div>
                       <div>
                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Shipment</p>
@@ -251,7 +251,7 @@ const AdminInvoices = () => {
                           <div><p className="font-medium">{invoice.profiles?.full_name || "N/A"}</p><p className="text-xs text-muted-foreground">{invoice.profiles?.email || ""}</p></div>
                         </TableCell>
                         <TableCell className="font-mono">{invoice.shipments?.tracking_number || "N/A"}</TableCell>
-                        <TableCell className="font-medium">₦{Number(invoice.amount).toFixed(2)}</TableCell>
+                        <TableCell className="font-medium">${Number(invoice.amount).toFixed(2)}</TableCell>
                         <TableCell><Badge className={getStatusColor(invoice.status)}>{invoice.status}</Badge></TableCell>
                         <TableCell>{invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "N/A"}</TableCell>
                         <TableCell>{invoice.payment_reference || "—"}</TableCell>

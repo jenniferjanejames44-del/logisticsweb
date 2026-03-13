@@ -80,14 +80,9 @@ Deno.serve(async (req) => {
 });
 
 function fmt(val: number, currency: string): string {
-  const normalizedCurrency = ["USD", "GBP", "NGN", "CNY", "EUR"].includes(currency) ? currency : "USD";
-  const locale = {
-    USD: "en-US",
-    GBP: "en-GB",
-    NGN: "en-NG",
-    CNY: "zh-CN",
-    EUR: "de-DE",
-  }[normalizedCurrency];
+  void currency;
+  const normalizedCurrency = "USD";
+  const locale = "en-US";
 
   return new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -115,7 +110,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const totalAmount = amount;
   const amountPaid = isPaid ? totalAmount : 0;
   const totalDue = totalAmount - amountPaid;
-  const currency = invoice.currency || 'NGN';
+  const currency = 'USD';
   const weight = shipment?.weight || invoice.weight_value || 0;
   const dimensions = invoice.dimensions || shipment?.description || 'N/A';
   const serviceType = shipment?.service_type?.replace(/[-_]/g, ' ') || 'N/A';

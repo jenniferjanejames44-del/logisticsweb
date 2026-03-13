@@ -98,7 +98,7 @@ const AdminPayments = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">₦{totalRevenue.toLocaleString()}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p>
                 </div>
                   <div className="rounded-xl bg-success/10 p-3 shadow-[0_10px_20px_rgba(34,197,94,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
               </div>
@@ -109,7 +109,7 @@ const AdminPayments = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-sm text-muted-foreground">Pending Payments</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">₦{pendingAmount.toLocaleString()}</p>
+                  <p className="text-xl sm:text-2xl font-bold text-foreground">${pendingAmount.toLocaleString()}</p>
                 </div>
                   <div className="rounded-xl bg-warning/10 p-3 shadow-[0_10px_20px_rgba(245,158,11,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
               </div>
@@ -165,7 +165,7 @@ const AdminPayments = () => {
                 {filteredPayments.map((payment) => (
                   <div key={payment.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-foreground">₦{Number(payment.amount).toLocaleString()} {payment.currency}</span>
+                      <span className="font-medium text-foreground">${Number(payment.amount).toLocaleString()}</span>
                       <Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
@@ -213,7 +213,7 @@ const AdminPayments = () => {
                     {filteredPayments.map((payment) => (
                       <TableRow key={payment.id}>
                         <TableCell className="font-mono">{payment.transaction_id || "N/A"}</TableCell>
-                        <TableCell className="font-medium">₦{Number(payment.amount).toLocaleString()} {payment.currency}</TableCell>
+                        <TableCell className="font-medium">${Number(payment.amount).toLocaleString()}</TableCell>
                         <TableCell className="capitalize">{payment.payment_method || "N/A"}</TableCell>
                         <TableCell>{payment.description || "N/A"}</TableCell>
                         <TableCell><Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge></TableCell>

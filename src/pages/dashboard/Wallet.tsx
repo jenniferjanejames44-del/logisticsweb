@@ -29,7 +29,7 @@ interface WalletTransaction {
 
 const Wallet = () => {
   const { user } = useAuth();
-  const { formatMoney } = useCurrency();
+  const { formatConverted } = useCurrency();
   const [balance, setBalance] = useState<number>(0);
   const [transactions, setTransactions] = useState<WalletTransaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,9 +99,9 @@ const Wallet = () => {
               <CardContent className="relative z-10 p-6">
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-foreground/80">Current Balance (NGN)</p>
+                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-foreground/80">Current Balance (USD)</p>
                     <p className="text-2xl sm:text-[2rem] font-bold text-foreground truncate tracking-tight">
-                      {formatMoney(balance, "NGN")}
+                      {formatConverted(balance, "NGN")}
                     </p>
                   </div>
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary shadow-lg shadow-primary/20 sm:h-[60px] sm:w-[60px]">
@@ -117,7 +117,7 @@ const Wallet = () => {
                   <div className="min-w-0">
                     <p className="mb-2 text-sm text-muted-foreground">Total Deposits</p>
                     <p className="text-xl sm:text-2xl font-bold text-success truncate">
-                      +{formatMoney(totalCredits, "NGN")}
+                      +{formatConverted(totalCredits, "NGN")}
                     </p>
                   </div>
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-success/20 bg-success/10 sm:h-14 sm:w-14">
@@ -133,7 +133,7 @@ const Wallet = () => {
                   <div className="min-w-0">
                     <p className="mb-2 text-sm text-muted-foreground">Total Spent</p>
                     <p className="text-xl sm:text-2xl font-bold text-warning truncate">
-                      -{formatMoney(totalDebits, "NGN")}
+                      -{formatConverted(totalDebits, "NGN")}
                     </p>
                   </div>
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg border border-warning/20 bg-warning/10 sm:h-14 sm:w-14">
@@ -219,7 +219,7 @@ const Wallet = () => {
                             transaction.type === "credit" ? "text-success" : "text-warning"
                           }`}
                         >
-                          {transaction.type === "credit" ? "+" : "-"}{formatMoney(Number(transaction.amount), "NGN")}
+                          {transaction.type === "credit" ? "+" : "-"}{formatConverted(Number(transaction.amount), "NGN")}
                         </p>
                         <Badge
                           variant={transaction.type === "credit" ? "outline" : "secondary"}

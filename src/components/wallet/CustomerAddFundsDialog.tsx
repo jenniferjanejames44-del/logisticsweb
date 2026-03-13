@@ -42,7 +42,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
   const handleProceedToPayment = async () => {
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 100) {
-      toast.error(`Minimum top-up amount is ${formatMoney(100, "NGN")}`);
+      toast.error(`Minimum top-up amount is ${formatMoney(100, "USD")}`);
       return;
     }
 
@@ -85,7 +85,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
             Add Funds to Wallet
           </DialogTitle>
           <DialogDescription>
-            Fund your NGN wallet instantly via Paystack. Pay with card, bank transfer, or USSD.
+            Fund your USD wallet instantly via Paystack. Pay with card, bank transfer, or USSD.
           </DialogDescription>
         </DialogHeader>
 
@@ -94,18 +94,18 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
           <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/10">
             <div className="flex items-center gap-2">
               <Wallet className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Current Balance (NGN)</span>
+              <span className="text-sm font-medium text-muted-foreground">Current Balance (USD)</span>
             </div>
             <span className="text-lg font-bold text-foreground">
-              {balanceLoading ? "..." : formatMoney(balance, "NGN")}
+              {balanceLoading ? "..." : formatMoney(balance, "USD")}
             </span>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="topup-amount">Amount (NGN)</Label>
+            <Label htmlFor="topup-amount">Amount (USD)</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">₦</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
               <Input
                 id="topup-amount"
                 type="number"
@@ -117,7 +117,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                 className="pl-8 h-12 text-lg"
               />
             </div>
-            <p className="text-xs text-muted-foreground">Minimum: {formatMoney(100, "NGN")}</p>
+            <p className="text-xs text-muted-foreground">Minimum: {formatMoney(100, "USD")}</p>
           </div>
 
           {/* Quick Amount Buttons */}
@@ -133,7 +133,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                   className="h-10"
                   onClick={() => setAmount(qa.toString())}
                 >
-                  {formatMoney(qa, "NGN")}
+                  {formatMoney(qa, "USD")}
                 </Button>
               ))}
             </div>
@@ -147,7 +147,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                 <span className="text-sm font-medium text-muted-foreground">New Balance</span>
               </div>
               <span className="text-lg font-bold text-green-600">
-                {formatMoney(newBalance, "NGN")}
+                {formatMoney(newBalance, "USD")}
               </span>
             </div>
           )}

@@ -170,8 +170,8 @@ const Overview = () => {
                 <Wallet className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance (NGN)</p>
-                <p className="text-[2rem] sm:text-[2.45rem] font-bold text-foreground tracking-tight mt-0.5">{formatMoney(balance, "NGN")}</p>
+                <p className="text-xs sm:text-sm text-foreground/80 font-semibold tracking-wide uppercase">Wallet Balance (USD)</p>
+                <p className="text-[2rem] sm:text-[2.45rem] font-bold text-foreground tracking-tight mt-0.5">{formatMoney(convertAmount(balance, "NGN", "USD"), "USD")}</p>
               </div>
             </div>
             <div className="flex gap-2.5 sm:gap-3">

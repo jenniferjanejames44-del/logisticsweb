@@ -99,7 +99,7 @@ const AdminDeliveryMethods = () => {
                   <Input value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Optional description" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Fee (₦)</Label>
+                  <Label>Fee (USD)</Label>
                   <Input type="number" min="0" step="0.01" value={formData.fee} onChange={(e) => setFormData({ ...formData, fee: e.target.value })} required />
                 </div>
                 <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ const AdminDeliveryMethods = () => {
                       </Badge>
                     </div>
                     {item.description && <p className="text-xs text-muted-foreground">{item.description}</p>}
-                    <p className="text-foreground font-bold text-lg">₦{Number(item.fee).toLocaleString()}</p>
+                    <p className="text-foreground font-bold text-lg">${Number(item.fee).toLocaleString()}</p>
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                       <Button variant="outline" size="sm" onClick={() => openDialog(item)}><Edit2 className="w-3.5 h-3.5 mr-1" />Edit</Button>
@@ -153,7 +153,7 @@ const AdminDeliveryMethods = () => {
                       <TableRow key={item.id}>
                         <TableCell className="font-medium">{item.name}</TableCell>
                         <TableCell className="text-muted-foreground">{item.description || "—"}</TableCell>
-                        <TableCell className="font-bold">₦{Number(item.fee).toLocaleString()}</TableCell>
+                        <TableCell className="font-bold">${Number(item.fee).toLocaleString()}</TableCell>
                         <TableCell>
                           <Badge variant={item.is_active ? "default" : "secondary"} className={item.is_active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}>
                             {item.is_active ? "Active" : "Inactive"}
