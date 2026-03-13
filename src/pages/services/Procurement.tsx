@@ -161,7 +161,7 @@ const Procurement = () => {
                 <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground">
                   <BadgeDollarSign className="h-4 w-4" /> Procurement fees
                 </span>
-                <h2 className="text-foreground">Public fee structure</h2>
+	                <h2 className="text-foreground">Processing / Procurement Fee Structure</h2>
                 <p className="mt-2 text-muted-foreground">These fee tiers are read from the admin-managed processing fee configuration and applied to the estimated order value.</p>
               </div>
 
