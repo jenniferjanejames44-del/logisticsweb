@@ -48,7 +48,7 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-3 top-3 z-50 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.22)] active:scale-95 lg:hidden"
+        className="fixed left-4 top-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_16px_34px_rgba(6,16,67,0.22)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_36px_rgba(6,16,67,0.24)] active:scale-95 lg:hidden"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -64,14 +64,14 @@ const DashboardSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen min-h-screen w-[296px] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#071343_0%,#0b1f63_100%)] text-primary-foreground shadow-[18px_0_40px_rgba(6,16,67,0.12)] transition-transform duration-300 lg:sticky ${
+        className={`fixed left-0 top-0 z-50 flex h-screen min-h-screen w-[304px] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#071343_0%,#0b1f63_100%)] text-primary-foreground shadow-[18px_0_40px_rgba(6,16,67,0.14)] transition-transform duration-300 lg:sticky ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo */}
         <div className="border-b border-primary-foreground/10 px-5 py-6">
           <Link to="/" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 shadow-[0_10px_24px_rgba(0,0,0,0.12)]">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-2.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
               <Logo className="h-7 text-white" />
             </div>
             <div>
@@ -95,10 +95,10 @@ const DashboardSidebar = () => {
                 key={item.href}
                 to={item.href}
                 onClick={() => setIsMobileOpen(false)}
-                className={`group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 text-[0.9375rem] ${
+                className={`group flex items-center gap-3 rounded-[18px] px-4 py-3.5 transition-all duration-200 text-[0.9375rem] ${
                   isActive
                     ? "bg-accent text-accent-foreground font-bold shadow-[0_12px_24px_rgba(223,81,1,0.22)]"
-                    : "font-semibold text-primary-foreground/88 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground"
+                    : "font-semibold text-primary-foreground/88 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground hover:shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
                 }`}
               >
                 <span className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${isActive ? "bg-white/16" : "bg-white/8 group-hover:bg-white/12"}`}>
@@ -133,13 +133,13 @@ const DashboardSidebar = () => {
 
         {/* Footer */}
         <div className="space-y-3 border-t border-primary-foreground/10 px-4 py-4">
-          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 shadow-[0_10px_24px_rgba(0,0,0,0.1)]">
+          <div className="rounded-[18px] border border-white/10 bg-white/5 px-4 py-3 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
             <p className="text-[13px] font-semibold text-primary-foreground">Welcome back!</p>
             <p className="text-[11px] text-primary-foreground/70">Manage your shipments in one place</p>
           </div>
           <Button
             variant="ghost"
-            className="h-11 w-full justify-start gap-3 rounded-lg border border-white/10 bg-white/5 px-4 text-[0.9375rem] font-semibold text-primary-foreground/80 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground"
+            className="h-11 w-full justify-start gap-3 rounded-[16px] border border-white/10 bg-white/5 px-4 text-[0.9375rem] font-semibold text-primary-foreground/80 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground"
             onClick={handleSignOut}
           >
             <LogOut className="w-[18px] h-[18px] flex-shrink-0" />

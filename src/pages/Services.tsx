@@ -75,20 +75,18 @@ const Services = () => {
       <Header />
       <main>
         {/* Hero Section */}
-        <section
-          ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
-        >
+        <section ref={heroRef} className="page-hero">
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
+            className="page-hero-media"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1920&q=80)',
             }}
           />
+          <div className="page-hero-overlay" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+            <div className={`page-hero-shell transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="page-hero-badge mb-6">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Our Services
               </span>
@@ -98,21 +96,19 @@ const Services = () => {
               <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
-              <div className="flex flex-row justify-center gap-4">
-                <Link 
-                  to="/pricing"
-                  className="btn btn-primary btn-lg"
-                >
-                  Get a Quote
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                </Link>
-                <Link 
-                  to="/contact"
-                  className="btn btn-secondary btn-lg"
-                >
-                  Contact Us
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                </Link>
+              <div className="page-hero-actions">
+                <Button asChild size="lg" variant="heroPrimary">
+                  <Link to="/pricing">
+                    Get a Quote
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="heroSecondary">
+                  <Link to="/contact">
+                    Contact Us
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </div>
@@ -120,7 +116,8 @@ const Services = () => {
 
         <section ref={servicesRef} className="section-padding bg-background">
           <div className="section-container">
-            <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+            <div className="mx-auto mb-14 max-w-3xl text-center lg:mb-16">
+              <span className="section-badge border-primary/10 bg-primary/5 text-primary">Service Catalogue</span>
               <h2 className="text-foreground mb-5">
                 Explore Our <span className="text-primary">Services</span>
               </h2>
@@ -129,25 +126,25 @@ const Services = () => {
               </p>
             </div>
             
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
-                  className={`group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
+                  className={`group relative h-full overflow-hidden rounded-[24px] border-border/70 bg-white/95 transition-all duration-500 ${
                     servicesInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                   }`}
                   style={{ transitionDelay: `${index * 80}ms` }}
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-accent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left" />
-                  <CardContent className="p-6 md:p-8">
-                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:bg-primary/15 md:mb-6 md:h-16 md:w-16">
+                  <CardContent className="flex h-full flex-col p-6 md:p-8">
+                    <div className="icon-tile mb-5 h-14 w-14 md:mb-6 md:h-16 md:w-16">
                       <service.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" strokeWidth={2.5} />
                     </div>
                     <h3 className="mb-4 text-foreground transition-colors duration-300 group-hover:text-primary">
                       {service.title}
                     </h3>
                     <p className="mb-6 text-base leading-relaxed text-muted-foreground">{service.description}</p>
-                    <ul className="space-y-2.5 mb-6">
+                    <ul className="mb-6 space-y-3">
                       {service.features.map((feature) => (
                         <li key={feature} className="flex items-center gap-2.5 text-sm text-muted-foreground">
                           <div className="w-1.5 h-1.5 bg-accent rounded-full flex-shrink-0" />
@@ -157,7 +154,7 @@ const Services = () => {
                     </ul>
                     <Link 
                       to={service.link}
-                      className="inline-flex items-center gap-2 font-bold text-sm text-primary group-hover:gap-3 transition-all duration-300"
+                      className="mt-auto inline-flex items-center gap-2 text-sm font-bold text-primary transition-all duration-300 group-hover:gap-3"
                     >
                       Learn More 
                       <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -170,19 +167,18 @@ const Services = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="section-padding bg-primary relative overflow-hidden">
+        <section className="cta-band section-padding relative overflow-hidden">
           <div className="section-container text-center relative z-10">
             <h2 className="text-white mb-6">Need a Custom Logistics Solution?</h2>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
-            <Link 
-              to="/contact"
-              className="btn btn-primary btn-lg"
-            >
-              Get in Touch
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <Button asChild size="lg" variant="heroPrimary">
+              <Link to="/contact">
+                Get in Touch
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </Button>
           </div>
         </section>
       </main>

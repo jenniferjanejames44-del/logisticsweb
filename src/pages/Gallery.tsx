@@ -64,17 +64,18 @@ const GalleryHeroSection = () => {
   const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="pt-32 pb-20 md:pt-40 md:pb-24 bg-primary relative overflow-hidden">
+    <section ref={ref} className="page-hero">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white to-transparent" />
       </div>
+      <div className="page-hero-overlay" />
       <div className="section-container relative z-10">
         <div
-          className={`text-center max-w-3xl mx-auto transition-all duration-700 ${
+          className={`page-hero-shell transition-all duration-700 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+          <span className="page-hero-badge mb-6">
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
             Media Gallery
           </span>
@@ -95,7 +96,7 @@ const VideoCard = ({ video, onPlay }: { video: GalleryVideo; onPlay: (video: Gal
     <div
       ref={ref as React.Ref<HTMLDivElement>}
       className={cn(
-        "group rounded-xl border border-border/80 bg-card text-card-foreground shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 overflow-hidden hover:-translate-y-1 hover:border-primary/12 hover:shadow-[0_16px_34px_rgba(6,16,67,0.08)]",
+        "group overflow-hidden rounded-[24px] border border-border/80 bg-card text-card-foreground shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/12 hover:shadow-[0_16px_34px_rgba(6,16,67,0.08)]",
         isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       )}
     >
@@ -132,7 +133,7 @@ const VideoModal = ({ video, onClose }: { video: GalleryVideo; onClose: () => vo
     {/* Backdrop */}
     <div className="absolute inset-0 bg-foreground/70 backdrop-blur-sm" onClick={onClose} />
     {/* Modal content */}
-    <div className="relative w-full max-w-4xl rounded-2xl overflow-hidden bg-card shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-200">
+    <div className="relative w-full max-w-4xl overflow-hidden rounded-[28px] bg-card shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-200">
       <button
         onClick={onClose}
         className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-[0_8px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:bg-white hover:scale-105"
@@ -165,7 +166,7 @@ const Gallery = () => {
         <GalleryHeroSection />
 
         {/* Video Grid Section */}
-        <section className="py-16 md:py-24 bg-background">
+        <section className="section-padding bg-background">
           <div className="section-container">
             <div
               className={cn(

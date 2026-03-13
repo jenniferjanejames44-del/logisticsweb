@@ -91,10 +91,7 @@ const ServicePageTemplate = ({
       <Header />
       <main>
         {/* Hero Section */}
-        <section
-          ref={heroRef}
-          className="hero-gradient relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
-        >
+        <section ref={heroRef} className="page-hero hero-gradient">
           <div className="absolute inset-0">
             <img 
               src={serviceImages[title] || serviceImages["Air Shipping"]}
@@ -104,10 +101,10 @@ const ServicePageTemplate = ({
               className="w-full h-full object-cover opacity-15"
             />
           </div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.16),transparent_30%),linear-gradient(180deg,rgba(6,16,67,0.16),rgba(6,16,67,0.42))]" />
+          <div className="page-hero-overlay" />
           
           <div className="section-container relative z-10">
-            <div className={`mx-auto max-w-4xl transition-all duration-500 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className={`page-hero-shell text-left transition-all duration-500 ${heroInView ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
               <Link 
                 to="/services" 
                 className="mb-6 inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-3.5 py-2 text-sm font-medium text-primary-foreground/80 shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-px hover:bg-white/10 hover:text-accent"
@@ -122,7 +119,7 @@ const ServicePageTemplate = ({
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 shadow-[0_14px_30px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-px sm:h-16 sm:w-16">
                   <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-accent" strokeWidth={2.5} />
                 </div>
-                <span className="inline-flex items-center rounded-full bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.18)] sm:text-sm">
+                <span className="page-hero-badge border-0 bg-accent text-xs font-semibold text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.18)] sm:text-sm">
                   {subtitle}
                 </span>
               </div>
@@ -130,7 +127,7 @@ const ServicePageTemplate = ({
               <h1 className="text-white mb-6 leading-tight">{title}</h1>
               <p className="text-base sm:text-lg md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">{description}</p>
               
-              <div className="flex flex-wrap items-center justify-start gap-4">
+              <div className="page-hero-actions justify-start">
                 <Button asChild variant="heroPrimary" size="lg">
                   <Link to="/pricing">Get a Quote</Link>
                 </Button>
@@ -170,7 +167,7 @@ const ServicePageTemplate = ({
         <section ref={workflowRef} className="section-padding bg-background">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
+              <span className="section-badge border-accent/20 bg-accent text-accent-foreground">
                 Process
               </span>
               <h2 className="text-foreground">How It Works</h2>
@@ -221,7 +218,7 @@ const ServicePageTemplate = ({
         <section ref={benefitsRef} className="section-padding section-alt">
           <div className="section-container">
             <div className="text-center mb-12 sm:mb-16">
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-bold text-accent-foreground">
+              <span className="section-badge border-accent/20 bg-accent text-accent-foreground">
                 Benefits
               </span>
               <h2 className="text-foreground">Why Choose Our {title}</h2>
@@ -254,7 +251,7 @@ const ServicePageTemplate = ({
         </section>
 
         {/* CTA Section */}
-        <section className="hero-gradient section-padding bg-primary">
+        <section className="cta-band section-padding">
           <div className="section-container text-center">
             <h2 className="text-white mb-6">Ready to Get Started?</h2>
             <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">

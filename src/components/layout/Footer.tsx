@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
-import { FaLinkedinIn } from "react-icons/fa6";
+import { Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 import Logo from "./Logo";
 
 const Footer = () => {
@@ -28,40 +26,41 @@ const Footer = () => {
       name: "Facebook",
       href: "https://facebook.com/raclogistics",
       label: "Facebook",
-      icon: SiFacebook,
-      iconClassName: "text-white",
+      icon: Facebook,
+      iconClassName: "text-primary-foreground",
       badgeClassName: "bg-[#1877F2]",
     },
     {
       name: "Instagram",
       href: "https://instagram.com/raclogistics",
       label: "Instagram",
-      icon: SiInstagram,
-      iconClassName: "text-white",
+      icon: Instagram,
+      iconClassName: "text-primary-foreground",
       badgeClassName: "bg-[linear-gradient(135deg,#F58529_0%,#DD2A7B_45%,#8134AF_70%,#515BD4_100%)]",
     },
     {
       name: "Twitter",
       href: "https://twitter.com/raclogistics",
       label: "Twitter",
-      icon: SiX,
-      iconClassName: "text-white",
+      icon: Twitter,
+      iconClassName: "text-primary-foreground",
       badgeClassName: "bg-[#111111]",
     },
     {
       name: "LinkedIn",
       href: "https://linkedin.com/company/raclogistics",
       label: "LinkedIn",
-      icon: FaLinkedinIn,
-      iconClassName: "text-white",
+      icon: Linkedin,
+      iconClassName: "text-primary-foreground",
       badgeClassName: "bg-[#0A66C2]",
     },
   ];
 
   return (
     <footer className="bg-primary text-white">
-      <div className="section-container px-4 pb-8 pt-16 sm:px-6 md:pt-20">
-        <div className="grid gap-12 border-b border-white/10 pb-12 lg:grid-cols-[1.2fr_0.8fr_0.95fr_1fr] lg:gap-10">
+      <div className="section-container px-4 pb-6 pt-12 sm:px-6 sm:pb-8 md:pt-16 lg:pt-20">
+        <div className="rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.03)_100%)] p-6 shadow-[0_28px_70px_rgba(0,0,0,0.18)] sm:p-8 lg:p-10">
+          <div className="grid gap-10 border-b border-white/10 pb-10 lg:grid-cols-[1.2fr_0.8fr_0.95fr_1fr] lg:gap-10">
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-3 group">
               <Logo className="h-16 sm:h-16 md:h-18 text-white" />
@@ -83,7 +82,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/10 p-1.5 shadow-[0_10px_24px_rgba(0,0,0,0.2)] ring-1 ring-white/10 transition-all duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:bg-white/15"
+                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/10 p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.2)] ring-1 ring-white/10 transition-all duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:bg-white/15"
                     >
                       <span
                         className={`flex h-full w-full items-center justify-center rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] ${social.badgeClassName}`}
@@ -133,22 +132,22 @@ const Footer = () => {
 
           <div>
             <h4 className="mb-5 text-xs font-bold uppercase tracking-[0.22em] text-white/55">Contact</h4>
-            <div className="space-y-4">
-              <a href="mailto:info@raclogistic.com" className="group flex items-start gap-3 text-white/72 transition-colors duration-200 hover:text-white">
+              <div className="space-y-4">
+              <a href="mailto:info@raclogistic.com" className="group flex items-start gap-3 rounded-[20px] border border-white/10 bg-white/[0.04] p-3.5 text-white/72 transition-all duration-200 hover:-translate-y-px hover:bg-white/[0.07] hover:text-white">
                 <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/90 transition-colors duration-200 group-hover:bg-white/14">
                   <Mail size={15} strokeWidth={2.3} />
                 </span>
                 <span className="text-[15px] leading-6">info@raclogistic.com</span>
               </a>
 
-              <a href="tel:+2348185956707" className="group flex items-start gap-3 text-white/72 transition-colors duration-200 hover:text-white">
+              <a href="tel:+2348185956707" className="group flex items-start gap-3 rounded-[20px] border border-white/10 bg-white/[0.04] p-3.5 text-white/72 transition-all duration-200 hover:-translate-y-px hover:bg-white/[0.07] hover:text-white">
                 <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/90 transition-colors duration-200 group-hover:bg-white/14">
                   <Phone size={15} strokeWidth={2.3} />
                 </span>
                 <span className="text-[15px] leading-6">+234 818 595 6707</span>
               </a>
 
-              <div className="flex items-start gap-3 text-white/72">
+              <div className="flex items-start gap-3 rounded-[20px] border border-white/10 bg-white/[0.04] p-3.5 text-white/72">
                 <span className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/8 text-white/90">
                   <MapPin size={15} strokeWidth={2.3} />
                 </span>
@@ -170,6 +169,7 @@ const Footer = () => {
               Terms of Service
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </footer>

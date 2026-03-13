@@ -90,7 +90,7 @@ const AdminSidebar = () => {
       {/* Logo */}
       <div className="border-b border-border/50 px-5 py-5">
         <Link to="/admin" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-lg font-bold text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.14)] transition-all duration-200 group-hover:-translate-y-px group-hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-primary-foreground shadow-[0_12px_28px_rgba(6,16,67,0.16)] transition-all duration-200 group-hover:-translate-y-px group-hover:shadow-[0_16px_30px_rgba(6,16,67,0.2)]">
             R
           </div>
           <div>
@@ -119,7 +119,7 @@ const AdminSidebar = () => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setIsMobileOpen(false)}
-                    className={`group flex items-center gap-3 rounded-xl px-3.5 py-3 text-[0.875rem] transition-all duration-200 ${
+                    className={`group flex items-center gap-3 rounded-[18px] px-3.5 py-3.5 text-[0.875rem] transition-all duration-200 ${
                       active
                         ? "bg-primary text-primary-foreground font-semibold shadow-[0_10px_24px_rgba(6,16,67,0.12)]"
                         : "font-medium text-muted-foreground hover:-translate-y-px hover:bg-white hover:text-foreground hover:shadow-[0_10px_24px_rgba(15,23,42,0.06)]"
@@ -140,13 +140,13 @@ const AdminSidebar = () => {
 
       {/* Footer */}
       <div className="space-y-2 border-t border-border/50 px-3 py-4">
-        <div className="rounded-xl border border-border bg-[linear-gradient(135deg,hsl(var(--background))_0%,hsl(var(--section-light))_100%)] px-4 py-3 shadow-[0_8px_20px_rgba(15,23,42,0.04)]">
+        <div className="rounded-[18px] border border-border bg-[linear-gradient(135deg,hsl(var(--background))_0%,hsl(var(--section-light))_100%)] px-4 py-3 shadow-[0_10px_22px_rgba(15,23,42,0.05)]">
           <p className="text-[13px] font-semibold text-foreground">Admin control center</p>
           <p className="text-[11px] text-muted-foreground">Manage operations, pricing, and customer activity.</p>
         </div>
         <Button
           variant="ghost"
-          className="h-11 w-full justify-start rounded-lg px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-white hover:text-foreground"
+          className="h-11 w-full justify-start rounded-[16px] px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-white hover:text-foreground"
           asChild
         >
           <Link to="/" onClick={() => setIsMobileOpen(false)}>
@@ -156,7 +156,7 @@ const AdminSidebar = () => {
         </Button>
         <Button
           variant="ghost"
-          className="h-11 w-full justify-start rounded-lg px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-destructive/10 hover:text-destructive"
+          className="h-11 w-full justify-start rounded-[16px] px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-destructive/10 hover:text-destructive"
           onClick={() => signOut()}
         >
           <LogOut className="w-[18px] h-[18px] mr-3 flex-shrink-0" />
@@ -170,7 +170,7 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="fixed left-3 top-3 z-50 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.16)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_14px_28px_rgba(6,16,67,0.18)] active:scale-95 md:hidden"
+        className="fixed left-4 top-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] active:scale-95 md:hidden"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         aria-label="Toggle menu"
       >
@@ -187,7 +187,7 @@ const AdminSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 flex h-full w-[288px] flex-col border-r border-border/50 bg-[linear-gradient(180deg,hsl(var(--background))_0%,hsl(var(--section-light))_100%)] shadow-[18px_0_40px_rgba(6,16,67,0.08)] backdrop-blur-xl transition-transform duration-300 ${
+        className={`fixed top-0 left-0 z-40 flex h-full w-[296px] flex-col border-r border-border/50 bg-[linear-gradient(180deg,hsl(var(--background))_0%,hsl(var(--section-light))_100%)] shadow-[18px_0_40px_rgba(6,16,67,0.08)] backdrop-blur-xl transition-transform duration-300 ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >

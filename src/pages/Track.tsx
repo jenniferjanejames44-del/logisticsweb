@@ -269,22 +269,20 @@ const Track = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        {/* Hero Section */}
-        <section
-          ref={heroRef}
-          className="relative pt-32 pb-24 sm:pb-32 overflow-hidden bg-primary"
-        >
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80)',
-            }}
-          />
+	        {/* Hero Section */}
+	        <section ref={heroRef} className="page-hero">
+	          {/* Background Image */}
+	          <div 
+	            className="page-hero-media"
+	            style={{
+	              backgroundImage: 'url(https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80)',
+	            }}
+	          />
+	          <div className="page-hero-overlay" />
           
-          <div className="section-container relative z-10">
-            <div className={`text-center max-w-4xl mx-auto transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+	          <div className="section-container relative z-10">
+	            <div className={`page-hero-shell transition-all duration-700 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+	              <span className="page-hero-badge mb-6">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
@@ -295,16 +293,16 @@ const Track = () => {
                 Track Your{" "}
                 <span className="text-accent">Shipment</span>
               </h1>
-              <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
+	              <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
               </p>
 
-              {/* Tracking Card */}
-              <div className="relative max-w-2xl mx-auto">
-                <div className="relative rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] sm:p-8 lg:p-10">
-                  {/* Header */}
-                  <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:h-14 sm:w-14">
+		              {/* Tracking Card */}
+		              <div className="relative max-w-2xl mx-auto">
+		                <div className="relative rounded-[26px] border border-border/70 bg-card p-6 shadow-[0_18px_44px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10">
+		                  {/* Header */}
+		                  <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4">
+		                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent shadow-[0_14px_32px_rgba(223,81,1,0.3)] sm:h-14 sm:w-14">
                       <Search size={22} className="sm:w-6 sm:h-6 text-accent-foreground" />
                     </div>
                     <h3 className="text-foreground sm:text-[1.625rem]">
@@ -312,10 +310,10 @@ const Track = () => {
                     </h3>
                   </div>
                   
-                  {/* Input section */}
-                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <div className="relative flex-1">
-                      <Input
+		                  {/* Input section */}
+		                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+		                        <div className="relative flex-1">
+		                          <Input
                         value={trackingNumber}
                         onChange={(e) => setTrackingNumber(e.target.value.toUpperCase())}
                         onKeyDown={(e) => e.key === "Enter" && searchShipment()}
@@ -323,8 +321,8 @@ const Track = () => {
                         className="h-12 rounded-lg px-5 text-base sm:h-14"
                       />
                     </div>
-                    <button 
-                      className="flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-8 text-base font-semibold text-accent-foreground shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-all duration-200 hover:brightness-[1.03] disabled:opacity-50 active:scale-[0.98] sm:h-14 sm:px-10"
+		                        <button 
+			                      className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-accent px-8 text-base font-semibold text-accent-foreground shadow-[0_14px_32px_rgba(223,81,1,0.3)] transition-all duration-200 hover:-translate-y-px hover:brightness-[1.03] disabled:opacity-50 active:scale-[0.98] sm:h-14 sm:px-10"
                       onClick={() => searchShipment()}
                       disabled={isLoading}
                     >

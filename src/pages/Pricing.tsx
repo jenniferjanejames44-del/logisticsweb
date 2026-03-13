@@ -121,41 +121,39 @@ const Pricing = () => {
     <div className="min-h-screen">
       <Header />
       <main>
-        {/* Hero Section */}
-        <section
-          ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
-        >
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80)',
-            }}
-          />
-          
-          <div className="section-container relative z-10">
-            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                Transparent Pricing
-              </span>
-              <h1 className="text-white mb-4 leading-tight">
-                Calculate Your Shipping Cost
-              </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
-                Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
-              </p>
-            </div>
-          </div>
-        </section>
+	        {/* Hero Section */}
+	        <section ref={heroRef} className="page-hero">
+	          <div 
+	            className="page-hero-media"
+	            style={{
+	              backgroundImage: 'url(https://images.unsplash.com/photo-1553413077-190dd305871c?w=1920&q=80)',
+	            }}
+	          />
+	          <div className="page-hero-overlay" />
+	          
+	          <div className="section-container relative z-10">
+	            <div className={`page-hero-shell transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+	              <span className="page-hero-badge mb-6">
+	                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+	                Transparent Pricing
+	              </span>
+	              <h1 className="text-white mb-4 leading-tight">
+	                Calculate Your Shipping Cost
+	              </h1>
+	              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+	                Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
+	              </p>
+	            </div>
+	          </div>
+	        </section>
 
-        {/* Calculator Section */}
-        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_38%),linear-gradient(180deg,#ffffff_0%,rgba(248,250,252,0.96)_100%)]">
+	        {/* Calculator Section */}
+	        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_38%),linear-gradient(180deg,#ffffff_0%,rgba(248,250,252,0.96)_100%)]">
           <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
           <div className="section-container">
-            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
-              {/* Calculator Form */}
-              <Card className="border-border/70 bg-white/95 shadow-[0_20px_48px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+	            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
+	              {/* Calculator Form */}
+	              <Card className="border-border/70 bg-white/95 shadow-[0_20px_48px_rgba(15,23,42,0.08)] backdrop-blur-sm">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-3 text-lg">
                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent shadow-[0_12px_24px_rgba(223,81,1,0.22)]">
@@ -165,7 +163,7 @@ const Pricing = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-5">
-                  <div className="space-y-2">
+	                    <div className="space-y-2">
                     <Label htmlFor="country" className="font-medium text-sm">Destination Country</Label>
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                       <SelectTrigger id="country" className="h-11 rounded-lg border-border bg-white"><SelectValue placeholder="Select destination country" /></SelectTrigger>
@@ -177,16 +175,16 @@ const Pricing = () => {
                     </Select>
                   </div>
 
-                  <div className="space-y-2">
+	                    <div className="space-y-2">
                     <Label htmlFor="weight" className="font-medium text-sm">Weight (KG)</Label>
                     <Input id="weight" type="number" min="0.1" step="0.1" placeholder="Enter weight in kilograms" className="h-11 rounded-lg border-border bg-white" value={weight} onChange={(e) => setWeight(e.target.value)} />
                   </div>
 
-                  <div className="space-y-3">
+	                    <div className="space-y-3">
                     <Label className="font-medium text-sm">Service Type</Label>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       {services.map((service) => (
-                        <button
+	                        <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
                           className={`group rounded-xl border p-5 text-left transition-all duration-200 ${
@@ -215,9 +213,9 @@ const Pricing = () => {
                 </CardContent>
               </Card>
 
-              {/* Price Result */}
-              <div className="space-y-5 lg:sticky lg:top-28">
-                <Card className={`overflow-hidden border bg-white/95 transition-all duration-300 backdrop-blur-sm ${
+	              {/* Price Result */}
+	              <div className="space-y-5 lg:sticky lg:top-28">
+	                <Card className={`overflow-hidden border bg-white/95 transition-all duration-300 backdrop-blur-sm ${
                   calculatedPrice !== null ? 'border-primary/20 shadow-[0_22px_48px_rgba(6,16,67,0.1)] ring-1 ring-primary/10' : 'border-border/70 shadow-[0_16px_38px_rgba(15,23,42,0.06)]'
                 }`}>
                   <CardContent className="p-6">
@@ -328,9 +326,9 @@ const Pricing = () => {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="section-padding bg-primary">
-          <div className="section-container text-center">
+	        {/* CTA */}
+	        <section className="cta-band section-padding">
+	          <div className="section-container text-center">
             <h2 className="text-white mb-6">Need a Custom Quote?</h2>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.

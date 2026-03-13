@@ -129,20 +129,18 @@ const Blog = () => {
       <Header />
       <main>
         {/* Hero Section */}
-        <section
-          ref={heroRef}
-          className="relative pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden bg-primary"
-        >
+        <section ref={heroRef} className="page-hero">
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
+            className="page-hero-media"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1920&q=80)',
             }}
           />
+          <div className="page-hero-overlay" />
           
           <div className="section-container relative z-10">
-            <div className={`text-center max-w-3xl mx-auto transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/15 text-white/90 backdrop-blur-sm border border-white/20 rounded-full text-sm font-bold mb-6">
+            <div className={`page-hero-shell transition-all duration-500 ${heroInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <span className="page-hero-badge mb-6">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                 Blog & Resources
               </span>
@@ -157,14 +155,14 @@ const Blog = () => {
         </section>
 
         {/* Featured Posts */}
-        <section className="section-padding bg-muted/30">
+        <section className="section-padding section-alt">
           <div className="section-container">
             <h2 className="mb-10 text-foreground">Featured Articles</h2>
             <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
               {featuredPosts.map((post) => (
                 <Card 
                   key={post.id} 
-                  className="group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+                  className="group relative overflow-hidden rounded-[24px] border-border/70 bg-white/95 p-0 transition-all duration-500"
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
                   <div className="aspect-video relative overflow-hidden">
@@ -192,7 +190,7 @@ const Blog = () => {
         {/* Search & Filter */}
         <section className="border-b border-border/50 bg-background py-10 md:py-12">
           <div className="section-container">
-            <div className="rounded-lg border border-border bg-card p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <div className="section-shell">
               <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
               <div className="relative w-full md:w-auto md:min-w-[320px]">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -208,10 +206,10 @@ const Blog = () => {
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`rounded-lg px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                    className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                       selectedCategory === category
-                        ? 'bg-primary text-primary-foreground shadow-[0_4px_20px_rgba(0,0,0,0.05)]'
-                        : 'border border-border bg-background text-muted-foreground hover:bg-primary/5 hover:text-primary'
+                        ? 'bg-primary text-primary-foreground shadow-[0_10px_24px_rgba(6,16,67,0.12)]'
+                        : 'border border-border/70 bg-white text-muted-foreground hover:-translate-y-px hover:bg-primary/5 hover:text-primary'
                     }`}
                   >
                     {category}
@@ -231,7 +229,7 @@ const Blog = () => {
                 {filteredPosts.map((post, index) => (
                   <Card 
                     key={post.id}
-                    className="group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]"
+                    className="group relative overflow-hidden rounded-[24px] border-border/70 bg-white/95 p-0 transition-all duration-500"
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
                     <div className="absolute top-0 left-0 right-0 h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-400 origin-left z-10" />
@@ -284,7 +282,7 @@ const Blog = () => {
         </section>
 
         {/* Newsletter CTA */}
-        <section className="section-padding bg-primary relative overflow-hidden">
+        <section className="cta-band section-padding relative overflow-hidden">
           <div className="section-container text-center relative z-10">
             <h2 className="text-white mb-6">Subscribe to Our Newsletter</h2>
             <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -296,9 +294,7 @@ const Blog = () => {
                 placeholder="Enter your email"
                 className="h-12 rounded-lg border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:border-white"
               />
-              <button className="btn btn-primary whitespace-nowrap">
-                Subscribe
-              </button>
+              <Button className="whitespace-nowrap" variant="heroPrimary">Subscribe</Button>
             </div>
           </div>
         </section>

@@ -41,22 +41,22 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
     <div className="min-h-screen flex bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.05),transparent_18%),linear-gradient(180deg,hsl(var(--section-light))_0%,hsl(var(--background))_28%)]">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto">
-        <div className="section-container animate-fade-in-soft py-6 pb-10 pt-20 lg:py-8 lg:pt-8">
+        <div className="section-container animate-fade-in-soft py-6 pb-12 pt-24 lg:py-10 lg:pt-10">
           {/* Page Header - Clean & Spacious */}
-          <div className="page-header-surface mb-8 p-6 sm:mb-10 sm:p-8">
-            <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+          <div className="page-header-surface mb-6 p-6 sm:mb-8 sm:p-8 lg:p-9">
+            <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               <span>Dashboard</span>
               <span className="text-primary/40">/</span>
               <span>{title}</span>
             </div>
-            <div className="relative z-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div className="relative z-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
               <div className="min-w-0">
                 <h1>{title}</h1>
                 {description && (
-                  <p className="mt-2 max-w-2xl text-base leading-relaxed text-muted-foreground">{description}</p>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">{description}</p>
                 )}
               </div>
-              {action && <div className="flex flex-shrink-0 flex-wrap items-center gap-3 self-start sm:self-auto">{action}</div>}
+              {action && <div className="flex w-full flex-shrink-0 flex-wrap items-center gap-3 self-start sm:w-auto sm:justify-end sm:self-auto">{action}</div>}
             </div>
           </div>
           {children}

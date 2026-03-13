@@ -47,11 +47,11 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   return (
     <div className="min-h-screen flex bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.05),transparent_18%),linear-gradient(180deg,hsl(var(--section-light))_0%,hsl(var(--background))_28%)]">
       <AdminSidebar />
-      <main className="flex-1 ml-0 md:ml-72 overflow-auto">
-        <div className="section-container animate-fade-in-soft py-6 pb-10 pt-16 md:py-8 md:pt-8">
+      <main className="flex-1 ml-0 overflow-auto md:ml-[296px]">
+        <div className="section-container animate-fade-in-soft py-6 pb-12 pt-24 md:py-10 md:pt-10">
           {title && (
-            <div className="page-header-surface mb-8 p-6 sm:mb-10 sm:p-8">
-              <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <div className="page-header-surface mb-6 p-6 sm:mb-8 sm:p-8 lg:p-9">
+              <div className="relative z-10 mb-4 inline-flex items-center gap-1.5 rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
                 <Shield className="w-3.5 h-3.5" />
                 <span>Admin Panel</span>
                 <span className="text-primary/40">/</span>
@@ -59,7 +59,7 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
               </div>
               <h1 className="relative z-10">{title}</h1>
               {description && (
-                <p className="relative z-10 mt-2 text-base leading-relaxed text-muted-foreground">{description}</p>
+                <p className="relative z-10 mt-3 max-w-3xl text-base leading-relaxed text-muted-foreground">{description}</p>
               )}
             </div>
           )}
