@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -58,27 +58,27 @@ const Header = () => {
   const isServicesRoute = location.pathname === "/services" || location.pathname.startsWith("/services/");
   const navItemClass = (isActive: boolean) =>
     cn(
-      "font-display relative rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px after:absolute after:bottom-1.5 after:left-4 after:h-0.5 after:w-[calc(100%-32px)] after:origin-left after:scale-x-0 after:rounded-full after:bg-accent after:transition-transform after:duration-200",
+      "font-display relative px-3 py-2 text-sm font-semibold text-primary transition-all duration-200 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-200",
       isActive
-        ? "bg-white/88 text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)] after:scale-x-100"
-        : "text-muted-foreground hover:bg-white hover:text-foreground hover:shadow-[0_10px_24px_rgba(15,23,42,0.05)] hover:after:scale-x-100",
+        ? "text-accent after:scale-x-100"
+        : "hover:bg-accent hover:text-white hover:after:scale-x-100",
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
-      "font-display rounded-[18px] border px-4 py-3.5 text-[15px] font-semibold transition-all duration-200",
+      "font-display block border-b border-border/60 py-3 text-[15px] font-semibold text-primary transition-all duration-200",
       isActive
-        ? "border-primary/12 bg-white text-primary shadow-[0_12px_26px_rgba(6,16,67,0.08)]"
-        : "border-transparent bg-white/70 text-foreground hover:-translate-y-px hover:border-border/70 hover:bg-white hover:text-primary hover:shadow-[0_10px_24px_rgba(15,23,42,0.05)]",
+        ? "text-accent"
+        : "hover:text-accent",
     );
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
     setIsMobileServicesOpen(false);
   };
 
-	  return (
-	    <header
-	      className="fixed top-0 left-0 right-0 z-50 h-[76px] bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 sm:h-20"
-	    >
+  return (
+    <header
+      className="fixed top-0 left-0 right-0 z-50 h-[76px] bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 sm:h-20"
+    >
       <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
         {/* Logo */}
         <Link to="/" className="group flex max-w-[calc(100%-3.5rem)] shrink-0 items-center lg:max-w-none">
@@ -86,7 +86,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-2.5 rounded-full border border-white/40 bg-white/72 px-2.5 py-2.5 shadow-[0_14px_32px_rgba(15,23,42,0.06)]">
+        <nav className="hidden lg:flex items-center gap-6">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -100,39 +100,39 @@ const Header = () => {
           {/* Services Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button 
+              <button
                 className={cn(
-                  "font-display flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 hover:-translate-y-px",
+                  "font-display flex items-center gap-1.5 px-3 py-2 text-sm font-semibold text-primary transition-all duration-200",
                   isServicesRoute
-                    ? "bg-white text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)]"
-                    : "text-muted-foreground hover:bg-white hover:text-foreground hover:shadow-[0_10px_24px_rgba(15,23,42,0.05)]",
+                    ? "text-accent"
+                    : "hover:bg-accent hover:text-white",
                 )}
               >
                 Services
                 <ChevronDown className="w-4 h-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="animate-fade-in-soft w-[340px] rounded-[22px] border border-border/70 bg-white/98 p-2.5 shadow-[0_24px_56px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-              <div className="space-y-1">
+            <DropdownMenuContent align="center" className="animate-fade-in-soft w-[340px] rounded-none border border-border/40 bg-white p-3 shadow-[0_18px_42px_rgba(15,23,42,0.08)]">
+              <div className="space-y-3">
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
                     className={cn(
-                      "rounded-lg px-1 py-2",
+                      "px-0 py-1",
                       groupIndex > 0 && "border-t border-border/60 pt-3",
                     )}
                   >
-                    <div className="px-2 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
+                    <div className="pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">
                       {group.heading}
                     </div>
                     {group.links.map((service) => (
                       <DropdownMenuItem key={service.name} asChild className="p-0">
                         <Link
                           to={service.href}
-                        className="group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-muted-foreground transition-all duration-200 hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
+                          className="group flex w-full items-center gap-3 py-2.5 text-primary transition-all duration-200 hover:text-accent"
                         >
-                          <span className="icon-surface h-9 w-9 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
-                            <service.icon className="w-4 h-4 text-primary" />
+                          <span className="flex h-8 w-8 items-center justify-center text-primary transition-colors duration-200 group-hover:text-accent">
+                            <service.icon className="h-4 w-4" />
                           </span>
                           <span className="font-medium">{service.name}</span>
                         </Link>
@@ -242,11 +242,7 @@ const Header = () => {
           </button>
         </div>
 
-        <nav className="relative z-10 flex min-h-[calc(100vh-81px)] flex-col gap-2 bg-transparent px-4 pb-6 pt-4 sm:px-5 sm:pb-7">
-          <div className="surface-card mb-2 p-4 sm:p-5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground/80">Navigate</p>
-            <p className="mt-2 text-sm font-semibold text-foreground">Shipping, pricing, tracking, and account access in one place.</p>
-          </div>
+        <nav className="relative z-10 flex min-h-[calc(100vh-81px)] flex-col bg-transparent px-4 pb-6 pt-4 sm:px-5 sm:pb-7">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -262,10 +258,10 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between rounded-xl border px-4 py-3.5 text-[15px] font-semibold transition-all duration-200",
+                "font-display flex items-center justify-between border-b border-border/60 py-3 text-[15px] font-semibold text-primary transition-all duration-200",
                 isServicesRoute
-                  ? "border-primary/12 bg-white text-primary shadow-[0_12px_24px_rgba(6,16,67,0.08)]"
-                  : "border-transparent bg-white/75 text-foreground hover:-translate-y-px hover:border-border/70 hover:bg-white hover:text-primary hover:shadow-[0_10px_20px_rgba(15,23,42,0.05)]",
+                  ? "text-accent"
+                  : "hover:text-accent",
               )}
               onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
               aria-expanded={isMobileServicesOpen}
@@ -274,16 +270,16 @@ const Header = () => {
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"}`}>
-              <div className="mt-2 space-y-3 rounded-[22px] border border-border/60 bg-white/90 p-3 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+              <div className="mt-2 space-y-3 pl-4">
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
                     className={cn(
-                      "rounded-lg px-1",
+                      "px-0",
                       groupIndex > 0 && "border-t border-border/60 pt-3",
                     )}
                   >
-                    <div className="px-3 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
+                    <div className="pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
                       {group.heading}
                     </div>
                     {group.links.map((service) => (
@@ -291,15 +287,15 @@ const Header = () => {
                         key={service.name}
                         to={service.href}
                         className={cn(
-                          "group flex items-center gap-3 rounded-xl px-4 py-3 text-sm transition-all duration-200 hover:-translate-y-px",
+                          "group flex items-center gap-3 py-2.5 text-sm text-primary transition-all duration-200 hover:text-accent",
                           location.pathname === service.href
-                            ? "border border-primary/10 bg-white text-foreground shadow-[0_12px_22px_rgba(15,23,42,0.06)]"
-                            : "border border-transparent bg-white/80 text-foreground/85 hover:border-border/70 hover:bg-white hover:text-foreground",
+                            ? "text-accent"
+                            : "",
                         )}
                         onClick={closeMobileMenu}
                       >
-                        <span className="icon-surface h-8 w-8 transition-all duration-200 group-hover:border-primary/15 group-hover:bg-primary/5">
-                          <service.icon className="w-4 h-4 text-primary" />
+                        <span className="flex h-7 w-7 items-center justify-center text-primary transition-colors duration-200 group-hover:text-accent">
+                          <service.icon className="w-4 h-4" />
                         </span>
                         {service.name}
                       </Link>
