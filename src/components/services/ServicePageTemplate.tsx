@@ -125,7 +125,7 @@ const ServicePageTemplate = ({
               </div>
               
               <h1 className="text-white mb-6 leading-tight">{title}</h1>
-              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 max-w-2xl leading-relaxed">{description}</p>
+              <p className="hero-subtext mb-6 max-w-2xl text-base leading-relaxed sm:text-lg md:text-xl">{description}</p>
               
               <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg">
@@ -254,7 +254,7 @@ const ServicePageTemplate = ({
         <section className="cta-band section-padding">
           <div className="section-container text-center">
             <h2 className="text-white mb-6">Ready to Get Started?</h2>
-            <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="hero-subtext mb-6 max-w-2xl mx-auto text-base leading-relaxed sm:text-lg md:text-xl">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
             <div className="cta-actions mt-10">

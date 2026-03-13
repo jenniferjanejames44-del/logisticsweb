@@ -80,7 +80,7 @@ const GalleryHeroSection = () => {
             Media Gallery
           </span>
           <h1 className="text-white mb-5 sm:mb-6 leading-tight">Gallery</h1>
-          <p className="text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed max-w-xl mx-auto">
+          <p className="hero-subtext max-w-xl mx-auto text-base font-medium leading-relaxed sm:text-lg md:text-xl">
             Explore our logistics operations, shipments, packaging process, warehouse handling, and delivery activities through real footage from our operations.
           </p>
         </div>
@@ -136,10 +136,10 @@ const VideoModal = ({ video, onClose }: { video: GalleryVideo; onClose: () => vo
     <div className="relative w-full max-w-4xl overflow-hidden rounded-[28px] bg-card shadow-[0_24px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-200">
       <button
         onClick={onClose}
-        className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-[0_8px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:bg-white hover:scale-105"
+        className="absolute top-3 right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary/90 text-primary-foreground shadow-[0_8px_18px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105 hover:bg-primary"
         aria-label="Close video"
       >
-        <X className="w-5 h-5 text-foreground" />
+        <X className="w-5 h-5" />
       </button>
       <video
         src={video.src}

@@ -38,7 +38,7 @@ const TrustedBySection = () => {
             What Our Clients Say
           </h2>
           <p
-            className={`text-base md:text-lg text-white/80 transition-all duration-700 delay-200 ${
+            className={`hero-subtext text-base md:text-lg transition-all duration-700 delay-200 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >

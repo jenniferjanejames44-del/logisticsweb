@@ -131,7 +131,7 @@ const Contact = () => {
 	              <h1 className="text-white mb-4 leading-tight">
 	                Contact RAC Logistics
 	              </h1>
-	              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+              <p className="hero-subtext max-w-xl mx-auto text-base leading-relaxed md:text-lg">
 	                Have questions? Need a quote? We're here to help. Reach out to our team and we'll respond within 24 hours.
 	              </p>
 	            </div>
@@ -189,7 +189,7 @@ const Contact = () => {
                         <Textarea id="message" name="message" placeholder="Tell us about your shipping needs..." value={formData.message} onChange={handleInputChange} required rows={5} className="resize-none" />
                       </div>
 
-                      <Button type="submit" disabled={isSubmitting} variant="accent" className="w-full" size="lg">
+                      <Button type="submit" disabled={isSubmitting} variant="accent" size="lg">
                         {isSubmitting ? (
                           <>
                             <div className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full animate-spin mr-2" />
@@ -284,7 +284,7 @@ const Contact = () => {
 	        <section className="cta-band section-padding">
 	          <div className="section-container text-center">
             <h2 className="text-white mb-6">Have More Questions?</h2>
-	            <p className="text-lg md:text-xl text-white/80 mb-6 max-w-2xl mx-auto leading-relaxed">
+	            <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
 	            <div className="cta-actions">

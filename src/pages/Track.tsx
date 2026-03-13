@@ -293,7 +293,7 @@ const Track = () => {
                 Track Your{" "}
                 <span className="text-accent">Shipment</span>
               </h1>
-	              <p className="text-base md:text-lg text-white/80 mb-10 sm:mb-14 max-w-2xl mx-auto leading-relaxed">
+	              <p className="hero-subtext mb-6 max-w-2xl mx-auto text-base leading-relaxed md:text-lg sm:mb-8">
                 Enter your tracking number to get real-time updates on your shipment's location and delivery status.
               </p>
 
@@ -401,11 +401,11 @@ const Track = () => {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="heroOutline" size="sm" onClick={shareTracking}>
+	                        <Button variant="outline" size="sm" onClick={shareTracking}>
                           <Share2 size={16} className="mr-2" />
                           Share
                         </Button>
-                        <Button variant="heroOutline" size="sm">
+	                        <Button variant="outline" size="sm">
                           <Bell size={16} className="mr-2" />
                           Notify Me
                         </Button>

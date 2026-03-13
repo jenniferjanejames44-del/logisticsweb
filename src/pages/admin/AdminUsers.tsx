@@ -433,7 +433,7 @@ const AdminUsers = () => {
                         <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
-                              <Button variant="outline" size="compact" className="rounded-[10px] border-border bg-white px-4" onClick={() => fetchLoginHistory(user.user_id)}>
+                              <Button variant="outline" size="compact" className="rounded-[10px] border-border px-4" onClick={() => fetchLoginHistory(user.user_id)}>
                                 <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
@@ -477,7 +477,7 @@ const AdminUsers = () => {
                                 <SelectItem value="admin">Admin</SelectItem>
                               </SelectContent>
                             </Select>
-                            <Button variant="outline" size="iconSm" className="rounded-[10px] border-border bg-white" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
+                            <Button variant="outline" size="iconSm" className="rounded-[10px] border-border" onClick={() => openResetPasswordDialog(user.user_id, user.full_name || user.email || "User")} title="Reset Password">
                               <KeyRound className="w-4 h-4" />
                             </Button>
                             <AlertDialog>

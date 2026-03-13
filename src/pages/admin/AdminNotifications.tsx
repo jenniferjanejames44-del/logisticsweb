@@ -151,7 +151,7 @@ const AdminNotifications = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input placeholder="Search..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)] sm:w-60" />
               </div>
-              <Button variant="outline" size="iconSm" onClick={fetchSubscriptions} className="flex-shrink-0 rounded-[10px] border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]">
+              <Button variant="outline" size="iconSm" onClick={fetchSubscriptions} className="flex-shrink-0 rounded-[10px] border-border/80 shadow-[0_6px_16px_rgba(15,23,42,0.04)]">
                 <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
               </Button>
             </div>
@@ -181,7 +181,7 @@ const AdminNotifications = () => {
                   <div className="flex items-center justify-between pt-2 border-t border-border/50">
                     <span className="text-xs text-muted-foreground">{format(new Date(sub.created_at), "MMM d, yyyy")}</span>
                     <div className="flex items-center gap-1.5">
-                      <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
+                      <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-transparent shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
                         {sub.is_active ? <ToggleRight className="w-4 h-4 text-success" /> : <ToggleLeft className="w-4 h-4 text-muted-foreground" />}
                       </Button>
                       <AlertDialog>
@@ -224,7 +224,7 @@ const AdminNotifications = () => {
                     <TableCell className="text-muted-foreground">{format(new Date(sub.created_at), "MMM d, yyyy")}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
+                      <Button variant="ghost" size="iconSm" className="rounded-[10px] border border-border/70 bg-transparent shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60" onClick={() => toggleSubscription(sub.id, sub.is_active)}>
                           {sub.is_active ? <ToggleRight className="w-4 h-4 text-success" /> : <ToggleLeft className="w-4 h-4 text-muted-foreground" />}
                         </Button>
                         <AlertDialog>

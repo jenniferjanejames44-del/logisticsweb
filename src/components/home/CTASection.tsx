@@ -33,7 +33,7 @@ const CTASection = () => {
           </h2>
           
           <p 
-            className={`mb-6 max-w-2xl text-[1.02rem] leading-relaxed text-white/82 transition-all duration-500 delay-200 sm:text-[1.1rem] ${
+            className={`hero-subtext mb-6 max-w-2xl text-[1.02rem] leading-relaxed transition-all duration-500 delay-200 sm:text-[1.1rem] ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >

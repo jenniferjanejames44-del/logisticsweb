@@ -55,7 +55,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className={`mb-6 max-w-2xl text-[1.05rem] font-medium leading-relaxed text-white/82 transition-all duration-700 delay-150 sm:text-[1.125rem] md:text-[1.25rem] ${
+          <p className={`hero-subtext mb-6 max-w-2xl text-[1.05rem] font-medium leading-relaxed transition-all duration-700 delay-150 sm:text-[1.125rem] md:text-[1.25rem] ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 

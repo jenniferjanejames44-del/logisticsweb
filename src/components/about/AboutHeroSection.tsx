@@ -26,7 +26,7 @@ const AboutHeroSection = () => {
             <h1 className="text-white mb-5 sm:mb-6 leading-tight">
               Your Trusted Global Partner
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/80 font-medium leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+            <p className="hero-subtext mb-8 max-w-xl mx-auto text-base font-medium leading-relaxed sm:text-lg md:text-xl lg:mx-0">
               Since 2017, RAC Logistics has been at the forefront of international 
               shipping and logistics. We've built our reputation on reliability, 
               innovation, and an unwavering commitment to customer satisfaction.

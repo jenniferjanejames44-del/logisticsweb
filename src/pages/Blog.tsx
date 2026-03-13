@@ -147,7 +147,7 @@ const Blog = () => {
               <h1 className="text-white mb-6 leading-tight">
                 Insights & Updates
               </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl mx-auto">
+              <p className="hero-subtext max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
                 Stay informed with the latest news, tips, and insights from the world of logistics.
               </p>
             </div>
@@ -285,7 +285,7 @@ const Blog = () => {
         <section className="cta-band section-padding relative overflow-hidden">
           <div className="section-container text-center relative z-10">
             <h2 className="text-white mb-6">Subscribe to Our Newsletter</h2>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
               Get the latest logistics insights, industry news, and exclusive tips delivered to your inbox.
             </p>
             <div className="mx-auto flex max-w-md flex-col gap-4 sm:flex-row">

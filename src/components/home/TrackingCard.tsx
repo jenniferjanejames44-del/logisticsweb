@@ -282,7 +282,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
                   <Button
                     type="button"
                     onClick={handleTrackClick}
-                    variant="secondary"
+                    variant="outline"
                     size="sm"
                     className="mt-4"
                   >

@@ -322,6 +322,10 @@
     @apply mx-auto max-w-[760px] text-center;
   }
 
+  .hero-subtext {
+    color: #E5E7EB;
+  }
+
   .page-hero-badge {
     @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold shadow-[0_10px_24px_rgba(0,0,0,0.08)];
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -331,26 +335,25 @@
   }
 
   .page-hero-actions {
-    @apply mt-6 flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:items-center;
+    @apply mt-6 flex flex-row flex-wrap items-center justify-center gap-4;
   }
 
   .page-hero-actions > * {
-    width: min(100%, 260px);
-    margin-inline: auto;
+    max-width: 220px;
+    min-width: 0;
   }
 
   .cta-actions {
-    @apply flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:items-center;
+    @apply flex flex-row flex-wrap items-center justify-center gap-4;
   }
 
   .cta-actions > * {
-    width: min(100%, 260px);
-    margin-inline: auto;
+    max-width: 220px;
+    min-width: 0;
   }
 
   .button-balance-mobile {
-    width: min(100%, 260px);
-    margin-inline: auto;
+    max-width: 220px;
   }
 
   .section-shell {
@@ -475,23 +478,9 @@
   }
 
   .section-container {
-    @apply mx-auto w-full max-w-[1320px];
+    @apply mx-auto w-full max-w-[1100px];
     padding-left: 20px;
     padding-right: 20px;
-  }
-
-  @media (min-width: 640px) {
-    .section-container {
-      padding-left: 24px;
-      padding-right: 24px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-container {
-      padding-left: 32px;
-      padding-right: 32px;
-    }
   }
   
   /* Professional Button System */
@@ -511,7 +500,11 @@
     border: none;
     cursor: pointer;
     min-height: 48px;
-    white-space: nowrap;
+    max-width: 220px;
+    width: auto;
+    text-align: center;
+    line-height: 1.2;
+    white-space: normal;
     will-change: transform, box-shadow;
   }
   
@@ -558,18 +551,18 @@
   }
 
   .btn-outline {
-    background: white;
+    background: transparent;
     color: hsl(var(--primary));
-    border: 1px solid hsl(var(--primary));
-    box-shadow: 0 10px 24px rgba(6, 16, 67, 0.06);
+    border: 1.5px solid hsl(var(--primary));
+    box-shadow: none;
   }
 
   .btn-outline:hover {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background: hsl(var(--primary) / 0.06);
+    color: hsl(var(--primary));
     border-color: hsl(var(--primary));
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(6, 16, 67, 0.16);
+    box-shadow: 0 12px 24px rgba(6, 16, 67, 0.1);
   }
   
   /* Ghost Button */
@@ -595,25 +588,15 @@
   }
   
   .btn-lg {
-    padding: 0.8125rem 1.5rem;
+    padding: 0.75rem 1.375rem;
     font-size: 1rem;
     min-height: 48px;
-  }
-
-  @media (min-width: 640px) {
-    .page-hero-actions > *,
-    .cta-actions > *,
-    .button-balance-mobile {
-      width: auto;
-      max-width: none;
-      margin-inline: 0;
-    }
   }
   
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .btn {
-      padding: 0.75rem 1.25rem;
+      padding: 0.75rem 1.375rem;
       font-size: 0.925rem;
       min-height: 48px;
     }

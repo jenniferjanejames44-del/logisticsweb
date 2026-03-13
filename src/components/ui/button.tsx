@@ -11,13 +11,13 @@ const secondaryButtonStyles =
   "border-[1.5px] border-white/90 bg-transparent text-white shadow-[0_10px_24px_rgba(0,0,0,0.08)] backdrop-blur-sm hover:-translate-y-[1px] hover:border-white hover:bg-white/10 hover:text-white hover:shadow-[0_14px_28px_rgba(0,0,0,0.12)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(0,0,0,0.08)]";
 
 const outlineButtonStyles =
-  "border border-primary bg-white text-primary shadow-[0_10px_24px_rgba(6,16,67,0.06)] hover:-translate-y-[1px] hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-[0_14px_30px_rgba(6,16,67,0.16)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(6,16,67,0.1)]";
+  "border-[1.5px] border-primary bg-transparent text-primary shadow-none hover:-translate-y-[1px] hover:border-primary hover:bg-primary/5 hover:text-primary hover:shadow-[0_12px_24px_rgba(6,16,67,0.1)] active:translate-y-0 active:shadow-none";
 
 const navyButtonStyles =
   "border border-primary bg-primary text-primary-foreground shadow-[0_12px_28px_rgba(6,16,67,0.14)] hover:-translate-y-[1px] hover:border-[hsl(var(--primary-hover))] hover:bg-[hsl(var(--primary-hover))] hover:text-primary-foreground hover:shadow-[0_14px_30px_rgba(6,16,67,0.18)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(6,16,67,0.12)]";
 
 const buttonVariants = cva(
-  "font-display inline-flex min-w-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg text-[0.95rem] font-semibold tracking-[-0.01em] ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-[18px] [&_svg]:shrink-0",
+  "font-display inline-flex min-w-0 select-none items-center justify-center gap-2 rounded-lg text-center text-[0.95rem] font-semibold leading-tight tracking-[-0.01em] ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-[18px] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -50,7 +50,7 @@ const buttonVariants = cva(
         /* Hero variants */
         heroPrimary: primaryButtonStyles,
         heroSecondary: secondaryButtonStyles,
-        heroOutline: "border border-white/60 bg-white/5 text-white shadow-[0_10px_24px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:bg-white/10 hover:border-white hover:shadow-[0_14px_28px_rgba(0,0,0,0.12)] active:translate-y-0",
+        heroOutline: secondaryButtonStyles,
 
         /* CTA variants - Orange for high-intent actions */
         cta: primaryButtonStyles,
@@ -78,7 +78,7 @@ const buttonVariants = cva(
         compact: "h-10 px-4 py-2 text-sm",
         sm: "h-10 px-4 py-2 text-sm sm:h-11 sm:px-5",
         lg: "h-12 px-[22px] py-3 text-base sm:h-[50px]",
-        xl: "h-[52px] px-6 py-3 text-base font-semibold sm:h-[56px] sm:px-7",
+        xl: "h-12 px-[22px] py-3 text-base font-semibold sm:h-[50px]",
         icon: "h-11 w-11 sm:h-12 sm:w-12",
         iconSm: "h-9 w-9",
         nav: "h-12 px-5 py-3 text-sm sm:px-5 sm:text-[0.95rem]",

@@ -82,7 +82,7 @@ const Footer = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-white/10 p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.2)] ring-1 ring-white/10 transition-all duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:bg-white/15"
+                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.2)] ring-1 ring-primary/20 transition-all duration-200 hover:-translate-y-1 hover:scale-[1.04] hover:bg-primary/28"
                     >
                       <span
                         className={`flex h-full w-full items-center justify-center rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] ${social.badgeClassName}`}

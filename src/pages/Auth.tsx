@@ -193,7 +193,7 @@ const AuthForm = () => {
                       Please check your inbox and spam folder.
                     </p>
                     <Button
-                      variant="secondary"
+                      variant="outline"
                       onClick={() => {
                         setIsForgotPassword(false);
                         setResetEmailSent(false);
@@ -277,7 +277,7 @@ const AuthForm = () => {
                         </p>
                         <Button
                           type="button"
-                          variant="secondary"
+                          variant="outline"
                           size="sm"
                           onClick={handleResendVerification}
                           disabled={isResending}

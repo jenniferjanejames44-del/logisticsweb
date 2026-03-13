@@ -151,7 +151,7 @@ const LiveChat = () => {
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(false)}
-            className="text-white/80 hover:text-white hover:bg-white/10 h-8 w-8"
+            className="h-8 w-8 text-white/80 hover:bg-primary/20 hover:text-white"
           >
             <X size={18} />
           </Button>

@@ -93,7 +93,7 @@ const Services = () => {
               <h1 className="text-white mb-6 leading-tight">
                 Comprehensive Logistics Solutions
               </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6 max-w-2xl mx-auto">
+              <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
               <div className="page-hero-actions">
@@ -170,7 +170,7 @@ const Services = () => {
         <section className="cta-band section-padding relative overflow-hidden">
           <div className="section-container text-center relative z-10">
             <h2 className="text-white mb-6">Need a Custom Logistics Solution?</h2>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
               Our team of experts will work with you to create a tailored solution that meets your specific requirements.
             </p>
             <Button asChild size="lg" variant="heroPrimary">

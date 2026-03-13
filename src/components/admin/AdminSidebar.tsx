@@ -146,7 +146,7 @@ const AdminSidebar = () => {
         </div>
         <Button
           variant="ghost"
-          className="h-11 w-full justify-start rounded-[16px] px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-white hover:text-foreground"
+          className="h-11 w-full justify-start rounded-[16px] px-4 text-[0.875rem] font-medium text-muted-foreground hover:-translate-y-px hover:bg-muted/70 hover:text-foreground"
           asChild
         >
           <Link to="/" onClick={() => setIsMobileOpen(false)}>

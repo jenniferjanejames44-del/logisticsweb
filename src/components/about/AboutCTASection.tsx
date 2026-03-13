@@ -21,14 +21,14 @@ const AboutCTASection = () => {
             Join thousands of businesses who trust us for their global shipping needs. 
             Let's discuss how we can help your business grow.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button asChild className="w-full max-w-[208px] sm:w-auto sm:max-w-none">
+          <div className="cta-actions">
+            <Button asChild>
               <Link to="/contact">
                 Contact Us
                 <ArrowRight size={16} />
               </Link>
             </Button>
-            <Button asChild variant="secondary" className="w-full max-w-[208px] sm:w-auto sm:max-w-none">
+            <Button asChild variant="outline">
               <Link to="/services">
                 View Services
                 <ArrowRight size={16} />

@@ -65,7 +65,7 @@ const Header = () => {
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
-      "font-display block border-b border-border/60 py-3 text-[15px] font-semibold text-primary transition-all duration-200",
+      "font-display block border-b border-border/60 py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
       isActive
         ? "text-accent"
         : "hover:text-accent",
@@ -168,7 +168,7 @@ const Header = () => {
                   </Link>
                 </Button>
               )}
-              <Button asChild variant="secondary" size="sm">
+              <Button asChild variant="nav" size="sm">
                 <Link to="/dashboard">
                   <User className="w-4 h-4" />
                   Dashboard
@@ -228,12 +228,12 @@ const Header = () => {
         aria-label="Navigation menu"
       >
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)]" aria-hidden="true" />
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-white/90 px-4 py-4 backdrop-blur-xl sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-white/90 px-4 py-3 backdrop-blur-xl sm:px-5">
           <Link to="/" onClick={closeMobileMenu} className="flex items-center">
             <HeaderLogo className="block h-9 w-auto max-w-[164px]" />
           </Link>
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/70 bg-white text-muted-foreground shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:border-primary/15 hover:bg-white hover:text-foreground"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/10 bg-primary/[0.04] text-primary shadow-[0_8px_18px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:border-primary/15 hover:bg-primary/[0.08] hover:text-primary"
             onClick={closeMobileMenu}
             aria-label="Close menu"
           >
@@ -241,7 +241,7 @@ const Header = () => {
           </button>
         </div>
 
-        <nav className="relative z-10 flex min-h-[calc(100vh-81px)] flex-col bg-transparent px-4 pb-6 pt-4 sm:px-5 sm:pb-7">
+        <nav className="relative z-10 flex min-h-[calc(100vh-73px)] flex-col bg-transparent px-4 pb-5 pt-3 sm:px-5 sm:pb-6">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -257,7 +257,7 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between border-b border-border/60 py-3 text-[15px] font-semibold text-primary transition-all duration-200",
+                "font-display flex items-center justify-between border-b border-border/60 py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
                 isServicesRoute
                   ? "text-accent"
                   : "hover:text-accent",
@@ -269,16 +269,16 @@ const Header = () => {
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"}`}>
-              <div className="mt-2 space-y-3 pl-4">
+              <div className="mt-1 space-y-2 pl-3.5">
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
                     className={cn(
                       "px-0",
-                      groupIndex > 0 && "border-t border-border/60 pt-3",
+                      groupIndex > 0 && "border-t border-border/60 pt-2.5",
                     )}
                   >
-                    <div className="pb-2 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
+                    <div className="pb-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
                       {group.heading}
                     </div>
                     {group.links.map((service) => (
@@ -286,7 +286,7 @@ const Header = () => {
                         key={service.name}
                         to={service.href}
                         className={cn(
-                          "group flex items-center gap-3 py-2.5 text-sm text-primary transition-all duration-200 hover:text-accent",
+                          "group flex items-center gap-3 py-2 text-sm text-primary transition-all duration-200 hover:text-accent",
                           location.pathname === service.href
                             ? "text-accent"
                             : "",
@@ -317,25 +317,25 @@ const Header = () => {
           ))}
           
           {/* CTA Buttons */}
-          <div className="mt-auto flex flex-col gap-3 border-t border-border/70 pt-5">
+          <div className="mt-auto flex flex-col items-start gap-2.5 border-t border-border/70 pt-4">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button asChild variant="outline" className="w-full justify-center">
+                  <Button asChild variant="outline" className="button-balance-mobile justify-center">
                     <Link to="/admin" onClick={closeMobileMenu}>
                       <Shield className="w-4 h-4" />
                       Admin Panel
                     </Link>
                   </Button>
                 )}
-                <Button asChild variant="secondary" className="w-full justify-center">
+                <Button asChild variant="nav" className="button-balance-mobile justify-center">
                   <Link to="/dashboard" onClick={closeMobileMenu}>
                     <User className="w-4 h-4" />
                     Dashboard
                   </Link>
                 </Button>
                 <button 
-                  className="flex w-full items-center justify-center gap-2 rounded-md border border-destructive/20 bg-destructive/5 py-3.5 text-sm font-bold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
+                  className="button-balance-mobile inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-[22px] py-3 text-sm font-semibold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
                   onClick={() => {
                     signOut();
                     closeMobileMenu();
@@ -346,13 +346,13 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button asChild variant="outline" className="w-full justify-center">
+                <Button asChild variant="outline" className="button-balance-mobile justify-center">
                   <Link to="/auth" onClick={closeMobileMenu}>
                     Login
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="navCta" className="w-full justify-center">
+                <Button asChild variant="navCta" className="button-balance-mobile justify-center">
                   <Link to="/auth" onClick={closeMobileMenu}>
                     Join Now
                     <ArrowRight className="w-4 h-4" />

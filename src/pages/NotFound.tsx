@@ -20,17 +20,17 @@ const NotFound = () => {
         <p className="text-muted-foreground mb-8 leading-relaxed">
           The page you're looking for doesn't exist or has been moved. Let's get you back on track.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="cta-actions">
           <Link to="/">
-            <Button size="lg" className="w-full max-w-[220px] gap-2 sm:w-auto sm:max-w-none">
+            <Button size="lg" className="gap-2">
               <Home className="w-4 h-4" />
               Go Home
             </Button>
           </Link>
           <Button 
-            variant="secondary" 
+            variant="outline" 
             size="lg" 
-            className="w-full max-w-[220px] gap-2 sm:w-auto sm:max-w-none"
+            className="gap-2"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="w-4 h-4" />

@@ -140,7 +140,7 @@ const Pricing = () => {
 	              <h1 className="text-white mb-4 leading-tight">
 	                Calculate Your Shipping Cost
 	              </h1>
-	              <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-xl mx-auto">
+	              <p className="hero-subtext max-w-xl mx-auto text-base leading-relaxed md:text-lg">
 	                Get instant, transparent pricing for your shipments. No hidden fees, no surprises.
 	              </p>
 	            </div>
@@ -262,7 +262,7 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="accent" className="mt-4 h-11 w-full rounded-lg shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleProceedToPayment}>
+                          <Button variant="accent" className="mt-4 shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleProceedToPayment}>
                             {user ? "Create Shipment & Pay" : "Sign In to Pay"}
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
@@ -330,10 +330,10 @@ const Pricing = () => {
 	        <section className="cta-band section-padding">
 	          <div className="section-container text-center">
             <h2 className="text-white mb-6">Need a Custom Quote?</h2>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+	            <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
               For large shipments, special cargo, or bulk discounts, contact our team for a personalized quote.
             </p>
-            <Button asChild className="mx-auto">
+            <Button asChild>
               <Link to="/contact">
                 Contact Sales
                 <ArrowRight className="w-4 h-4" />

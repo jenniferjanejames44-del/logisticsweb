@@ -92,13 +92,13 @@ const ImportService = () => {
             <img src={importHeroImage} alt="Import logistics containers arriving at port" className="h-full w-full object-cover" loading="eager" decoding="async" />
           </div>
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.52),rgba(6,16,67,0.72)),radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_34%)]" />
-          <div className="section-container relative z-10 max-w-6xl">
+          <div className="section-container relative z-10">
             <div className="max-w-4xl">
               <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm">
                 <Globe className="h-4 w-4 text-accent" /> Import Service
               </span>
               <h1 className="mb-6 text-white">Import with RAC Logistics</h1>
-              <p className="mb-6 max-w-3xl text-lg leading-relaxed text-white/80">
+              <p className="hero-subtext mb-6 max-w-3xl text-lg leading-relaxed">
                 Move cargo from our supported warehouse countries into your destination market with a clear, step-by-step import workflow.
               </p>
               <div className="page-hero-actions sm:justify-start">
@@ -223,7 +223,7 @@ const ImportService = () => {
         </section>
 
         <section className="section-padding section-alt">
-          <div className="section-container max-w-5xl">
+          <div className="section-container">  
             <div className="mb-10 text-center">
               <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground">
                 <ClipboardList className="h-4 w-4" /> Step-by-step process
