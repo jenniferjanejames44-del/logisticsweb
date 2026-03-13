@@ -72,16 +72,6 @@ const TrustedBySection = () => {
           ))}
         </div>
 
-        <div className={`transition-all duration-700 delay-500 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <p className="text-center text-white/60 text-sm mb-6 md:mb-8 uppercase tracking-wider">Trusted by leading companies worldwide</p>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-            {trustedLogos.map((logo) => (
-              <div key={logo.name} className="w-16 h-16 md:w-20 md:h-20 bg-white/10 rounded-xl flex items-center justify-center hover:bg-white/20 transition-colors">
-                <span className="text-white/70 font-bold text-lg md:text-xl">{logo.initial}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
