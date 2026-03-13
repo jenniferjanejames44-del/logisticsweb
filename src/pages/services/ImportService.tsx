@@ -98,10 +98,10 @@ const ImportService = () => {
                 <Globe className="h-4 w-4 text-accent" /> Import Service
               </span>
               <h1 className="mb-6 text-white">Import with RAC Logistics</h1>
-              <p className="mb-8 max-w-3xl text-lg leading-relaxed text-white/80">
+              <p className="mb-6 max-w-3xl text-lg leading-relaxed text-white/80">
                 Move cargo from our supported warehouse countries into your destination market with a clear, step-by-step import workflow.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg">
                   <Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link>
                 </Button>
@@ -241,7 +241,7 @@ const ImportService = () => {
                 </Card>
               ))}
             </div>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="cta-actions mt-10">
               <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link></Button>
               <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=import&intent=quote">Get Shipping Quote <ArrowRight className="h-4 w-4" /></Link></Button>
             </div>

@@ -126,10 +126,10 @@ const Procurement = () => {
                 <ShoppingBag className="h-4 w-4 text-accent" /> Buy For Me / Procurement Service
               </span>
               <h1 className="mb-6 text-white">Let RAC buy and ship on your behalf</h1>
-              <p className="mb-8 max-w-3xl text-lg leading-relaxed text-white/80">
+              <p className="mb-6 max-w-3xl text-lg leading-relaxed text-white/80">
                 Share the product you want from Amazon, Alibaba, supplier catalogs, or direct sellers. We purchase it for you, add the request to the existing procurement system, and keep fulfillment moving in one workflow.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg"><Link to="#procurement-form">Submit Procurement Request</Link></Button>
                 <Button asChild variant="heroSecondary" size="lg"><Link to="/dashboard/shopping-orders">View Existing Requests</Link></Button>
               </div>

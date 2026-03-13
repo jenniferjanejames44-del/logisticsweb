@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
+import { Star, Quote } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const testimonials = [
@@ -37,12 +37,8 @@ const TestimonialsSection = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000);
+    const interval = setInterval(nextSlide, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -78,20 +74,6 @@ const TestimonialsSection = () => {
         <div className={`relative max-w-4xl mx-auto transition-all duration-600 delay-200 ${
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}>
-          {/* Navigation Buttons */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-2 lg:-translate-x-16 z-10 w-12 h-12 sm:w-14 sm:h-14 bg-card border-2 border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
-          >
-            <ChevronLeft size={24} />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-2 lg:translate-x-16 z-10 w-12 h-12 sm:w-14 sm:h-14 bg-card border-2 border-border rounded-2xl flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-lg transition-all duration-300 active:scale-95"
-          >
-            <ChevronRight size={24} />
-          </button>
-
           {/* Slides */}
           <div className="overflow-hidden rounded-2xl">
             <div

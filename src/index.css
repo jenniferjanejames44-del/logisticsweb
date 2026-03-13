@@ -331,7 +331,26 @@
   }
 
   .page-hero-actions {
-    @apply mt-8 flex flex-col items-stretch justify-center gap-3.5 sm:mt-10 sm:flex-row sm:items-center;
+    @apply mt-6 flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:items-center;
+  }
+
+  .page-hero-actions > * {
+    width: min(100%, 260px);
+    margin-inline: auto;
+  }
+
+  .cta-actions {
+    @apply flex flex-col items-center justify-center gap-3.5 sm:flex-row sm:items-center;
+  }
+
+  .cta-actions > * {
+    width: min(100%, 260px);
+    margin-inline: auto;
+  }
+
+  .button-balance-mobile {
+    width: min(100%, 260px);
+    margin-inline: auto;
   }
 
   .section-shell {
@@ -452,13 +471,13 @@
   
   /* Section Padding */
   .section-padding {
-    @apply py-12 sm:py-16 lg:py-20;
+    @apply py-12 lg:py-20;
   }
 
   .section-container {
     @apply mx-auto w-full max-w-[1320px];
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   @media (min-width: 640px) {
@@ -477,7 +496,7 @@
   
   /* Professional Button System */
   .btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.375rem;
     border-radius: 0.5rem;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     font-size: 0.95rem;
@@ -516,31 +535,32 @@
     box-shadow: 0 8px 18px rgba(6, 16, 67, 0.12);
   }
   
-  /* Secondary Button - Outline Navy */
+  /* Secondary Button - White Outline */
   .btn-secondary {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    border: 1px solid hsl(var(--primary));
-    box-shadow: 0 12px 28px rgba(6, 16, 67, 0.14);
+    background: transparent;
+    color: white;
+    border: 1.5px solid rgba(255, 255, 255, 0.88);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
   }
   
   .btn-secondary:hover {
-    background: hsl(var(--primary-hover));
-    color: hsl(var(--primary-foreground));
-    border-color: hsl(var(--primary-hover));
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.95);
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(6, 16, 67, 0.18);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
   }
   
   .btn-secondary:active {
     transform: translateY(0);
-    box-shadow: 0 8px 16px rgba(6, 16, 67, 0.12);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   }
 
   .btn-outline {
     background: white;
     color: hsl(var(--primary));
-    border: 1px solid hsl(var(--primary) / 0.2);
+    border: 1px solid hsl(var(--primary));
     box-shadow: 0 10px 24px rgba(6, 16, 67, 0.06);
   }
 
@@ -579,11 +599,21 @@
     font-size: 1rem;
     min-height: 48px;
   }
+
+  @media (min-width: 640px) {
+    .page-hero-actions > *,
+    .cta-actions > *,
+    .button-balance-mobile {
+      width: auto;
+      max-width: none;
+      margin-inline: 0;
+    }
+  }
   
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .btn {
-      padding: 0.8125rem 1.125rem;
+      padding: 0.75rem 1.25rem;
       font-size: 0.925rem;
       min-height: 48px;
     }

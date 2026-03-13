@@ -33,7 +33,7 @@ const CTASection = () => {
           </h2>
           
           <p 
-            className={`mb-10 max-w-2xl text-[1.02rem] leading-relaxed text-white/82 transition-all duration-500 delay-200 sm:text-[1.1rem] ${
+            className={`mb-6 max-w-2xl text-[1.02rem] leading-relaxed text-white/82 transition-all duration-500 delay-200 sm:text-[1.1rem] ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
@@ -41,16 +41,16 @@ const CTASection = () => {
             Get a free quote today and experience the difference.
           </p>
           
-          <div className={`flex flex-col items-stretch justify-center gap-3.5 sm:flex-row sm:items-center transition-all duration-500 delay-300 ${
+          <div className={`cta-actions transition-all duration-500 delay-300 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}>
-            <Button asChild variant="heroPrimary" size="lg" className="w-full sm:w-auto">
+            <Button asChild variant="heroPrimary" size="lg">
               <Link to="/pricing">
                 Get Quote
                 <ArrowRight size={18} />
               </Link>
             </Button>
-            <Button asChild variant="heroOutline" size="lg" className="w-full sm:w-auto">
+            <Button asChild variant="heroSecondary" size="lg">
               <Link to="/contact">
                 Contact Us
                 <ArrowRight size={18} />

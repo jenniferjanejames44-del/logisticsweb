@@ -180,7 +180,7 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
               onClick={handleTrackClick}
               disabled={isLoading}
               variant="heroPrimary"
-              className="w-full sm:w-auto"
+              className="button-balance-mobile"
             >
               Track Now
               <ArrowRight size={16} />

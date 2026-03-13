@@ -70,10 +70,10 @@ const ExportService = () => {
                 <Send className="h-4 w-4 text-accent" /> Export Service
               </span>
               <h1 className="mb-6 text-white">Export internationally with clarity</h1>
-              <p className="mb-8 max-w-3xl text-lg leading-relaxed text-white/80">
+              <p className="mb-6 max-w-3xl text-lg leading-relaxed text-white/80">
                 Use RAC Logistics to move items from origin to international destinations with clear shipping rules, packaging guidance, and a defined export process.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=export&intent=shipment">Create Shipment</Link></Button>
                 <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=export&intent=quote">Calculate Shipping</Link></Button>
               </div>
@@ -168,7 +168,7 @@ const ExportService = () => {
                 </Card>
               ))}
             </div>
-            <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <div className="cta-actions mt-10">
               <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=export&intent=shipment">Create Shipment</Link></Button>
               <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=export&intent=quote">Calculate Shipping <ArrowRight className="h-4 w-4" /></Link></Button>
             </div>

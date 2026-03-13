@@ -93,7 +93,7 @@ const Services = () => {
               <h1 className="text-white mb-6 leading-tight">
                 Comprehensive Logistics Solutions
               </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-6 max-w-2xl mx-auto">
                 From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
               </p>
               <div className="page-hero-actions">

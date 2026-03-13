@@ -125,9 +125,9 @@ const ServicePageTemplate = ({
               </div>
               
               <h1 className="text-white mb-6 leading-tight">{title}</h1>
-              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">{description}</p>
+              <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 max-w-2xl leading-relaxed">{description}</p>
               
-              <div className="page-hero-actions justify-start">
+              <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg">
                   <Link to="/pricing">Get a Quote</Link>
                 </Button>
@@ -257,7 +257,7 @@ const ServicePageTemplate = ({
             <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Get a free quote today and experience the RAC Logistics difference.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="cta-actions mt-10">
               <Button asChild variant="heroPrimary" size="lg">
                 <Link to="/pricing">Get a Quote</Link>
               </Button>

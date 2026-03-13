@@ -55,7 +55,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className={`mb-10 max-w-2xl text-[1.05rem] font-medium leading-relaxed text-white/82 transition-all duration-700 delay-150 sm:mb-12 sm:text-[1.125rem] md:text-[1.25rem] ${
+          <p className={`mb-6 max-w-2xl text-[1.05rem] font-medium leading-relaxed text-white/82 transition-all duration-700 delay-150 sm:text-[1.125rem] md:text-[1.25rem] ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
@@ -63,16 +63,16 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className={`mb-12 flex flex-col items-stretch justify-center gap-3.5 sm:flex-row sm:items-center transition-all duration-700 delay-300 ${
+          <div className={`page-hero-actions mb-12 transition-all duration-700 delay-300 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
-            <Button asChild variant="heroPrimary" size="xl" className="w-full sm:w-auto">
+            <Button asChild variant="heroPrimary" size="xl">
               <Link to="/pricing">
                 Get Quote
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
             </Button>
-            <Button asChild variant="heroSecondary" size="xl" className="w-full sm:w-auto">
+            <Button asChild variant="heroSecondary" size="xl">
               <Link to="/auth">
                 Sign Up
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />

@@ -267,11 +267,11 @@ const Contact = () => {
               />
             </div>
 	            <div className="mt-4 text-center">
-              <a
+	              <a
                 href="https://www.google.com/maps/search/29b+Osolo+Way+Opposite+Polaris+Bank+Ajao+Estate+Isolo+Lagos"
                 target="_blank"
                 rel="noopener noreferrer"
-	                className="btn btn-secondary btn-lg"
+		                className="btn btn-outline btn-lg"
               >
                 Open in Google Maps
                 <ArrowRight className="w-4 h-4" />
@@ -284,18 +284,18 @@ const Contact = () => {
 	        <section className="cta-band section-padding">
 	          <div className="section-container text-center">
             <h2 className="text-white mb-6">Have More Questions?</h2>
-            <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+	            <p className="text-lg md:text-xl text-white/80 mb-6 max-w-2xl mx-auto leading-relaxed">
               Check out our frequently asked questions or start a live chat for immediate assistance.
             </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+	            <div className="cta-actions">
               <Link 
                 to="/blog"
-                className="btn btn-primary btn-lg"
+	                className="btn btn-primary btn-lg"
               >
                 View Resources
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Link>
-              <Button variant="heroOutline" size="lg" type="button">
+	              <Button variant="heroSecondary" size="lg" type="button">
                 Start Live Chat
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>

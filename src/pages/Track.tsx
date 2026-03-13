@@ -311,7 +311,7 @@ const Track = () => {
                   </div>
                   
 		                  {/* Input section */}
-		                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+			                  <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
 		                        <div className="relative flex-1">
 		                          <Input
                         value={trackingNumber}
@@ -321,8 +321,8 @@ const Track = () => {
                         className="h-12 rounded-lg px-5 text-base sm:h-14"
                       />
                     </div>
-		                        <button 
-			                      className="flex h-12 items-center justify-center gap-2 rounded-2xl bg-accent px-8 text-base font-semibold text-accent-foreground shadow-[0_14px_32px_rgba(223,81,1,0.3)] transition-all duration-200 hover:-translate-y-px hover:brightness-[1.03] disabled:opacity-50 active:scale-[0.98] sm:h-14 sm:px-10"
+			                        <button 
+				                      className="button-balance-mobile flex h-12 items-center justify-center gap-2 rounded-lg bg-accent px-[22px] text-base font-semibold text-accent-foreground shadow-[0_14px_32px_rgba(223,81,1,0.3)] transition-all duration-200 hover:-translate-y-px hover:brightness-[1.03] disabled:opacity-50 active:scale-[0.98] sm:h-14 sm:px-10"
                       onClick={() => searchShipment()}
                       disabled={isLoading}
                     >
@@ -549,7 +549,7 @@ const Track = () => {
                     <p className="text-muted-foreground mb-4">
                       Our support team is available 24/7 to assist you with any questions.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+	                    <div className="cta-actions">
                       <Button variant="cta" asChild>
                         <a href="/contact">Contact Support</a>
                       </Button>
