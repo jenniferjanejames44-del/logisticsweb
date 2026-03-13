@@ -64,12 +64,9 @@ const TrustedBySection = () => {
                 ))}
               </div>
               <p className="text-white/90 text-sm md:text-base leading-relaxed mb-6 italic">"{testimonial.quote}"</p>
-              <div className="flex items-center gap-4">
-                <img src={testimonial.image} alt={testimonial.author} className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/30" loading="lazy" />
-                <div>
+              <div className="text-center">
                   <h4 className="text-white font-semibold text-sm md:text-base">{testimonial.author}</h4>
                   <p className="text-white/60 text-xs md:text-sm">{testimonial.role}</p>
-                </div>
               </div>
             </div>
           ))}
