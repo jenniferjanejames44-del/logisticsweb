@@ -287,7 +287,8 @@
   }
 
   .surface-subtle {
-    @apply rounded-[22px] border border-border/60 bg-white/80;
+    @apply rounded-[22px] border border-border/60;
+    background-color: rgba(255, 255, 255, 0.80);
     background-image: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248,250,252,0.86) 100%);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 10px 24px rgba(15, 23, 42, 0.04);
   }
