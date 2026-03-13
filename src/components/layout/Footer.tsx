@@ -56,10 +56,10 @@ const Footer = () => {
     },
   ];
 
-  return (
-    <footer className="bg-primary text-white">
-      <div className="section-container px-4 pb-6 pt-12 sm:px-6 sm:pb-8 md:pt-16 lg:pt-20">
-        <div className="rounded-[34px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.03)_100%)] p-6 shadow-[0_28px_70px_rgba(0,0,0,0.18)] sm:p-8 lg:p-10">
+	  return (
+	    <footer className="bg-primary text-white">
+	      <div className="section-container px-4 pb-6 pt-12 sm:px-6 sm:pb-8 md:pt-16 lg:pt-20">
+	        <div className="border-t border-white/10 pt-10 sm:pt-12">
           <div className="grid gap-10 border-b border-white/10 pb-10 lg:grid-cols-[1.2fr_0.8fr_0.95fr_1fr] lg:gap-10">
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-3 group">
