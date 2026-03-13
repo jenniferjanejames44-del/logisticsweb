@@ -14,21 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const { user, signOut } = useAuth();
   const { isAdmin } = useUserRole();
   const location = useLocation();
   
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const mainNavLinks = [
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/pricing" },
@@ -84,14 +75,10 @@ const Header = () => {
     setIsMobileServicesOpen(false);
   };
 
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 h-[76px] border-b bg-white/82 backdrop-blur-xl transition-all duration-300 sm:h-20 ${
-        isScrolled
-          ? "border-border/80 shadow-[0_16px_40px_rgba(15,23,42,0.1)]"
-          : "border-white/30 shadow-[0_10px_30px_rgba(15,23,42,0.05)]"
-      }`}
-    >
+	  return (
+	    <header
+	      className="fixed top-0 left-0 right-0 z-50 h-[76px] bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 sm:h-20"
+	    >
       <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
         {/* Logo */}
         <Link to="/" className="group flex max-w-[calc(100%-3.5rem)] shrink-0 items-center lg:max-w-none">
