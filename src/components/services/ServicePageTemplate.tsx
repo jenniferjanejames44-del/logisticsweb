@@ -42,6 +42,8 @@ interface ServicePageProps {
   workflowSteps: WorkflowStep[];
   benefits: Benefit[];
   features: string[];
+  /** Slug passed as ?service= to the pricing page (e.g. "air", "ocean") */
+  pricingSlug?: string;
 }
 
 const resolveServiceIcon = (label: string): LucideIcon => {
