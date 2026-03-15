@@ -59,6 +59,7 @@ import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
 import AdminSupport from "./pages/admin/AdminSupport";
 import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
 import AdminRefunds from "./pages/admin/AdminRefunds";
+import Checkout from "./pages/Checkout";
 import DesignSystem from "./pages/DesignSystem";
 const queryClient = new QueryClient();
 
@@ -100,6 +101,7 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/track" element={<Track />} />
               <Route path="/shipping" element={<Shipping />} />
+              <Route path="/checkout" element={<Checkout />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
