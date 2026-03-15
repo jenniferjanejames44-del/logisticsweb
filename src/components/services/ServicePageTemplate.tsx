@@ -82,8 +82,10 @@ const ServicePageTemplate = ({
   description,
   workflowSteps,
   benefits,
-  features
+  features,
+  pricingSlug,
 }: ServicePageProps) => {
+  const quoteLink = pricingSlug ? `/pricing?service=${pricingSlug}` : "/pricing";
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { ref: workflowRef, isInView: workflowInView } = useInView({ threshold: 0.1 });
   const { ref: benefitsRef, isInView: benefitsInView } = useInView({ threshold: 0.1 });
