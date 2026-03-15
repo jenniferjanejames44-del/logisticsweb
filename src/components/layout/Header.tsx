@@ -184,10 +184,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button asChild variant="outline" size="sm" className="font-semibold text-[15px]">
+              <Button asChild variant="outline" size="sm" className="font-semibold text-[15px] whitespace-nowrap px-5">
                 <Link to="/auth">Log In</Link>
               </Button>
-              <Button asChild variant="navCta" size="sm" className="font-bold">
+              <Button asChild variant="navCta" size="sm" className="font-bold whitespace-nowrap px-5">
                 <Link to="/auth">
                   Join Now
                   <ArrowRight className="w-4 h-4" />
@@ -273,10 +273,7 @@ const Header = () => {
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
-                    className={cn(
-                      "px-0",
-                      groupIndex > 0 && "border-t border-border/60 pt-2.5",
-                    )}
+                    className="px-0"
                   >
                     <div className="pb-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
                       {group.heading}
