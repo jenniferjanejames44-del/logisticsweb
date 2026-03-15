@@ -102,10 +102,10 @@ const ImportService = () => {
                 Move cargo from our supported warehouse countries into your destination market with a clear, step-by-step import workflow.
               </p>
               <div className="page-hero-actions sm:justify-start">
-                <Button asChild variant="heroPrimary" size="lg">
+                <Button asChild variant="heroSecondary" size="lg">
                   <Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link>
                 </Button>
-                <Button asChild variant="heroSecondary" size="lg">
+                <Button asChild variant="heroPrimary" size="lg">
                   <Link to="/shipping?flow=import&intent=quote">Get Shipping Quote</Link>
                 </Button>
               </div>
@@ -242,8 +242,8 @@ const ImportService = () => {
               ))}
             </div>
             <div className="cta-actions mt-10">
-              <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link></Button>
-              <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=import&intent=quote">Get Shipping Quote <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link></Button>
+              <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=import&intent=quote">Get Shipping Quote <ArrowRight className="h-4 w-4" /></Link></Button>
             </div>
           </div>
         </section>
