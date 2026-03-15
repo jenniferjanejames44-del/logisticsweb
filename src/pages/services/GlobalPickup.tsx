@@ -7,6 +7,7 @@ const GlobalPickup = () => {
       icon={PackageCheck}
       title="Global Pickup Services"
       subtitle="Worldwide Collection"
+      pricingSlug="pickup"
       description="RAC Logistics arranges package pickup from suppliers, warehouses, and businesses globally — transporting your items safely and efficiently to your destination."
       features={[
         "Worldwide Pickup Coordination",

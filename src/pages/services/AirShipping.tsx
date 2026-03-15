@@ -7,6 +7,7 @@ const AirShipping = () => {
       icon={Plane}
       title="Air Shipping"
       subtitle="Fast & Reliable"
+      pricingSlug="air"
       description="Experience the fastest way to ship your cargo globally. Our air freight solutions offer express delivery, real-time tracking, and temperature-controlled options for sensitive shipments."
       features={[
         "Express Delivery",

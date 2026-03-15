@@ -7,6 +7,7 @@ const OceanShipping = () => {
       icon={Ship}
       title="Ocean Shipping"
       subtitle="Cost-Effective"
+      pricingSlug="ocean"
       description="Our ocean freight solutions provide the most economical way to ship large volumes globally. Choose from FCL and LCL options with access to major ports worldwide."
       features={[
         "FCL Shipping",

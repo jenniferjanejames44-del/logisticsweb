@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,7 +44,18 @@ interface RoutePrice {
   price_per_kg: number;
 }
 
+const serviceSlugMap: Record<string, string> = {
+  air: "air-express",
+  ocean: "ocean-fcl",
+  pickup: "personal-shopping",
+  warehouse: "procurement",
+  customs: "procurement",
+  shopping: "personal-shopping",
+  procurement: "procurement",
+};
+
 const Pricing = () => {
+  const [searchParams] = useSearchParams();
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { user } = useAuth();
   const { formatUsd } = useCurrency();
@@ -56,6 +67,14 @@ const Pricing = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
   const [routeRate, setRouteRate] = useState<number | null>(null);
+
+  // Auto-select service from URL param
+  useEffect(() => {
+    const serviceParam = searchParams.get("service");
+    if (serviceParam && serviceSlugMap[serviceParam]) {
+      setSelectedService(serviceSlugMap[serviceParam]);
+    }
+  }, [searchParams]);
 
   // Fetch route-based prices from database
   useEffect(() => {
@@ -286,7 +305,7 @@ const Pricing = () => {
                           </div>
                           
                           <Button variant="accent" className="mt-4 shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleContinueToCheckout}>
-                            Continue to Checkout
+                            Continue Shipment
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                           <p className="text-xs text-muted-foreground mt-2">Secure payment via Paystack</p>

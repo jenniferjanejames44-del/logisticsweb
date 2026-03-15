@@ -42,6 +42,8 @@ interface ServicePageProps {
   workflowSteps: WorkflowStep[];
   benefits: Benefit[];
   features: string[];
+  /** Slug passed as ?service= to the pricing page (e.g. "air", "ocean") */
+  pricingSlug?: string;
 }
 
 const resolveServiceIcon = (label: string): LucideIcon => {
@@ -80,8 +82,10 @@ const ServicePageTemplate = ({
   description,
   workflowSteps,
   benefits,
-  features
+  features,
+  pricingSlug,
 }: ServicePageProps) => {
+  const quoteLink = pricingSlug ? `/pricing?service=${pricingSlug}` : "/pricing";
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { ref: workflowRef, isInView: workflowInView } = useInView({ threshold: 0.1 });
   const { ref: benefitsRef, isInView: benefitsInView } = useInView({ threshold: 0.1 });
@@ -129,7 +133,7 @@ const ServicePageTemplate = ({
               
               <div className="page-hero-actions sm:justify-start">
                 <Button asChild variant="heroPrimary" size="lg">
-                  <Link to="/pricing">Get a Quote</Link>
+                  <Link to={quoteLink}>Get a Quote</Link>
                 </Button>
                 <Button asChild variant="heroSecondary" size="lg">
                   <Link to="/contact">Contact Us</Link>
@@ -259,7 +263,7 @@ const ServicePageTemplate = ({
             </p>
             <div className="cta-actions mt-10">
               <Button asChild variant="heroPrimary" size="lg">
-                <Link to="/pricing">Get a Quote</Link>
+                <Link to={quoteLink}>Get a Quote</Link>
               </Button>
               <Button asChild variant="heroSecondary" size="lg">
                 <Link to="/contact">Contact Sales</Link>

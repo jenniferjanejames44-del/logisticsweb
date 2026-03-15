@@ -7,6 +7,7 @@ const WarehousingPage = () => {
       icon={Warehouse}
       title="Warehousing & Storage"
       subtitle="Secure Solutions"
+      pricingSlug="warehouse"
       description="State-of-the-art warehousing facilities with advanced inventory management. From short-term storage to full fulfillment services, we've got you covered."
       features={[
         "Secure Storage",
