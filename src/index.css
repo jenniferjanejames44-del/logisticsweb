@@ -339,8 +339,9 @@
   }
 
   .page-hero-actions > * {
-    max-width: 220px;
+    max-width: 260px;
     min-width: 0;
+    width: auto;
   }
 
   .cta-actions {
@@ -348,12 +349,13 @@
   }
 
   .cta-actions > * {
-    max-width: 220px;
+    max-width: 260px;
     min-width: 0;
+    width: auto;
   }
 
   .button-balance-mobile {
-    max-width: 220px;
+    max-width: 260px;
   }
 
   .section-shell {
