@@ -7,6 +7,7 @@ const CustomsClearance = () => {
       icon={FileCheck}
       title="Customs Clearance"
       subtitle="Expert Brokerage"
+      pricingSlug="customs"
       description="Expert customs brokerage services for seamless border crossings. Our licensed brokers ensure fast clearance with full regulatory compliance."
       features={[
         "Licensed Brokers",
