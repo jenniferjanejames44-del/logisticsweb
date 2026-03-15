@@ -69,10 +69,33 @@ const Pricing = () => {
     fetchRoutes();
   }, []);
 
-  const handleProceedToPayment = () => {
+  const handleContinueToCheckout = () => {
+    if (!selectedCountry || !weight || !selectedService || calculatedPrice === null) return;
+    
+    const country = countries.find(c => c.code === selectedCountry);
+    const service = services.find(s => s.id === selectedService);
+    
+    // Store quote data for checkout
+    const quoteData = {
+      destination_country: country?.name || selectedCountry,
+      destination_code: selectedCountry,
+      weight: weight,
+      service_type: selectedService,
+      service_name: service?.name || selectedService,
+      delivery_estimate: service?.description || "",
+      calculated_price: calculatedPrice,
+      base_rate: baseRate,
+      base_shipping_cost: baseShippingCost,
+      handling_fee: handlingFee,
+      insurance_fee: insuranceFee,
+      route_rate: routeRate,
+    };
+    localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
+    
     if (user) {
-      navigate("/dashboard/shipments");
+      navigate("/checkout");
     } else {
+      localStorage.setItem("post_auth_redirect", "/checkout");
       navigate("/auth");
     }
   };
