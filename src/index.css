@@ -339,8 +339,9 @@
   }
 
   .page-hero-actions > * {
-    max-width: 220px;
+    max-width: 260px;
     min-width: 0;
+    width: auto;
   }
 
   .cta-actions {
@@ -348,12 +349,13 @@
   }
 
   .cta-actions > * {
-    max-width: 220px;
+    max-width: 260px;
     min-width: 0;
+    width: auto;
   }
 
   .button-balance-mobile {
-    max-width: 220px;
+    max-width: 260px;
   }
 
   .section-shell {
@@ -485,10 +487,10 @@
   
   /* Professional Button System */
   .btn {
-    padding: 0.75rem 1.375rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
@@ -500,7 +502,7 @@
     border: none;
     cursor: pointer;
     min-height: 48px;
-    max-width: 220px;
+    max-width: 260px;
     width: auto;
     text-align: center;
     line-height: 1.2;
@@ -528,38 +530,37 @@
     box-shadow: 0 8px 18px rgba(6, 16, 67, 0.12);
   }
   
-  /* Secondary Button - White Outline */
+  /* Secondary Button - Deep Navy */
   .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 1.5px solid rgba(255, 255, 255, 0.88);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(8px);
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 0 12px 28px rgba(6, 16, 67, 0.14);
   }
   
   .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.95);
+    background: hsl(var(--primary-hover));
+    border-color: hsl(var(--primary-hover));
     transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 14px 30px rgba(6, 16, 67, 0.18);
   }
   
   .btn-secondary:active {
     transform: translateY(0);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 16px rgba(6, 16, 67, 0.12);
   }
 
+  /* Outline Button - Navy border, fills navy on hover */
   .btn-outline {
     background: transparent;
     color: hsl(var(--primary));
-    border: 1.5px solid hsl(var(--primary));
+    border: 2px solid hsl(var(--primary));
     box-shadow: none;
   }
 
   .btn-outline:hover {
-    background: hsl(var(--primary) / 0.06);
-    color: hsl(var(--primary));
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
     border-color: hsl(var(--primary));
     transform: translateY(-1px);
     box-shadow: 0 12px 24px rgba(6, 16, 67, 0.1);
@@ -588,7 +589,7 @@
   }
   
   .btn-lg {
-    padding: 0.75rem 1.375rem;
+    padding: 0.75rem 1.5rem;
     font-size: 1rem;
     min-height: 48px;
   }
@@ -596,9 +597,10 @@
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .btn {
-      padding: 0.75rem 1.375rem;
+      padding: 0.625rem 1.125rem;
       font-size: 0.925rem;
-      min-height: 48px;
+      min-height: 44px;
+      max-width: 260px;
     }
   }
   
