@@ -301,8 +301,8 @@ const Track = () => {
 		              <div className="relative max-w-2xl mx-auto">
 		                <div className="relative rounded-[26px] border border-border/70 bg-card p-6 shadow-[0_18px_44px_rgba(15,23,42,0.08)] sm:p-8 lg:p-10">
 		                  {/* Header */}
-		                  <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4">
-		                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent shadow-[0_14px_32px_rgba(223,81,1,0.3)] sm:h-14 sm:w-14">
+			                  <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8 sm:gap-4">
+			                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-[0_14px_32px_rgba(6,16,67,0.32)] sm:h-14 sm:w-14">
                       <Search size={22} className="sm:w-6 sm:h-6 text-accent-foreground" />
                     </div>
                     <h3 className="text-foreground sm:text-[1.625rem]">
