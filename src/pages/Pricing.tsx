@@ -285,8 +285,8 @@ const Pricing = () => {
                             </div>
                           </div>
                           
-                          <Button variant="accent" className="mt-4 shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleProceedToPayment}>
-                            {user ? "Create Shipment & Pay" : "Sign In to Pay"}
+                          <Button variant="accent" className="mt-4 shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleContinueToCheckout}>
+                            Continue to Checkout
                             <ArrowRight className="w-4 h-4 ml-2" />
                           </Button>
                           <p className="text-xs text-muted-foreground mt-2">Secure payment via Paystack</p>
