@@ -59,7 +59,7 @@ import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
 import AdminSupport from "./pages/admin/AdminSupport";
 import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
 import AdminRefunds from "./pages/admin/AdminRefunds";
-import DesignSystem from "./pages/DesignSystem";
+import Checkout from "./pages/Checkout";
 const queryClient = new QueryClient();
 
 // Component that uses the login tracking hook
