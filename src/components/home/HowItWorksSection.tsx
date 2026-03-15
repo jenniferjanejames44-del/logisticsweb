@@ -61,7 +61,7 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8">
           {steps.map((step, index) => (
             <div
               key={step.step}
@@ -97,7 +97,7 @@ const HowItWorksSection = () => {
 
               {/* Connector - Large Desktop only */}
               {index < steps.length - 1 && (
-                <div className="absolute top-1/2 z-10 hidden -right-4 -translate-y-1/2 transform xl:flex">
+                <div className="absolute top-1/2 z-10 hidden -right-3 -translate-y-1/2 transform lg:flex xl:-right-4">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/10 bg-background shadow-sm">
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>

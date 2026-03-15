@@ -484,6 +484,30 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+
+  @media (min-width: 1024px) {
+    .section-container {
+      max-width: 1240px;
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+    .page-hero-shell {
+      max-width: 860px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .section-container {
+      max-width: 1320px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .page-hero-shell {
+      max-width: 920px;
+    }
+  }
   
   /* Professional Button System */
   .btn {
