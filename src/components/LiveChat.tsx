@@ -14,6 +14,14 @@ interface Message {
 }
 
 const SCROLL_THRESHOLD = 120;
+const WHATSAPP_LINK = "https://wa.me/2348185956707?text=Hello%20RAC%20Logistics%2C%20I%20need%20support.";
+
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M19.11 17.33c-.3-.15-1.78-.88-2.05-.98-.27-.1-.47-.15-.67.15-.2.3-.77.98-.94 1.18-.17.2-.35.23-.65.08-.3-.15-1.27-.47-2.42-1.5-.89-.8-1.5-1.78-1.67-2.08-.18-.3-.02-.46.13-.61.13-.13.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.53.08-.8.38-.27.3-1.03 1-.98 2.43.05 1.42 1.03 2.8 1.18 3 .15.2 2.04 3.12 5.04 4.38.71.31 1.27.5 1.7.64.71.22 1.36.19 1.88.12.57-.08 1.78-.73 2.03-1.43.25-.7.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z" />
+    <path d="M27.22 4.78A15.2 15.2 0 0 0 3.68 23.12L2 30l7.04-1.64a15.21 15.21 0 0 0 7.22 1.83h.01c8.39 0 15.22-6.82 15.22-15.21 0-4.06-1.58-7.88-4.27-10.2Zm-10.95 22.8h-.01a12.7 12.7 0 0 1-6.47-1.78l-.46-.27-4.18.97.99-4.07-.3-.48a12.66 12.66 0 0 1-1.95-6.72c0-7 5.7-12.69 12.71-12.69 3.39 0 6.58 1.32 8.98 3.72a12.61 12.61 0 0 1 3.72 8.98c0 7-5.7 12.69-12.7 12.69Z" />
+  </svg>
+);
 
 const LiveChat = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -123,7 +131,7 @@ const LiveChat = () => {
       {/* Chat Window */}
       <div
         className={cn(
-          "fixed bottom-[5.5rem] right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] max-w-[380px] bg-card rounded-2xl shadow-2xl border border-border z-[9998] overflow-hidden transition-all duration-300 transform",
+          "fixed bottom-[10rem] right-4 sm:bottom-[10.5rem] sm:right-6 w-[calc(100vw-2rem)] max-w-[380px] rounded-2xl border border-border bg-card shadow-2xl z-[9998] overflow-hidden transition-all duration-300 transform sm:w-[380px]",
           isOpen
             ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
             : "opacity-0 translate-y-4 scale-95 pointer-events-none"
@@ -234,12 +242,22 @@ const LiveChat = () => {
         </div>
       </div>
 
+      <a
+        href={WHATSAPP_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with RAC Logistics on WhatsApp"
+        className="fixed bottom-6 right-4 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_36px_rgba(37,211,102,0.32)] transition-all duration-300 hover:-translate-y-px hover:bg-[#1DA851] hover:shadow-[0_20px_42px_rgba(37,211,102,0.4)] sm:right-6"
+      >
+        <WhatsAppIcon className="h-7 w-7" />
+      </a>
+
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-6 right-4 sm:right-6 w-14 h-14 rounded-xl shadow-lg z-[9999] flex items-center justify-center transition-all duration-300",
+          "fixed bottom-[5.25rem] right-4 z-[9999] flex h-14 w-14 items-center justify-center rounded-xl shadow-lg transition-all duration-300 sm:bottom-24 sm:right-6",
           isOpen
             ? "bg-muted text-foreground"
             : "bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-xl",
