@@ -1,4 +1,4 @@
-import { Store, Cog, Syringe, Cpu, UtensilsCrossed, CarFront } from "lucide-react";
+import { Store, Cog, Syringe, Cpu, UtensilsCrossed, Fuel } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const industries = [
@@ -28,9 +28,9 @@ const industries = [
     description: "Cold chain logistics for perishable goods.",
   },
   {
-    icon: CarFront,
-    title: "Automotive",
-    description: "Parts logistics and just-in-time delivery.",
+    icon: Fuel,
+    title: "Oil & Gas",
+    description: "Specialized logistics support for energy equipment and supply chains.",
   },
 ];
 
