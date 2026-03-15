@@ -273,10 +273,7 @@ const Header = () => {
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
-                    className={cn(
-                      "px-0",
-                      groupIndex > 0 && "border-t border-border/60 pt-2.5",
-                    )}
+                    className="px-0"
                   >
                     <div className="pb-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-foreground/65">
                       {group.heading}
