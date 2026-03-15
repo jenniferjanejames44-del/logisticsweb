@@ -141,9 +141,9 @@ const TrackingCard = ({ isVisible }: TrackingCardProps) => {
         <div className="p-6 sm:p-7">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="icon-tile h-11 w-11 rounded-[16px] border-accent/10 bg-accent/[0.08] text-accent shadow-[0_10px_20px_rgba(223,81,1,0.16)] sm:h-12 sm:w-12">
-              <Search size={18} className="sm:hidden text-accent-foreground" />
-              <Search size={20} className="hidden sm:block text-accent-foreground" />
+            <div className="icon-tile h-11 w-11 rounded-[16px] border-primary/10 bg-primary text-primary-foreground shadow-[0_12px_24px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12">
+              <Search size={18} className="sm:hidden text-primary-foreground" />
+              <Search size={20} className="hidden sm:block text-primary-foreground" />
             </div>
             <div className="text-left">
               <h3 className="font-bold text-base sm:text-lg text-foreground leading-tight">Track Your Shipment</h3>
