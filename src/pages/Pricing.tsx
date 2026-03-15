@@ -44,7 +44,18 @@ interface RoutePrice {
   price_per_kg: number;
 }
 
+const serviceSlugMap: Record<string, string> = {
+  air: "air-express",
+  ocean: "ocean-fcl",
+  pickup: "personal-shopping",
+  warehouse: "procurement",
+  customs: "procurement",
+  shopping: "personal-shopping",
+  procurement: "procurement",
+};
+
 const Pricing = () => {
+  const [searchParams] = useSearchParams();
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { user } = useAuth();
   const { formatUsd } = useCurrency();
@@ -56,6 +67,14 @@ const Pricing = () => {
   const [isCalculating, setIsCalculating] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
   const [routeRate, setRouteRate] = useState<number | null>(null);
+
+  // Auto-select service from URL param
+  useEffect(() => {
+    const serviceParam = searchParams.get("service");
+    if (serviceParam && serviceSlugMap[serviceParam]) {
+      setSelectedService(serviceSlugMap[serviceParam]);
+    }
+  }, [searchParams]);
 
   // Fetch route-based prices from database
   useEffect(() => {
