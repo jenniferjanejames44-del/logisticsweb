@@ -184,10 +184,10 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Button asChild variant="outline" size="sm" className="font-semibold text-[15px]">
+              <Button asChild variant="outline" size="sm" className="font-semibold text-[15px] whitespace-nowrap px-5">
                 <Link to="/auth">Log In</Link>
               </Button>
-              <Button asChild variant="navCta" size="sm" className="font-bold">
+              <Button asChild variant="navCta" size="sm" className="font-bold whitespace-nowrap px-5">
                 <Link to="/auth">
                   Join Now
                   <ArrowRight className="w-4 h-4" />
