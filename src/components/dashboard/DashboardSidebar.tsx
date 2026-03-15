@@ -69,17 +69,14 @@ const DashboardSidebar = () => {
         }`}
       >
         {/* Logo */}
-        <div className="border-b border-primary-foreground/10 px-5 py-6">
-          <Link to="/" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-2.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
-              <Logo className="h-7 text-white" />
-            </div>
-            <div>
-              <span className="block text-base font-bold leading-tight">
-                RAC <span className="text-accent">Logistics</span>
-              </span>
-              <span className="text-[11px] leading-none text-primary-foreground/60">Customer Portal</span>
-            </div>
+        <div className="border-b border-primary-foreground/10 px-5 py-5 sm:py-6">
+          <Link
+            to="/"
+            className="group flex w-full items-center justify-center rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-all duration-200 hover:bg-white/[0.07] lg:justify-start"
+            onClick={() => setIsMobileOpen(false)}
+            aria-label="RAC Logistics home"
+          >
+            <Logo className="h-auto w-full max-w-[148px] text-white sm:max-w-[164px] lg:max-w-[176px]" />
           </Link>
         </div>
 
