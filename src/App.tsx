@@ -100,6 +100,7 @@ const App = () => (
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/track" element={<Track />} />
               <Route path="/shipping" element={<Shipping />} />
+              <Route path="/checkout" element={<Checkout />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
