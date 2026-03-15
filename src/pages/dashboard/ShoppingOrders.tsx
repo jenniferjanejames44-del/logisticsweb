@@ -15,13 +15,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  pending_purchase: { label: "Pending Purchase", variant: "secondary" },
-  purchased: { label: "Purchased", variant: "default" },
-  arrived_warehouse: { label: "Arrived Warehouse", variant: "outline" },
-  ready_for_shipment: { label: "Ready for Shipment", variant: "default" },
-};
+import {
+  getShoppingOrderDisplayStatus,
+  needsShoppingOrderPayment,
+  SHOPPING_ORDER_PAYMENT_ROUTE,
+  shoppingOrderStatusConfig,
+} from "@/lib/shoppingOrders";
 
 interface ShoppingOrder {
   id: string;
@@ -93,7 +92,9 @@ const ShoppingOrders = () => {
         ) : (
           <div className="grid gap-4">
             {orders.map((order) => {
-              const sc = statusConfig[order.status] || statusConfig.pending_purchase;
+              const displayStatus = getShoppingOrderDisplayStatus(order.status, order.payment_status);
+              const sc = shoppingOrderStatusConfig[displayStatus] || shoppingOrderStatusConfig.pending_payment;
+              const showPayNow = needsShoppingOrderPayment(order.status, order.payment_status);
               return (
                 <Card key={order.id} className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
                   <CardContent className="p-6">
@@ -112,6 +113,11 @@ const ShoppingOrders = () => {
                           <p className="font-bold text-foreground">{formatUsd(Number(order.total_cost))}</p>
                           <Badge variant={sc.variant} className="text-xs">{sc.label}</Badge>
                         </div>
+                        {showPayNow && (
+                          <Button size="sm" onClick={() => navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${order.id}`)}>
+                            Pay Now
+                          </Button>
+                        )}
                         <Button variant="ghost" size="icon" className="h-10 w-10 rounded-lg" onClick={() => setSelectedOrder(order)}>
                           <Eye className="w-4 h-4" />
                         </Button>
@@ -146,14 +152,21 @@ const ShoppingOrders = () => {
                 <span className="text-muted-foreground">Total Cost</span>
                 <span className="font-bold text-primary">{formatUsd(Number(selectedOrder.total_cost))}</span>
                 <span className="text-muted-foreground">Status</span>
-                <Badge variant={statusConfig[selectedOrder.status]?.variant || "secondary"}>
-                  {statusConfig[selectedOrder.status]?.label || selectedOrder.status}
+                  <Badge variant={shoppingOrderStatusConfig[getShoppingOrderDisplayStatus(selectedOrder.status, selectedOrder.payment_status)]?.variant || "secondary"}>
+                  {shoppingOrderStatusConfig[getShoppingOrderDisplayStatus(selectedOrder.status, selectedOrder.payment_status)]?.label || selectedOrder.status}
                 </Badge>
                 <span className="text-muted-foreground">Payment</span>
                 <Badge variant={selectedOrder.payment_status === "paid" ? "default" : "destructive"}>
                   {selectedOrder.payment_status}
                 </Badge>
               </div>
+              {needsShoppingOrderPayment(selectedOrder.status, selectedOrder.payment_status) && (
+                <div className="flex justify-end">
+                  <Button onClick={() => navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${selectedOrder.id}`)}>
+                    Pay Now
+                  </Button>
+                </div>
+              )}
               {selectedOrder.item_description && (
                 <div className="rounded-lg border border-border bg-background p-4">
                   <p className="text-muted-foreground mb-1">Description</p>

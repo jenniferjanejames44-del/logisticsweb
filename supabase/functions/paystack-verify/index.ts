@@ -144,6 +144,103 @@ Deno.serve(async (req) => {
       }
     }
 
+    // ── Shopping order payment ──
+    if (metadata.type === "shopping_order") {
+      if (metadata.user_id !== userId) {
+        return new Response(
+          JSON.stringify({ error: "Access denied" }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const { data: order, error: orderError } = await adminClient
+        .from("shopping_orders")
+        .select("id, user_id, order_number, total_cost, payment_status")
+        .eq("id", metadata.shopping_order_id)
+        .single();
+
+      if (orderError || !order) {
+        return new Response(
+          JSON.stringify({ error: "Shopping order not found for this payment" }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (order.user_id !== userId) {
+        return new Response(
+          JSON.stringify({ error: "Access denied" }),
+          { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (order.payment_status === "paid") {
+        return new Response(
+          JSON.stringify({ status: "success", message: "Shopping order already paid", type: "shopping_order" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (txn.status !== "success") {
+        return new Response(
+          JSON.stringify({ status: "failed", message: `Payment status: ${txn.status}`, type: "shopping_order" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const paidAmountNGN = txn.amount / 100;
+      const fallbackQuote = await buildGatewayQuote({
+        amount: Number(order.total_cost),
+        baseCurrency: "USD",
+        gateway: "paystack",
+      });
+      const expectedAmount = Number(metadata.gateway_amount || fallbackQuote.payableAmount);
+      const gatewayCurrency = metadata.gateway_currency || txn.currency || "NGN";
+
+      if (paidAmountNGN + 0.01 < expectedAmount) {
+        console.error(`Shopping order amount mismatch: paid ${paidAmountNGN}, expected ${expectedAmount}`);
+        return new Response(
+          JSON.stringify({ error: "Amount mismatch", status: "failed", type: "shopping_order" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      await adminClient
+        .from("shopping_orders")
+        .update({
+          payment_status: "paid",
+          status: "paid",
+        })
+        .eq("id", order.id);
+
+      const { data: existingPayment } = await adminClient
+        .from("payments")
+        .select("id")
+        .eq("transaction_id", reference)
+        .maybeSingle();
+
+      if (!existingPayment) {
+        await adminClient.from("payments").insert({
+          user_id: userId,
+          shipment_id: null,
+          amount: paidAmountNGN,
+          currency: gatewayCurrency,
+          status: "completed",
+          payment_method: txn.channel || "paystack",
+          transaction_id: reference,
+          description: `Paystack payment for shopping order ${order.order_number}`,
+        });
+      }
+
+      return new Response(
+        JSON.stringify({
+          status: "success",
+          message: "Payment verified and shopping order marked as paid",
+          type: "shopping_order",
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     // ── Invoice payment ──
     const { data: invoice, error: invError } = await adminClient
       .from("invoices")

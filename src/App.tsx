@@ -54,6 +54,7 @@ import Track from "./pages/Track";
 import Shipping from "./pages/Shipping";
 import PersonalShoppingForm from "./pages/PersonalShoppingForm";
 import ShoppingOrders from "./pages/dashboard/ShoppingOrders";
+import ShoppingOrderPayment from "./pages/dashboard/ShoppingOrderPayment";
 import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
 import AdminSupport from "./pages/admin/AdminSupport";
 import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
@@ -111,6 +112,7 @@ const App = () => (
               <Route path="/dashboard/support" element={<Support />} />
               <Route path="/dashboard/support/:id" element={<SupportTicketDetail />} />
               <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
+              <Route path="/dashboard/shopping-orders/pay" element={<ShoppingOrderPayment />} />
               <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
               {/* Admin Dashboard */}
               <Route path="/admin" element={<AdminDashboard />} />

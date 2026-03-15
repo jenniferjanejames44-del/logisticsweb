@@ -106,6 +106,66 @@ Deno.serve(async (req) => {
         return new Response("OK", { status: 200 });
       }
 
+      // Shopping order payment
+      if (metadata.type === "shopping_order" && metadata.shopping_order_id) {
+        const { data: order } = await adminClient
+          .from("shopping_orders")
+          .select("id, user_id, order_number, total_cost, payment_status")
+          .eq("id", metadata.shopping_order_id)
+          .single();
+
+        if (!order) {
+          console.error("Shopping order not found for reference:", reference);
+          return new Response("OK", { status: 200 });
+        }
+
+        if (order.payment_status === "paid") {
+          console.log("Shopping order already paid:", order.id);
+          return new Response("OK", { status: 200 });
+        }
+
+        const paidAmountNGN = txn.amount / 100;
+        const fallbackQuote = await buildGatewayQuote({
+          amount: Number(order.total_cost),
+          baseCurrency: "USD",
+          gateway: "paystack",
+        });
+        const expectedAmount = Number(metadata.gateway_amount || fallbackQuote.payableAmount);
+        const gatewayCurrency = metadata.gateway_currency || txn.currency || "NGN";
+
+        if (paidAmountNGN + 0.01 < expectedAmount) {
+          console.error(`Webhook shopping order amount mismatch: paid ${paidAmountNGN}, expected ${expectedAmount}`);
+          return new Response("OK", { status: 200 });
+        }
+
+        await adminClient
+          .from("shopping_orders")
+          .update({ payment_status: "paid", status: "paid" })
+          .eq("id", order.id);
+
+        const { data: existingPayment } = await adminClient
+          .from("payments")
+          .select("id")
+          .eq("transaction_id", reference)
+          .maybeSingle();
+
+        if (!existingPayment) {
+          await adminClient.from("payments").insert({
+            user_id: order.user_id,
+            shipment_id: null,
+            amount: paidAmountNGN,
+            currency: gatewayCurrency,
+            status: "completed",
+            payment_method: txn.channel || "paystack",
+            transaction_id: reference,
+            description: `Paystack webhook payment for shopping order ${order.order_number}`,
+          });
+        }
+
+        console.log("Webhook: Shopping order paid successfully:", order.id);
+        return new Response("OK", { status: 200 });
+      }
+
       // Invoice payment
       const { data: invoice, error: invError } = await adminClient
         .from("invoices")

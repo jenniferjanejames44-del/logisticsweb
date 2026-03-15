@@ -42,12 +42,96 @@ Deno.serve(async (req) => {
     }
     const userId = claimsData.claims.sub;
 
-    const { invoice_id, callback_url } = await req.json();
+    const { invoice_id, shopping_order_id, callback_url } = await req.json();
 
-    if (!invoice_id || !callback_url) {
+    if ((!invoice_id && !shopping_order_id) || !callback_url) {
       return new Response(
-        JSON.stringify({ error: "invoice_id and callback_url are required" }),
+        JSON.stringify({ error: "invoice_id or shopping_order_id and callback_url are required" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Fetch user email from profiles
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("user_id", userId)
+      .single();
+
+    const email = profile?.email || "";
+
+    if (shopping_order_id) {
+      const { data: order, error: orderError } = await supabase
+        .from("shopping_orders")
+        .select("id, order_number, total_cost, payment_status, status")
+        .eq("id", shopping_order_id)
+        .eq("user_id", userId)
+        .single();
+
+      if (orderError || !order) {
+        return new Response(
+          JSON.stringify({ error: "Shopping order not found or access denied" }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      if (order.payment_status === "paid") {
+        return new Response(
+          JSON.stringify({ error: "Shopping order is already paid" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      const quote = await buildGatewayQuote({
+        amount: Number(order.total_cost),
+        baseCurrency: "USD",
+        gateway: "paystack",
+      });
+      const reference = `SHOP-${order.order_number}-${Date.now()}`;
+      const amountInKobo = Math.round(quote.payableAmount * 100);
+
+      const paystackRes = await fetch("https://api.paystack.co/transaction/initialize", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          amount: amountInKobo,
+          reference,
+          currency: "NGN",
+          callback_url,
+          metadata: {
+            type: "shopping_order",
+            shopping_order_id: order.id,
+            order_number: order.order_number,
+            user_id: userId,
+            base_amount: quote.baseAmount,
+            base_currency: quote.baseCurrency,
+            gateway_amount: quote.payableAmount,
+            gateway_currency: quote.gatewayCurrency,
+            exchange_rate: quote.exchangeRate,
+          },
+        }),
+      });
+
+      const paystackData = await paystackRes.json();
+      if (!paystackRes.ok || !paystackData.status) {
+        console.error("Paystack init failed:", paystackData);
+        throw new Error(paystackData.message || "Failed to initialize payment");
+      }
+
+      return new Response(
+        JSON.stringify({
+          authorization_url: paystackData.data.authorization_url,
+          reference: paystackData.data.reference,
+          access_code: paystackData.data.access_code,
+          gateway_amount: quote.payableAmount,
+          gateway_currency: quote.gatewayCurrency,
+          type: "shopping_order",
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -73,14 +157,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Fetch user email from profiles
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("email")
-      .eq("user_id", userId)
-      .single();
-
-    const email = profile?.email || "";
     const reference = `PAY-${invoice.invoice_number}-${Date.now()}`;
     const quote = await buildGatewayQuote({
       amount: Number(invoice.amount),

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { getPendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
 
 interface AuthRedirectProps {
   children: React.ReactNode;
@@ -63,19 +64,21 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
           console.log("AuthRedirect: Redirecting to /admin");
           navigate("/admin", { replace: true });
         } else {
+          const hasPendingShoppingOrder = !!getPendingShoppingOrder();
+
           // Check for pending redirect (shipment/procurement/public workflow)
           const postAuthRedirect = localStorage.getItem("post_auth_redirect");
-          const pendingRedirect = postAuthRedirect || localStorage.getItem("pending_shipment_redirect");
+          const pendingRedirect = postAuthRedirect || localStorage.getItem("pending_shipment_redirect") || (hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : null);
           if (pendingRedirect) {
             if (postAuthRedirect) {
               localStorage.removeItem("post_auth_redirect");
             }
             localStorage.removeItem("pending_shipment_redirect");
-            console.log("AuthRedirect: Redirecting to pending shipment:", pendingRedirect);
+            console.log("AuthRedirect: Redirecting to pending workflow:", pendingRedirect);
             navigate(pendingRedirect, { replace: true });
           } else {
             const hasPending = localStorage.getItem("pending_shipment_data");
-            const redirectTo = hasPending ? "/dashboard/shipments" : "/dashboard";
+            const redirectTo = hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : hasPending ? "/dashboard/shipments" : "/dashboard";
             console.log("AuthRedirect: Redirecting to", redirectTo);
             navigate(redirectTo, { replace: true });
           }

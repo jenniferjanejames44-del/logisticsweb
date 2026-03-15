@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
+import { savePendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
 import {
   ShoppingBag,
   ArrowLeft,
@@ -80,7 +81,18 @@ const PersonalShoppingForm = () => {
 
   const handleSubmit = async () => {
     if (!user) {
-      toast({ title: "Please sign in", variant: "destructive" });
+      savePendingShoppingOrder({
+        productName: form.productName,
+        productLink: form.productLink,
+        itemDescription: form.itemDescription,
+        itemValue: totalItemValue,
+        quantity,
+        processingFee,
+        totalCost,
+        additionalNotes: form.additionalNotes,
+      });
+      localStorage.setItem("post_auth_redirect", SHOPPING_ORDER_PAYMENT_ROUTE);
+      toast({ title: "Please sign in", description: "Continue to secure payment after login.", variant: "destructive" });
       navigate("/auth");
       return;
     }
@@ -98,7 +110,7 @@ const PersonalShoppingForm = () => {
         }
       }
 
-      const { error } = await supabase.from("shopping_orders").insert({
+      const { data, error } = await supabase.from("shopping_orders").insert({
         user_id: user.id,
         order_number: "", // trigger generates this
         product_name: form.productName,
@@ -110,12 +122,14 @@ const PersonalShoppingForm = () => {
         total_cost: totalCost,
         product_image_url: imageUrl,
         additional_notes: form.additionalNotes || null,
-      });
+        status: "pending_payment",
+        payment_status: "unpaid",
+      }).select("id").single();
 
       if (error) throw error;
 
-      toast({ title: "Shopping request submitted!", description: "We'll process your order shortly." });
-      navigate("/dashboard/shopping-orders");
+      toast({ title: "Shopping request submitted!", description: "Continue to payment to confirm your order." });
+      navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${data.id}`);
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
     } finally {

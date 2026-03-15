@@ -18,6 +18,7 @@ const PaymentCallback = () => {
   const [status, setStatus] = useState<"verifying" | "success" | "failed">("verifying");
   const [message, setMessage] = useState("Verifying your payment...");
   const [paymentType, setPaymentType] = useState<string | null>(null);
+  const orderId = searchParams.get("orderId");
 
   useEffect(() => {
     const reference = searchParams.get("reference") || searchParams.get("trxref");
@@ -40,6 +41,9 @@ const PaymentCallback = () => {
             setPaymentType("wallet_topup");
             setMessage(data.message || "Your wallet has been funded successfully!");
             refetchBalance();
+          } else if (data.type === "shopping_order") {
+            setPaymentType("shopping_order");
+            setMessage(data.message || "Payment successful! Your shopping order has been marked as paid.");
           } else {
             setMessage(data.message || "Payment successful! Your invoice has been marked as paid.");
           }
@@ -58,6 +62,17 @@ const PaymentCallback = () => {
   }, [searchParams, user]);
 
   const isWalletTopup = paymentType === "wallet_topup";
+  const isShoppingOrder = paymentType === "shopping_order" || searchParams.get("type") === "shopping_order";
+
+  useEffect(() => {
+    if (status !== "success" || !isShoppingOrder) return;
+
+    const timer = window.setTimeout(() => {
+      navigate("/dashboard/shopping-orders", { replace: true });
+    }, 1800);
+
+    return () => window.clearTimeout(timer);
+  }, [status, isShoppingOrder, navigate]);
 
   return (
     <DashboardLayout title="Payment Status" description="Payment verification result">
@@ -79,7 +94,7 @@ const PaymentCallback = () => {
                   <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
                 )}
                 <h2 className="text-foreground">
-                  {isWalletTopup ? "Wallet Funded!" : "Payment Successful!"}
+                  {isWalletTopup ? "Wallet Funded!" : isShoppingOrder ? "Shopping Order Paid!" : "Payment Successful!"}
                 </h2>
                 <p className="text-muted-foreground">{message}</p>
                 {isWalletTopup && !balanceLoading && (
@@ -95,6 +110,15 @@ const PaymentCallback = () => {
                     <>
                       <Button variant="cta" onClick={() => navigate("/dashboard/wallet")}>
                         View Wallet
+                      </Button>
+                      <Button variant="outline" onClick={() => navigate("/dashboard")}>
+                        Go to Dashboard
+                      </Button>
+                    </>
+                  ) : isShoppingOrder ? (
+                    <>
+                      <Button onClick={() => navigate("/dashboard/shopping-orders")}>
+                        View Shopping Orders
                       </Button>
                       <Button variant="outline" onClick={() => navigate("/dashboard")}>
                         Go to Dashboard
@@ -119,8 +143,8 @@ const PaymentCallback = () => {
                 <h2 className="text-foreground">Payment Failed</h2>
                 <p className="text-muted-foreground">{message}</p>
                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                  <Button onClick={() => navigate(isWalletTopup ? "/dashboard/wallet" : "/dashboard/shipments")}>
-                    {isWalletTopup ? "Back to Wallet" : "Back to Shipments"}
+                  <Button onClick={() => navigate(isWalletTopup ? "/dashboard/wallet" : isShoppingOrder && orderId ? `/dashboard/shopping-orders/pay?orderId=${orderId}` : isShoppingOrder ? "/dashboard/shopping-orders" : "/dashboard/shipments")}>
+                    {isWalletTopup ? "Back to Wallet" : isShoppingOrder ? "Back to Shopping Orders" : "Back to Shipments"}
                   </Button>
                   <Button variant="outline" onClick={() => navigate("/contact")}>
                     Contact Support

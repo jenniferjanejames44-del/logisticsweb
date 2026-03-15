@@ -20,6 +20,7 @@ import {
   formatProcessingFeeBand,
   type ProcessingFeeBand,
 } from "@/lib/procurementFees";
+import { savePendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
 
 const Procurement = () => {
   const { user } = useAuth();
@@ -66,8 +67,18 @@ const Procurement = () => {
     event.preventDefault();
 
     if (!user) {
-      localStorage.setItem("post_auth_redirect", "/services/procurement");
-      toast({ title: "Log in required", description: "Please log in to submit your procurement request." });
+      savePendingShoppingOrder({
+        productName: form.productName,
+        productLink: form.productLink,
+        itemDescription: form.specialInstructions || form.productName,
+        itemValue: estimatedOrderValue,
+        quantity,
+        processingFee,
+        totalCost: estimatedTotal,
+        additionalNotes: form.specialInstructions,
+      });
+      localStorage.setItem("post_auth_redirect", SHOPPING_ORDER_PAYMENT_ROUTE);
+      toast({ title: "Log in required", description: "Please log in to continue to payment for this request." });
       navigate("/auth");
       return;
     }
@@ -85,7 +96,7 @@ const Procurement = () => {
         }
       }
 
-      const { error } = await supabase.from("shopping_orders").insert({
+      const { data, error } = await supabase.from("shopping_orders").insert({
         user_id: user.id,
         order_number: "",
         product_name: form.productName,
@@ -97,12 +108,14 @@ const Procurement = () => {
         total_cost: estimatedTotal,
         product_image_url: fileUrl,
         additional_notes: form.specialInstructions || null,
-      });
+        status: "pending_payment",
+        payment_status: "unpaid",
+      }).select("id").single();
 
       if (error) throw error;
 
-      toast({ title: "Procurement request submitted", description: "Your request has been added to the existing procurement queue." });
-      navigate("/dashboard/shopping-orders");
+      toast({ title: "Procurement request submitted", description: "Continue to payment to confirm your order." });
+      navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${data.id}`);
     } catch (error) {
       toast({
         title: "Submission failed",

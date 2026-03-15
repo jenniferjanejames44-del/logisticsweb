@@ -11,20 +11,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ShoppingBag, Eye, RefreshCw } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
-
-const statusOptions = [
-  { value: "pending_purchase", label: "Pending Purchase" },
-  { value: "purchased", label: "Purchased" },
-  { value: "arrived_warehouse", label: "Arrived Warehouse" },
-  { value: "ready_for_shipment", label: "Ready for Shipment" },
-];
-
-const statusConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
-  pending_purchase: { label: "Pending Purchase", variant: "secondary" },
-  purchased: { label: "Purchased", variant: "default" },
-  arrived_warehouse: { label: "Arrived Warehouse", variant: "outline" },
-  ready_for_shipment: { label: "Ready for Shipment", variant: "default" },
-};
+import {
+  canAdvanceShoppingOrder,
+  getShoppingOrderDisplayStatus,
+  shoppingOrderStatusConfig,
+  shoppingOrderStatusOptions,
+} from "@/lib/shoppingOrders";
 
 interface ShoppingOrder {
   id: string;
@@ -83,16 +75,25 @@ const AdminShoppingOrders = () => {
 
   useEffect(() => { fetchOrders(); }, []);
 
-  const updateStatus = async (orderId: string, newStatus: string) => {
+  const updateStatus = async (order: ShoppingOrder, newStatus: string) => {
+    if (!canAdvanceShoppingOrder(newStatus, order.payment_status)) {
+      toast({
+        title: "Payment required",
+        description: "This shopping order must be paid before it can move beyond pending payment.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const { error } = await supabase
       .from("shopping_orders")
       .update({ status: newStatus })
-      .eq("id", orderId);
+      .eq("id", order.id);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Status updated" });
-      setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, status: newStatus } : o));
+      setOrders((prev) => prev.map((o) => o.id === order.id ? { ...o, status: newStatus } : o));
     }
   };
 
@@ -141,7 +142,8 @@ const AdminShoppingOrders = () => {
                   ) : (
                     orders.map((order) => {
                       const profile = profiles[order.user_id];
-                      const sc = statusConfig[order.status] || statusConfig.pending_purchase;
+                      const displayStatus = getShoppingOrderDisplayStatus(order.status, order.payment_status);
+                      const sc = shoppingOrderStatusConfig[displayStatus] || shoppingOrderStatusConfig.pending_payment;
                       return (
                         <TableRow key={order.id}>
                           <TableCell className="font-mono text-xs">{order.order_number}</TableCell>
@@ -161,12 +163,12 @@ const AdminShoppingOrders = () => {
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            <Select value={order.status} onValueChange={(val) => updateStatus(order.id, val)}>
+                            <Select value={displayStatus} onValueChange={(val) => updateStatus(order, val)}>
                               <SelectTrigger className="w-[160px] h-8 text-xs">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                {statusOptions.map((s) => (
+                                {shoppingOrderStatusOptions.map((s) => (
                                   <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
                                 ))}
                               </SelectContent>
