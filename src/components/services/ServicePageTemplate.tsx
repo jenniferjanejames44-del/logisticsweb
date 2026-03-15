@@ -263,7 +263,7 @@ const ServicePageTemplate = ({
             </p>
             <div className="cta-actions mt-10">
               <Button asChild variant="heroPrimary" size="lg">
-                <Link to="/pricing">Get a Quote</Link>
+                <Link to={quoteLink}>Get a Quote</Link>
               </Button>
               <Button asChild variant="heroSecondary" size="lg">
                 <Link to="/contact">Contact Sales</Link>
