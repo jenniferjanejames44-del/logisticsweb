@@ -64,7 +64,7 @@ const Header = () => {
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
-      "font-display block border-b border-border/60 py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
+      "font-display block py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
       isActive
         ? "text-accent"
         : "hover:text-accent",
