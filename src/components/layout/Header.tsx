@@ -256,7 +256,7 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between border-b border-border/60 py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
+                "font-display flex items-center justify-between py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
                 isServicesRoute
                   ? "text-accent"
                   : "hover:text-accent",
