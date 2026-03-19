@@ -67,7 +67,7 @@ const Footer = () => {
         <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-[1.15fr_0.82fr_0.95fr_1.08fr]">
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center" aria-label="RAC Logistics home">
-              <Logo className="h-16 text-white sm:h-[70px]" />
+              <HeaderLogo className="h-16 sm:h-[70px] [&_g]:fill-white [&_text]:fill-white" />
             </Link>
 
             <p className="max-w-md text-[15px] leading-7 text-white/72">
