@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
-import Logo from "./Logo";
+import HeaderLogo from "./HeaderLogo";
 
 const Footer = () => {
   const companyLinks = [
