@@ -20,7 +20,7 @@ import ExportService from "./pages/services/ExportService";
 import WarehousingPage from "./pages/services/Warehousing";
 import CustomsClearance from "./pages/services/CustomsClearance";
 import GlobalPickup from "./pages/services/GlobalPickup";
-import Gallery from "./pages/Gallery";
+
 import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
