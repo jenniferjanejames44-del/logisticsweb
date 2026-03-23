@@ -7,8 +7,62 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAIL = "rex@raclogisticltd.com";
-const FROM_EMAIL = "RAC Logistics <onboarding@resend.dev>";
 const SITE_URL = "https://logisticsweb.lovable.app";
+
+// ──────────────────────────────────────
+// Role-based FROM addresses
+// ──────────────────────────────────────
+// Once raclogisticltd.com is verified with Resend, these will send from the real domain.
+// Until then, Resend requires using onboarding@resend.dev.
+
+const RESEND_DOMAIN_VERIFIED = false; // Set to true after domain verification
+
+function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): string {
+  if (!RESEND_DOMAIN_VERIFIED) {
+    return "RAC Logistics <onboarding@resend.dev>";
+  }
+  const map: Record<string, string> = {
+    "info": "RAC Logistics <info@raclogisticltd.com>",
+    "support": "RAC Support <support@raclogisticltd.com>",
+    "billing": "RAC Billing <billing@raclogisticltd.com>",
+    "no-reply": "RAC Logistics <no-reply@raclogisticltd.com>",
+  };
+  return map[role];
+}
+
+// ──────────────────────────────────────
+// Email type → sender role mapping
+// ──────────────────────────────────────
+
+function getSenderRole(type: string): "info" | "support" | "billing" | "no-reply" {
+  switch (type) {
+    // info@ — general notifications, shipment updates
+    case "shipment_created":
+    case "shipment_status_update":
+    case "account_verified":
+      return "info";
+
+    // support@ — tickets and replies
+    case "support_ticket_created":
+    case "admin_ticket_reply":
+    case "contact_message":
+      return "support";
+
+    // billing@ — payments and invoices
+    case "payment_confirmation":
+    case "payment_failed":
+    case "wallet_topup":
+      return "billing";
+
+    // no-reply@ — OTP, security, system
+    case "otp_verification":
+    case "security_alert":
+      return "no-reply";
+
+    default:
+      return "info";
+  }
+}
 
 interface EmailRequest {
   type: string;
@@ -38,6 +92,8 @@ Deno.serve(async (req) => {
       );
     }
 
+    const senderRole = getSenderRole(type);
+    const fromAddress = getFromAddress(senderRole);
     const emails = buildEmails(type, data);
     const results = [];
 
@@ -50,7 +106,7 @@ Deno.serve(async (req) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            from: FROM_EMAIL,
+            from: email.from || fromAddress,
             to: Array.isArray(email.to) ? email.to : [email.to],
             subject: email.subject,
             html: email.html,
@@ -86,6 +142,7 @@ interface EmailPayload {
   to: string | string[];
   subject: string;
   html: string;
+  from?: string; // Override per-email if admin emails need different from
 }
 
 function buildEmails(type: string, data: Record<string, any>): EmailPayload[] {
@@ -96,10 +153,18 @@ function buildEmails(type: string, data: Record<string, any>): EmailPayload[] {
       return buildShipmentStatusUpdateEmails(data);
     case "payment_confirmation":
       return buildPaymentConfirmationEmails(data);
+    case "payment_failed":
+      return buildPaymentFailedEmails(data);
     case "wallet_topup":
       return buildWalletTopupEmails(data);
     case "contact_message":
       return buildContactMessageEmails(data);
+    case "support_ticket_created":
+      return buildSupportTicketCreatedEmails(data);
+    case "admin_ticket_reply":
+      return buildAdminTicketReplyEmails(data);
+    case "account_verified":
+      return buildAccountVerifiedEmails(data);
     default:
       console.warn("Unknown email type:", type);
       return [];
@@ -160,6 +225,10 @@ function statusBadge(status: string): string {
     cancelled: "#ef4444",
     paid: "#22c55e",
     unpaid: "#f59e0b",
+    open: "#3b82f6",
+    in_progress: "#8b5cf6",
+    resolved: "#22c55e",
+    closed: "#6b7280",
   };
   const color = colors[status.toLowerCase()] || "#6b7280";
   const label = status.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
@@ -193,7 +262,7 @@ function currencyFormat(amount: number, currency = "USD"): string {
 }
 
 // ──────────────────────────────────────
-// 1. Shipment Created
+// 1. Shipment Created (from: info@)
 // ──────────────────────────────────────
 
 function buildShipmentCreatedEmails(data: Record<string, any>): EmailPayload[] {
@@ -201,7 +270,6 @@ function buildShipmentCreatedEmails(data: Record<string, any>): EmailPayload[] {
   const trackUrl = `${SITE_URL}/track?number=${data.tracking_number}`;
   const timestamp = new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
 
-  // User email
   if (data.user_email) {
     const body = `
       <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Shipment Created Successfully! 🎉</h2>
@@ -228,7 +296,6 @@ function buildShipmentCreatedEmails(data: Record<string, any>): EmailPayload[] {
     });
   }
 
-  // Admin email
   const adminBody = `
     <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">📦 New Shipment Created</h2>
     <p style="color:#555;font-size:14px;margin:0 0 20px;">A new shipment has been created on the platform.</p>
@@ -253,7 +320,7 @@ function buildShipmentCreatedEmails(data: Record<string, any>): EmailPayload[] {
 }
 
 // ──────────────────────────────────────
-// 2. Shipment Status Update
+// 2. Shipment Status Update (from: info@)
 // ──────────────────────────────────────
 
 function buildShipmentStatusUpdateEmails(data: Record<string, any>): EmailPayload[] {
@@ -272,7 +339,6 @@ function buildShipmentStatusUpdateEmails(data: Record<string, any>): EmailPayloa
   };
   const message = statusMessages[data.new_status] || `Your shipment status has been updated to ${newStatus}.`;
 
-  // User/subscriber emails
   const recipients = data.subscriber_emails || [];
   if (data.user_email && !recipients.includes(data.user_email)) {
     recipients.push(data.user_email);
@@ -306,7 +372,6 @@ function buildShipmentStatusUpdateEmails(data: Record<string, any>): EmailPayloa
     }
   }
 
-  // Admin email
   const adminBody = `
     <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">🔄 Shipment Status Changed</h2>
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
@@ -327,14 +392,13 @@ function buildShipmentStatusUpdateEmails(data: Record<string, any>): EmailPayloa
 }
 
 // ──────────────────────────────────────
-// 3. Payment Confirmation
+// 3. Payment Confirmation (from: billing@)
 // ──────────────────────────────────────
 
 function buildPaymentConfirmationEmails(data: Record<string, any>): EmailPayload[] {
   const emails: EmailPayload[] = [];
   const dashboardUrl = `${SITE_URL}/dashboard/payments`;
 
-  // User email
   if (data.user_email) {
     const body = `
       <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Payment Confirmed! ✅</h2>
@@ -364,7 +428,6 @@ function buildPaymentConfirmationEmails(data: Record<string, any>): EmailPayload
     });
   }
 
-  // Admin email
   const adminBody = `
     <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">💰 Payment Received</h2>
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
@@ -387,13 +450,64 @@ function buildPaymentConfirmationEmails(data: Record<string, any>): EmailPayload
 }
 
 // ──────────────────────────────────────
-// 4. Wallet Top-up
+// 4. Payment Failed (from: billing@)
+// ──────────────────────────────────────
+
+function buildPaymentFailedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+
+  if (data.user_email) {
+    const body = `
+      <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Payment Failed ❌</h2>
+      <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.user_name || "Customer"}, unfortunately your payment could not be processed.</p>
+      
+      <div style="background:#f8d7da;border-radius:8px;padding:16px;margin-bottom:20px;text-align:center;">
+        <p style="margin:0;color:#721c24;font-size:12px;font-weight:600;">PAYMENT FAILED</p>
+        <p style="margin:4px 0 0;color:#721c24;font-size:28px;font-weight:800;">${currencyFormat(data.amount, data.currency)}</p>
+      </div>
+      
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+        ${data.tracking_number ? infoRow("Tracking Number", data.tracking_number) : ""}
+        ${data.reference ? infoRow("Reference", data.reference) : ""}
+        ${infoRow("Date", new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }))}
+      </table>
+
+      <p style="color:#555;font-size:13px;">Please try again or use a different payment method. If the issue persists, contact our support team.</p>
+      ${ctaButton("Retry Payment", `${SITE_URL}/dashboard/shipments`)}
+    `;
+    emails.push({
+      to: data.user_email,
+      subject: `Payment Failed - Action Required`,
+      html: emailWrapper("Payment Failed", body),
+    });
+  }
+
+  const adminBody = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">⚠️ Payment Failed</h2>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+      ${infoRow("Customer", `${data.user_name || "N/A"} (${data.user_email || "N/A"})`)}
+      ${infoRow("Amount", `<strong>${currencyFormat(data.amount, data.currency)}</strong>`)}
+      ${data.tracking_number ? infoRow("Tracking", data.tracking_number) : ""}
+      ${data.reference ? infoRow("Reference", data.reference) : ""}
+      ${infoRow("Time", new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }))}
+    </table>
+  `;
+  emails.push({
+    to: ADMIN_EMAIL,
+    subject: `[Admin] Payment Failed: ${data.user_email || "Unknown"}`,
+    html: emailWrapper("Payment Failed Alert", adminBody),
+  });
+
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 5. Wallet Top-up (from: billing@)
 // ──────────────────────────────────────
 
 function buildWalletTopupEmails(data: Record<string, any>): EmailPayload[] {
   const emails: EmailPayload[] = [];
 
-  // User confirmation
   if (data.user_email) {
     const body = `
       <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Wallet Funded Successfully! 💳</h2>
@@ -418,7 +532,6 @@ function buildWalletTopupEmails(data: Record<string, any>): EmailPayload[] {
     });
   }
 
-  // Admin notification
   const adminBody = `
     <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">💳 Wallet Top-up</h2>
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
@@ -438,7 +551,7 @@ function buildWalletTopupEmails(data: Record<string, any>): EmailPayload[] {
 }
 
 // ──────────────────────────────────────
-// 5. Contact / Support Message
+// 6. Contact / Support Message (from: support@)
 // ──────────────────────────────────────
 
 function buildContactMessageEmails(data: Record<string, any>): EmailPayload[] {
@@ -462,4 +575,130 @@ function buildContactMessageEmails(data: Record<string, any>): EmailPayload[] {
     subject: `[Contact] ${data.subject || "New Message"} from ${data.name || data.email || "Visitor"}`,
     html: emailWrapper("Contact Message", adminBody),
   }];
+}
+
+// ──────────────────────────────────────
+// 7. Support Ticket Created (from: support@)
+// ──────────────────────────────────────
+
+function buildSupportTicketCreatedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  const ticketUrl = `${SITE_URL}/dashboard/support/${data.ticket_id}`;
+
+  if (data.user_email) {
+    const body = `
+      <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Support Ticket Created 🎫</h2>
+      <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.user_name || "Customer"}, we've received your support request and our team will respond shortly.</p>
+      
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+        ${infoRow("Ticket Number", `<strong>${data.ticket_number}</strong>`)}
+        ${infoRow("Subject", data.subject || "N/A")}
+        ${infoRow("Category", (data.category || "").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()))}
+        ${infoRow("Status", statusBadge("open"))}
+        ${infoRow("Created", new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }))}
+      </table>
+
+      ${ctaButton("View Your Ticket", ticketUrl)}
+      
+      <p style="color:#888;font-size:12px;text-align:center;">Our support team typically responds within 24 hours.</p>
+    `;
+    emails.push({
+      to: data.user_email,
+      subject: `Support Ticket Created - ${data.ticket_number}`,
+      html: emailWrapper("Support Ticket Created", body),
+    });
+  }
+
+  const adminBody = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">🎫 New Support Ticket</h2>
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+      ${infoRow("Ticket Number", `<strong>${data.ticket_number}</strong>`)}
+      ${infoRow("Customer", `${data.user_name || "N/A"} (${data.user_email || "N/A"})`)}
+      ${infoRow("Subject", data.subject || "N/A")}
+      ${infoRow("Category", (data.category || "").replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase()))}
+      ${infoRow("Created", new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }))}
+    </table>
+    ${ctaButton("View Ticket", `${SITE_URL}/admin/support/${data.ticket_id}`)}
+  `;
+  emails.push({
+    to: ADMIN_EMAIL,
+    subject: `[Admin] New Ticket: ${data.ticket_number} - ${data.subject}`,
+    html: emailWrapper("New Support Ticket", adminBody),
+  });
+
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 8. Admin Reply to Ticket (from: support@)
+// ──────────────────────────────────────
+
+function buildAdminTicketReplyEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  const ticketUrl = `${SITE_URL}/dashboard/support/${data.ticket_id}`;
+
+  if (data.user_email) {
+    const body = `
+      <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">New Reply on Your Support Ticket 💬</h2>
+      <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.user_name || "Customer"}, our support team has replied to your ticket.</p>
+      
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+        ${infoRow("Ticket Number", `<strong>${data.ticket_number}</strong>`)}
+        ${infoRow("Subject", data.subject || "N/A")}
+      </table>
+
+      <div style="background:#f8f9fb;border-radius:8px;padding:16px;margin-bottom:20px;border-left:4px solid #061043;">
+        <p style="margin:0 0 4px;color:#888;font-size:12px;font-weight:600;">ADMIN REPLY</p>
+        <p style="margin:0;color:#1a1a2e;font-size:14px;line-height:1.6;white-space:pre-wrap;">${data.reply_message || ""}</p>
+      </div>
+
+      ${ctaButton("View & Reply", ticketUrl)}
+    `;
+    emails.push({
+      to: data.user_email,
+      subject: `Reply on Ticket ${data.ticket_number} - ${data.subject}`,
+      html: emailWrapper("Support Ticket Reply", body),
+    });
+  }
+
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 9. Account Verified / Welcome (from: info@)
+// ──────────────────────────────────────
+
+function buildAccountVerifiedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+
+  if (data.user_email) {
+    const body = `
+      <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Welcome to RAC Logistics! 🎉</h2>
+      <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.user_name || "there"}, your account has been verified and you're all set to start shipping with us.</p>
+      
+      <div style="background:#e8f5e9;border-radius:8px;padding:20px;margin-bottom:20px;text-align:center;">
+        <p style="margin:0;color:#2e7d32;font-size:16px;font-weight:700;">✅ Account Verified</p>
+        <p style="margin:8px 0 0;color:#388e3c;font-size:13px;">Your account is now fully active</p>
+      </div>
+
+      <h3 style="color:#061043;font-size:16px;margin:20px 0 12px;">Here's what you can do:</h3>
+      <ul style="color:#555;font-size:14px;line-height:2;padding-left:20px;">
+        <li>Create and track shipments worldwide</li>
+        <li>Get instant shipping quotes</li>
+        <li>Manage invoices and payments</li>
+        <li>Access 24/7 customer support</li>
+      </ul>
+
+      ${ctaButton("Go to Dashboard", `${SITE_URL}/dashboard`)}
+      
+      <p style="color:#888;font-size:12px;text-align:center;">Need help getting started? Contact us at support@raclogisticltd.com</p>
+    `;
+    emails.push({
+      to: data.user_email,
+      subject: `Welcome to RAC Logistics - Account Verified!`,
+      html: emailWrapper("Welcome to RAC Logistics", body),
+    });
+  }
+
+  return emails;
 }
