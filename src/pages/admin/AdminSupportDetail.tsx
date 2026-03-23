@@ -158,18 +158,30 @@ const AdminSupportDetail = () => {
         .update(updates)
         .eq("id", id);
 
-      // Create notification for user
+      // Send email notification to user
       if (ticket) {
-        await supabase
-          .from("user_notifications")
-          .insert({
-            user_id: ticket.user_id,
-            type: "ticket_reply",
-            title: "New Reply on Your Support Ticket",
-            message: `Admin has replied to your ticket #${ticket.ticket_number}`,
-            link: `/dashboard/support/${ticket.id}`,
-            ticket_id: ticket.id,
-          });
+        try {
+          const customerEmail = (ticket.profiles as any)?.email;
+          const customerName = (ticket.profiles as any)?.full_name;
+
+          if (customerEmail) {
+            await supabase.functions.invoke("send-notification-email", {
+              body: {
+                type: "admin_ticket_reply",
+                data: {
+                  ticket_id: ticket.id,
+                  ticket_number: ticket.ticket_number,
+                  subject: ticket.subject,
+                  reply_message: replyMessage,
+                  user_name: customerName || "",
+                  user_email: customerEmail,
+                },
+              },
+            });
+          }
+        } catch (emailErr) {
+          console.error("Failed to send reply email:", emailErr);
+        }
       }
 
       toast({
@@ -211,16 +223,14 @@ const AdminSupportDetail = () => {
         .update(updates)
         .eq("id", id);
 
-      // Create notification
+      // Notify user via in-app notification
       await supabase
-        .from("user_notifications")
+        .from("notifications")
         .insert({
           user_id: ticket.user_id,
           type: "ticket_status_change",
           title: "Support Ticket Status Updated",
           message: `Your ticket #${ticket.ticket_number} status has been changed to ${status.replace(/_/g, " ")}`,
-          link: `/dashboard/support/${ticket.id}`,
-          ticket_id: ticket.id,
         });
 
       toast({

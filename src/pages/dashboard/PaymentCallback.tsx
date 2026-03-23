@@ -38,6 +38,7 @@ const PaymentCallback = () => {
         if (data.status === "success") {
           setStatus("success");
           if (data.type === "wallet_topup") {
+
             setPaymentType("wallet_topup");
             setMessage(data.message || "Your wallet has been funded successfully!");
             refetchBalance();
@@ -50,6 +51,24 @@ const PaymentCallback = () => {
         } else {
           setStatus("failed");
           setMessage(data.message || "Payment could not be verified. Please contact support.");
+
+          // Send payment failed email
+          try {
+            await supabase.functions.invoke("send-notification-email", {
+              body: {
+                type: "payment_failed",
+                data: {
+                  user_email: user.email,
+                  user_name: "",
+                  amount: data.amount || 0,
+                  reference,
+                  tracking_number: data.tracking_number || "",
+                },
+              },
+            });
+          } catch (emailErr) {
+            console.error("Failed to send payment failed email:", emailErr);
+          }
         }
       } catch (err) {
         console.error("Verification error:", err);
