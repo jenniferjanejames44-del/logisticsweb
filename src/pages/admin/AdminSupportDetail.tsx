@@ -223,16 +223,14 @@ const AdminSupportDetail = () => {
         .update(updates)
         .eq("id", id);
 
-      // Create notification
+      // Notify user via in-app notification
       await supabase
-        .from("user_notifications")
+        .from("notifications")
         .insert({
           user_id: ticket.user_id,
           type: "ticket_status_change",
           title: "Support Ticket Status Updated",
           message: `Your ticket #${ticket.ticket_number} status has been changed to ${status.replace(/_/g, " ")}`,
-          link: `/dashboard/support/${ticket.id}`,
-          ticket_id: ticket.id,
         });
 
       toast({
