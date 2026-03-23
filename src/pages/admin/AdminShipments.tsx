@@ -103,9 +103,50 @@ const AdminShipments = () => {
 
   const handleStatusChange = async (shipmentId: string, newStatus: string) => {
     try {
+      // Get current shipment data before updating
+      const shipment = shipments.find(s => s.id === shipmentId);
+      const oldStatus = shipment?.status || "unknown";
+
       const { error } = await supabase.from("shipments").update({ status: newStatus }).eq("id", shipmentId);
       if (error) throw error;
       toast.success("Shipment status updated");
+
+      // Send status update email notification
+      if (shipment) {
+        try {
+          // Get user profile for email
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("full_name, email")
+            .eq("user_id", shipment.user_id)
+            .single();
+
+          // Get shipment notification subscribers
+          const { data: subscribers } = await supabase
+            .from("shipment_notifications")
+            .select("email")
+            .eq("tracking_number", shipment.tracking_number)
+            .eq("is_active", true);
+
+          await supabase.functions.invoke("send-notification-email", {
+            body: {
+              type: "shipment_status_update",
+              data: {
+                tracking_number: shipment.tracking_number,
+                old_status: oldStatus,
+                new_status: newStatus,
+                user_name: profile?.full_name || "",
+                user_email: profile?.email || "",
+                estimated_delivery: shipment.estimated_delivery,
+                subscriber_emails: (subscribers || []).map(s => s.email),
+              },
+            },
+          });
+        } catch (emailErr) {
+          console.error("Failed to send status update email:", emailErr);
+        }
+      }
+
       fetchShipments();
     } catch (error) {
       console.error("Error updating status:", error);

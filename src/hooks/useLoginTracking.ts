@@ -61,6 +61,28 @@ export const useLoginTracking = () => {
           console.error("Error tracking login:", error);
         } else {
           sessionStorage.setItem(sessionKey, "true");
+
+          // Send welcome email on first-ever login (account just verified)
+          try {
+            const { count } = await supabase
+              .from("login_history")
+              .select("*", { count: "exact", head: true })
+              .eq("user_id", user.id);
+
+            if (count !== null && count <= 1) {
+              await supabase.functions.invoke("send-notification-email", {
+                body: {
+                  type: "account_verified",
+                  data: {
+                    user_email: user.email,
+                    user_name: user.user_metadata?.full_name || "",
+                  },
+                },
+              });
+            }
+          } catch (welcomeErr) {
+            console.error("Failed to send welcome email:", welcomeErr);
+          }
         }
       } catch (error) {
         console.error("Error tracking login:", error);
