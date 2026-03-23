@@ -15,7 +15,7 @@ const SITE_URL = "https://www.raclogisticltd.com";
 // Once raclogisticltd.com is verified with Resend, these will send from the real domain.
 // Until then, Resend requires using onboarding@resend.dev.
 
-const RESEND_DOMAIN_VERIFIED = false; // Set to true after domain verification
+const RESEND_DOMAIN_VERIFIED = true;
 
 function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): string {
   if (!RESEND_DOMAIN_VERIFIED) {
