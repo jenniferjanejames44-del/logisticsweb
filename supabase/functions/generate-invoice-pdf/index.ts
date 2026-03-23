@@ -124,7 +124,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const destCity = shipment?.destination_city || '';
   const destCountry = shipment?.destination_country || '';
 
-  const qrData = encodeURIComponent(`https://logisticsweb.lovable.app/track?tracking=${trackingNumber}`);
+  const qrData = encodeURIComponent(`https://www.raclogisticltd.com/track?tracking=${trackingNumber}`);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${qrData}`;
 
   return `<!DOCTYPE html>

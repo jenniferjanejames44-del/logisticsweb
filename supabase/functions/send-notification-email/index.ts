@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAIL = "rex@raclogisticltd.com";
-const SITE_URL = "https://logisticsweb.lovable.app";
+const SITE_URL = "https://www.raclogisticltd.com";
 
 // ──────────────────────────────────────
 // Role-based FROM addresses
@@ -15,7 +15,7 @@ const SITE_URL = "https://logisticsweb.lovable.app";
 // Once raclogisticltd.com is verified with Resend, these will send from the real domain.
 // Until then, Resend requires using onboarding@resend.dev.
 
-const RESEND_DOMAIN_VERIFIED = false; // Set to true after domain verification
+const RESEND_DOMAIN_VERIFIED = true;
 
 function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): string {
   if (!RESEND_DOMAIN_VERIFIED) {
@@ -205,7 +205,7 @@ function emailWrapper(title: string, bodyContent: string): string {
     <td style="background:#f8f9fb;padding:20px 30px;text-align:center;border-top:1px solid #eee;">
       <p style="margin:0 0 4px;color:#061043;font-weight:700;font-size:13px;">RAC LOGISTICS LTD</p>
       <p style="margin:0 0 4px;color:#888;font-size:11px;">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos</p>
-      <p style="margin:0;color:#888;font-size:11px;">info@raclogistic.com | www.raclogistics.com</p>
+      <p style="margin:0;color:#888;font-size:11px;">info@raclogisticltd.com | www.raclogisticltd.com</p>
     </td>
   </tr>
 </table>
