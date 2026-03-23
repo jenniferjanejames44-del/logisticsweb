@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const ADMIN_EMAIL = "rex@raclogisticltd.com";
-const SITE_URL = "https://logisticsweb.lovable.app";
+const SITE_URL = "https://www.raclogisticltd.com";
 
 // ──────────────────────────────────────
 // Role-based FROM addresses
