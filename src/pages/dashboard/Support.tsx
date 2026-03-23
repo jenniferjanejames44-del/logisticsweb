@@ -159,6 +159,31 @@ const Support = () => {
         }
       }
 
+      // Send support ticket created email
+      try {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name, email")
+          .eq("user_id", user.id)
+          .single();
+
+        await supabase.functions.invoke("send-notification-email", {
+          body: {
+            type: "support_ticket_created",
+            data: {
+              ticket_id: ticket.id,
+              ticket_number: ticketNumber,
+              subject,
+              category,
+              user_name: profile?.full_name || "",
+              user_email: profile?.email || user.email,
+            },
+          },
+        });
+      } catch (emailErr) {
+        console.error("Failed to send ticket email:", emailErr);
+      }
+
       toast({
         title: "Ticket Created",
         description: `Your support ticket ${ticketNumber} has been created successfully.`,

@@ -38,6 +38,7 @@ const PaymentCallback = () => {
         if (data.status === "success") {
           setStatus("success");
           if (data.type === "wallet_topup") {
+
             setPaymentType("wallet_topup");
             setMessage(data.message || "Your wallet has been funded successfully!");
             refetchBalance();
