@@ -5,6 +5,43 @@ const corsHeaders = {
 };
 
 const SITE_URL = "https://www.raclogisticltd.com";
+const ALLOWED_HOSTNAMES = new Set(["raclogisticltd.com", "www.raclogisticltd.com"]);
+
+function getDefaultRedirectPath(emailActionType: string): string {
+  switch (emailActionType) {
+    case "recovery":
+      return "/reset-password";
+    case "magiclink":
+      return "/dashboard";
+    case "email_change":
+      return "/dashboard/profile";
+    case "invite":
+      return "/auth";
+    case "signup":
+    default:
+      return "/auth";
+  }
+}
+
+function sanitizeRedirectTarget(redirectTo: string | undefined, emailActionType: string): string {
+  const fallbackUrl = new URL(getDefaultRedirectPath(emailActionType), SITE_URL).toString();
+
+  if (!redirectTo) {
+    return fallbackUrl;
+  }
+
+  try {
+    const url = new URL(redirectTo, SITE_URL);
+
+    if (!ALLOWED_HOSTNAMES.has(url.hostname)) {
+      return new URL(`${url.pathname}${url.search}${url.hash}`, SITE_URL).toString();
+    }
+
+    return url.toString();
+  } catch {
+    return fallbackUrl;
+  }
+}
 
 function emailWrapper(title: string, bodyContent: string): string {
   return `<!DOCTYPE html>
@@ -158,7 +195,14 @@ Deno.serve(async (req) => {
     const email = user.email;
     const emailActionType = emailData.email_action_type;
     const tokenHash = emailData.token_hash;
-    const redirectTo = emailData.redirect_to || SITE_URL;
+    const redirectTo = sanitizeRedirectTarget(emailData.redirect_to, emailActionType);
+
+    if (!tokenHash) {
+      return new Response(
+        JSON.stringify({ error: "Missing token hash" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
     
     // Build the confirmation URL using the token_hash
     // Supabase expects: {site_url}/auth/confirm?token_hash={hash}&type={type}&next={redirect_to}
@@ -181,9 +225,7 @@ Deno.serve(async (req) => {
         break;
     }
 
-    // Use the Supabase project URL for the confirmation endpoint
-    const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
-    const confirmationUrl = `${supabaseUrl}/auth/v1/verify?token=${emailData.token_hash}&type=${confirmationType}&redirect_to=${encodeURIComponent(redirectTo)}`;
+    const confirmationUrl = `${SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(tokenHash)}&type=${encodeURIComponent(confirmationType)}&next=${encodeURIComponent(redirectTo)}`;
 
     // Build email based on type
     let emailContent: { subject: string; html: string };
