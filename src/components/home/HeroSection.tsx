@@ -30,7 +30,7 @@ const HeroSection = () => {
         <source src={heroVideo} type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(223,81,1,0.16),transparent_26%),linear-gradient(180deg,rgba(6,16,67,0.22),rgba(6,16,67,0.5))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.6),rgba(6,16,67,0.75))]" />
 
       <div className="section-container relative z-10 pb-14 pt-28 sm:pb-16 sm:pt-32 md:py-32 lg:py-36">
         <div className="mx-auto max-w-[820px] text-center animate-fade-in-soft">
