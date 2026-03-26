@@ -5,9 +5,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 import {
   clearPendingShoppingOrder,
@@ -56,7 +57,6 @@ const ShoppingOrderPayment = () => {
 
     const loadOrder = async () => {
       setLoading(true);
-
       let activeOrderId = orderId;
 
       if (!activeOrderId) {
@@ -107,7 +107,6 @@ const ShoppingOrderPayment = () => {
       } else {
         setOrder(orderData);
       }
-
       setLoading(false);
     };
 
@@ -148,34 +147,63 @@ const ShoppingOrderPayment = () => {
 
   return (
     <DashboardLayout title="Shopping Order Payment" description="Complete payment for your shopping request">
-      <div className="mx-auto max-w-2xl space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Checkout</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <div className="mx-auto max-w-lg">
+        <Card className="overflow-hidden">
+          {/* Header */}
+          <div className="bg-primary p-5">
+            <h2 className="text-lg font-bold text-white">Checkout</h2>
+            <p className="text-sm text-white/70">Complete your shopping order payment</p>
+          </div>
+
+          <CardContent className="p-5 space-y-5">
             {loading ? (
-              <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" /> Loading order...</div>
+              <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin" /> Loading order...
+              </div>
             ) : !order ? null : (
               <>
-                <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-muted/30 p-4">
+                {/* Order Info */}
+                <div className="flex items-start justify-between gap-3 rounded-lg border border-border bg-muted/30 p-4">
                   <div>
-                    <p className="font-semibold text-foreground">{order.product_name}</p>
-                    <p className="text-sm text-muted-foreground">{order.order_number}</p>
+                    <p className="text-sm font-semibold text-foreground">{order.product_name}</p>
+                    <p className="text-xs text-muted-foreground">{order.order_number}</p>
                   </div>
                   <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
                 </div>
-                <div className="space-y-3 rounded-xl border border-border bg-background p-4 text-sm">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Item value</span><span>{formatUsd(Number(order.item_value))}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Processing fee</span><span>{formatUsd(Number(order.processing_fee))}</span></div>
-                  <div className="flex justify-between"><span className="text-muted-foreground">Quantity</span><span>{order.quantity}</span></div>
-                  <div className="flex justify-between border-t border-border pt-3 text-base font-semibold"><span>Total due</span><span className="text-primary">{formatUsd(Number(order.total_cost))}</span></div>
+
+                {/* Price Breakdown */}
+                <div className="space-y-3 rounded-lg border border-border p-4 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Item value</span>
+                    <span className="font-medium">{formatUsd(Number(order.item_value))}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Processing fee</span>
+                    <span className="font-medium">{formatUsd(Number(order.processing_fee))}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Quantity</span>
+                    <span className="font-medium">{order.quantity}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between text-base font-bold">
+                    <span>Total Due</span>
+                    <span className="text-primary">{formatUsd(Number(order.total_cost))}</span>
+                  </div>
                 </div>
+
+                {/* Actions */}
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button variant="outline" onClick={() => navigate("/dashboard/shopping-orders")}>
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate("/dashboard/shopping-orders")}>
                     Back to Orders
                   </Button>
-                  <Button onClick={handlePaystackPayment} disabled={paying || !needsShoppingOrderPayment(order.status, order.payment_status)}>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="flex-1"
+                    onClick={handlePaystackPayment}
+                    disabled={paying || !needsShoppingOrderPayment(order.status, order.payment_status)}
+                  >
                     {paying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCard className="mr-2 h-4 w-4" />}
                     {needsShoppingOrderPayment(order.status, order.payment_status) ? "Pay Now" : "Already Paid"}
                   </Button>

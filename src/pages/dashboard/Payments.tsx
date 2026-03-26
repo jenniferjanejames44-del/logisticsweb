@@ -4,19 +4,12 @@ import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { PaymentsListSkeleton } from "@/components/dashboard/DashboardSkeletons";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
-  CreditCard,
-  Search,
-  DollarSign,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  Calendar,
-  type LucideIcon,
+  CreditCard, Search, DollarSign, CheckCircle, Clock, AlertCircle, Calendar, type LucideIcon,
 } from "lucide-react";
 
 interface Payment {
@@ -42,50 +35,38 @@ const Payments = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       if (!user) return;
-
       const { data, error } = await supabase
         .from("payments")
-        .select(`
-          *,
-          shipments (tracking_number)
-        `)
+        .select(`*, shipments (tracking_number)`)
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
-
-      if (!error && data) {
-        setPayments(data);
-      }
+      if (!error && data) setPayments(data);
       setLoading(false);
     };
-
     fetchPayments();
   }, [user]);
 
   const totalPaid = useMemo(
-    () => payments
-      .filter((payment) => payment.status === "completed")
-      .reduce((sum, payment) => sum + convertAmount(Number(payment.amount), payment.currency || "USD"), 0),
+    () => payments.filter((p) => p.status === "completed").reduce((sum, p) => sum + convertAmount(Number(p.amount), p.currency || "USD"), 0),
     [payments, convertAmount],
   );
 
   const pendingAmount = useMemo(
-    () => payments
-      .filter((payment) => payment.status === "pending")
-      .reduce((sum, payment) => sum + convertAmount(Number(payment.amount), payment.currency || "USD"), 0),
+    () => payments.filter((p) => p.status === "pending").reduce((sum, p) => sum + convertAmount(Number(p.amount), p.currency || "USD"), 0),
     [payments, convertAmount],
   );
 
   const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: LucideIcon }> = {
+    const config: Record<string, { variant: "default" | "secondary" | "destructive" | "outline"; icon: LucideIcon }> = {
       completed: { variant: "outline", icon: CheckCircle },
       pending: { variant: "secondary", icon: Clock },
       failed: { variant: "destructive", icon: AlertCircle },
       refunded: { variant: "default", icon: DollarSign },
     };
-    const config = statusConfig[status] || statusConfig.pending;
-    const Icon = config.icon;
+    const c = config[status] || config.pending;
+    const Icon = c.icon;
     return (
-      <Badge variant={config.variant} className="gap-1 capitalize">
+      <Badge variant={c.variant} className="gap-1 capitalize">
         <Icon className="w-3 h-3" />
         {status}
       </Badge>
@@ -93,7 +74,7 @@ const Payments = () => {
   };
 
   const filteredPayments = payments.filter((payment) => {
-    const matchesSearch = 
+    const matchesSearch =
       payment.transaction_id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       payment.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       payment.shipments?.tracking_number?.toLowerCase().includes(searchQuery.toLowerCase());
@@ -112,64 +93,44 @@ const Payments = () => {
   return (
     <DashboardLayout title="Payments" description="View your payment history and invoices">
       {/* Stats */}
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
-        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Total Paid</p>
-                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{formatMoney(totalPaid, selectedCurrency)}</p>
-              </div>
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-green-500/8 transition-transform duration-200 group-hover:scale-105">
-                <CheckCircle className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Pending</p>
-                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{formatMoney(pendingAmount, selectedCurrency)}</p>
-              </div>
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-warning/8 transition-transform duration-200 group-hover:scale-105">
-                <Clock className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-warning" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="group border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <p className="mb-2 text-sm font-medium tracking-wide text-muted-foreground">Total Transactions</p>
-                <p className="text-[1.25rem] sm:text-[1.5rem] lg:text-[1.75rem] font-bold text-foreground tracking-tight truncate">{payments.length}</p>
-              </div>
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8 transition-transform duration-200 group-hover:scale-105">
-                <CreditCard className="w-5 h-5 sm:w-[22px] sm:h-[22px] text-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+        {[
+          { label: "Total Paid", value: formatMoney(totalPaid, selectedCurrency), icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
+          { label: "Pending", value: formatMoney(pendingAmount, selectedCurrency), icon: Clock, color: "text-orange-600", bg: "bg-orange-500/8" },
+          { label: "Total Transactions", value: payments.length, icon: CreditCard, color: "text-primary", bg: "bg-primary/8" },
+        ].map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={stat.label}>
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-muted-foreground sm:text-sm">{stat.label}</p>
+                    <p className="mt-1 text-lg font-bold text-foreground sm:text-2xl truncate">{stat.value}</p>
+                  </div>
+                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
+                    <Icon className={`w-[18px] h-[18px] ${stat.color}`} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Filters */}
-      <Card className="mb-6 border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-        <CardContent className="flex flex-col gap-4 p-6 sm:flex-row">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search by transaction ID or tracking..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-12 rounded-lg pl-9 text-sm"
+            className="h-11 pl-9 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="h-12 w-full rounded-lg sm:w-[180px]">
+          <SelectTrigger className="h-11 w-full sm:w-[180px]">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -180,52 +141,41 @@ const Payments = () => {
             <SelectItem value="refunded">Refunded</SelectItem>
           </SelectContent>
         </Select>
-        </CardContent>
-      </Card>
+      </div>
 
       {/* Payments List */}
-      {loading ? (
-        <div className="flex items-center justify-center py-12">
-          <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
-        </div>
-      ) : filteredPayments.length > 0 ? (
-        <div className="grid gap-4">
+      {filteredPayments.length > 0 ? (
+        <div className="grid gap-3">
           {filteredPayments.map((payment) => (
-            <Card key={payment.id} className="border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-              <CardContent className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex items-start gap-3.5">
-                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
-                      <CreditCard className="w-5 h-5 text-primary" />
+            <Card key={payment.id} className="transition-shadow hover:shadow-md">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
+                      <CreditCard className="w-[18px] h-[18px] text-primary" />
                     </div>
                     <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-foreground">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-sm font-semibold text-foreground">
                           {formatConverted(Number(payment.amount), payment.currency || "USD")}
                         </h3>
                         {getStatusBadge(payment.status)}
                       </div>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                         <span>Original: {formatMoney(Number(payment.amount), payment.currency || "USD")}</span>
-                        {payment.shipments && (
-                          <span>Shipment: {payment.shipments.tracking_number}</span>
-                        )}
-                        {payment.payment_method && (
-                          <span className="capitalize">{payment.payment_method}</span>
-                        )}
-                        {payment.transaction_id && (
-                          <span>ID: {payment.transaction_id}</span>
-                        )}
+                        {payment.shipments && <span>Shipment: {payment.shipments.tracking_number}</span>}
+                        {payment.payment_method && <span className="capitalize">{payment.payment_method}</span>}
+                        {payment.transaction_id && <span>ID: {payment.transaction_id}</span>}
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
-                      <Calendar className="w-4 h-4" />
+                  <div className="text-right flex-shrink-0">
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground justify-end">
+                      <Calendar className="w-3 h-3" />
                       {new Date(payment.created_at).toLocaleDateString()}
                     </p>
                     {payment.description && (
-                      <p className="text-sm text-muted-foreground mt-1">{payment.description}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{payment.description}</p>
                     )}
                   </div>
                 </div>
@@ -234,11 +184,11 @@ const Payments = () => {
           ))}
         </div>
       ) : (
-        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <CreditCard className="w-16 h-16 text-muted-foreground mb-4" />
-            <h3 className="font-heading text-xl font-semibold text-foreground mb-2">No Payments Found</h3>
-            <p className="text-muted-foreground">
+            <CreditCard className="w-12 h-12 text-muted-foreground/40 mb-3" />
+            <h3 className="text-base font-semibold text-foreground mb-1">No Payments Found</h3>
+            <p className="text-sm text-muted-foreground">
               {searchQuery || statusFilter !== "all"
                 ? "Try adjusting your search or filters"
                 : "Your payment history will appear here"}
