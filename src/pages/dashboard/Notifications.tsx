@@ -26,37 +26,25 @@ interface Notification {
 
 const getNotificationIcon = (type: string) => {
   switch (type) {
-    case "shipment_update":
-      return Package;
-    case "payment_received":
-      return CreditCard;
+    case "shipment_update": return Package;
+    case "payment_received": return CreditCard;
     case "ticket_reply":
-    case "ticket_status_change":
-      return Bell;
-    case "refund_issued":
-      return CheckCircle;
-    case "general":
-      return Info;
-    default:
-      return Bell;
+    case "ticket_status_change": return Bell;
+    case "refund_issued": return CheckCircle;
+    case "general": return Info;
+    default: return Bell;
   }
 };
 
 const getNotificationIconColor = (type: string) => {
   switch (type) {
-    case "shipment_update":
-      return "text-primary";
-    case "payment_received":
-      return "text-success";
+    case "shipment_update": return "text-primary";
+    case "payment_received": return "text-green-600";
     case "ticket_reply":
-    case "ticket_status_change":
-      return "text-accent";
-    case "refund_issued":
-      return "text-green-600";
-    case "general":
-      return "text-info";
-    default:
-      return "text-muted-foreground";
+    case "ticket_status_change": return "text-accent";
+    case "refund_issued": return "text-green-600";
+    case "general": return "text-primary";
+    default: return "text-muted-foreground";
   }
 };
 
@@ -67,11 +55,10 @@ const formatTimeAgo = (dateString: string) => {
   const diffMins = Math.floor(diffMs / (1000 * 60));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffDays = Math.floor(diffHours / 24);
-  
   if (diffMins < 1) return "Just now";
-  if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-  if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
   return date.toLocaleDateString();
 };
 
@@ -83,91 +70,50 @@ const Notifications = () => {
 
   const fetchNotifications = async () => {
     if (!user) return;
-
     const { data, error } = await supabase
       .from("user_notifications")
       .select("*")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching notifications:", error);
-    } else {
-      setNotifications(data || []);
-    }
+    if (error) console.error("Error fetching notifications:", error);
+    else setNotifications(data || []);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchNotifications();
-
-    // Subscribe to real-time notifications
     const channel = supabase
       .channel('user_notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'user_notifications',
-          filter: `user_id=eq.${user?.id}`,
-        },
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_notifications', filter: `user_id=eq.${user?.id}` },
         (payload) => {
           setNotifications(prev => [payload.new as Notification, ...prev]);
-          toast({
-            title: (payload.new as Notification).title,
-            description: (payload.new as Notification).message,
-          });
+          toast({ title: (payload.new as Notification).title, description: (payload.new as Notification).message });
         }
       )
       .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [user]);
 
   const markAsRead = async (id: string) => {
-    const { error } = await supabase
-      .from("user_notifications")
-      .update({ is_read: true })
-      .eq("id", id);
-
-    if (!error) {
-      setNotifications(prev =>
-        prev.map(n => n.id === id ? { ...n, is_read: true } : n)
-      );
-    }
+    const { error } = await supabase.from("user_notifications").update({ is_read: true }).eq("id", id);
+    if (!error) setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
   };
 
   const markAllAsRead = async () => {
     const unreadIds = notifications.filter(n => !n.is_read).map(n => n.id);
     if (unreadIds.length === 0) return;
-
-    const { error } = await supabase
-      .from("user_notifications")
-      .update({ is_read: true })
-      .in("id", unreadIds);
-
+    const { error } = await supabase.from("user_notifications").update({ is_read: true }).in("id", unreadIds);
     if (!error) {
       setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-      toast({
-        title: "All notifications marked as read",
-      });
+      toast({ title: "All notifications marked as read" });
     }
   };
 
   const deleteNotification = async (id: string) => {
-    const { error } = await supabase
-      .from("user_notifications")
-      .delete()
-      .eq("id", id);
-
+    const { error } = await supabase.from("user_notifications").delete().eq("id", id);
     if (!error) {
       setNotifications(prev => prev.filter(n => n.id !== id));
-      toast({
-        title: "Notification deleted",
-      });
+      toast({ title: "Notification deleted" });
     }
   };
 
@@ -175,98 +121,61 @@ const Notifications = () => {
 
   if (loading) {
     return (
-      <DashboardLayout 
-        title="Notifications" 
-        description="Loading notifications..."
-      >
+      <DashboardLayout title="Notifications" description="Loading notifications...">
         <NotificationsSkeleton />
       </DashboardLayout>
     );
   }
 
   return (
-    <DashboardLayout 
-      title="Notifications" 
-      description={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
-    >
-      {/* Actions Bar */}
+    <DashboardLayout title="Notifications" description={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}>
       {notifications.length > 0 && (
-        <div className="mb-6 flex justify-end">
-          <Button 
-            variant="outline" 
-            className="h-11 rounded-lg px-6"
-            onClick={markAllAsRead}
-            disabled={unreadCount === 0}
-          >
-            <Check size={16} className="mr-2" />
+        <div className="mb-5 flex justify-end">
+          <Button variant="outline" size="sm" onClick={markAllAsRead} disabled={unreadCount === 0}>
+            <Check size={14} className="mr-1.5" />
             Mark all as read
           </Button>
         </div>
       )}
 
-      <div className="space-y-3 sm:space-y-4">
+      <div className="space-y-2.5">
         {notifications.map((notification) => {
           const Icon = getNotificationIcon(notification.type);
           const iconColor = getNotificationIconColor(notification.type);
-          
           return (
-            <Card 
-              key={notification.id} 
-              className={`border-border shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] ${
-                !notification.is_read ? 'border-l-4 border-l-accent bg-accent/5' : ''
-              }`}
+            <Card
+              key={notification.id}
+              className={`transition-shadow hover:shadow-md ${!notification.is_read ? 'border-l-3 border-l-accent' : ''}`}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${
-                    !notification.is_read ? 'bg-accent/10' : 'bg-muted'
-                  }`}>
-                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${iconColor}`} />
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-start gap-3">
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${!notification.is_read ? 'bg-accent/8' : 'bg-muted'}`}>
+                    <Icon className={`w-4 h-4 ${iconColor}`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                       <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-foreground text-sm sm:text-base">{notification.title}</h3>
-                          {!notification.is_read && (
-                            <Badge variant="secondary" className="text-xs">New</Badge>
-                          )}
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <h3 className="text-sm font-semibold text-foreground">{notification.title}</h3>
+                          {!notification.is_read && <Badge variant="secondary" className="text-[10px]">New</Badge>}
                         </div>
-                        <p className="text-muted-foreground text-xs sm:text-sm">{notification.message}</p>
+                        <p className="text-xs text-muted-foreground">{notification.message}</p>
                         {notification.link && (
-                          <Link
-                            to={notification.link}
-                            className="text-accent text-xs sm:text-sm hover:underline mt-1 inline-block"
-                            onClick={() => markAsRead(notification.id)}
-                          >
+                          <Link to={notification.link} className="text-accent text-xs hover:underline mt-1 inline-block" onClick={() => markAsRead(notification.id)}>
                             View details →
                           </Link>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
-                          {formatTimeAgo(notification.created_at)}
-                        </span>
-                        <div className="flex gap-1">
-                          {!notification.is_read && (
-            <Button
-              variant="ghost"
-              size="icon"
-                              className="h-10 w-10 rounded-lg"
-              onClick={() => markAsRead(notification.id)}
-            >
-              <CheckCircle size={16} className="text-muted-foreground hover:text-accent" />
-            </Button>
-                          )}
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-10 w-10 rounded-lg"
-                            onClick={() => deleteNotification(notification.id)}
-                          >
-                            <Trash2 size={16} className="text-muted-foreground hover:text-destructive" />
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <span className="text-[11px] text-muted-foreground whitespace-nowrap">{formatTimeAgo(notification.created_at)}</span>
+                        {!notification.is_read && (
+                          <Button variant="ghost" size="iconSm" onClick={() => markAsRead(notification.id)}>
+                            <CheckCircle size={14} className="text-muted-foreground" />
                           </Button>
-                        </div>
+                        )}
+                        <Button variant="ghost" size="iconSm" onClick={() => deleteNotification(notification.id)}>
+                          <Trash2 size={14} className="text-muted-foreground" />
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -277,12 +186,12 @@ const Notifications = () => {
         })}
 
         {notifications.length === 0 && (
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-            <CardContent className="flex flex-col items-center justify-center py-10 sm:py-12">
-              <Bell className="w-12 h-12 sm:w-16 sm:h-16 text-muted-foreground mb-3 sm:mb-4" />
-              <h3 className="mb-2 text-foreground">No Notifications</h3>
-              <p className="text-muted-foreground text-sm sm:text-base text-center">
-                You're all caught up! We'll notify you when there are updates to your shipments.
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <Bell className="w-12 h-12 text-muted-foreground/40 mb-3" />
+              <h3 className="text-base font-semibold text-foreground mb-1">No Notifications</h3>
+              <p className="text-sm text-muted-foreground text-center">
+                You're all caught up! We'll notify you when there are updates.
               </p>
             </CardContent>
           </Card>
