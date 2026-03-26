@@ -41,29 +41,79 @@ const SENDER_DOMAIN = "notify.www.raclogisticltd.com"
 const ROOT_DOMAIN = "www.raclogisticltd.com"
 const FROM_DOMAIN = "notify.www.raclogisticltd.com" // Domain shown in From address (may be root or sender subdomain)
 const TARGET_ORIGIN = `https://${ROOT_DOMAIN}`
+const AUTH_CALLBACK_PATH = '/auth/callback'
 
-/**
- * Rewrites any confirmation URL so that the user always lands on the
- * custom domain (raclogisticltd.com) instead of any builder/platform domain.
- * Preserves all query-string parameters (token_hash, type, next, redirect_to, etc.).
- */
-function rewriteConfirmationUrl(rawUrl: string | undefined): string {
-  if (!rawUrl) return TARGET_ORIGIN;
+const DEFAULT_PATH_BY_TYPE: Record<string, string> = {
+  signup: '/auth',
+  invite: '/auth',
+  recovery: '/reset-password',
+  magiclink: '/dashboard',
+  email_change: '/dashboard/profile',
+  email: '/auth',
+}
+
+function isTrustedHost(hostname: string): boolean {
+  return hostname === ROOT_DOMAIN || hostname === ROOT_DOMAIN.replace('www.', '')
+}
+
+function getCombinedParam(url: URL, key: string): string | null {
+  const hashParams = new URLSearchParams(url.hash.replace(/^#/, ''))
+  return url.searchParams.get(key) ?? hashParams.get(key)
+}
+
+function getSafeReturnPath(candidate: string | null, fallbackPath: string): string {
+  if (!candidate) {
+    return fallbackPath
+  }
 
   try {
-    const parsed = new URL(rawUrl);
-
-    // If the URL already points at our domain, return it unchanged
-    if (parsed.hostname === ROOT_DOMAIN || parsed.hostname === ROOT_DOMAIN.replace('www.', '')) {
-      return rawUrl;
+    const parsed = new URL(candidate, TARGET_ORIGIN)
+    if (!isTrustedHost(parsed.hostname)) {
+      return fallbackPath
     }
 
-    // Rebuild the URL on the custom domain, keeping path + query + hash
-    const rewritten = new URL(parsed.pathname + parsed.search + parsed.hash, TARGET_ORIGIN);
-    return rewritten.toString();
+    return `${parsed.pathname}${parsed.search}${parsed.hash}` || fallbackPath
   } catch {
-    // If we can't parse it, return the target origin as a safe default
-    return TARGET_ORIGIN;
+    return candidate.startsWith('/') ? candidate : fallbackPath
+  }
+}
+
+/**
+ * Rewrites any auth link so that emails always send users to the RAC
+ * frontend callback route instead of any builder/platform domain.
+ * Preserves auth tokens and safe redirect intent.
+ */
+function rewriteConfirmationUrl(rawUrl: string | undefined, emailType: string): string {
+  const fallbackPath = DEFAULT_PATH_BY_TYPE[emailType] ?? '/dashboard'
+  const callbackUrl = new URL(AUTH_CALLBACK_PATH, TARGET_ORIGIN)
+  callbackUrl.searchParams.set('next', fallbackPath)
+
+  if (!rawUrl) return callbackUrl.toString()
+
+  try {
+    const parsed = new URL(rawUrl)
+    const nextPath = getSafeReturnPath(
+      getCombinedParam(parsed, 'next') ?? getCombinedParam(parsed, 'redirect_to'),
+      fallbackPath,
+    )
+
+    callbackUrl.searchParams.set('next', nextPath)
+    callbackUrl.searchParams.set('redirect_to', new URL(nextPath, TARGET_ORIGIN).toString())
+
+    for (const key of ['token_hash', 'type', 'access_token', 'refresh_token', 'code']) {
+      const value = getCombinedParam(parsed, key)
+      if (value) {
+        callbackUrl.searchParams.set(key, value)
+      }
+    }
+
+    if (!callbackUrl.searchParams.has('type')) {
+      callbackUrl.searchParams.set('type', emailType)
+    }
+
+    return callbackUrl.toString()
+  } catch {
+    return callbackUrl.toString()
   }
 }
 
@@ -72,33 +122,34 @@ function rewriteConfirmationUrl(rawUrl: string | undefined): string {
 // The sample email uses a fixed placeholder (RFC 6761 .test TLD) so the Go backend
 // can always find-and-replace it with the actual recipient when sending test emails,
 // even if the project's domain has changed since the template was scaffolded.
-const SAMPLE_PROJECT_URL = "https://logisticsweb.lovable.app"
+const SAMPLE_PROJECT_URL = TARGET_ORIGIN
+const SAMPLE_CONFIRMATION_URL = new URL(`${AUTH_CALLBACK_PATH}?next=/auth`, TARGET_ORIGIN).toString()
 const SAMPLE_EMAIL = "user@example.test"
 const SAMPLE_DATA: Record<string, object> = {
   signup: {
     siteName: SITE_NAME,
     siteUrl: SAMPLE_PROJECT_URL,
     recipient: SAMPLE_EMAIL,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    confirmationUrl: SAMPLE_CONFIRMATION_URL,
   },
   magiclink: {
     siteName: SITE_NAME,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    confirmationUrl: new URL(`${AUTH_CALLBACK_PATH}?next=/dashboard`, TARGET_ORIGIN).toString(),
   },
   recovery: {
     siteName: SITE_NAME,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    confirmationUrl: new URL(`${AUTH_CALLBACK_PATH}?next=/reset-password`, TARGET_ORIGIN).toString(),
   },
   invite: {
     siteName: SITE_NAME,
     siteUrl: SAMPLE_PROJECT_URL,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    confirmationUrl: SAMPLE_CONFIRMATION_URL,
   },
   email_change: {
     siteName: SITE_NAME,
     email: SAMPLE_EMAIL,
     newEmail: SAMPLE_EMAIL,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    confirmationUrl: new URL(`${AUTH_CALLBACK_PATH}?next=/dashboard/profile`, TARGET_ORIGIN).toString(),
   },
   reauthentication: {
     token: '123456',
@@ -244,7 +295,7 @@ async function handleWebhook(req: Request): Promise<Response> {
   }
 
   // Rewrite the confirmation URL so links always point to the custom domain
-  const safeConfirmationUrl = rewriteConfirmationUrl(payload.data.url)
+  const safeConfirmationUrl = rewriteConfirmationUrl(payload.data.url, emailType)
   console.log('URL rewrite', { original: payload.data.url, rewritten: safeConfirmationUrl, run_id })
 
   // Build template props from payload.data (HookData structure)
