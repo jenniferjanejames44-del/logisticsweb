@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { buildAuthRedirectUrl } from "@/lib/authUrls";
+import { buildAuthCallbackUrl } from "@/lib/authUrls";
 
 interface AuthContextType {
   user: User | null;
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       email,
       password,
       options: {
-        emailRedirectTo: buildAuthRedirectUrl("/auth"),
+        emailRedirectTo: buildAuthCallbackUrl("/auth"),
         data: {
           full_name: fullName,
         },

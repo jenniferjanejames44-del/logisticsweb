@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import AuthRedirect from "@/components/AuthRedirect";
-import { buildAuthRedirectUrl } from "@/lib/authUrls";
+import { buildAuthCallbackUrl } from "@/lib/authUrls";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ const AuthForm = () => {
     setIsLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: buildAuthRedirectUrl("/reset-password"),
+        redirectTo: buildAuthCallbackUrl("/reset-password"),
       });
       
       if (error) throw error;
@@ -83,7 +83,7 @@ const AuthForm = () => {
         type: 'signup',
         email: email,
         options: {
-          emailRedirectTo: buildAuthRedirectUrl("/auth"),
+          emailRedirectTo: buildAuthCallbackUrl("/auth"),
         },
       });
       

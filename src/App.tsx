@@ -26,6 +26,7 @@ import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import Auth from "./pages/Auth";
 import AuthConfirm from "./pages/AuthConfirm";
+import AuthCallback from "./pages/AuthCallback";
 import ResetPassword from "./pages/ResetPassword";
 import Overview from "./pages/dashboard/Overview";
 import Shipments from "./pages/dashboard/Shipments";
@@ -99,6 +100,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/confirm" element={<AuthConfirm />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/track" element={<Track />} />

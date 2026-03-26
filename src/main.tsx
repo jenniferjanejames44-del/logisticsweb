@@ -3,29 +3,27 @@ import App from "./App.tsx";
 import "./index.css";
 
 /**
- * Client-side failsafe: if the user lands on a lovable.app domain with
- * auth parameters (token_hash, type, etc.), redirect them to the custom
- * domain so the auth flow completes on raclogisticltd.com.
+ * Client-side failsafe: if the user lands on any non-RAC domain with
+ * auth parameters or auth callback paths, immediately move the flow to
+ * raclogisticltd.com while preserving the full URL payload.
  */
 (function enforceDomainRedirect() {
   const { hostname, pathname, search, hash } = window.location;
-  if (hostname.includes("lovable.app") || hostname.includes("lovable.dev")) {
-    // Only redirect if this looks like an auth callback (has token_hash or type param)
-    const params = new URLSearchParams(search);
-    const hashParams = new URLSearchParams(hash.replace(/^#/, ""));
-    const isAuthCallback =
-      params.has("token_hash") ||
-      params.has("type") ||
-      hashParams.has("token_hash") ||
-      hashParams.has("type") ||
-      pathname.startsWith("/auth/confirm") ||
-      pathname.startsWith("/reset-password");
+  const params = new URLSearchParams(search);
+  const hashParams = new URLSearchParams(hash.replace(/^#/, ""));
+  const isTrustedDomain = ["raclogisticltd.com", "www.raclogisticltd.com", "localhost", "127.0.0.1"].includes(hostname);
+  const hasAuthPayload = ["token_hash", "type", "access_token", "refresh_token", "code"].some(
+    (key) => params.has(key) || hashParams.has(key),
+  );
+  const isAuthPath =
+    pathname.startsWith("/auth/confirm") ||
+    pathname.startsWith("/auth/callback") ||
+    pathname.startsWith("/reset-password");
 
-    if (isAuthCallback) {
-      const target = `https://www.raclogisticltd.com${pathname}${search}${hash}`;
-      window.location.replace(target);
-      return; // Stop rendering — we're redirecting
-    }
+  if (!isTrustedDomain && (hasAuthPayload || isAuthPath)) {
+    const target = `https://www.raclogisticltd.com${pathname}${search}${hash}`;
+    window.location.replace(target);
+    return;
   }
 })();
 
