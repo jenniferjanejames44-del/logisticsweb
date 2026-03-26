@@ -25,7 +25,7 @@ const HeroSection = () => {
         preload="auto"
         poster={heroPoster}
         disablePictureInPicture
-        className="absolute inset-0 w-full h-full object-cover opacity-20"
+        className="absolute inset-0 w-full h-full object-cover opacity-30"
       >
         <source src={heroVideo} type="video/mp4" />
       </video>
