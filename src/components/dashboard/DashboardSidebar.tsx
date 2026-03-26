@@ -13,7 +13,6 @@ import {
   Menu,
   X,
   Shield,
-  ChevronRight,
   Wallet,
   FileText,
   ShoppingBag,
@@ -48,7 +47,7 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-4 top-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_16px_34px_rgba(6,16,67,0.22)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_36px_rgba(6,16,67,0.24)] active:scale-95 lg:hidden"
+        className="fixed left-4 top-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg lg:hidden"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -57,91 +56,82 @@ const DashboardSidebar = () => {
       {/* Overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-foreground/20 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen min-h-screen w-[304px] flex-col border-r border-white/10 bg-[linear-gradient(180deg,#071343_0%,#0b1f63_100%)] text-primary-foreground shadow-[18px_0_40px_rgba(6,16,67,0.14)] transition-transform duration-300 lg:sticky ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-white border-r border-border transition-transform duration-300 lg:sticky ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo */}
-        <div className="border-b border-primary-foreground/10 px-5 py-5 sm:py-6">
+        <div className="px-5 py-5 border-b border-border">
           <Link
             to="/"
-            className="group flex w-full items-center justify-center rounded-[22px] border border-white/10 bg-white/5 px-4 py-3 shadow-[0_12px_28px_rgba(0,0,0,0.14)] transition-all duration-200 hover:bg-white/[0.07] lg:justify-start"
+            className="flex items-center"
             onClick={() => setIsMobileOpen(false)}
             aria-label="RAC Logistics home"
           >
-            <Logo className="h-auto w-full max-w-[148px] text-white sm:max-w-[164px] lg:max-w-[176px]" />
+            <Logo className="h-auto w-full max-w-[140px]" />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-5">
-          <p className="px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-foreground/60">
-            Main Menu
+        <nav className="flex-1 overflow-y-auto px-3 py-4">
+          <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Menu
           </p>
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                to={item.href}
-                onClick={() => setIsMobileOpen(false)}
-                className={`group flex items-center gap-3 rounded-[18px] px-4 py-3.5 transition-all duration-200 text-[0.9375rem] ${
-                  isActive
-                    ? "bg-accent text-accent-foreground font-bold shadow-[0_12px_24px_rgba(223,81,1,0.22)]"
-                    : "font-semibold text-primary-foreground/88 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground hover:shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
-                }`}
-              >
-                <span className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${isActive ? "bg-white/16" : "bg-white/8 group-hover:bg-white/12"}`}>
-                  <item.icon className={`w-[18px] h-[18px] flex-shrink-0 ${isActive ? "text-accent-foreground" : ""}`} strokeWidth={2.5} />
-                </span>
-                <span>{item.label}</span>
-                {isActive && <ChevronRight className="w-4 h-4 ml-auto" strokeWidth={2.5} />}
-              </Link>
-            );
-          })}
+          <div className="space-y-0.5">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={2} />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
 
           {isAdmin && (
             <>
-              <div className="my-3 border-t border-primary-foreground/10" />
-              <p className="px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-foreground/60">
-                Administration
+              <div className="my-3 border-t border-border" />
+              <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Admin
               </p>
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="group flex items-center gap-3 rounded-xl border border-accent/20 bg-accent/12 px-4 py-3 text-[0.875rem] font-medium text-accent transition-all duration-200 hover:-translate-y-px hover:bg-accent/20"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-accent hover:bg-accent/8"
               >
-                <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                  <Shield className="w-[18px] h-[18px] flex-shrink-0" />
-                </span>
+                <Shield className="w-[18px] h-[18px] flex-shrink-0" />
                 <span>Admin Dashboard</span>
-                <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
               </Link>
             </>
           )}
         </nav>
 
         {/* Footer */}
-        <div className="space-y-3 border-t border-primary-foreground/10 px-4 py-4">
-          <div className="rounded-[18px] border border-white/10 bg-white/5 px-4 py-3 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
-            <p className="text-[13px] font-semibold text-primary-foreground">Welcome back!</p>
-            <p className="text-[11px] text-primary-foreground/70">Manage your shipments in one place</p>
-          </div>
-          <Button
-            variant="ghost"
-            className="h-11 w-full justify-start gap-3 rounded-[16px] border border-white/10 bg-white/5 px-4 text-[0.9375rem] font-semibold text-primary-foreground/80 hover:-translate-y-px hover:bg-white/10 hover:text-primary-foreground"
+        <div className="border-t border-border p-3 space-y-2">
+          <button
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             onClick={handleSignOut}
           >
             <LogOut className="w-[18px] h-[18px] flex-shrink-0" />
             <span>Sign Out</span>
-          </Button>
+          </button>
         </div>
       </aside>
     </>
