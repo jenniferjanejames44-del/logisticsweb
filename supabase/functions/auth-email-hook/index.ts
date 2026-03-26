@@ -36,10 +36,36 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "logisticsweb"
+const SITE_NAME = "RAC Logistics"
 const SENDER_DOMAIN = "notify.www.raclogisticltd.com"
 const ROOT_DOMAIN = "www.raclogisticltd.com"
 const FROM_DOMAIN = "notify.www.raclogisticltd.com" // Domain shown in From address (may be root or sender subdomain)
+const TARGET_ORIGIN = `https://${ROOT_DOMAIN}`
+
+/**
+ * Rewrites any confirmation URL so that the user always lands on the
+ * custom domain (raclogisticltd.com) instead of any builder/platform domain.
+ * Preserves all query-string parameters (token_hash, type, next, redirect_to, etc.).
+ */
+function rewriteConfirmationUrl(rawUrl: string | undefined): string {
+  if (!rawUrl) return TARGET_ORIGIN;
+
+  try {
+    const parsed = new URL(rawUrl);
+
+    // If the URL already points at our domain, return it unchanged
+    if (parsed.hostname === ROOT_DOMAIN || parsed.hostname === ROOT_DOMAIN.replace('www.', '')) {
+      return rawUrl;
+    }
+
+    // Rebuild the URL on the custom domain, keeping path + query + hash
+    const rewritten = new URL(parsed.pathname + parsed.search + parsed.hash, TARGET_ORIGIN);
+    return rewritten.toString();
+  } catch {
+    // If we can't parse it, return the target origin as a safe default
+    return TARGET_ORIGIN;
+  }
+}
 
 // Sample data for preview mode ONLY (not used in actual email sending).
 // URLs are baked in at scaffold time from the project's real data.
@@ -217,12 +243,16 @@ async function handleWebhook(req: Request): Promise<Response> {
     )
   }
 
+  // Rewrite the confirmation URL so links always point to the custom domain
+  const safeConfirmationUrl = rewriteConfirmationUrl(payload.data.url)
+  console.log('URL rewrite', { original: payload.data.url, rewritten: safeConfirmationUrl, run_id })
+
   // Build template props from payload.data (HookData structure)
   const templateProps = {
     siteName: SITE_NAME,
-    siteUrl: `https://${ROOT_DOMAIN}`,
+    siteUrl: TARGET_ORIGIN,
     recipient: payload.data.email,
-    confirmationUrl: payload.data.url,
+    confirmationUrl: safeConfirmationUrl,
     token: payload.data.token,
     email: payload.data.email,
     newEmail: payload.data.new_email,
