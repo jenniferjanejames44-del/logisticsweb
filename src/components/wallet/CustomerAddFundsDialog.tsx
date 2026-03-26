@@ -6,23 +6,18 @@ import { useWalletBalance } from "@/hooks/useWalletBalance";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { CreditCard, Loader2, Wallet, Shield, ArrowRight } from "lucide-react";
+import { CreditCard, Loader2, Wallet, Shield, ChevronRight } from "lucide-react";
 
 interface CustomerAddFundsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const quickAmounts = [1000, 2500, 5000, 10000, 25000, 50000];
+const quickAmounts = [500, 1000, 2500, 5000, 10000, 25000];
 
 const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogProps) => {
   const { user } = useAuth();
@@ -78,112 +73,112 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-primary" />
-            Add Funds to Wallet
-          </DialogTitle>
-          <DialogDescription>
-            Fund your USD wallet instantly via Paystack. Pay with card, bank transfer, or USSD.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-6 py-4">
-          {/* Current Balance Indicator */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-primary/5 border border-primary/10">
-            <div className="flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">Current Balance (USD)</span>
+      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden">
+        {/* Header */}
+        <div className="bg-primary px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
+              <Wallet className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold text-foreground">
-              {balanceLoading ? "..." : formatMoney(balance, "USD")}
-            </span>
+            <div>
+              <h2 className="text-base font-semibold text-white">Add Funds</h2>
+              <p className="text-xs text-white/60">Top up your wallet instantly</p>
+            </div>
           </div>
+          <div className="mt-4 rounded-lg bg-white/10 px-4 py-3">
+            <p className="text-[11px] text-white/50 uppercase tracking-wide">Current Balance</p>
+            <p className="text-xl font-bold text-white mt-0.5">
+              {balanceLoading ? "..." : formatMoney(balance, "USD")}
+            </p>
+          </div>
+        </div>
 
+        {/* Body */}
+        <div className="px-6 py-5 space-y-5">
           {/* Amount Input */}
-          <div className="space-y-2">
-            <Label htmlFor="topup-amount">Amount (USD)</Label>
+          <div>
+            <label className="text-sm font-medium text-foreground mb-1.5 block">Enter Amount (USD)</label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold text-lg">$</span>
               <Input
-                id="topup-amount"
                 type="number"
-                placeholder="Enter amount"
+                placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 min="100"
                 step="1"
-                className="pl-8 h-12 text-lg"
+                className="pl-9 h-12 text-lg font-semibold border-border"
               />
             </div>
-            <p className="text-xs text-muted-foreground">Minimum: {formatMoney(100, "USD")}</p>
+            <p className="text-[11px] text-muted-foreground mt-1">Minimum: $100.00</p>
           </div>
 
-          {/* Quick Amount Buttons */}
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Quick select</Label>
+          {/* Quick Amounts */}
+          <div>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Quick Select</p>
             <div className="grid grid-cols-3 gap-2">
               {quickAmounts.map((qa) => (
-                <Button
+                <button
                   key={qa}
                   type="button"
-                  variant={amount === qa.toString() ? "default" : "outline"}
-                  size="sm"
-                  className="h-10"
                   onClick={() => setAmount(qa.toString())}
+                  className={`h-9 rounded-lg border text-sm font-medium transition-colors ${
+                    amount === qa.toString()
+                      ? "border-accent bg-accent/8 text-accent"
+                      : "border-border bg-white text-foreground hover:border-muted-foreground/30"
+                  }`}
                 >
-                  {formatMoney(qa, "USD")}
-                </Button>
+                  ${qa.toLocaleString()}
+                </button>
               ))}
             </div>
           </div>
 
           {/* New Balance Preview */}
           {parsedAmount >= 100 && (
-            <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/5 border border-green-500/20">
-              <div className="flex items-center gap-2">
-                <ArrowRight className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-muted-foreground">New Balance</span>
-              </div>
-              <span className="text-lg font-bold text-green-600">
+            <div className="flex items-center justify-between rounded-lg bg-green-50 border border-green-200 px-4 py-3">
+              <span className="text-sm text-green-700">New Balance</span>
+              <span className="text-base font-bold text-green-700">
                 {formatMoney(newBalance, "USD")}
               </span>
             </div>
           )}
 
-          {/* Security Note */}
-          <div className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border/50">
-            <Shield className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground">
-              Payments are processed securely via Paystack. Your wallet will be credited instantly after successful payment.
-            </p>
+          {/* Security */}
+          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+            <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Secured by Paystack. Credited instantly after payment.</span>
           </div>
         </div>
 
-        <DialogFooter className="flex-col sm:flex-row gap-2">
-          <Button variant="outline" onClick={handleClose} className="w-full sm:w-auto">
+        {/* Footer */}
+        <div className="px-6 pb-5 flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleClose}
+            className="flex-1 h-11"
+          >
             Cancel
           </Button>
           <Button
-            variant="cta"
             onClick={handleProceedToPayment}
             disabled={loading || !amount || parseFloat(amount) < 100}
-            className="w-full sm:w-auto"
+            className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 Redirecting...
               </>
             ) : (
               <>
-                <CreditCard className="w-4 h-4 mr-2" />
-                Proceed to Payment
+                <CreditCard className="w-4 h-4" />
+                Pay Now
+                <ChevronRight className="w-4 h-4" />
               </>
             )}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
