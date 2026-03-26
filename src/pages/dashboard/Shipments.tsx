@@ -58,7 +58,6 @@ const Shipments = () => {
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
 
-  // Auto-open payment dialog if ?pay=shipmentId is in URL
   useEffect(() => {
     const payId = searchParams.get("pay");
     if (payId && shipments.length > 0) {
@@ -66,7 +65,6 @@ const Shipments = () => {
       if (shipment && shipment.payment_status !== "paid") {
         setSelectedShipment(shipment);
         setPaymentDialogOpen(true);
-        // Clear the param
         searchParams.delete("pay");
         setSearchParams(searchParams, { replace: true });
       }
@@ -123,8 +121,6 @@ const Shipments = () => {
     setLoading(false);
   };
 
-
-
   const filteredShipments = shipments.filter((shipment) => {
     const matchesSearch = shipment.tracking_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
       shipment.destination_country.toLowerCase().includes(searchQuery.toLowerCase());
@@ -152,37 +148,35 @@ const Shipments = () => {
 
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
-      {/* Balance Card */}
-      <Card className="mb-5 sm:mb-7 border-primary/15 bg-gradient-to-br from-primary/[0.07] via-primary/[0.03] to-transparent shadow-sm">
-        <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary/15 to-primary/8 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-inner border border-primary/10">
-              <Wallet className="w-5 h-5 sm:w-6 sm:h-6 text-primary" strokeWidth={2.5} />
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm text-muted-foreground font-medium tracking-wide">Wallet Balance</p>
-              <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mt-0.5">{formatConverted(balance, "NGN")}</p>
-            </div>
+      {/* Wallet Balance Bar */}
+      <div className="mb-5 flex flex-col gap-3 rounded-xl border border-border bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/8">
+            <Wallet className="w-5 h-5 text-primary" />
           </div>
-          <Button variant="dashOutline" size="dashSm" className="w-full max-w-[220px] sm:w-auto sm:max-w-none hover:bg-primary/5 hover:border-primary/40 transition-all duration-200" onClick={() => window.location.href = "/dashboard/wallet"}>
-            Manage Wallet
-          </Button>
-        </CardContent>
-      </Card>
+          <div>
+            <p className="text-xs text-muted-foreground">Wallet Balance</p>
+            <p className="text-lg font-bold text-foreground">{formatConverted(balance, "NGN")}</p>
+          </div>
+        </div>
+        <Button variant="outline" size="sm" onClick={() => window.location.href = "/dashboard/wallet"}>
+          Manage Wallet
+        </Button>
+      </div>
 
       {/* Actions Bar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 mb-4 sm:mb-6">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-12 text-sm rounded-xl border-border/60 hover:border-primary/40 focus:border-primary transition-colors"
+            className="h-11 pl-9 text-sm"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px] h-12 rounded-xl border-border/60 hover:border-primary/40 font-medium transition-colors">
+          <SelectTrigger className="w-full sm:w-[180px] h-11">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -198,59 +192,57 @@ const Shipments = () => {
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>
         </Select>
-
-        <Button variant="dashAccent" size="dash" className="w-full max-w-[220px] sm:w-auto sm:max-w-none shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all duration-200" asChild>
+        <Button variant="default" size="sm" asChild>
           <a href="/shipping">
-            <Plus className="w-4 h-4" strokeWidth={2.5} />
+            <Plus className="w-4 h-4" />
             New Shipment
           </a>
         </Button>
       </div>
 
-      {/* Shipments List — Improved card layout */}
+      {/* Shipments List */}
       {filteredShipments.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid gap-3">
           {filteredShipments.map((shipment) => (
-            <Card key={shipment.id} className="border-border transition-all duration-200 hover:border-border/80 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-              <CardContent className="p-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                  {/* Left side */}
-                  <div className="flex items-start gap-3 sm:gap-4 min-w-0 flex-1">
-                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 shadow-sm">
-                      <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
+            <Card key={shipment.id} className="transition-shadow hover:shadow-md">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="flex items-start gap-3 min-w-0 flex-1">
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
+                      <Package className="w-[18px] h-[18px] text-primary" />
                     </div>
-                    <div className="min-w-0 flex-1 space-y-2">
+                    <div className="min-w-0 flex-1 space-y-1.5">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-semibold text-foreground text-sm sm:text-base">{shipment.tracking_number || "Pending"}</h3>
+                        <h3 className="text-sm font-semibold text-foreground">{shipment.tracking_number || "Pending"}</h3>
                         <StatusBadge status={shipment.status} size="md" />
                       </div>
-                      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-1.5 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1 truncate">
-                          <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
                           {shipment.origin_country} → {shipment.destination_country}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Package className="w-3.5 h-3.5 flex-shrink-0" />
+                          <Package className="w-3 h-3" />
                           {shipment.weight} KG
                         </span>
                         {shipment.estimated_delivery && (
                           <span className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
+                            <Calendar className="w-3 h-3" />
                             Est: {new Date(shipment.estimated_delivery).toLocaleDateString()}
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground">
                         Created {new Date(shipment.created_at).toLocaleDateString()}
                         <span className="ml-2 capitalize">{shipment.service_type.replace("-", " ")}</span>
                       </p>
                     </div>
                   </div>
 
-                  {/* Right side — price + action */}
-                  <div className="flex items-center justify-between lg:flex-col lg:items-end gap-3 lg:gap-2 flex-shrink-0 pt-1 lg:pt-0 border-t lg:border-t-0 border-border/30 lg:min-w-[160px]">
+                  {/* Price + Action */}
+                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-2 flex-shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-border/50 lg:min-w-[140px]">
                     {shipment.price !== null ? (
-                      <p className="text-base sm:text-lg font-bold text-foreground">
+                      <p className="text-base font-bold text-foreground">
                         {shipment.invoices?.[0]
                           ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
                           : formatUsd(Number(shipment.price))}
@@ -260,16 +252,10 @@ const Shipments = () => {
                     )}
                     {shipment.price !== null && (
                       shipment.payment_status === "paid" ? (
-                        <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/30">
-                          Paid
-                        </Badge>
+                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">Paid</Badge>
                       ) : (
-                        <Button
-                          variant="dashAccent"
-                          size="dashSm"
-                          onClick={() => openPaymentDialog(shipment)}
-                        >
-                          <DollarSign className="w-4 h-4" />
+                        <Button variant="default" size="sm" onClick={() => openPaymentDialog(shipment)}>
+                          <DollarSign className="w-3.5 h-3.5" />
                           Pay Now
                         </Button>
                       )
@@ -291,16 +277,12 @@ const Shipments = () => {
           }
           action={
             !searchQuery && statusFilter === "all"
-              ? {
-                  label: "Create Shipment",
-                  href: "/shipping",
-                }
+              ? { label: "Create Shipment", href: "/shipping" }
               : undefined
           }
         />
       )}
 
-      {/* Payment Dialog */}
       {selectedShipment && selectedShipment.price !== null && (
         <PayShipmentDialog
           open={paymentDialogOpen}
