@@ -13,7 +13,6 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   TrendingUp,
-  CreditCard,
   Clock,
   Plus,
 } from "lucide-react";
@@ -74,7 +73,7 @@ const Wallet = () => {
       title="Wallet"
       description="Manage your account balance and view transactions"
       action={
-        <Button variant="default" size="sm" onClick={() => setAddFundsOpen(true)}>
+        <Button variant="default" size="sm" onClick={() => setAddFundsOpen(true)} className="h-9">
           <Plus className="w-4 h-4" />
           Add Funds
         </Button>
@@ -83,104 +82,84 @@ const Wallet = () => {
       {loading ? (
         <WalletSkeleton />
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Balance Cards */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {/* Main balance */}
-            <Card className="border-primary/15 bg-primary">
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/70">Current Balance (USD)</p>
-                    <p className="mt-1 text-2xl font-bold text-white sm:text-3xl truncate">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <Card className="bg-primary border-0">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-white/60">Current Balance</p>
+                    <p className="mt-1 text-2xl font-bold text-white">
                       {formatConverted(balance, "NGN")}
                     </p>
                   </div>
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-white/15">
-                    <WalletIcon className="w-6 h-6 text-white" />
-                  </div>
+                  <WalletIcon className="w-6 h-6 text-white/40" />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Total Deposits */}
             <Card>
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground sm:text-sm">Total Deposits</p>
-                    <p className="mt-1 text-xl font-bold text-green-600 sm:text-2xl truncate">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Total Deposits</p>
+                    <p className="mt-1 text-xl font-bold text-green-600">
                       +{formatConverted(totalCredits, "NGN")}
                     </p>
                   </div>
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-green-500/8">
-                    <ArrowUpCircle className="w-5 h-5 text-green-600" />
-                  </div>
+                  <ArrowUpCircle className="w-5 h-5 text-green-500" />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Total Spent */}
             <Card>
-              <CardContent className="p-5 sm:p-6">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground sm:text-sm">Total Spent</p>
-                    <p className="mt-1 text-xl font-bold text-orange-600 sm:text-2xl truncate">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Total Spent</p>
+                    <p className="mt-1 text-xl font-bold text-orange-600">
                       -{formatConverted(totalDebits, "NGN")}
                     </p>
                   </div>
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-orange-500/8">
-                    <ArrowDownCircle className="w-5 h-5 text-orange-600" />
-                  </div>
+                  <ArrowDownCircle className="w-5 h-5 text-orange-500" />
                 </div>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Info Banner */}
-          <div className="flex items-start gap-3 rounded-xl border border-border bg-muted/30 p-4">
-            <CreditCard className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-foreground">Fund Your Wallet Instantly</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Click "Add Funds" to top up your wallet via Paystack. Pay securely with card, bank transfer, or USSD.
-              </p>
-            </div>
           </div>
 
           {/* Transactions */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <TrendingUp className="w-4 h-4 text-primary" />
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-muted-foreground" />
                 Transaction History
               </CardTitle>
             </CardHeader>
             <CardContent>
               {transactions.length === 0 ? (
-                <div className="py-10 text-center">
-                  <Clock className="mx-auto mb-3 w-10 h-10 text-muted-foreground/40" />
+                <div className="py-12 text-center">
+                  <Clock className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
                   <p className="text-sm font-medium text-muted-foreground">No transactions yet</p>
                   <p className="mt-1 text-xs text-muted-foreground">Your transaction history will appear here</p>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="divide-y divide-border">
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
-                      className="flex items-center justify-between gap-3 rounded-lg border border-border bg-background p-3.5 transition-colors hover:bg-muted/30"
+                      className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                     >
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="flex items-center gap-3 min-w-0">
                         <div
-                          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full ${
-                            transaction.type === "credit" ? "bg-green-500/8" : "bg-orange-500/8"
+                          className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
+                            transaction.type === "credit" ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"
                           }`}
                         >
                           {transaction.type === "credit" ? (
-                            <ArrowUpCircle className="w-4 h-4 text-green-600" />
+                            <ArrowUpCircle className="w-4 h-4" />
                           ) : (
-                            <ArrowDownCircle className="w-4 h-4 text-orange-600" />
+                            <ArrowDownCircle className="w-4 h-4" />
                           )}
                         </div>
                         <div className="min-w-0">
@@ -188,18 +167,13 @@ const Wallet = () => {
                             {transaction.description || (transaction.type === "credit" ? "Deposit" : "Payment")}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {format(new Date(transaction.created_at), "MMM dd, yyyy 'at' hh:mm a")}
+                            {format(new Date(transaction.created_at), "MMM dd, yyyy")}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className={`text-sm font-semibold ${transaction.type === "credit" ? "text-green-600" : "text-orange-600"}`}>
-                          {transaction.type === "credit" ? "+" : "-"}{formatConverted(Number(transaction.amount), "NGN")}
-                        </p>
-                        <Badge variant={transaction.type === "credit" ? "outline" : "secondary"} className="text-[10px]">
-                          {transaction.type}
-                        </Badge>
-                      </div>
+                      <p className={`text-sm font-semibold flex-shrink-0 ${transaction.type === "credit" ? "text-green-600" : "text-orange-600"}`}>
+                        {transaction.type === "credit" ? "+" : "-"}{formatConverted(Number(transaction.amount), "NGN")}
+                      </p>
                     </div>
                   ))}
                 </div>
