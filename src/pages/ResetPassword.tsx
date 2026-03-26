@@ -18,27 +18,51 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [hasSession, setHasSession] = useState(false);
+  const [isCheckingLink, setIsCheckingLink] = useState(true);
   
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
+    let isActive = true;
+
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setHasSession(true);
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const searchParams = new URLSearchParams(window.location.search);
+      const accessToken = hashParams.get("access_token") ?? searchParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token") ?? searchParams.get("refresh_token");
+
+      if (accessToken && refreshToken) {
+        await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
       }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!isActive) {
+        return;
+      }
+
+      setHasSession(Boolean(session));
+      setIsCheckingLink(false);
     };
     
-    checkSession();
+    void checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setHasSession(true);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!isActive) {
+        return;
       }
+
+      setHasSession(event === 'PASSWORD_RECOVERY' ? true : Boolean(session));
+      setIsCheckingLink(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isActive = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,6 +115,28 @@ const ResetPassword = () => {
       setIsLoading(false);
     }
   };
+
+  if (isCheckingLink) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center bg-section-light px-4 py-32 sm:px-6">
+          <Card className="w-full max-w-md rounded-lg border-border bg-card shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <CardHeader className="p-6 pb-3 text-center">
+              <CardTitle className="text-foreground">Verifying your reset link</CardTitle>
+              <CardDescription className="text-sm leading-relaxed">
+                Please wait while we securely prepare your password reset.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-6">
+              <div className="mx-auto h-8 w-8 rounded-full border-4 border-secondary border-t-transparent animate-spin" />
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!hasSession && !isSuccess) {
     return (
