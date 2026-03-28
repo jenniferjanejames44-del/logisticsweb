@@ -120,7 +120,7 @@ async function sendViaResend(params: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: `${SITE_NAME} <info@raclogisticltd.com>`,
+        from: `Raclogistics Ltd <info@notify.raclogisticltd.com>`,
         to: [params.to],
         subject: params.subject,
         html: params.html,
