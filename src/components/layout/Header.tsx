@@ -198,7 +198,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 lg:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 md:hidden"
           onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
           aria-label="Toggle menu"
         >
