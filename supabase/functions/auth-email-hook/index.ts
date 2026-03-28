@@ -169,12 +169,12 @@ Deno.serve(async (req) => {
 
     console.log('Processing auth email', { emailType, recipientEmail })
 
-    // Validate recipient email
+    // Validate recipient email - return 200 for test/warmup calls to prevent fallback
     if (!recipientEmail || typeof recipientEmail !== 'string' || !recipientEmail.includes('@')) {
-      console.error('Invalid or missing recipient email', { recipientEmail, payloadKeys: Object.keys(payload) })
+      console.warn('No recipient email in payload (test/warmup call)', { payloadKeys: Object.keys(payload) })
       return new Response(
-        JSON.stringify({ error: 'Missing or invalid recipient email address' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ success: true, skipped: true, reason: 'no_recipient' }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
 
