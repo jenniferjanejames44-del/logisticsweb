@@ -218,7 +218,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)] shadow-[0_28px_64px_rgba(6,16,67,0.18)] transition-all duration-300 ease-out isolate ${
+        className={`md:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)] shadow-[0_28px_64px_rgba(6,16,67,0.18)] transition-all duration-300 ease-out isolate ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
