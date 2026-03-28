@@ -19,7 +19,7 @@ interface RecoveryEmailProps {
 }
 
 export const RecoveryEmail = ({
-  siteName = 'RAC Logistics',
+  siteName,
   confirmationUrl,
 }: RecoveryEmailProps) => (
   <Html lang="en" dir="ltr">
@@ -27,10 +27,10 @@ export const RecoveryEmail = ({
     <Preview>Reset your password for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Reset Your Password 🔐</Heading>
+        <Heading style={h1}>Reset your password</Heading>
         <Text style={text}>
-          We received a request to reset your password for your RAC Logistics account. Click
-          the button below to set a new password.
+          We received a request to reset your password for {siteName}. Click
+          the button below to choose a new password.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Reset Password
@@ -56,7 +56,7 @@ const h1 = {
 }
 const text = {
   fontSize: '14px',
-  color: '#616B7C',
+  color: '#5a5f73',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
@@ -64,9 +64,8 @@ const button = {
   backgroundColor: '#DF5101',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '6px',
-  padding: '14px 36px',
+  borderRadius: '8px',
+  padding: '12px 20px',
   textDecoration: 'none',
-  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

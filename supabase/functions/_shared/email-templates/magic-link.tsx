@@ -19,7 +19,7 @@ interface MagicLinkEmailProps {
 }
 
 export const MagicLinkEmail = ({
-  siteName = 'RAC Logistics',
+  siteName,
   confirmationUrl,
 }: MagicLinkEmailProps) => (
   <Html lang="en" dir="ltr">
@@ -27,9 +27,9 @@ export const MagicLinkEmail = ({
     <Preview>Your login link for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Sign In to RAC Logistics 🔗</Heading>
+        <Heading style={h1}>Your login link</Heading>
         <Text style={text}>
-          Click the button below to sign in to your RAC Logistics account. This link will expire
+          Click the button below to log in to {siteName}. This link will expire
           shortly.
         </Text>
         <Button style={button} href={confirmationUrl}>
@@ -55,7 +55,7 @@ const h1 = {
 }
 const text = {
   fontSize: '14px',
-  color: '#616B7C',
+  color: '#5a5f73',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
@@ -63,9 +63,8 @@ const button = {
   backgroundColor: '#DF5101',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '6px',
-  padding: '14px 36px',
+  borderRadius: '8px',
+  padding: '12px 20px',
   textDecoration: 'none',
-  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

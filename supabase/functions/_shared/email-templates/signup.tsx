@@ -22,7 +22,7 @@ interface SignupEmailProps {
 }
 
 export const SignupEmail = ({
-  siteName = 'RAC Logistics',
+  siteName,
   siteUrl,
   recipient,
   confirmationUrl,
@@ -32,26 +32,26 @@ export const SignupEmail = ({
     <Preview>Confirm your email for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Welcome to RAC Logistics! ✉️</Heading>
+        <Heading style={h1}>Confirm your email</Heading>
         <Text style={text}>
-          Thanks for creating your account with{' '}
+          Thanks for signing up for{' '}
           <Link href={siteUrl} style={link}>
             <strong>{siteName}</strong>
           </Link>
           !
         </Text>
         <Text style={text}>
-          Please verify your email address (
+          Please confirm your email address (
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
           </Link>
-          ) to activate your account:
+          ) by clicking the button below:
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Verify My Email
+          Verify Email
         </Button>
         <Text style={footer}>
-          If you didn't create an account with RAC Logistics, you can safely ignore this email.
+          If you didn't create an account, you can safely ignore this email.
         </Text>
       </Container>
     </Body>
@@ -70,7 +70,7 @@ const h1 = {
 }
 const text = {
   fontSize: '14px',
-  color: '#616B7C',
+  color: '#5a5f73',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
@@ -79,9 +79,8 @@ const button = {
   backgroundColor: '#DF5101',
   color: '#ffffff',
   fontSize: '14px',
-  borderRadius: '6px',
-  padding: '14px 36px',
+  borderRadius: '8px',
+  padding: '12px 20px',
   textDecoration: 'none',
-  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
