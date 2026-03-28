@@ -32,7 +32,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "RAC Logistics"
+const SITE_NAME = "Raclogistics Limited"
 const ROOT_DOMAIN = "www.raclogisticltd.com"
 const TARGET_ORIGIN = `https://${ROOT_DOMAIN}`
 const AUTH_CALLBACK_PATH = '/auth/callback'
