@@ -156,7 +156,7 @@ const Header = () => {
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden lg:flex items-center gap-2.5">
+        <div className="hidden md:flex items-center gap-2.5">
           {user ? (
             <>
               {isAdmin && (
