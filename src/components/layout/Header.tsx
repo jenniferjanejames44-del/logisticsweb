@@ -85,7 +85,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
