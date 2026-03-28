@@ -209,7 +209,7 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-foreground/18 backdrop-blur-sm transition-opacity duration-300"
+          className="md:hidden fixed inset-0 bg-foreground/18 backdrop-blur-sm transition-opacity duration-300"
           style={{ zIndex: 9998 }}
           onClick={closeMobileMenu}
           aria-hidden="true"
