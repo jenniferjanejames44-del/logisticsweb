@@ -155,17 +155,28 @@ Deno.serve(async (req) => {
     const payload = await req.json()
     console.log('Received auth webhook payload', JSON.stringify(payload).substring(0, 500))
 
-    // Supabase Auth Hook format: { user, email_data }
-    // email_data contains: token_hash, redirect_to, email_action_type, token, site_url, hashed_token
+    // Handle multiple payload formats:
+    // 1. Supabase Auth Hook: { user: { email }, email_data: { token_hash, email_action_type, ... } }
+    // 2. Lovable managed hook: { type, user_email, token_hash, redirect_to, ... }
+    // 3. Simple test: { type }
     const emailData = payload.email_data || payload
     const user = payload.user || {}
 
-    const emailType = emailData.email_action_type || emailData.action_type || emailData.type || 'signup'
-    const recipientEmail = user.email || emailData.email || emailData.to
-    const tokenHash = emailData.token_hash || emailData.token
-    const redirectTo = emailData.redirect_to || emailData.redirect_url || emailData.url
+    const emailType = emailData.email_action_type || emailData.action_type || emailData.type || payload.type || 'signup'
+    const recipientEmail = user.email || emailData.email || emailData.to || emailData.user_email || payload.user_email || payload.email || payload.to
+    const tokenHash = emailData.token_hash || emailData.token || payload.token_hash || payload.token
+    const redirectTo = emailData.redirect_to || emailData.redirect_url || emailData.url || payload.redirect_to
 
     console.log('Processing auth email', { emailType, recipientEmail })
+
+    // Validate recipient email
+    if (!recipientEmail || typeof recipientEmail !== 'string' || !recipientEmail.includes('@')) {
+      console.error('Invalid or missing recipient email', { recipientEmail, payloadKeys: Object.keys(payload) })
+      return new Response(
+        JSON.stringify({ error: 'Missing or invalid recipient email address' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
 
     const EmailTemplate = EMAIL_TEMPLATES[emailType]
     if (!EmailTemplate) {
