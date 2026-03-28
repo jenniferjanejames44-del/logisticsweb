@@ -85,7 +85,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -156,7 +156,7 @@ const Header = () => {
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden lg:flex items-center gap-2.5">
+        <div className="hidden md:flex items-center gap-2.5">
           {user ? (
             <>
               {isAdmin && (
@@ -198,7 +198,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 lg:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 md:hidden"
           onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
           aria-label="Toggle menu"
         >
@@ -209,7 +209,7 @@ const Header = () => {
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-foreground/18 backdrop-blur-sm transition-opacity duration-300"
+          className="md:hidden fixed inset-0 bg-foreground/18 backdrop-blur-sm transition-opacity duration-300"
           style={{ zIndex: 9998 }}
           onClick={closeMobileMenu}
           aria-hidden="true"
@@ -218,7 +218,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)] shadow-[0_28px_64px_rgba(6,16,67,0.18)] transition-all duration-300 ease-out isolate ${
+        className={`md:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)] shadow-[0_28px_64px_rgba(6,16,67,0.18)] transition-all duration-300 ease-out isolate ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
