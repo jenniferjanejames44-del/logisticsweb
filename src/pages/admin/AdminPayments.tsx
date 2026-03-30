@@ -159,12 +159,12 @@ const AdminPayments = () => {
                 <p className="font-medium">No payments found</p>
               </div>
             ) : isMobile ? (
-              <div className="space-y-3">
+              <div className="divide-y divide-border/40">
                 {filteredPayments.map((payment) => (
-                  <div key={payment.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                  <div key={payment.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <span className="font-medium text-foreground">${Number(payment.amount).toLocaleString()}</span>
-                      <Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge>
+                      <Badge className={`${getStatusColor(payment.status)} capitalize text-[11px]`}>{payment.status}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
@@ -180,10 +180,10 @@ const AdminPayments = () => {
                         <p className="text-foreground truncate">{payment.description || "N/A"}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                    <div className="flex items-center justify-between pt-2 border-t border-border/30">
                       <span className="text-xs text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</span>
                       <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                        <SelectTrigger className="h-10 w-32 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]"><SelectValue /></SelectTrigger>
+                        <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
                         <SelectContent>
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
@@ -193,7 +193,7 @@ const AdminPayments = () => {
                 ))}
               </div>
             ) : (
-              <div className="-mx-6 overflow-x-auto px-6">
+              <div className="overflow-x-auto">
                 <div className="min-w-[860px]">
                 <Table>
                   <TableHeader>
