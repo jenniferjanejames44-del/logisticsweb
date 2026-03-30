@@ -1124,9 +1124,9 @@ const Shipping = () => {
                           </div>
                         </div>
 
-                        <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                          <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">Shipment Details</p>
-                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                        <div className={`${softPanelClass}`}>
+                          <p className="text-xs font-bold text-primary uppercase tracking-wider mb-3">Shipment Details</p>
+                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                             {[
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
                               { label: "Actual Weight", value: `${formData.weight} KG` },
@@ -1140,19 +1140,19 @@ const Shipping = () => {
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
                               { label: "Quantity", value: formData.quantity || "1" },
-                              { label: "Declared Value (USD)", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
+                              { label: "Declared Value", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
                               { label: "Insurance", value: formData.insurance_required === "true" ? "Yes" : "No" },
                             ].map((item) => (
-                              <div key={item.label} className="rounded-xl bg-white/80 p-3 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 break-words text-sm font-semibold leading-snug text-foreground">{item.value}</p>
+                              <div key={item.label}>
+                                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                <p className="mt-0.5 text-sm font-semibold text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
                           {formData.notes && (
                             <div className="mt-4 pt-4 border-t border-border/40">
                               <p className="text-xs text-muted-foreground mb-1">Shipment Notes</p>
-                              <p className="break-words text-sm leading-relaxed text-foreground">{formData.notes}</p>
+                              <p className="text-sm text-foreground">{formData.notes}</p>
                             </div>
                           )}
                         </div>
