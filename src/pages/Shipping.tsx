@@ -458,17 +458,16 @@ const Shipping = () => {
     <div className="min-h-screen">
       <Header />
       <main>
-        <section className="bg-primary pt-28 pb-14 sm:pt-32 sm:pb-18 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/0 via-transparent to-primary/20" />
-          <div className="absolute top-0 left-0 w-full h-full opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--primary-foreground)) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        <section className="bg-primary pt-28 pb-12 sm:pt-32 sm:pb-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/30" />
           <div className="section-container text-center relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-5 bg-primary-foreground/10 text-primary-foreground/90 border border-primary-foreground/10 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-5 bg-primary-foreground/10 text-primary-foreground/90 border border-primary-foreground/10">
               <Package className="w-3.5 h-3.5" /> {workflowGuide?.badge || "New Shipment"}
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 tracking-tight">
               {workflowGuide ? (intent === "quote" ? workflowGuide.quoteTitle : workflowGuide.shipmentTitle) : "Create a Shipment"}
             </h1>
-            <p className="text-primary-foreground/75 text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-primary-foreground/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
               {workflowGuide?.description || "Fill in your details step by step and we'll calculate the cost automatically."}
             </p>
           </div>
