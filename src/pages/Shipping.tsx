@@ -1259,8 +1259,10 @@ const Shipping = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={step === 1}
-                      className="order-2 min-h-[44px] w-full gap-2 shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-px sm:order-1 sm:w-auto"
+                      className="order-2 h-12 w-full gap-2 sm:order-1 sm:w-auto"
                     >
+                      <ArrowLeft className="w-4 h-4" /> Back
+                    </Button>
                       <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
