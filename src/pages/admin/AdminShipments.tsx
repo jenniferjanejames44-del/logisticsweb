@@ -238,28 +238,26 @@ const AdminShipments = () => {
 
   return (
     <AdminLayout title="Shipment Management" description="Track and manage all customer shipments">
-      <div className="space-y-6 sm:space-y-8">
-        <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
-          <CardHeader className="p-6 pb-4">
-              <div className="flex flex-col gap-4 sm:gap-4">
-              <CardTitle className="flex items-center gap-2.5 text-base sm:text-lg font-bold">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 shadow-sm">
-                  <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
-                </span>
+      <div className="space-y-5">
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Package className="w-4 h-4 text-primary" strokeWidth={2} />
                 All Shipments ({filteredShipments.length})
               </CardTitle>
-              <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
-                <div className="relative flex-1 sm:max-w-[320px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2.5} />
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+                <div className="relative sm:w-[260px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" strokeWidth={2} />
                   <Input
                     placeholder="Search by tracking number, city..."
-                    className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35 focus:border-primary"
+                    className="h-9 rounded-lg border-border/80 bg-muted/30 pl-9 text-sm"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-xl border-border/80 bg-white font-medium shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35 sm:w-48">
+                  <SelectTrigger className="h-9 w-full rounded-lg border-border/80 bg-muted/30 text-sm sm:w-44">
                     <SelectValue placeholder="Filter status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -270,7 +268,7 @@ const AdminShipments = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-3 sm:p-6">
+          <CardContent className="p-3 sm:p-4">
             {loading ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
