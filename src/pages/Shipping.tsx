@@ -1241,8 +1241,8 @@ const Shipping = () => {
                         )}
                       </div>
 
-                      <div className="flex items-start gap-3 rounded-xl bg-muted/[0.18] p-4 ring-1 ring-border/50">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"><Shield className="w-4 h-4 text-primary" /></div>
+                      <div className="flex items-start gap-3 rounded-lg bg-muted/30 border border-border/40 p-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Shield className="w-4 h-4 text-primary" /></div>
                         <p className="text-sm text-muted-foreground">By confirming, you agree to our shipping terms. You can pay immediately or save and pay later from your dashboard.</p>
                       </div>
                     </div>
