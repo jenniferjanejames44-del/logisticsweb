@@ -75,7 +75,7 @@ const AdminAnalytics = () => {
 
   if (loading) {
     return (
-      <AdminLayout>
+      <AdminLayout title="Analytics" description="Insights and performance metrics">
         <div className="flex items-center justify-center h-64">
           <p className="text-muted-foreground text-sm">Loading analytics...</p>
         </div>
@@ -84,110 +84,103 @@ const AdminAnalytics = () => {
   }
 
   return (
-    <AdminLayout>
-      <div className="space-y-6 sm:space-y-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-foreground">Analytics Dashboard</h1>
-          <p className="text-muted-foreground mt-1 text-sm sm:text-base">Insights and performance metrics for your logistics operations</p>
-        </div>
+    <AdminLayout title="Analytics" description="Insights and performance metrics for your logistics operations.">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+        {/* Shipments by Status */}
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+              <Package className="w-4 h-4 text-primary" />Shipments by Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            {data.shipmentsByStatus.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-[240px] sm:h-[280px]">
+                <BarChart data={data.shipmentsByStatus}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="status" className="text-xs capitalize" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ChartContainer>
+            ) : (
+              <p className="text-center text-muted-foreground py-8 text-sm">No data available</p>
+            )}
+          </CardContent>
+        </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          {/* Shipments by Status */}
-          <Card className="border-border/50">
-            <CardHeader className="pb-2 sm:pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                <Package className="w-4 h-4 sm:w-5 sm:h-5" />Shipments by Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-6 pt-0">
-              {data.shipmentsByStatus.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[220px] sm:h-[300px]">
-                  <BarChart data={data.shipmentsByStatus}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                    <XAxis dataKey="status" className="text-xs capitalize" tick={{ fontSize: 11 }} />
-                    <YAxis tick={{ fontSize: 11 }} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ChartContainer>
-              ) : (
-                <p className="text-center text-muted-foreground py-8 text-sm">No data available</p>
-              )}
-            </CardContent>
-          </Card>
+        {/* Shipments by Service */}
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+              <BarChart3 className="w-4 h-4 text-primary" />Shipments by Service Type
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            {data.shipmentsByService.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-[240px] sm:h-[280px]">
+                <PieChart>
+                  <Pie data={data.shipmentsByService} cx="50%" cy="50%" innerRadius={40} outerRadius={70} paddingAngle={5} dataKey="count" nameKey="service"
+                    label={({ service, count }) => `${service}: ${count}`}>
+                    {data.shipmentsByService.map((_, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+                  </Pie>
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                </PieChart>
+              </ChartContainer>
+            ) : (
+              <p className="text-center text-muted-foreground py-8 text-sm">No data available</p>
+            )}
+          </CardContent>
+        </Card>
 
-          {/* Shipments by Service */}
-          <Card className="border-border/50">
-            <CardHeader className="pb-2 sm:pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5" />Shipments by Service Type
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-6 pt-0">
-              {data.shipmentsByService.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[220px] sm:h-[300px]">
-                  <PieChart>
-                    <Pie data={data.shipmentsByService} cx="50%" cy="50%" innerRadius={40} outerRadius={70} paddingAngle={5} dataKey="count" nameKey="service"
-                      label={({ service, count }) => `${service}: ${count}`}>
-                      {data.shipmentsByService.map((_, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </PieChart>
-                </ChartContainer>
-              ) : (
-                <p className="text-center text-muted-foreground py-8 text-sm">No data available</p>
-              )}
-            </CardContent>
-          </Card>
+        {/* Revenue Over Time */}
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+              <DollarSign className="w-4 h-4 text-primary" />Revenue Over Time
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            {data.revenueByMonth.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-[240px] sm:h-[280px]">
+                <LineChart data={data.revenueByMonth}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="revenue" stroke="hsl(var(--secondary))" strokeWidth={2} dot={{ fill: "hsl(var(--secondary))" }} />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <p className="text-center text-muted-foreground py-8 text-sm">No revenue data available</p>
+            )}
+          </CardContent>
+        </Card>
 
-          {/* Revenue Over Time */}
-          <Card className="border-border/50">
-            <CardHeader className="pb-2 sm:pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />Revenue Over Time
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-6 pt-0">
-              {data.revenueByMonth.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[220px] sm:h-[300px]">
-                  <LineChart data={data.revenueByMonth}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                    <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                    <YAxis tick={{ fontSize: 11 }} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line type="monotone" dataKey="revenue" stroke="hsl(var(--secondary))" strokeWidth={2} dot={{ fill: "hsl(var(--secondary))" }} />
-                  </LineChart>
-                </ChartContainer>
-              ) : (
-                <p className="text-center text-muted-foreground py-8 text-sm">No revenue data available</p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Shipments Over Time */}
-          <Card className="border-border/50">
-            <CardHeader className="pb-2 sm:pb-4">
-              <CardTitle className="flex items-center gap-2 text-sm sm:text-base">
-                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />Shipments Over Time
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 sm:p-6 pt-0">
-              {data.shipmentsByMonth.length > 0 ? (
-                <ChartContainer config={chartConfig} className="h-[220px] sm:h-[300px]">
-                  <LineChart data={data.shipmentsByMonth}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-                    <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                    <YAxis tick={{ fontSize: 11 }} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line type="monotone" dataKey="count" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ fill: "hsl(var(--primary))" }} />
-                  </LineChart>
-                </ChartContainer>
-              ) : (
-                <p className="text-center text-muted-foreground py-8 text-sm">No shipment data available</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
+        {/* Shipments Over Time */}
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+              <TrendingUp className="w-4 h-4 text-primary" />Shipments Over Time
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            {data.shipmentsByMonth.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-[240px] sm:h-[280px]">
+                <LineChart data={data.shipmentsByMonth}>
+                  <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                  <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line type="monotone" dataKey="count" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ fill: "hsl(var(--primary))" }} />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <p className="text-center text-muted-foreground py-8 text-sm">No shipment data available</p>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

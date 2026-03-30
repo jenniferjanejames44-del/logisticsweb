@@ -227,47 +227,45 @@ const AdminUsers = () => {
 
   return (
     <AdminLayout title="User Management" description="Manage customer accounts, permissions, and view activity">
-      <div className="space-y-6 sm:space-y-8">
-        <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.07)]">
-          <CardHeader className="p-6 pb-4">
-              <div className="flex flex-col gap-4 sm:gap-4">
-              <CardTitle className="flex items-center gap-3 text-base sm:text-lg">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
-                  <UserCog className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
+      <div className="space-y-5">
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <UserCog className="w-4 h-4 text-primary" />
                 All Users ({filteredUsers.length})
               </CardTitle>
-              <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
-                <div className="relative flex-1 sm:max-w-[280px]">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+                <div className="relative sm:w-[240px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search users..." className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search users..." className="h-9 rounded-lg border-border/80 bg-muted/30 pl-9 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Dialog open={addAdminOpen} onOpenChange={setAddAdminOpen}>
                   <DialogTrigger asChild>
-                    <Button className="h-11 w-full max-w-[220px] rounded-xl px-6 sm:w-auto sm:max-w-none"><UserPlus className="w-4 h-4 mr-2" />Add Admin</Button>
+                    <Button className="h-9 rounded-lg px-4 text-sm"><UserPlus className="w-4 h-4 mr-1.5" />Add Admin</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
-                    <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
-                      <DialogTitle className="text-foreground">Add New Admin</DialogTitle>
-                      <DialogDescription>Create a new admin account with full dashboard access.</DialogDescription>
+                  <DialogContent className="sm:max-w-md rounded-xl border border-border/60 bg-white p-0">
+                    <DialogHeader className="border-b border-border/40 px-5 py-4">
+                      <DialogTitle className="text-foreground text-base">Add New Admin</DialogTitle>
+                      <DialogDescription className="text-sm">Create a new admin account with full dashboard access.</DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4 px-6 py-5">
-                      <div className="space-y-2">
-                        <Label htmlFor="admin-name">Full Name</Label>
-                        <Input id="admin-name" placeholder="Enter full name" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
+                    <div className="space-y-4 px-5 py-4">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="admin-name" className="text-sm">Full Name</Label>
+                        <Input id="admin-name" placeholder="Enter full name" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminName} onChange={(e) => setNewAdminName(e.target.value)} />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="admin-email">Email *</Label>
-                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
+                      <div className="space-y-1.5">
+                        <Label htmlFor="admin-email" className="text-sm">Email *</Label>
+                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="admin-password">Password *</Label>
-                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-11 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
+                      <div className="space-y-1.5">
+                        <Label htmlFor="admin-password" className="text-sm">Password *</Label>
+                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
                       </div>
                     </div>
-                    <DialogFooter className="border-t border-border/60 px-6 py-5">
-                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-11 w-full rounded-xl sm:w-auto">Cancel</Button>
-                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-11 w-full rounded-xl sm:w-auto">
+                    <DialogFooter className="border-t border-border/40 px-5 py-4">
+                      <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-10 w-full rounded-lg sm:w-auto text-sm">Cancel</Button>
+                      <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-10 w-full rounded-lg sm:w-auto text-sm">
                         {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
                       </Button>
                     </DialogFooter>
@@ -276,7 +274,7 @@ const AdminUsers = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-3 sm:p-6">
+          <CardContent className="p-0 sm:p-0">
             {loading ? (
               <p className="text-center text-muted-foreground py-8 text-sm">Loading users...</p>
             ) : filteredUsers.length === 0 ? (
@@ -286,9 +284,9 @@ const AdminUsers = () => {
               </div>
             ) : isMobile ? (
               /* Mobile Card View */
-              <div className="space-y-3">
+              <div className="divide-y divide-border/40">
                 {filteredUsers.map((user) => (
-                  <div key={user.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                  <div key={user.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
                         <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
