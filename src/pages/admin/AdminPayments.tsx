@@ -218,7 +218,7 @@ const AdminPayments = () => {
                         <TableCell>{new Date(payment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
                           <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                            <SelectTrigger className="h-10 w-32 rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)]"><SelectValue /></SelectTrigger>
+                            <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
                             <SelectContent>
                               {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                             </SelectContent>
