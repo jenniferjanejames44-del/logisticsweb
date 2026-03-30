@@ -1228,9 +1228,9 @@ const Shipping = () => {
                                 <span className={`whitespace-nowrap font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>{formatUsd(deliveryFee)}</span>
                               </div>
                             )}
-                            <div className="flex items-center justify-between gap-3 rounded-xl bg-white/85 px-4 py-3 ring-1 ring-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                              <span className="font-bold text-foreground text-lg">Total</span>
-                              <span className="whitespace-nowrap text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</span>
+                            <div className="flex items-center justify-between rounded-lg bg-white px-4 py-3 border border-primary/15">
+                              <span className="font-bold text-foreground text-base">Total</span>
+                              <span className="text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</span>
                             </div>
                             {grandTotal === 0 && (
                               <p className="text-sm text-muted-foreground text-center pt-1">
