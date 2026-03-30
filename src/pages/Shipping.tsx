@@ -440,13 +440,13 @@ const Shipping = () => {
     }, 160);
   }, []);
 
-  const inputClass = "h-11 rounded-lg border border-[#E5E7EB] bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:border-primary/20 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:border-primary/20 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const invalidFieldClass = "border-destructive/60 ring-2 ring-destructive/10 focus:border-destructive focus:ring-destructive/15";
-  const stepPanelClass = "space-y-5 sm:space-y-6 animate-in fade-in-0 slide-in-from-right-2";
-  const softPanelClass = "rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 sm:p-5";
-  const interactiveCardClass = "transition-all duration-200 ease-in-out hover:bg-muted/[0.3]";
-  const actionBarClass = "mt-6 flex flex-col gap-3 border-t border-border/50 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
+  const inputClass = "h-12 rounded-lg border border-border/70 bg-white px-4 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
+  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-border/70 bg-white px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
+  const invalidFieldClass = "!border-destructive/60 !ring-2 !ring-destructive/12 focus:!border-destructive focus:!ring-destructive/18";
+  const stepPanelClass = "space-y-6 sm:space-y-7 animate-in fade-in-0 slide-in-from-right-2 duration-300";
+  const softPanelClass = "rounded-xl border border-border/50 bg-muted/30 p-4 sm:p-5";
+  const interactiveCardClass = "transition-colors duration-200 hover:bg-muted/40";
+  const actionBarClass = "mt-8 flex flex-col gap-3 border-t border-border/40 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -458,27 +458,25 @@ const Shipping = () => {
     <div className="min-h-screen">
       <Header />
       <main>
-        <section className="bg-primary pt-28 pb-14 sm:pt-32 sm:pb-18 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/0 via-transparent to-primary/20" />
-          <div className="absolute top-0 left-0 w-full h-full opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--primary-foreground)) 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+        <section className="bg-primary pt-28 pb-12 sm:pt-32 sm:pb-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/30" />
           <div className="section-container text-center relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-5 bg-primary-foreground/10 text-primary-foreground/90 border border-primary-foreground/10 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold mb-5 bg-primary-foreground/10 text-primary-foreground/90 border border-primary-foreground/10">
               <Package className="w-3.5 h-3.5" /> {workflowGuide?.badge || "New Shipment"}
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground mb-3 tracking-tight">
               {workflowGuide ? (intent === "quote" ? workflowGuide.quoteTitle : workflowGuide.shipmentTitle) : "Create a Shipment"}
             </h1>
-            <p className="text-primary-foreground/75 text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-primary-foreground/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
               {workflowGuide?.description || "Fill in your details step by step and we'll calculate the cost automatically."}
             </p>
           </div>
         </section>
 
-        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_35%),linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)]">
-          <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
-          <div className="section-container relative z-10">
+        <section className="section-padding bg-[hsl(220,20%,97%)]">
+          <div className="section-container">
             {workflowGuide && (
-              <div className="mx-auto mb-6 max-w-4xl rounded-2xl border border-primary/15 bg-white/90 p-5 shadow-[0_16px_36px_rgba(15,23,42,0.05)] backdrop-blur-sm">
+              <div className="mx-auto mb-6 max-w-4xl rounded-xl border border-border/60 bg-white p-5 shadow-sm">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-primary">{workflowGuide.badge}</p>
@@ -491,38 +489,51 @@ const Shipping = () => {
               </div>
             )}
             <div className="mx-auto max-w-4xl">
-              <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+              <div className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-sm">
                 {/* Progress */}
-                <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.94))] p-5 sm:p-6">
-                  <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="border-b border-border/50 bg-white p-5 sm:p-6">
+                  <div className="mb-5 flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-foreground">Shipment progress</p>
-                      <p className="text-xs text-muted-foreground">Step {step} of {TOTAL_STEPS}</p>
+                      <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{progressSteps[step - 1]?.label}</p>
                     </div>
-                    <div className="rounded-full border border-primary/10 bg-primary/[0.05] px-3 py-1 text-xs font-semibold text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                      {Math.round((step / TOTAL_STEPS) * 100)}% complete
-                    </div>
+                    <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-bold text-primary">
+                      {Math.round((step / TOTAL_STEPS) * 100)}%
+                    </span>
                   </div>
-                  <div className="flex items-start gap-2 sm:gap-3">
+                  {/* Progress bar */}
+                  <div className="mb-5 h-1.5 w-full rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
+                  </div>
+                  {/* Step pills */}
+                  <div className="flex items-center gap-1 sm:gap-2">
                     {progressSteps.map((s, i) => {
-                      const isActive = step >= s.num;
-                      const isCurrent = step === s.num;
                       const isComplete = step > s.num;
+                      const isCurrent = step === s.num;
                       const StepIcon = s.icon;
                       return (
                         <Fragment key={s.num}>
-                          <div className="flex min-w-0 flex-1 flex-col items-center text-center">
-                            <div className={`mb-2 flex h-10 w-10 items-center justify-center rounded-xl border text-sm transition-all duration-200 ease-in-out sm:h-12 sm:w-12 ${isComplete ? "border-primary bg-primary text-primary-foreground shadow-[0_14px_28px_rgba(6,16,67,0.18)]" : isCurrent ? "border-primary/20 bg-primary/[0.08] text-primary ring-4 ring-primary/10 shadow-[0_12px_24px_rgba(6,16,67,0.12)]" : isActive ? "border-primary/15 bg-primary/[0.05] text-primary" : "border-border/70 bg-white text-muted-foreground"}`}>
-                              {isComplete ? <CheckCircle2 className="h-[18px] w-[18px]" strokeWidth={2.5} /> : <StepIcon className="h-[18px] w-[18px]" strokeWidth={2.5} />}
-                            </div>
-                            <span className={`text-[10px] font-semibold leading-4 tracking-wide sm:text-xs ${isCurrent ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                              {s.label}
-                            </span>
-                          </div>
+                          <button
+                            type="button"
+                            onClick={() => { if (isComplete) setStep(s.num); }}
+                            disabled={!isComplete}
+                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold transition-all duration-200 sm:px-3 sm:py-2.5 sm:text-sm ${
+                              isComplete
+                                ? "bg-primary/8 text-primary cursor-pointer hover:bg-primary/12"
+                                : isCurrent
+                                  ? "bg-primary text-primary-foreground shadow-sm"
+                                  : "bg-muted/50 text-muted-foreground cursor-default"
+                            }`}
+                          >
+                            {isComplete ? (
+                              <CheckCircle2 className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                            ) : (
+                              <StepIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
+                            )}
+                            <span className="hidden sm:inline">{s.label}</span>
+                          </button>
                           {i < progressSteps.length - 1 && (
-                            <div className="mt-5 hidden h-1 flex-1 rounded-full bg-border/80 sm:block">
-                              <div className={`h-full rounded-full bg-primary transition-all duration-200 ease-in-out ${step > s.num ? "w-full" : "w-0"}`} />
-                            </div>
+                            <div className="h-px w-2 bg-border/60 sm:w-4" />
                           )}
                         </Fragment>
                       );
@@ -531,18 +542,18 @@ const Shipping = () => {
                 </div>
 
                 {/* Form */}
-                <div className="bg-white p-4 sm:p-6 lg:p-8">
+                <div className="bg-white p-5 sm:p-6 lg:p-8">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><User className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Sender Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who is sending this package?</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><User className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Sender Details</h3><p className="text-sm text-muted-foreground">Who is sending this package?</p></div>
                       </div>
                       {showStepValidation && !isStep1Complete && (
-                        <div className="flex items-start gap-2.5 rounded-xl bg-destructive/[0.04] p-3 text-sm text-destructive ring-1 ring-destructive/20">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -597,13 +608,13 @@ const Shipping = () => {
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Receiver Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who will receive this package?</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
-                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -668,13 +679,13 @@ const Shipping = () => {
                   {/* ===== STEP 3: Package ===== */}
                   {step === 3 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 shadow-md shadow-accent/20"><Package className="w-5 h-5 text-accent-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Package Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">What are you shipping?</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground"><Package className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Package Details</h3><p className="text-sm text-muted-foreground">What are you shipping?</p></div>
                       </div>
                       {showStepValidation && !isStep3Complete && (
-                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -805,14 +816,14 @@ const Shipping = () => {
                   {/* ===== STEP 4: Shipping Options ===== */}
                   {step === 4 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Truck className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Shipping Options</h3><p className="text-sm text-muted-foreground">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
                       {showStepValidation && (
-                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
                         </div>
                       )}
@@ -1039,29 +1050,27 @@ const Shipping = () => {
                   {/* ===== STEP 5: Summary ===== */}
                   {step === 5 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><CheckCircle2 className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipment Summary</h3><p className="text-[13px] text-muted-foreground mt-0.5">Review your details and confirm</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><CheckCircle2 className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_300px]">
-                        <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
-                          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                            <div className="min-w-0 space-y-3">
-                              <span className="inline-flex w-fit items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_280px]">
+                        {/* Route overview */}
+                        <div className="rounded-xl border border-primary/15 bg-primary/4 p-5 sm:p-6">
+                          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <div className="space-y-2">
+                              <span className="inline-flex items-center rounded-full bg-primary/8 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
                                 Ready to confirm
                               </span>
-                              <div>
-                                <p className="break-words text-sm font-semibold text-foreground sm:text-base">{formData.origin_country} → {formData.destination_country}</p>
-                                <p className="mt-1 break-words text-sm leading-relaxed text-muted-foreground">
-                                  {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
-                                </p>
-                              </div>
+                              <p className="text-base font-semibold text-foreground">{formData.origin_country} → {formData.destination_country}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
+                              </p>
                             </div>
-                            <div className="rounded-2xl bg-white/90 px-4 py-3 text-left ring-1 ring-primary/10 sm:min-w-[180px]">
-                              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Estimated total</p>
-                              <p className="mt-1 whitespace-nowrap text-3xl font-bold text-primary">{formatUsd(grandTotal)}</p>
-                              <p className="text-xs text-muted-foreground">Final confirmation before submission</p>
+                            <div className="rounded-xl bg-white px-4 py-3 border border-border/50 sm:min-w-[160px] sm:text-right">
+                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
+                              <p className="mt-1 text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</p>
                             </div>
                           </div>
 
@@ -1071,24 +1080,25 @@ const Shipping = () => {
                               { label: "Packaging", value: packagingCost > 0 ? formatUsd(packagingCost) : "None selected" },
                               { label: "Delivery Fee", value: deliveryFee > 0 ? formatUsd(deliveryFee) : "Included / N/A" },
                             ].map((item) => (
-                              <div key={item.label} className="rounded-xl bg-white/80 p-4 ring-1 ring-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 break-words text-sm font-semibold text-foreground">{item.value}</p>
+                              <div key={item.label} className="rounded-lg bg-white p-3 border border-border/40">
+                                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
                         </div>
 
-                        <div className="rounded-2xl bg-muted/[0.18] p-5 ring-1 ring-border/50">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Submission checklist</p>
-                          <div className="mt-4 space-y-3 text-sm">
+                        {/* Checklist */}
+                        <div className="rounded-xl border border-border/50 bg-muted/30 p-5">
+                          <p className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Checklist</p>
+                          <div className="space-y-2.5">
                             {[
                               `Sender and receiver details captured`,
                               `Route and warehouse selected`,
-                              `${selectedDeliveryMethodData?.name || "Pickup"} delivery method confirmed`,
-                              packagingCost > 0 ? "Packaging materials included" : "No packaging materials selected",
+                              `${selectedDeliveryMethodData?.name || "Pickup"} delivery confirmed`,
+                              packagingCost > 0 ? "Packaging materials included" : "No packaging selected",
                             ].map((item) => (
-                              <div key={item} className="flex items-start gap-2 rounded-xl bg-white/80 px-3 py-2.5 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                              <div key={item} className="flex items-start gap-2 text-sm">
                                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                                 <span className="text-muted-foreground">{item}</span>
                               </div>
@@ -1098,25 +1108,25 @@ const Shipping = () => {
                       </div>
 
                       {/* Details cards */}
-                      <div className="space-y-4">
+                      <div className="space-y-5">
                         <div className="grid sm:grid-cols-2 gap-4">
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
+                          <div className={`${softPanelClass}`}>
+                            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Sender</p>
                             <p className="font-semibold text-sm text-foreground">{formData.sender_name}</p>
-                            <p className="break-words text-xs text-muted-foreground">{formData.sender_phone}</p>
-                            {formData.sender_address && <p className="mt-1 break-words text-xs leading-relaxed text-muted-foreground">{formData.sender_address}, {formData.sender_city}</p>}
+                            <p className="text-xs text-muted-foreground mt-0.5">{formData.sender_phone}</p>
+                            {formData.sender_address && <p className="mt-1 text-xs text-muted-foreground">{formData.sender_address}, {formData.sender_city}</p>}
                           </div>
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Receiver</p>
+                          <div className={`${softPanelClass}`}>
+                            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Receiver</p>
                             <p className="font-semibold text-sm text-foreground">{formData.receiver_name}</p>
-                            <p className="break-words text-xs text-muted-foreground">{formData.receiver_phone}</p>
-                            {formData.receiver_address && <p className="mt-1 break-words text-xs leading-relaxed text-muted-foreground">{formData.receiver_address}, {formData.receiver_city}, {formData.receiver_country}</p>}
+                            <p className="text-xs text-muted-foreground mt-0.5">{formData.receiver_phone}</p>
+                            {formData.receiver_address && <p className="mt-1 text-xs text-muted-foreground">{formData.receiver_address}, {formData.receiver_city}, {formData.receiver_country}</p>}
                           </div>
                         </div>
 
-                        <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                          <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-3">Shipment Details</p>
-                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                        <div className={`${softPanelClass}`}>
+                          <p className="text-xs font-bold text-primary uppercase tracking-wider mb-3">Shipment Details</p>
+                          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                             {[
                               { label: "Route", value: `${formData.origin_country} → ${formData.destination_country}` },
                               { label: "Actual Weight", value: `${formData.weight} KG` },
@@ -1130,37 +1140,37 @@ const Shipping = () => {
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
                               { label: "Quantity", value: formData.quantity || "1" },
-                              { label: "Declared Value (USD)", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
+                              { label: "Declared Value", value: formData.declared_value ? `$${formData.declared_value}` : "—" },
                               { label: "Insurance", value: formData.insurance_required === "true" ? "Yes" : "No" },
                             ].map((item) => (
-                              <div key={item.label} className="rounded-xl bg-white/80 p-3 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 break-words text-sm font-semibold leading-snug text-foreground">{item.value}</p>
+                              <div key={item.label}>
+                                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                <p className="mt-0.5 text-sm font-semibold text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
                           {formData.notes && (
                             <div className="mt-4 pt-4 border-t border-border/40">
                               <p className="text-xs text-muted-foreground mb-1">Shipment Notes</p>
-                              <p className="break-words text-sm leading-relaxed text-foreground">{formData.notes}</p>
+                              <p className="text-sm text-foreground">{formData.notes}</p>
                             </div>
                           )}
                         </div>
 
                         {/* Packaging summary */}
                         {packagingCost > 0 && (
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <div className="mb-3 flex items-center justify-between gap-3">
-                              <p className="text-xs font-semibold text-primary uppercase tracking-wider">Packaging</p>
-                              <span className="whitespace-nowrap rounded-full border border-primary/15 bg-primary/[0.06] px-3 py-1 text-xs font-semibold text-primary">
+                          <div className={softPanelClass}>
+                            <div className="mb-3 flex items-center justify-between">
+                              <p className="text-xs font-bold text-primary uppercase tracking-wider">Packaging</p>
+                              <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-bold text-primary">
                                 {formatUsd(packagingCost)}
                               </span>
                             </div>
                             <div className="space-y-2">
                               {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
-                                <div key={p.id} className="flex items-center justify-between gap-3 rounded-xl bg-white/80 px-3 py-2.5 text-sm ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                                  <span className="break-words text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
-                                  <span className="whitespace-nowrap font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
+                                <div key={p.id} className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
+                                  <span className="font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
                                 </div>
                               ))}
                             </div>
@@ -1169,7 +1179,7 @@ const Shipping = () => {
                       </div>
 
                       {/* Pricing */}
-                      <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
+                      <div className="rounded-xl border border-border/50 bg-muted/30 p-5 sm:p-6">
                         {priceLoading ? (
                           <p className="text-sm text-muted-foreground text-center py-4">Calculating price...</p>
                         ) : (
@@ -1218,9 +1228,9 @@ const Shipping = () => {
                                 <span className={`whitespace-nowrap font-semibold ${pickupFeePrepaid ? "text-foreground" : "text-muted-foreground line-through"}`}>{formatUsd(deliveryFee)}</span>
                               </div>
                             )}
-                            <div className="flex items-center justify-between gap-3 rounded-xl bg-white/85 px-4 py-3 ring-1 ring-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                              <span className="font-bold text-foreground text-lg">Total</span>
-                              <span className="whitespace-nowrap text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</span>
+                            <div className="flex items-center justify-between rounded-lg bg-white px-4 py-3 border border-primary/15">
+                              <span className="font-bold text-foreground text-base">Total</span>
+                              <span className="text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</span>
                             </div>
                             {grandTotal === 0 && (
                               <p className="text-sm text-muted-foreground text-center pt-1">
@@ -1231,8 +1241,8 @@ const Shipping = () => {
                         )}
                       </div>
 
-                      <div className="flex items-start gap-3 rounded-xl bg-muted/[0.18] p-4 ring-1 ring-border/50">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10"><Shield className="w-4 h-4 text-primary" /></div>
+                      <div className="flex items-start gap-3 rounded-lg bg-muted/30 border border-border/40 p-4">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Shield className="w-4 h-4 text-primary" /></div>
                         <p className="text-sm text-muted-foreground">By confirming, you agree to our shipping terms. You can pay immediately or save and pay later from your dashboard.</p>
                       </div>
                     </div>
@@ -1249,9 +1259,9 @@ const Shipping = () => {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={step === 1}
-                      className="order-2 min-h-[44px] w-full gap-2 shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-px sm:order-1 sm:w-auto"
+                      className="order-2 h-12 w-full gap-2 sm:order-1 sm:w-auto"
                     >
-                      <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
+                      <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
                     {step < TOTAL_STEPS ? (
                       <Button
@@ -1262,7 +1272,6 @@ const Shipping = () => {
                           if (canProceed(step)) {
                             setShowStepValidation(false);
                             setStep(step + 1);
-                            // Smooth scroll to top of form
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             return;
                           }
@@ -1274,9 +1283,9 @@ const Shipping = () => {
                             variant: "destructive",
                           });
                         }}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-primary/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-primary/20 sm:order-2 sm:min-w-[150px] sm:w-auto"
+                        className="order-1 h-12 w-full gap-2 sm:order-2 sm:min-w-[150px] sm:w-auto"
                       >
-                        Continue <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
+                        Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
                       <Button
@@ -1285,9 +1294,9 @@ const Shipping = () => {
                         size="dash"
                         disabled={isSubmitting}
                         onClick={handleSubmit}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-accent/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-accent/20 sm:order-2 sm:min-w-[170px] sm:w-auto"
+                        className="order-1 h-12 w-full gap-2 sm:order-2 sm:min-w-[170px] sm:w-auto"
                       >
-                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
+                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                       </Button>
                     )}
                   </div>
