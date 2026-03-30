@@ -1108,7 +1108,7 @@ const Shipping = () => {
                       </div>
 
                       {/* Details cards */}
-                      <div className="space-y-4">
+                      <div className="space-y-5">
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div className={`${softPanelClass} ${interactiveCardClass}`}>
                             <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
