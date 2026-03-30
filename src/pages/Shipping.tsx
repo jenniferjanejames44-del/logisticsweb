@@ -473,11 +473,10 @@ const Shipping = () => {
           </div>
         </section>
 
-        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_35%),linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)]">
-          <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
-          <div className="section-container relative z-10">
+        <section className="section-padding bg-[hsl(220,20%,97%)]">
+          <div className="section-container">
             {workflowGuide && (
-              <div className="mx-auto mb-6 max-w-4xl rounded-2xl border border-primary/15 bg-white/90 p-5 shadow-[0_16px_36px_rgba(15,23,42,0.05)] backdrop-blur-sm">
+              <div className="mx-auto mb-6 max-w-4xl rounded-xl border border-border/60 bg-white p-5 shadow-sm">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <p className="text-sm font-semibold text-primary">{workflowGuide.badge}</p>
@@ -490,7 +489,7 @@ const Shipping = () => {
               </div>
             )}
             <div className="mx-auto max-w-4xl">
-              <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+              <div className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-sm">
                 {/* Progress */}
                 <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.94))] p-5 sm:p-6">
                   <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
