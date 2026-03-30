@@ -284,9 +284,9 @@ const AdminUsers = () => {
               </div>
             ) : isMobile ? (
               /* Mobile Card View */
-              <div className="space-y-3">
+              <div className="divide-y divide-border/40">
                 {filteredUsers.map((user) => (
-                  <div key={user.id} className="space-y-3 rounded-xl border border-border/70 bg-white/95 p-5 shadow-[0_12px_28px_rgba(15,23,42,0.05)]">
+                  <div key={user.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
                         <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
