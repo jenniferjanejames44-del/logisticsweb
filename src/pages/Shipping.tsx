@@ -816,14 +816,14 @@ const Shipping = () => {
                   {/* ===== STEP 4: Shipping Options ===== */}
                   {step === 4 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><Truck className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Shipping Options</h3><p className="text-[13px] text-muted-foreground mt-0.5">Choose your route, warehouse, and delivery preferences</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Truck className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Shipping Options</h3><p className="text-sm text-muted-foreground">Choose your route, warehouse, and delivery preferences</p></div>
                       </div>
 
                       {showStepValidation && (
-                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
                         </div>
                       )}
