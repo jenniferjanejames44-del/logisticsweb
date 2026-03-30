@@ -608,9 +608,9 @@ const Shipping = () => {
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
                     <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/30 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-md shadow-primary/20"><Send className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} /></div>
-                        <div><h3 className="font-bold text-[1.125rem] text-foreground tracking-tight">Receiver Details</h3><p className="text-[13px] text-muted-foreground mt-0.5">Who will receive this package?</p></div>
+                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="w-5 h-5" strokeWidth={2} /></div>
+                        <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
                         <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
