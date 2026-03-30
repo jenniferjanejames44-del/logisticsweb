@@ -1159,18 +1159,18 @@ const Shipping = () => {
 
                         {/* Packaging summary */}
                         {packagingCost > 0 && (
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <div className="mb-3 flex items-center justify-between gap-3">
-                              <p className="text-xs font-semibold text-primary uppercase tracking-wider">Packaging</p>
-                              <span className="whitespace-nowrap rounded-full border border-primary/15 bg-primary/[0.06] px-3 py-1 text-xs font-semibold text-primary">
+                          <div className={softPanelClass}>
+                            <div className="mb-3 flex items-center justify-between">
+                              <p className="text-xs font-bold text-primary uppercase tracking-wider">Packaging</p>
+                              <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-bold text-primary">
                                 {formatUsd(packagingCost)}
                               </span>
                             </div>
                             <div className="space-y-2">
                               {packagingMaterials.filter(p => (packagingQuantities[p.id] || 0) > 0).map(p => (
-                                <div key={p.id} className="flex items-center justify-between gap-3 rounded-xl bg-white/80 px-3 py-2.5 text-sm ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                                  <span className="break-words text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
-                                  <span className="whitespace-nowrap font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
+                                <div key={p.id} className="flex items-center justify-between text-sm">
+                                  <span className="text-muted-foreground">{p.name} × {packagingQuantities[p.id]}</span>
+                                  <span className="font-semibold text-foreground">{formatUsd(packagingQuantities[p.id] * Number(p.price))}</span>
                                 </div>
                               ))}
                             </div>
