@@ -1263,8 +1263,6 @@ const Shipping = () => {
                     >
                       <ArrowLeft className="w-4 h-4" /> Back
                     </Button>
-                      <ArrowLeft className="w-4 h-4" strokeWidth={2.5} /> Back
-                    </Button>
                     {step < TOTAL_STEPS ? (
                       <Button
                         type="button"
