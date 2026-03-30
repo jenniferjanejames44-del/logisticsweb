@@ -542,7 +542,7 @@ const Shipping = () => {
                 </div>
 
                 {/* Form */}
-                <div className="bg-white p-4 sm:p-6 lg:p-8">
+                <div className="bg-white p-5 sm:p-6 lg:p-8">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
