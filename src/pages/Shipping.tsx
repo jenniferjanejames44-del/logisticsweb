@@ -440,13 +440,13 @@ const Shipping = () => {
     }, 160);
   }, []);
 
-  const inputClass = "h-11 rounded-lg border border-[#E5E7EB] bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:border-primary/20 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:border-primary/20 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const invalidFieldClass = "border-destructive/60 ring-2 ring-destructive/10 focus:border-destructive focus:ring-destructive/15";
-  const stepPanelClass = "space-y-5 sm:space-y-6 animate-in fade-in-0 slide-in-from-right-2";
-  const softPanelClass = "rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 sm:p-5";
-  const interactiveCardClass = "transition-all duration-200 ease-in-out hover:bg-muted/[0.3]";
-  const actionBarClass = "mt-6 flex flex-col gap-3 border-t border-border/50 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
+  const inputClass = "h-12 rounded-lg border border-border/70 bg-white px-4 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
+  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-border/70 bg-white px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
+  const invalidFieldClass = "!border-destructive/60 !ring-2 !ring-destructive/12 focus:!border-destructive focus:!ring-destructive/18";
+  const stepPanelClass = "space-y-6 sm:space-y-7 animate-in fade-in-0 slide-in-from-right-2 duration-300";
+  const softPanelClass = "rounded-xl border border-border/50 bg-muted/30 p-4 sm:p-5";
+  const interactiveCardClass = "transition-colors duration-200 hover:bg-muted/40";
+  const actionBarClass = "mt-8 flex flex-col gap-3 border-t border-border/40 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
