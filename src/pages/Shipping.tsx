@@ -1179,7 +1179,7 @@ const Shipping = () => {
                       </div>
 
                       {/* Pricing */}
-                      <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
+                      <div className="rounded-xl border border-border/50 bg-muted/30 p-5 sm:p-6">
                         {priceLoading ? (
                           <p className="text-sm text-muted-foreground text-center py-4">Calculating price...</p>
                         ) : (
