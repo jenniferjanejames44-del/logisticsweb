@@ -1274,7 +1274,6 @@ const Shipping = () => {
                           if (canProceed(step)) {
                             setShowStepValidation(false);
                             setStep(step + 1);
-                            // Smooth scroll to top of form
                             window.scrollTo({ top: 0, behavior: 'smooth' });
                             return;
                           }
@@ -1286,9 +1285,9 @@ const Shipping = () => {
                             variant: "destructive",
                           });
                         }}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-primary/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-primary/20 sm:order-2 sm:min-w-[150px] sm:w-auto"
+                        className="order-1 h-12 w-full gap-2 sm:order-2 sm:min-w-[150px] sm:w-auto"
                       >
-                        Continue <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
+                        Continue <ArrowRight className="w-4 h-4" />
                       </Button>
                     ) : (
                       <Button
@@ -1297,9 +1296,9 @@ const Shipping = () => {
                         size="dash"
                         disabled={isSubmitting}
                         onClick={handleSubmit}
-                        className="order-1 min-h-[44px] w-full gap-2 shadow-md shadow-accent/15 transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-lg hover:shadow-accent/20 sm:order-2 sm:min-w-[170px] sm:w-auto"
+                        className="order-1 h-12 w-full gap-2 sm:order-2 sm:min-w-[170px] sm:w-auto"
                       >
-                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" strokeWidth={2.5} />
+                        {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                       </Button>
                     )}
                   </div>
