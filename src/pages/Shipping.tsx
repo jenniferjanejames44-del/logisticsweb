@@ -613,8 +613,8 @@ const Shipping = () => {
                         <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
-                        <div className="flex items-start gap-2.5 p-3 rounded-xl border border-destructive/40 bg-destructive/5 text-destructive text-sm">
-                          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
