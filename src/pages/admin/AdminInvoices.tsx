@@ -189,12 +189,12 @@ const AdminInvoices = () => {
                 <p className="font-medium">No invoices found</p>
               </div>
             ) : isMobile ? (
-              <div className="space-y-3">
+              <div className="divide-y divide-border/40">
                 {filtered.map((invoice) => (
-                  <div key={invoice.id} className="space-y-3 rounded-lg border border-border bg-card p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                  <div key={invoice.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <span className="font-mono font-medium text-sm text-foreground">{invoice.invoice_number}</span>
-                      <Badge className={getStatusColor(invoice.status)}>{invoice.status}</Badge>
+                      <Badge className={`${getStatusColor(invoice.status)} text-[11px]`}>{invoice.status}</Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <div>
@@ -214,13 +214,13 @@ const AdminInvoices = () => {
                         <p className="text-foreground">{invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "N/A"}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 border-t border-border/50 pt-3">
+                    <div className="flex items-center gap-2 border-t border-border/30 pt-3">
                       {invoice.status === "unpaid" && (
-                        <Button variant="default" className="h-11 flex-1 rounded-lg" onClick={() => openPayDialog(invoice)}>
+                        <Button variant="default" className="h-9 flex-1 rounded-lg text-sm" onClick={() => openPayDialog(invoice)}>
                           <CheckCircle className="w-3.5 h-3.5 mr-1" />Mark Paid
                         </Button>
                       )}
-                      <Button variant="outline" className="h-11 flex-1 rounded-lg" onClick={() => handleDownload(invoice)}>
+                      <Button variant="outline" className="h-9 flex-1 rounded-lg text-sm" onClick={() => handleDownload(invoice)}>
                         <Download className="w-3.5 h-3.5 mr-1" />View
                       </Button>
                     </div>
@@ -228,8 +228,8 @@ const AdminInvoices = () => {
                 ))}
               </div>
             ) : (
-              <div className="-mx-6 overflow-x-auto px-6">
-                <div className="min-w-[1020px] overflow-hidden rounded-lg border border-border bg-background">
+              <div className="overflow-x-auto">
+                <div className="min-w-[1020px]">
                 <Table>
                   <TableHeader>
                     <TableRow>
