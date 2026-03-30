@@ -90,60 +90,58 @@ const AdminPayments = () => {
 
   return (
     <AdminLayout title="Payment Management" description="Track and manage all customer payments">
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-5">
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
-          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="mb-2 text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Total Revenue</p>
+                  <p className="text-lg sm:text-xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p>
                 </div>
-                  <div className="rounded-xl bg-success/10 p-3 shadow-[0_10px_20px_rgba(34,197,94,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10"><DollarSign className="w-[18px] h-[18px] text-success" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-            <CardContent className="p-6">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="mb-2 text-sm text-muted-foreground">Pending Payments</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">${pendingAmount.toLocaleString()}</p>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Pending Payments</p>
+                  <p className="text-lg sm:text-xl font-bold text-foreground">${pendingAmount.toLocaleString()}</p>
                 </div>
-                  <div className="rounded-xl bg-warning/10 p-3 shadow-[0_10px_20px_rgba(245,158,11,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10"><DollarSign className="w-[18px] h-[18px] text-warning" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border/70 bg-white/95 shadow-[0_16px_36px_rgba(15,23,42,0.06)]">
-            <CardContent className="p-6">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="mb-2 text-sm text-muted-foreground">Total Transactions</p>
-                  <p className="text-xl sm:text-2xl font-bold text-foreground">{payments.length}</p>
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Total Transactions</p>
+                  <p className="text-lg sm:text-xl font-bold text-foreground">{payments.length}</p>
                 </div>
-                  <div className="rounded-xl bg-primary/10 p-3 shadow-[0_10px_20px_rgba(6,16,67,0.08)]"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><DollarSign className="w-[18px] h-[18px] text-primary" /></div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-border/70 bg-white/95 shadow-[0_18px_40px_rgba(15,23,42,0.07)]">
-          <CardHeader className="p-6 pb-4">
-              <div className="flex flex-col gap-4 sm:gap-4">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <DollarSign className="w-4 h-4 text-primary" />
                 All Payments ({filteredPayments.length})
               </CardTitle>
-                <div className="flex flex-col gap-2 rounded-2xl border border-border/70 bg-muted/[0.18] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] sm:flex-row sm:items-center sm:gap-3">
-                <div className="relative flex-1 sm:max-w-[280px]">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+                <div className="relative sm:w-[240px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input placeholder="Search payments..." className="h-11 rounded-xl border-border/80 bg-white pl-10 shadow-[0_6px_16px_rgba(15,23,42,0.04)]" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search payments..." className="h-9 rounded-lg border-border/80 bg-muted/30 pl-9 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="h-11 w-full rounded-xl border-border/80 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.04)] sm:w-44"><SelectValue placeholder="Filter status" /></SelectTrigger>
+                  <SelectTrigger className="h-9 w-full rounded-lg border-border/80 bg-muted/30 text-sm sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
                     {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
@@ -152,7 +150,7 @@ const AdminPayments = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-3 sm:p-6">
+          <CardContent className="p-0 sm:p-0">
             {loading ? (
               <p className="text-center text-muted-foreground py-8 text-sm">Loading payments...</p>
             ) : filteredPayments.length === 0 ? (
