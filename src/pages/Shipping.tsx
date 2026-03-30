@@ -1110,17 +1110,17 @@ const Shipping = () => {
                       {/* Details cards */}
                       <div className="space-y-5">
                         <div className="grid sm:grid-cols-2 gap-4">
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Sender</p>
+                          <div className={`${softPanelClass}`}>
+                            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Sender</p>
                             <p className="font-semibold text-sm text-foreground">{formData.sender_name}</p>
-                            <p className="break-words text-xs text-muted-foreground">{formData.sender_phone}</p>
-                            {formData.sender_address && <p className="mt-1 break-words text-xs leading-relaxed text-muted-foreground">{formData.sender_address}, {formData.sender_city}</p>}
+                            <p className="text-xs text-muted-foreground mt-0.5">{formData.sender_phone}</p>
+                            {formData.sender_address && <p className="mt-1 text-xs text-muted-foreground">{formData.sender_address}, {formData.sender_city}</p>}
                           </div>
-                          <div className={`${softPanelClass} ${interactiveCardClass}`}>
-                            <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-2.5">Receiver</p>
+                          <div className={`${softPanelClass}`}>
+                            <p className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Receiver</p>
                             <p className="font-semibold text-sm text-foreground">{formData.receiver_name}</p>
-                            <p className="break-words text-xs text-muted-foreground">{formData.receiver_phone}</p>
-                            {formData.receiver_address && <p className="mt-1 break-words text-xs leading-relaxed text-muted-foreground">{formData.receiver_address}, {formData.receiver_city}, {formData.receiver_country}</p>}
+                            <p className="text-xs text-muted-foreground mt-0.5">{formData.receiver_phone}</p>
+                            {formData.receiver_address && <p className="mt-1 text-xs text-muted-foreground">{formData.receiver_address}, {formData.receiver_city}, {formData.receiver_country}</p>}
                           </div>
                         </div>
 
