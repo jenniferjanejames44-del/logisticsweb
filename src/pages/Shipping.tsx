@@ -1055,24 +1055,22 @@ const Shipping = () => {
                         <div><h3 className="font-bold text-lg text-foreground">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_300px]">
-                        <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
-                          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                            <div className="min-w-0 space-y-3">
-                              <span className="inline-flex w-fit items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_280px]">
+                        {/* Route overview */}
+                        <div className="rounded-xl border border-primary/15 bg-primary/4 p-5 sm:p-6">
+                          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <div className="space-y-2">
+                              <span className="inline-flex items-center rounded-full bg-primary/8 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
                                 Ready to confirm
                               </span>
-                              <div>
-                                <p className="break-words text-sm font-semibold text-foreground sm:text-base">{formData.origin_country} → {formData.destination_country}</p>
-                                <p className="mt-1 break-words text-sm leading-relaxed text-muted-foreground">
-                                  {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
-                                </p>
-                              </div>
+                              <p className="text-base font-semibold text-foreground">{formData.origin_country} → {formData.destination_country}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
+                              </p>
                             </div>
-                            <div className="rounded-2xl bg-white/90 px-4 py-3 text-left ring-1 ring-primary/10 sm:min-w-[180px]">
-                              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">Estimated total</p>
-                              <p className="mt-1 whitespace-nowrap text-3xl font-bold text-primary">{formatUsd(grandTotal)}</p>
-                              <p className="text-xs text-muted-foreground">Final confirmation before submission</p>
+                            <div className="rounded-xl bg-white px-4 py-3 border border-border/50 sm:min-w-[160px] sm:text-right">
+                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
+                              <p className="mt-1 text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</p>
                             </div>
                           </div>
 
@@ -1082,24 +1080,25 @@ const Shipping = () => {
                               { label: "Packaging", value: packagingCost > 0 ? formatUsd(packagingCost) : "None selected" },
                               { label: "Delivery Fee", value: deliveryFee > 0 ? formatUsd(deliveryFee) : "Included / N/A" },
                             ].map((item) => (
-                              <div key={item.label} className="rounded-xl bg-white/80 p-4 ring-1 ring-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 break-words text-sm font-semibold text-foreground">{item.value}</p>
+                              <div key={item.label} className="rounded-lg bg-white p-3 border border-border/40">
+                                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                                <p className="mt-1 text-sm font-semibold text-foreground">{item.value}</p>
                               </div>
                             ))}
                           </div>
                         </div>
 
-                        <div className="rounded-2xl bg-muted/[0.18] p-5 ring-1 ring-border/50">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Submission checklist</p>
-                          <div className="mt-4 space-y-3 text-sm">
+                        {/* Checklist */}
+                        <div className="rounded-xl border border-border/50 bg-muted/30 p-5">
+                          <p className="text-xs font-bold uppercase tracking-wider text-primary mb-4">Checklist</p>
+                          <div className="space-y-2.5">
                             {[
                               `Sender and receiver details captured`,
                               `Route and warehouse selected`,
-                              `${selectedDeliveryMethodData?.name || "Pickup"} delivery method confirmed`,
-                              packagingCost > 0 ? "Packaging materials included" : "No packaging materials selected",
+                              `${selectedDeliveryMethodData?.name || "Pickup"} delivery confirmed`,
+                              packagingCost > 0 ? "Packaging materials included" : "No packaging selected",
                             ].map((item) => (
-                              <div key={item} className="flex items-start gap-2 rounded-xl bg-white/80 px-3 py-2.5 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
+                              <div key={item} className="flex items-start gap-2 text-sm">
                                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                                 <span className="text-muted-foreground">{item}</span>
                               </div>
