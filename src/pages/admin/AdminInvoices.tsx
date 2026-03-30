@@ -128,48 +128,48 @@ const AdminInvoices = () => {
 
   return (
     <AdminLayout title="Invoice Management" description="Track and manage all customer invoices">
-      <div className="space-y-6 sm:space-y-8">
+      <div className="space-y-5">
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-6">
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
-                <div><p className="text-xs sm:text-sm text-muted-foreground">Paid Revenue</p><p className="text-xl sm:text-2xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p></div>
-                <div className="rounded-lg bg-success/10 p-3"><CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-success" /></div>
+                <div><p className="text-xs font-medium text-muted-foreground mb-1">Paid Revenue</p><p className="text-lg sm:text-xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10"><CheckCircle className="w-[18px] h-[18px] text-success" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-            <CardContent className="p-6">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
-                <div><p className="text-xs sm:text-sm text-muted-foreground">Unpaid Invoices</p><p className="text-xl sm:text-2xl font-bold text-foreground">${totalUnpaid.toLocaleString()}</p></div>
-                <div className="rounded-lg bg-warning/10 p-3"><DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-warning" /></div>
+                <div><p className="text-xs font-medium text-muted-foreground mb-1">Unpaid Invoices</p><p className="text-lg sm:text-xl font-bold text-foreground">${totalUnpaid.toLocaleString()}</p></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10"><DollarSign className="w-[18px] h-[18px] text-warning" /></div>
               </div>
             </CardContent>
           </Card>
-          <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-            <CardContent className="p-6">
+          <Card className="border-border/60 bg-white shadow-sm">
+            <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between">
-                <div><p className="text-xs sm:text-sm text-muted-foreground">Total Invoices</p><p className="text-xl sm:text-2xl font-bold text-foreground">{invoices.length}</p></div>
-                <div className="rounded-lg bg-primary/10 p-3"><FileText className="w-5 h-5 sm:w-6 sm:h-6 text-primary" /></div>
+                <div><p className="text-xs font-medium text-muted-foreground mb-1">Total Invoices</p><p className="text-lg sm:text-xl font-bold text-foreground">{invoices.length}</p></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><FileText className="w-[18px] h-[18px] text-primary" /></div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-          <CardHeader className="p-6 pb-4">
-            <div className="flex flex-col gap-3 sm:gap-4">
-              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5" />All Invoices ({filtered.length})
+        <Card className="border-border/60 bg-white shadow-sm">
+          <CardHeader className="px-5 py-4 border-b border-border/40">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <FileText className="w-4 h-4 text-primary" />All Invoices ({filtered.length})
               </CardTitle>
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                <div className="relative flex-1 sm:max-w-[280px]">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-2">
+                <div className="relative sm:w-[240px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input placeholder="Search invoices..." className="h-11 rounded-lg pl-10" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                  <Input placeholder="Search invoices..." className="h-9 rounded-lg border-border/80 bg-muted/30 pl-9 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="h-11 w-full rounded-lg sm:w-40"><SelectValue placeholder="Filter status" /></SelectTrigger>
+                  <SelectTrigger className="h-9 w-full rounded-lg border-border/80 bg-muted/30 text-sm sm:w-36"><SelectValue placeholder="Filter status" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Statuses</SelectItem>
                     <SelectItem value="unpaid">Unpaid</SelectItem>
@@ -180,7 +180,7 @@ const AdminInvoices = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-0 sm:p-0">
             {loading ? (
               <p className="text-center text-muted-foreground py-8 text-sm">Loading invoices...</p>
             ) : filtered.length === 0 ? (
