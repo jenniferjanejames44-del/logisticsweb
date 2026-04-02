@@ -76,16 +76,16 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-[76px] bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 sm:h-20"
+      className="fixed top-0 left-0 right-0 z-50 h-[68px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[72px] lg:h-20"
     >
-      <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
+      <div className="section-container flex h-full items-center justify-between gap-3 sm:gap-6">
         {/* Logo */}
-        <Link to="/" className="group flex max-w-[calc(100%-3.5rem)] shrink-0 items-center lg:max-w-none">
-          <HeaderLogo className="block h-10 w-auto max-w-[172px] sm:h-11 sm:max-w-[210px] md:h-[50px] md:max-w-[240px]" />
+        <Link to="/" className="group flex shrink-0 items-center">
+          <HeaderLogo className="block h-9 w-auto max-w-[160px] sm:h-10 sm:max-w-[180px] lg:h-[50px] lg:max-w-[240px]" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        {/* Desktop Navigation - visible at lg (1024px+) like ShipBob */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -155,8 +155,8 @@ const Header = () => {
 
         </nav>
 
-        {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-2.5">
+        {/* CTA Buttons - desktop only (lg+) */}
+        <div className="hidden lg:flex items-center gap-2.5">
           {user ? (
             <>
               {isAdmin && (
@@ -196,20 +196,36 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 md:hidden"
-          onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X size={24} strokeWidth={3} /> : <Menu size={24} strokeWidth={3} />}
-        </button>
+        {/* Tablet + Mobile: CTA button + Hamburger (ShipBob pattern) */}
+        <div className="flex items-center gap-2.5 lg:hidden">
+          {/* Visible CTA on tablet like ShipBob */}
+          {!user ? (
+            <Button asChild variant="navCta" size="sm" className="hidden sm:inline-flex font-bold whitespace-nowrap px-4 text-sm">
+              <Link to="/auth">
+                Join Now
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild variant="nav" size="sm" className="hidden sm:inline-flex font-semibold whitespace-nowrap px-4 text-sm">
+              <Link to="/dashboard">
+                Dashboard
+              </Link>
+            </Button>
+          )}
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 sm:h-11 sm:w-11"
+            onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-foreground/18 backdrop-blur-sm transition-opacity duration-300"
+          className="lg:hidden fixed inset-0 bg-foreground/12 transition-opacity duration-300"
           style={{ zIndex: 9998 }}
           onClick={closeMobileMenu}
           aria-hidden="true"
@@ -218,7 +234,7 @@ const Header = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)] shadow-[0_28px_64px_rgba(6,16,67,0.18)] transition-all duration-300 ease-out isolate ${
+        className={`lg:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-background shadow-[0_28px_64px_rgba(6,16,67,0.12)] transition-all duration-300 ease-out isolate ${
           isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
@@ -226,8 +242,7 @@ const Header = () => {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)]" aria-hidden="true" />
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-white/90 px-4 py-3 backdrop-blur-xl sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/40 bg-background px-4 py-3 sm:px-5">
           <Link to="/" onClick={closeMobileMenu} className="flex items-center">
             <HeaderLogo className="block h-9 w-auto max-w-[164px]" />
           </Link>

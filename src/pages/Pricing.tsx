@@ -193,7 +193,7 @@ const Pricing = () => {
 	        <section className="section-padding relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(6,16,67,0.06),transparent_38%),linear-gradient(180deg,#ffffff_0%,rgba(248,250,252,0.96)_100%)]">
           <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, hsl(var(--foreground)) 1px, transparent 0)', backgroundSize: '28px 28px' }} />
           <div className="section-container">
-	            <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
+	            <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_420px]">
 	              {/* Calculator Form */}
 	              <Card className="border-border/70 bg-white/95 shadow-[0_20px_48px_rgba(15,23,42,0.08)] backdrop-blur-sm">
                 <CardHeader className="pb-4">

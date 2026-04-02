@@ -25,9 +25,7 @@ const Index = () => {
         <ServicesSection />
         <HowItWorksSection />
         <FounderSection />
-        <div className="hidden md:block">
-          <CoreValuesSection />
-        </div>
+        <CoreValuesSection />
         <WhyChooseSection />
         <IndustriesSection />
         <PartnersSection />

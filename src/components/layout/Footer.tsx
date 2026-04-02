@@ -63,8 +63,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary text-white">
-      <div className="section-container px-4 pb-10 pt-[60px] sm:px-6">
-        <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 xl:grid-cols-[1.15fr_0.82fr_0.95fr_1.08fr]">
+      <div className="section-container pb-10 pt-12 sm:pt-14 lg:pt-[60px]">
+        <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[1.15fr_0.82fr_0.95fr_1.08fr]">
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center" aria-label="RAC Logistics home">
               <HeaderLogo className="h-16 sm:h-[70px] [&_g]:fill-white [&_text]:fill-white" />

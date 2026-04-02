@@ -10,7 +10,7 @@ const FounderSection = () => {
   return (
     <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Image */}
           <div
             className={`relative transition-all duration-600 ${

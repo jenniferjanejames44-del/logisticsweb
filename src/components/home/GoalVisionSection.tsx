@@ -8,7 +8,7 @@ const GoalVisionSection = () => {
     <section ref={ref} className="section-padding bg-muted relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 lg:mb-16">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground shadow-sm ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -32,7 +32,7 @@ const GoalVisionSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid sm:grid-cols-2 gap-5 lg:gap-8">
           {/* Goal Card */}
           <div
             className={`group relative overflow-hidden rounded-2xl bg-card border border-border/50 p-8 lg:p-10 shadow-sm hover:shadow-xl transition-all duration-400 ease-out hover:-translate-y-2 ${
