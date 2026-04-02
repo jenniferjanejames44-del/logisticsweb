@@ -158,7 +158,7 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 md:hidden"
+        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 lg:hidden"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         aria-label="Toggle menu"
       >
@@ -168,7 +168,7 @@ const AdminSidebar = () => {
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity"
+          className="lg:hidden fixed inset-0 bg-black/15 z-40 transition-opacity"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
@@ -176,7 +176,7 @@ const AdminSidebar = () => {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 flex h-full w-[260px] flex-col bg-white border-r border-border/40 transition-transform duration-300 ${
-          isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <NavContent />
