@@ -141,7 +141,7 @@ const AdminPackaging = () => {
                       <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm" onClick={() => openDialog(item)}><Edit2 className="w-3.5 h-3.5 mr-1" />Edit</Button>
-                        <Button variant="outline" size="sm" onClick={() => deleteItem(item)} className="text-destructive hover:text-destructive"><Trash2 className="w-3.5 h-3.5" /></Button>
+                        <DeleteConfirmDialog title="Delete Material" description={`Are you sure you want to delete "${item.name}"? This cannot be undone.`} onConfirm={() => deleteItem(item)} trigger={<Button variant="outline" size="sm" className="text-destructive hover:text-destructive"><Trash2 className="w-3.5 h-3.5" /></Button>} />
                       </div>
                     </div>
                   </div>
