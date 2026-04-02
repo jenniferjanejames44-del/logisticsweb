@@ -89,9 +89,7 @@ const AdminSidebar = () => {
       {/* Logo */}
       <div className="border-b border-border/50 px-5 py-5">
         <Link to="/admin" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-base font-bold text-primary-foreground shadow-sm">
-            R
-          </div>
+          <img src="/favicon.png" alt="RAC" className="h-10 w-10 rounded-xl shadow-sm object-contain" />
           <div>
             <span className="font-bold text-[15px] text-foreground block leading-tight">RAC Admin</span>
             <span className="text-[11px] text-muted-foreground flex items-center gap-1 leading-none">
