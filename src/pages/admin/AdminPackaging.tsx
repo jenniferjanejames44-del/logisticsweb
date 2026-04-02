@@ -77,7 +77,6 @@ const AdminPackaging = () => {
   };
 
   const deleteItem = async (item: PackagingMaterial) => {
-    if (!confirm(`Delete "${item.name}"?`)) return;
     const { error } = await (supabase as any).from("packaging_materials").delete().eq("id", item.id);
     if (error) toast.error("Failed to delete");
     else { toast.success("Deleted"); fetchItems(); }
