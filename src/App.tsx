@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useLoginTracking } from "@/hooks/useLoginTracking";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -81,6 +82,7 @@ const App = () => (
               <Toaster />
               <Sonner />
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
