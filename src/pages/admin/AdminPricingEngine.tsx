@@ -388,7 +388,7 @@ const TaxesTab = () => {
                 <TableCell className="font-medium">{i.name}</TableCell>
                 <TableCell>{i.rate}%</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Tax Setting" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
