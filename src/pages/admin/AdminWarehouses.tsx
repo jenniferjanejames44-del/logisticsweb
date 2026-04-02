@@ -71,7 +71,7 @@ const AdminWarehouses = () => {
                       <TableCell className="max-w-[200px] truncate">{i.address}</TableCell>
                       <TableCell>{i.phone || "—"}</TableCell>
                       <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                      <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="icon" onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                      <TableCell><div className="flex gap-1"><Button variant="ghost" size="icon" onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Warehouse" description={`Are you sure you want to delete "${i.name}"? This cannot be undone.`} onConfirm={() => removeWarehouse(i.id)} trigger={<Button variant="ghost" size="icon"><Trash2 className="w-4 h-4 text-destructive" /></Button>} /></div></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

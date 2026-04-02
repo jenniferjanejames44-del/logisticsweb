@@ -134,7 +134,7 @@ const ZoneCountriesTab = () => {
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.country}</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                <TableCell><DeleteConfirmDialog title="Delete Country Mapping" description={`Are you sure you want to remove "${i.country}" from this zone?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></TableCell>
               </TableRow>
             ))}
           </TableBody>

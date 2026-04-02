@@ -166,7 +166,7 @@ const AdminPackaging = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Button variant="ghost" size="icon" onClick={() => openDialog(item)}><Edit2 className="w-4 h-4" /></Button>
-                            <Button variant="ghost" size="icon" onClick={() => deleteItem(item)} className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>
+                            <DeleteConfirmDialog title="Delete Material" description={`Are you sure you want to delete "${item.name}"? This cannot be undone.`} onConfirm={() => deleteItem(item)} trigger={<Button variant="ghost" size="icon" className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>} />
                             <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                           </div>
                         </TableCell>
