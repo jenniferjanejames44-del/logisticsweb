@@ -754,14 +754,14 @@ const Shipping = () => {
 
                       {/* Insurance Option */}
                       <div className={softPanelClass}>
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
-                              <Shield className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/8">
+                              <Shield className="w-4 h-4 text-primary" strokeWidth={2} />
                             </div>
                             <div>
-                              <Label className="text-sm font-semibold cursor-pointer">Shipment Insurance</Label>
-                              <p className="text-xs text-muted-foreground">Protect your package against loss or damage</p>
+                              <Label className="text-sm font-medium cursor-pointer">Shipment Insurance</Label>
+                              <p className="text-[11px] text-muted-foreground">Protect against loss or damage</p>
                             </div>
                           </div>
                           <Checkbox
@@ -769,11 +769,6 @@ const Shipping = () => {
                             onCheckedChange={(checked) => updateField("insurance_required", checked ? "true" : "false")}
                           />
                         </div>
-                        {formData.insurance_required === "true" && (
-                          <div className="space-y-2 pl-[52px]">
-                            <p className="text-xs text-muted-foreground">Insurance coverage based on declared value</p>
-                          </div>
-                        )}
                       </div>
 
                       {/* Shipment Notes */}
@@ -793,8 +788,8 @@ const Shipping = () => {
                         <Label className="text-sm font-medium">Upload Package Photos (Optional)</Label>
                         <p className="text-xs text-muted-foreground">Max 5 files. Images or PDF only.</p>
                         <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf" onChange={handleFileChange} className="hidden" />
-                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-xl border border-dashed border-primary/35 bg-primary/[0.05] px-4 py-2.5 text-sm font-semibold text-primary shadow-[0_10px_20px_rgba(6,16,67,0.04)] transition-all duration-200 hover:-translate-y-px hover:bg-primary/10">
-                          <Upload className="w-4 h-4" /> Choose Files
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border bg-white px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted/30">
+                          <Upload className="w-3.5 h-3.5" /> Choose Files
                         </button>
                         {uploadedFiles.length > 0 && (
                           <div className="mt-2 space-y-1.5">
