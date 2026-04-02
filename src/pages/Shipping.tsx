@@ -1290,7 +1290,7 @@ const Shipping = () => {
               <h2 className="text-foreground mb-4">How <span className="text-primary">Shipping Works</span></h2>
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">From booking to delivery in five simple steps.</p>
             </div>
-            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {[
                 { num: 1, title: "Create your shipment online", icon: ClipboardList },
                 { num: 2, title: "Send package to our warehouse", icon: Package },
@@ -1298,10 +1298,10 @@ const Shipping = () => {
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },
               ].map((s) => (
-                <div key={s.num} className="group relative flex flex-col items-center rounded-2xl border border-border/70 bg-white/95 p-6 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_20px_40px_rgba(15,23,42,0.07)]">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary shadow-[0_14px_28px_rgba(6,16,67,0.16)] transition-transform group-hover:scale-105"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
-                  <span className="text-xs font-bold text-primary mb-2">Step {s.num}</span>
-                  <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
+                <div key={s.num} className="flex flex-col items-center rounded-lg border border-border/50 bg-white p-5 text-center transition-colors hover:border-border">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/8"><s.icon className="w-5 h-5 text-primary" /></div>
+                  <span className="text-[11px] font-semibold text-primary mb-1.5">Step {s.num}</span>
+                  <p className="text-sm font-medium text-foreground leading-snug">{s.title}</p>
                 </div>
               ))}
             </div>
