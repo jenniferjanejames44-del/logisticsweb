@@ -2,17 +2,12 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, DollarSign } from "lucide-react";
+import { Loader2, DollarSign, Wallet, Shield, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
 interface AddFundsDialogProps {
@@ -22,6 +17,8 @@ interface AddFundsDialogProps {
   userName: string;
   onSuccess: () => void;
 }
+
+const quickAmounts = [50, 100, 250, 500, 1000, 5000];
 
 const AddFundsDialog = ({
   open,
@@ -67,59 +64,107 @@ const AddFundsDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add Funds to Wallet</DialogTitle>
-          <DialogDescription>
-            Credit funds to {userName}'s account balance
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount (USD) *</Label>
+      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden rounded-xl">
+        {/* Header */}
+        <div className="bg-primary px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
+              <Wallet className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-white">Add Funds</h2>
+              <p className="text-xs text-white/60">Credit to {userName}'s wallet</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="px-6 py-5 space-y-5">
+          {/* Amount Input */}
+          <div>
+            <label className="text-[13px] font-medium text-foreground mb-1.5 block">Amount (USD) *</label>
             <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold text-lg">$</span>
               <Input
-                id="amount"
                 type="number"
                 min="0.01"
                 step="0.01"
                 placeholder="0.00"
-                className="pl-10"
+                className="pl-9 h-12 text-lg font-semibold border-border/60"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
             </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="description">Description (Optional)</Label>
+
+          {/* Quick Amounts */}
+          <div>
+            <p className="text-[11px] text-muted-foreground uppercase tracking-wide mb-2">Quick Select</p>
+            <div className="grid grid-cols-3 gap-2">
+              {quickAmounts.map((qa) => (
+                <button
+                  key={qa}
+                  type="button"
+                  onClick={() => setAmount(qa.toString())}
+                  className={`h-9 rounded-lg border text-[13px] font-medium transition-all ${
+                    amount === qa.toString()
+                      ? "border-primary bg-primary/8 text-primary shadow-sm"
+                      : "border-border/60 bg-background text-foreground hover:border-border hover:bg-muted/30"
+                  }`}
+                >
+                  ${qa.toLocaleString()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="text-[13px] font-medium text-foreground mb-1.5 block">Description (Optional)</label>
             <Textarea
-              id="description"
               placeholder="e.g., Bank transfer received"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
+              className="border-border/60 text-[13px] resize-none"
             />
           </div>
+
+          {/* Security */}
+          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+            <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+            <span>Funds will be credited instantly to the user's wallet.</span>
+          </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+
+        {/* Footer */}
+        <div className="px-6 pb-5 flex gap-2.5">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            className="flex-1 h-11"
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={loading}>
+          <Button
+            onClick={handleSubmit}
+            disabled={loading || !amount || parseFloat(amount) <= 0}
+            className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+          >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Adding...
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Adding…
               </>
             ) : (
               <>
-                <DollarSign className="w-4 h-4 mr-2" />
+                <DollarSign className="w-4 h-4" />
                 Add Funds
+                <ChevronRight className="w-4 h-4" />
               </>
             )}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
