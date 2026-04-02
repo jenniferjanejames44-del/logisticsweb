@@ -605,13 +605,13 @@ const Shipping = () => {
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Send className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Receiver Details</h3><p className="text-xs text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -676,13 +676,13 @@ const Shipping = () => {
                   {/* ===== STEP 3: Package ===== */}
                   {step === 3 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground"><Package className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Package Details</h3><p className="text-sm text-muted-foreground">What are you shipping?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/60"><Package className="w-4 h-4 text-accent-foreground" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Package Details</h3><p className="text-xs text-muted-foreground">What are you shipping?</p></div>
                       </div>
                       {showStepValidation && !isStep3Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
