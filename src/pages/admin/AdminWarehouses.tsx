@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Plus, Edit2, Trash2, Warehouse } from "lucide-react";
 import { toast } from "sonner";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 
 const AdminWarehouses = () => {
   const [items, setItems] = useState<any[]>([]);
