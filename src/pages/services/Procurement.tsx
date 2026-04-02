@@ -282,7 +282,7 @@ const Procurement = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" variant="heroPrimary" size="lg" className="w-full" disabled={submitting || loadingFees}>
+                  <Button type="submit" variant="default" size="lg" className="w-full" disabled={submitting || loadingFees}>
                     {submitting ? "Submitting request..." : loadingFees ? "Loading fee configuration..." : "Submit Procurement Request"}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
