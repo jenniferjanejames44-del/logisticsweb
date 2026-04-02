@@ -79,9 +79,9 @@ export default {
         "3xl": "1.5rem",
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        heading: ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
-        button: ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["DM Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        heading: ["DM Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        button: ["DM Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
       },
       fontSize: {
         "display-xl": ["4.5rem", { lineHeight: "1.05", letterSpacing: "-0.025em" }],
