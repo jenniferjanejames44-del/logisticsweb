@@ -15,7 +15,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="hero-gradient relative flex min-h-[92vh] items-center justify-center overflow-hidden bg-primary">
+    <section className="hero-gradient relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-primary lg:min-h-[92vh]">
       {/* Background Video */}
       <video
         autoPlay
@@ -32,7 +32,7 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.6),rgba(6,16,67,0.75))]" />
 
-      <div className="section-container relative z-10 pb-14 pt-28 sm:pb-16 sm:pt-32 md:py-32 lg:py-36">
+      <div className="section-container relative z-10 pb-10 pt-24 sm:pb-14 sm:pt-28 md:pb-16 md:pt-32 lg:py-36">
         <div className="mx-auto max-w-[820px] text-center animate-fade-in-soft">
           {/* Badge */}
           <div className={`mb-6 transition-all duration-500 ${
