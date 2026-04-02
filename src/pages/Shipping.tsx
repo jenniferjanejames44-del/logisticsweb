@@ -1027,8 +1027,8 @@ const Shipping = () => {
                   {step === 5 && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><CheckCircle2 className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><CheckCircle2 className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Shipment Summary</h3><p className="text-xs text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
                       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_280px]">
