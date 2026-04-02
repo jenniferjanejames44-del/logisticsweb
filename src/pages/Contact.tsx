@@ -141,7 +141,7 @@ const Contact = () => {
 	        {/* Contact Form & Info */}
 	        <section className="section-padding bg-background">
 	          <div className="section-container">
-	            <div className="grid gap-6 lg:grid-cols-3 lg:gap-8">
+	            <div className="grid gap-5 lg:grid-cols-3 lg:gap-8">
 	              {/* Contact Form */}
 	              <div className="lg:col-span-2">
 	                <Card className="border-border/70 bg-white/95 shadow-[0_18px_44px_rgba(15,23,42,0.06)]">
