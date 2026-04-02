@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
-import { Button } from "@/components/ui/button";
+
 import Logo from "@/components/layout/Logo";
 import {
   LayoutDashboard,
