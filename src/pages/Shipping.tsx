@@ -440,13 +440,13 @@ const Shipping = () => {
     }, 160);
   }, []);
 
-  const inputClass = "h-12 rounded-lg border border-border/70 bg-white px-4 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
-  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-border/70 bg-white px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
-  const invalidFieldClass = "!border-destructive/60 !ring-2 !ring-destructive/12 focus:!border-destructive focus:!ring-destructive/18";
-  const stepPanelClass = "space-y-6 sm:space-y-7 animate-in fade-in-0 slide-in-from-right-2 duration-300";
-  const softPanelClass = "rounded-xl border border-border/50 bg-muted/30 p-4 sm:p-5";
-  const interactiveCardClass = "transition-colors duration-200 hover:bg-muted/40";
-  const actionBarClass = "mt-8 flex flex-col gap-3 border-t border-border/40 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
+  const inputClass = "h-11 rounded-[10px] border border-border/60 bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors duration-150 hover:border-border focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10";
+  const textAreaClass = "min-h-[100px] resize-none rounded-[10px] border border-border/60 bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors duration-150 hover:border-border focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10";
+  const invalidFieldClass = "!border-destructive/50 !ring-1 !ring-destructive/15 focus:!border-destructive focus:!ring-destructive/20";
+  const stepPanelClass = "space-y-5 animate-in fade-in-0 duration-200";
+  const softPanelClass = "rounded-lg border border-border/40 bg-[hsl(220,20%,98%)] p-4";
+  const interactiveCardClass = "transition-colors duration-150 hover:bg-muted/30";
+  const actionBarClass = "mt-6 flex flex-col gap-3 border-t border-border/30 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -488,25 +488,22 @@ const Shipping = () => {
                 </div>
               </div>
             )}
-            <div className="mx-auto max-w-4xl">
-              <div className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-sm">
+            <div className="mx-auto max-w-3xl">
+              <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
                 {/* Progress */}
-                <div className="border-b border-border/50 bg-white p-5 sm:p-6">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{progressSteps[step - 1]?.label}</p>
-                    </div>
-                    <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-bold text-primary">
+                <div className="border-b border-border/40 bg-white px-5 py-4 sm:px-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS} — <span className="text-primary">{progressSteps[step - 1]?.label}</span></p>
+                    <span className="text-xs font-medium text-muted-foreground">
                       {Math.round((step / TOTAL_STEPS) * 100)}%
                     </span>
                   </div>
                   {/* Progress bar */}
-                  <div className="mb-5 h-1.5 w-full rounded-full bg-muted">
-                    <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
+                  <div className="mb-4 h-1 w-full rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary transition-all duration-400 ease-out" style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
                   </div>
                   {/* Step pills */}
-                  <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="flex items-center gap-1">
                     {progressSteps.map((s, i) => {
                       const isComplete = step > s.num;
                       const isCurrent = step === s.num;
@@ -517,23 +514,23 @@ const Shipping = () => {
                             type="button"
                             onClick={() => { if (isComplete) setStep(s.num); }}
                             disabled={!isComplete}
-                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold transition-all duration-200 sm:px-3 sm:py-2.5 sm:text-sm ${
+                            className={`flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-semibold transition-colors duration-150 sm:px-2.5 sm:py-2 sm:text-xs ${
                               isComplete
-                                ? "bg-primary/8 text-primary cursor-pointer hover:bg-primary/12"
+                                ? "text-primary cursor-pointer hover:bg-primary/6"
                                 : isCurrent
-                                  ? "bg-primary text-primary-foreground shadow-sm"
-                                  : "bg-muted/50 text-muted-foreground cursor-default"
+                                  ? "bg-primary text-primary-foreground"
+                                  : "text-muted-foreground/60 cursor-default"
                             }`}
                           >
                             {isComplete ? (
-                              <CheckCircle2 className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                              <CheckCircle2 className="h-3.5 w-3.5 shrink-0" strokeWidth={2.5} />
                             ) : (
-                              <StepIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
+                              <StepIcon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
                             )}
                             <span className="hidden sm:inline">{s.label}</span>
                           </button>
                           {i < progressSteps.length - 1 && (
-                            <div className="h-px w-2 bg-border/60 sm:w-4" />
+                            <div className="h-px w-2 bg-border/40 sm:w-3" />
                           )}
                         </Fragment>
                       );
