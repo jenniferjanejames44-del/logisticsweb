@@ -539,18 +539,18 @@ const Shipping = () => {
                 </div>
 
                 {/* Form */}
-                <div className="bg-white p-5 sm:p-6 lg:p-8">
+                <div className="bg-white px-5 py-5 sm:px-6 sm:py-6">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><User className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Sender Details</h3><p className="text-sm text-muted-foreground">Who is sending this package?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><User className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Sender Details</h3><p className="text-xs text-muted-foreground">Who is sending this package?</p></div>
                       </div>
                       {showStepValidation && !isStep1Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
