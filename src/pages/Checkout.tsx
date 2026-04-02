@@ -8,15 +8,14 @@ import { useWalletBalance } from "@/hooks/useWalletBalance";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PayShipmentDialog from "@/components/shipments/PayShipmentDialog";
+import CheckoutSummaryCard from "@/components/checkout/CheckoutSummaryCard";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
-  MapPin, Package, Truck, ArrowLeft,
-  CheckCircle, Loader2, Shield, CreditCard, Edit3, ChevronRight,
+  ArrowLeft, CheckCircle, Loader2, Shield, CreditCard, Edit3, ChevronRight,
 } from "lucide-react";
 import { toast } from "sonner";
 
-interface QuoteData {
+export interface QuoteData {
   destination_country: string;
   destination_code: string;
   weight: string;
@@ -139,13 +138,13 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-muted/30">
       <Header />
 
       <main className="flex-1 overflow-y-auto">
-        {/* Back */}
-        <div className="w-full border-b border-border/40">
-          <div className="max-w-2xl mx-auto px-4 py-3 sm:px-6">
+        {/* Breadcrumb bar */}
+        <div className="w-full border-b border-border/40 bg-background">
+          <div className="max-w-3xl mx-auto px-4 py-3 sm:px-6">
             <button
               onClick={handleEditQuote}
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
@@ -156,83 +155,35 @@ const Checkout = () => {
           </div>
         </div>
 
-        <div className="max-w-2xl mx-auto px-4 py-8 sm:px-6 sm:py-12 space-y-6">
-          {/* Title */}
+        <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 sm:py-12 space-y-6">
+          {/* Page title */}
           <div className="text-center space-y-1.5">
             <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Confirm & Pay</h1>
             <p className="text-muted-foreground text-sm">Review your shipment details before payment.</p>
           </div>
 
-          {/* Summary Card */}
-          <div className="rounded-xl border border-border/50 bg-white overflow-hidden">
-            {/* Card header */}
-            <div className="px-6 py-4 border-b border-border/40">
-              <h2 className="text-[13px] font-bold text-foreground flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">
-                  <Package className="w-4 h-4 text-accent" />
-                </div>
-                Shipment Summary
-              </h2>
-            </div>
+          {/* Summary Card - extracted component */}
+          <CheckoutSummaryCard
+            quote={quote}
+            formatUsd={formatUsd}
+            formatNgn={formatNgn}
+            exchangeRates={exchangeRates}
+          />
 
-            <div className="px-6 py-5 space-y-5">
-              {/* Details grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <DetailRow icon={<MapPin className="w-4 h-4" />} label="Destination" value={quote.destination_country} />
-                <DetailRow icon={<Package className="w-4 h-4" />} label="Weight" value={`${quote.weight} KG`} />
-                <DetailRow icon={<Truck className="w-4 h-4" />} label="Service" value={quote.service_name} subtitle={quote.delivery_estimate} />
-              </div>
-
-              {/* Cost breakdown */}
-              <div className="rounded-lg border border-border/50 p-4 space-y-2.5 text-sm">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Base Rate ({quote.weight} KG × {formatUsd(quote.base_rate)}/KG)</span>
-                  <span className="text-foreground font-medium">{formatUsd(quote.base_shipping_cost)}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Handling Fee</span>
-                  <span className="text-foreground font-medium">{formatUsd(quote.handling_fee)}</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Insurance (2%)</span>
-                  <span className="text-foreground font-medium">{formatUsd(quote.insurance_fee)}</span>
-                </div>
-              </div>
-
-              {/* Total section */}
-              <div className="rounded-lg border border-border/50 p-5">
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Shipping Cost (USD)</p>
-                    <p className="text-2xl font-bold text-foreground">{formatUsd(quote.calculated_price)}</p>
-                  </div>
-                  <Separator orientation="vertical" className="hidden sm:block h-12" />
-                  <div className="sm:text-right">
-                    <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Naira Equivalent</p>
-                    <p className="text-xl font-bold text-accent">{formatNgn(quote.calculated_price)}</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">
-                      Rate: $1 = ₦{exchangeRates.NGN.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Security */}
-          <div className="flex items-center gap-2.5 px-4 py-3 rounded-lg border border-green-200 dark:border-green-800/40 bg-green-50/50 dark:bg-green-950/10">
-            <Shield className="w-4 h-4 text-green-500 flex-shrink-0" />
+          {/* Security note */}
+          <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-green-200 dark:border-green-800/40 bg-green-50/50 dark:bg-green-950/10">
+            <Shield className="w-4 h-4 text-green-600 flex-shrink-0" />
             <p className="text-[13px] text-green-700 dark:text-green-300">
               Secured checkout via Paystack. Your payment is encrypted.
             </p>
           </div>
 
-          {/* Buttons */}
+          {/* Action buttons */}
           <div className="flex flex-col gap-2.5 sm:flex-row-reverse">
             <Button
               onClick={handleProceedToPayment}
               disabled={creatingShipment || !!createdShipmentId}
-              className="flex-1 h-12 bg-accent hover:bg-accent/90 text-white border-0 text-[15px] font-semibold"
+              className="flex-1 h-12 bg-accent hover:bg-accent/90 text-white border-0 text-[15px] font-semibold rounded-xl"
             >
               {creatingShipment ? (
                 <>
@@ -256,7 +207,7 @@ const Checkout = () => {
             <Button
               variant="outline"
               onClick={handleEditQuote}
-              className="sm:w-auto h-12"
+              className="sm:w-auto h-12 rounded-xl"
             >
               <Edit3 className="w-4 h-4" />
               Edit Quote
@@ -284,18 +235,5 @@ const Checkout = () => {
     </div>
   );
 };
-
-function DetailRow({ icon, label, value, subtitle }: { icon: React.ReactNode; label: string; value: string; subtitle?: string }) {
-  return (
-    <div className="flex items-start gap-3 p-3.5 rounded-lg border border-border/40">
-      <span className="text-accent mt-0.5 flex-shrink-0">{icon}</span>
-      <div className="min-w-0">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
-        <p className="text-[13px] font-semibold text-foreground mt-0.5 truncate">{value}</p>
-        {subtitle && <p className="text-[11px] text-muted-foreground mt-0.5">{subtitle}</p>}
-      </div>
-    </div>
-  );
-}
 
 export default Checkout;
