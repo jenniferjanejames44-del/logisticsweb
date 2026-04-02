@@ -242,8 +242,7 @@ const Header = () => {
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,248,250,0.98)_100%)]" aria-hidden="true" />
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/70 bg-white/90 px-4 py-3 backdrop-blur-xl sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/40 bg-background px-4 py-3 sm:px-5">
           <Link to="/" onClick={closeMobileMenu} className="flex items-center">
             <HeaderLogo className="block h-9 w-auto max-w-[164px]" />
           </Link>
