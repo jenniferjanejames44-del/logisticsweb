@@ -155,8 +155,8 @@ const Header = () => {
 
         </nav>
 
-        {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-2.5">
+        {/* CTA Buttons - desktop only (lg+) */}
+        <div className="hidden lg:flex items-center gap-2.5">
           {user ? (
             <>
               {isAdmin && (
@@ -196,14 +196,30 @@ const Header = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(180deg,hsl(var(--primary))_0%,hsl(var(--primary-hover))_100%)] text-primary-foreground shadow-[0_14px_30px_rgba(6,16,67,0.18)] transition-all duration-200 hover:-translate-y-px hover:shadow-[0_18px_34px_rgba(6,16,67,0.22)] sm:h-12 sm:w-12 md:hidden"
-          onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X size={24} strokeWidth={3} /> : <Menu size={24} strokeWidth={3} />}
-        </button>
+        {/* Tablet + Mobile: CTA button + Hamburger (ShipBob pattern) */}
+        <div className="flex items-center gap-2.5 lg:hidden">
+          {/* Visible CTA on tablet like ShipBob */}
+          {!user ? (
+            <Button asChild variant="navCta" size="sm" className="hidden sm:inline-flex font-bold whitespace-nowrap px-4 text-sm">
+              <Link to="/auth">
+                Join Now
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild variant="nav" size="sm" className="hidden sm:inline-flex font-semibold whitespace-nowrap px-4 text-sm">
+              <Link to="/dashboard">
+                Dashboard
+              </Link>
+            </Button>
+          )}
+          <button
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary/90 sm:h-11 sm:w-11"
+            onClick={() => (isMobileMenuOpen ? closeMobileMenu() : setIsMobileMenuOpen(true))}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={22} strokeWidth={2.5} /> : <Menu size={22} strokeWidth={2.5} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu backdrop */}
