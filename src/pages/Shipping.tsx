@@ -1031,9 +1031,9 @@ const Shipping = () => {
                         <div><h3 className="font-semibold text-base text-foreground">Shipment Summary</h3><p className="text-xs text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
-                      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_280px]">
+                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_240px]">
                         {/* Route overview */}
-                        <div className="rounded-xl border border-primary/15 bg-primary/4 p-5 sm:p-6">
+                        <div className="rounded-lg border border-primary/10 bg-primary/[0.02] p-4">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div className="space-y-2">
                               <span className="inline-flex items-center rounded-full bg-primary/8 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
@@ -1044,9 +1044,9 @@ const Shipping = () => {
                                 {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
                               </p>
                             </div>
-                            <div className="rounded-xl bg-white px-4 py-3 border border-border/50 sm:min-w-[160px] sm:text-right">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
-                              <p className="mt-1 text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</p>
+                            <div className="rounded-lg bg-white px-3 py-2.5 border border-border/40 sm:min-w-[140px] sm:text-right">
+                              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
+                              <p className="mt-0.5 text-xl font-bold text-primary">{formatUsd(grandTotal)}</p>
                             </div>
                           </div>
 
