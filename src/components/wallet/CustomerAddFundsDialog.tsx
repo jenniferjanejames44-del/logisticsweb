@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { CreditCard, Loader2, Wallet, Shield, ChevronRight } from "lucide-react";
+import { CreditCard, Loader2, Wallet, Shield, ChevronRight, CheckCircle2 } from "lucide-react";
 
 interface CustomerAddFundsDialogProps {
   open: boolean;
@@ -73,7 +73,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden">
+      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden rounded-xl">
         {/* Header */}
         <div className="bg-primary px-6 py-5">
           <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
         <div className="px-6 py-5 space-y-5">
           {/* Amount Input */}
           <div>
-            <label className="text-sm font-medium text-foreground mb-1.5 block">Enter Amount (USD)</label>
+            <label className="text-[13px] font-medium text-foreground mb-1.5 block">Enter Amount (USD)</label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold text-lg">$</span>
               <Input
@@ -107,10 +107,10 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                 onChange={(e) => setAmount(e.target.value)}
                 min="100"
                 step="1"
-                className="pl-9 h-12 text-lg font-semibold border-border"
+                className="pl-9 h-12 text-lg font-semibold border-border/60"
               />
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">Minimum: $100.00</p>
+            <p className="text-[11px] text-muted-foreground mt-1.5">Minimum: $100.00</p>
           </div>
 
           {/* Quick Amounts */}
@@ -122,10 +122,10 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
                   key={qa}
                   type="button"
                   onClick={() => setAmount(qa.toString())}
-                  className={`h-9 rounded-lg border text-sm font-medium transition-colors ${
+                  className={`h-9 rounded-lg border text-[13px] font-medium transition-all ${
                     amount === qa.toString()
-                      ? "border-accent bg-accent/8 text-accent"
-                      : "border-border bg-white text-foreground hover:border-muted-foreground/30"
+                      ? "border-primary bg-primary/8 text-primary shadow-sm"
+                      : "border-border/60 bg-background text-foreground hover:border-border hover:bg-muted/30"
                   }`}
                 >
                   ${qa.toLocaleString()}
@@ -136,9 +136,12 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
 
           {/* New Balance Preview */}
           {parsedAmount >= 100 && (
-            <div className="flex items-center justify-between rounded-lg bg-green-50 border border-green-200 px-4 py-3">
-              <span className="text-sm text-green-700">New Balance</span>
-              <span className="text-base font-bold text-green-700">
+            <div className="flex items-center justify-between rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800/40 px-4 py-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                <span className="text-[13px] text-green-700 dark:text-green-400">New Balance</span>
+              </div>
+              <span className="text-base font-bold text-green-700 dark:text-green-400">
                 {formatMoney(newBalance, "USD")}
               </span>
             </div>
@@ -152,7 +155,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
         </div>
 
         {/* Footer */}
-        <div className="px-6 pb-5 flex gap-2">
+        <div className="px-6 pb-5 flex gap-2.5">
           <Button
             variant="outline"
             onClick={handleClose}
@@ -168,7 +171,7 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Redirecting...
+                Redirecting…
               </>
             ) : (
               <>

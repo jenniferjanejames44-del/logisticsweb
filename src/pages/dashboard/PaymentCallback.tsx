@@ -7,7 +7,7 @@ import { useWalletBalance } from "@/hooks/useWalletBalance";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Loader2, Wallet } from "lucide-react";
+import { CheckCircle, XCircle, Loader2, Wallet, ArrowRight, Shield } from "lucide-react";
 
 const PaymentCallback = () => {
   const [searchParams] = useSearchParams();
@@ -24,7 +24,7 @@ const PaymentCallback = () => {
     const reference = searchParams.get("reference") || searchParams.get("trxref");
     const type = searchParams.get("type");
     setPaymentType(type);
-    
+
     if (!reference || !user) return;
 
     const verifyPayment = async () => {
@@ -38,7 +38,6 @@ const PaymentCallback = () => {
         if (data.status === "success") {
           setStatus("success");
           if (data.type === "wallet_topup") {
-
             setPaymentType("wallet_topup");
             setMessage(data.message || "Your wallet has been funded successfully!");
             refetchBalance();
@@ -52,7 +51,6 @@ const PaymentCallback = () => {
           setStatus("failed");
           setMessage(data.message || "Payment could not be verified. Please contact support.");
 
-          // Send payment failed email
           try {
             await supabase.functions.invoke("send-notification-email", {
               body: {
@@ -85,92 +83,149 @@ const PaymentCallback = () => {
 
   useEffect(() => {
     if (status !== "success" || !isShoppingOrder) return;
-
     const timer = window.setTimeout(() => {
       navigate("/dashboard/shopping-orders", { replace: true });
     }, 1800);
-
     return () => window.clearTimeout(timer);
   }, [status, isShoppingOrder, navigate]);
 
   return (
     <DashboardLayout title="Payment Status" description="Payment verification result">
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <Card className="w-full max-w-xl border-border shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-          <CardContent className="space-y-6 p-8 text-center">
+      <div className="flex min-h-[50vh] items-center justify-center px-4">
+        <Card className="w-full max-w-md overflow-hidden border-border/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+          {/* Status Header */}
+          <div className={`px-6 py-6 text-center ${
+            status === "verifying"
+              ? "bg-primary/5"
+              : status === "success"
+              ? "bg-green-50 dark:bg-green-950/20"
+              : "bg-destructive/5"
+          }`}>
             {status === "verifying" && (
-              <>
-                <Loader2 className="mx-auto h-16 w-16 animate-spin text-primary" />
-                <h2 className="text-foreground">Verifying Payment</h2>
-                <p className="text-muted-foreground">{message}</p>
-              </>
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Verifying Payment</h2>
+                  <p className="text-sm text-muted-foreground mt-1">Please wait while we confirm your transaction…</p>
+                </div>
+              </div>
             )}
             {status === "success" && (
-              <>
-                {isWalletTopup ? (
-                  <Wallet className="mx-auto h-16 w-16 text-green-500" />
-                ) : (
-                  <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-                )}
-                <h2 className="text-foreground">
-                  {isWalletTopup ? "Wallet Funded!" : isShoppingOrder ? "Shopping Order Paid!" : "Payment Successful!"}
-                </h2>
-                <p className="text-muted-foreground">{message}</p>
-                {isWalletTopup && !balanceLoading && (
-                  <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-5">
-                    <p className="mb-2 text-sm text-muted-foreground">Updated Balance</p>
-                    <p className="text-2xl font-bold text-green-600">
-                      {formatConverted(balance, "NGN")}
-                    </p>
-                  </div>
-                )}
-                <div className="flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                  {isWalletTopup ? (
+                    <Wallet className="h-8 w-8 text-green-600" />
+                  ) : (
+                    <CheckCircle className="h-8 w-8 text-green-600" />
+                  )}
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">
+                    {isWalletTopup ? "Wallet Funded!" : isShoppingOrder ? "Order Paid!" : "Payment Successful!"}
+                  </h2>
+                  <p className="text-sm text-muted-foreground mt-1">{message}</p>
+                </div>
+              </div>
+            )}
+            {status === "failed" && (
+              <div className="flex flex-col items-center gap-3">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
+                  <XCircle className="h-8 w-8 text-destructive" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">Payment Failed</h2>
+                  <p className="text-sm text-muted-foreground mt-1">{message}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <CardContent className="p-6 space-y-4">
+            {/* Wallet balance card on success */}
+            {status === "success" && isWalletTopup && !balanceLoading && (
+              <div className="rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800/40 p-4">
+                <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide mb-1">Updated Balance</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {formatConverted(balance, "NGN")}
+                </p>
+              </div>
+            )}
+
+            {/* Security badge */}
+            {status === "success" && (
+              <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>Transaction verified and secured by Paystack.</span>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2.5 sm:flex-row">
+              {status === "success" && (
+                <>
                   {isWalletTopup ? (
                     <>
-                      <Button variant="cta" onClick={() => navigate("/dashboard/wallet")}>
+                      <Button
+                        className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+                        onClick={() => navigate("/dashboard/wallet")}
+                      >
                         View Wallet
+                        <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
-                      <Button variant="outline" onClick={() => navigate("/dashboard")}>
-                        Go to Dashboard
+                      <Button variant="outline" className="flex-1 h-11" onClick={() => navigate("/dashboard")}>
+                        Dashboard
                       </Button>
                     </>
                   ) : isShoppingOrder ? (
                     <>
-                      <Button onClick={() => navigate("/dashboard/shopping-orders")}>
-                        View Shopping Orders
+                      <Button
+                        className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+                        onClick={() => navigate("/dashboard/shopping-orders")}
+                      >
+                        View Orders
+                        <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
-                      <Button variant="outline" onClick={() => navigate("/dashboard")}>
-                        Go to Dashboard
+                      <Button variant="outline" className="flex-1 h-11" onClick={() => navigate("/dashboard")}>
+                        Dashboard
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Button onClick={() => navigate("/dashboard/invoices")}>
+                      <Button
+                        className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+                        onClick={() => navigate("/dashboard/invoices")}
+                      >
                         View Invoices
+                        <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
-                      <Button variant="outline" onClick={() => navigate("/dashboard/shipments")}>
+                      <Button variant="outline" className="flex-1 h-11" onClick={() => navigate("/dashboard/shipments")}>
                         View Shipments
                       </Button>
                     </>
                   )}
-                </div>
-              </>
-            )}
-            {status === "failed" && (
-              <>
-                <XCircle className="mx-auto h-16 w-16 text-destructive" />
-                <h2 className="text-foreground">Payment Failed</h2>
-                <p className="text-muted-foreground">{message}</p>
-                <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                  <Button onClick={() => navigate(isWalletTopup ? "/dashboard/wallet" : isShoppingOrder && orderId ? `/dashboard/shopping-orders/pay?orderId=${orderId}` : isShoppingOrder ? "/dashboard/shopping-orders" : "/dashboard/shipments")}>
-                    {isWalletTopup ? "Back to Wallet" : isShoppingOrder ? "Back to Shopping Orders" : "Back to Shipments"}
+                </>
+              )}
+              {status === "failed" && (
+                <>
+                  <Button
+                    className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+                    onClick={() => navigate(
+                      isWalletTopup ? "/dashboard/wallet"
+                        : isShoppingOrder && orderId ? `/dashboard/shopping-orders/pay?orderId=${orderId}`
+                        : isShoppingOrder ? "/dashboard/shopping-orders"
+                        : "/dashboard/shipments"
+                    )}
+                  >
+                    {isWalletTopup ? "Back to Wallet" : isShoppingOrder ? "Back to Orders" : "Back to Shipments"}
                   </Button>
-                  <Button variant="outline" onClick={() => navigate("/contact")}>
+                  <Button variant="outline" className="flex-1 h-11" onClick={() => navigate("/contact")}>
                     Contact Support
                   </Button>
-                </div>
-              </>
-            )}
+                </>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>

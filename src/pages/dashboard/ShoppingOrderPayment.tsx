@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Loader2, CreditCard } from "lucide-react";
+import { Loader2, CreditCard, Shield, ChevronRight, Package } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -147,65 +147,89 @@ const ShoppingOrderPayment = () => {
 
   return (
     <DashboardLayout title="Shopping Order Payment" description="Complete payment for your shopping request">
-      <div className="mx-auto max-w-lg">
-        <Card className="overflow-hidden">
+      <div className="mx-auto max-w-md">
+        <Card className="overflow-hidden border-border/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
           {/* Header */}
-          <div className="bg-primary p-5">
-            <h2 className="text-lg font-bold text-white">Checkout</h2>
-            <p className="text-sm text-white/70">Complete your shopping order payment</p>
+          <div className="bg-primary px-6 py-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
+                <Package className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-white">Checkout</h2>
+                <p className="text-xs text-white/60">Complete your shopping order payment</p>
+              </div>
+            </div>
           </div>
 
-          <CardContent className="p-5 space-y-5">
+          <CardContent className="p-6 space-y-5">
             {loading ? (
-              <div className="flex items-center justify-center gap-3 py-10 text-muted-foreground">
-                <Loader2 className="h-5 w-5 animate-spin" /> Loading order...
+              <div className="flex flex-col items-center justify-center gap-3 py-10">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Loading order…</p>
               </div>
             ) : !order ? null : (
               <>
                 {/* Order Info */}
-                <div className="flex items-start justify-between gap-3 rounded-lg border border-border bg-muted/30 p-4">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{order.product_name}</p>
-                    <p className="text-xs text-muted-foreground">{order.order_number}</p>
+                <div className="flex items-start justify-between gap-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+                  <div className="min-w-0">
+                    <p className="text-[13px] font-semibold text-foreground truncate">{order.product_name}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{order.order_number}</p>
                   </div>
-                  <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
+                  <Badge variant={statusBadge.variant} className="flex-shrink-0 text-[10px]">{statusBadge.label}</Badge>
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="space-y-3 rounded-lg border border-border p-4 text-sm">
+                <div className="space-y-2.5 rounded-lg border border-border/60 p-4 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Item value</span>
-                    <span className="font-medium">{formatUsd(Number(order.item_value))}</span>
+                    <span className="font-medium text-foreground">{formatUsd(Number(order.item_value))}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Processing fee</span>
-                    <span className="font-medium">{formatUsd(Number(order.processing_fee))}</span>
+                    <span className="font-medium text-foreground">{formatUsd(Number(order.processing_fee))}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Quantity</span>
-                    <span className="font-medium">{order.quantity}</span>
+                    <span className="font-medium text-foreground">{order.quantity}</span>
                   </div>
-                  <Separator />
-                  <div className="flex justify-between text-base font-bold">
-                    <span>Total Due</span>
-                    <span className="text-primary">{formatUsd(Number(order.total_cost))}</span>
+                  <Separator className="my-1" />
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-foreground">Total Due</span>
+                    <span className="text-lg font-bold text-primary">{formatUsd(Number(order.total_cost))}</span>
                   </div>
                 </div>
 
+                {/* Security */}
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span>Secured checkout via Paystack. Encrypted transaction.</span>
+                </div>
+
                 {/* Actions */}
-                <div className="flex flex-col gap-3 sm:flex-row">
-                  <Button variant="outline" size="sm" className="flex-1" onClick={() => navigate("/dashboard/shopping-orders")}>
-                    Back to Orders
+                <div className="flex gap-2.5">
+                  <Button variant="outline" className="flex-1 h-11" onClick={() => navigate("/dashboard/shopping-orders")}>
+                    Back
                   </Button>
                   <Button
-                    variant="default"
-                    size="sm"
-                    className="flex-1"
+                    className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
                     onClick={handlePaystackPayment}
                     disabled={paying || !needsShoppingOrderPayment(order.status, order.payment_status)}
                   >
-                    {paying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCard className="mr-2 h-4 w-4" />}
-                    {needsShoppingOrderPayment(order.status, order.payment_status) ? "Pay Now" : "Already Paid"}
+                    {paying ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing…
+                      </>
+                    ) : needsShoppingOrderPayment(order.status, order.payment_status) ? (
+                      <>
+                        <CreditCard className="w-4 h-4" />
+                        Pay Now
+                        <ChevronRight className="w-4 h-4" />
+                      </>
+                    ) : (
+                      "Already Paid"
+                    )}
                   </Button>
                 </div>
               </>
