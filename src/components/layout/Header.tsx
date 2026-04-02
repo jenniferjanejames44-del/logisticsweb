@@ -76,16 +76,16 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-[76px] bg-white shadow-[0_12px_32px_rgba(15,23,42,0.08)] transition-all duration-300 sm:h-20"
+      className="fixed top-0 left-0 right-0 z-50 h-[68px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[72px] lg:h-20"
     >
-      <div className="section-container flex h-full items-center justify-between gap-3 px-4 sm:gap-6 sm:px-6">
+      <div className="section-container flex h-full items-center justify-between gap-3 sm:gap-6">
         {/* Logo */}
-        <Link to="/" className="group flex max-w-[calc(100%-3.5rem)] shrink-0 items-center lg:max-w-none">
-          <HeaderLogo className="block h-10 w-auto max-w-[172px] sm:h-11 sm:max-w-[210px] md:h-[50px] md:max-w-[240px]" />
+        <Link to="/" className="group flex shrink-0 items-center">
+          <HeaderLogo className="block h-9 w-auto max-w-[160px] sm:h-10 sm:max-w-[180px] lg:h-[50px] lg:max-w-[240px]" />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        {/* Desktop Navigation - visible at lg (1024px+) like ShipBob */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
