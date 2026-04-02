@@ -66,7 +66,7 @@ const Payments = () => {
     const c = config[status] || config.pending;
     const Icon = c.icon;
     return (
-      <Badge variant={c.variant} className="gap-1 capitalize">
+      <Badge variant={c.variant} className="gap-1 capitalize text-[10px]">
         <Icon className="w-3 h-3" />
         {status}
       </Badge>
@@ -93,23 +93,23 @@ const Payments = () => {
   return (
     <DashboardLayout title="Payments" description="View your payment history and invoices">
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+      <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
           { label: "Total Paid", value: formatMoney(totalPaid, selectedCurrency), icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
-          { label: "Pending", value: formatMoney(pendingAmount, selectedCurrency), icon: Clock, color: "text-orange-600", bg: "bg-orange-500/8" },
+          { label: "Pending", value: formatMoney(pendingAmount, selectedCurrency), icon: Clock, color: "text-accent", bg: "bg-accent/8" },
           { label: "Total Transactions", value: payments.length, icon: CreditCard, color: "text-primary", bg: "bg-primary/8" },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label}>
-              <CardContent className="p-4 sm:p-5">
+            <Card key={stat.label} className="border-border/50">
+              <CardContent className="p-4">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground sm:text-sm">{stat.label}</p>
-                    <p className="mt-1 text-lg font-bold text-foreground sm:text-2xl truncate">{stat.value}</p>
+                    <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
+                    <p className="mt-1.5 text-xl font-bold text-foreground truncate">{stat.value}</p>
                   </div>
-                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
-                    <Icon className={`w-[18px] h-[18px] ${stat.color}`} />
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
+                    <Icon className={`w-4 h-4 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -126,11 +126,11 @@ const Payments = () => {
             placeholder="Search by transaction ID or tracking..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 pl-9 text-sm"
+            className="h-10 pl-9 text-[13px] border-border/60"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="h-11 w-full sm:w-[180px]">
+          <SelectTrigger className="h-10 w-full sm:w-[180px] text-[13px] border-border/60">
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
           <SelectContent>
@@ -145,23 +145,23 @@ const Payments = () => {
 
       {/* Payments List */}
       {filteredPayments.length > 0 ? (
-        <div className="grid gap-3">
+        <div className="grid gap-2.5">
           {filteredPayments.map((payment) => (
-            <Card key={payment.id} className="transition-shadow hover:shadow-md">
+            <Card key={payment.id} className="border-border/50 transition-all duration-200 hover:shadow-sm hover:border-border">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
-                      <CreditCard className="w-[18px] h-[18px] text-primary" />
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/6">
+                      <CreditCard className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm font-semibold text-foreground">
+                        <h3 className="text-[13px] font-semibold text-foreground">
                           {formatConverted(Number(payment.amount), payment.currency || "USD")}
                         </h3>
                         {getStatusBadge(payment.status)}
                       </div>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
                         <span>Original: {formatMoney(Number(payment.amount), payment.currency || "USD")}</span>
                         {payment.shipments && <span>Shipment: {payment.shipments.tracking_number}</span>}
                         {payment.payment_method && <span className="capitalize">{payment.payment_method}</span>}
@@ -170,12 +170,12 @@ const Payments = () => {
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="flex items-center gap-1 text-xs text-muted-foreground justify-end">
+                    <p className="flex items-center gap-1 text-[11px] text-muted-foreground justify-end">
                       <Calendar className="w-3 h-3" />
                       {new Date(payment.created_at).toLocaleDateString()}
                     </p>
                     {payment.description && (
-                      <p className="text-xs text-muted-foreground mt-0.5">{payment.description}</p>
+                      <p className="text-[11px] text-muted-foreground/70 mt-0.5">{payment.description}</p>
                     )}
                   </div>
                 </div>
@@ -184,11 +184,11 @@ const Payments = () => {
           ))}
         </div>
       ) : (
-        <Card>
+        <Card className="border-border/50">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <CreditCard className="w-12 h-12 text-muted-foreground/40 mb-3" />
-            <h3 className="text-base font-semibold text-foreground mb-1">No Payments Found</h3>
-            <p className="text-sm text-muted-foreground">
+            <CreditCard className="w-12 h-12 text-muted-foreground/20 mb-3" />
+            <h3 className="text-sm font-semibold text-foreground mb-1">No Payments Found</h3>
+            <p className="text-[12px] text-muted-foreground">
               {searchQuery || statusFilter !== "all"
                 ? "Try adjusting your search or filters"
                 : "Your payment history will appear here"}
