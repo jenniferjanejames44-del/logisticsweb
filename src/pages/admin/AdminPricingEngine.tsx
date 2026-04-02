@@ -267,7 +267,7 @@ const HeavyWeightPricingTab = () => {
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
                 <TableCell>${Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Heavy Weight Pricing" description="Are you sure you want to delete this pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
