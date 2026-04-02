@@ -149,20 +149,25 @@ const Shipments = () => {
   return (
     <DashboardLayout title="Shipments" description="Manage and track all your shipments">
       {/* Wallet Balance Bar */}
-      <div className="mb-5 flex flex-col gap-3 rounded-xl border border-border bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/8">
-            <Wallet className="w-5 h-5 text-primary" />
+      <Card className="mb-5 bg-primary border-0">
+        <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <Wallet className="w-6 h-6 text-white/40" />
+            <div>
+              <p className="text-xs text-white/60">Wallet Balance</p>
+              <p className="mt-0.5 text-2xl font-bold text-white">{formatConverted(balance, "NGN")}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Wallet Balance</p>
-            <p className="text-lg font-bold text-foreground">{formatConverted(balance, "NGN")}</p>
-          </div>
-        </div>
-        <Button variant="outline" size="sm" onClick={() => window.location.href = "/dashboard/wallet"}>
-          Manage Wallet
-        </Button>
-      </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="bg-white/15 text-white border-0 hover:bg-white/25"
+            onClick={() => window.location.href = "/dashboard/wallet"}
+          >
+            Manage Wallet
+          </Button>
+        </CardContent>
+      </Card>
 
       {/* Actions Bar */}
       <div className="mb-5 flex flex-col gap-3 sm:flex-row">
