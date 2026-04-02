@@ -36,7 +36,7 @@ const HowItWorksSection = () => {
     <section ref={ref} className="section-padding relative overflow-hidden bg-section-light">
       <div className="section-container relative">
         {/* Header */}
-        <div className="mx-auto mb-16 max-w-3xl text-center lg:mb-20">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12 lg:mb-16">
           <span
             className={`mb-6 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-accent-foreground shadow-md transition-all duration-600 ${
               isInView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -61,7 +61,7 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8">
           {steps.map((step, index) => (
             <div
               key={step.step}

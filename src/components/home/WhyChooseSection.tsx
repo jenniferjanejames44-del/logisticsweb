@@ -26,7 +26,7 @@ const WhyChooseSection = () => {
     <section ref={ref} className="section-padding section-alt relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="mx-auto mb-14 max-w-3xl text-center lg:mb-16">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12 lg:mb-16">
           <span
             className={`section-badge mb-6 border-accent/20 bg-accent text-accent-foreground transition-all duration-600 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -52,7 +52,7 @@ const WhyChooseSection = () => {
         </div>
 
         {/* Differentiators Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-7">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
           {differentiators.map((item, index) => (
             <div
               key={item.title}

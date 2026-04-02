@@ -36,7 +36,7 @@ const CoreValuesSection = () => {
     <section ref={ref} className="section-padding bg-background relative overflow-hidden">
       <div className="section-container relative">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 lg:mb-16">
           <span
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wide mb-6 transition-all duration-600 bg-accent text-accent-foreground ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -61,7 +61,7 @@ const CoreValuesSection = () => {
         </div>
 
         {/* Values Grid - 3 top + 2 bottom centered on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
           {values.slice(0, 3).map((value, index) => (
             <div
               key={value.title}
@@ -88,7 +88,7 @@ const CoreValuesSection = () => {
         </div>
         
         {/* Bottom row - 2 cards centered */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-8 max-w-2xl lg:max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6 mt-5 lg:mt-6 max-w-2xl lg:max-w-3xl mx-auto">
           {values.slice(3).map((value, index) => (
             <div
               key={value.title}

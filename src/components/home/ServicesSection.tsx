@@ -41,7 +41,7 @@ const ServicesSection = () => {
     <section ref={ref} className="section-padding section-alt">
       <div className="section-container">
         {/* Header */}
-        <div className="mx-auto mb-14 max-w-3xl text-center lg:mb-16">
+        <div className="mx-auto mb-10 max-w-3xl text-center sm:mb-12 lg:mb-16">
           <span
             className={`section-badge mb-5 border-accent/20 bg-accent text-accent-foreground shadow-[0_10px_24px_rgba(223,81,1,0.16)] transition-all duration-500 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -66,7 +66,7 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-7">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-7">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
