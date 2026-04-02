@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler } from "lucide-react";
 import { toast } from "sonner";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Shipment {
