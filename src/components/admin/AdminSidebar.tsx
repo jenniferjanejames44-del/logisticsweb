@@ -8,12 +8,10 @@ import {
   Package,
   DollarSign,
   BarChart3,
-  Settings,
   LogOut,
   Menu,
   X,
   Home,
-  Shield,
   Bell,
   FileText,
   ShoppingBag,
@@ -23,6 +21,8 @@ import {
   Truck,
   MessageSquare,
   RefreshCw,
+  Settings,
+  ChevronRight,
 } from "lucide-react";
 
 interface NavSection {
@@ -32,7 +32,7 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    label: "Main",
+    label: "Overview",
     items: [
       { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     ],
@@ -59,15 +59,10 @@ const navSections: NavSection[] = [
     ],
   },
   {
-    label: "Pricing",
+    label: "Configuration",
     items: [
       { name: "Pricing Plans", href: "/admin/pricing", icon: Settings },
       { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
-    ],
-  },
-  {
-    label: "System",
-    items: [
       { name: "Notifications", href: "/admin/notifications", icon: Bell },
       { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     ],
@@ -85,26 +80,25 @@ const AdminSidebar = () => {
   };
 
   const NavContent = () => (
-    <>
-      {/* Logo */}
-      <div className="border-b border-border/50 px-5 py-5">
-        <Link to="/admin" className="flex items-center gap-3 group" onClick={() => setIsMobileOpen(false)}>
-          <img src="/favicon.png" alt="RAC" className="h-10 w-10 rounded-xl shadow-sm object-contain" />
+    <div className="flex flex-col h-full">
+      {/* Brand Header */}
+      <div className="px-5 py-5 border-b border-border/30">
+        <Link to="/admin" className="flex items-center gap-3" onClick={() => setIsMobileOpen(false)}>
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-sm">
+            <Package className="w-5 h-5 text-primary-foreground" strokeWidth={2} />
+          </div>
           <div>
-            <span className="font-bold text-[15px] text-foreground block leading-tight">RAC Admin</span>
-            <span className="text-[11px] text-muted-foreground flex items-center gap-1 leading-none">
-              <Shield className="w-3 h-3" />
-              Control Panel
-            </span>
+            <span className="font-bold text-[15px] text-foreground block leading-tight tracking-tight">RAC Logistics</span>
+            <span className="text-[11px] text-muted-foreground/70 leading-none">Admin Console</span>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
         {navSections.map((section) => (
           <div key={section.label}>
-            <p className="text-[10px] font-semibold text-muted-foreground/50 uppercase tracking-[0.15em] px-3 pb-1.5">
+            <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.18em] px-3 mb-1.5">
               {section.label}
             </p>
             <div className="space-y-0.5">
@@ -116,14 +110,18 @@ const AdminSidebar = () => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setIsMobileOpen(false)}
-                    className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13px] transition-all duration-150 ${
+                    className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] transition-all duration-200 ${
                       active
-                        ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                        : "font-medium text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                        ? "bg-primary/[0.08] text-primary font-semibold"
+                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     }`}
                   >
-                    <Icon className="w-[16px] h-[16px] flex-shrink-0" strokeWidth={2} />
-                    <span>{item.name}</span>
+                    {active && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary" />
+                    )}
+                    <Icon className={`w-4 h-4 flex-shrink-0 ${active ? "text-primary" : ""}`} strokeWidth={active ? 2.2 : 1.8} />
+                    <span className="flex-1">{item.name}</span>
+                    {active && <ChevronRight className="w-3.5 h-3.5 text-primary/50" />}
                   </Link>
                 );
               })}
@@ -133,34 +131,34 @@ const AdminSidebar = () => {
       </nav>
 
       {/* Footer */}
-      <div className="space-y-1 border-t border-border/50 px-3 py-3">
+      <div className="border-t border-border/30 px-3 py-3 space-y-0.5">
         <Button
           variant="ghost"
-          className="h-10 w-full justify-start rounded-lg px-3 text-[13px] font-medium text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+          className="h-9 w-full justify-start rounded-lg px-3 text-[13px] text-muted-foreground hover:bg-muted/50 hover:text-foreground"
           asChild
         >
           <Link to="/" onClick={() => setIsMobileOpen(false)}>
-            <Home className="w-4 h-4 mr-3 flex-shrink-0" />
-            Back to Site
+            <Home className="w-4 h-4 mr-3 flex-shrink-0" strokeWidth={1.8} />
+            Back to Website
           </Link>
         </Button>
         <Button
           variant="ghost"
-          className="h-10 w-full justify-start rounded-lg px-3 text-[13px] font-medium text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+          className="h-9 w-full justify-start rounded-lg px-3 text-[13px] text-muted-foreground hover:bg-destructive/8 hover:text-destructive"
           onClick={() => signOut()}
         >
-          <LogOut className="w-4 h-4 mr-3 flex-shrink-0" />
-          Logout
+          <LogOut className="w-4 h-4 mr-3 flex-shrink-0" strokeWidth={1.8} />
+          Sign Out
         </Button>
       </div>
-    </>
+    </div>
   );
 
   return (
     <>
       {/* Mobile Menu Button */}
       <button
-        className="fixed left-4 top-4 z-50 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md transition-all duration-200 active:scale-95 md:hidden"
+        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 md:hidden"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         aria-label="Toggle menu"
       >
@@ -170,14 +168,14 @@ const AdminSidebar = () => {
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-foreground/20 backdrop-blur-sm z-40"
+          className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 flex h-full w-[272px] flex-col border-r border-border/60 bg-white transition-transform duration-300 ${
+        className={`fixed top-0 left-0 z-40 flex h-full w-[260px] flex-col bg-white border-r border-border/40 transition-transform duration-300 ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
