@@ -242,8 +242,8 @@ const ImportService = () => {
               ))}
             </div>
             <div className="cta-actions mt-10">
-              <Button asChild variant="heroSecondary" size="lg"><Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link></Button>
-              <Button asChild variant="heroPrimary" size="lg"><Link to="/shipping?flow=import&intent=quote">Get Shipping Quote <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button asChild variant="outline" size="lg"><Link to="/shipping?flow=import&intent=shipment">Start Shipment</Link></Button>
+              <Button asChild variant="default" size="lg"><Link to="/shipping?flow=import&intent=quote">Get Shipping Quote <ArrowRight className="h-4 w-4" /></Link></Button>
             </div>
           </div>
         </section>

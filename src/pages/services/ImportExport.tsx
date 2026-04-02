@@ -43,7 +43,7 @@ const ImportExport = () => {
                   <span className="icon-surface mb-5 h-12 w-12 border-primary/10 bg-primary/5"><Send className="h-5 w-5 text-primary" /></span>
                   <h2 className="text-foreground">{item.title}</h2>
                   <p className="mt-3 text-muted-foreground">{item.description}</p>
-                  <Button asChild variant="heroPrimary" className="mt-6">
+                  <Button asChild variant="default" className="mt-6">
                     <Link to={item.href}>Open service page <ArrowRight className="h-4 w-4" /></Link>
                   </Button>
                 </CardContent>
