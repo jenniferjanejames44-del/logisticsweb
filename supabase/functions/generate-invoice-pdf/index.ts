@@ -140,7 +140,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
 *{margin:0;padding:0;box-sizing:border-box;}
 
 /* ── Page ── */
-html,body{background:#e9ecef;font-family:'Inter','Helvetica Neue','Arial',sans-serif;color:#1a1a2e;font-size:11px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+html,body{background:#e9ecef;font-family:'DM Sans','Helvetica Neue','Arial',sans-serif;color:#1a1a2e;font-size:11px;line-height:1.45;-webkit-font-smoothing:antialiased;}
 
 .document{
   width:210mm;margin:20px auto;background:#fff;
