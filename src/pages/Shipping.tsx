@@ -922,9 +922,9 @@ const Shipping = () => {
                       )}
 
                       {/* Shipping Speed */}
-                      <div className="space-y-3">
+                      <div className="space-y-2.5">
                         <Label className="text-sm font-medium">Shipping Speed</Label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {[
                             { value: "standard", label: "Standard", desc: "10–14 business days", icon: Package },
                             { value: "express", label: "Express", desc: "5–7 business days", icon: Zap },
@@ -933,17 +933,17 @@ const Shipping = () => {
                               key={opt.value}
                               type="button"
                               onClick={() => setShippingSpeed(opt.value)}
-                              className={`group flex items-center gap-3 rounded-xl bg-white p-4 text-left ring-1 transition-all duration-200 ease-in-out ${shippingSpeed === opt.value ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15 active:scale-[0.98]"}`}
+                              className={`flex items-center gap-2.5 rounded-lg bg-white p-3 text-left border transition-colors duration-150 ${shippingSpeed === opt.value ? "border-primary/30 bg-primary/[0.03]" : "border-border/40 hover:border-border"}`}
                             >
-                              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                                <opt.icon className="w-4 h-4" strokeWidth={2.5} />
+                              <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                <opt.icon className="w-4 h-4" strokeWidth={2} />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className={`font-semibold text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
-                                <p className="text-xs leading-relaxed text-muted-foreground">{opt.desc}</p>
+                                <p className={`font-medium text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
+                                <p className="text-[11px] text-muted-foreground">{opt.desc}</p>
                               </div>
-                              <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${shippingSpeed === opt.value ? "bg-primary" : "bg-muted"}`}>
-                                <CheckCircle2 className={`w-3.5 h-3.5 ${shippingSpeed === opt.value ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
+                              <div className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${shippingSpeed === opt.value ? "border-primary bg-primary" : "border-border"}`}>
+                                {shippingSpeed === opt.value && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                               </div>
                             </button>
                           ))}
@@ -952,54 +952,50 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div ref={registerFieldRef("packaging_materials")} className={`space-y-3 rounded-xl p-4 ring-1 transition-all duration-200 ease-in-out sm:p-5 ${isPackagingInvalid ? "bg-destructive/[0.03] ring-destructive/30" : "bg-muted/[0.18] ring-border/50"}`}>
-                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
+                        <div ref={registerFieldRef("packaging_materials")} className={`space-y-2.5 rounded-lg border p-4 ${isPackagingInvalid ? "bg-destructive/[0.02] border-destructive/25" : "border-border/40 bg-[hsl(220,20%,98%)]"}`}>
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
-                              Select at least one packaging material to continue.
+                              Select at least one packaging material.
                             </p>
                           )}
-                          <div className="space-y-3">
+                          <div className="space-y-2">
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`grid gap-4 rounded-xl bg-white p-4 ring-1 transition-all duration-200 ease-in-out sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center ${qty > 0 ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15"}`}>
-                                  <div className="flex min-w-0 items-center gap-3">
-                                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground"}`}>
-                                      <Box className="w-4 h-4" strokeWidth={2.5} />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-semibold text-foreground">{pkg.name}</p>
-                                      <p className="text-xs text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
-                                    </div>
+                                <div key={pkg.id} className={`flex items-center gap-3 rounded-lg bg-white border p-3 transition-colors duration-150 ${qty > 0 ? "border-primary/25 bg-primary/[0.02]" : "border-border/40 hover:border-border"}`}>
+                                  <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${qty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                    <Box className="w-4 h-4" strokeWidth={2} />
                                   </div>
-                                  <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:w-auto sm:flex-nowrap sm:justify-end">
-                                    <div className="inline-flex min-w-[124px] items-center justify-between gap-2 rounded-xl bg-white/90 px-2 py-1.5 ring-1 ring-border/50">
-                                      <button
-                                        type="button"
-                                        onClick={() => updatePackagingQty(pkg.id, -1)}
-                                        disabled={qty === 0}
-                                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-200 ease-in-out ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:-translate-y-px hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
-                                        aria-label="Decrease quantity"
-                                      >
-                                        <Minus className="w-4 h-4" strokeWidth={2.5} />
-                                      </button>
-                                      <span className={`w-10 text-center font-bold text-base ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
-                                      <button
-                                        type="button"
-                                        onClick={() => updatePackagingQty(pkg.id, 1)}
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95"
-                                        aria-label="Increase quantity"
-                                      >
-                                        <Plus className="w-4 h-4" strokeWidth={2.5} />
-                                      </button>
-                                    </div>
-                                    {qty > 0 && (
-                                      <span className="whitespace-nowrap rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary">
-                                        {formatUsd(qty * Number(pkg.price))}
-                                      </span>
-                                    )}
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-foreground">{pkg.name}</p>
+                                    <p className="text-[11px] text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
                                   </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <button
+                                      type="button"
+                                      onClick={() => updatePackagingQty(pkg.id, -1)}
+                                      disabled={qty === 0}
+                                      className={`flex h-7 w-7 items-center justify-center rounded-md border transition-colors ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-muted/50"}`}
+                                      aria-label="Decrease quantity"
+                                    >
+                                      <Minus className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className={`w-7 text-center text-sm font-semibold ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => updatePackagingQty(pkg.id, 1)}
+                                      className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-muted/50"
+                                      aria-label="Increase quantity"
+                                    >
+                                      <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                  {qty > 0 && (
+                                    <span className="text-xs font-semibold text-primary whitespace-nowrap">
+                                      {formatUsd(qty * Number(pkg.price))}
+                                    </span>
+                                  )}
                                 </div>
                               );
                             })}
@@ -1009,15 +1005,15 @@ const Shipping = () => {
 
                       {/* Extra Services */}
                       {extraCharges.length > 0 && (
-                        <div className="space-y-3">
+                        <div className="space-y-2.5">
                           <Label className="text-sm font-medium">Extra Services</Label>
-                          <div className="grid sm:grid-cols-2 gap-3">
+                          <div className="grid sm:grid-cols-2 gap-2">
                             {extraCharges.map((ec: any) => (
-                              <div key={ec.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20" onClick={() => toggleExtra(ec.id)}>
+                              <div key={ec.id} className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border/40 bg-white p-3 transition-colors hover:border-border" onClick={() => toggleExtra(ec.id)}>
                                 <Checkbox checked={selectedExtras.includes(ec.id)} onCheckedChange={() => toggleExtra(ec.id)} />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-foreground">{ec.name}</p>
-                                  <p className="text-xs text-muted-foreground">{formatUsd(Number(ec.price))}</p>
+                                  <p className="text-[11px] text-muted-foreground">{formatUsd(Number(ec.price))}</p>
                                 </div>
                               </div>
                             ))}
