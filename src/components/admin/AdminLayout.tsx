@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import AdminSidebar from "./AdminSidebar";
-import { Shield } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -29,12 +29,9 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   if (authLoading || roleLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative">
-            <div className="w-12 h-12 border-3 border-primary/20 border-t-primary rounded-full animate-spin" />
-            <Shield className="absolute inset-0 m-auto w-5 h-5 text-primary animate-pulse" />
-          </div>
-          <p className="text-muted-foreground text-sm font-medium">Loading admin panel...</p>
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <p className="text-muted-foreground text-sm">Loading admin panel...</p>
         </div>
       </div>
     );
@@ -45,21 +42,15 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   }
 
   return (
-    <div className="min-h-screen flex bg-[hsl(220,20%,97%)]">
+    <div className="min-h-screen flex bg-[#f8f9fb]">
       <AdminSidebar />
-      <main className="flex-1 ml-0 overflow-auto md:ml-[272px]">
-        <div className="mx-auto max-w-6xl px-4 py-6 pt-20 sm:px-6 lg:px-8 md:pt-8 md:py-8">
+      <main className="flex-1 ml-0 overflow-auto md:ml-[260px]">
+        <div className="mx-auto max-w-[1200px] px-4 py-6 pt-20 sm:px-6 lg:px-8 md:pt-6 md:py-6">
           {title && (
-            <div className="mb-6 sm:mb-8">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                  <Shield className="w-4 h-4 text-primary" />
-                </div>
-                <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Admin Panel</span>
-              </div>
-              <h1 className="text-xl font-bold text-foreground sm:text-2xl">{title}</h1>
+            <div className="mb-6">
+              <h1 className="text-xl font-bold text-foreground sm:text-2xl tracking-tight">{title}</h1>
               {description && (
-                <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+                <p className="mt-0.5 text-[13px] text-muted-foreground">{description}</p>
               )}
             </div>
           )}
