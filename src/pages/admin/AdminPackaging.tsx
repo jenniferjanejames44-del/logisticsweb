@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Box, Plus, Edit2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface PackagingMaterial {
@@ -76,7 +77,6 @@ const AdminPackaging = () => {
   };
 
   const deleteItem = async (item: PackagingMaterial) => {
-    if (!confirm(`Delete "${item.name}"?`)) return;
     const { error } = await (supabase as any).from("packaging_materials").delete().eq("id", item.id);
     if (error) toast.error("Failed to delete");
     else { toast.success("Deleted"); fetchItems(); }
@@ -141,7 +141,7 @@ const AdminPackaging = () => {
                       <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm" onClick={() => openDialog(item)}><Edit2 className="w-3.5 h-3.5 mr-1" />Edit</Button>
-                        <Button variant="outline" size="sm" onClick={() => deleteItem(item)} className="text-destructive hover:text-destructive"><Trash2 className="w-3.5 h-3.5" /></Button>
+                        <DeleteConfirmDialog title="Delete Material" description={`Are you sure you want to delete "${item.name}"? This cannot be undone.`} onConfirm={() => deleteItem(item)} trigger={<Button variant="outline" size="sm" className="text-destructive hover:text-destructive"><Trash2 className="w-3.5 h-3.5" /></Button>} />
                       </div>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ const AdminPackaging = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Button variant="ghost" size="icon" onClick={() => openDialog(item)}><Edit2 className="w-4 h-4" /></Button>
-                            <Button variant="ghost" size="icon" onClick={() => deleteItem(item)} className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>
+                            <DeleteConfirmDialog title="Delete Material" description={`Are you sure you want to delete "${item.name}"? This cannot be undone.`} onConfirm={() => deleteItem(item)} trigger={<Button variant="ghost" size="icon" className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>} />
                             <Switch checked={item.is_active} onCheckedChange={() => toggleStatus(item)} />
                           </div>
                         </TableCell>

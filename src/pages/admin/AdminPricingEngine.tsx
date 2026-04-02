@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit2, Trash2, Globe, Weight, TrendingUp, Tag, Percent, DollarSign } from "lucide-react";
 import { toast } from "sonner";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 
 const compactAddButtonClass = "rounded-[10px] px-4";
 const compactIconButtonClass = "rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60";
@@ -80,7 +81,7 @@ const ZonesTab = () => {
                 <TableCell className="font-medium">{z.name}</TableCell>
                 <TableCell>{z.description || "—"}</TableCell>
                 <TableCell>{z.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(z.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Zone" description={`Are you sure you want to delete zone "${z.name}"? This cannot be undone.`} onConfirm={() => remove(z.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -133,7 +134,7 @@ const ZoneCountriesTab = () => {
               <TableRow key={i.id}>
                 <TableCell className="font-medium">{i.country}</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></TableCell>
+                <TableCell><DeleteConfirmDialog title="Delete Country Mapping" description={`Are you sure you want to remove "${i.country}" from this zone?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -200,7 +201,7 @@ const WeightPricingTab = () => {
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
                 <TableCell>${Number(i.price).toLocaleString()}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Weight Pricing" description="Are you sure you want to delete this weight pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -266,7 +267,7 @@ const HeavyWeightPricingTab = () => {
                 <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
                 <TableCell>${Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Heavy Weight Pricing" description="Are you sure you want to delete this pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -328,7 +329,7 @@ const ExtraChargesTab = () => {
                 <TableCell className="font-medium">{i.name}</TableCell>
                 <TableCell>${Number(i.price).toLocaleString()}</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Extra Charge" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -387,7 +388,7 @@ const TaxesTab = () => {
                 <TableCell className="font-medium">{i.name}</TableCell>
                 <TableCell>{i.rate}%</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Tax Setting" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -446,7 +447,7 @@ const ProcessingFeesTab = () => {
                 <TableCell>${Number(i.min_value).toLocaleString()}–${Number(i.max_value).toLocaleString()}</TableCell>
                 <TableCell className="capitalize">{i.fee_type}</TableCell>
                 <TableCell>{i.fee_type === "flat" ? `$${i.fee_value}` : `${i.fee_value}%`}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Processing Fee" description="Are you sure you want to delete this processing fee?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Bell, Package, CreditCard, CheckCircle, AlertCircle, Info, Trash2, Check } from "lucide-react";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -173,9 +174,16 @@ const Notifications = () => {
                             <CheckCircle size={14} className="text-muted-foreground" />
                           </Button>
                         )}
-                        <Button variant="ghost" size="iconSm" onClick={() => deleteNotification(notification.id)}>
-                          <Trash2 size={14} className="text-muted-foreground" />
-                        </Button>
+                        <DeleteConfirmDialog
+                          title="Delete Notification"
+                          description="Are you sure you want to delete this notification?"
+                          onConfirm={() => deleteNotification(notification.id)}
+                          trigger={
+                            <Button variant="ghost" size="iconSm">
+                              <Trash2 size={14} className="text-muted-foreground" />
+                            </Button>
+                          }
+                        />
                       </div>
                     </div>
                   </div>

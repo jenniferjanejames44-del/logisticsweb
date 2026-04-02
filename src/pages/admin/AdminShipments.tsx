@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler } from "lucide-react";
 import { toast } from "sonner";
+import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Shipment {
@@ -155,7 +156,6 @@ const AdminShipments = () => {
   };
 
   const handleDelete = async (shipmentId: string) => {
-    if (!confirm("Are you sure you want to delete this shipment?")) return;
     try {
       const { error } = await supabase.from("shipments").delete().eq("id", shipmentId);
       if (error) throw error;
@@ -366,14 +366,11 @@ const AdminShipments = () => {
                           {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                         </SelectContent>
                       </Select>
-                      <Button
-                        variant="ghost"
-                        size="iconSm"
-                        className="flex-shrink-0 rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] transition-all duration-200 hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
-                        onClick={() => handleDelete(shipment.id)}
-                      >
-                        <Trash2 className="w-4 h-4" strokeWidth={2.5} />
-                      </Button>
+                      <DeleteConfirmDialog
+                        title="Delete Shipment"
+                        description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
+                        onConfirm={() => handleDelete(shipment.id)}
+                      />
                     </div>
                   </div>
                 ))}
@@ -453,14 +450,11 @@ const AdminShipments = () => {
                             {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                           </SelectContent>
                         </Select>
-                        <Button
-                          variant="ghost"
-                          size="iconSm"
-                          className="flex-shrink-0 rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] transition-all duration-200 hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
-                          onClick={() => handleDelete(shipment.id)}
-                        >
-                          <Trash2 className="w-4 h-4" strokeWidth={2.5} />
-                        </Button>
+                        <DeleteConfirmDialog
+                          title="Delete Shipment"
+                          description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
+                          onConfirm={() => handleDelete(shipment.id)}
+                        />
                       </div>
                     </CardContent>
                   </Card>
