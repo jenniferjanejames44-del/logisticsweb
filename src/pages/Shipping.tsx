@@ -870,14 +870,12 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div ref={registerFieldRef("delivery_method")} className={`space-y-3 rounded-xl p-4 ring-1 transition-all duration-200 ease-in-out sm:p-5 ${isDeliveryInvalid ? "bg-destructive/[0.03] ring-destructive/30" : "bg-muted/[0.18] ring-border/50"}`}>
+                        <div ref={registerFieldRef("delivery_method")} className={`space-y-2.5 rounded-lg border p-4 ${isDeliveryInvalid ? "bg-destructive/[0.02] border-destructive/25" : "border-border/40 bg-[hsl(220,20%,98%)]"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {isDeliveryInvalid && (
-                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
-                              Please select a delivery method to continue.
-                            </p>
+                            <p className="text-xs text-destructive">Please select a delivery method to continue.</p>
                           )}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {deliveryMethods.map((dm: any) => {
                               const isSelected = selectedDeliveryMethod === dm.id;
                               const isPickup = dm.name.toLowerCase().includes("pickup");
@@ -888,20 +886,17 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex flex-col items-start gap-3 rounded-xl bg-white p-4 text-left ring-1 transition-all duration-200 ease-in-out sm:flex-row sm:items-center ${isSelected ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15 active:scale-[0.98]"}`}
+                                  className={`flex items-center gap-2.5 rounded-lg bg-white p-3 text-left border transition-colors duration-150 ${isSelected ? "border-primary/30 bg-primary/[0.03]" : "border-border/40 hover:border-border"}`}
                                 >
-                                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                                    <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                  <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                    <Icon className="w-4 h-4" strokeWidth={2} />
                                   </div>
                                   <div className="min-w-0 flex-1">
-                                    <p className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
-                                    <p className="text-xs leading-relaxed text-muted-foreground sm:truncate">{dm.description || (Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee)))}</p>
+                                    <p className={`font-medium text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
+                                    <p className="text-[11px] text-muted-foreground truncate">{Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee))}</p>
                                   </div>
-                                  <div className="flex items-center gap-2 self-end sm:self-center">
-                                    <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee))}</span>
-                                    <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
-                                      <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
-                                    </div>
+                                  <div className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${isSelected ? "border-primary bg-primary" : "border-border"}`}>
+                                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                                   </div>
                                 </button>
                               );
@@ -910,22 +905,15 @@ const Shipping = () => {
 
                           {/* Pickup Fee Option */}
                           {isPickupMethod && deliveryFee > 0 && (
-                            <div className="mt-3 rounded-xl bg-white p-4 ring-1 ring-border/50 sm:p-5">
-                              <div className="flex items-start gap-3">
+                            <div className="rounded-lg bg-white border border-border/40 p-3">
+                              <div className="flex items-center gap-2.5">
                                 <Checkbox
                                   checked={pickupFeePrepaid}
                                   onCheckedChange={(checked) => setPickupFeePrepaid(!!checked)}
-                                  className="mt-0.5"
                                 />
                                 <div className="flex-1">
-                                  <p className="text-sm font-medium text-foreground">
-                                    Pay pickup handling fee now — {formatUsd(deliveryFee)}
-                                  </p>
-                                  {!pickupFeePrepaid && (
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                      Pickup fee will be paid at the office during collection.
-                                    </p>
-                                  )}
+                                  <p className="text-sm font-medium text-foreground">Pay pickup fee now — {formatUsd(deliveryFee)}</p>
+                                  {!pickupFeePrepaid && <p className="text-[11px] text-muted-foreground">Fee will be paid at office during collection.</p>}
                                 </div>
                               </div>
                             </div>
