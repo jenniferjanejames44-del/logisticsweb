@@ -447,7 +447,7 @@ const ProcessingFeesTab = () => {
                 <TableCell>${Number(i.min_value).toLocaleString()}–${Number(i.max_value).toLocaleString()}</TableCell>
                 <TableCell className="capitalize">{i.fee_type}</TableCell>
                 <TableCell>{i.fee_type === "flat" ? `$${i.fee_value}` : `${i.fee_value}%`}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(i.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Processing Fee" description="Are you sure you want to delete this processing fee?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
