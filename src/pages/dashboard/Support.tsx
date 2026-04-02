@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -114,7 +114,7 @@ const Support = () => {
 
   const getStatusColor = (status: string) => {
     if (status === "open") return "bg-blue-50 text-blue-700 border-blue-200";
-    if (status === "in_progress") return "bg-orange-50 text-orange-700 border-orange-200";
+    if (status === "in_progress") return "bg-accent/8 text-accent border-accent/20";
     if (status === "resolved") return "bg-green-50 text-green-700 border-green-200";
     return "bg-muted text-muted-foreground";
   };
@@ -126,24 +126,24 @@ const Support = () => {
       action={
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="default" size="sm">
-              <Plus className="w-4 h-4" />
+            <Button variant="default" size="sm" className="h-9 text-[13px]">
+              <Plus className="w-3.5 h-3.5" />
               New Ticket
             </Button>
           </DialogTrigger>
           <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto p-0 gap-0">
             <DialogHeader className="px-5 pt-5">
-              <DialogTitle>Create Support Ticket</DialogTitle>
+              <DialogTitle className="text-base">Create Support Ticket</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 p-5 pt-3">
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject *</Label>
-                <Input id="subject" placeholder="Brief description of your issue" value={subject} onChange={(e) => setSubject(e.target.value)} className="h-11" />
+              <div className="space-y-1.5">
+                <Label htmlFor="subject" className="text-[12px]">Subject *</Label>
+                <Input id="subject" placeholder="Brief description of your issue" value={subject} onChange={(e) => setSubject(e.target.value)} className="h-10 text-[13px] border-border/60" />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="category">Issue Category *</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="category" className="text-[12px]">Issue Category *</Label>
                 <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger id="category" className="h-11"><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectTrigger id="category" className="h-10 text-[13px] border-border/60"><SelectValue placeholder="Select category" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="shipment_issue">Shipment Issue</SelectItem>
                     <SelectItem value="payment_issue">Payment Issue</SelectItem>
@@ -153,32 +153,32 @@ const Support = () => {
                 </Select>
               </div>
               {category === "shipment_issue" && shipments.length > 0 && (
-                <div className="space-y-2">
-                  <Label htmlFor="shipment">Related Shipment (Optional)</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="shipment" className="text-[12px]">Related Shipment (Optional)</Label>
                   <Select value={shipmentId} onValueChange={setShipmentId}>
-                    <SelectTrigger id="shipment" className="h-11"><SelectValue placeholder="Select shipment" /></SelectTrigger>
+                    <SelectTrigger id="shipment" className="h-10 text-[13px] border-border/60"><SelectValue placeholder="Select shipment" /></SelectTrigger>
                     <SelectContent>
                       {shipments.map((s) => (<SelectItem key={s.id} value={s.id}>{s.tracking_number}</SelectItem>))}
                     </SelectContent>
                   </Select>
                 </div>
               )}
-              <div className="space-y-2">
-                <Label htmlFor="message">Message *</Label>
-                <Textarea id="message" placeholder="Describe your issue in detail..." value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-[120px]" />
+              <div className="space-y-1.5">
+                <Label htmlFor="message" className="text-[12px]">Message *</Label>
+                <Textarea id="message" placeholder="Describe your issue in detail..." value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-[100px] text-[13px] border-border/60" />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="attachment">Attachment (Optional)</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="attachment" className="text-[12px]">Attachment (Optional)</Label>
                 <div className="flex items-center gap-2">
-                  <Input id="attachment" type="file" accept="image/*,.pdf,.doc,.docx" onChange={(e) => setAttachment(e.target.files?.[0] || null)} className="h-11" />
+                  <Input id="attachment" type="file" accept="image/*,.pdf,.doc,.docx" onChange={(e) => setAttachment(e.target.files?.[0] || null)} className="h-10 text-[13px] border-border/60" />
                   {attachment && (
-                    <Button variant="ghost" size="iconSm" onClick={() => setAttachment(null)}><X className="w-4 h-4" /></Button>
+                    <Button variant="ghost" size="iconSm" onClick={() => setAttachment(null)}><X className="w-3.5 h-3.5" /></Button>
                   )}
                 </div>
-                {attachment && <p className="text-xs text-muted-foreground">{attachment.name} ({(attachment.size / 1024).toFixed(2)} KB)</p>}
+                {attachment && <p className="text-[11px] text-muted-foreground">{attachment.name} ({(attachment.size / 1024).toFixed(2)} KB)</p>}
               </div>
-              <Button onClick={handleCreateTicket} disabled={isCreating || !subject || !category || !message} variant="default" size="sm" className="w-full">
-                {isCreating ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</>) : "Create Ticket"}
+              <Button onClick={handleCreateTicket} disabled={isCreating || !subject || !category || !message} variant="default" size="sm" className="w-full h-9 text-[13px]">
+                {isCreating ? (<><Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />Creating...</>) : "Create Ticket"}
               </Button>
             </div>
           </DialogContent>
@@ -190,37 +190,37 @@ const Support = () => {
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : tickets.length === 0 ? (
-        <Card>
+        <Card className="border-border/50">
           <CardContent className="text-center py-14">
-            <MessageSquare className="mx-auto mb-3 w-12 h-12 text-muted-foreground/40" />
-            <h3 className="text-base font-semibold text-foreground mb-1">No Support Tickets</h3>
-            <p className="text-sm text-muted-foreground mb-4">You haven't created any support tickets yet.</p>
-            <Button variant="default" size="sm" onClick={() => setIsDialogOpen(true)}>
-              <Plus className="w-4 h-4" />
+            <MessageSquare className="mx-auto mb-3 w-12 h-12 text-muted-foreground/20" />
+            <h3 className="text-sm font-semibold text-foreground mb-1">No Support Tickets</h3>
+            <p className="text-[12px] text-muted-foreground mb-4">You haven't created any support tickets yet.</p>
+            <Button variant="default" size="sm" onClick={() => setIsDialogOpen(true)} className="h-9 text-[13px]">
+              <Plus className="w-3.5 h-3.5" />
               Create Your First Ticket
             </Button>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-3">
+        <div className="grid gap-2.5">
           {tickets.map((ticket) => (
             <Card
               key={ticket.id}
-              className="cursor-pointer transition-shadow hover:shadow-md"
+              className="cursor-pointer border-border/50 transition-all duration-200 hover:shadow-sm hover:border-border"
               onClick={() => window.location.href = `/dashboard/support/${ticket.id}`}
             >
-              <CardContent className="p-4 sm:p-5">
+              <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-semibold text-foreground mb-1.5">{ticket.subject}</h3>
+                    <h3 className="text-[13px] font-semibold text-foreground mb-1.5">{ticket.subject}</h3>
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <Badge variant="outline" className="text-[10px]">{ticket.ticket_number}</Badge>
-                      <Badge variant="secondary" className="text-[10px] capitalize">{ticket.category.replace(/_/g, " ")}</Badge>
-                      <Badge className={`text-[10px] border ${getStatusColor(ticket.status)}`}>{ticket.status.replace(/_/g, " ")}</Badge>
+                      <Badge variant="outline" className="text-[9px] border-border/60">{ticket.ticket_number}</Badge>
+                      <Badge variant="secondary" className="text-[9px] capitalize">{ticket.category.replace(/_/g, " ")}</Badge>
+                      <Badge className={`text-[9px] border ${getStatusColor(ticket.status)}`}>{ticket.status.replace(/_/g, " ")}</Badge>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between text-xs text-muted-foreground mt-3 pt-3 border-t border-border/50">
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground/70 mt-3 pt-3 border-t border-border/30">
                   <span>Created {new Date(ticket.created_at).toLocaleDateString()}</span>
                   <span>Updated {new Date(ticket.updated_at).toLocaleDateString()}</span>
                 </div>

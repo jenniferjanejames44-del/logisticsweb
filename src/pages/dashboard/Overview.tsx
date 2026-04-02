@@ -124,10 +124,10 @@ const Overview = () => {
   }
 
   const statCards = [
-    { label: "Total Shipments", value: stats.total, icon: Package, color: "text-primary" },
-    { label: "In Transit", value: stats.inTransit, icon: Truck, color: "text-blue-600" },
-    { label: "Delivered", value: stats.delivered, icon: CheckCircle, color: "text-green-600" },
-    { label: "Total Spent", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, color: "text-accent" },
+    { label: "Total Shipments", value: stats.total, icon: Package, color: "text-primary", bg: "bg-primary/8" },
+    { label: "In Transit", value: stats.inTransit, icon: Truck, color: "text-blue-600", bg: "bg-blue-500/8" },
+    { label: "Delivered", value: stats.delivered, icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
+    { label: "Total Spent", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, color: "text-accent", bg: "bg-accent/8" },
   ];
 
   return (
@@ -137,14 +137,16 @@ const Overview = () => {
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label}>
+            <Card key={stat.label} className="border-border/50">
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-muted-foreground">{stat.label}</p>
-                    <p className="mt-1 text-xl font-bold text-foreground">{stat.value}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
+                    <p className="mt-1.5 text-xl font-bold text-foreground">{stat.value}</p>
                   </div>
-                  <Icon className={`w-5 h-5 ${stat.color}`} strokeWidth={1.5} />
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
+                    <Icon className={`w-4 h-4 ${stat.color}`} strokeWidth={2} />
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -153,24 +155,24 @@ const Overview = () => {
       </div>
 
       {/* Wallet Banner */}
-      <Card className="mb-5 bg-primary border-0">
-        <CardContent className="p-5">
+      <Card className="mb-5 bg-primary border-0 overflow-hidden">
+        <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
-              <Wallet className="w-6 h-6 text-white/80" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                <Wallet className="w-5 h-5 text-white" />
+              </div>
               <div>
-                <p className="text-xs text-white/60">Wallet Balance</p>
-                <p className="text-2xl font-bold text-white">{formatMoney(convertAmount(balance, "NGN", "USD"), "USD")}</p>
+                <p className="text-[11px] font-medium text-white/50 uppercase tracking-wide">Wallet Balance</p>
+                <p className="text-xl font-bold text-white sm:text-2xl">{formatMoney(convertAmount(balance, "NGN", "USD"), "USD")}</p>
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button size="sm" asChild className="bg-white text-primary hover:bg-white/90 border-0 shadow-none h-9 text-sm">
-                <Link to="/dashboard/wallet">
-                  <ArrowUpCircle className="w-4 h-4" />
-                  Add Funds
-                </Link>
-              </Button>
-            </div>
+            <Button size="sm" asChild className="bg-white text-primary hover:bg-white/90 border-0 shadow-none h-9 text-[13px] font-semibold">
+              <Link to="/dashboard/wallet">
+                <ArrowUpCircle className="w-3.5 h-3.5" />
+                Add Funds
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -178,18 +180,23 @@ const Overview = () => {
       {/* Quick Actions */}
       <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
-          { label: "Create Shipment", icon: Plus, href: "/shipping" },
-          { label: "Get Quote", icon: ShoppingBag, href: "/pricing" },
-          { label: "Contact Support", icon: Headphones, href: "/contact" },
+          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping" },
+          { label: "Get Quote", desc: "Calculate shipping cost", icon: ShoppingBag, href: "/pricing" },
+          { label: "Contact Support", desc: "Need help? Reach out", icon: Headphones, href: "/contact" },
         ].map((action) => {
           const Icon = action.icon;
           return (
             <Link key={action.label} to={action.href}>
-              <Card className="h-full cursor-pointer hover:border-primary/30 transition-colors">
+              <Card className="h-full cursor-pointer border-border/50 hover:border-primary/20 hover:shadow-sm transition-all duration-200">
                 <CardContent className="flex items-center gap-3 p-4">
-                  <Icon className="w-5 h-5 text-accent flex-shrink-0" strokeWidth={1.5} />
-                  <span className="text-sm font-medium text-foreground">{action.label}</span>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground ml-auto" />
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-accent/8">
+                    <Icon className="w-4 h-4 text-accent" strokeWidth={2} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-semibold text-foreground">{action.label}</p>
+                    <p className="text-[11px] text-muted-foreground">{action.desc}</p>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-muted-foreground/50" />
                 </CardContent>
               </Card>
             </Link>
@@ -199,26 +206,28 @@ const Overview = () => {
 
       {/* Recent Shipments + Activity */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-        <Card className="lg:col-span-3">
-          <CardHeader className="flex flex-row items-center justify-between pb-3">
-            <CardTitle>Recent Shipments</CardTitle>
-            <Link to="/dashboard/shipments" className="text-sm font-medium text-accent hover:underline">
+        <Card className="lg:col-span-3 border-border/50">
+          <CardHeader className="flex flex-row items-center justify-between pb-3 px-4 sm:px-5">
+            <CardTitle className="text-sm font-semibold">Recent Shipments</CardTitle>
+            <Link to="/dashboard/shipments" className="text-[12px] font-semibold text-accent hover:underline">
               View All
             </Link>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-5">
             {recentShipments.length > 0 ? (
-              <div className="space-y-2">
+              <div className="divide-y divide-border/50">
                 {recentShipments.map((shipment) => (
                   <div
                     key={shipment.id}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-border p-3"
+                    className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <Package className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md bg-primary/6">
+                        <Package className="w-3.5 h-3.5 text-primary" />
+                      </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{shipment.tracking_number || "Pending"}</p>
-                        <p className="text-xs text-muted-foreground">To: {shipment.destination_country}</p>
+                        <p className="text-[13px] font-medium text-foreground truncate">{shipment.tracking_number || "Pending"}</p>
+                        <p className="text-[11px] text-muted-foreground">To: {shipment.destination_country}</p>
                       </div>
                     </div>
                     <StatusBadge status={shipment.status} size="sm" />
@@ -227,7 +236,7 @@ const Overview = () => {
               </div>
             ) : (
               <div className="py-10 text-center">
-                <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
+                <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/20" />
                 <p className="text-sm text-muted-foreground mb-3">No shipments yet</p>
                 <Button variant="default" size="sm" asChild>
                   <Link to="/shipping">Create Your First Shipment</Link>
@@ -237,23 +246,23 @@ const Overview = () => {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+        <Card className="lg:col-span-2 border-border/50">
+          <CardHeader className="px-4 sm:px-5">
+            <CardTitle className="text-sm font-semibold">Recent Activity</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-5">
             {activities.length > 0 ? (
               <div className="space-y-3">
                 {activities.slice(0, 6).map((activity) => {
                   const Icon = activity.icon;
                   return (
-                    <div key={activity.id} className="flex gap-3">
-                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border bg-white">
-                        <Icon className="w-3.5 h-3.5 text-muted-foreground" />
+                    <div key={activity.id} className="flex gap-2.5">
+                      <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-muted/80">
+                        <Icon className="w-3 h-3 text-muted-foreground" />
                       </div>
                       <div className="min-w-0 pt-0.5">
-                        <p className="text-xs text-foreground leading-snug">{activity.message}</p>
-                        <p className="text-[11px] text-muted-foreground mt-0.5">{activity.time}</p>
+                        <p className="text-[12px] text-foreground leading-snug">{activity.message}</p>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">{activity.time}</p>
                       </div>
                     </div>
                   );
@@ -261,7 +270,7 @@ const Overview = () => {
               </div>
             ) : (
               <div className="py-8 text-center">
-                <Clock className="mx-auto mb-2 w-8 h-8 text-muted-foreground/30" />
+                <Clock className="mx-auto mb-2 w-8 h-8 text-muted-foreground/20" />
                 <p className="text-sm text-muted-foreground">No activity yet</p>
               </div>
             )}

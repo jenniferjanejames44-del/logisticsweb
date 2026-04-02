@@ -89,7 +89,7 @@ const Invoices = () => {
     const c = config[status] || config.unpaid;
     const Icon = c.icon;
     return (
-      <Badge variant={c.variant} className={`gap-1 capitalize ${status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : ''}`}>
+      <Badge variant={c.variant} className={`gap-1 capitalize text-[10px] ${status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : ''}`}>
         <Icon className="w-3 h-3" />
         {status}
       </Badge>
@@ -119,7 +119,7 @@ const Invoices = () => {
   return (
     <DashboardLayout title="Invoices" description="View and download your invoices">
       {/* Stats */}
-      <div className="mb-6 grid gap-3 sm:grid-cols-3 sm:gap-4">
+      <div className="mb-5 grid gap-3 sm:grid-cols-3">
         {[
           { label: "Total Invoices", value: invoices.length, icon: FileText, color: "text-primary", bg: "bg-primary/8" },
           { label: "Unpaid", value: formatMoney(totalUnpaid, selectedCurrency), icon: Clock, color: "text-accent", bg: "bg-accent/8" },
@@ -127,15 +127,15 @@ const Invoices = () => {
         ].map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label}>
-              <CardContent className="p-4 sm:p-5">
+            <Card key={stat.label} className="border-border/50">
+              <CardContent className="p-4">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground sm:text-sm">{stat.label}</p>
-                    <p className="mt-1 text-lg font-bold text-foreground sm:text-2xl truncate">{stat.value}</p>
+                    <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
+                    <p className="mt-1.5 text-xl font-bold text-foreground truncate">{stat.value}</p>
                   </div>
-                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
-                    <Icon className={`w-[18px] h-[18px] ${stat.color}`} />
+                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${stat.bg}`}>
+                    <Icon className={`w-4 h-4 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -148,10 +148,10 @@ const Invoices = () => {
       <div className="mb-5 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input placeholder="Search invoice or tracking..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="h-11 pl-9 text-sm" />
+          <Input placeholder="Search invoice or tracking..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="h-10 pl-9 text-[13px] border-border/60" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="h-11 w-full sm:w-[180px]">
+          <SelectTrigger className="h-10 w-full sm:w-[180px] text-[13px] border-border/60">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -165,21 +165,21 @@ const Invoices = () => {
 
       {/* Invoice List */}
       {filtered.length > 0 ? (
-        <div className="grid gap-3">
+        <div className="grid gap-2.5">
           {filtered.map((invoice) => (
-            <Card key={invoice.id} className="transition-shadow hover:shadow-md">
+            <Card key={invoice.id} className="border-border/50 transition-all duration-200 hover:shadow-sm hover:border-border">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
-                      <FileText className="w-[18px] h-[18px] text-primary" />
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/6">
+                      <FileText className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className="text-sm font-semibold text-foreground">{invoice.invoice_number}</h3>
+                        <h3 className="text-[13px] font-semibold text-foreground">{invoice.invoice_number}</h3>
                         {getStatusBadge(invoice.status)}
                       </div>
-                      <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
                         {invoice.shipments && <span>Shipment: {invoice.shipments.tracking_number}</span>}
                         <span className="flex items-center gap-1">
                           <DollarSign className="w-3 h-3" />
@@ -194,11 +194,11 @@ const Invoices = () => {
                       </div>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={() => handleDownload(invoice)} disabled={downloading === invoice.id}>
+                  <Button variant="outline" size="sm" onClick={() => handleDownload(invoice)} disabled={downloading === invoice.id} className="h-8 text-[12px] border-border/60">
                     {downloading === invoice.id ? (
-                      <div className="w-4 h-4 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+                      <div className="w-3.5 h-3.5 border-2 border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
                     ) : (
-                      <Download className="w-4 h-4 mr-1" />
+                      <Download className="w-3.5 h-3.5" />
                     )}
                     Download
                   </Button>
@@ -208,11 +208,11 @@ const Invoices = () => {
           ))}
         </div>
       ) : (
-        <Card>
+        <Card className="border-border/50">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <FileText className="w-12 h-12 text-muted-foreground/40 mb-3" />
-            <h3 className="text-base font-semibold text-foreground mb-1">No Invoices Found</h3>
-            <p className="text-sm text-muted-foreground">
+            <FileText className="w-12 h-12 text-muted-foreground/20 mb-3" />
+            <h3 className="text-sm font-semibold text-foreground mb-1">No Invoices Found</h3>
+            <p className="text-[12px] text-muted-foreground">
               {searchQuery || statusFilter !== "all" ? "Try adjusting your search or filters" : "Your invoices will appear here when you create shipments"}
             </p>
           </CardContent>
@@ -225,14 +225,14 @@ const Invoices = () => {
           <DialogHeader className="px-6 pt-5 pb-2 flex-shrink-0">
             <div className="flex items-center justify-between">
               <DialogTitle>Invoice Preview</DialogTitle>
-              <Button size="sm" onClick={handlePrint} className="mr-6">Print / Save as PDF</Button>
+              <Button size="sm" onClick={handlePrint} className="mr-6 h-8 text-[12px]">Print / Save as PDF</Button>
             </div>
           </DialogHeader>
           <div className="flex-1 overflow-hidden px-6 pb-6">
             <iframe
               ref={iframeRef}
               srcDoc={invoiceHtml || ""}
-              className="w-full h-full border border-border rounded-lg"
+              className="w-full h-full border border-border/50 rounded-lg"
               title="Invoice Preview"
               sandbox="allow-same-origin allow-scripts"
             />

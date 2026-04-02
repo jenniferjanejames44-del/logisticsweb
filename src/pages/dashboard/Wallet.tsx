@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { WalletSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import CustomerAddFundsDialog from "@/components/wallet/CustomerAddFundsDialog";
 import {
@@ -73,8 +72,8 @@ const Wallet = () => {
       title="Wallet"
       description="Manage your account balance and view transactions"
       action={
-        <Button variant="default" size="sm" onClick={() => setAddFundsOpen(true)} className="h-9">
-          <Plus className="w-4 h-4" />
+        <Button variant="default" size="sm" onClick={() => setAddFundsOpen(true)} className="h-9 text-[13px]">
+          <Plus className="w-3.5 h-3.5" />
           Add Funds
         </Button>
       }
@@ -86,92 +85,98 @@ const Wallet = () => {
           {/* Balance Cards */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Card className="bg-primary border-0">
-              <CardContent className="p-5">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-white/60">Current Balance</p>
-                    <p className="mt-1 text-2xl font-bold text-white">
+                    <p className="text-[11px] font-medium text-white/50 uppercase tracking-wide">Current Balance</p>
+                    <p className="mt-1.5 text-xl font-bold text-white sm:text-2xl">
                       {formatConverted(balance, "NGN")}
                     </p>
                   </div>
-                  <WalletIcon className="w-6 h-6 text-white/40" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+                    <WalletIcon className="w-4 h-4 text-white" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-5">
+            <Card className="border-border/50">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-muted-foreground">Total Deposits</p>
-                    <p className="mt-1 text-xl font-bold text-green-600">
+                    <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Total Deposits</p>
+                    <p className="mt-1.5 text-xl font-bold text-green-600">
                       +{formatConverted(totalCredits, "NGN")}
                     </p>
                   </div>
-                  <ArrowUpCircle className="w-5 h-5 text-green-500" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/8">
+                    <ArrowUpCircle className="w-4 h-4 text-green-500" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardContent className="p-5">
+            <Card className="border-border/50">
+              <CardContent className="p-4 sm:p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-muted-foreground">Total Spent</p>
-                    <p className="mt-1 text-xl font-bold text-orange-600">
+                    <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Total Spent</p>
+                    <p className="mt-1.5 text-xl font-bold text-accent">
                       -{formatConverted(totalDebits, "NGN")}
                     </p>
                   </div>
-                  <ArrowDownCircle className="w-5 h-5 text-orange-500" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/8">
+                    <ArrowDownCircle className="w-4 h-4 text-accent" />
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
 
           {/* Transactions */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
+          <Card className="border-border/50">
+            <CardHeader className="pb-2 px-4 sm:px-5">
+              <CardTitle className="flex items-center gap-2 text-sm font-semibold">
                 <TrendingUp className="w-4 h-4 text-muted-foreground" />
                 Transaction History
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-5">
               {transactions.length === 0 ? (
                 <div className="py-12 text-center">
-                  <Clock className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
+                  <Clock className="mx-auto mb-3 w-10 h-10 text-muted-foreground/20" />
                   <p className="text-sm font-medium text-muted-foreground">No transactions yet</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Your transaction history will appear here</p>
+                  <p className="mt-1 text-[12px] text-muted-foreground/70">Your transaction history will appear here</p>
                 </div>
               ) : (
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-border/50">
                   {transactions.map((transaction) => (
                     <div
                       key={transaction.id}
                       className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 min-w-0">
                         <div
                           className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${
-                            transaction.type === "credit" ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"
+                            transaction.type === "credit" ? "bg-green-50 text-green-600" : "bg-accent/8 text-accent"
                           }`}
                         >
                           {transaction.type === "credit" ? (
-                            <ArrowUpCircle className="w-4 h-4" />
+                            <ArrowUpCircle className="w-3.5 h-3.5" />
                           ) : (
-                            <ArrowDownCircle className="w-4 h-4" />
+                            <ArrowDownCircle className="w-3.5 h-3.5" />
                           )}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-medium text-foreground truncate">
+                          <p className="text-[13px] font-medium text-foreground truncate">
                             {transaction.description || (transaction.type === "credit" ? "Deposit" : "Payment")}
                           </p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="text-[11px] text-muted-foreground">
                             {format(new Date(transaction.created_at), "MMM dd, yyyy")}
                           </p>
                         </div>
                       </div>
-                      <p className={`text-sm font-semibold flex-shrink-0 ${transaction.type === "credit" ? "text-green-600" : "text-orange-600"}`}>
+                      <p className={`text-[13px] font-semibold flex-shrink-0 ${transaction.type === "credit" ? "text-green-600" : "text-accent"}`}>
                         {transaction.type === "credit" ? "+" : "-"}{formatConverted(Number(transaction.amount), "NGN")}
                       </p>
                     </div>

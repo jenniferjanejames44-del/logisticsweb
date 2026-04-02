@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { User, Mail, Phone, Building, MapPin, Globe, Save, Loader2 } from "lucide-react";
+import { User, Mail, Building, Globe, Save, Loader2 } from "lucide-react";
 
 interface Profile {
   id: string;
@@ -96,27 +96,27 @@ const Profile = () => {
 
   return (
     <DashboardLayout title="Profile" description="Manage your account settings and preferences">
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-5">
         {/* Profile Summary */}
-        <Card className="lg:col-span-1">
-          <CardContent className="p-5 sm:p-6 text-center">
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/8">
-              <User className="w-9 h-9 text-primary" />
+        <Card className="lg:col-span-1 border-border/50">
+          <CardContent className="p-5 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/8">
+              <User className="w-7 h-7 text-primary" />
             </div>
-            <h3 className="text-base font-semibold text-foreground">{formData.full_name || "User"}</h3>
-            <p className="mt-1.5 flex items-center justify-center gap-1.5 text-sm text-muted-foreground">
-              <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+            <h3 className="text-[15px] font-semibold text-foreground">{formData.full_name || "User"}</h3>
+            <p className="mt-1.5 flex items-center justify-center gap-1.5 text-[12px] text-muted-foreground">
+              <Mail className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">{user?.email}</span>
             </p>
             {formData.company_name && (
-              <p className="mt-1 flex items-center justify-center gap-1.5 text-sm text-muted-foreground">
-                <Building className="w-3.5 h-3.5 flex-shrink-0" />
+              <p className="mt-1 flex items-center justify-center gap-1.5 text-[12px] text-muted-foreground">
+                <Building className="w-3 h-3 flex-shrink-0" />
                 <span className="truncate">{formData.company_name}</span>
               </p>
             )}
             {formData.country && (
-              <p className="mt-1 flex items-center justify-center gap-1.5 text-sm text-muted-foreground">
-                <Globe className="w-3.5 h-3.5 flex-shrink-0" />
+              <p className="mt-1 flex items-center justify-center gap-1.5 text-[12px] text-muted-foreground">
+                <Globe className="w-3 h-3 flex-shrink-0" />
                 <span className="truncate">{formData.city ? `${formData.city}, ` : ""}{formData.country}</span>
               </p>
             )}
@@ -124,75 +124,75 @@ const Profile = () => {
         </Card>
 
         {/* Edit Form */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Edit Profile</CardTitle>
+        <Card className="lg:col-span-2 border-border/50">
+          <CardHeader className="px-5">
+            <CardTitle className="text-sm font-semibold">Edit Profile</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <CardContent className="px-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="full_name">Full Name</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="full_name" className="text-[12px]">Full Name</Label>
                   <Input
                     id="full_name"
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                     placeholder="John Doe"
-                    className="h-11"
+                    className="h-10 text-[13px] border-border/60"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="phone" className="text-[12px]">Phone Number</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+1 234 567 8900"
-                    className="h-11"
+                    className="h-10 text-[13px] border-border/60"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="company_name">Company Name</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="company_name" className="text-[12px]">Company Name</Label>
                 <Input
                   id="company_name"
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                   placeholder="Your Company Inc."
-                  className="h-11"
+                  className="h-10 text-[13px] border-border/60"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="address" className="text-[12px]">Address</Label>
                 <Textarea
                   id="address"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="123 Main Street, Suite 100"
-                  className="min-h-[96px]"
+                  className="min-h-[80px] text-[13px] border-border/60"
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="city" className="text-[12px]">City</Label>
                   <Input
                     id="city"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="New York"
-                    className="h-11"
+                    className="h-10 text-[13px] border-border/60"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="country">Country</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="country" className="text-[12px]">Country</Label>
                   <Select
                     value={formData.country}
                     onValueChange={(value) => setFormData({ ...formData, country: value })}
                   >
-                    <SelectTrigger id="country" className="h-11">
+                    <SelectTrigger id="country" className="h-10 text-[13px] border-border/60">
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
@@ -204,12 +204,12 @@ const Profile = () => {
                 </div>
               </div>
 
-              <Button type="submit" variant="default" size="sm" disabled={saving}>
+              <Button type="submit" variant="default" size="sm" disabled={saving} className="h-9 text-[13px]">
                 {saving ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
                 ) : (
                   <>
-                    <Save className="w-4 h-4" />
+                    <Save className="w-3.5 h-3.5" />
                     Save Changes
                   </>
                 )}

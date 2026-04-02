@@ -5,7 +5,7 @@ import { NotificationsSkeleton } from "@/components/dashboard/DashboardSkeletons
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Bell, Package, CreditCard, CheckCircle, AlertCircle, Info, Trash2, Check } from "lucide-react";
+import { Bell, Package, CreditCard, CheckCircle, Info, Trash2, Check } from "lucide-react";
 import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -129,49 +129,51 @@ const Notifications = () => {
   }
 
   return (
-    <DashboardLayout title="Notifications" description={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}>
-      {notifications.length > 0 && (
-        <div className="mb-5 flex justify-end">
-          <Button variant="outline" size="sm" onClick={markAllAsRead} disabled={unreadCount === 0}>
-            <Check size={14} className="mr-1.5" />
-            Mark all as read
+    <DashboardLayout
+      title="Notifications"
+      description={`You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`}
+      action={
+        notifications.length > 0 ? (
+          <Button variant="outline" size="sm" onClick={markAllAsRead} disabled={unreadCount === 0} className="h-9 text-[13px] border-border/60">
+            <Check size={14} />
+            Mark all read
           </Button>
-        </div>
-      )}
-
-      <div className="space-y-2.5">
+        ) : undefined
+      }
+    >
+      <div className="space-y-2">
         {notifications.map((notification) => {
           const Icon = getNotificationIcon(notification.type);
           const iconColor = getNotificationIconColor(notification.type);
           return (
             <Card
               key={notification.id}
-              className={`transition-shadow hover:shadow-md ${!notification.is_read ? 'border-l-3 border-l-accent' : ''}`}
+              className={`border-border/50 transition-all duration-200 hover:shadow-sm ${!notification.is_read ? 'border-l-2 border-l-accent' : ''}`}
             >
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex items-start gap-3">
-                  <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${!notification.is_read ? 'bg-accent/8' : 'bg-muted'}`}>
-                    <Icon className={`w-4 h-4 ${iconColor}`} />
+              <CardContent className="p-4">
+                <div className="flex items-start gap-2.5">
+                  <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${!notification.is_read ? 'bg-accent/8' : 'bg-muted/80'}`}>
+                    <Icon className={`w-3.5 h-3.5 ${iconColor}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <h3 className="text-sm font-semibold text-foreground">{notification.title}</h3>
-                          {!notification.is_read && <Badge variant="secondary" className="text-[10px]">New</Badge>}
+                          <h3 className="text-[13px] font-semibold text-foreground">{notification.title}</h3>
+                          {!notification.is_read && <Badge variant="secondary" className="text-[9px] px-1.5 py-0">New</Badge>}
                         </div>
-                        <p className="text-xs text-muted-foreground">{notification.message}</p>
+                        <p className="text-[12px] text-muted-foreground leading-relaxed">{notification.message}</p>
                         {notification.link && (
-                          <Link to={notification.link} className="text-accent text-xs hover:underline mt-1 inline-block" onClick={() => markAsRead(notification.id)}>
+                          <Link to={notification.link} className="text-accent text-[11px] hover:underline mt-1 inline-block font-medium" onClick={() => markAsRead(notification.id)}>
                             View details →
                           </Link>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 flex-shrink-0">
-                        <span className="text-[11px] text-muted-foreground whitespace-nowrap">{formatTimeAgo(notification.created_at)}</span>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <span className="text-[10px] text-muted-foreground/70 whitespace-nowrap">{formatTimeAgo(notification.created_at)}</span>
                         {!notification.is_read && (
                           <Button variant="ghost" size="iconSm" onClick={() => markAsRead(notification.id)}>
-                            <CheckCircle size={14} className="text-muted-foreground" />
+                            <CheckCircle size={13} className="text-muted-foreground" />
                           </Button>
                         )}
                         <DeleteConfirmDialog
@@ -180,7 +182,7 @@ const Notifications = () => {
                           onConfirm={() => deleteNotification(notification.id)}
                           trigger={
                             <Button variant="ghost" size="iconSm">
-                              <Trash2 size={14} className="text-muted-foreground" />
+                              <Trash2 size={13} className="text-muted-foreground" />
                             </Button>
                           }
                         />
@@ -194,11 +196,11 @@ const Notifications = () => {
         })}
 
         {notifications.length === 0 && (
-          <Card>
+          <Card className="border-border/50">
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <Bell className="w-12 h-12 text-muted-foreground/40 mb-3" />
-              <h3 className="text-base font-semibold text-foreground mb-1">No Notifications</h3>
-              <p className="text-sm text-muted-foreground text-center">
+              <Bell className="w-12 h-12 text-muted-foreground/20 mb-3" />
+              <h3 className="text-sm font-semibold text-foreground mb-1">No Notifications</h3>
+              <p className="text-[12px] text-muted-foreground text-center">
                 You're all caught up! We'll notify you when there are updates.
               </p>
             </CardContent>

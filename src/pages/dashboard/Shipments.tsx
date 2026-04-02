@@ -17,7 +17,7 @@ import PayShipmentDialog from "@/components/shipments/PayShipmentDialog";
 import StatusBadge from "@/components/shipments/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import {
-  Package, Plus, Search, Truck, Clock, CheckCircle, AlertCircle,
+  Package, Plus, Search,
   MapPin, Calendar, DollarSign, Wallet,
 } from "lucide-react";
 
@@ -147,21 +147,34 @@ const Shipments = () => {
   }
 
   return (
-    <DashboardLayout title="Shipments" description="Manage and track all your shipments">
+    <DashboardLayout
+      title="Shipments"
+      description="Manage and track all your shipments"
+      action={
+        <Button variant="default" size="sm" asChild className="h-9 text-[13px]">
+          <a href="/shipping">
+            <Plus className="w-3.5 h-3.5" />
+            New Shipment
+          </a>
+        </Button>
+      }
+    >
       {/* Wallet Balance Bar */}
       <Card className="mb-5 bg-primary border-0">
-        <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <Wallet className="w-6 h-6 text-white/40" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
+              <Wallet className="w-4 h-4 text-white" />
+            </div>
             <div>
-              <p className="text-xs text-white/60">Wallet Balance</p>
-              <p className="mt-0.5 text-2xl font-bold text-white">{formatConverted(balance, "NGN")}</p>
+              <p className="text-[11px] font-medium text-white/50 uppercase tracking-wide">Wallet Balance</p>
+              <p className="text-lg font-bold text-white sm:text-xl">{formatConverted(balance, "NGN")}</p>
             </div>
           </div>
           <Button
             variant="secondary"
             size="sm"
-            className="bg-white/15 text-white border-0 hover:bg-white/25"
+            className="bg-white/15 text-white border-0 hover:bg-white/25 h-8 text-[12px]"
             onClick={() => window.location.href = "/dashboard/wallet"}
           >
             Manage Wallet
@@ -177,11 +190,11 @@ const Shipments = () => {
             placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 pl-9 text-sm"
+            className="h-10 pl-9 text-[13px] border-border/60"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px] h-11">
+          <SelectTrigger className="w-full sm:w-[180px] h-10 text-[13px] border-border/60">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -197,31 +210,25 @@ const Shipments = () => {
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant="default" size="sm" asChild>
-          <a href="/shipping">
-            <Plus className="w-4 h-4" />
-            New Shipment
-          </a>
-        </Button>
       </div>
 
       {/* Shipments List */}
       {filteredShipments.length > 0 ? (
-        <div className="grid gap-3">
+        <div className="grid gap-2.5">
           {filteredShipments.map((shipment) => (
-            <Card key={shipment.id} className="transition-shadow hover:shadow-md">
+            <Card key={shipment.id} className="border-border/50 transition-all duration-200 hover:shadow-sm hover:border-border">
               <CardContent className="p-4 sm:p-5">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                   <div className="flex items-start gap-3 min-w-0 flex-1">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/8">
-                      <Package className="w-[18px] h-[18px] text-primary" />
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/6">
+                      <Package className="w-4 h-4 text-primary" />
                     </div>
-                    <div className="min-w-0 flex-1 space-y-1.5">
+                    <div className="min-w-0 flex-1 space-y-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-sm font-semibold text-foreground">{shipment.tracking_number || "Pending"}</h3>
+                        <h3 className="text-[13px] font-semibold text-foreground">{shipment.tracking_number || "Pending"}</h3>
                         <StatusBadge status={shipment.status} size="md" />
                       </div>
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3 h-3" />
                           {shipment.origin_country} → {shipment.destination_country}
@@ -237,7 +244,7 @@ const Shipments = () => {
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-[10px] text-muted-foreground/70">
                         Created {new Date(shipment.created_at).toLocaleDateString()}
                         <span className="ml-2 capitalize">{shipment.service_type.replace("-", " ")}</span>
                       </p>
@@ -245,22 +252,22 @@ const Shipments = () => {
                   </div>
 
                   {/* Price + Action */}
-                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-2 flex-shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-border/50 lg:min-w-[140px]">
+                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-1.5 flex-shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-border/30 lg:min-w-[140px]">
                     {shipment.price !== null ? (
-                      <p className="text-base font-bold text-foreground">
+                      <p className="text-sm font-bold text-foreground">
                         {shipment.invoices?.[0]
                           ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
                           : formatUsd(Number(shipment.price))}
                       </p>
                     ) : (
-                      <Badge variant="secondary" className="text-xs">Price Pending</Badge>
+                      <Badge variant="secondary" className="text-[10px]">Price Pending</Badge>
                     )}
                     {shipment.price !== null && (
                       shipment.payment_status === "paid" ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">Paid</Badge>
+                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 text-[10px]">Paid</Badge>
                       ) : (
-                        <Button variant="default" size="sm" onClick={() => openPaymentDialog(shipment)}>
-                          <DollarSign className="w-3.5 h-3.5" />
+                        <Button variant="default" size="sm" onClick={() => openPaymentDialog(shipment)} className="h-7 text-[11px] px-3">
+                          <DollarSign className="w-3 h-3" />
                           Pay Now
                         </Button>
                       )
