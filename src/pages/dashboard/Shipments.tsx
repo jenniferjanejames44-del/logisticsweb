@@ -17,7 +17,7 @@ import PayShipmentDialog from "@/components/shipments/PayShipmentDialog";
 import StatusBadge from "@/components/shipments/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import {
-  Package, Plus, Search, Truck, Clock, CheckCircle, AlertCircle,
+  Package, Plus, Search,
   MapPin, Calendar, DollarSign, Wallet,
 } from "lucide-react";
 
