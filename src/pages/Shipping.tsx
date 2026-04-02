@@ -440,13 +440,13 @@ const Shipping = () => {
     }, 160);
   }, []);
 
-  const inputClass = "h-12 rounded-lg border border-border/70 bg-white px-4 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
-  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-border/70 bg-white px-4 py-3 text-[15px] text-foreground placeholder:text-muted-foreground/55 shadow-sm transition-all duration-200 hover:border-primary/25 focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/12";
-  const invalidFieldClass = "!border-destructive/60 !ring-2 !ring-destructive/12 focus:!border-destructive focus:!ring-destructive/18";
-  const stepPanelClass = "space-y-6 sm:space-y-7 animate-in fade-in-0 slide-in-from-right-2 duration-300";
-  const softPanelClass = "rounded-xl border border-border/50 bg-muted/30 p-4 sm:p-5";
-  const interactiveCardClass = "transition-colors duration-200 hover:bg-muted/40";
-  const actionBarClass = "mt-8 flex flex-col gap-3 border-t border-border/40 pt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
+  const inputClass = "h-11 rounded-[10px] border border-border/60 bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors duration-150 hover:border-border focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10";
+  const textAreaClass = "min-h-[100px] resize-none rounded-[10px] border border-border/60 bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/50 transition-colors duration-150 hover:border-border focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10";
+  const invalidFieldClass = "!border-destructive/50 !ring-1 !ring-destructive/15 focus:!border-destructive focus:!ring-destructive/20";
+  const stepPanelClass = "space-y-5 animate-in fade-in-0 duration-200";
+  const softPanelClass = "rounded-lg border border-border/40 bg-[hsl(220,20%,98%)] p-4";
+  const interactiveCardClass = "transition-colors duration-150 hover:bg-muted/30";
+  const actionBarClass = "mt-6 flex flex-col gap-3 border-t border-border/30 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
   const categories = [
     "Electronics", "Clothing & Fashion", "Food & Beverages", "Documents",
@@ -488,25 +488,22 @@ const Shipping = () => {
                 </div>
               </div>
             )}
-            <div className="mx-auto max-w-4xl">
-              <div className="overflow-hidden rounded-2xl border border-border/60 bg-white shadow-sm">
+            <div className="mx-auto max-w-3xl">
+              <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
                 {/* Progress */}
-                <div className="border-b border-border/50 bg-white p-5 sm:p-6">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{progressSteps[step - 1]?.label}</p>
-                    </div>
-                    <span className="rounded-full bg-primary/8 px-3 py-1 text-xs font-bold text-primary">
+                <div className="border-b border-border/40 bg-white px-5 py-4 sm:px-6">
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS} — <span className="text-primary">{progressSteps[step - 1]?.label}</span></p>
+                    <span className="text-xs font-medium text-muted-foreground">
                       {Math.round((step / TOTAL_STEPS) * 100)}%
                     </span>
                   </div>
                   {/* Progress bar */}
-                  <div className="mb-5 h-1.5 w-full rounded-full bg-muted">
-                    <div className="h-full rounded-full bg-primary transition-all duration-500 ease-out" style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
+                  <div className="mb-4 h-1 w-full rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary transition-all duration-400 ease-out" style={{ width: `${(step / TOTAL_STEPS) * 100}%` }} />
                   </div>
                   {/* Step pills */}
-                  <div className="flex items-center gap-1 sm:gap-2">
+                  <div className="flex items-center gap-1">
                     {progressSteps.map((s, i) => {
                       const isComplete = step > s.num;
                       const isCurrent = step === s.num;
@@ -517,23 +514,23 @@ const Shipping = () => {
                             type="button"
                             onClick={() => { if (isComplete) setStep(s.num); }}
                             disabled={!isComplete}
-                            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-semibold transition-all duration-200 sm:px-3 sm:py-2.5 sm:text-sm ${
+                            className={`flex items-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-semibold transition-colors duration-150 sm:px-2.5 sm:py-2 sm:text-xs ${
                               isComplete
-                                ? "bg-primary/8 text-primary cursor-pointer hover:bg-primary/12"
+                                ? "text-primary cursor-pointer hover:bg-primary/6"
                                 : isCurrent
-                                  ? "bg-primary text-primary-foreground shadow-sm"
-                                  : "bg-muted/50 text-muted-foreground cursor-default"
+                                  ? "bg-primary text-primary-foreground"
+                                  : "text-muted-foreground/60 cursor-default"
                             }`}
                           >
                             {isComplete ? (
-                              <CheckCircle2 className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                              <CheckCircle2 className="h-3.5 w-3.5 shrink-0" strokeWidth={2.5} />
                             ) : (
-                              <StepIcon className="h-4 w-4 shrink-0" strokeWidth={2} />
+                              <StepIcon className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
                             )}
                             <span className="hidden sm:inline">{s.label}</span>
                           </button>
                           {i < progressSteps.length - 1 && (
-                            <div className="h-px w-2 bg-border/60 sm:w-4" />
+                            <div className="h-px w-2 bg-border/40 sm:w-3" />
                           )}
                         </Fragment>
                       );
@@ -542,18 +539,18 @@ const Shipping = () => {
                 </div>
 
                 {/* Form */}
-                <div className="bg-white p-5 sm:p-6 lg:p-8">
+                <div className="bg-white px-5 py-5 sm:px-6 sm:py-6">
 
                   {/* ===== STEP 1: Sender ===== */}
                   {step === 1 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><User className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Sender Details</h3><p className="text-sm text-muted-foreground">Who is sending this package?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><User className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Sender Details</h3><p className="text-xs text-muted-foreground">Who is sending this package?</p></div>
                       </div>
                       {showStepValidation && !isStep1Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -608,13 +605,13 @@ const Shipping = () => {
                   {/* ===== STEP 2: Receiver ===== */}
                   {step === 2 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Send className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Receiver Details</h3><p className="text-sm text-muted-foreground">Who will receive this package?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Send className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Receiver Details</h3><p className="text-xs text-muted-foreground">Who will receive this package?</p></div>
                       </div>
                       {showStepValidation && !isStep2Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -679,13 +676,13 @@ const Shipping = () => {
                   {/* ===== STEP 3: Package ===== */}
                   {step === 3 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground"><Package className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Package Details</h3><p className="text-sm text-muted-foreground">What are you shipping?</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/60"><Package className="w-4 h-4 text-accent-foreground" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Package Details</h3><p className="text-xs text-muted-foreground">What are you shipping?</p></div>
                       </div>
                       {showStepValidation && !isStep3Complete && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
                         </div>
                       )}
@@ -757,14 +754,14 @@ const Shipping = () => {
 
                       {/* Insurance Option */}
                       <div className={softPanelClass}>
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 shadow-[0_10px_20px_rgba(6,16,67,0.08)]">
-                              <Shield className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/8">
+                              <Shield className="w-4 h-4 text-primary" strokeWidth={2} />
                             </div>
                             <div>
-                              <Label className="text-sm font-semibold cursor-pointer">Shipment Insurance</Label>
-                              <p className="text-xs text-muted-foreground">Protect your package against loss or damage</p>
+                              <Label className="text-sm font-medium cursor-pointer">Shipment Insurance</Label>
+                              <p className="text-[11px] text-muted-foreground">Protect against loss or damage</p>
                             </div>
                           </div>
                           <Checkbox
@@ -772,11 +769,6 @@ const Shipping = () => {
                             onCheckedChange={(checked) => updateField("insurance_required", checked ? "true" : "false")}
                           />
                         </div>
-                        {formData.insurance_required === "true" && (
-                          <div className="space-y-2 pl-[52px]">
-                            <p className="text-xs text-muted-foreground">Insurance coverage based on declared value</p>
-                          </div>
-                        )}
                       </div>
 
                       {/* Shipment Notes */}
@@ -796,8 +788,8 @@ const Shipping = () => {
                         <Label className="text-sm font-medium">Upload Package Photos (Optional)</Label>
                         <p className="text-xs text-muted-foreground">Max 5 files. Images or PDF only.</p>
                         <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf" onChange={handleFileChange} className="hidden" />
-                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-xl border border-dashed border-primary/35 bg-primary/[0.05] px-4 py-2.5 text-sm font-semibold text-primary shadow-[0_10px_20px_rgba(6,16,67,0.04)] transition-all duration-200 hover:-translate-y-px hover:bg-primary/10">
-                          <Upload className="w-4 h-4" /> Choose Files
+                        <button type="button" onClick={() => fileInputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg border border-dashed border-border bg-white px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted/30">
+                          <Upload className="w-3.5 h-3.5" /> Choose Files
                         </button>
                         {uploadedFiles.length > 0 && (
                           <div className="mt-2 space-y-1.5">
@@ -816,14 +808,14 @@ const Shipping = () => {
                   {/* ===== STEP 4: Shipping Options ===== */}
                   {step === 4 && (
                     <div className={stepPanelClass}>
-                      <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Truck className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Shipping Options</h3><p className="text-sm text-muted-foreground">Choose your route, warehouse, and delivery preferences</p></div>
+                      <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Truck className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
                       </div>
 
                       {showStepValidation && (
-                        <div className="flex items-center gap-2.5 rounded-lg bg-destructive/6 border border-destructive/20 p-3 text-sm text-destructive">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
+                        <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
+                          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
                         </div>
                       )}
@@ -878,14 +870,12 @@ const Shipping = () => {
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
-                        <div ref={registerFieldRef("delivery_method")} className={`space-y-3 rounded-xl p-4 ring-1 transition-all duration-200 ease-in-out sm:p-5 ${isDeliveryInvalid ? "bg-destructive/[0.03] ring-destructive/30" : "bg-muted/[0.18] ring-border/50"}`}>
+                        <div ref={registerFieldRef("delivery_method")} className={`space-y-2.5 rounded-lg border p-4 ${isDeliveryInvalid ? "bg-destructive/[0.02] border-destructive/25" : "border-border/40 bg-[hsl(220,20%,98%)]"}`}>
                           <Label className="text-sm font-medium">Delivery Method *</Label>
                           {isDeliveryInvalid && (
-                            <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
-                              Please select a delivery method to continue.
-                            </p>
+                            <p className="text-xs text-destructive">Please select a delivery method to continue.</p>
                           )}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {deliveryMethods.map((dm: any) => {
                               const isSelected = selectedDeliveryMethod === dm.id;
                               const isPickup = dm.name.toLowerCase().includes("pickup");
@@ -896,20 +886,17 @@ const Shipping = () => {
                                   type="button"
                                   aria-pressed={isSelected}
                                   onClick={() => setSelectedDeliveryMethod(dm.id)}
-                                  className={`group flex flex-col items-start gap-3 rounded-xl bg-white p-4 text-left ring-1 transition-all duration-200 ease-in-out sm:flex-row sm:items-center ${isSelected ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15 active:scale-[0.98]"}`}
+                                  className={`flex items-center gap-2.5 rounded-lg bg-white p-3 text-left border transition-colors duration-150 ${isSelected ? "border-primary/30 bg-primary/[0.03]" : "border-border/40 hover:border-border"}`}
                                 >
-                                  <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${isSelected ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                                    <Icon className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                  <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                    <Icon className="w-4 h-4" strokeWidth={2} />
                                   </div>
                                   <div className="min-w-0 flex-1">
-                                    <p className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
-                                    <p className="text-xs leading-relaxed text-muted-foreground sm:truncate">{dm.description || (Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee)))}</p>
+                                    <p className={`font-medium text-sm ${isSelected ? "text-primary" : "text-foreground"}`}>{dm.name}</p>
+                                    <p className="text-[11px] text-muted-foreground truncate">{Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee))}</p>
                                   </div>
-                                  <div className="flex items-center gap-2 self-end sm:self-center">
-                                    <span className={`text-sm font-bold whitespace-nowrap ${isSelected ? "text-primary" : "text-foreground"}`}>{Number(dm.fee) === 0 ? "Free" : formatUsd(Number(dm.fee))}</span>
-                                    <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${isSelected ? "bg-primary" : "bg-muted"}`}>
-                                      <CheckCircle2 className={`w-3.5 h-3.5 ${isSelected ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
-                                    </div>
+                                  <div className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${isSelected ? "border-primary bg-primary" : "border-border"}`}>
+                                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                                   </div>
                                 </button>
                               );
@@ -918,22 +905,15 @@ const Shipping = () => {
 
                           {/* Pickup Fee Option */}
                           {isPickupMethod && deliveryFee > 0 && (
-                            <div className="mt-3 rounded-xl bg-white p-4 ring-1 ring-border/50 sm:p-5">
-                              <div className="flex items-start gap-3">
+                            <div className="rounded-lg bg-white border border-border/40 p-3">
+                              <div className="flex items-center gap-2.5">
                                 <Checkbox
                                   checked={pickupFeePrepaid}
                                   onCheckedChange={(checked) => setPickupFeePrepaid(!!checked)}
-                                  className="mt-0.5"
                                 />
                                 <div className="flex-1">
-                                  <p className="text-sm font-medium text-foreground">
-                                    Pay pickup handling fee now — {formatUsd(deliveryFee)}
-                                  </p>
-                                  {!pickupFeePrepaid && (
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                      Pickup fee will be paid at the office during collection.
-                                    </p>
-                                  )}
+                                  <p className="text-sm font-medium text-foreground">Pay pickup fee now — {formatUsd(deliveryFee)}</p>
+                                  {!pickupFeePrepaid && <p className="text-[11px] text-muted-foreground">Fee will be paid at office during collection.</p>}
                                 </div>
                               </div>
                             </div>
@@ -942,9 +922,9 @@ const Shipping = () => {
                       )}
 
                       {/* Shipping Speed */}
-                      <div className="space-y-3">
+                      <div className="space-y-2.5">
                         <Label className="text-sm font-medium">Shipping Speed</Label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {[
                             { value: "standard", label: "Standard", desc: "10–14 business days", icon: Package },
                             { value: "express", label: "Express", desc: "5–7 business days", icon: Zap },
@@ -953,17 +933,17 @@ const Shipping = () => {
                               key={opt.value}
                               type="button"
                               onClick={() => setShippingSpeed(opt.value)}
-                              className={`group flex items-center gap-3 rounded-xl bg-white p-4 text-left ring-1 transition-all duration-200 ease-in-out ${shippingSpeed === opt.value ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15 active:scale-[0.98]"}`}
+                              className={`flex items-center gap-2.5 rounded-lg bg-white p-3 text-left border transition-colors duration-150 ${shippingSpeed === opt.value ? "border-primary/30 bg-primary/[0.03]" : "border-border/40 hover:border-border"}`}
                             >
-                              <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                                <opt.icon className="w-4 h-4" strokeWidth={2.5} />
+                              <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${shippingSpeed === opt.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                <opt.icon className="w-4 h-4" strokeWidth={2} />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className={`font-semibold text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
-                                <p className="text-xs leading-relaxed text-muted-foreground">{opt.desc}</p>
+                                <p className={`font-medium text-sm ${shippingSpeed === opt.value ? "text-primary" : "text-foreground"}`}>{opt.label}</p>
+                                <p className="text-[11px] text-muted-foreground">{opt.desc}</p>
                               </div>
-                              <div className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors ${shippingSpeed === opt.value ? "bg-primary" : "bg-muted"}`}>
-                                <CheckCircle2 className={`w-3.5 h-3.5 ${shippingSpeed === opt.value ? "text-primary-foreground" : "text-muted-foreground"}`} strokeWidth={2.5} />
+                              <div className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${shippingSpeed === opt.value ? "border-primary bg-primary" : "border-border"}`}>
+                                {shippingSpeed === opt.value && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                               </div>
                             </button>
                           ))}
@@ -972,54 +952,50 @@ const Shipping = () => {
 
                       {/* Packaging Materials */}
                       {packagingMaterials.length > 0 && (
-                        <div ref={registerFieldRef("packaging_materials")} className={`space-y-3 rounded-xl p-4 ring-1 transition-all duration-200 ease-in-out sm:p-5 ${isPackagingInvalid ? "bg-destructive/[0.03] ring-destructive/30" : "bg-muted/[0.18] ring-border/50"}`}>
-                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" strokeWidth={2.5} /> Packaging Materials *</Label>
+                        <div ref={registerFieldRef("packaging_materials")} className={`space-y-2.5 rounded-lg border p-4 ${isPackagingInvalid ? "bg-destructive/[0.02] border-destructive/25" : "border-border/40 bg-[hsl(220,20%,98%)]"}`}>
+                          <Label className="text-sm font-medium flex items-center gap-1.5"><Box className="w-3.5 h-3.5" /> Packaging Materials *</Label>
                           {!hasPackagingSelection && (
                             <p className={`text-xs ${showStepValidation ? "text-destructive" : "text-muted-foreground"}`}>
-                              Select at least one packaging material to continue.
+                              Select at least one packaging material.
                             </p>
                           )}
-                          <div className="space-y-3">
+                          <div className="space-y-2">
                             {packagingMaterials.map((pkg: any) => {
                               const qty = packagingQuantities[pkg.id] || 0;
                               return (
-                                <div key={pkg.id} className={`grid gap-4 rounded-xl bg-white p-4 ring-1 transition-all duration-200 ease-in-out sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center ${qty > 0 ? "bg-primary/[0.05] ring-primary/20" : "ring-border/50 hover:bg-muted/20 hover:ring-primary/15"}`}>
-                                  <div className="flex min-w-0 items-center gap-3">
-                                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${qty > 0 ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(6,16,67,0.18)]" : "bg-muted text-muted-foreground"}`}>
-                                      <Box className="w-4 h-4" strokeWidth={2.5} />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm font-semibold text-foreground">{pkg.name}</p>
-                                      <p className="text-xs text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
-                                    </div>
+                                <div key={pkg.id} className={`flex items-center gap-3 rounded-lg bg-white border p-3 transition-colors duration-150 ${qty > 0 ? "border-primary/25 bg-primary/[0.02]" : "border-border/40 hover:border-border"}`}>
+                                  <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md transition-colors ${qty > 0 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                    <Box className="w-4 h-4" strokeWidth={2} />
                                   </div>
-                                  <div className="flex w-full flex-wrap items-center justify-between gap-3 sm:w-auto sm:flex-nowrap sm:justify-end">
-                                    <div className="inline-flex min-w-[124px] items-center justify-between gap-2 rounded-xl bg-white/90 px-2 py-1.5 ring-1 ring-border/50">
-                                      <button
-                                        type="button"
-                                        onClick={() => updatePackagingQty(pkg.id, -1)}
-                                        disabled={qty === 0}
-                                        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-200 ease-in-out ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:-translate-y-px hover:bg-destructive/10 hover:border-destructive/40 hover:text-destructive active:scale-95"}`}
-                                        aria-label="Decrease quantity"
-                                      >
-                                        <Minus className="w-4 h-4" strokeWidth={2.5} />
-                                      </button>
-                                      <span className={`w-10 text-center font-bold text-base ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
-                                      <button
-                                        type="button"
-                                        onClick={() => updatePackagingQty(pkg.id, 1)}
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-foreground transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary/10 hover:border-primary/40 hover:text-primary active:scale-95"
-                                        aria-label="Increase quantity"
-                                      >
-                                        <Plus className="w-4 h-4" strokeWidth={2.5} />
-                                      </button>
-                                    </div>
-                                    {qty > 0 && (
-                                      <span className="whitespace-nowrap rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary">
-                                        {formatUsd(qty * Number(pkg.price))}
-                                      </span>
-                                    )}
+                                  <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-foreground">{pkg.name}</p>
+                                    <p className="text-[11px] text-muted-foreground">{formatUsd(Number(pkg.price))} / unit</p>
                                   </div>
+                                  <div className="flex items-center gap-1.5">
+                                    <button
+                                      type="button"
+                                      onClick={() => updatePackagingQty(pkg.id, -1)}
+                                      disabled={qty === 0}
+                                      className={`flex h-7 w-7 items-center justify-center rounded-md border transition-colors ${qty === 0 ? "border-border/30 text-muted-foreground/30 cursor-not-allowed" : "border-border text-foreground hover:bg-muted/50"}`}
+                                      aria-label="Decrease quantity"
+                                    >
+                                      <Minus className="w-3.5 h-3.5" />
+                                    </button>
+                                    <span className={`w-7 text-center text-sm font-semibold ${qty > 0 ? "text-primary" : "text-muted-foreground"}`}>{qty}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => updatePackagingQty(pkg.id, 1)}
+                                      className="flex h-7 w-7 items-center justify-center rounded-md border border-border text-foreground transition-colors hover:bg-muted/50"
+                                      aria-label="Increase quantity"
+                                    >
+                                      <Plus className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                  {qty > 0 && (
+                                    <span className="text-xs font-semibold text-primary whitespace-nowrap">
+                                      {formatUsd(qty * Number(pkg.price))}
+                                    </span>
+                                  )}
                                 </div>
                               );
                             })}
@@ -1029,15 +1005,15 @@ const Shipping = () => {
 
                       {/* Extra Services */}
                       {extraCharges.length > 0 && (
-                        <div className="space-y-3">
+                        <div className="space-y-2.5">
                           <Label className="text-sm font-medium">Extra Services</Label>
-                          <div className="grid sm:grid-cols-2 gap-3">
+                          <div className="grid sm:grid-cols-2 gap-2">
                             {extraCharges.map((ec: any) => (
-                              <div key={ec.id} className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-[0_10px_24px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-px hover:border-primary/20" onClick={() => toggleExtra(ec.id)}>
+                              <div key={ec.id} className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border/40 bg-white p-3 transition-colors hover:border-border" onClick={() => toggleExtra(ec.id)}>
                                 <Checkbox checked={selectedExtras.includes(ec.id)} onCheckedChange={() => toggleExtra(ec.id)} />
                                 <div className="flex-1 min-w-0">
                                   <p className="text-sm font-medium text-foreground">{ec.name}</p>
-                                  <p className="text-xs text-muted-foreground">{formatUsd(Number(ec.price))}</p>
+                                  <p className="text-[11px] text-muted-foreground">{formatUsd(Number(ec.price))}</p>
                                 </div>
                               </div>
                             ))}
@@ -1051,13 +1027,13 @@ const Shipping = () => {
                   {step === 5 && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground"><CheckCircle2 className="w-5 h-5" strokeWidth={2} /></div>
-                        <div><h3 className="font-bold text-lg text-foreground">Shipment Summary</h3><p className="text-sm text-muted-foreground">Review your details and confirm</p></div>
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><CheckCircle2 className="w-4 h-4 text-primary" strokeWidth={2} /></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Shipment Summary</h3><p className="text-xs text-muted-foreground">Review your details and confirm</p></div>
                       </div>
 
-                      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_280px]">
+                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_240px]">
                         {/* Route overview */}
-                        <div className="rounded-xl border border-primary/15 bg-primary/4 p-5 sm:p-6">
+                        <div className="rounded-lg border border-primary/10 bg-primary/[0.02] p-4">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                             <div className="space-y-2">
                               <span className="inline-flex items-center rounded-full bg-primary/8 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary">
@@ -1068,9 +1044,9 @@ const Shipping = () => {
                                 {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
                               </p>
                             </div>
-                            <div className="rounded-xl bg-white px-4 py-3 border border-border/50 sm:min-w-[160px] sm:text-right">
-                              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
-                              <p className="mt-1 text-2xl font-bold text-primary sm:text-3xl">{formatUsd(grandTotal)}</p>
+                            <div className="rounded-lg bg-white px-3 py-2.5 border border-border/40 sm:min-w-[140px] sm:text-right">
+                              <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Estimated total</p>
+                              <p className="mt-0.5 text-xl font-bold text-primary">{formatUsd(grandTotal)}</p>
                             </div>
                           </div>
 
@@ -1314,7 +1290,7 @@ const Shipping = () => {
               <h2 className="text-foreground mb-4">How <span className="text-primary">Shipping Works</span></h2>
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground">From booking to delivery in five simple steps.</p>
             </div>
-            <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {[
                 { num: 1, title: "Create your shipment online", icon: ClipboardList },
                 { num: 2, title: "Send package to our warehouse", icon: Package },
@@ -1322,10 +1298,10 @@ const Shipping = () => {
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },
               ].map((s) => (
-                <div key={s.num} className="group relative flex flex-col items-center rounded-2xl border border-border/70 bg-white/95 p-6 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-[0_20px_40px_rgba(15,23,42,0.07)]">
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary shadow-[0_14px_28px_rgba(6,16,67,0.16)] transition-transform group-hover:scale-105"><s.icon className="w-6 h-6 text-primary-foreground" /></div>
-                  <span className="text-xs font-bold text-primary mb-2">Step {s.num}</span>
-                  <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
+                <div key={s.num} className="flex flex-col items-center rounded-lg border border-border/50 bg-white p-5 text-center transition-colors hover:border-border">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/8"><s.icon className="w-5 h-5 text-primary" /></div>
+                  <span className="text-[11px] font-semibold text-primary mb-1.5">Step {s.num}</span>
+                  <p className="text-sm font-medium text-foreground leading-snug">{s.title}</p>
                 </div>
               ))}
             </div>
