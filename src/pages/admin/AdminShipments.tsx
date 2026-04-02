@@ -156,7 +156,6 @@ const AdminShipments = () => {
   };
 
   const handleDelete = async (shipmentId: string) => {
-    if (!confirm("Are you sure you want to delete this shipment?")) return;
     try {
       const { error } = await supabase.from("shipments").delete().eq("id", shipmentId);
       if (error) throw error;
