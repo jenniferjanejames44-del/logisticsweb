@@ -81,7 +81,7 @@ const ZonesTab = () => {
                 <TableCell className="font-medium">{z.name}</TableCell>
                 <TableCell>{z.description || "—"}</TableCell>
                 <TableCell>{z.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><Button variant="ghost" size="iconSm" className={compactDeleteButtonClass} onClick={() => remove(z.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button></div></TableCell>
+                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Zone" description={`Are you sure you want to delete zone "${z.name}"? This cannot be undone.`} onConfirm={() => remove(z.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
