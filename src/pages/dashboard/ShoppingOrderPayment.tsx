@@ -5,7 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -148,21 +147,21 @@ const ShoppingOrderPayment = () => {
   return (
     <DashboardLayout title="Shopping Order Payment" description="Complete payment for your shopping request">
       <div className="mx-auto max-w-md">
-        <Card className="overflow-hidden border-border/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-          {/* Header */}
-          <div className="bg-primary px-6 py-5">
+        <div className="rounded-xl border border-border/50 bg-white overflow-hidden">
+          {/* Clean Header */}
+          <div className="px-6 pt-6 pb-4 border-b border-border/40">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
-                <Package className="w-5 h-5 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
+                <Package className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-white">Checkout</h2>
-                <p className="text-xs text-white/60">Complete your shopping order payment</p>
+                <h2 className="text-base font-bold text-foreground">Checkout</h2>
+                <p className="text-xs text-muted-foreground">Complete your shopping order payment</p>
               </div>
             </div>
           </div>
 
-          <CardContent className="p-6 space-y-5">
+          <div className="p-6 space-y-5">
             {loading ? (
               <div className="flex flex-col items-center justify-center gap-3 py-10">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
@@ -171,7 +170,7 @@ const ShoppingOrderPayment = () => {
             ) : !order ? null : (
               <>
                 {/* Order Info */}
-                <div className="flex items-start justify-between gap-3 rounded-lg border border-border/60 bg-muted/20 p-4">
+                <div className="flex items-start justify-between gap-3 rounded-lg border border-border/50 p-4">
                   <div className="min-w-0">
                     <p className="text-[13px] font-semibold text-foreground truncate">{order.product_name}</p>
                     <p className="text-[11px] text-muted-foreground mt-0.5">{order.order_number}</p>
@@ -180,7 +179,7 @@ const ShoppingOrderPayment = () => {
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="space-y-2.5 rounded-lg border border-border/60 p-4 text-sm">
+                <div className="space-y-2.5 rounded-lg border border-border/50 p-4 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Item value</span>
                     <span className="font-medium text-foreground">{formatUsd(Number(order.item_value))}</span>
@@ -195,14 +194,14 @@ const ShoppingOrderPayment = () => {
                   </div>
                   <Separator className="my-1" />
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-foreground">Total Due</span>
-                    <span className="text-lg font-bold text-primary">{formatUsd(Number(order.total_cost))}</span>
+                    <span className="font-semibold text-foreground">Total Due</span>
+                    <span className="text-lg font-bold text-accent">{formatUsd(Number(order.total_cost))}</span>
                   </div>
                 </div>
 
                 {/* Security */}
                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                  <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+                  <Shield className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
                   <span>Secured checkout via Paystack. Encrypted transaction.</span>
                 </div>
 
@@ -234,8 +233,8 @@ const ShoppingOrderPayment = () => {
                 </div>
               </>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );

@@ -5,7 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Loader2, Wallet, ArrowRight, Shield } from "lucide-react";
 
@@ -92,19 +91,13 @@ const PaymentCallback = () => {
   return (
     <DashboardLayout title="Payment Status" description="Payment verification result">
       <div className="flex min-h-[50vh] items-center justify-center px-4">
-        <Card className="w-full max-w-md overflow-hidden border-border/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
-          {/* Status Header */}
-          <div className={`px-6 py-6 text-center ${
-            status === "verifying"
-              ? "bg-primary/5"
-              : status === "success"
-              ? "bg-green-50 dark:bg-green-950/20"
-              : "bg-destructive/5"
-          }`}>
+        <div className="w-full max-w-md rounded-xl border border-border/50 bg-white overflow-hidden">
+          {/* Status Icon Area */}
+          <div className="px-6 pt-8 pb-5 text-center">
             {status === "verifying" && (
               <div className="flex flex-col items-center gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted/50">
+                  <Loader2 className="h-7 w-7 animate-spin text-primary" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-foreground">Verifying Payment</h2>
@@ -114,11 +107,11 @@ const PaymentCallback = () => {
             )}
             {status === "success" && (
               <div className="flex flex-col items-center gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-50 dark:bg-green-950/20">
                   {isWalletTopup ? (
-                    <Wallet className="h-8 w-8 text-green-600" />
+                    <Wallet className="h-7 w-7 text-green-600" />
                   ) : (
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                    <CheckCircle className="h-7 w-7 text-green-600" />
                   )}
                 </div>
                 <div>
@@ -131,8 +124,8 @@ const PaymentCallback = () => {
             )}
             {status === "failed" && (
               <div className="flex flex-col items-center gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-                  <XCircle className="h-8 w-8 text-destructive" />
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-destructive/[0.06]">
+                  <XCircle className="h-7 w-7 text-destructive" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-foreground">Payment Failed</h2>
@@ -142,12 +135,12 @@ const PaymentCallback = () => {
             )}
           </div>
 
-          <CardContent className="p-6 space-y-4">
+          <div className="px-6 pb-6 space-y-4">
             {/* Wallet balance card on success */}
             {status === "success" && isWalletTopup && !balanceLoading && (
-              <div className="rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800/40 p-4">
-                <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide mb-1">Updated Balance</p>
-                <p className="text-2xl font-bold text-green-600">
+              <div className="rounded-lg border border-border/50 p-4">
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Updated Balance</p>
+                <p className="text-2xl font-bold text-foreground">
                   {formatConverted(balance, "NGN")}
                 </p>
               </div>
@@ -156,7 +149,7 @@ const PaymentCallback = () => {
             {/* Security badge */}
             {status === "success" && (
               <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                <Shield className="w-3.5 h-3.5 flex-shrink-0" />
+                <Shield className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
                 <span>Transaction verified and secured by Paystack.</span>
               </div>
             )}
@@ -226,8 +219,8 @@ const PaymentCallback = () => {
                 </>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );
