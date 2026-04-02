@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, Package, DollarSign, TrendingUp, Clock, CheckCircle, ArrowUpRight, ArrowDownRight, Truck, ShoppingBag } from "lucide-react";
+import { Users, Package, DollarSign, TrendingUp, Clock, CheckCircle, ArrowUpRight, ArrowDownRight, Truck } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface DashboardStats {
