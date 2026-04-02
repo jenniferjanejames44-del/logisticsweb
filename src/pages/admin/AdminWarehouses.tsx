@@ -44,7 +44,7 @@ const AdminWarehouses = () => {
     toast.success(editing ? "Updated" : "Created"); setOpen(false); fetch_();
   };
 
-  const remove = async (id: string) => {
+  const removeWarehouse = async (id: string) => {
     const { error } = await (supabase as any).from("warehouses").delete().eq("id", id);
     if (error) { toast.error("Delete failed"); return; }
     toast.success("Deleted"); fetch_();
