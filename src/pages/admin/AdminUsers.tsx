@@ -332,7 +332,7 @@ const AdminUsers = () => {
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-lg rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+                        <DialogContent className="sm:max-w-lg rounded-xl border border-border/70 bg-background p-0">
                           <DialogHeader className="px-6 pt-6">
                             <DialogTitle className="text-base">Login Activity - {user.full_name || user.email}</DialogTitle>
                             <DialogDescription>Recent login history</DialogDescription>
@@ -435,7 +435,7 @@ const AdminUsers = () => {
                                 <Eye className="w-4 h-4 mr-1" />View
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-lg rounded-xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+                            <DialogContent className="max-w-lg rounded-xl border border-border/70 bg-background p-0">
                               <DialogHeader className="px-6 pt-6">
                                 <DialogTitle>Login Activity - {user.full_name || user.email}</DialogTitle>
                                 <DialogDescription>Recent login history and device information</DialogDescription>
@@ -511,7 +511,7 @@ const AdminUsers = () => {
 
         {/* Reset Password Dialog */}
         <Dialog open={resetPasswordOpen} onOpenChange={setResetPasswordOpen}>
-          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-background p-0">
             <DialogHeader className="border-b border-border/60 px-6 py-6 pr-16">
               <DialogTitle className="text-foreground">Reset Password</DialogTitle>
               <DialogDescription>Set a new password for {resetPasswordUserName}</DialogDescription>
