@@ -472,6 +472,14 @@ const AdminShipments = () => {
                         </div>
                       </div>
 
+                      {/* Contact Details */}
+                      {(shipment.sender_phone || shipment.receiver_phone) && (
+                        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
+                          <ContactActions phone={shipment.sender_phone} altPhone={shipment.sender_alt_phone} name={shipment.sender_name} label="Sender" />
+                          <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
+                        </div>
+                      )}
+
                       <div className="flex items-center gap-2 pt-2 border-t border-border/40">
                         <Button
                           variant="dashAccent"
