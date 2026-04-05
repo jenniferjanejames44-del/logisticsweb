@@ -74,7 +74,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Sign out error:", error);
+    } finally {
+      // Always clear state and redirect, even if signOut API fails
+      setSession(null);
+      setUser(null);
+      window.location.href = "/auth";
+    }
   };
 
   const value = {
