@@ -74,16 +74,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signOut = async () => {
+    // Clear state FIRST so AuthRedirect won't bounce us back
+    setSession(null);
+    setUser(null);
     try {
       await supabase.auth.signOut();
     } catch (error) {
       console.error("Sign out error:", error);
-    } finally {
-      // Always clear state and redirect, even if signOut API fails
-      setSession(null);
-      setUser(null);
-      window.location.href = "/auth";
     }
+    // Use replace to prevent back-button returning to protected page
+    window.location.replace("/auth");
   };
 
   const value = {
