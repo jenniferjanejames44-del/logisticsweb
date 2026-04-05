@@ -105,7 +105,7 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
           value={query}
           onChange={(e) => handleInputChange(e.target.value)}
           placeholder={placeholder}
-          className={`pl-9 pr-8 ${className || ""}`}
+          className={`pl-10 pr-9 ${className || ""}`}
           onFocus={() => { if (results.length > 0) setShowDropdown(true); }}
         />
         {isSearching && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin" />}

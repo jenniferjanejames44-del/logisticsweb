@@ -21,6 +21,8 @@ import {
   MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
+import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
+import SearchableCountrySelect from "@/components/shipments/SearchableCountrySelect";
 
 const TOTAL_STEPS = 5;
 
@@ -92,6 +94,9 @@ const Shipping = () => {
   const flow = searchParams.get("flow");
   const intent = searchParams.get("intent") === "quote" ? "quote" : "shipment";
   const workflowGuide = flow === "import" || flow === "export" ? shipmentWorkflowGuides[flow] : null;
+  const [shippingType, setShippingType] = useState<ShippingType>(
+    flow === "import" ? "import" : flow === "export" ? "export" : null
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -250,8 +255,52 @@ const Shipping = () => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Always show all warehouses
-  const filteredWarehouses = warehouses;
+  // Filter warehouses based on shipping type
+  const filteredWarehouses = useMemo(() => {
+    if (!shippingType) return warehouses;
+    if (shippingType === "import") {
+      // Show international warehouses (not Nigeria)
+      return warehouses.filter((w: any) => w.country?.toLowerCase() !== "nigeria");
+    }
+    // Export: show Nigeria warehouses only
+    return warehouses.filter((w: any) => w.country?.toLowerCase() === "nigeria");
+  }, [warehouses, shippingType]);
+
+  // Auto-fill origin/destination based on shipping type
+  const handleShippingTypeChange = (type: ShippingType) => {
+    setShippingType(type);
+    if (type === "import") {
+      updateField("destination_country", "Nigeria");
+      updateField("receiver_country", "Nigeria");
+      updateField("origin_country", "");
+    } else if (type === "export") {
+      updateField("origin_country", "Nigeria");
+      updateField("sender_country", "Nigeria");
+      updateField("destination_country", "");
+    }
+    updateField("warehouse_location", "");
+  };
+
+  // Countries available based on shipping type
+  const originCountriesForType = useMemo(() => {
+    if (shippingType === "import") {
+      return originCountries.filter((c: string) => c !== "Nigeria");
+    }
+    if (shippingType === "export") {
+      return ["Nigeria"];
+    }
+    return originCountries;
+  }, [originCountries, shippingType]);
+
+  const destinationCountriesForType = useMemo(() => {
+    if (shippingType === "import") {
+      return ["Nigeria"];
+    }
+    if (shippingType === "export") {
+      return ALL_COUNTRIES.filter((c) => c !== "Nigeria");
+    }
+    return ALL_COUNTRIES;
+  }, [shippingType]);
 
   const selectedWarehouse = useMemo(() =>
     warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
@@ -366,7 +415,7 @@ const Shipping = () => {
   const isStep1Complete = formData.sender_name && formData.sender_phone;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
-  const isStep4Complete = formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
+  const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const isSenderNameInvalid = showStepValidation && !formData.sender_name;
   const isSenderPhoneInvalid = showStepValidation && !formData.sender_phone;
@@ -406,6 +455,7 @@ const Shipping = () => {
       return null;
     }
     if (currentStep === 4) {
+      if (!shippingType) return "shipping_type";
       if (!formData.origin_country) return "origin_country";
       if (!formData.destination_country || !isRouteValid) return "destination_country";
       if (!formData.warehouse_location) return "warehouse_location";
@@ -813,60 +863,95 @@ const Shipping = () => {
                         <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
                       </div>
 
-                      {showStepValidation && (
+                      {showStepValidation && !isStep4Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
                         </div>
                       )}
 
-                      {/* Route */}
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div ref={registerFieldRef("origin_country")} className="space-y-2">
-                          <Label className="text-sm font-medium">Origin Country *</Label>
-                          <Select value={formData.origin_country} onValueChange={(v) => { updateField("origin_country", v); updateField("destination_country", ""); updateField("warehouse_location", ""); }}>
-                            <SelectTrigger aria-invalid={(isOriginInvalid || isRouteInvalid) || undefined} className={`${inputClass} ${(isOriginInvalid || isRouteInvalid) ? invalidFieldClass : ""}`}><SelectValue placeholder="Select origin" /></SelectTrigger>
-                            <SelectContent className="bg-card border-border">{originCountries.map((c: string) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
-                          </Select>
-                          {isOriginInvalid && <p className="text-xs text-destructive">Please select an origin country to continue.</p>}
-                        </div>
-                        <div ref={registerFieldRef("destination_country")} className="space-y-2">
-                          <Label className="text-sm font-medium">Destination Country *</Label>
-                          <Select value={formData.destination_country} onValueChange={(v) => { updateField("destination_country", v); updateField("warehouse_location", ""); }}>
-                            <SelectTrigger aria-invalid={(isDestinationInvalid || isRouteInvalid) || undefined} className={`${inputClass} ${(isDestinationInvalid || isRouteInvalid) ? invalidFieldClass : ""}`}><SelectValue placeholder="Select destination" /></SelectTrigger>
-                            <SelectContent className="bg-card border-border max-h-60">
-                              {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                            </SelectContent>
-                          </Select>
-                          {isDestinationInvalid && <p className="text-xs text-destructive">Please select a destination country to continue.</p>}
-                          {!isDestinationInvalid && isRouteInvalid && <p className="text-xs text-destructive">This route is not currently available. Please choose another route.</p>}
-                        </div>
+                      {/* Shipping Type Selector */}
+                      <div ref={registerFieldRef("shipping_type")}>
+                        <ShippingTypeSelector
+                          value={shippingType}
+                          onChange={handleShippingTypeChange}
+                          showError={showStepValidation && !shippingType}
+                        />
                       </div>
 
-                      {formData.origin_country && formData.destination_country && !isRouteValid && (
-                        <div className="rounded-xl bg-destructive/[0.04] p-3 text-sm text-destructive ring-1 ring-destructive/20">
-                          This route is not currently available. Please select a different origin/destination.
-                        </div>
-                      )}
+                      {/* Route - only show after shipping type selected */}
+                      {shippingType && (
+                        <>
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            <div ref={registerFieldRef("origin_country")} className="space-y-2">
+                              <Label className="text-sm font-medium">Origin Country *</Label>
+                              {shippingType === "export" ? (
+                                <div className={`flex h-11 items-center rounded-[10px] border border-border/60 bg-muted/30 px-3.5 text-sm text-foreground cursor-not-allowed`}>
+                                  Nigeria
+                                </div>
+                              ) : (
+                                <SearchableCountrySelect
+                                  value={formData.origin_country}
+                                  onChange={(v) => { updateField("origin_country", v); updateField("destination_country", shippingType === "import" ? "Nigeria" : ""); updateField("warehouse_location", ""); }}
+                                  countries={originCountriesForType}
+                                  placeholder="Select origin country"
+                                  aria-invalid={(isOriginInvalid || isRouteInvalid) || undefined}
+                                />
+                              )}
+                              {isOriginInvalid && <p className="text-xs text-destructive">Please select an origin country.</p>}
+                            </div>
+                            <div ref={registerFieldRef("destination_country")} className="space-y-2">
+                              <Label className="text-sm font-medium">Destination Country *</Label>
+                              {shippingType === "import" ? (
+                                <div className={`flex h-11 items-center rounded-[10px] border border-border/60 bg-muted/30 px-3.5 text-sm text-foreground cursor-not-allowed`}>
+                                  Nigeria
+                                </div>
+                              ) : (
+                                <SearchableCountrySelect
+                                  value={formData.destination_country}
+                                  onChange={(v) => { updateField("destination_country", v); updateField("warehouse_location", ""); }}
+                                  countries={destinationCountriesForType}
+                                  placeholder="Select destination country"
+                                  aria-invalid={(isDestinationInvalid || isRouteInvalid) || undefined}
+                                />
+                              )}
+                              {isDestinationInvalid && <p className="text-xs text-destructive">Please select a destination country.</p>}
+                              {!isDestinationInvalid && isRouteInvalid && <p className="text-xs text-destructive">This route is not currently available.</p>}
+                            </div>
+                          </div>
 
-                      {/* Warehouse */}
-                      <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1.5"><Warehouse className="w-3.5 h-3.5" /> Select Warehouse *</Label>
-                        <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
-                          <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
-                          <SelectContent className="bg-card border-border">
-                            {(filteredWarehouses.length > 0 ? filteredWarehouses : warehouses).map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                        {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
-                      </div>
-                      {selectedWarehouse && (
-                        <div className={`${softPanelClass} bg-white`}>
-                          <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
-                          <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
-                          {selectedWarehouse.phone && <p className="mt-1 flex items-center gap-1 break-words text-sm text-muted-foreground"><Phone className="w-3 h-3 shrink-0" /> {selectedWarehouse.phone}</p>}
-                        </div>
-                      )}
+                          {formData.origin_country && formData.destination_country && !isRouteValid && (
+                            <div className="rounded-xl bg-destructive/[0.04] p-3 text-sm text-destructive ring-1 ring-destructive/20">
+                              This route is not currently available. Please select a different origin/destination.
+                            </div>
+                          )}
+
+                          {/* Warehouse */}
+                          <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
+                            <Label className="text-sm font-medium flex items-center gap-1.5">
+                              <Warehouse className="w-3.5 h-3.5" />
+                              {shippingType === "import" ? "Select International Warehouse *" : "Select Nigeria Warehouse *"}
+                            </Label>
+                            <p className="text-xs text-muted-foreground">
+                              {shippingType === "import"
+                                ? "Choose the international warehouse where your goods will be shipped from"
+                                : "Choose the Nigeria warehouse where your goods will be dispatched from"}
+                            </p>
+                            <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
+                              <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
+                              <SelectContent className="bg-card border-border">
+                                {filteredWarehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
+                              </SelectContent>
+                            </Select>
+                            {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
+                          </div>
+                          {selectedWarehouse && (
+                            <div className={`${softPanelClass} bg-white`}>
+                              <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
+                              <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
+                              {selectedWarehouse.phone && <p className="mt-1 flex items-center gap-1 break-words text-sm text-muted-foreground"><Phone className="w-3 h-3 shrink-0" /> {selectedWarehouse.phone}</p>}
+                            </div>
+                          )}
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
@@ -1019,6 +1104,8 @@ const Shipping = () => {
                             ))}
                           </div>
                         </div>
+                      )}
+                        </>
                       )}
                     </div>
                   )}
