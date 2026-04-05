@@ -255,8 +255,52 @@ const Shipping = () => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Always show all warehouses
-  const filteredWarehouses = warehouses;
+  // Filter warehouses based on shipping type
+  const filteredWarehouses = useMemo(() => {
+    if (!shippingType) return warehouses;
+    if (shippingType === "import") {
+      // Show international warehouses (not Nigeria)
+      return warehouses.filter((w: any) => w.country?.toLowerCase() !== "nigeria");
+    }
+    // Export: show Nigeria warehouses only
+    return warehouses.filter((w: any) => w.country?.toLowerCase() === "nigeria");
+  }, [warehouses, shippingType]);
+
+  // Auto-fill origin/destination based on shipping type
+  const handleShippingTypeChange = (type: ShippingType) => {
+    setShippingType(type);
+    if (type === "import") {
+      updateField("destination_country", "Nigeria");
+      updateField("receiver_country", "Nigeria");
+      updateField("origin_country", "");
+    } else if (type === "export") {
+      updateField("origin_country", "Nigeria");
+      updateField("sender_country", "Nigeria");
+      updateField("destination_country", "");
+    }
+    updateField("warehouse_location", "");
+  };
+
+  // Countries available based on shipping type
+  const originCountriesForType = useMemo(() => {
+    if (shippingType === "import") {
+      return originCountries.filter((c: string) => c !== "Nigeria");
+    }
+    if (shippingType === "export") {
+      return ["Nigeria"];
+    }
+    return originCountries;
+  }, [originCountries, shippingType]);
+
+  const destinationCountriesForType = useMemo(() => {
+    if (shippingType === "import") {
+      return ["Nigeria"];
+    }
+    if (shippingType === "export") {
+      return ALL_COUNTRIES.filter((c) => c !== "Nigeria");
+    }
+    return ALL_COUNTRIES;
+  }, [shippingType]);
 
   const selectedWarehouse = useMemo(() =>
     warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
