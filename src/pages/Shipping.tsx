@@ -21,6 +21,8 @@ import {
   MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
+import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
+import SearchableCountrySelect from "@/components/shipments/SearchableCountrySelect";
 
 const TOTAL_STEPS = 5;
 
