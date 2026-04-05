@@ -943,15 +943,15 @@ const Shipping = () => {
                                 {filteredWarehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
                               </SelectContent>
                             </Select>
-                        {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
-                      </div>
-                      {selectedWarehouse && (
-                        <div className={`${softPanelClass} bg-white`}>
-                          <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
-                          <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
-                          {selectedWarehouse.phone && <p className="mt-1 flex items-center gap-1 break-words text-sm text-muted-foreground"><Phone className="w-3 h-3 shrink-0" /> {selectedWarehouse.phone}</p>}
-                        </div>
-                      )}
+                            {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
+                          </div>
+                          {selectedWarehouse && (
+                            <div className={`${softPanelClass} bg-white`}>
+                              <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
+                              <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
+                              {selectedWarehouse.phone && <p className="mt-1 flex items-center gap-1 break-words text-sm text-muted-foreground"><Phone className="w-3 h-3 shrink-0" /> {selectedWarehouse.phone}</p>}
+                            </div>
+                          )}
 
                       {/* Delivery Method - from DB */}
                       {deliveryMethods.length > 0 && (
