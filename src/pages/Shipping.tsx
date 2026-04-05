@@ -120,8 +120,8 @@ const Shipping = () => {
   const [pickupFeePrepaid, setPickupFeePrepaid] = useState(false);
 
   const [formData, setFormData] = useState({
-    sender_name: "", sender_email: "", sender_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
-    receiver_name: "", receiver_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
+    sender_name: "", sender_email: "", sender_phone: "", sender_alt_phone: "", sender_address: "", sender_city: "", sender_state: "", sender_country: "",
+    receiver_name: "", receiver_phone: "", receiver_alt_phone: "", receiver_email: "", receiver_address: "", receiver_city: "", receiver_state: "", receiver_country: "", receiver_postal_code: "",
     description: "", category: "", weight: "", length_cm: "", width_cm: "", height_cm: "", quantity: "1", declared_value: "",
     origin_country: "", destination_country: "", warehouse_location: "",
     insurance_required: "false", notes: "",
@@ -412,15 +412,19 @@ const Shipping = () => {
     setIsSubmitting(false);
   };
 
-  const isStep1Complete = formData.sender_name && formData.sender_phone;
-  const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_country;
+  const isStep1Complete = formData.sender_name && formData.sender_phone && formData.sender_address && formData.sender_city;
+  const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_address && formData.receiver_city && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
   const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const isSenderNameInvalid = showStepValidation && !formData.sender_name;
   const isSenderPhoneInvalid = showStepValidation && !formData.sender_phone;
+  const isSenderAddressInvalid = showStepValidation && !formData.sender_address;
+  const isSenderCityInvalid = showStepValidation && !formData.sender_city;
   const isReceiverNameInvalid = showStepValidation && !formData.receiver_name;
   const isReceiverPhoneInvalid = showStepValidation && !formData.receiver_phone;
+  const isReceiverAddressInvalid = showStepValidation && !formData.receiver_address;
+  const isReceiverCityInvalid = showStepValidation && !formData.receiver_city;
   const isReceiverCountryInvalid = showStepValidation && !formData.receiver_country;
   const isWeightInvalid = showStepValidation && (!formData.weight || parseFloat(formData.weight) <= 0);
   const isOriginInvalid = showStepValidation && !formData.origin_country;
@@ -442,11 +446,15 @@ const Shipping = () => {
     if (currentStep === 1) {
       if (!formData.sender_name) return "sender_name";
       if (!formData.sender_phone) return "sender_phone";
+      if (!formData.sender_address) return "sender_address";
+      if (!formData.sender_city) return "sender_city";
       return null;
     }
     if (currentStep === 2) {
       if (!formData.receiver_name) return "receiver_name";
       if (!formData.receiver_phone) return "receiver_phone";
+      if (!formData.receiver_address) return "receiver_address";
+      if (!formData.receiver_city) return "receiver_city";
       if (!formData.receiver_country) return "receiver_country";
       return null;
     }
