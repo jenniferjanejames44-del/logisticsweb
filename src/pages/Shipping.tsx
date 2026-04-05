@@ -1105,6 +1105,8 @@ const Shipping = () => {
                           </div>
                         </div>
                       )}
+                        </>
+                      )}
                     </div>
                   )}
 
