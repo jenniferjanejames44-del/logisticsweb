@@ -94,6 +94,9 @@ const Shipping = () => {
   const flow = searchParams.get("flow");
   const intent = searchParams.get("intent") === "quote" ? "quote" : "shipment";
   const workflowGuide = flow === "import" || flow === "export" ? shipmentWorkflowGuides[flow] : null;
+  const [shippingType, setShippingType] = useState<ShippingType>(
+    flow === "import" ? "import" : flow === "export" ? "export" : null
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
