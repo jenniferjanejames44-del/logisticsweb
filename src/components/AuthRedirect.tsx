@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { AUTH_SIGNOUT_FLAG, useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { getPendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
 
@@ -15,12 +15,18 @@ interface AuthRedirectProps {
 const AuthRedirect = ({ children }: AuthRedirectProps) => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const [isChecking, setIsChecking] = useState(true);
   const [hasRedirected, setHasRedirected] = useState(false);
+  const isSigningOut = typeof window !== "undefined" && sessionStorage.getItem(AUTH_SIGNOUT_FLAG) === "true";
 
   useEffect(() => {
     const checkRoleAndRedirect = async () => {
+      if (isSigningOut) {
+        setIsChecking(false);
+        setHasRedirected(false);
+        return;
+      }
+
       // Wait for auth to finish loading
       if (authLoading) {
         return;
@@ -39,7 +45,7 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
 
       try {
         console.log("AuthRedirect: Fetching role for user:", user.id);
-        
+
         // Fetch role directly from database
         const { data, error } = await supabase
           .from("user_roles")
@@ -91,7 +97,11 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
     };
 
     checkRoleAndRedirect();
-  }, [user, authLoading, navigate, hasRedirected]);
+  }, [user, authLoading, navigate, hasRedirected, isSigningOut]);
+
+  if (isSigningOut) {
+    return <>{children}</>;
+  }
 
   // Show loading state while checking auth/role
   if (authLoading || (user && isChecking && !hasRedirected)) {

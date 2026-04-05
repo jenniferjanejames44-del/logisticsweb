@@ -13,6 +13,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AUTH_SIGNOUT_FLAG = "rac-auth-signing-out";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -32,11 +33,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const clearSignOutFlag = () => {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem(AUTH_SIGNOUT_FLAG);
+      }
+    };
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+
+        if (event === "SIGNED_OUT" || !session) {
+          clearSignOutFlag();
+        }
+
         setLoading(false);
       }
     );
@@ -45,6 +57,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      if (!session) {
+        clearSignOutFlag();
+      }
+
       setLoading(false);
     });
 
@@ -52,6 +69,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem(AUTH_SIGNOUT_FLAG);
+    }
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -66,6 +87,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signIn = async (email: string, password: string) => {
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem(AUTH_SIGNOUT_FLAG);
+    }
+
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -74,15 +99,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signOut = async () => {
-    // Clear state FIRST so AuthRedirect won't bounce us back
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(AUTH_SIGNOUT_FLAG, "true");
+    }
+
     setSession(null);
     setUser(null);
+
     try {
       await supabase.auth.signOut();
     } catch (error) {
       console.error("Sign out error:", error);
     }
-    // Use replace to prevent back-button returning to protected page
+
     window.location.replace("/auth");
   };
 
