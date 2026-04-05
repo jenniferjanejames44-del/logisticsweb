@@ -18,7 +18,7 @@ import StatusBadge from "@/components/shipments/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import {
   Package, Plus, Search,
-  MapPin, Calendar, DollarSign, Wallet,
+  MapPin, Calendar, DollarSign, Wallet, Phone, MessageCircle,
 } from "lucide-react";
 
 interface Shipment {
@@ -36,6 +36,14 @@ interface Shipment {
   created_at: string;
   price: number | null;
   payment_status: string;
+  sender_name: string | null;
+  sender_phone: string | null;
+  sender_alt_phone: string | null;
+  sender_address: string | null;
+  receiver_name: string | null;
+  receiver_phone: string | null;
+  receiver_alt_phone: string | null;
+  receiver_address: string | null;
   invoices?: {
     id: string;
     invoice_number: string;
@@ -44,6 +52,8 @@ interface Shipment {
     status: string;
   }[] | null;
 }
+
+const formatPhoneWA = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
 
 const Shipments = () => {
   const { user } = useAuth();
@@ -244,6 +254,25 @@ const Shipments = () => {
                           </span>
                         )}
                       </div>
+                      {/* Contact summary */}
+                      {(shipment.sender_phone || shipment.receiver_phone) && (
+                        <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-muted-foreground">
+                          {shipment.sender_phone && (
+                            <span className="flex items-center gap-1">
+                              <Phone className="w-3 h-3" />
+                              Sender: <a href={`tel:${shipment.sender_phone}`} className="text-primary hover:underline">{shipment.sender_phone}</a>
+                              <a href={`https://wa.me/${formatPhoneWA(shipment.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3 h-3 inline" /></a>
+                            </span>
+                          )}
+                          {shipment.receiver_phone && (
+                            <span className="flex items-center gap-1">
+                              <Phone className="w-3 h-3" />
+                              Receiver: <a href={`tel:${shipment.receiver_phone}`} className="text-primary hover:underline">{shipment.receiver_phone}</a>
+                              <a href={`https://wa.me/${formatPhoneWA(shipment.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3 h-3 inline" /></a>
+                            </span>
+                          )}
+                        </div>
+                      )}
                       <p className="text-[10px] text-muted-foreground/70">
                         Created {new Date(shipment.created_at).toLocaleDateString()}
                         <span className="ml-2 capitalize">{shipment.service_type.replace("-", " ")}</span>

@@ -587,6 +587,14 @@ export type Database = {
           payment_status: string
           pickup_prepaid: boolean
           price: number | null
+          receiver_address: string | null
+          receiver_alt_phone: string | null
+          receiver_name: string | null
+          receiver_phone: string | null
+          sender_address: string | null
+          sender_alt_phone: string | null
+          sender_name: string | null
+          sender_phone: string | null
           service_type: string
           status: string
           tracking_number: string
@@ -611,6 +619,14 @@ export type Database = {
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
+          receiver_address?: string | null
+          receiver_alt_phone?: string | null
+          receiver_name?: string | null
+          receiver_phone?: string | null
+          sender_address?: string | null
+          sender_alt_phone?: string | null
+          sender_name?: string | null
+          sender_phone?: string | null
           service_type: string
           status?: string
           tracking_number: string
@@ -635,6 +651,14 @@ export type Database = {
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
+          receiver_address?: string | null
+          receiver_alt_phone?: string | null
+          receiver_name?: string | null
+          receiver_phone?: string | null
+          sender_address?: string | null
+          sender_alt_phone?: string | null
+          sender_name?: string | null
+          sender_phone?: string | null
           service_type?: string
           status?: string
           tracking_number?: string
