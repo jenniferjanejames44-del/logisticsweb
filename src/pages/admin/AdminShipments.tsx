@@ -382,6 +382,7 @@ const AdminShipments = () => {
                         <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
                       </div>
                     )}
+                    <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                       <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
                         {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
