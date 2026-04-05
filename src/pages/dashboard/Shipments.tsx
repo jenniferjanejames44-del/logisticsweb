@@ -18,7 +18,7 @@ import StatusBadge from "@/components/shipments/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import {
   Package, Plus, Search,
-  MapPin, Calendar, DollarSign, Wallet,
+  MapPin, Calendar, DollarSign, Wallet, Phone, MessageCircle,
 } from "lucide-react";
 
 interface Shipment {
@@ -36,6 +36,14 @@ interface Shipment {
   created_at: string;
   price: number | null;
   payment_status: string;
+  sender_name: string | null;
+  sender_phone: string | null;
+  sender_alt_phone: string | null;
+  sender_address: string | null;
+  receiver_name: string | null;
+  receiver_phone: string | null;
+  receiver_alt_phone: string | null;
+  receiver_address: string | null;
   invoices?: {
     id: string;
     invoice_number: string;
@@ -44,6 +52,8 @@ interface Shipment {
     status: string;
   }[] | null;
 }
+
+const formatPhoneWA = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
 
 const Shipments = () => {
   const { user } = useAuth();
