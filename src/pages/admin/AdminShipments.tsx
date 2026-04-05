@@ -375,7 +375,13 @@ const AdminShipments = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                    {/* Contact Details */}
+                    {(shipment.sender_phone || shipment.receiver_phone) && (
+                      <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
+                        <ContactActions phone={shipment.sender_phone} altPhone={shipment.sender_alt_phone} name={shipment.sender_name} label="Sender" />
+                        <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
+                      </div>
+                    )}
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                       <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
                         {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
