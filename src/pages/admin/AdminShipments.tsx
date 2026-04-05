@@ -12,7 +12,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler, Phone, MessageCircle, User } from "lucide-react";
 import { toast } from "sonner";
 import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -35,7 +35,47 @@ interface Shipment {
   price: number | null;
   payment_status: string;
   user_id: string;
+  sender_name: string | null;
+  sender_phone: string | null;
+  sender_alt_phone: string | null;
+  sender_address: string | null;
+  receiver_name: string | null;
+  receiver_phone: string | null;
+  receiver_alt_phone: string | null;
+  receiver_address: string | null;
 }
+
+const formatPhoneForWhatsApp = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
+
+const ContactActions = ({ phone, altPhone, name, label }: { phone: string | null; altPhone: string | null; name: string | null; label: string }) => {
+  if (!phone && !altPhone) return null;
+  return (
+    <div className="space-y-1.5">
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" strokeWidth={2.5} />{label}</p>
+      {name && <p className="text-foreground font-medium text-sm">{name}</p>}
+      {phone && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <a href={`tel:${phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
+            <Phone className="w-3 h-3" />{phone}
+          </a>
+          <a href={`https://wa.me/${formatPhoneForWhatsApp(phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium">
+            <MessageCircle className="w-3 h-3" />WhatsApp
+          </a>
+        </div>
+      )}
+      {altPhone && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <a href={`tel:${altPhone}`} className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary hover:underline">
+            <Phone className="w-2.5 h-2.5" />Alt: {altPhone}
+          </a>
+          <a href={`https://wa.me/${formatPhoneForWhatsApp(altPhone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[11px] text-green-600 hover:underline">
+            <MessageCircle className="w-2.5 h-2.5" />WA
+          </a>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const calcVolWeight = (l: number | null, w: number | null, h: number | null) => {
   if (l && w && h && l > 0 && w > 0 && h > 0) return (l * w * h) / 5000;
