@@ -455,6 +455,7 @@ const Shipping = () => {
       return null;
     }
     if (currentStep === 4) {
+      if (!shippingType) return "shipping_type";
       if (!formData.origin_country) return "origin_country";
       if (!formData.destination_country || !isRouteValid) return "destination_country";
       if (!formData.warehouse_location) return "warehouse_location";
