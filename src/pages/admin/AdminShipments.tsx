@@ -48,11 +48,10 @@ interface Shipment {
 const formatPhoneForWhatsApp = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
 
 const ContactActions = ({ phone, altPhone, name, label }: { phone: string | null; altPhone: string | null; name: string | null; label: string }) => {
-  if (!phone && !altPhone) return null;
   return (
     <div className="space-y-1.5">
       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><User className="w-3 h-3" strokeWidth={2.5} />{label}</p>
-      {name && <p className="text-foreground font-medium text-sm">{name}</p>}
+      <p className="text-foreground font-medium text-sm">{name || <span className="text-muted-foreground italic">Not provided</span>}</p>
       {phone && (
         <div className="flex items-center gap-1.5 flex-wrap">
           <a href={`tel:${phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
@@ -62,6 +61,9 @@ const ContactActions = ({ phone, altPhone, name, label }: { phone: string | null
             <MessageCircle className="w-3 h-3" />WhatsApp
           </a>
         </div>
+      )}
+      {!phone && (
+        <p className="text-xs text-muted-foreground italic">No phone provided</p>
       )}
       {altPhone && (
         <div className="flex items-center gap-1.5 flex-wrap">
@@ -375,13 +377,25 @@ const AdminShipments = () => {
                         </p>
                       </div>
                     </div>
-                    {/* Contact Details */}
-                    {(shipment.sender_phone || shipment.receiver_phone) && (
+                      {/* Contact Details - Always visible */}
+                      <div className="space-y-2">
                       <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
                         <ContactActions phone={shipment.sender_phone} altPhone={shipment.sender_alt_phone} name={shipment.sender_name} label="Sender" />
                         <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
                       </div>
-                    )}
+                      {(shipment.sender_address || shipment.receiver_address) && (
+                        <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
+                          <div>
+                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Sender Address</p>
+                            <p className="text-foreground text-xs mt-1">{shipment.sender_address || "—"}</p>
+                          </div>
+                          <div>
+                            <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Receiver Address</p>
+                            <p className="text-foreground text-xs mt-1">{shipment.receiver_address || "—"}</p>
+                          </div>
+                        </div>
+                      )}
+                      </div>
                     <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
                       <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
@@ -472,13 +486,25 @@ const AdminShipments = () => {
                         </div>
                       </div>
 
-                      {/* Contact Details */}
-                      {(shipment.sender_phone || shipment.receiver_phone) && (
+                      {/* Contact Details - Always visible */}
+                      <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
                           <ContactActions phone={shipment.sender_phone} altPhone={shipment.sender_alt_phone} name={shipment.sender_name} label="Sender" />
                           <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
                         </div>
-                      )}
+                        {(shipment.sender_address || shipment.receiver_address) && (
+                          <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
+                            <div>
+                              <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Sender Address</p>
+                              <p className="text-foreground text-xs mt-1">{shipment.sender_address || "—"}</p>
+                            </div>
+                            <div>
+                              <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Receiver Address</p>
+                              <p className="text-foreground text-xs mt-1">{shipment.receiver_address || "—"}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
 
                       <div className="flex items-center gap-2 pt-2 border-t border-border/40">
                         <Button
