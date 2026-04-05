@@ -404,6 +404,14 @@ const Shipping = () => {
         estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
         tracking_number: "",
         price: grandTotal || null,
+        sender_name: formData.sender_name || null,
+        sender_phone: formData.sender_phone || null,
+        sender_alt_phone: formData.sender_alt_phone || null,
+        sender_address: [formData.sender_address, formData.sender_city, formData.sender_state, formData.sender_country].filter(Boolean).join(", ") || null,
+        receiver_name: formData.receiver_name || null,
+        receiver_phone: formData.receiver_phone || null,
+        receiver_alt_phone: formData.receiver_alt_phone || null,
+        receiver_address: [formData.receiver_address, formData.receiver_city, formData.receiver_state, formData.receiver_country, formData.receiver_postal_code].filter(Boolean).join(", ") || null,
       } as any).select("id").single();
 
       if (error) {
@@ -620,20 +628,26 @@ const Shipping = () => {
                         <div ref={registerFieldRef("sender_name")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" strokeWidth={2.5} /> Full Name *</Label>
                           <Input aria-invalid={isSenderNameInvalid || undefined} value={formData.sender_name} onChange={(e) => updateField("sender_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${isSenderNameInvalid ? invalidFieldClass : ""}`} />
-                          {isSenderNameInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          {isSenderNameInvalid && <p className="text-xs text-destructive">Full name is required.</p>}
                         </div>
                         <div ref={registerFieldRef("sender_phone")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" strokeWidth={2.5} /> Phone Number *</Label>
-                          <Input aria-invalid={isSenderPhoneInvalid || undefined} type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${isSenderPhoneInvalid ? invalidFieldClass : ""}`} />
-                          {isSenderPhoneInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isSenderPhoneInvalid || undefined} type="tel" value={formData.sender_phone} onChange={(e) => updateField("sender_phone", e.target.value.replace(/[^0-9+\-\s()]/g, ""))} placeholder="+234XXXXXXXXXX" className={`${inputClass} ${isSenderPhoneInvalid ? invalidFieldClass : ""}`} />
+                          {isSenderPhoneInvalid && <p className="text-xs text-destructive">Phone number is required.</p>}
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" strokeWidth={2.5} /> Email</Label>
-                        <Input type="email" value={formData.sender_email} onChange={(e) => updateField("sender_email", e.target.value)} placeholder="Email address" className={inputClass} />
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" strokeWidth={2.5} /> Alternative Phone (WhatsApp or Backup)</Label>
+                          <Input type="tel" value={formData.sender_alt_phone} onChange={(e) => updateField("sender_alt_phone", e.target.value.replace(/[^0-9+\-\s()]/g, ""))} placeholder="+234XXXXXXXXXX" className={inputClass} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" strokeWidth={2.5} /> Email</Label>
+                          <Input type="email" value={formData.sender_email} onChange={(e) => updateField("sender_email", e.target.value)} placeholder="Email address" className={inputClass} />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} /> Address</Label>
+                      <div ref={registerFieldRef("sender_address")} className="space-y-2">
+                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} /> Address *</Label>
                         <LocationPicker
                           value={formData.sender_address}
                           onChange={(v) => updateField("sender_address", v)}
@@ -644,13 +658,15 @@ const Shipping = () => {
                             if (loc.country) updateField("sender_country", loc.country);
                           }}
                           placeholder="Search your address"
-                          className={inputClass}
+                          className={`${inputClass} ${isSenderAddressInvalid ? invalidFieldClass : ""}`}
                         />
+                        {isSenderAddressInvalid && <p className="text-xs text-destructive">Please enter a valid address.</p>}
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">City</Label>
-                          <Input value={formData.sender_city} onChange={(e) => updateField("sender_city", e.target.value)} placeholder="City" className={inputClass} />
+                        <div ref={registerFieldRef("sender_city")} className="space-y-2">
+                          <Label className="text-sm font-medium">City *</Label>
+                          <Input aria-invalid={isSenderCityInvalid || undefined} value={formData.sender_city} onChange={(e) => updateField("sender_city", e.target.value)} placeholder="City" className={`${inputClass} ${isSenderCityInvalid ? invalidFieldClass : ""}`} />
+                          {isSenderCityInvalid && <p className="text-xs text-destructive">City is required.</p>}
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">State</Label>
@@ -681,20 +697,26 @@ const Shipping = () => {
                         <div ref={registerFieldRef("receiver_name")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Receiver Name *</Label>
                           <Input aria-invalid={isReceiverNameInvalid || undefined} value={formData.receiver_name} onChange={(e) => updateField("receiver_name", e.target.value)} placeholder="Full name" className={`${inputClass} ${isReceiverNameInvalid ? invalidFieldClass : ""}`} />
-                          {isReceiverNameInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          {isReceiverNameInvalid && <p className="text-xs text-destructive">Receiver name is required.</p>}
                         </div>
                         <div ref={registerFieldRef("receiver_phone")} className="space-y-2">
                           <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone Number *</Label>
-                          <Input aria-invalid={isReceiverPhoneInvalid || undefined} type="tel" value={formData.receiver_phone} onChange={(e) => updateField("receiver_phone", e.target.value)} placeholder="Phone number" className={`${inputClass} ${isReceiverPhoneInvalid ? invalidFieldClass : ""}`} />
-                          {isReceiverPhoneInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          <Input aria-invalid={isReceiverPhoneInvalid || undefined} type="tel" value={formData.receiver_phone} onChange={(e) => updateField("receiver_phone", e.target.value.replace(/[^0-9+\-\s()]/g, ""))} placeholder="+234XXXXXXXXXX" className={`${inputClass} ${isReceiverPhoneInvalid ? invalidFieldClass : ""}`} />
+                          {isReceiverPhoneInvalid && <p className="text-xs text-destructive">Phone number is required.</p>}
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" /> Email (optional)</Label>
-                        <Input type="email" value={formData.receiver_email} onChange={(e) => updateField("receiver_email", e.target.value)} placeholder="Receiver email" className={inputClass} />
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Alternative Phone (WhatsApp or Backup)</Label>
+                          <Input type="tel" value={formData.receiver_alt_phone} onChange={(e) => updateField("receiver_alt_phone", e.target.value.replace(/[^0-9+\-\s()]/g, ""))} placeholder="+234XXXXXXXXXX" className={inputClass} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" /> Email (optional)</Label>
+                          <Input type="email" value={formData.receiver_email} onChange={(e) => updateField("receiver_email", e.target.value)} placeholder="Receiver email" className={inputClass} />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Destination Address</Label>
+                      <div ref={registerFieldRef("receiver_address")} className="space-y-2">
+                        <Label className="text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Destination Address *</Label>
                         <LocationPicker
                           value={formData.receiver_address}
                           onChange={(v) => updateField("receiver_address", v)}
@@ -705,13 +727,15 @@ const Shipping = () => {
                             if (loc.country) updateField("receiver_country", loc.country);
                           }}
                           placeholder="Search destination address"
-                          className={inputClass}
+                          className={`${inputClass} ${isReceiverAddressInvalid ? invalidFieldClass : ""}`}
                         />
+                        {isReceiverAddressInvalid && <p className="text-xs text-destructive">Please enter a valid address.</p>}
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        <div className="space-y-2">
-                          <Label className="text-sm font-medium">City</Label>
-                          <Input value={formData.receiver_city} onChange={(e) => updateField("receiver_city", e.target.value)} placeholder="City" className={inputClass} />
+                        <div ref={registerFieldRef("receiver_city")} className="space-y-2">
+                          <Label className="text-sm font-medium">City *</Label>
+                          <Input aria-invalid={isReceiverCityInvalid || undefined} value={formData.receiver_city} onChange={(e) => updateField("receiver_city", e.target.value)} placeholder="City" className={`${inputClass} ${isReceiverCityInvalid ? invalidFieldClass : ""}`} />
+                          {isReceiverCityInvalid && <p className="text-xs text-destructive">City is required.</p>}
                         </div>
                         <div className="space-y-2">
                           <Label className="text-sm font-medium">State</Label>
@@ -725,7 +749,7 @@ const Shipping = () => {
                               {ALL_COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                             </SelectContent>
                           </Select>
-                          {isReceiverCountryInvalid && <p className="text-xs text-destructive">Please complete this field before continuing.</p>}
+                          {isReceiverCountryInvalid && <p className="text-xs text-destructive">Country is required.</p>}
                         </div>
                       </div>
                       <div className="space-y-2">
