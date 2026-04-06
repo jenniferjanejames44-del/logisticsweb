@@ -71,6 +71,7 @@ const AdminUsers = () => {
   const [addFundsUserId, setAddFundsUserId] = useState("");
   const [addFundsUserName, setAddFundsUserName] = useState("");
   const isMobile = useIsMobile();
+  const [viewProfileUser, setViewProfileUser] = useState<UserWithRole | null>(null);
 
   const fetchUsers = async () => {
     try {
