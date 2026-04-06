@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
 import {
   Package,
   MapPin,
@@ -31,6 +32,8 @@ import {
   MapPinned,
   MessageSquare,
   Building2,
+  ArrowDownToLine,
+  ArrowUpFromLine,
 } from "lucide-react";
 
 const countries = [
@@ -47,10 +50,19 @@ const serviceTypes = [
   { id: "road-freight", name: "Road Freight", icon: Truck, description: "3-10 days" },
 ];
 
-const warehouseLocations = [
+const exportWarehouses = [
   { id: "usa_warehouse", name: "USA Warehouse" },
   { id: "uk_warehouse", name: "UK Warehouse" },
   { id: "china_warehouse", name: "China Warehouse" },
+];
+
+const importWarehouses = [
+  { id: "nigeria_warehouse", name: "Nigeria Warehouse (Lagos)" },
+];
+
+const warehouseLocations = [
+  ...exportWarehouses,
+  ...importWarehouses,
 ];
 
 const warehouseAddresses = [
@@ -96,6 +108,8 @@ const ShipmentCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
+  const [shippingType, setShippingType] = useState<ShippingType>(null);
+  const [showTypeError, setShowTypeError] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
   const [prepayPickup, setPrepayPickup] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
