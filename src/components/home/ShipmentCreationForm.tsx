@@ -620,11 +620,16 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       <div className={actionBarClass}>
-                        <p className="text-sm text-muted-foreground">Complete the route and contact details to continue.</p>
+                        <p className="text-sm text-muted-foreground">
+                          {!shippingType ? "Select a shipping type first." : "Complete the route and contact details to continue."}
+                        </p>
                         <button 
                           type="button" 
-                          disabled={!isStep1Complete}
-                          onClick={() => setStep(2)}
+                          disabled={!isStep1Complete || !shippingType}
+                          onClick={() => {
+                            if (!shippingType) { setShowTypeError(true); return; }
+                            setStep(2);
+                          }}
                           className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                         >
                           Continue
@@ -823,7 +828,7 @@ const ShipmentCreationForm = () => {
                             <SelectValue placeholder="Select warehouse" />
                           </SelectTrigger>
                           <SelectContent className="bg-card border-border">
-                            {warehouseLocations.map((wh) => (
+                            {availableWarehouses.map((wh) => (
                               <SelectItem key={wh.id} value={wh.id}>
                                 <div className="flex items-center gap-2">
                                   <Warehouse className="w-4 h-4 text-primary" />
