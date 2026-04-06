@@ -314,7 +314,7 @@ const AuthForm = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {!isLogin && (
                     <div className="space-y-2">
-                      <Label htmlFor="fullName" className="text-sm font-medium">Full Name</Label>
+                      <Label htmlFor="fullName" className="text-sm font-medium">Full Name *</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <Input
@@ -325,6 +325,65 @@ const AuthForm = () => {
                           onChange={(e) => setFullName(e.target.value)}
                           className="h-11 rounded-lg pl-10"
                           required={!isLogin}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-sm font-medium">Phone Number *</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+234 800 000 0000"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className="h-11 rounded-lg pl-10"
+                          required={!isLogin}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="address" className="text-sm font-medium">Address</Label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="address"
+                          type="text"
+                          placeholder="123 Main Street"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          className="h-11 rounded-lg pl-10"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="city" className="text-sm font-medium">City</Label>
+                        <div className="relative">
+                          <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                          <Input
+                            id="city"
+                            type="text"
+                            placeholder="Lagos"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="h-11 rounded-lg pl-10"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="country" className="text-sm font-medium">Country</Label>
+                        <Input
+                          id="country"
+                          type="text"
+                          placeholder="Nigeria"
+                          value={country}
+                          onChange={(e) => setCountry(e.target.value)}
+                          className="h-11 rounded-lg"
                         />
                       </div>
                     </div>
