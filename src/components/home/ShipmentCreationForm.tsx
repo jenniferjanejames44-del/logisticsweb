@@ -444,9 +444,16 @@ const ShipmentCreationForm = () => {
                         </div>
                         <div>
                           <h3 className="text-lg font-bold text-foreground">Route & contact details</h3>
-                          <p className="text-sm text-muted-foreground">Set the shipping path and the key contact information.</p>
+                          <p className="text-sm text-muted-foreground">First, choose your shipping direction, then set the route and contacts.</p>
                         </div>
                       </div>
+
+                      {/* Shipping Type Selector */}
+                      <ShippingTypeSelector
+                        value={shippingType}
+                        onChange={handleShippingTypeChange}
+                        showError={showTypeError}
+                      />
                       {/* Origin & Destination */}
                       <div className="grid md:grid-cols-2 gap-8">
                         {/* Origin Card */}
@@ -463,8 +470,9 @@ const ShipmentCreationForm = () => {
                               <Select
                                 value={formData.origin_country}
                                 onValueChange={(value) => setFormData({ ...formData, origin_country: value })}
+                                disabled={shippingType === "export"}
                               >
-                                <SelectTrigger className={`${inputClass}`}>
+                                <SelectTrigger className={`${inputClass} ${shippingType === "export" ? "opacity-70 cursor-not-allowed" : ""}`}>
                                   <SelectValue placeholder="Select country" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card border-border">
@@ -473,6 +481,9 @@ const ShipmentCreationForm = () => {
                                   ))}
                                 </SelectContent>
                               </Select>
+                              {shippingType === "export" && (
+                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowUpFromLine className="w-3 h-3" /> Origin locked to Nigeria for export</p>
+                              )}
                             </div>
                             <div className="space-y-2">
                               <Label className="text-muted-foreground text-sm font-medium">City *</Label>
@@ -501,8 +512,9 @@ const ShipmentCreationForm = () => {
                               <Select
                                 value={formData.destination_country}
                                 onValueChange={(value) => setFormData({ ...formData, destination_country: value })}
+                                disabled={shippingType === "import"}
                               >
-                                <SelectTrigger className={`${inputClass}`}>
+                                <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
                                   <SelectValue placeholder="Select country" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card border-border">
@@ -511,6 +523,9 @@ const ShipmentCreationForm = () => {
                                   ))}
                                 </SelectContent>
                               </Select>
+                              {shippingType === "import" && (
+                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowDownToLine className="w-3 h-3" /> Destination locked to Nigeria for import</p>
+                              )}
                             </div>
                             <div className="space-y-2">
                               <Label className="text-muted-foreground text-sm font-medium">City *</Label>
