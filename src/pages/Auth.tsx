@@ -142,7 +142,15 @@ const AuthForm = () => {
         if (!fullName.trim()) {
           throw new Error("Please enter your full name");
         }
-        const { error } = await signUp(email, password, fullName);
+        if (!phone.trim()) {
+          throw new Error("Please enter your phone number");
+        }
+        const { error } = await signUp(email, password, fullName, {
+          phone: phone.trim(),
+          address: address.trim(),
+          city: city.trim(),
+          country: country.trim(),
+        });
         if (error) throw error;
         
         setShowVerificationMessage(true);
