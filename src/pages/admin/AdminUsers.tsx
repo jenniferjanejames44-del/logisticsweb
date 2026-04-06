@@ -437,6 +437,11 @@ const AdminUsers = () => {
                           </div>
                         </TableCell>
                         <TableCell>
+                          <Button variant="outline" size="compact" className="rounded-[10px] border-border px-4" onClick={() => setViewProfileUser(user)}>
+                            <Eye className="w-4 h-4 mr-1" />Details
+                          </Button>
+                        </TableCell>
+                        <TableCell>
                           <Dialog>
                             <DialogTrigger asChild>
                               <Button variant="outline" size="compact" className="rounded-[10px] border-border px-4" onClick={() => fetchLoginHistory(user.user_id)}>
