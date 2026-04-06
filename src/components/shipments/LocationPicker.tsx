@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
-import { MapPin, Search, Loader2, X } from "lucide-react";
+import { MapPin, Loader2, X } from "lucide-react";
 
 interface LocationData {
   address: string;
