@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
-import { MapPin, Search, Loader2, X } from "lucide-react";
+import { MapPin, Loader2, X } from "lucide-react";
 
 interface LocationData {
   address: string;
@@ -100,12 +100,11 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
   return (
     <div ref={wrapperRef} className="relative">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         <Input
           value={query}
           onChange={(e) => handleInputChange(e.target.value)}
           placeholder={placeholder}
-          className={`pl-10 pr-9 ${className || ""}`}
+          className={className || ""}
           onFocus={() => { if (results.length > 0) setShowDropdown(true); }}
         />
         {isSearching && <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground animate-spin" />}
