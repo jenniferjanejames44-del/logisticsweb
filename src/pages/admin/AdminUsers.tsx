@@ -549,6 +549,69 @@ const AdminUsers = () => {
         </Dialog>
 
         <AddFundsDialog open={addFundsOpen} onOpenChange={setAddFundsOpen} userId={addFundsUserId} userName={addFundsUserName} onSuccess={fetchUsers} />
+
+        {/* User Profile Detail Dialog */}
+        <Dialog open={!!viewProfileUser} onOpenChange={(open) => !open && setViewProfileUser(null)}>
+          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-background p-0">
+            <DialogHeader className="border-b border-border/60 px-6 py-5">
+              <DialogTitle className="text-foreground">User Details</DialogTitle>
+              <DialogDescription>{viewProfileUser?.full_name || viewProfileUser?.email}</DialogDescription>
+            </DialogHeader>
+            {viewProfileUser && (
+              <div className="space-y-4 px-6 py-5">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Full Name</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.full_name || "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Email</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.email || "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Phone</p>
+                    <div className="flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-primary" />
+                      <p className="text-sm font-medium text-foreground">{viewProfileUser.phone || "N/A"}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Company</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.company_name || "N/A"}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Address</p>
+                    <div className="flex items-start gap-1.5">
+                      <Home className="w-3.5 h-3.5 text-primary mt-0.5" />
+                      <p className="text-sm font-medium text-foreground">{viewProfileUser.address || "N/A"}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">City</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.city || "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Country</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.country || "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Role</p>
+                    <Badge variant={viewProfileUser.role === "admin" ? "default" : "secondary"}>{viewProfileUser.role}</Badge>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Joined</p>
+                    <p className="text-sm font-medium text-foreground">{format(new Date(viewProfileUser.created_at), "MMM dd, yyyy")}</p>
+                  </div>
+                </div>
+                {viewProfileUser.phone && (
+                  <a href={`tel:${viewProfileUser.phone}`} className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+                    <Phone className="w-4 h-4" /> Call {viewProfileUser.full_name?.split(" ")[0] || "User"}
+                  </a>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
