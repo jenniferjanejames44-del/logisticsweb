@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
 import {
   Package,
   MapPin,
@@ -31,6 +32,8 @@ import {
   MapPinned,
   MessageSquare,
   Building2,
+  ArrowDownToLine,
+  ArrowUpFromLine,
 } from "lucide-react";
 
 const countries = [
@@ -47,10 +50,19 @@ const serviceTypes = [
   { id: "road-freight", name: "Road Freight", icon: Truck, description: "3-10 days" },
 ];
 
-const warehouseLocations = [
+const exportWarehouses = [
   { id: "usa_warehouse", name: "USA Warehouse" },
   { id: "uk_warehouse", name: "UK Warehouse" },
   { id: "china_warehouse", name: "China Warehouse" },
+];
+
+const importWarehouses = [
+  { id: "nigeria_warehouse", name: "Nigeria Warehouse (Lagos)" },
+];
+
+const warehouseLocations = [
+  ...exportWarehouses,
+  ...importWarehouses,
 ];
 
 const warehouseAddresses = [
@@ -96,6 +108,8 @@ const ShipmentCreationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
   const [isFocused, setIsFocused] = useState(false);
+  const [shippingType, setShippingType] = useState<ShippingType>(null);
+  const [showTypeError, setShowTypeError] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
   const [prepayPickup, setPrepayPickup] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -154,6 +168,32 @@ const ShipmentCreationForm = () => {
     };
     fetchProfile();
   }, [user]);
+
+  // Handle shipping type change — auto-set countries and warehouse
+  const handleShippingTypeChange = (type: ShippingType) => {
+    setShippingType(type);
+    setShowTypeError(false);
+    if (type === "import") {
+      setFormData((prev) => ({
+        ...prev,
+        destination_country: "Nigeria",
+        warehouse_location: "nigeria_warehouse",
+      }));
+    } else if (type === "export") {
+      setFormData((prev) => ({
+        ...prev,
+        origin_country: "Nigeria",
+        warehouse_location: "",
+      }));
+    }
+  };
+
+  // Warehouses filtered by shipping type
+  const availableWarehouses = useMemo(() => {
+    if (shippingType === "import") return importWarehouses;
+    if (shippingType === "export") return exportWarehouses;
+    return warehouseLocations;
+  }, [shippingType]);
 
   // Calculate estimated shipping cost dynamically
   const estimatedCost = useMemo(() => {
@@ -277,6 +317,7 @@ const ShipmentCreationForm = () => {
       });
       setStep(1);
       setPrepayPickup(false);
+      setShippingType(null);
       setUploadedFiles([]);
       navigate("/dashboard/shipments");
     }
@@ -404,9 +445,16 @@ const ShipmentCreationForm = () => {
                         </div>
                         <div>
                           <h3 className="text-lg font-bold text-foreground">Route & contact details</h3>
-                          <p className="text-sm text-muted-foreground">Set the shipping path and the key contact information.</p>
+                          <p className="text-sm text-muted-foreground">First, choose your shipping direction, then set the route and contacts.</p>
                         </div>
                       </div>
+
+                      {/* Shipping Type Selector */}
+                      <ShippingTypeSelector
+                        value={shippingType}
+                        onChange={handleShippingTypeChange}
+                        showError={showTypeError}
+                      />
                       {/* Origin & Destination */}
                       <div className="grid md:grid-cols-2 gap-8">
                         {/* Origin Card */}
@@ -423,8 +471,9 @@ const ShipmentCreationForm = () => {
                               <Select
                                 value={formData.origin_country}
                                 onValueChange={(value) => setFormData({ ...formData, origin_country: value })}
+                                disabled={shippingType === "export"}
                               >
-                                <SelectTrigger className={`${inputClass}`}>
+                                <SelectTrigger className={`${inputClass} ${shippingType === "export" ? "opacity-70 cursor-not-allowed" : ""}`}>
                                   <SelectValue placeholder="Select country" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card border-border">
@@ -433,6 +482,9 @@ const ShipmentCreationForm = () => {
                                   ))}
                                 </SelectContent>
                               </Select>
+                              {shippingType === "export" && (
+                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowUpFromLine className="w-3 h-3" /> Origin locked to Nigeria for export</p>
+                              )}
                             </div>
                             <div className="space-y-2">
                               <Label className="text-muted-foreground text-sm font-medium">City *</Label>
@@ -461,8 +513,9 @@ const ShipmentCreationForm = () => {
                               <Select
                                 value={formData.destination_country}
                                 onValueChange={(value) => setFormData({ ...formData, destination_country: value })}
+                                disabled={shippingType === "import"}
                               >
-                                <SelectTrigger className={`${inputClass}`}>
+                                <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
                                   <SelectValue placeholder="Select country" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-card border-border">
@@ -471,6 +524,9 @@ const ShipmentCreationForm = () => {
                                   ))}
                                 </SelectContent>
                               </Select>
+                              {shippingType === "import" && (
+                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowDownToLine className="w-3 h-3" /> Destination locked to Nigeria for import</p>
+                              )}
                             </div>
                             <div className="space-y-2">
                               <Label className="text-muted-foreground text-sm font-medium">City *</Label>
@@ -565,11 +621,16 @@ const ShipmentCreationForm = () => {
                       </div>
 
                       <div className={actionBarClass}>
-                        <p className="text-sm text-muted-foreground">Complete the route and contact details to continue.</p>
+                        <p className="text-sm text-muted-foreground">
+                          {!shippingType ? "Select a shipping type first." : "Complete the route and contact details to continue."}
+                        </p>
                         <button 
                           type="button" 
-                          disabled={!isStep1Complete}
-                          onClick={() => setStep(2)}
+                          disabled={!isStep1Complete || !shippingType}
+                          onClick={() => {
+                            if (!shippingType) { setShowTypeError(true); return; }
+                            setStep(2);
+                          }}
                           className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
                         >
                           Continue
@@ -763,12 +824,13 @@ const ShipmentCreationForm = () => {
                         <Select
                           value={formData.warehouse_location}
                           onValueChange={(value) => setFormData({ ...formData, warehouse_location: value })}
+                          disabled={shippingType === "import"}
                         >
-                          <SelectTrigger className={inputClass}>
+                          <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
                             <SelectValue placeholder="Select warehouse" />
                           </SelectTrigger>
                           <SelectContent className="bg-card border-border">
-                            {warehouseLocations.map((wh) => (
+                            {availableWarehouses.map((wh) => (
                               <SelectItem key={wh.id} value={wh.id}>
                                 <div className="flex items-center gap-2">
                                   <Warehouse className="w-4 h-4 text-primary" />
