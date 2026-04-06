@@ -169,6 +169,32 @@ const ShipmentCreationForm = () => {
     fetchProfile();
   }, [user]);
 
+  // Handle shipping type change — auto-set countries and warehouse
+  const handleShippingTypeChange = (type: ShippingType) => {
+    setShippingType(type);
+    setShowTypeError(false);
+    if (type === "import") {
+      setFormData((prev) => ({
+        ...prev,
+        destination_country: "Nigeria",
+        warehouse_location: "nigeria_warehouse",
+      }));
+    } else if (type === "export") {
+      setFormData((prev) => ({
+        ...prev,
+        origin_country: "Nigeria",
+        warehouse_location: "",
+      }));
+    }
+  };
+
+  // Warehouses filtered by shipping type
+  const availableWarehouses = useMemo(() => {
+    if (shippingType === "import") return importWarehouses;
+    if (shippingType === "export") return exportWarehouses;
+    return warehouseLocations;
+  }, [shippingType]);
+
   // Calculate estimated shipping cost dynamically
   const estimatedCost = useMemo(() => {
     const weightNum = parseFloat(formData.weight);
