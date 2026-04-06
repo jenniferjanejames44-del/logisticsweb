@@ -34,6 +34,8 @@ import {
   Building2,
   ArrowDownToLine,
   ArrowUpFromLine,
+  ChevronLeft,
+  X,
 } from "lucide-react";
 
 const countries = [
@@ -43,21 +45,21 @@ const countries = [
 ];
 
 const serviceTypes = [
-  { id: "air-express", name: "Air Express", icon: Plane, description: "1-3 days" },
-  { id: "air-standard", name: "Air Standard", icon: Plane, description: "5-7 days" },
-  { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, description: "20-30 days" },
-  { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, description: "25-35 days" },
-  { id: "road-freight", name: "Road Freight", icon: Truck, description: "3-10 days" },
+  { id: "air-express", name: "Air Express", icon: Plane, description: "1-3 days", tag: "Fastest" },
+  { id: "air-standard", name: "Air Standard", icon: Plane, description: "5-7 days", tag: "Popular" },
+  { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, description: "20-30 days", tag: "" },
+  { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, description: "25-35 days", tag: "" },
+  { id: "road-freight", name: "Road Freight", icon: Truck, description: "3-10 days", tag: "" },
 ];
 
 const exportWarehouses = [
-  { id: "usa_warehouse", name: "USA Warehouse" },
-  { id: "uk_warehouse", name: "UK Warehouse" },
-  { id: "china_warehouse", name: "China Warehouse" },
+  { id: "usa_warehouse", name: "USA Warehouse", flag: "🇺🇸" },
+  { id: "uk_warehouse", name: "UK Warehouse", flag: "🇬🇧" },
+  { id: "china_warehouse", name: "China Warehouse", flag: "🇨🇳" },
 ];
 
 const importWarehouses = [
-  { id: "nigeria_warehouse", name: "Nigeria Warehouse (Lagos)" },
+  { id: "nigeria_warehouse", name: "Nigeria Warehouse (Lagos)", flag: "🇳🇬" },
 ];
 
 const warehouseLocations = [
@@ -68,30 +70,30 @@ const warehouseLocations = [
 const warehouseAddresses = [
   {
     name: "USA Warehouse",
+    flag: "🇺🇸",
     lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
     phone: "12815919189",
-    icon: Building2,
   },
   {
     name: "UK Warehouse",
-    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London", "SW9 7PD"],
+    flag: "🇬🇧",
+    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
     phone: null,
-    icon: Building2,
   },
   {
     name: "China Warehouse",
-    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B Warehouse"],
+    flag: "🇨🇳",
+    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
     phone: null,
-    icon: Building2,
   },
 ];
 
 const shippingSteps = [
-  { num: 1, title: "Create your shipment online", icon: ClipboardList },
-  { num: 2, title: "Send your package to our warehouse", icon: Package },
-  { num: 3, title: "Our team processes and ships your package", icon: Truck },
-  { num: 4, title: "Track your shipment from your dashboard", icon: Globe },
-  { num: 5, title: "Receive delivery or pick up at our office", icon: CheckCircle2 },
+  { num: 1, title: "Create your shipment online", description: "Fill in the shipping form with your details", icon: ClipboardList },
+  { num: 2, title: "Send to our warehouse", description: "Drop off or ship to the nearest warehouse", icon: Package },
+  { num: 3, title: "We process & ship", description: "Our team handles customs and logistics", icon: Truck },
+  { num: 4, title: "Track your shipment", description: "Monitor progress from your dashboard", icon: Globe },
+  { num: 5, title: "Receive delivery", description: "Collect at our office or get it delivered", icon: CheckCircle2 },
 ];
 
 interface RoutePrice {
@@ -107,7 +109,6 @@ const ShipmentCreationForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [step, setStep] = useState(1);
-  const [isFocused, setIsFocused] = useState(false);
   const [shippingType, setShippingType] = useState<ShippingType>(null);
   const [showTypeError, setShowTypeError] = useState(false);
   const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
@@ -136,7 +137,6 @@ const ShipmentCreationForm = () => {
     special_instructions: "",
   });
 
-  // Fetch shipping routes from database
   useEffect(() => {
     const fetchRoutes = async () => {
       const { data } = await supabase
@@ -148,7 +148,6 @@ const ShipmentCreationForm = () => {
     fetchRoutes();
   }, []);
 
-  // Pre-fill sender info from profile
   useEffect(() => {
     if (!user) return;
     const fetchProfile = async () => {
@@ -169,7 +168,6 @@ const ShipmentCreationForm = () => {
     fetchProfile();
   }, [user]);
 
-  // Handle shipping type change — auto-set countries and warehouse
   const handleShippingTypeChange = (type: ShippingType) => {
     setShippingType(type);
     setShowTypeError(false);
@@ -188,19 +186,15 @@ const ShipmentCreationForm = () => {
     }
   };
 
-  // Warehouses filtered by shipping type
   const availableWarehouses = useMemo(() => {
     if (shippingType === "import") return importWarehouses;
     if (shippingType === "export") return exportWarehouses;
     return warehouseLocations;
   }, [shippingType]);
 
-  // Calculate estimated shipping cost dynamically
   const estimatedCost = useMemo(() => {
     const weightNum = parseFloat(formData.weight);
-    if (!formData.origin_country || !formData.destination_country || !weightNum || weightNum <= 0) {
-      return null;
-    }
+    if (!formData.origin_country || !formData.destination_country || !weightNum || weightNum <= 0) return null;
     const route = routePrices.find(
       (r) => r.origin_country === formData.origin_country && r.destination_country === formData.destination_country
     );
@@ -216,7 +210,6 @@ const ShipmentCreationForm = () => {
     return route ? Number(route.price_per_kg) : null;
   }, [formData.origin_country, formData.destination_country, routePrices]);
 
-  // Calculate pickup fee based on weight
   const pickupFee = useMemo(() => {
     const weightNum = parseFloat(formData.weight);
     if (!weightNum || weightNum <= 0) return 0;
@@ -225,7 +218,6 @@ const ShipmentCreationForm = () => {
     return Math.round(weightLbs * 6 * 100) / 100;
   }, [formData.weight]);
 
-  // Total price including optional pickup
   const totalPrice = useMemo(() => {
     if (estimatedCost === null) return null;
     return prepayPickup ? estimatedCost + pickupFee : estimatedCost;
@@ -268,7 +260,6 @@ const ShipmentCreationForm = () => {
     );
     const finalPrice = shippingOnly !== null && prepayPickup ? shippingOnly + pickupFee : shippingOnly;
 
-    // Build description with all extra info
     const descParts = [formData.description];
     if (formData.sender_name) descParts.push(`Sender: ${formData.sender_name}`);
     if (formData.sender_email) descParts.push(`Sender Email: ${formData.sender_email}`);
@@ -298,16 +289,9 @@ const ShipmentCreationForm = () => {
     } as any);
 
     if (error) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
-      toast({
-        title: "Shipment Created!",
-        description: "Your shipment has been created successfully. Proceed to payment.",
-      });
+      toast({ title: "Shipment Created!", description: "Your shipment has been created successfully." });
       setFormData({
         origin_country: "", origin_city: "", destination_country: "", destination_city: "",
         weight: "", service_type: "", description: "", warehouse_location: "",
@@ -330,211 +314,205 @@ const ShipmentCreationForm = () => {
 
   const progressSteps = [
     { num: 1, label: "Route & Contacts", icon: MapPin },
-    { num: 2, label: "Package Details", icon: Scale },
-    { num: 3, label: "Review", icon: CheckCircle2 },
+    { num: 2, label: "Package & Shipping", icon: Package },
+    { num: 3, label: "Review & Submit", icon: CheckCircle2 },
   ];
 
-  const inputClass = "h-11 rounded-lg border border-[#E5E7EB] bg-white px-3.5 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 ease-in-out hover:border-primary/25 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const textAreaClass = "min-h-[104px] resize-none rounded-lg border border-[#E5E7EB] bg-white px-3.5 py-3 text-sm text-foreground placeholder:text-muted-foreground/70 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-colors duration-200 ease-in-out hover:border-primary/25 focus:border-primary/35 focus:ring-2 focus:ring-primary/10";
-  const stepPanelClass = "space-y-5 sm:space-y-6 animate-in fade-in-0 slide-in-from-right-2 duration-200";
-  const sectionCardClass = "group relative rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 transition-colors duration-200 ease-in-out sm:p-5 hover:bg-muted/[0.3]";
-  const actionBarClass = "flex flex-col gap-3 border-t border-border/50 pt-4 sm:flex-row sm:items-center sm:justify-between";
+  // --- Shared Styles ---
+  const inputBase = "h-12 rounded-xl border border-border/80 bg-white px-4 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all duration-200 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15 focus:shadow-sm";
+  const labelBase = "text-sm font-semibold text-foreground flex items-center gap-2";
+  const sectionCard = "rounded-2xl border border-border/50 bg-white p-5 sm:p-6 space-y-5 transition-all duration-200 hover:shadow-sm";
+  const sectionHeader = "flex items-center gap-3 pb-4 border-b border-border/40";
+  const iconBox = (bg: string) => `flex h-10 w-10 items-center justify-center rounded-xl ${bg} shadow-sm`;
 
   return (
     <>
-      <section className="section-padding bg-muted relative overflow-hidden">
-        {/* Background decoration */}
+      <section className="section-padding bg-muted/50 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/[0.03] rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/[0.03] rounded-full blur-3xl" />
         </div>
 
         <div className="section-container relative z-10">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
+          {/* Section Header */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-5 bg-primary/10 text-primary">
               <Package className="w-4 h-4" />
-              Quick Shipping
-            </span>
-            <h2 className="text-foreground mb-4">
+              Ship with RAC
+            </div>
+            <h2 className="text-foreground mb-3">
               Create Your <span className="text-primary">Shipment</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              Create your shipment by entering the package and destination details below. The system will automatically calculate the shipping cost.
+            <p className="text-muted-foreground text-base max-w-xl mx-auto">
+              Fill in the details below and we'll handle the rest. Fast, reliable, and transparent.
             </p>
           </div>
 
-          {/* Card Container */}
-          <div 
-            className={`relative max-w-4xl mx-auto overflow-hidden rounded-[20px] transition-all duration-200 ease-in-out ${
-              isFocused ? "shadow-[0_28px_60px_rgba(15,23,42,0.14)]" : "shadow-[0_20px_44px_rgba(15,23,42,0.1)]"
-            }`}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          >
-            <div className="relative rounded-[20px] bg-white/95 backdrop-blur-sm">
-              {/* Progress Steps */}
-              <div className="border-b border-border/60 bg-[linear-gradient(180deg,rgba(248,250,252,0.98),rgba(255,255,255,0.95))] p-4 sm:p-6">
-                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Quick shipment flow</p>
-                    <p className="text-xs text-muted-foreground">Step {step} of {progressSteps.length}</p>
-                  </div>
-                  <div className="rounded-full border border-primary/10 bg-primary/[0.05] px-3 py-1 text-xs font-semibold text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                    {Math.round((step / progressSteps.length) * 100)}% complete
-                  </div>
-                </div>
-                <div className="flex items-start gap-2 sm:gap-3">
-                  {progressSteps.map((s, i) => {
-                    const isActive = step >= s.num;
-                    const isCurrent = step === s.num;
-                    const isComplete = step > s.num;
-                    const StepIcon = s.icon;
+          {/* Main Card */}
+          <div className="max-w-4xl mx-auto">
+            {/* Step Indicator */}
+            <div className="flex items-center justify-between mb-6 px-2">
+              {progressSteps.map((s, i) => {
+                const isActive = step >= s.num;
+                const isCurrent = step === s.num;
+                const isComplete = step > s.num;
+                const StepIcon = s.icon;
 
-                    return (
-                      <div key={s.num} className="flex flex-1 items-start gap-2 sm:gap-3">
-                        <div className="flex min-w-0 flex-1 flex-col items-center gap-1.5 text-center">
-                          <div 
-                            className={`relative flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-200 ease-in-out sm:h-12 sm:w-12 ${
-                              isComplete
-                                ? "border-primary bg-primary text-primary-foreground shadow-[0_14px_28px_rgba(6,16,67,0.18)]"
-                                : isCurrent
-                                  ? "border-primary/20 bg-primary/[0.08] text-primary ring-4 ring-primary/10 shadow-[0_12px_24px_rgba(6,16,67,0.12)]"
-                                  : isActive
-                                    ? "border-primary/15 bg-primary/[0.05] text-primary"
-                                    : "border-border/70 bg-white text-muted-foreground"
-                            }`}
-                          >
-                            {isComplete ? (
-                              <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                            ) : (
-                              <StepIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            )}
-                          </div>
-                          
-                          <span className={`text-[10px] sm:text-sm font-semibold leading-4 transition-colors ${
-                            isCurrent ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"
-                          }`}>
-                            {s.label}
-                          </span>
-                        </div>
-
-                        {i < progressSteps.length - 1 && (
-                          <div className="mt-5 hidden h-1 flex-1 rounded-full bg-border/80 sm:block">
-                            <div 
-                              className={`h-full rounded-full bg-primary transition-all duration-200 ease-in-out ${
-                                step > s.num ? "w-full" : "w-0"
-                              }`}
-                            />
-                          </div>
+                return (
+                  <div key={s.num} className="flex items-center flex-1">
+                    <div className="flex flex-col items-center gap-2 min-w-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (isComplete) setStep(s.num);
+                        }}
+                        disabled={!isComplete}
+                        className={`flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all duration-300 ${
+                          isComplete
+                            ? "border-primary bg-primary text-white cursor-pointer hover:shadow-md"
+                            : isCurrent
+                              ? "border-primary bg-white text-primary shadow-lg shadow-primary/20"
+                              : "border-border bg-white text-muted-foreground"
+                        }`}
+                      >
+                        {isComplete ? (
+                          <CheckCircle2 className="w-5 h-5" />
+                        ) : (
+                          <span className="text-sm font-bold">{s.num}</span>
                         )}
+                      </button>
+                      <span className={`text-xs font-semibold text-center leading-tight hidden sm:block ${
+                        isCurrent ? "text-primary" : isActive ? "text-foreground" : "text-muted-foreground"
+                      }`}>
+                        {s.label}
+                      </span>
+                    </div>
+                    {i < progressSteps.length - 1 && (
+                      <div className="flex-1 mx-3 mt-[-20px] sm:mt-[-24px]">
+                        <div className="h-0.5 rounded-full bg-border">
+                          <div className={`h-full rounded-full bg-primary transition-all duration-500 ${
+                            step > s.num ? "w-full" : "w-0"
+                          }`} />
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-              {/* Form Content */}
-              <div className="p-4 sm:p-6 lg:p-8">
+            {/* Form Card */}
+            <div className="rounded-2xl bg-white border border-border/50 shadow-xl shadow-black/[0.04] overflow-hidden">
+              <div className="p-5 sm:p-8">
                 <form onSubmit={handleSubmit}>
-                  {/* Step 1: Route & Contacts */}
+
+                  {/* ===== STEP 1: Route & Contacts ===== */}
                   {step === 1 && (
-                    <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
-                          <MapPin className="h-5 w-5 text-primary-foreground" />
+                    <div className="space-y-6 animate-in fade-in-0 duration-300">
+                      {/* Step header */}
+                      <div className={sectionHeader}>
+                        <div className={iconBox("bg-primary text-white")}>
+                          <MapPin className="h-5 w-5" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-foreground">Route & contact details</h3>
-                          <p className="text-sm text-muted-foreground">First, choose your shipping direction, then set the route and contacts.</p>
+                          <h3 className="text-lg font-bold text-foreground">Route & Contacts</h3>
+                          <p className="text-sm text-muted-foreground">Select direction, set route, and add contact details</p>
                         </div>
                       </div>
 
-                      {/* Shipping Type Selector */}
+                      {/* Shipping Type */}
                       <ShippingTypeSelector
                         value={shippingType}
                         onChange={handleShippingTypeChange}
                         showError={showTypeError}
                       />
+
                       {/* Origin & Destination */}
-                      <div className="grid md:grid-cols-2 gap-8">
-                        {/* Origin Card */}
-                        <div className={sectionCardClass}>
-                          <div className="flex items-center gap-3 mb-5">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-md transition-transform duration-200 group-hover:scale-105">
-                              <MapPin className="w-5 h-5 text-primary-foreground" />
+                      <div className="grid md:grid-cols-2 gap-5">
+                        {/* Origin */}
+                        <div className={sectionCard}>
+                          <div className="flex items-center gap-3">
+                            <div className={iconBox("bg-primary/10 text-primary")}>
+                              <ArrowUpFromLine className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-lg text-foreground">Origin</span>
+                            <div>
+                              <p className="font-bold text-foreground">Origin</p>
+                              <p className="text-xs text-muted-foreground">Where is the package coming from?</p>
+                            </div>
                           </div>
                           <div className="space-y-4">
                             <div className="space-y-2">
-                              <Label className="text-muted-foreground text-sm font-medium">Country *</Label>
+                              <Label className={labelBase}>Country <span className="text-destructive">*</span></Label>
                               <Select
                                 value={formData.origin_country}
-                                onValueChange={(value) => setFormData({ ...formData, origin_country: value })}
+                                onValueChange={(v) => setFormData({ ...formData, origin_country: v })}
                                 disabled={shippingType === "export"}
                               >
-                                <SelectTrigger className={`${inputClass} ${shippingType === "export" ? "opacity-70 cursor-not-allowed" : ""}`}>
-                                  <SelectValue placeholder="Select country" />
+                                <SelectTrigger className={`${inputBase} ${shippingType === "export" ? "opacity-60 cursor-not-allowed bg-muted/30" : ""}`}>
+                                  <SelectValue placeholder="Select origin country" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-card border-border">
-                                  {countries.map((country) => (
-                                    <SelectItem key={country} value={country}>{country}</SelectItem>
-                                  ))}
+                                <SelectContent className="bg-white border-border">
+                                  {countries.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                                 </SelectContent>
                               </Select>
                               {shippingType === "export" && (
-                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowUpFromLine className="w-3 h-3" /> Origin locked to Nigeria for export</p>
+                                <p className="text-xs text-primary/70 flex items-center gap-1 mt-1">
+                                  <ArrowUpFromLine className="w-3 h-3" /> Locked to Nigeria for export
+                                </p>
                               )}
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-muted-foreground text-sm font-medium">City *</Label>
+                              <Label className={labelBase}>City <span className="text-destructive">*</span></Label>
                               <Input
                                 value={formData.origin_city}
                                 onChange={(e) => setFormData({ ...formData, origin_city: e.target.value })}
-                                placeholder="Enter city"
-                                className={inputClass}
+                                placeholder="Enter origin city"
+                                className={inputBase}
                                 required
                               />
                             </div>
                           </div>
                         </div>
 
-                        {/* Destination Card */}
-                        <div className={sectionCardClass}>
-                          <div className="flex items-center gap-3 mb-5">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-md transition-transform duration-200 group-hover:scale-105">
-                              <MapPin className="w-5 h-5 text-accent-foreground" />
+                        {/* Destination */}
+                        <div className={sectionCard}>
+                          <div className="flex items-center gap-3">
+                            <div className={iconBox("bg-accent/10 text-accent")}>
+                              <ArrowDownToLine className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-lg text-foreground">Destination</span>
+                            <div>
+                              <p className="font-bold text-foreground">Destination</p>
+                              <p className="text-xs text-muted-foreground">Where should we deliver?</p>
+                            </div>
                           </div>
                           <div className="space-y-4">
                             <div className="space-y-2">
-                              <Label className="text-muted-foreground text-sm font-medium">Country *</Label>
+                              <Label className={labelBase}>Country <span className="text-destructive">*</span></Label>
                               <Select
                                 value={formData.destination_country}
-                                onValueChange={(value) => setFormData({ ...formData, destination_country: value })}
+                                onValueChange={(v) => setFormData({ ...formData, destination_country: v })}
                                 disabled={shippingType === "import"}
                               >
-                                <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
-                                  <SelectValue placeholder="Select country" />
+                                <SelectTrigger className={`${inputBase} ${shippingType === "import" ? "opacity-60 cursor-not-allowed bg-muted/30" : ""}`}>
+                                  <SelectValue placeholder="Select destination country" />
                                 </SelectTrigger>
-                                <SelectContent className="bg-card border-border">
-                                  {countries.map((country) => (
-                                    <SelectItem key={country} value={country}>{country}</SelectItem>
-                                  ))}
+                                <SelectContent className="bg-white border-border">
+                                  {countries.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                                 </SelectContent>
                               </Select>
                               {shippingType === "import" && (
-                                <p className="text-xs text-primary/70 flex items-center gap-1"><ArrowDownToLine className="w-3 h-3" /> Destination locked to Nigeria for import</p>
+                                <p className="text-xs text-primary/70 flex items-center gap-1 mt-1">
+                                  <ArrowDownToLine className="w-3 h-3" /> Locked to Nigeria for import
+                                </p>
                               )}
                             </div>
                             <div className="space-y-2">
-                              <Label className="text-muted-foreground text-sm font-medium">City *</Label>
+                              <Label className={labelBase}>City <span className="text-destructive">*</span></Label>
                               <Input
                                 value={formData.destination_city}
                                 onChange={(e) => setFormData({ ...formData, destination_city: e.target.value })}
-                                placeholder="Enter city"
-                                className={inputClass}
+                                placeholder="Enter destination city"
+                                className={inputBase}
                                 required
                               />
                             </div>
@@ -542,77 +520,89 @@ const ShipmentCreationForm = () => {
                         </div>
                       </div>
 
-                      {/* Route Visualization */}
-                      <div className="rounded-xl bg-muted/[0.22] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] ring-1 ring-border/50 sm:p-5">
-                        <div className="flex items-center justify-center gap-2 py-1 sm:gap-3">
-                          <div className="min-w-0 text-center">
-                            <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1" />
-                            <span className="block max-w-[88px] truncate text-xs text-muted-foreground sm:max-w-none">{formData.origin_city || "Origin"}</span>
-                          </div>
-                          <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
-                          <Plane className="w-5 h-5 text-primary -rotate-45" />
-                          <div className="flex-1 max-w-32 h-0.5 bg-primary/30 rounded-full" />
-                          <div className="min-w-0 text-center">
-                            <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1" />
-                            <span className="block max-w-[88px] truncate text-xs text-muted-foreground sm:max-w-none">{formData.destination_city || "Destination"}</span>
+                      {/* Route Preview */}
+                      {(formData.origin_city || formData.destination_city) && (
+                        <div className="rounded-xl bg-gradient-to-r from-primary/[0.04] to-accent/[0.04] border border-primary/10 p-4">
+                          <div className="flex items-center justify-center gap-3">
+                            <div className="text-center">
+                              <div className="w-3 h-3 rounded-full bg-primary mx-auto mb-1.5" />
+                              <p className="text-xs font-semibold text-foreground">{formData.origin_city || "Origin"}</p>
+                              <p className="text-[10px] text-muted-foreground">{formData.origin_country}</p>
+                            </div>
+                            <div className="flex items-center gap-2 flex-1 max-w-[160px]">
+                              <div className="flex-1 h-px bg-primary/30" />
+                              <Plane className="w-4 h-4 text-primary -rotate-45 shrink-0" />
+                              <div className="flex-1 h-px bg-accent/30" />
+                            </div>
+                            <div className="text-center">
+                              <div className="w-3 h-3 rounded-full bg-accent mx-auto mb-1.5" />
+                              <p className="text-xs font-semibold text-foreground">{formData.destination_city || "Destination"}</p>
+                              <p className="text-[10px] text-muted-foreground">{formData.destination_country}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
 
-                      {/* Sender Information */}
-                      <div className={sectionCardClass}>
-                        <div className="flex items-center gap-3 mb-5">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-md">
-                            <User className="w-5 h-5 text-primary-foreground" />
+                      {/* Sender */}
+                      <div className={sectionCard}>
+                        <div className="flex items-center gap-3">
+                          <div className={iconBox("bg-primary/10 text-primary")}>
+                            <User className="w-5 h-5" />
                           </div>
-                          <span className="font-bold text-lg text-foreground">Sender Information</span>
+                          <div>
+                            <p className="font-bold text-foreground">Sender Details</p>
+                            <p className="text-xs text-muted-foreground">Who is sending this package?</p>
+                          </div>
                         </div>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Name *</Label>
-                            <Input value={formData.sender_name} onChange={(e) => setFormData({ ...formData, sender_name: e.target.value })} placeholder="Full name" className={inputClass} required />
+                            <Label className={labelBase}><User className="w-3.5 h-3.5 text-muted-foreground" /> Full Name <span className="text-destructive">*</span></Label>
+                            <Input value={formData.sender_name} onChange={(e) => setFormData({ ...formData, sender_name: e.target.value })} placeholder="Enter full name" className={inputBase} required />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><Mail className="w-3 h-3" /> Email</Label>
-                            <Input type="email" value={formData.sender_email} onChange={(e) => setFormData({ ...formData, sender_email: e.target.value })} placeholder="Email address" className={inputClass} />
+                            <Label className={labelBase}><Mail className="w-3.5 h-3.5 text-muted-foreground" /> Email</Label>
+                            <Input type="email" value={formData.sender_email} onChange={(e) => setFormData({ ...formData, sender_email: e.target.value })} placeholder="Email address" className={inputBase} />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone *</Label>
-                            <Input type="tel" value={formData.sender_phone} onChange={(e) => setFormData({ ...formData, sender_phone: e.target.value })} placeholder="Phone number" className={inputClass} required />
+                            <Label className={labelBase}><Phone className="w-3.5 h-3.5 text-muted-foreground" /> Phone <span className="text-destructive">*</span></Label>
+                            <Input type="tel" value={formData.sender_phone} onChange={(e) => setFormData({ ...formData, sender_phone: e.target.value })} placeholder="Phone number" className={inputBase} required />
                           </div>
                         </div>
                       </div>
 
-                      {/* Receiver Information */}
-                      <div className={sectionCardClass}>
-                        <div className="flex items-center gap-3 mb-5">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent shadow-md">
-                            <MapPinned className="w-5 h-5 text-accent-foreground" />
+                      {/* Receiver */}
+                      <div className={sectionCard}>
+                        <div className="flex items-center gap-3">
+                          <div className={iconBox("bg-accent/10 text-accent")}>
+                            <MapPinned className="w-5 h-5" />
                           </div>
-                          <span className="font-bold text-lg text-foreground">Receiver Information</span>
+                          <div>
+                            <p className="font-bold text-foreground">Receiver Details</p>
+                            <p className="text-xs text-muted-foreground">Who will receive this package?</p>
+                          </div>
                         </div>
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><User className="w-3 h-3" /> Name *</Label>
-                            <Input value={formData.receiver_name} onChange={(e) => setFormData({ ...formData, receiver_name: e.target.value })} placeholder="Receiver full name" className={inputClass} required />
+                            <Label className={labelBase}><User className="w-3.5 h-3.5 text-muted-foreground" /> Full Name <span className="text-destructive">*</span></Label>
+                            <Input value={formData.receiver_name} onChange={(e) => setFormData({ ...formData, receiver_name: e.target.value })} placeholder="Receiver's full name" className={inputBase} required />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><Phone className="w-3 h-3" /> Phone *</Label>
-                            <Input type="tel" value={formData.receiver_phone} onChange={(e) => setFormData({ ...formData, receiver_phone: e.target.value })} placeholder="Receiver phone" className={inputClass} required />
+                            <Label className={labelBase}><Phone className="w-3.5 h-3.5 text-muted-foreground" /> Phone <span className="text-destructive">*</span></Label>
+                            <Input type="tel" value={formData.receiver_phone} onChange={(e) => setFormData({ ...formData, receiver_phone: e.target.value })} placeholder="Receiver's phone" className={inputBase} required />
                           </div>
                           <div className="sm:col-span-2 space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium flex items-center gap-1"><MapPin className="w-3 h-3" /> Address</Label>
-                            <Input value={formData.receiver_address} onChange={(e) => setFormData({ ...formData, receiver_address: e.target.value })} placeholder="Street address" className={inputClass} />
+                            <Label className={labelBase}><MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Street Address</Label>
+                            <Input value={formData.receiver_address} onChange={(e) => setFormData({ ...formData, receiver_address: e.target.value })} placeholder="Enter street address" className={inputBase} />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium">City</Label>
-                            <Input value={formData.receiver_city} onChange={(e) => setFormData({ ...formData, receiver_city: e.target.value })} placeholder="City" className={inputClass} />
+                            <Label className={labelBase}>City</Label>
+                            <Input value={formData.receiver_city} onChange={(e) => setFormData({ ...formData, receiver_city: e.target.value })} placeholder="City" className={inputBase} />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-muted-foreground text-sm font-medium">Country</Label>
-                            <Select value={formData.receiver_country} onValueChange={(value) => setFormData({ ...formData, receiver_country: value })}>
-                              <SelectTrigger className={inputClass}><SelectValue placeholder="Select country" /></SelectTrigger>
-                              <SelectContent className="bg-card border-border">
+                            <Label className={labelBase}>Country</Label>
+                            <Select value={formData.receiver_country} onValueChange={(v) => setFormData({ ...formData, receiver_country: v })}>
+                              <SelectTrigger className={inputBase}><SelectValue placeholder="Select country" /></SelectTrigger>
+                              <SelectContent className="bg-white border-border">
                                 {countries.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                               </SelectContent>
                             </Select>
@@ -620,9 +610,10 @@ const ShipmentCreationForm = () => {
                         </div>
                       </div>
 
-                      <div className={actionBarClass}>
+                      {/* Action Bar */}
+                      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-sm text-muted-foreground">
-                          {!shippingType ? "Select a shipping type first." : "Complete the route and contact details to continue."}
+                          {!shippingType ? "Select a shipping direction to continue." : "Fill in the required fields to proceed."}
                         </p>
                         <button 
                           type="button" 
@@ -630,108 +621,134 @@ const ShipmentCreationForm = () => {
                           onClick={() => {
                             if (!shippingType) { setShowTypeError(true); return; }
                             setStep(2);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
                           }}
-                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:hover:translate-y-0 active:scale-[0.98]"
                         >
-                          Continue
+                          Continue to Package Details
                           <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
                   )}
 
-                  {/* Step 2: Package Details */}
+                  {/* ===== STEP 2: Package Details ===== */}
                   {step === 2 && (
-                    <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-accent/80 shadow-[0_12px_24px_rgba(223,81,1,0.16)]">
-                          <Scale className="h-5 w-5 text-accent-foreground" />
+                    <div className="space-y-6 animate-in fade-in-0 duration-300">
+                      <div className={sectionHeader}>
+                        <div className={iconBox("bg-accent text-white")}>
+                          <Package className="h-5 w-5" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-foreground">Package details</h3>
-                          <p className="text-sm text-muted-foreground">Add shipment details, warehouse selection, and optional documents.</p>
+                          <h3 className="text-lg font-bold text-foreground">Package & Shipping</h3>
+                          <p className="text-sm text-muted-foreground">Add weight, service type, warehouse, and optional details</p>
                         </div>
                       </div>
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className={sectionCardClass}>
-                          <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary transition-transform duration-200 group-hover:scale-105">
-                              <Scale className="w-4 h-4 text-primary-foreground" />
+
+                      {/* Weight & Service Type */}
+                      <div className="grid md:grid-cols-2 gap-5">
+                        <div className={sectionCard}>
+                          <div className="flex items-center gap-3">
+                            <div className={iconBox("bg-primary/10 text-primary")}>
+                              <Scale className="w-5 h-5" />
                             </div>
-                            <span className="font-semibold">Weight (KG) *</span>
-                          </Label>
+                            <div>
+                              <p className="font-bold text-foreground">Package Weight</p>
+                              <p className="text-xs text-muted-foreground">Weight in kilograms</p>
+                            </div>
+                          </div>
                           <Input
                             type="number"
                             min="0.1"
                             step="0.1"
                             value={formData.weight}
                             onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                            placeholder="Enter package weight"
-                            className={inputClass}
+                            placeholder="e.g. 5.0"
+                            className={`${inputBase} text-lg font-semibold`}
                             required
                           />
+                          {formData.weight && parseFloat(formData.weight) > 0 && (
+                            <p className="text-xs text-muted-foreground">
+                              ≈ {(parseFloat(formData.weight) * 2.20462).toFixed(1)} lbs
+                            </p>
+                          )}
                         </div>
-                        <div className={sectionCardClass}>
-                          <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent transition-transform duration-200 group-hover:scale-105">
-                              <Truck className="w-4 h-4 text-accent-foreground" />
+
+                        <div className={sectionCard}>
+                          <div className="flex items-center gap-3">
+                            <div className={iconBox("bg-accent/10 text-accent")}>
+                              <Truck className="w-5 h-5" />
                             </div>
-                            <span className="font-semibold">Service Type *</span>
-                          </Label>
-                          <Select
-                            value={formData.service_type}
-                            onValueChange={(value) => setFormData({ ...formData, service_type: value })}
-                          >
-                            <SelectTrigger className={inputClass}>
-                              <SelectValue placeholder="Select service" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-card border-border">
-                              {serviceTypes.map((type) => (
-                                <SelectItem key={type.id} value={type.id}>
-                                  <div className="flex items-center gap-2">
-                                    <type.icon className="w-4 h-4 text-primary" />
-                                    <span>{type.name}</span>
-                                    <span className="text-muted-foreground text-xs">({type.description})</span>
+                            <div>
+                              <p className="font-bold text-foreground">Service Type</p>
+                              <p className="text-xs text-muted-foreground">Choose shipping speed</p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            {serviceTypes.map((type) => {
+                              const isSelected = formData.service_type === type.id;
+                              const ServiceIcon = type.icon;
+                              return (
+                                <button
+                                  key={type.id}
+                                  type="button"
+                                  onClick={() => setFormData({ ...formData, service_type: type.id })}
+                                  className={`w-full flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-200 ${
+                                    isSelected
+                                      ? "border-primary bg-primary/[0.04] shadow-sm"
+                                      : "border-border/50 bg-white hover:border-primary/20"
+                                  }`}
+                                >
+                                  <ServiceIcon className={`w-4 h-4 shrink-0 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                                  <div className="flex-1 min-w-0">
+                                    <p className={`text-sm font-semibold ${isSelected ? "text-primary" : "text-foreground"}`}>{type.name}</p>
+                                    <p className="text-xs text-muted-foreground">{type.description}</p>
                                   </div>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                                  {type.tag && (
+                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-accent/10 text-accent px-2 py-0.5 rounded-full">{type.tag}</span>
+                                  )}
+                                  <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                                    isSelected ? "border-primary bg-primary" : "border-border"
+                                  }`}>
+                                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
 
-                      {/* Estimated Shipping Cost */}
+                      {/* Estimated Cost */}
                       {formData.weight && parseFloat(formData.weight) > 0 && (
-                        <div className="rounded-xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(255,255,255,0.92))] p-4 ring-1 ring-primary/10 transition-all duration-200 ease-in-out sm:p-5">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-md">
-                              <DollarSign className="w-5 h-5 text-primary-foreground" />
+                        <div className="rounded-2xl bg-gradient-to-br from-primary/[0.04] to-accent/[0.02] border border-primary/10 p-5 sm:p-6">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className={iconBox("bg-primary text-white")}>
+                              <DollarSign className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-lg text-foreground">Estimated Shipping Cost</span>
+                            <p className="font-bold text-lg text-foreground">Estimated Cost</p>
                           </div>
                           {estimatedCost !== null ? (
-                            <div className="space-y-3">
-                              <div className="space-y-1">
-                                <div className="flex justify-between text-sm text-muted-foreground">
+                            <div className="space-y-4">
+                              <div className="space-y-2 text-sm">
+                                <div className="flex justify-between text-muted-foreground">
                                   <span>Shipping ({formData.weight} KG × {formatUsd(matchedRate || 0)}/KG)</span>
-                                  <span>{formatUsd(estimatedCost)}</span>
+                                  <span className="font-medium">{formatUsd(estimatedCost)}</span>
                                 </div>
                                 {prepayPickup && (
-                                  <div className="flex justify-between text-sm text-muted-foreground">
+                                  <div className="flex justify-between text-muted-foreground">
                                     <span>Pickup / Delivery Fee</span>
-                                    <span>{formatUsd(pickupFee)}</span>
+                                    <span className="font-medium">{formatUsd(pickupFee)}</span>
                                   </div>
                                 )}
                               </div>
-                              <div className="border-t border-primary/20 pt-2 flex justify-between items-center">
-                                <span className="font-bold text-foreground">Total Payment</span>
-                                <span className="text-3xl font-bold text-primary">
-                                  {formatUsd(totalPrice || 0)}
-                                </span>
+                              <div className="border-t border-primary/15 pt-3 flex justify-between items-center">
+                                <span className="font-bold text-foreground">Total</span>
+                                <span className="text-2xl sm:text-3xl font-bold text-primary">{formatUsd(totalPrice || 0)}</span>
                               </div>
 
-                              {/* Prepay Pickup Checkbox */}
-                              <div className="mt-3 rounded-xl border border-border/70 bg-white p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                              {/* Pickup checkbox */}
+                              <div className="rounded-xl border border-border/60 bg-white p-4">
                                 <div className="flex items-start gap-3">
                                   <Checkbox
                                     id="prepay-pickup"
@@ -739,14 +756,14 @@ const ShipmentCreationForm = () => {
                                     onCheckedChange={(checked) => setPrepayPickup(checked === true)}
                                     className="mt-0.5"
                                   />
-                                  <div className="space-y-1">
+                                  <div>
                                     <label htmlFor="prepay-pickup" className="text-sm font-semibold text-foreground cursor-pointer">
                                       Prepay Pickup / Delivery Fee
                                     </label>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
-                                      If you pay this now, you will not pay any pickup fee when collecting your shipment.
+                                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                                      Pay now to skip the pickup fee on collection.
                                       {parseFloat(formData.weight) <= 4
-                                        ? ` (Flat fee: ${formatUsd(70)} for shipments ≤ 4 KG)`
+                                        ? ` (Flat: ${formatUsd(70)} for ≤ 4 KG)`
                                         : ` (${formatUsd(6)}/lb — ${(parseFloat(formData.weight) * 2.20462).toFixed(1)} lbs = ${formatUsd(pickupFee)})`}
                                     </p>
                                   </div>
@@ -755,104 +772,109 @@ const ShipmentCreationForm = () => {
                             </div>
                           ) : (
                             <p className="text-sm text-muted-foreground">
-                              No route pricing found for {formData.origin_country || "origin"} → {formData.destination_country || "destination"}. Price will be set by admin.
+                              No route pricing available for {formData.origin_country || "origin"} → {formData.destination_country || "destination"}. Price will be set by admin.
                             </p>
                           )}
                         </div>
                       )}
 
-                      {/* Item Description */}
-                      <div className={sectionCardClass}>
-                        <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
-                            <FileText className="w-4 h-4 text-primary" />
-                          </div>
-                          <span className="font-semibold">Item Description</span>
-                        </Label>
-                        <Textarea
-                          value={formData.description}
-                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                          placeholder="Describe the contents of your shipment"
-                          rows={3}
-                          className={textAreaClass}
-                        />
-                      </div>
-
-                      {/* Declared Value & Special Instructions */}
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className={sectionCardClass}>
-                          <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
-                              <DollarSign className="w-4 h-4 text-primary" />
-                            </div>
-                            <span className="font-semibold">Declared Value (USD)</span>
-                          </Label>
-                          <Input
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={formData.declared_value}
-                            onChange={(e) => setFormData({ ...formData, declared_value: e.target.value })}
-                            placeholder="e.g. 500"
-                            className={inputClass}
+                      {/* Description & Value */}
+                      <div className="grid md:grid-cols-2 gap-5">
+                        <div className="space-y-2">
+                          <Label className={labelBase}><FileText className="w-3.5 h-3.5 text-muted-foreground" /> Item Description</Label>
+                          <Textarea
+                            value={formData.description}
+                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                            placeholder="Describe the contents of your shipment"
+                            rows={3}
+                            className="min-h-[100px] resize-none rounded-xl border border-border/80 bg-white px-4 py-3 text-sm placeholder:text-muted-foreground/60 transition-all duration-200 hover:border-primary/30 focus:border-primary focus:ring-2 focus:ring-primary/15"
                           />
                         </div>
-                        <div className={sectionCardClass}>
-                          <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 transition-transform duration-200 group-hover:scale-105">
-                              <MessageSquare className="w-4 h-4 text-accent-foreground" />
-                            </div>
-                            <span className="font-semibold">Special Instructions</span>
-                          </Label>
-                          <Input
-                            value={formData.special_instructions}
-                            onChange={(e) => setFormData({ ...formData, special_instructions: e.target.value })}
-                            placeholder="e.g. Fragile, handle with care"
-                            className={inputClass}
-                          />
+                        <div className="space-y-5">
+                          <div className="space-y-2">
+                            <Label className={labelBase}><DollarSign className="w-3.5 h-3.5 text-muted-foreground" /> Declared Value (USD)</Label>
+                            <Input
+                              type="number" min="0" step="0.01"
+                              value={formData.declared_value}
+                              onChange={(e) => setFormData({ ...formData, declared_value: e.target.value })}
+                              placeholder="e.g. 500"
+                              className={inputBase}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className={labelBase}><MessageSquare className="w-3.5 h-3.5 text-muted-foreground" /> Special Instructions</Label>
+                            <Input
+                              value={formData.special_instructions}
+                              onChange={(e) => setFormData({ ...formData, special_instructions: e.target.value })}
+                              placeholder="e.g. Fragile, handle with care"
+                              className={inputBase}
+                            />
+                          </div>
                         </div>
                       </div>
 
-                      {/* Warehouse */}
-                      <div className={sectionCardClass}>
-                        <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent transition-transform duration-200 group-hover:scale-105">
-                            <Warehouse className="w-4 h-4 text-accent-foreground" />
+                      {/* Warehouse Selection */}
+                      <div className={sectionCard}>
+                        <div className="flex items-center gap-3">
+                          <div className={iconBox("bg-accent/10 text-accent")}>
+                            <Warehouse className="w-5 h-5" />
                           </div>
-                          <span className="font-semibold">Warehouse Location</span>
-                        </Label>
-                        <Select
-                          value={formData.warehouse_location}
-                          onValueChange={(value) => setFormData({ ...formData, warehouse_location: value })}
-                          disabled={shippingType === "import"}
-                        >
-                          <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
-                            <SelectValue placeholder="Select warehouse" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-card border-border">
-                            {availableWarehouses.map((wh) => (
-                              <SelectItem key={wh.id} value={wh.id}>
-                                <div className="flex items-center gap-2">
-                                  <Warehouse className="w-4 h-4 text-primary" />
-                                  <span>{wh.name}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                          <div>
+                            <p className="font-bold text-foreground">Warehouse</p>
+                            <p className="text-xs text-muted-foreground">
+                              {shippingType === "import" ? "Auto-selected for import" : "Select your preferred warehouse"}
+                            </p>
+                          </div>
+                        </div>
+                        {shippingType === "import" ? (
+                          <div className="flex items-center gap-3 rounded-xl bg-primary/[0.04] border border-primary/10 px-4 py-3">
+                            <span className="text-xl">🇳🇬</span>
+                            <div>
+                              <p className="text-sm font-semibold text-foreground">Nigeria Warehouse (Lagos)</p>
+                              <p className="text-xs text-muted-foreground">Auto-selected for import shipments</p>
+                            </div>
+                            <CheckCircle2 className="w-5 h-5 text-primary ml-auto" />
+                          </div>
+                        ) : (
+                          <div className="grid sm:grid-cols-3 gap-3">
+                            {availableWarehouses.map((wh) => {
+                              const isSelected = formData.warehouse_location === wh.id;
+                              return (
+                                <button
+                                  key={wh.id}
+                                  type="button"
+                                  onClick={() => setFormData({ ...formData, warehouse_location: wh.id })}
+                                  className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all duration-200 ${
+                                    isSelected
+                                      ? "border-primary bg-primary/[0.04] shadow-sm"
+                                      : "border-border/50 bg-white hover:border-primary/20"
+                                  }`}
+                                >
+                                  <span className="text-2xl">{wh.flag}</span>
+                                  <p className={`text-sm font-semibold ${isSelected ? "text-primary" : "text-foreground"}`}>{wh.name}</p>
+                                  <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
+                                    isSelected ? "border-primary bg-primary" : "border-border"
+                                  }`}>
+                                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
 
                       {/* Upload Documents */}
-                      <div className={sectionCardClass}>
-                        <Label className="flex items-center gap-2 text-muted-foreground mb-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 transition-transform duration-200 group-hover:scale-105">
-                            <Upload className="w-4 h-4 text-primary" />
+                      <div className={sectionCard}>
+                        <div className="flex items-center gap-3">
+                          <div className={iconBox("bg-primary/10 text-primary")}>
+                            <Upload className="w-5 h-5" />
                           </div>
-                          <span className="font-semibold">Upload Documents (Optional)</span>
-                        </Label>
-                        <p className="text-xs text-muted-foreground mb-3">
-                          Attach purchase receipts, package photos, or invoice documents for verification. Max 5 files.
-                        </p>
+                          <div>
+                            <p className="font-bold text-foreground">Documents (Optional)</p>
+                            <p className="text-xs text-muted-foreground">Attach receipts, photos, or invoices. Max 5 files.</p>
+                          </div>
+                        </div>
                         <input
                           ref={fileInputRef}
                           type="file"
@@ -864,221 +886,174 @@ const ShipmentCreationForm = () => {
                         <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
-                          className="inline-flex items-center gap-2 rounded-xl border border-dashed border-primary/40 bg-primary/5 px-4 py-2.5 text-sm font-semibold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary/10"
+                          className="inline-flex items-center gap-2 rounded-xl border-2 border-dashed border-primary/30 bg-primary/[0.02] px-5 py-3 text-sm font-semibold text-primary transition-all duration-200 hover:-translate-y-px hover:bg-primary/[0.06] hover:border-primary/50"
                         >
                           <Upload className="w-4 h-4" />
                           Choose Files
                         </button>
                         {uploadedFiles.length > 0 && (
-                          <div className="mt-3 space-y-2">
+                          <div className="space-y-2">
                             {uploadedFiles.map((file, idx) => (
-                              <div key={idx} className="flex items-center justify-between rounded-xl border border-border/70 bg-white px-3 py-2 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                <span className="text-foreground truncate max-w-[200px] sm:max-w-none">{file.name}</span>
-                                <button type="button" onClick={() => removeFile(idx)} className="text-destructive hover:text-destructive/80 text-xs font-semibold ml-2 shrink-0">Remove</button>
+                              <div key={idx} className="flex items-center justify-between rounded-xl border border-border/60 bg-muted/30 px-4 py-2.5 text-sm">
+                                <span className="text-foreground truncate max-w-[220px] sm:max-w-none">{file.name}</span>
+                                <button type="button" onClick={() => removeFile(idx)} className="text-destructive hover:text-destructive/80 ml-2 shrink-0">
+                                  <X className="w-4 h-4" />
+                                </button>
                               </div>
                             ))}
                           </div>
                         )}
                       </div>
 
-                      <div className={actionBarClass}>
+                      {/* Action Bar */}
+                      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
                         <button 
                           type="button" 
-                          onClick={() => setStep(1)}
-                          className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                          onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                          className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-border bg-white px-6 py-3 text-sm font-bold text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:text-primary active:scale-[0.98]"
                         >
+                          <ChevronLeft className="w-4 h-4" />
                           Back
                         </button>
                         <button 
                           type="button" 
                           disabled={!isStep2Complete}
-                          onClick={() => setStep(3)}
-                          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98]"
+                          onClick={() => { setStep(3); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 disabled:hover:translate-y-0 active:scale-[0.98]"
                         >
-                          Review
+                          Review Shipment
                           <ArrowRight className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
                   )}
 
-                  {/* Step 3: Review */}
+                  {/* ===== STEP 3: Review ===== */}
                   {step === 3 && (
-                    <div className={stepPanelClass}>
-                      <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-[0_12px_24px_rgba(6,16,67,0.16)]">
-                          <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
+                    <div className="space-y-6 animate-in fade-in-0 duration-300">
+                      <div className={sectionHeader}>
+                        <div className={iconBox("bg-primary text-white")}>
+                          <CheckCircle2 className="h-5 w-5" />
                         </div>
                         <div>
-                          <h3 className="text-lg font-bold text-foreground">Review your shipment</h3>
-                          <p className="text-sm text-muted-foreground">A final, polished overview before the shipment is created.</p>
+                          <h3 className="text-lg font-bold text-foreground">Review & Submit</h3>
+                          <p className="text-sm text-muted-foreground">Double-check everything before creating your shipment</p>
                         </div>
                       </div>
 
-                      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_300px]">
-                        <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10 sm:p-6">
-                          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                            <div className="min-w-0">
-                              <span className="inline-flex items-center rounded-full border border-primary/15 bg-white/80 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Ready for submission</span>
-                              <p className="mt-3 break-words text-base font-bold text-foreground sm:text-lg">{formData.origin_city}, {formData.origin_country} → {formData.destination_city}, {formData.destination_country}</p>
-                              <p className="mt-1 break-words text-sm leading-relaxed text-muted-foreground">{formData.receiver_name} is receiving this shipment via {formData.service_type.replace("-", " ")}.</p>
-                            </div>
-                            <div className="rounded-2xl bg-white/85 px-4 py-3 ring-1 ring-primary/10 sm:min-w-[190px]">
-                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">Estimated payment</p>
-                              <p className="mt-1 whitespace-nowrap text-2xl font-bold text-primary sm:text-3xl">{formatUsd(totalPrice ?? estimatedCost ?? 0)}</p>
-                              <p className="text-xs text-muted-foreground">Includes pickup only when prepaid</p>
-                            </div>
+                      {/* Route Summary */}
+                      <div className="rounded-2xl bg-gradient-to-br from-primary/[0.05] to-accent/[0.03] border border-primary/10 p-5 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                          <div>
+                            <span className="inline-flex items-center rounded-full bg-white/80 border border-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
+                              Ready to Submit
+                            </span>
+                            <p className="mt-3 text-lg font-bold text-foreground">
+                              {formData.origin_city}, {formData.origin_country} → {formData.destination_city}, {formData.destination_country}
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {formData.receiver_name} • {formData.service_type.replace("-", " ")} • {formData.weight} KG
+                            </p>
                           </div>
-
-                          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                            {[
-                              { label: "Weight", value: `${formData.weight} KG` },
-                              { label: "Service", value: formData.service_type.replace("-", " ") },
-                              { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "Not selected" },
-                            ].map((item) => (
-                              <div key={item.label} className="rounded-xl bg-white/80 p-4 ring-1 ring-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                                <p className="mt-1 break-words text-sm font-semibold capitalize text-foreground">{item.value}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="rounded-2xl bg-muted/[0.18] p-5 ring-1 ring-border/50">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Review checklist</p>
-                          <div className="mt-4 space-y-3 text-sm">
-                            {[
-                              "Route and warehouse details added",
-                              "Sender and receiver details captured",
-                              prepayPickup ? "Pickup fee prepaid with order" : "Pickup fee payable on collection",
-                              uploadedFiles.length > 0 ? `${uploadedFiles.length} supporting document(s) attached` : "No supporting documents attached",
-                            ].map((item) => (
-                              <div key={item} className="flex items-start gap-2 rounded-xl bg-white/80 px-3 py-2.5 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                                <span className="text-muted-foreground">{item}</span>
-                              </div>
-                            ))}
+                          <div className="rounded-xl bg-white/90 border border-primary/10 px-5 py-3 text-center sm:text-right">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Total</p>
+                            <p className="text-2xl sm:text-3xl font-bold text-primary mt-0.5">
+                              {formatUsd(totalPrice ?? estimatedCost ?? 0)}
+                            </p>
                           </div>
                         </div>
                       </div>
 
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className={sectionCardClass}>
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Sender</p>
-                          <p className="mt-2 text-base font-bold text-foreground">{formData.sender_name}</p>
-                          <p className="break-words text-sm text-muted-foreground">{formData.sender_phone}</p>
-                          {formData.sender_email && <p className="break-words text-sm text-muted-foreground">{formData.sender_email}</p>}
+                      {/* Detail Cards */}
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className={sectionCard}>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary">Sender</p>
+                          <div className="space-y-1">
+                            <p className="text-base font-bold text-foreground">{formData.sender_name}</p>
+                            <p className="text-sm text-muted-foreground">{formData.sender_phone}</p>
+                            {formData.sender_email && <p className="text-sm text-muted-foreground">{formData.sender_email}</p>}
+                          </div>
                         </div>
-                        <div className={sectionCardClass}>
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Receiver</p>
-                          <p className="mt-2 text-base font-bold text-foreground">{formData.receiver_name}</p>
-                          <p className="break-words text-sm text-muted-foreground">{formData.receiver_phone}</p>
-                          {formData.receiver_address && <p className="break-words text-sm leading-relaxed text-muted-foreground">{formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}</p>}
-                        </div>
-                      </div>
-
-                      <div className={sectionCardClass}>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Shipment details</p>
-                        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                          {[
-                            { label: "Origin", value: `${formData.origin_city}, ${formData.origin_country}` },
-                            { label: "Destination", value: `${formData.destination_city}, ${formData.destination_country}` },
-                            { label: "Service", value: formData.service_type.replace("-", " ") },
-                            { label: "Weight", value: `${formData.weight} KG` },
-                            { label: "Declared Value", value: formData.declared_value ? `$${parseFloat(formData.declared_value).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "—" },
-                            { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "—" },
-                          ].map((item) => (
-                            <div key={item.label} className="rounded-xl bg-white/80 p-3 ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">
-                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">{item.label}</p>
-                              <p className="mt-1 break-words text-sm font-semibold capitalize text-foreground">{item.value}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {(formData.description || formData.special_instructions || uploadedFiles.length > 0 || estimatedCost !== null) && (
-                        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-                          <div className="space-y-4">
-                            {formData.description && (
-                              <div className={sectionCardClass}>
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Description</p>
-                                <p className="mt-2 break-words text-sm leading-relaxed text-foreground">{formData.description}</p>
-                              </div>
-                            )}
-                            {formData.special_instructions && (
-                              <div className={sectionCardClass}>
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Special instructions</p>
-                                <p className="mt-2 break-words text-sm leading-relaxed text-foreground">{formData.special_instructions}</p>
-                              </div>
-                            )}
-                            {uploadedFiles.length > 0 && (
-                              <div className={sectionCardClass}>
-                                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Uploaded documents</p>
-                                <ul className="mt-3 space-y-2">
-                                  {uploadedFiles.map((f, i) => (
-                                    <li key={i} className="break-all rounded-xl bg-white/80 px-3 py-2 text-sm text-foreground ring-1 ring-border/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)]">{f.name}</li>
-                                  ))}
-                                </ul>
-                              </div>
+                        <div className={sectionCard}>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-accent">Receiver</p>
+                          <div className="space-y-1">
+                            <p className="text-base font-bold text-foreground">{formData.receiver_name}</p>
+                            <p className="text-sm text-muted-foreground">{formData.receiver_phone}</p>
+                            {formData.receiver_address && (
+                              <p className="text-sm text-muted-foreground">
+                                {formData.receiver_address}{formData.receiver_city ? `, ${formData.receiver_city}` : ""}
+                              </p>
                             )}
                           </div>
+                        </div>
+                      </div>
 
-                          {estimatedCost !== null && (
-                            <div className="rounded-2xl bg-[linear-gradient(180deg,rgba(6,16,67,0.05),rgba(223,81,1,0.035))] p-5 ring-1 ring-primary/10">
-                              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-primary">Pricing summary</p>
-                              <div className="mt-4 space-y-3">
-                                <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
-                                  <span>Shipping cost</span>
-                                  <span className="whitespace-nowrap">{formatUsd(estimatedCost)}</span>
-                                </div>
-                                <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
-                                  <span>Rate applied</span>
-                                  <span className="whitespace-nowrap">{formatUsd(matchedRate || 0)}/KG</span>
-                                </div>
-                                {prepayPickup ? (
-                                  <div className="flex items-start justify-between gap-3 text-sm text-muted-foreground">
-                                    <span>Pickup / Delivery fee</span>
-                                    <span className="whitespace-nowrap">{formatUsd(pickupFee)}</span>
-                                  </div>
-                                ) : (
-                                  <p className="text-xs text-muted-foreground">Pickup fee will be paid on collection.</p>
-                                )}
-                                <div className="rounded-xl bg-white/80 px-4 py-3 ring-1 ring-primary/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                                  <div className="flex items-center justify-between gap-3">
-                                    <span className="text-sm font-bold text-foreground">Total payment</span>
-                                    <span className="whitespace-nowrap text-xl font-bold text-primary sm:text-2xl">{formatUsd(totalPrice ?? estimatedCost)}</span>
-                                  </div>
-                                </div>
-                              </div>
+                      {/* Shipment Details Grid */}
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {[
+                          { label: "Origin", value: `${formData.origin_city}, ${formData.origin_country}` },
+                          { label: "Destination", value: `${formData.destination_city}, ${formData.destination_country}` },
+                          { label: "Service", value: formData.service_type.replace("-", " ") },
+                          { label: "Weight", value: `${formData.weight} KG` },
+                          { label: "Declared Value", value: formData.declared_value ? `$${parseFloat(formData.declared_value).toLocaleString("en-US", { minimumFractionDigits: 2 })}` : "—" },
+                          { label: "Warehouse", value: warehouseLocations.find(w => w.id === formData.warehouse_location)?.name || "—" },
+                        ].map((item) => (
+                          <div key={item.label} className="rounded-xl bg-muted/30 border border-border/40 p-3">
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                            <p className="mt-1 text-sm font-semibold capitalize text-foreground">{item.value}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Pricing Summary */}
+                      {estimatedCost !== null && (
+                        <div className="rounded-xl bg-muted/20 border border-border/40 p-4 space-y-2 text-sm">
+                          <div className="flex justify-between text-muted-foreground">
+                            <span>Shipping cost</span>
+                            <span>{formatUsd(estimatedCost)}</span>
+                          </div>
+                          <div className="flex justify-between text-muted-foreground">
+                            <span>Rate</span>
+                            <span>{formatUsd(matchedRate || 0)}/KG</span>
+                          </div>
+                          {prepayPickup && (
+                            <div className="flex justify-between text-muted-foreground">
+                              <span>Pickup fee</span>
+                              <span>{formatUsd(pickupFee)}</span>
                             </div>
                           )}
+                          <div className="border-t border-border/40 pt-2 flex justify-between items-center">
+                            <span className="font-bold text-foreground">Total</span>
+                            <span className="text-xl font-bold text-primary">{formatUsd(totalPrice ?? estimatedCost)}</span>
+                          </div>
                         </div>
                       )}
 
-                      <div className="flex items-start gap-3 rounded-xl bg-muted/[0.18] p-4 ring-1 ring-border/50">
-                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-                          <CheckCircle2 className="w-4 h-4 text-primary" />
-                        </div>
+                      {/* Terms */}
+                      <div className="flex items-start gap-3 rounded-xl bg-primary/[0.03] border border-primary/10 p-4">
+                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <p className="text-sm text-muted-foreground">
                           By submitting, you agree to our shipping terms. Your shipment will be created and you can proceed to payment from your dashboard.
                         </p>
                       </div>
 
-                      <div className={actionBarClass}>
+                      {/* Action Bar */}
+                      <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
                         <button 
                           type="button" 
-                          onClick={() => setStep(2)}
-                          className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-6 py-3 text-sm font-bold text-primary transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary hover:text-primary-foreground active:scale-[0.98] sm:w-auto"
+                          onClick={() => { setStep(2); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-border bg-white px-6 py-3 text-sm font-bold text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:text-primary active:scale-[0.98] sm:w-auto"
                         >
+                          <ChevronLeft className="w-4 h-4" />
                           Back
                         </button>
                         <button 
                           type="submit" 
                           disabled={isSubmitting}
-                          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-md transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-accent/90 disabled:opacity-50 active:scale-[0.98] sm:w-auto"
+                          className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30 disabled:opacity-50 active:scale-[0.98] sm:w-auto"
                         >
-                          {isSubmitting ? "Creating..." : "Create Shipment"}
-                          <ArrowRight className="w-4 h-4" />
+                          {isSubmitting ? "Creating Shipment..." : "Create Shipment"}
+                          {!isSubmitting && <ArrowRight className="w-4 h-4" />}
                         </button>
                       </div>
                     </div>
@@ -1090,35 +1065,35 @@ const ShipmentCreationForm = () => {
         </div>
       </section>
 
-      {/* Warehouse Locations Section */}
+      {/* Warehouse Locations */}
       <section className="section-padding bg-background">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-5 bg-primary/10 text-primary">
               <Warehouse className="w-4 h-4" />
               Warehouses
-            </span>
-            <h2 className="text-foreground mb-4">
+            </div>
+            <h2 className="text-foreground mb-3">
               Our <span className="text-primary">Warehouse Locations</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            <p className="text-muted-foreground text-base max-w-xl mx-auto">
               Ship your packages to any of our warehouse locations worldwide.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
             {warehouseAddresses.map((wh) => (
-              <div key={wh.name} className="group p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <wh.icon className="w-6 h-6 text-primary" />
+              <div key={wh.name} className="group p-6 rounded-2xl bg-white border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-3xl">{wh.flag}</span>
+                  <h3 className="font-bold text-lg text-foreground">{wh.name}</h3>
                 </div>
-                <h3 className="font-bold text-lg text-foreground mb-3">{wh.name}</h3>
                 <div className="space-y-1">
                   {wh.lines.map((line, i) => (
                     <p key={i} className="text-sm text-muted-foreground">{line}</p>
                   ))}
                   {wh.phone && (
-                    <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1">
-                      <Phone className="w-3 h-3" /> {wh.phone}
+                    <p className="text-sm text-muted-foreground mt-2 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5" /> {wh.phone}
                     </p>
                   )}
                 </div>
@@ -1128,31 +1103,36 @@ const ShipmentCreationForm = () => {
         </div>
       </section>
 
-      {/* How Shipping Works Section */}
-      <section className="section-padding bg-muted">
+      {/* How Shipping Works */}
+      <section className="section-padding bg-muted/50">
         <div className="section-container">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-6 bg-accent text-accent-foreground shadow-sm">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold mb-5 bg-accent/10 text-accent">
               <Truck className="w-4 h-4" />
-              Process
-            </span>
-            <h2 className="text-foreground mb-4">
-              How <span className="text-primary">Shipping Works</span>
+              How It Works
+            </div>
+            <h2 className="text-foreground mb-3">
+              Simple <span className="text-primary">5-Step Process</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              From booking to delivery in five simple steps.
+            <p className="text-muted-foreground text-base max-w-xl mx-auto">
+              From booking to delivery — here's how it works.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 max-w-6xl mx-auto">
             {shippingSteps.map((s) => {
               const StepIcon = s.icon;
               return (
-                <div key={s.num} className="group relative flex flex-col items-center text-center p-5 rounded-2xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                  <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                    <StepIcon className="w-6 h-6 text-primary-foreground" />
+                <div key={s.num} className="group relative flex flex-col items-center text-center p-5 rounded-2xl bg-white border border-border/50 hover:border-primary/20 hover:shadow-md transition-all duration-300">
+                  <div className="relative mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-105 transition-transform">
+                      <StepIcon className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white shadow-sm">
+                      {s.num}
+                    </span>
                   </div>
-                  <span className="text-xs font-bold text-primary mb-2">Step {s.num}</span>
-                  <p className="text-sm font-semibold text-foreground leading-snug">{s.title}</p>
+                  <p className="text-sm font-bold text-foreground mb-1">{s.title}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{s.description}</p>
                 </div>
               );
             })}
