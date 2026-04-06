@@ -296,24 +296,28 @@ const AdminUsers = () => {
                       </div>
                       <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Company</p>
-                        <p className="text-foreground truncate">{user.company_name || "N/A"}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Location</p>
-                        <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Balance</p>
-                        <p className="text-foreground font-medium">${(user.balance || 0).toFixed(2)}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Joined</p>
-                        <p className="text-foreground">{format(new Date(user.created_at), "MMM dd, yyyy")}</p>
-                      </div>
-                    </div>
+                     <div className="grid grid-cols-2 gap-2 text-sm">
+                       <div>
+                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Phone</p>
+                         <p className="text-foreground truncate">{user.phone || "N/A"}</p>
+                       </div>
+                       <div>
+                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Location</p>
+                         <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</p>
+                       </div>
+                       <div>
+                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Address</p>
+                         <p className="text-foreground truncate">{user.address || "N/A"}</p>
+                       </div>
+                       <div>
+                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Balance</p>
+                         <p className="text-foreground font-medium">${(user.balance || 0).toFixed(2)}</p>
+                       </div>
+                       <div>
+                         <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Joined</p>
+                         <p className="text-foreground">{format(new Date(user.created_at), "MMM dd, yyyy")}</p>
+                       </div>
+                     </div>
                     <div className="flex flex-wrap items-center gap-2 border-t border-border/50 pt-3">
                       <Select value={user.role} onValueChange={(v: "admin" | "customer") => handleRoleChange(user.user_id, v)}>
                         <SelectTrigger className="h-10 w-28 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
