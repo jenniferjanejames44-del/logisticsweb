@@ -317,6 +317,7 @@ const ShipmentCreationForm = () => {
       });
       setStep(1);
       setPrepayPickup(false);
+      setShippingType(null);
       setUploadedFiles([]);
       navigate("/dashboard/shipments");
     }
