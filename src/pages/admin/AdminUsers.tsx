@@ -20,7 +20,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,
   DialogTrigger, DialogFooter,
 } from "@/components/ui/dialog";
-import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound, Wallet } from "lucide-react";
+import { Search, UserCog, Trash2, Eye, Monitor, Smartphone, Tablet, Clock, MapPin, Mail, UserPlus, Loader2, KeyRound, Wallet, Phone, Home } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import AddFundsDialog from "@/components/wallet/AddFundsDialog";
@@ -33,6 +33,7 @@ interface UserWithRole {
   email: string | null;
   company_name: string | null;
   phone: string | null;
+  address: string | null;
   city: string | null;
   country: string | null;
   created_at: string;
