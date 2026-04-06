@@ -394,11 +394,12 @@ const AdminUsers = () => {
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Email</TableHead>
-                      <TableHead>Company</TableHead>
+                      <TableHead>Phone</TableHead>
                       <TableHead>Location</TableHead>
                       <TableHead>Role</TableHead>
                       <TableHead>Balance</TableHead>
                       <TableHead>Joined</TableHead>
+                      <TableHead>Profile</TableHead>
                       <TableHead>Activity</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
@@ -413,7 +414,12 @@ const AdminUsers = () => {
                             <span className="text-sm">{user.email || "N/A"}</span>
                           </div>
                         </TableCell>
-                        <TableCell>{user.company_name || "N/A"}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Phone className="w-4 h-4 text-muted-foreground" />
+                            <span className="text-sm">{user.phone || "N/A"}</span>
+                          </div>
+                        </TableCell>
                         <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</TableCell>
                         <TableCell><Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge></TableCell>
                         <TableCell>
