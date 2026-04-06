@@ -823,8 +823,9 @@ const ShipmentCreationForm = () => {
                         <Select
                           value={formData.warehouse_location}
                           onValueChange={(value) => setFormData({ ...formData, warehouse_location: value })}
+                          disabled={shippingType === "import"}
                         >
-                          <SelectTrigger className={inputClass}>
+                          <SelectTrigger className={`${inputClass} ${shippingType === "import" ? "opacity-70 cursor-not-allowed" : ""}`}>
                             <SelectValue placeholder="Select warehouse" />
                           </SelectTrigger>
                           <SelectContent className="bg-card border-border">
