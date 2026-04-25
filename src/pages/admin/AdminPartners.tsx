@@ -334,7 +334,11 @@ const AdminPartners = () => {
             <div className="space-y-3 text-sm">
               <Row label="Email" value={viewing.email} />
               <Row label="Phone" value={viewing.phone || "—"} />
-              <Row label="Country / City" value={`${viewing.country || "—"} / ${viewing.city || "—"}`} />
+              <Row label="Address" value={viewing.address || "—"} />
+              <Row label="City" value={viewing.city || "—"} />
+              <Row label="State / Region" value={viewing.state || "—"} />
+              <Row label="Country" value={viewing.country || "—"} />
+              <Row label="Zip / Postal" value={viewing.zip_code || "—"} />
               <Row label="Business" value={viewing.business_name || "—"} />
               <Row label="Social / Site" value={viewing.social_link || "—"} />
               <div>
@@ -349,6 +353,13 @@ const AdminPartners = () => {
               )}
               <Row label="Status" value={viewing.status} />
               <Row label="Referral code" value={viewing.referral_code || "— (assigned on approval)"} />
+              {viewing.referral_code && (
+                <Row
+                  label="Referral link"
+                  value={`https://www.raclogisticltd.com/auth?ref=${viewing.referral_code}`}
+                />
+              )}
+              <Row label="Date applied" value={new Date(viewing.created_at).toLocaleString()} />
               <div className="space-y-2 pt-2 border-t border-border/60">
                 <Label>Commission percentage</Label>
                 <div className="flex gap-2">
