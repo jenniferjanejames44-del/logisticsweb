@@ -499,6 +499,17 @@ const AdminShipments = () => {
                         </div>
                       </div>
 
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Truck className="w-3 h-3" strokeWidth={2.5} />Service</p>
+                          <p className="text-foreground font-medium mt-1 capitalize">{shipment.service_type?.replace(/_/g, " ") || "—"}</p>
+                        </div>
+                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><FileText className="w-3 h-3" strokeWidth={2.5} />Description</p>
+                          <p className="text-foreground text-xs mt-1">{shipment.description || <span className="text-muted-foreground italic">—</span>}</p>
+                        </div>
+                      </div>
+
                       {/* Contact Details - Always visible */}
                       <div className="space-y-3">
                         <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
