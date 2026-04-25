@@ -1450,7 +1450,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
           </div>
         </section>
 
-        {/* How Shipping Works */}
+        {/* How Shipping Works — public route only */}
+        {!embedded && (
         <section className="section-padding bg-background">
           <div className="section-container">
             <div className="mb-12 text-center">
@@ -1475,6 +1476,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             </div>
           </div>
         </section>
+        )}
       </main>
       {!embedded && <Footer />}
       {!embedded && <LiveChat />}
