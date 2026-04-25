@@ -224,33 +224,44 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
+    const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
     if (s === 0 && !method) e.method = "Please select a shipping method.";
     if (s === 1 && !deliveryType) e.deliveryType = "Please select a delivery type.";
     if (s === 2 && !warehouseId) e.warehouse = "Please select a warehouse.";
     if (s === 3) {
-      if (!senderName) e.senderName = "Required";
-      if (!senderPhone) e.senderPhone = "Required";
-      if (!senderCountry) e.senderCountry = "Required";
-      if (!senderCity) e.senderCity = "Required";
-      if (!senderAddress) e.senderAddress = "Required";
+      if (!senderName.trim()) e.senderName = "Full name is required";
+      if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
+      else if (!isPhone(senderPhone)) e.senderPhone = "Enter a valid phone number";
+      if (senderEmail.trim() && !isEmail(senderEmail)) e.senderEmail = "Enter a valid email";
+      if (!senderCountry) e.senderCountry = "Country is required";
+      if (!senderCity.trim()) e.senderCity = "City is required";
+      if (!senderAddress.trim()) e.senderAddress = "Street address is required";
     }
     if (s === 4) {
-      if (!receiverName) e.receiverName = "Required";
-      if (!receiverPhone) e.receiverPhone = "Required";
-      if (!receiverCountry) e.receiverCountry = "Required";
-      if (!receiverCity) e.receiverCity = "Required";
-      if (!receiverAddress) e.receiverAddress = "Required";
+      if (!receiverName.trim()) e.receiverName = "Full name is required";
+      if (!receiverPhone.trim()) e.receiverPhone = "Phone number is required";
+      else if (!isPhone(receiverPhone)) e.receiverPhone = "Enter a valid phone number";
+      if (receiverEmail.trim() && !isEmail(receiverEmail)) e.receiverEmail = "Enter a valid email";
+      if (!receiverCountry) e.receiverCountry = "Country is required";
+      if (!receiverCity.trim()) e.receiverCity = "City is required";
+      if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (s === 5) {
       items.forEach((it, idx) => {
-        if (!it.description) e[`item_${idx}_desc`] = "Required";
-        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Required";
-        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Required";
+        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
+        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
+        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
       });
     }
     setErrors(e);
     if (Object.keys(e).length > 0) {
-      toast({ title: "Please complete required fields", variant: "destructive" });
+      const count = Object.keys(e).length;
+      toast({
+        title: "Please complete required fields",
+        description: `${count} field${count > 1 ? "s" : ""} need${count > 1 ? "" : "s"} your attention.`,
+        variant: "destructive",
+      });
       return false;
     }
     return true;
@@ -543,7 +554,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Phone number" required error={errors.senderPhone}>
                 <Input value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} placeholder="+234…" />
               </Field>
-              <Field label="Email">
+              <Field label="Email" error={errors.senderEmail}>
                 <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
@@ -585,7 +596,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Phone number" required error={errors.receiverPhone}>
                 <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+234…" />
               </Field>
-              <Field label="Email">
+              <Field label="Email" error={errors.receiverEmail}>
                 <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
