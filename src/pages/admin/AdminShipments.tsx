@@ -12,7 +12,7 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler, Phone, MessageCircle, User } from "lucide-react";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler, Phone, MessageCircle, User, Truck, FileText } from "lucide-react";
 import { toast } from "sonner";
 import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -376,6 +376,18 @@ const AdminShipments = () => {
                             : "—"}
                         </p>
                       </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Truck className="w-3 h-3" strokeWidth={2.5} />Service</p>
+                        <p className="text-foreground font-medium capitalize">{shipment.service_type?.replace(/_/g, " ") || "—"}</p>
+                      </div>
+                      {shipment.description && (
+                        <div>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><FileText className="w-3 h-3" strokeWidth={2.5} />Description</p>
+                          <p className="text-foreground text-xs">{shipment.description}</p>
+                        </div>
+                      )}
                     </div>
                       {/* Contact Details - Always visible */}
                       <div className="space-y-2">
