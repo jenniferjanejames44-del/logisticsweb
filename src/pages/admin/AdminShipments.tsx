@@ -672,6 +672,96 @@ const AdminShipments = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Shipment Details Dialog */}
+        <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-border/70 bg-white/95 p-0 backdrop-blur-sm">
+            {detailsShipment && (() => {
+              const s = detailsShipment;
+              const vol = calcVolWeight(s.length_cm, s.width_cm, s.height_cm);
+              const chg = calcChargeableWeight(s.weight, s.length_cm, s.width_cm, s.height_cm);
+              return (
+                <>
+                  <DialogHeader className="border-b border-border/60 px-6 py-5 pr-16">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                        <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                      </div>
+                      <div>
+                        <DialogTitle className="font-mono text-foreground">{s.tracking_number}</DialogTitle>
+                        <DialogDescription>Created {new Date(s.created_at).toLocaleDateString()}</DialogDescription>
+                      </div>
+                      <div className="ml-auto flex items-center gap-2">
+                        <Badge className={`${getStatusColor(s.status)} font-semibold capitalize`}>{s.status.replace(/_/g, " ")}</Badge>
+                        <Badge variant="outline" className={`font-semibold capitalize ${s.payment_status === "paid" ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}`}>
+                          {s.payment_status}
+                        </Badge>
+                      </div>
+                    </div>
+                  </DialogHeader>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-5 px-6 py-5">
+                    <Section icon={Truck} title="Shipment Overview">
+                      <Row label="Service" value={s.service_type?.replace(/_/g, " ") || "—"} capitalize />
+                      <Row label="Origin" value={`${s.origin_city}, ${s.origin_country}`} />
+                      <Row label="Destination" value={`${s.destination_city}, ${s.destination_country}`} />
+                      <Row label="ETA" value={s.estimated_delivery ? new Date(s.estimated_delivery).toLocaleDateString() : "—"} />
+                      {s.description && <Row label="Description" value={s.description} />}
+                    </Section>
+                    <Section icon={Scale} title="Package Details">
+                      <Row label="Weight" value={`${s.weight} kg`} />
+                      <Row label="Dimensions" value={s.length_cm && s.width_cm && s.height_cm ? `${s.length_cm} × ${s.width_cm} × ${s.height_cm} cm` : "Not set"} />
+                      {vol > 0 && <Row label="Volumetric Wt" value={`${vol.toFixed(2)} kg`} />}
+                      {vol > 0 && <Row label="Chargeable Wt" value={`${chg.toFixed(2)} kg`} bold />}
+                    </Section>
+                    <Section icon={User} title="Sender Details">
+                      <Row label="Name" value={s.sender_name || "Not provided"} />
+                      <Row label="Phone" value={s.sender_phone || "Not provided"} />
+                      {s.sender_alt_phone && <Row label="Alt Phone" value={s.sender_alt_phone} />}
+                      <Row label="Address" value={s.sender_address || "Not provided"} />
+                      {s.sender_phone && (
+                        <div className="flex items-center gap-3 pt-1">
+                          <a href={`tel:${s.sender_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"><Phone className="w-3 h-3" />Call</a>
+                          <a href={`https://wa.me/${formatPhoneForWhatsApp(s.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium"><MessageCircle className="w-3 h-3" />WhatsApp</a>
+                        </div>
+                      )}
+                    </Section>
+                    <Section icon={User} title="Receiver Details">
+                      <Row label="Name" value={s.receiver_name || "Not provided"} />
+                      <Row label="Phone" value={s.receiver_phone || "Not provided"} />
+                      {s.receiver_alt_phone && <Row label="Alt Phone" value={s.receiver_alt_phone} />}
+                      <Row label="Address" value={s.receiver_address || "Not provided"} />
+                      {s.receiver_phone && (
+                        <div className="flex items-center gap-3 pt-1">
+                          <a href={`tel:${s.receiver_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"><Phone className="w-3 h-3" />Call</a>
+                          <a href={`https://wa.me/${formatPhoneForWhatsApp(s.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium"><MessageCircle className="w-3 h-3" />WhatsApp</a>
+                        </div>
+                      )}
+                    </Section>
+                    <Section icon={Warehouse} title="Warehouse Details">
+                      <Row label="Warehouse" value={s.warehouse_location || "Not assigned"} />
+                      <Row label="Pickup Prepaid" value={s.pickup_prepaid ? "Yes" : "No"} />
+                    </Section>
+                    <Section icon={CreditCard} title="Payment Details">
+                      <Row label="Status" value={s.payment_status} capitalize />
+                      <Row label="Price" value={s.price !== null ? `$${Number(s.price).toLocaleString()}` : "Not set"} bold={s.price !== null} />
+                    </Section>
+                  </div>
+                  <DialogFooter className="border-t border-border/60 px-6 py-4 gap-2 sm:justify-between">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Button variant="dashAccent" size="sm" onClick={() => { setDetailsOpen(false); openPriceDialog(s); }}>
+                        <DollarSign className="w-3.5 h-3.5 mr-1.5" />{s.price !== null ? "Edit Price" : "Set Price"}
+                      </Button>
+                      <Button variant="dashOutline" size="sm" onClick={() => { setDetailsOpen(false); openDimensionDialog(s); }}>
+                        <Ruler className="w-3.5 h-3.5 mr-1.5" />Edit Dimensions
+                      </Button>
+                    </div>
+                    <Button variant="outline" onClick={() => setDetailsOpen(false)}>Close</Button>
+                  </DialogFooter>
+                </>
+              );
+            })()}
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );
