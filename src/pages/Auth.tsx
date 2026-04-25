@@ -25,7 +25,9 @@ const AuthForm = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
+  const [stateRegion, setStateRegion] = useState("");
   const [country, setCountry] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
@@ -104,7 +106,9 @@ const AuthForm = () => {
           phone: phone.trim(),
           address: address.trim(),
           city: city.trim(),
+          state: stateRegion.trim(),
           country: country.trim(),
+          company_name: companyName.trim(),
         });
         if (error) throw error;
         setShowVerificationMessage(true);
@@ -384,9 +388,22 @@ const AuthForm = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
+                          <Label htmlFor="state" className="text-sm font-medium">State / Region</Label>
+                          <Input id="state" type="text" placeholder="Lagos State" value={stateRegion}
+                            onChange={(e) => setStateRegion(e.target.value)} className="h-11 rounded-lg" />
+                        </div>
+                        <div className="space-y-2">
                           <Label htmlFor="country" className="text-sm font-medium">Country</Label>
                           <Input id="country" type="text" placeholder="Nigeria" value={country}
                             onChange={(e) => setCountry(e.target.value)} className="h-11 rounded-lg" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="company" className="text-sm font-medium">Company (optional)</Label>
+                          <div className="relative">
+                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                            <Input id="company" type="text" placeholder="Acme Inc." value={companyName}
+                              onChange={(e) => setCompanyName(e.target.value)} className="h-11 rounded-lg pl-10" />
+                          </div>
                         </div>
                       </div>
                     </>

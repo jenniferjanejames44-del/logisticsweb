@@ -35,6 +35,7 @@ interface UserWithRole {
   phone: string | null;
   address: string | null;
   city: string | null;
+  state: string | null;
   country: string | null;
   created_at: string;
   role: string;
@@ -72,6 +73,35 @@ const AdminUsers = () => {
   const [addFundsUserName, setAddFundsUserName] = useState("");
   const isMobile = useIsMobile();
   const [viewProfileUser, setViewProfileUser] = useState<UserWithRole | null>(null);
+  const [profileExtras, setProfileExtras] = useState<{ shipments: number; payments: number; paidAmount: number } | null>(null);
+
+  useEffect(() => {
+    if (!viewProfileUser) {
+      setProfileExtras(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [{ data: ships }, { data: pays }] = await Promise.all([
+          supabase.from("shipments").select("id").eq("user_id", viewProfileUser.user_id),
+          supabase.from("payments").select("amount, status").eq("user_id", viewProfileUser.user_id),
+        ]);
+        if (cancelled) return;
+        const paidAmount = (pays || [])
+          .filter((p: any) => p.status === "completed" || p.status === "success" || p.status === "paid")
+          .reduce((s: number, p: any) => s + Number(p.amount || 0), 0);
+        setProfileExtras({
+          shipments: (ships || []).length,
+          payments: (pays || []).length,
+          paidAmount,
+        });
+      } catch (e) {
+        if (!cancelled) setProfileExtras({ shipments: 0, payments: 0, paidAmount: 0 });
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [viewProfileUser]);
 
   const fetchUsers = async () => {
     try {
@@ -291,23 +321,23 @@ const AdminUsers = () => {
                   <div key={user.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
-                        <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user.email || "N/A"}</p>
+                        <p className="font-medium text-foreground truncate">{user.full_name || "Not provided"}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user.email || "Not provided"}</p>
                       </div>
                       <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
                     </div>
                      <div className="grid grid-cols-2 gap-2 text-sm">
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Phone</p>
-                         <p className="text-foreground truncate">{user.phone || "N/A"}</p>
+                         <p className="text-foreground truncate">{user.phone || "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Location</p>
-                         <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</p>
+                         <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Address</p>
-                         <p className="text-foreground truncate">{user.address || "N/A"}</p>
+                         <p className="text-foreground truncate">{user.address || "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Balance</p>
@@ -411,20 +441,20 @@ const AdminUsers = () => {
                   <TableBody>
                     {filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.full_name || "N/A"}</TableCell>
+                        <TableCell className="font-medium">{user.full_name || "Not provided"}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Mail className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{user.email || "N/A"}</span>
+                            <span className="text-sm">{user.email || "Not provided"}</span>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Phone className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{user.phone || "N/A"}</span>
+                            <span className="text-sm">{user.phone || "Not provided"}</span>
                           </div>
                         </TableCell>
-                        <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</TableCell>
+                        <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "Not provided"}</TableCell>
                         <TableCell><Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge></TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
@@ -556,7 +586,7 @@ const AdminUsers = () => {
 
         {/* User Profile Detail Dialog */}
         <Dialog open={!!viewProfileUser} onOpenChange={(open) => !open && setViewProfileUser(null)}>
-          <DialogContent className="sm:max-w-md rounded-2xl border border-border/70 bg-background p-0">
+          <DialogContent className="sm:max-w-lg rounded-2xl border border-border/70 bg-background p-0 max-h-[90vh] overflow-y-auto">
             <DialogHeader className="border-b border-border/60 px-6 py-5">
               <DialogTitle className="text-foreground">User Details</DialogTitle>
               <DialogDescription>{viewProfileUser?.full_name || viewProfileUser?.email}</DialogDescription>
@@ -566,37 +596,41 @@ const AdminUsers = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Full Name</p>
-                    <p className="text-sm font-medium text-foreground">{viewProfileUser.full_name || "N/A"}</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.full_name || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Email</p>
-                    <p className="text-sm font-medium text-foreground">{viewProfileUser.email || "N/A"}</p>
+                    <p className="text-sm font-medium text-foreground break-all">{viewProfileUser.email || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Phone</p>
                     <div className="flex items-center gap-1.5">
                       <Phone className="w-3.5 h-3.5 text-primary" />
-                      <p className="text-sm font-medium text-foreground">{viewProfileUser.phone || "N/A"}</p>
+                      <p className="text-sm font-medium text-foreground">{viewProfileUser.phone || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Company</p>
-                    <p className="text-sm font-medium text-foreground">{viewProfileUser.company_name || "N/A"}</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.company_name || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Address</p>
                     <div className="flex items-start gap-1.5">
                       <Home className="w-3.5 h-3.5 text-primary mt-0.5" />
-                      <p className="text-sm font-medium text-foreground">{viewProfileUser.address || "N/A"}</p>
+                      <p className="text-sm font-medium text-foreground">{viewProfileUser.address || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">City</p>
-                    <p className="text-sm font-medium text-foreground">{viewProfileUser.city || "N/A"}</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.city || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">State / Region</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.state || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Country</p>
-                    <p className="text-sm font-medium text-foreground">{viewProfileUser.country || "N/A"}</p>
+                    <p className="text-sm font-medium text-foreground">{viewProfileUser.country || <span className="text-muted-foreground italic font-normal">Not provided</span>}</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Role</p>
@@ -605,6 +639,20 @@ const AdminUsers = () => {
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Joined</p>
                     <p className="text-sm font-medium text-foreground">{format(new Date(viewProfileUser.created_at), "MMM dd, yyyy")}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3 rounded-xl border border-border/60 bg-muted/[0.18] p-4">
+                  <div className="text-center">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Shipments</p>
+                    <p className="text-lg font-bold text-foreground mt-0.5">{profileExtras?.shipments ?? "—"}</p>
+                  </div>
+                  <div className="text-center border-x border-border/40">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Payments</p>
+                    <p className="text-lg font-bold text-foreground mt-0.5">{profileExtras?.payments ?? "—"}</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Paid</p>
+                    <p className="text-lg font-bold text-primary mt-0.5">${(profileExtras?.paidAmount ?? 0).toLocaleString()}</p>
                   </div>
                 </div>
                 {viewProfileUser.phone && (
