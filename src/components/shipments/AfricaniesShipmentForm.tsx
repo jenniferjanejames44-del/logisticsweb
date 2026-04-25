@@ -554,7 +554,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Phone number" required error={errors.senderPhone}>
                 <Input value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} placeholder="+234…" />
               </Field>
-              <Field label="Email">
+              <Field label="Email" error={errors.senderEmail}>
                 <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
@@ -596,7 +596,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Phone number" required error={errors.receiverPhone}>
                 <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+234…" />
               </Field>
-              <Field label="Email">
+              <Field label="Email" error={errors.receiverEmail}>
                 <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
