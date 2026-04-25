@@ -12,7 +12,10 @@ import {
 import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler, Phone, MessageCircle, User, Truck, FileText, Warehouse, CreditCard } from "lucide-react";
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
+import { Search, Package, Trash2, DollarSign, Loader2, MapPin, Scale, Ruler, Phone, MessageCircle, User, Truck, FileText, Warehouse, CreditCard, Eye, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
