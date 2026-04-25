@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { Handshake, Copy, ExternalLink, Users, CheckCircle2, Clock, Wallet, ArrowRight } from "lucide-react";
+import { Handshake, Copy, ExternalLink, Users, CheckCircle2, Clock, Wallet, ArrowRight, Share2, Mail, Send, Facebook, Twitter, MessageCircle } from "lucide-react";
 
 interface PartnerRecord {
   id: string;
@@ -81,6 +81,68 @@ const Partner = () => {
   const copy = (val: string, label: string) => {
     navigator.clipboard.writeText(val);
     toast.success(`${label} copied`);
+  };
+
+  const shareMessage = partner?.referral_code
+    ? `Ship smarter with RAC Logistics! Use my referral link to sign up and get started: ${referralLink}`
+    : "";
+
+  const openShare = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer,width=600,height=600");
+  };
+
+  const shareTargets = [
+    {
+      key: "whatsapp",
+      label: "WhatsApp",
+      icon: MessageCircle,
+      className: "bg-[#25D366] hover:bg-[#1faa53] text-white border-transparent",
+      url: () => `https://wa.me/?text=${encodeURIComponent(shareMessage)}`,
+    },
+    {
+      key: "telegram",
+      label: "Telegram",
+      icon: Send,
+      className: "bg-[#229ED9] hover:bg-[#1b86b8] text-white border-transparent",
+      url: () => `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent("Ship smarter with RAC Logistics!")}`,
+    },
+    {
+      key: "twitter",
+      label: "X / Twitter",
+      icon: Twitter,
+      className: "bg-foreground hover:bg-foreground/90 text-background border-transparent",
+      url: () => `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`,
+    },
+    {
+      key: "facebook",
+      label: "Facebook",
+      icon: Facebook,
+      className: "bg-[#1877F2] hover:bg-[#145fc5] text-white border-transparent",
+      url: () => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`,
+    },
+    {
+      key: "email",
+      label: "Email",
+      icon: Mail,
+      className: "bg-primary hover:bg-primary/90 text-primary-foreground border-transparent",
+      url: () => `mailto:?subject=${encodeURIComponent("Try RAC Logistics")}&body=${encodeURIComponent(shareMessage)}`,
+    },
+  ];
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "RAC Logistics — Partner referral",
+          text: "Ship smarter with RAC Logistics!",
+          url: referralLink,
+        });
+      } catch {
+        /* user cancelled */
+      }
+    } else {
+      copy(referralLink, "Link");
+    }
   };
 
   const totalReferrals = referrals.length;
@@ -184,6 +246,32 @@ const Partner = () => {
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
                   Anyone who signs up through this link is permanently linked to your account.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <div className="flex items-center justify-between gap-2">
+                  <label className="text-xs font-medium text-muted-foreground">Share with one tap</label>
+                  <Button variant="ghost" size="sm" onClick={handleNativeShare} className="h-8 text-xs">
+                    <Share2 className="w-3.5 h-3.5 mr-1.5" /> More
+                  </Button>
+                </div>
+                <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                  {shareTargets.map((t) => (
+                    <Button
+                      key={t.key}
+                      type="button"
+                      variant="outline"
+                      onClick={() => openShare(t.url())}
+                      className={`justify-center gap-2 ${t.className}`}
+                    >
+                      <t.icon className="w-4 h-4" />
+                      <span className="text-sm font-medium">{t.label}</span>
+                    </Button>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Tap a channel to send your referral link with a ready-made message.
                 </p>
               </div>
             </CardContent>
