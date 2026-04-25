@@ -99,6 +99,7 @@ const AdminInvoices = () => {
 
   const handleDownload = async (invoice: Invoice) => {
     try {
+      setSelectedInvoice(invoice);
       const { data, error } = await supabase.functions.invoke("generate-invoice-pdf", { body: { invoice_id: invoice.id } });
       if (error) throw error;
       const filePath = data.file_path || `${invoice.user_id}/${invoice.invoice_number}.html`;
