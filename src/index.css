@@ -159,7 +159,10 @@
   /* Headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', 'Inter', sans-serif;
-    color: hsl(var(--primary));
+    /* Inherit color from parent so headings work on both light and dark sections.
+       Light/default sections inherit body's --foreground; dark hero sections that
+       set text-primary-foreground will render white headings. */
+    color: inherit;
     text-rendering: optimizeLegibility;
     letter-spacing: -0.025em;
   }
