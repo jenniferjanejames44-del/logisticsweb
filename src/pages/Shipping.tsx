@@ -628,7 +628,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><User className="w-4 h-4 text-primary" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Sender Details</h3><p className="text-xs text-muted-foreground">Who is sending this package?</p></div>
                       </div>
-                      {showStepValidation && !isStep1Complete && (
+                      {!embedded && showStepValidation && !isStep1Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -697,7 +697,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Send className="w-4 h-4 text-primary" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Receiver Details</h3><p className="text-xs text-muted-foreground">Who will receive this package?</p></div>
                       </div>
-                      {showStepValidation && !isStep2Complete && (
+                      {!embedded && showStepValidation && !isStep2Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -776,7 +776,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/60"><Package className="w-4 h-4 text-accent-foreground" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Package Details</h3><p className="text-xs text-muted-foreground">What are you shipping?</p></div>
                       </div>
-                      {showStepValidation && !isStep3Complete && (
+                      {!embedded && showStepValidation && !isStep3Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -909,7 +909,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                         <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
                       </div>
 
-                      {showStepValidation && !isStep4Complete && (
+                      {!embedded && showStepValidation && !isStep4Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
