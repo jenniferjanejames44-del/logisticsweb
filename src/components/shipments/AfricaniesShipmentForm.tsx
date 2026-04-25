@@ -293,6 +293,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const desc = [
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
         selectedWarehouse ? `Warehouse: ${selectedWarehouse.name} (${selectedWarehouse.country})` : null,
+        selectedPackaging ? `Packaging: ${selectedPackaging.name} ($${packagingPrice.toFixed(2)})` : null,
         `Items: ${itemLines.join("; ")}`,
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
@@ -308,7 +309,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         status: "shipment_created",
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
-        price: breakdown?.total || null,
+          price: breakdown ? grandTotal : null,
         warehouse_location: selectedWarehouse?.country || null,
           pickup_prepaid: false,
         description: desc,
