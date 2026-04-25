@@ -161,30 +161,28 @@ const Shipments = () => {
       title="Shipments"
       description="Manage and track all your shipments"
       action={
-        <Button variant="default" size="sm" asChild className="h-9 text-[13px]">
+        <Button asChild className="h-10 px-4 text-sm bg-accent hover:bg-accent/90 text-white rounded-lg">
           <a href="/shipping">
-            <Plus className="w-3.5 h-3.5" />
+            <Plus className="w-4 h-4" />
             New Shipment
           </a>
         </Button>
       }
     >
       {/* Wallet Balance Bar */}
-      <Card className="mb-5 bg-primary border-0">
-        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
-              <Wallet className="w-4 h-4 text-white" />
+      <Card className="mb-6 bg-primary border-0 rounded-xl">
+        <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
+              <Wallet className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-[11px] font-medium text-white/50 uppercase tracking-wide">Wallet Balance</p>
-              <p className="text-lg font-bold text-white sm:text-xl">{formatConverted(balance, "NGN")}</p>
+              <p className="text-xs font-medium text-white/60 uppercase tracking-wide">Wallet Balance</p>
+              <p className="mt-0.5 text-xl font-bold text-white sm:text-2xl">{formatConverted(balance, "NGN")}</p>
             </div>
           </div>
           <Button
-            variant="secondary"
-            size="sm"
-            className="bg-white/15 text-white border-0 hover:bg-white/25 h-8 text-[12px]"
+            className="bg-white text-primary hover:bg-white/90 border-0 h-10 px-4 text-sm font-semibold rounded-lg"
             onClick={() => window.location.href = "/dashboard/wallet"}
           >
             Manage Wallet
@@ -193,18 +191,18 @@ const Shipments = () => {
       </Card>
 
       {/* Actions Bar */}
-      <div className="mb-5 flex flex-col gap-3 sm:flex-row">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search tracking or destination..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-10 pl-9 text-[13px] border-border/60"
+            className="h-11 pl-10 text-sm border-border/60 rounded-lg"
           />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px] h-10 text-[13px] border-border/60">
+          <SelectTrigger className="w-full sm:w-[200px] h-11 text-sm border-border/60 rounded-lg">
             <SelectValue placeholder="Filter status" />
           </SelectTrigger>
           <SelectContent>
@@ -224,56 +222,56 @@ const Shipments = () => {
 
       {/* Shipments List */}
       {filteredShipments.length > 0 ? (
-        <div className="grid gap-2.5">
+        <div className="grid gap-3">
           {filteredShipments.map((shipment) => (
-            <Card key={shipment.id} className="border-border/50 transition-all duration-200 hover:shadow-sm hover:border-border">
-              <CardContent className="p-4 sm:p-5">
-                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="flex items-start gap-3 min-w-0 flex-1">
-                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary/6">
-                      <Package className="w-4 h-4 text-primary" />
+            <Card key={shipment.id} className="rounded-xl border-border/60 transition-all duration-200 hover:shadow-md hover:border-accent/30">
+              <CardContent className="p-5 sm:p-6">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="flex items-start gap-3.5 min-w-0 flex-1">
+                    <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-primary/8">
+                      <Package className="w-5 h-5 text-primary" />
                     </div>
-                    <div className="min-w-0 flex-1 space-y-1">
+                    <div className="min-w-0 flex-1 space-y-1.5">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-[13px] font-semibold text-foreground">{shipment.tracking_number || "Pending"}</h3>
+                        <h3 className="text-sm font-bold text-foreground">{shipment.tracking_number || "Pending"}</h3>
                         <StatusBadge status={shipment.status} size="md" />
                       </div>
-                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted-foreground">
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
+                          <MapPin className="w-3.5 h-3.5" />
                           {shipment.origin_country} → {shipment.destination_country}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Package className="w-3 h-3" />
+                          <Package className="w-3.5 h-3.5" />
                           {shipment.weight} KG
                         </span>
                         {shipment.estimated_delivery && (
                           <span className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
+                            <Calendar className="w-3.5 h-3.5" />
                             Est: {new Date(shipment.estimated_delivery).toLocaleDateString()}
                           </span>
                         )}
                       </div>
                       {/* Contact summary */}
                       {(shipment.sender_phone || shipment.receiver_phone) && (
-                        <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-muted-foreground">
+                        <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
                           {shipment.sender_phone && (
                             <span className="flex items-center gap-1">
-                              <Phone className="w-3 h-3" />
+                              <Phone className="w-3.5 h-3.5" />
                               Sender: <a href={`tel:${shipment.sender_phone}`} className="text-primary hover:underline">{shipment.sender_phone}</a>
-                              <a href={`https://wa.me/${formatPhoneWA(shipment.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3 h-3 inline" /></a>
+                              <a href={`https://wa.me/${formatPhoneWA(shipment.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3.5 h-3.5 inline" /></a>
                             </span>
                           )}
                           {shipment.receiver_phone && (
                             <span className="flex items-center gap-1">
-                              <Phone className="w-3 h-3" />
+                              <Phone className="w-3.5 h-3.5" />
                               Receiver: <a href={`tel:${shipment.receiver_phone}`} className="text-primary hover:underline">{shipment.receiver_phone}</a>
-                              <a href={`https://wa.me/${formatPhoneWA(shipment.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3 h-3 inline" /></a>
+                              <a href={`https://wa.me/${formatPhoneWA(shipment.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline ml-1"><MessageCircle className="w-3.5 h-3.5 inline" /></a>
                             </span>
                           )}
                         </div>
                       )}
-                      <p className="text-[10px] text-muted-foreground/70">
+                      <p className="text-[11px] text-muted-foreground/80">
                         Created {new Date(shipment.created_at).toLocaleDateString()}
                         <span className="ml-2 capitalize">{shipment.service_type.replace("-", " ")}</span>
                       </p>
@@ -281,22 +279,22 @@ const Shipments = () => {
                   </div>
 
                   {/* Price + Action */}
-                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-1.5 flex-shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-border/30 lg:min-w-[140px]">
+                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-2 flex-shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-border/40 lg:min-w-[150px]">
                     {shipment.price !== null ? (
-                      <p className="text-sm font-bold text-foreground">
+                      <p className="text-base font-bold text-foreground">
                         {shipment.invoices?.[0]
                           ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
                           : formatUsd(Number(shipment.price))}
                       </p>
                     ) : (
-                      <Badge variant="secondary" className="text-[10px]">Price Pending</Badge>
+                      <Badge variant="secondary" className="text-[11px]">Price Pending</Badge>
                     )}
                     {shipment.price !== null && (
                       shipment.payment_status === "paid" ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 text-[10px]">Paid</Badge>
+                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs px-2.5 py-1">Paid</Badge>
                       ) : (
-                        <Button variant="default" size="sm" onClick={() => openPaymentDialog(shipment)} className="h-7 text-[11px] px-3">
-                          <DollarSign className="w-3 h-3" />
+                        <Button onClick={() => openPaymentDialog(shipment)} className="h-9 text-xs px-4 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold">
+                          <DollarSign className="w-3.5 h-3.5" />
                           Pay Now
                         </Button>
                       )
