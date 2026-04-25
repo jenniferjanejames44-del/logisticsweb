@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp } from "lucide-react";
+import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp, FileDown, Circle } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -30,6 +30,7 @@ interface Invoice {
   payment_reference: string | null;
   pdf_url: string | null;
   created_at: string;
+  paid_at: string | null;
   shipments: { tracking_number: string } | null;
   profiles: { full_name: string | null; email: string | null } | null;
 }
@@ -98,6 +99,7 @@ const AdminInvoices = () => {
 
   const handleDownload = async (invoice: Invoice) => {
     try {
+      setSelectedInvoice(invoice);
       const { data, error } = await supabase.functions.invoke("generate-invoice-pdf", { body: { invoice_id: invoice.id } });
       if (error) throw error;
       const filePath = data.file_path || `${invoice.user_id}/${invoice.invoice_number}.html`;
@@ -112,6 +114,56 @@ const AdminInvoices = () => {
   };
 
   const handlePrint = () => { iframeRef.current?.contentWindow?.print(); };
+
+  const handleExportCsv = () => {
+    if (filtered.length === 0) {
+      toast.error("No invoices to export");
+      return;
+    }
+    const headers = ["Invoice #", "Customer", "Email", "Tracking #", "Amount", "Status", "Due Date", "Paid At", "Reference", "Created"];
+    const escape = (val: unknown) => {
+      const s = val === null || val === undefined ? "" : String(val);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = filtered.map((i) => [
+      i.invoice_number,
+      i.profiles?.full_name || "",
+      i.profiles?.email || "",
+      i.shipments?.tracking_number || "",
+      Number(i.amount).toFixed(2),
+      i.status,
+      i.due_date ? new Date(i.due_date).toISOString().slice(0, 10) : "",
+      i.paid_at ? new Date(i.paid_at).toISOString() : "",
+      i.payment_reference || "",
+      new Date(i.created_at).toISOString(),
+    ].map(escape).join(","));
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `invoices-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${filtered.length} invoice${filtered.length === 1 ? "" : "s"}`);
+  };
+
+  const buildTimeline = (invoice: Invoice) => {
+    const now = new Date();
+    const created = new Date(invoice.created_at);
+    const due = invoice.due_date ? new Date(invoice.due_date) : null;
+    const paid = invoice.paid_at ? new Date(invoice.paid_at) : null;
+    const isOverdue = invoice.status === "overdue" || (invoice.status === "unpaid" && due && due < now);
+    const events: Array<{ label: string; date: Date | null; state: "done" | "current" | "upcoming" | "alert"; description: string }> = [
+      { label: "Invoice Created", date: created, state: "done", description: "Invoice generated and sent to customer." },
+      { label: "Awaiting Payment", date: null, state: invoice.status === "unpaid" && !isOverdue ? "current" : invoice.status === "paid" ? "done" : "done", description: "Customer notified, payment pending." },
+      { label: isOverdue ? "Marked Overdue" : "Due Date", date: due, state: isOverdue ? "alert" : invoice.status === "paid" ? "done" : "upcoming", description: isOverdue ? "Payment past due — follow up required." : "Expected payment date." },
+      { label: "Payment Received", date: paid, state: invoice.status === "paid" ? "done" : "upcoming", description: invoice.status === "paid" ? `Reference: ${invoice.payment_reference || "—"}` : "Awaiting confirmation." },
+    ];
+    return events;
+  };
 
   const filtered = invoices.filter(i => {
     const matchesSearch =
@@ -177,6 +229,15 @@ const AdminInvoices = () => {
                     <SelectItem value="overdue">Overdue</SelectItem>
                   </SelectContent>
                 </Select>
+                <Button
+                  variant="outline"
+                  className="h-9 gap-1.5 rounded-lg border-border/80 bg-white text-sm"
+                  onClick={handleExportCsv}
+                  disabled={loading || filtered.length === 0}
+                >
+                  <FileDown className="w-4 h-4" />
+                  Export CSV
+                </Button>
               </div>
             </div>
           </CardHeader>
@@ -312,8 +373,46 @@ const AdminInvoices = () => {
                 </Button>
               </div>
             </DialogHeader>
-            <div className="flex-1 overflow-hidden px-4 sm:px-6 pb-4 sm:pb-6">
-              <iframe ref={iframeRef} srcDoc={invoiceHtml || ""} className="w-full h-full border border-border rounded-lg" title="Invoice Preview" sandbox="allow-same-origin allow-scripts" />
+            <div className="flex-1 overflow-y-auto px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
+              <div className="h-[55vh] min-h-[400px]">
+                <iframe ref={iframeRef} srcDoc={invoiceHtml || ""} className="w-full h-full border border-border rounded-lg" title="Invoice Preview" sandbox="allow-same-origin allow-scripts" />
+              </div>
+              {selectedInvoice && (
+                <div className="rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
+                  <div className="mb-4 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <h3 className="text-sm font-semibold text-foreground">Status Timeline</h3>
+                    <span className="ml-2 text-[11px] uppercase tracking-wider text-muted-foreground">{selectedInvoice.invoice_number}</span>
+                  </div>
+                  <ol className="relative space-y-4 border-l-2 border-border/60 pl-5">
+                    {buildTimeline(selectedInvoice).map((event, idx) => {
+                      const dotColor =
+                        event.state === "done" ? "bg-success border-success" :
+                        event.state === "current" ? "bg-primary border-primary animate-pulse" :
+                        event.state === "alert" ? "bg-destructive border-destructive" :
+                        "bg-muted border-border";
+                      const labelColor =
+                        event.state === "alert" ? "text-destructive" :
+                        event.state === "current" ? "text-primary" :
+                        "text-foreground";
+                      return (
+                        <li key={idx} className="relative">
+                          <span className={`absolute -left-[27px] top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 ${dotColor}`}>
+                            <Circle className="h-1 w-1 opacity-0" />
+                          </span>
+                          <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                            <p className={`text-sm font-semibold ${labelColor}`}>{event.label}</p>
+                            <p className="text-[11px] tabular-nums text-muted-foreground">
+                              {event.date ? event.date.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "—"}
+                            </p>
+                          </div>
+                          <p className="mt-0.5 text-xs text-muted-foreground">{event.description}</p>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+              )}
             </div>
           </DialogContent>
         </Dialog>
