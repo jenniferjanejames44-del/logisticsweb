@@ -97,7 +97,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation - visible at lg (1024px+) like ShipBob */}
-        <nav className="hidden md:flex items-center gap-1 xl:gap-2">
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -168,7 +168,7 @@ const Header = () => {
         </nav>
 
         {/* CTA Buttons - desktop only (lg+) */}
-        <div className="hidden md:flex items-center gap-2.5">
+        <div className="hidden lg:flex items-center gap-2.5">
           {user ? (
             <>
               {isAdmin && (
@@ -209,7 +209,7 @@ const Header = () => {
         </div>
 
         {/* Tablet + Mobile: CTA button + Hamburger (ShipBob pattern) */}
-        <div className="flex items-center gap-2.5 md:hidden">
+        <div className="flex items-center gap-2.5 lg:hidden">
           {/* Visible CTA on tablet like ShipBob */}
           {!user ? (
             <Button asChild variant="navCta" size="sm" className="hidden sm:inline-flex font-bold whitespace-nowrap px-4 text-sm">
@@ -236,7 +236,7 @@ const Header = () => {
 
       {/* Mobile Menu - Full screen overlay */}
       <div
-        className={`md:hidden fixed inset-0 h-[100dvh] w-screen overflow-y-auto overscroll-contain bg-background transition-all duration-300 ease-out isolate ${
+        className={`lg:hidden fixed inset-0 h-[100dvh] w-screen overflow-y-auto overscroll-contain bg-background transition-all duration-300 ease-out isolate ${
           isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
