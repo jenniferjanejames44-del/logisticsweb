@@ -51,6 +51,25 @@ interface LoginHistory {
   logged_in_at: string;
 }
 
+const DetailRow = ({
+  label,
+  value,
+  valueNode,
+  breakAll,
+}: {
+  label: string;
+  value?: string | null;
+  valueNode?: React.ReactNode;
+  breakAll?: boolean;
+}) => (
+  <div className="flex items-start justify-between gap-4 px-4 py-3">
+    <dt className="text-xs text-muted-foreground">{label}</dt>
+    <dd className={`text-sm font-medium text-right text-foreground ${breakAll ? "break-all" : ""}`}>
+      {valueNode ?? (value ? value : <span className="italic font-normal text-muted-foreground">Not provided</span>)}
+    </dd>
+  </div>
+);
+
 const AdminUsers = () => {
   const [users, setUsers] = useState<UserWithRole[]>([]);
   const [loading, setLoading] = useState(true);
