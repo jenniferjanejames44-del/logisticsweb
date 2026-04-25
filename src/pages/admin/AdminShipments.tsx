@@ -175,6 +175,8 @@ const AdminShipments = () => {
   const [dimInputs, setDimInputs] = useState({ weight: "", length_cm: "", width_cm: "", height_cm: "" });
   const [settingDims, setSettingDims] = useState(false);
   const [settingPrice, setSettingPrice] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [detailsShipment, setDetailsShipment] = useState<Shipment | null>(null);
   const isMobile = useIsMobile();
 
   const fetchShipments = async () => {
