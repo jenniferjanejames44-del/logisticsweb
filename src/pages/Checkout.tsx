@@ -230,6 +230,9 @@ const Checkout = () => {
           userBalance={balance}
           userId={user!.id}
           onSuccess={handlePaymentSuccess}
+          serviceType={quote.service_name || quote.service_type}
+          destination={quote.destination_country}
+          weight={parseFloat(quote.weight)}
         />
       )}
     </div>

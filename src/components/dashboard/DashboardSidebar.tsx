@@ -76,7 +76,7 @@ const DashboardSidebar = () => {
               key={item.href}
               to={item.href}
               onClick={() => setIsMobileOpen(false)}
-              className={`group flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150 ${
+              className={`group flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 isActive
                   ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
@@ -140,10 +140,10 @@ const DashboardSidebar = () => {
               <User className="w-3.5 h-3.5" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[13px] font-semibold text-foreground truncate">
+              <p className="text-sm font-semibold text-foreground truncate">
                 {profileName || "User"}
               </p>
-              <p className="text-[11px] text-muted-foreground truncate">
+              <p className="text-xs text-muted-foreground truncate">
                 {user?.email}
               </p>
             </div>
@@ -165,7 +165,7 @@ const DashboardSidebar = () => {
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-accent hover:bg-accent/5 transition-colors"
+                className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-accent hover:bg-accent/5 transition-colors"
               >
                 <Shield className="w-4 h-4 flex-shrink-0" />
                 <span>Admin Dashboard</span>
@@ -177,7 +177,7 @@ const DashboardSidebar = () => {
         {/* Footer */}
         <div className="border-t border-border/40 p-3">
           <button
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
             onClick={handleSignOut}
           >
             <LogOut className="w-4 h-4 flex-shrink-0" />
