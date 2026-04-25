@@ -321,23 +321,23 @@ const AdminUsers = () => {
                   <div key={user.id} className="space-y-3 p-4">
                     <div className="flex items-center justify-between">
                       <div className="min-w-0">
-                        <p className="font-medium text-foreground truncate">{user.full_name || "N/A"}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user.email || "N/A"}</p>
+                        <p className="font-medium text-foreground truncate">{user.full_name || "Not provided"}</p>
+                        <p className="text-xs text-muted-foreground truncate">{user.email || "Not provided"}</p>
                       </div>
                       <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
                     </div>
                      <div className="grid grid-cols-2 gap-2 text-sm">
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Phone</p>
-                         <p className="text-foreground truncate">{user.phone || "N/A"}</p>
+                         <p className="text-foreground truncate">{user.phone || "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Location</p>
-                         <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</p>
+                         <p className="text-foreground truncate">{user.city && user.country ? `${user.city}, ${user.country}` : "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Address</p>
-                         <p className="text-foreground truncate">{user.address || "N/A"}</p>
+                         <p className="text-foreground truncate">{user.address || "Not provided"}</p>
                        </div>
                        <div>
                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider">Balance</p>
@@ -441,20 +441,20 @@ const AdminUsers = () => {
                   <TableBody>
                     {filteredUsers.map((user) => (
                       <TableRow key={user.id}>
-                        <TableCell className="font-medium">{user.full_name || "N/A"}</TableCell>
+                        <TableCell className="font-medium">{user.full_name || "Not provided"}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Mail className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{user.email || "N/A"}</span>
+                            <span className="text-sm">{user.email || "Not provided"}</span>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Phone className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">{user.phone || "N/A"}</span>
+                            <span className="text-sm">{user.phone || "Not provided"}</span>
                           </div>
                         </TableCell>
-                        <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "N/A"}</TableCell>
+                        <TableCell>{user.city && user.country ? `${user.city}, ${user.country}` : "Not provided"}</TableCell>
                         <TableCell><Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge></TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
