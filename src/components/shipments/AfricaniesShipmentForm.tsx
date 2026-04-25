@@ -8,11 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
-  User, Send, Package, MapPin, Plus, Minus, Trash2, Box, Loader2,
-  ArrowRight, Phone, Mail, Building2, Globe, Scale, DollarSign,
+  User, Send, Package, Plus, Minus, Trash2, Loader2,
+  ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
+  Truck, PackageCheck, Store, MapPin,
 } from "lucide-react";
 
 type Flow = "import" | "export";
@@ -23,6 +27,17 @@ interface Item {
   quantity: number;
   weight: string;
   value: string;
+  length?: string;
+  width?: string;
+  height?: string;
+}
+
+interface Warehouse {
+  id: string;
+  name: string;
+  country: string;
+  address: string;
+  phone: string | null;
 }
 
 const COUNTRIES = [
@@ -35,24 +50,26 @@ const COUNTRIES = [
   "United States","Vietnam","Zambia","Zimbabwe",
 ];
 
-const WAREHOUSES: { country: string; flag: string; label: string }[] = [
-  { country: "China", flag: "🇨🇳", label: "China" },
-  { country: "United States", flag: "🇺🇸", label: "USA" },
-  { country: "United Kingdom", flag: "🇬🇧", label: "UK" },
-];
-
-const BOX_SIZES = [
-  { id: "small", label: "Small Box", dims: "30 × 30 × 30 cm", weight: "Up to 5 kg" },
-  { id: "medium", label: "Medium Box", dims: "45 × 45 × 45 cm", weight: "Up to 15 kg" },
-  { id: "large", label: "Large Box", dims: "60 × 60 × 60 cm", weight: "Up to 30 kg" },
-  { id: "custom", label: "Custom Size", dims: "Enter your own", weight: "Any weight" },
-];
-
 const SHIPPING_METHODS = [
-  { id: "air-express", label: "Express Air", days: "5–7 days", icon: "✈️" },
-  { id: "air-standard", label: "Standard Air", days: "10–14 days", icon: "🛫" },
-  { id: "ocean", label: "Ocean Freight", days: "25–35 days", icon: "🚢" },
+  { id: "air-express", label: "Air Delivery", days: "5–10 days", icon: Plane, desc: "Faster delivery via air freight" },
+  { id: "ocean", label: "Ocean Delivery", days: "25–35 days", icon: Ship, desc: "Affordable for heavy or bulk shipments" },
 ];
+
+const DELIVERY_TYPES = [
+  { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
+  { id: "pickup", label: "Pickup", desc: "I want RAC Logistics to pick up for me", icon: Truck },
+  { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
+];
+
+const STEPS = [
+  "Method",
+  "Delivery Type",
+  "Warehouse",
+  "Sender",
+  "Receiver",
+  "Items",
+  "Summary",
+] as const;
 
 export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const { user } = useAuth();
@@ -60,41 +77,61 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const { toast } = useToast();
 
   const isExport = flow === "export";
-  const fixedNigeria = isExport ? "origin" : "destination";
 
-  // Sender
+  const [step, setStep] = useState(0);
+
+  // Step 1: Method
+  const [method, setMethod] = useState<string>("");
+
+  // Step 2: Delivery type
+  const [deliveryType, setDeliveryType] = useState<string>("");
+
+  // Step 3: Warehouse
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [warehouseId, setWarehouseId] = useState<string>("");
+
+  // Step 4: Sender
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
-  const [senderAddress, setSenderAddress] = useState("");
-  const [senderCity, setSenderCity] = useState("");
   const [senderCountry, setSenderCountry] = useState(isExport ? "Nigeria" : "");
+  const [senderCity, setSenderCity] = useState("");
+  const [senderAddress, setSenderAddress] = useState("");
+  const [senderZip, setSenderZip] = useState("");
+  const [saveSender, setSaveSender] = useState(false);
 
-  // Receiver
+  // Step 5: Receiver
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhone, setReceiverPhone] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
-  const [receiverAddress, setReceiverAddress] = useState("");
-  const [receiverCity, setReceiverCity] = useState("");
   const [receiverCountry, setReceiverCountry] = useState(isExport ? "" : "Nigeria");
+  const [receiverCity, setReceiverCity] = useState("");
+  const [receiverAddress, setReceiverAddress] = useState("");
+  const [receiverZip, setReceiverZip] = useState("");
 
-  // Warehouse (only for import flow)
-  const [warehouse, setWarehouse] = useState<string>("");
-
-  // Box & items
-  const [boxSize, setBoxSize] = useState("medium");
+  // Step 6: Items
   const [items, setItems] = useState<Item[]>([
     { id: crypto.randomUUID(), description: "", quantity: 1, weight: "", value: "" },
   ]);
-
-  // Shipping
-  const [method, setMethod] = useState("air-standard");
   const [notes, setNotes] = useState("");
 
   // Pricing
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Load warehouses from DB
+  useEffect(() => {
+    supabase
+      .from("warehouses")
+      .select("id, name, country, address, phone")
+      .eq("is_active", true)
+      .order("country")
+      .then(({ data }) => {
+        if (data) setWarehouses(data as Warehouse[]);
+      });
+  }, []);
 
   // Prefill from profile
   useEffect(() => {
@@ -119,6 +156,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  const selectedWarehouse = useMemo(
+    () => warehouses.find((w) => w.id === warehouseId),
+    [warehouses, warehouseId],
+  );
+
   const totalWeight = useMemo(
     () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
     [items],
@@ -130,8 +172,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
-  // Auto price
+  // Auto price (only on summary step)
   useEffect(() => {
+    if (step !== 6) return;
     if (!destinationCountry || totalWeight <= 0) {
       setBreakdown(null);
       return;
@@ -142,7 +185,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       .then((b) => { if (!cancelled) setBreakdown(b); })
       .finally(() => { if (!cancelled) setCalculating(false); });
     return () => { cancelled = true; };
-  }, [destinationCountry, totalWeight, totalValue]);
+  }, [step, destinationCountry, totalWeight, totalValue]);
 
   const updateItem = (id: string, patch: Partial<Item>) =>
     setItems((arr) => arr.map((it) => (it.id === id ? { ...it, ...patch } : it)));
@@ -151,24 +194,51 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const removeItem = (id: string) =>
     setItems((arr) => (arr.length > 1 ? arr.filter((i) => i.id !== id) : arr));
 
-  const validate = (): string | null => {
-    if (!senderName || !senderPhone || !senderAddress || !senderCity || !senderCountry)
-      return "Please complete sender information.";
-    if (!receiverName || !receiverPhone || !receiverAddress || !receiverCity || !receiverCountry)
-      return "Please complete receiver information.";
-    if (!isExport && !warehouse) return "Please select a RAC warehouse abroad.";
-    if (items.some((i) => !i.description || !i.weight || parseFloat(i.weight) <= 0))
-      return "Each item needs a description and a positive weight.";
-    if (totalWeight <= 0) return "Total weight must be greater than zero.";
-    return null;
+  const validateStep = (s: number): boolean => {
+    const e: Record<string, string> = {};
+    if (s === 0 && !method) e.method = "Please select a shipping method.";
+    if (s === 1 && !deliveryType) e.deliveryType = "Please select a delivery type.";
+    if (s === 2 && !warehouseId) e.warehouse = "Please select a warehouse.";
+    if (s === 3) {
+      if (!senderName) e.senderName = "Required";
+      if (!senderPhone) e.senderPhone = "Required";
+      if (!senderCountry) e.senderCountry = "Required";
+      if (!senderCity) e.senderCity = "Required";
+      if (!senderAddress) e.senderAddress = "Required";
+    }
+    if (s === 4) {
+      if (!receiverName) e.receiverName = "Required";
+      if (!receiverPhone) e.receiverPhone = "Required";
+      if (!receiverCountry) e.receiverCountry = "Required";
+      if (!receiverCity) e.receiverCity = "Required";
+      if (!receiverAddress) e.receiverAddress = "Required";
+    }
+    if (s === 5) {
+      items.forEach((it, idx) => {
+        if (!it.description) e[`item_${idx}_desc`] = "Required";
+        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Required";
+        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Required";
+      });
+    }
+    setErrors(e);
+    if (Object.keys(e).length > 0) {
+      toast({ title: "Please complete required fields", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
+
+  const next = () => {
+    if (!validateStep(step)) return;
+    setStep((s) => Math.min(s + 1, STEPS.length - 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const back = () => {
+    setStep((s) => Math.max(s - 1, 0));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSubmit = async () => {
-    const err = validate();
-    if (err) {
-      toast({ title: "Missing information", description: err, variant: "destructive" });
-      return;
-    }
     if (!user) {
       savePendingShipment({
         origin_country: senderCountry,
@@ -187,15 +257,15 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     setSubmitting(true);
     try {
       const eta = new Date();
-      eta.setDate(eta.getDate() + (method === "air-express" ? 7 : method === "ocean" ? 30 : 14));
+      eta.setDate(eta.getDate() + (method === "ocean" ? 30 : 7));
 
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
       );
       const desc = [
-        `Box: ${BOX_SIZES.find((b) => b.id === boxSize)?.label}`,
+        `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
+        selectedWarehouse ? `Warehouse: ${selectedWarehouse.name} (${selectedWarehouse.country})` : null,
         `Items: ${itemLines.join("; ")}`,
-        warehouse ? `Warehouse: ${warehouse}` : null,
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
 
@@ -211,18 +281,29 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
         price: breakdown?.total || null,
-        warehouse_location: warehouse || null,
-        pickup_prepaid: false,
+        warehouse_location: selectedWarehouse?.country || null,
+        pickup_prepaid: deliveryType === "pickup",
         description: desc,
         sender_name: senderName,
         sender_phone: senderPhone,
-        sender_address: [senderAddress, senderCity, senderCountry].filter(Boolean).join(", "),
+        sender_address: [senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", "),
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
-        receiver_address: [receiverAddress, receiverCity, receiverCountry].filter(Boolean).join(", "),
+        receiver_address: [receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", "),
       } as any).select("id").single();
 
       if (error) throw error;
+
+      if (saveSender) {
+        await supabase.from("profiles").update({
+          full_name: senderName,
+          phone: senderPhone,
+          address: senderAddress,
+          city: senderCity,
+          country: senderCountry,
+        }).eq("user_id", user.id);
+      }
+
       toast({ title: "Shipment created!", description: "Redirecting to payment…" });
       navigate(`/dashboard/shipments?pay=${shipment?.id}`);
     } catch (e: any) {
@@ -232,266 +313,441 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     }
   };
 
-  const SectionTitle = ({ icon: Icon, title, subtitle }: any) => (
-    <div className="flex items-start gap-3 mb-4">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-        <Icon className="h-5 w-5" strokeWidth={2.2} />
-      </div>
-      <div>
-        <h3 className="text-base font-bold text-foreground">{title}</h3>
-        {subtitle && <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>}
-      </div>
-    </div>
-  );
-
-  const Field = ({ label, children, required }: any) => (
+  // ---------- UI helpers ----------
+  const Field = ({ label, required, error, children }: any) => (
     <div className="space-y-1.5">
       <Label className="text-xs font-semibold text-foreground">
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
+      {error && <p className="text-[11px] text-destructive">{error}</p>}
     </div>
   );
 
-  return (
-    <div className="space-y-5">
-      {/* Warehouse selector for IMPORT flow */}
-      {!isExport && (
-        <div className="rounded-2xl border border-border/60 bg-white p-5">
-          <SectionTitle
-            icon={Building2}
-            title="Choose a RAC warehouse abroad"
-            subtitle="Send your goods to one of our verified warehouses for onward shipping to Nigeria."
-          />
-          <div className="grid grid-cols-3 gap-3">
-            {WAREHOUSES.map((w) => (
-              <button
-                key={w.country}
-                type="button"
-                onClick={() => { setWarehouse(w.country); setSenderCountry(w.country); }}
-                className={`rounded-xl border-2 p-3 text-center transition-all ${
-                  warehouse === w.country
-                    ? "border-primary bg-primary/5 shadow-sm"
-                    : "border-border/60 bg-white hover:border-primary/40"
+  // ---------- Stepper ----------
+  const Stepper = () => (
+    <div className="mb-5 overflow-x-auto">
+      <div className="flex items-center gap-1.5 min-w-max sm:min-w-0 sm:justify-between">
+        {STEPS.map((label, i) => {
+          const done = i < step;
+          const active = i === step;
+          return (
+            <div key={label} className="flex items-center gap-1.5">
+              <div
+                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                  active
+                    ? "bg-primary text-primary-foreground"
+                    : done
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
-                <div className="text-3xl">{w.flag}</div>
-                <div className="mt-1 text-xs font-semibold text-foreground">{w.label}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+                <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${
+                  active ? "bg-white/25" : done ? "bg-primary text-primary-foreground" : "bg-background"
+                }`}>
+                  {done ? <Check className="h-2.5 w-2.5" /> : i + 1}
+                </span>
+                <span className="hidden sm:inline">{label}</span>
+              </div>
+              {i < STEPS.length - 1 && <span className="text-muted-foreground/40 text-xs">›</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 
-      {/* Sender + Receiver side-by-side */}
-      <div className="grid gap-5 lg:grid-cols-2">
-        {/* SENDER */}
-        <div className="rounded-2xl border border-border/60 bg-white p-5">
-          <SectionTitle icon={User} title="Sender Details" subtitle="Who is sending the parcel?" />
-          <div className="space-y-3">
-            <Field label="Full name" required>
-              <Input value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="John Doe" />
-            </Field>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Phone" required>
+  // ---------- Step bodies ----------
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Select Your Preferred Shipment Method</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Choose how you'd like your goods to travel.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {SHIPPING_METHODS.map((m) => {
+                const Icon = m.icon;
+                const active = method === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setMethod(m.id)}
+                    className={`group rounded-2xl border-2 p-5 text-left transition-all ${
+                      active ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 bg-white hover:border-primary/40"
+                    }`}
+                  >
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="mt-3 text-sm font-bold text-foreground">{m.label}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{m.desc}</div>
+                    <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-foreground">
+                      {m.days}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.method && <p className="mt-2 text-xs text-destructive">{errors.method}</p>}
+          </div>
+        );
+
+      case 1:
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Delivery Type</h2>
+            <p className="mt-1 text-sm text-muted-foreground">How will your goods reach the warehouse?</p>
+            <div className="mt-4">
+              <Field label="Delivery type" required error={errors.deliveryType}>
+                <Select value={deliveryType} onValueChange={setDeliveryType}>
+                  <SelectTrigger><SelectValue placeholder="Select a delivery type" /></SelectTrigger>
+                  <SelectContent>
+                    {DELIVERY_TYPES.map((d) => (
+                      <SelectItem key={d.id} value={d.id}>
+                        {d.label} — {d.desc}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {DELIVERY_TYPES.map((d) => {
+                  const Icon = d.icon;
+                  const active = deliveryType === d.id;
+                  return (
+                    <button
+                      key={d.id}
+                      type="button"
+                      onClick={() => setDeliveryType(d.id)}
+                      className={`rounded-xl border-2 p-4 text-left transition-all ${
+                        active ? "border-primary bg-primary/5" : "border-border/60 bg-white hover:border-primary/40"
+                      }`}
+                    >
+                      <Icon className={`h-5 w-5 ${active ? "text-primary" : "text-muted-foreground"}`} />
+                      <div className="mt-2 text-sm font-bold text-foreground">{d.label}</div>
+                      <div className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">{d.desc}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 2: {
+        // Build display list: ensure China, USA, UK appear (USA shows "coming soon" if not in DB)
+        const displayCountries = ["China", "United States", "United Kingdom"];
+        const items = displayCountries.map((country) => {
+          const w = warehouses.find((x) => x.country === country);
+          return { country, warehouse: w };
+        });
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Select where your goods will be received.</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {items.map(({ country, warehouse: w }) => {
+                const flag = country === "China" ? "🇨🇳" : country === "United States" ? "🇺🇸" : "🇬🇧";
+                const label = country === "United States" ? "USA" : country === "United Kingdom" ? "UK" : "China";
+                const active = w && warehouseId === w.id;
+                const disabled = !w;
+                return (
+                  <button
+                    key={country}
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => w && setWarehouseId(w.id)}
+                    className={`rounded-xl border-2 p-4 text-center transition-all ${
+                      active ? "border-primary bg-primary/5 shadow-sm" :
+                      disabled ? "border-border/40 bg-muted/30 opacity-60 cursor-not-allowed" :
+                      "border-border/60 bg-white hover:border-primary/40"
+                    }`}
+                  >
+                    <div className="text-3xl">{flag}</div>
+                    <div className="mt-1 text-sm font-bold text-foreground">{label}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                      {w ? "Available" : "Coming soon"}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
+
+            {selectedWarehouse && (
+              <div className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                    <Building2 className="h-4 w-4" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-bold text-foreground">{selectedWarehouse.name}</div>
+                    <div className="mt-1 grid gap-1 text-xs text-muted-foreground">
+                      <div className="flex items-start gap-1.5">
+                        <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
+                        <span className="break-words">{selectedWarehouse.address}</span>
+                      </div>
+                      <div><span className="font-semibold text-foreground">Country:</span> {selectedWarehouse.country}</div>
+                      {selectedWarehouse.phone && (
+                        <div><span className="font-semibold text-foreground">Phone:</span> {selectedWarehouse.phone}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      case 3:
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Sender Details</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Who is sending the shipment?</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <Field label="Full name" required error={errors.senderName}>
+                <Input value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="John Doe" />
+              </Field>
+              <Field label="Phone number" required error={errors.senderPhone}>
                 <Input value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} placeholder="+234…" />
               </Field>
               <Field label="Email">
-                <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@…" />
+                <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
-            </div>
-            <Field label="Address" required>
-              <Input value={senderAddress} onChange={(e) => setSenderAddress(e.target.value)} placeholder="Street, building" />
-            </Field>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="City" required>
+              <Field label="Country" required error={errors.senderCountry}>
+                <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
+                  <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
+                  <SelectContent>
+                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="City" required error={errors.senderCity}>
                 <Input value={senderCity} onChange={(e) => setSenderCity(e.target.value)} placeholder="Lagos" />
               </Field>
-              <Field label="Country" required>
-                <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
-                  <SelectTrigger><SelectValue placeholder="Country" /></SelectTrigger>
-                  <SelectContent>
-                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+              <Field label="Zip / Postal code">
+                <Input value={senderZip} onChange={(e) => setSenderZip(e.target.value)} placeholder="100001" />
               </Field>
+              <div className="sm:col-span-2">
+                <Field label="Street address" required error={errors.senderAddress}>
+                  <Input value={senderAddress} onChange={(e) => setSenderAddress(e.target.value)} placeholder="Street, building, apt" />
+                </Field>
+              </div>
             </div>
+            <label className="mt-4 flex items-center gap-2 cursor-pointer">
+              <Checkbox checked={saveSender} onCheckedChange={(v) => setSaveSender(Boolean(v))} />
+              <span className="text-xs text-foreground">Save as default sender</span>
+            </label>
           </div>
-        </div>
+        );
 
-        {/* RECEIVER */}
-        <div className="rounded-2xl border border-border/60 bg-white p-5">
-          <SectionTitle icon={Send} title="Receiver Details" subtitle="Who will receive the parcel?" />
-          <div className="space-y-3">
-            <Field label="Full name" required>
-              <Input value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Jane Doe" />
-            </Field>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Phone" required>
-                <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+1…" />
+      case 4:
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Receiver Details</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Who will receive the shipment?</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <Field label="Full name" required error={errors.receiverName}>
+                <Input value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Jane Doe" />
+              </Field>
+              <Field label="Phone number" required error={errors.receiverPhone}>
+                <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+234…" />
               </Field>
               <Field label="Email">
-                <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@…" />
+                <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@example.com" />
               </Field>
-            </div>
-            <Field label="Address" required>
-              <Input value={receiverAddress} onChange={(e) => setReceiverAddress(e.target.value)} placeholder="Street, building" />
-            </Field>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="City" required>
-                <Input value={receiverCity} onChange={(e) => setReceiverCity(e.target.value)} placeholder="City" />
-              </Field>
-              <Field label="Country" required>
+              <Field label="Country" required error={errors.receiverCountry}>
                 <Select value={receiverCountry} onValueChange={setReceiverCountry} disabled={!isExport}>
-                  <SelectTrigger><SelectValue placeholder="Country" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
+              <Field label="City" required error={errors.receiverCity}>
+                <Input value={receiverCity} onChange={(e) => setReceiverCity(e.target.value)} placeholder="City" />
+              </Field>
+              <Field label="Zip / Postal code">
+                <Input value={receiverZip} onChange={(e) => setReceiverZip(e.target.value)} placeholder="00000" />
+              </Field>
+              <div className="sm:col-span-2">
+                <Field label="Street address" required error={errors.receiverAddress}>
+                  <Input value={receiverAddress} onChange={(e) => setReceiverAddress(e.target.value)} placeholder="Street, building, apt" />
+                </Field>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        );
 
-      {/* Box selector */}
-      <div className="rounded-2xl border border-border/60 bg-white p-5">
-        <SectionTitle icon={Box} title="Choose box size" subtitle="Pick the closest size — we'll confirm at the warehouse." />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {BOX_SIZES.map((b) => (
-            <button
-              key={b.id}
-              type="button"
-              onClick={() => setBoxSize(b.id)}
-              className={`rounded-xl border-2 p-4 text-left transition-all ${
-                boxSize === b.id
-                  ? "border-primary bg-primary/5 shadow-sm"
-                  : "border-border/60 bg-white hover:border-primary/40"
-              }`}
-            >
-              <Box className={`h-6 w-6 mb-2 ${boxSize === b.id ? "text-primary" : "text-muted-foreground"}`} />
-              <div className="text-sm font-bold text-foreground">{b.label}</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{b.dims}</div>
-              <div className="text-[11px] text-muted-foreground">{b.weight}</div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Items */}
-      <div className="rounded-2xl border border-border/60 bg-white p-5">
-        <SectionTitle icon={Package} title="Items in your shipment" subtitle="Add each item — needed for customs and pricing." />
-        <div className="space-y-3">
-          {items.map((item, idx) => (
-            <div key={item.id} className="rounded-xl border border-border/50 bg-muted/20 p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-muted-foreground">Item #{idx + 1}</span>
-                {items.length > 1 && (
-                  <button type="button" onClick={() => removeItem(item.id)} className="text-destructive hover:text-destructive/80">
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-              <div className="grid gap-2 sm:grid-cols-12">
-                <div className="sm:col-span-5">
-                  <Input
-                    value={item.description}
-                    onChange={(e) => updateItem(item.id, { description: e.target.value })}
-                    placeholder="Description (e.g. Phone, Clothes)"
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <div className="flex items-center rounded-[16px] border border-border/70 bg-white h-12">
-                    <button type="button" onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })}
-                      className="px-2 text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
-                    <input type="number" min={1} value={item.quantity}
-                      onChange={(e) => updateItem(item.id, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
-                      className="w-full text-center bg-transparent text-sm font-semibold outline-none" />
-                    <button type="button" onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })}
-                      className="px-2 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+      case 5:
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Item Details</h2>
+            <p className="mt-1 text-sm text-muted-foreground">List the items inside your shipment.</p>
+            <div className="mt-4 space-y-3">
+              {items.map((item, idx) => (
+                <div key={item.id} className="rounded-xl border border-border/60 bg-muted/20 p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-muted-foreground">Item #{idx + 1}</span>
+                    {items.length > 1 && (
+                      <button type="button" onClick={() => removeItem(item.id)} className="text-destructive hover:text-destructive/80">
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <div className="sm:col-span-2">
+                      <Field label="Description" required error={errors[`item_${idx}_desc`]}>
+                        <Input value={item.description}
+                          onChange={(e) => updateItem(item.id, { description: e.target.value })}
+                          placeholder="e.g. Phone, Clothes, Electronics" />
+                      </Field>
+                    </div>
+                    <Field label="Quantity" required>
+                      <div className="flex items-center rounded-[16px] border border-border/70 bg-white h-12">
+                        <button type="button" onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })}
+                          className="px-3 text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
+                        <input type="number" min={1} value={item.quantity}
+                          onChange={(e) => updateItem(item.id, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
+                          className="w-full text-center bg-transparent text-sm font-semibold outline-none" />
+                        <button type="button" onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })}
+                          className="px-3 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+                      </div>
+                    </Field>
+                    <Field label="Weight (kg)" required error={errors[`item_${idx}_weight`]}>
+                      <Input type="number" min={0} step="0.1" value={item.weight}
+                        onChange={(e) => updateItem(item.id, { weight: e.target.value })} placeholder="0.0" />
+                    </Field>
+                    <Field label="Value (USD)" required error={errors[`item_${idx}_value`]}>
+                      <Input type="number" min={0} value={item.value}
+                        onChange={(e) => updateItem(item.id, { value: e.target.value })} placeholder="0" />
+                    </Field>
+                    <div className="grid grid-cols-3 gap-2 sm:col-span-1">
+                      <Field label="L (cm)">
+                        <Input type="number" value={item.length || ""} onChange={(e) => updateItem(item.id, { length: e.target.value })} placeholder="—" />
+                      </Field>
+                      <Field label="W (cm)">
+                        <Input type="number" value={item.width || ""} onChange={(e) => updateItem(item.id, { width: e.target.value })} placeholder="—" />
+                      </Field>
+                      <Field label="H (cm)">
+                        <Input type="number" value={item.height || ""} onChange={(e) => updateItem(item.id, { height: e.target.value })} placeholder="—" />
+                      </Field>
+                    </div>
                   </div>
                 </div>
-                <div className="sm:col-span-2">
-                  <Input type="number" min={0} step="0.1" value={item.weight}
-                    onChange={(e) => updateItem(item.id, { weight: e.target.value })} placeholder="kg" />
-                </div>
-                <div className="sm:col-span-3">
-                  <Input type="number" min={0} value={item.value}
-                    onChange={(e) => updateItem(item.id, { value: e.target.value })} placeholder="Value (USD)" />
-                </div>
+              ))}
+              <Button type="button" variant="outline" onClick={addItem} className="w-full">
+                <Plus className="h-4 w-4 mr-1" /> Add another item
+              </Button>
+              <Field label="Additional notes (optional)">
+                <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Special handling instructions, fragile items, etc." />
+              </Field>
+            </div>
+          </div>
+        );
+
+      case 6: {
+        const methodLabel = SHIPPING_METHODS.find((m) => m.id === method)?.label || "—";
+        const deliveryLabel = DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label || "—";
+        const SummaryRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
+          <div className="flex items-start justify-between gap-3 py-2 border-b border-border/30 last:border-0 text-xs">
+            <span className="text-muted-foreground">{label}</span>
+            <span className="font-semibold text-foreground text-right break-words max-w-[60%]">{value}</span>
+          </div>
+        );
+        return (
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-lg font-bold text-foreground">Review Your Shipment</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Confirm details before payment.</p>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div className="rounded-xl border border-border/60 bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Shipment</h3>
+                <SummaryRow label="Method" value={methodLabel} />
+                <SummaryRow label="Delivery type" value={deliveryLabel} />
+                <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
+              </div>
+              <div className="rounded-xl border border-border/60 bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
+                <SummaryRow label="Total items" value={items.reduce((s, i) => s + (i.quantity || 0), 0)} />
+                <SummaryRow label="Total weight" value={`${totalWeight.toFixed(2)} kg`} />
+                <SummaryRow label="Declared value" value={`$${totalValue.toFixed(2)}`} />
+              </div>
+              <div className="rounded-xl border border-border/60 bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Sender</h3>
+                <SummaryRow label="Name" value={senderName} />
+                <SummaryRow label="Phone" value={senderPhone} />
+                <SummaryRow label="Address" value={[senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", ")} />
+              </div>
+              <div className="rounded-xl border border-border/60 bg-white p-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Receiver</h3>
+                <SummaryRow label="Name" value={receiverName} />
+                <SummaryRow label="Phone" value={receiverPhone} />
+                <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
             </div>
-          ))}
-          <Button type="button" variant="outline" onClick={addItem} className="w-full">
-            <Plus className="h-4 w-4 mr-1" /> Add another item
-          </Button>
-        </div>
-      </div>
 
-      {/* Shipping method */}
-      <div className="rounded-2xl border border-border/60 bg-white p-5">
-        <SectionTitle icon={Globe} title="Shipping method" />
-        <div className="grid gap-3 sm:grid-cols-3">
-          {SHIPPING_METHODS.map((m) => (
-            <button
-              key={m.id}
-              type="button"
-              onClick={() => setMethod(m.id)}
-              className={`rounded-xl border-2 p-4 text-left transition-all ${
-                method === m.id
-                  ? "border-primary bg-primary/5 shadow-sm"
-                  : "border-border/60 bg-white hover:border-primary/40"
-              }`}
-            >
-              <div className="text-2xl mb-1">{m.icon}</div>
-              <div className="text-sm font-bold text-foreground">{m.label}</div>
-              <div className="text-[11px] text-muted-foreground">{m.days}</div>
-            </button>
-          ))}
-        </div>
-        <div className="mt-4">
-          <Field label="Additional notes (optional)">
-            <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
-              placeholder="Special handling instructions, fragile items, etc." />
-          </Field>
-        </div>
-      </div>
-
-      {/* Summary + submit */}
-      <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5">
-        <div className="grid gap-3 sm:grid-cols-3 mb-4">
-          <div className="rounded-xl bg-white border border-border/40 p-3">
-            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground"><Scale className="h-3 w-3" /> Total weight</div>
-            <div className="mt-1 text-lg font-bold text-foreground">{totalWeight.toFixed(2)} kg</div>
-          </div>
-          <div className="rounded-xl bg-white border border-border/40 p-3">
-            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground"><DollarSign className="h-3 w-3" /> Declared value</div>
-            <div className="mt-1 text-lg font-bold text-foreground">${totalValue.toFixed(2)}</div>
-          </div>
-          <div className="rounded-xl bg-primary text-primary-foreground border border-primary/40 p-3">
-            <div className="flex items-center gap-1.5 text-[11px] opacity-80"><Globe className="h-3 w-3" /> Estimated total</div>
-            <div className="mt-1 text-lg font-bold">
-              {calculating ? <Loader2 className="h-5 w-5 animate-spin" /> :
-                breakdown ? `$${breakdown.total.toFixed(2)}` : "—"}
+            <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
+                  <div className="mt-1 text-2xl font-bold text-foreground">
+                    {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
+                      breakdown ? `$${breakdown.total.toFixed(2)}` : "—"}
+                  </div>
+                </div>
+                <div className="text-right text-xs text-muted-foreground">
+                  Calculated by RAC pricing engine
+                </div>
+              </div>
+              {breakdown && (
+                <div className="mt-3 rounded-xl bg-white/80 border border-border/40 p-3 space-y-1 text-xs">
+                  <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({breakdown.zone || "zone"})</span><span className="font-semibold">${breakdown.shippingCost.toFixed(2)}</span></div>
+                  {breakdown.processingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Processing fee</span><span className="font-semibold">${breakdown.processingFee.toFixed(2)}</span></div>}
+                  {breakdown.taxes.map((t) => (
+                    <div key={t.name} className="flex justify-between"><span className="text-muted-foreground">{t.name} ({t.rate}%)</span><span className="font-semibold">${t.amount.toFixed(2)}</span></div>
+                  ))}
+                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${breakdown.total.toFixed(2)}</span></div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        );
+      }
 
-        {breakdown && (
-          <div className="rounded-xl bg-white/80 border border-border/40 p-3 mb-4 space-y-1 text-xs">
-            <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({breakdown.zone || "zone"})</span><span className="font-semibold">${breakdown.shippingCost.toFixed(2)}</span></div>
-            {breakdown.processingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Processing fee</span><span className="font-semibold">${breakdown.processingFee.toFixed(2)}</span></div>}
-            {breakdown.taxes.map((t) => (
-              <div key={t.name} className="flex justify-between"><span className="text-muted-foreground">{t.name} ({t.rate}%)</span><span className="font-semibold">${t.amount.toFixed(2)}</span></div>
-            ))}
-            <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${breakdown.total.toFixed(2)}</span></div>
-          </div>
-        )}
+      default:
+        return null;
+    }
+  };
 
-        <Button onClick={handleSubmit} disabled={submitting} className="w-full h-12 text-sm font-bold">
-          {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating shipment…</> :
-            <>Confirm & Proceed to Payment <ArrowRight className="h-4 w-4 ml-2" /></>}
+  const isLast = step === STEPS.length - 1;
+
+  return (
+    <div className="rounded-2xl border border-border/60 bg-white p-4 sm:p-6">
+      <Stepper />
+
+      <div className="min-h-[300px]">{renderStep()}</div>
+
+      <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-4 border-t border-border/40">
+        <Button type="button" variant="outline" onClick={back} disabled={step === 0}>
+          <ArrowLeft className="h-4 w-4 mr-1" /> Back
         </Button>
+        {!isLast ? (
+          <Button type="button" onClick={next} className="font-semibold">
+            Continue <ArrowRight className="h-4 w-4 ml-1" />
+          </Button>
+        ) : (
+          <Button type="button" onClick={handleSubmit} disabled={submitting} className="font-bold h-11">
+            {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating…</> :
+              <>Proceed to Payment <ArrowRight className="h-4 w-4 ml-1" /></>}
+          </Button>
+        )}
       </div>
     </div>
   );
