@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   LayoutDashboard,
   Users,
@@ -80,15 +81,10 @@ const AdminSidebar = () => {
   const NavContent = () => (
     <div className="flex flex-col h-full">
       {/* Brand Header */}
-      <div className="px-5 py-5 border-b border-border/30">
-        <Link to="/admin" className="flex items-center gap-3" onClick={() => setIsMobileOpen(false)}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-sm">
-            <Package className="w-5 h-5 text-primary-foreground" strokeWidth={2} />
-          </div>
-          <div>
-            <span className="font-bold text-[15px] text-foreground block leading-tight tracking-tight">RAC Logistics</span>
-            <span className="text-[11px] text-muted-foreground/70 leading-none">Admin Console</span>
-          </div>
+      <div className="px-5 py-4 border-b border-border/30">
+        <Link to="/admin" className="flex flex-col items-start gap-1" onClick={() => setIsMobileOpen(false)}>
+          <HeaderLogo className="h-auto w-full max-w-[160px]" />
+          <span className="text-[11px] text-muted-foreground/70 leading-none pl-1">Admin Console</span>
         </Link>
       </div>
 
