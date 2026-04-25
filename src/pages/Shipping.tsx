@@ -1359,6 +1359,39 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
 
                   {/* Navigation */}
                   <div className={actionBarClass}>
+                    {embedded ? (
+                      <Button
+                        type="button"
+                        variant="dashAccent"
+                        size="dash"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          // Run all step validations together
+                          const allComplete = isStep1Complete && isStep2Complete && isStep3Complete && isStep4Complete;
+                          if (!allComplete) {
+                            setShowStepValidation(true);
+                            // Find first invalid field across all steps
+                            const firstInvalid =
+                              getFirstInvalidField(1) ||
+                              getFirstInvalidField(2) ||
+                              getFirstInvalidField(3) ||
+                              getFirstInvalidField(4);
+                            scrollToInvalidField(firstInvalid);
+                            toast({
+                              title: "Complete required fields",
+                              description: "Please fill in all required fields before submitting.",
+                              variant: "destructive",
+                            });
+                            return;
+                          }
+                          handleSubmit();
+                        }}
+                        className="ml-auto h-12 w-full gap-2 sm:w-auto sm:min-w-[200px]"
+                      >
+                        {isSubmitting ? "Creating shipment…" : "Confirm & Proceed to Payment"} <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    ) : (
+                    <>
                     <Button
                       type="button"
                       variant="dashOutline"
@@ -1407,6 +1440,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                       >
                         {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                       </Button>
+                    )}
+                    </>
                     )}
                   </div>
                 </div>
