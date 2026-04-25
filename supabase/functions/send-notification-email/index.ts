@@ -40,6 +40,10 @@ function getSenderRole(type: string): "info" | "support" | "billing" | "no-reply
     case "shipment_created":
     case "shipment_status_update":
     case "account_verified":
+    case "partner_application_received":
+    case "partner_admin_notification":
+    case "partner_approved":
+    case "partner_rejected":
       return "info";
 
     // support@ — tickets and replies
@@ -57,6 +61,7 @@ function getSenderRole(type: string): "info" | "support" | "billing" | "no-reply
     // no-reply@ — OTP, security, system
     case "otp_verification":
     case "security_alert":
+    case "login_notification":
       return "no-reply";
 
     default:
@@ -165,6 +170,16 @@ function buildEmails(type: string, data: Record<string, any>): EmailPayload[] {
       return buildAdminTicketReplyEmails(data);
     case "account_verified":
       return buildAccountVerifiedEmails(data);
+    case "login_notification":
+      return buildLoginNotificationEmails(data);
+    case "partner_application_received":
+      return buildPartnerApplicationReceivedEmails(data);
+    case "partner_admin_notification":
+      return buildPartnerAdminNotificationEmails(data);
+    case "partner_approved":
+      return buildPartnerApprovedEmails(data);
+    case "partner_rejected":
+      return buildPartnerRejectedEmails(data);
     default:
       console.warn("Unknown email type:", type);
       return [];
