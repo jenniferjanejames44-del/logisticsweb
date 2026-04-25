@@ -40,6 +40,7 @@ const AuthForm = () => {
   const [city, setCity] = useState("");
   const [stateRegion, setStateRegion] = useState("");
   const [country, setCountry] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -116,12 +117,16 @@ const AuthForm = () => {
       } else {
         if (!fullName.trim()) throw new Error("Please enter your full name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
+        if (!address.trim()) throw new Error("Please enter your full address");
+        if (!city.trim()) throw new Error("Please enter your city");
+        if (!country.trim()) throw new Error("Please select or enter your country");
         const { error } = await signUp(email, password, fullName, {
           phone: phone.trim(),
           address: address.trim(),
           city: city.trim(),
           state: stateRegion.trim(),
           country: country.trim(),
+          zip_code: zipCode.trim(),
           company_name: companyName.trim(),
           referral_code: referralCode.trim() || undefined,
         });
@@ -388,7 +393,7 @@ const AuthForm = () => {
                         <div className="relative">
                           <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input id="address" type="text" placeholder="123 Main Street" value={address}
-                            onChange={(e) => setAddress(e.target.value)} className="h-11 rounded-lg pl-10" />
+                            onChange={(e) => setAddress(e.target.value)} className="h-11 rounded-lg pl-10" required={!isLogin} />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
@@ -397,7 +402,7 @@ const AuthForm = () => {
                           <div className="relative">
                             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                             <Input id="city" type="text" placeholder="Lagos" value={city}
-                              onChange={(e) => setCity(e.target.value)} className="h-11 rounded-lg pl-10" />
+                              onChange={(e) => setCity(e.target.value)} className="h-11 rounded-lg pl-10" required={!isLogin} />
                           </div>
                         </div>
                         <div className="space-y-2">
@@ -408,9 +413,14 @@ const AuthForm = () => {
                         <div className="space-y-2">
                           <Label htmlFor="country" className="text-sm font-medium">Country</Label>
                           <Input id="country" type="text" placeholder="Nigeria" value={country}
-                            onChange={(e) => setCountry(e.target.value)} className="h-11 rounded-lg" />
+                            onChange={(e) => setCountry(e.target.value)} className="h-11 rounded-lg" required={!isLogin} />
                         </div>
                         <div className="space-y-2">
+                          <Label htmlFor="zip" className="text-sm font-medium">Zip / Postal Code</Label>
+                          <Input id="zip" type="text" placeholder="100001" value={zipCode}
+                            onChange={(e) => setZipCode(e.target.value)} className="h-11 rounded-lg" />
+                        </div>
+                        <div className="space-y-2 col-span-2">
                           <Label htmlFor="company" className="text-sm font-medium">Company (optional)</Label>
                           <div className="relative">
                             <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
