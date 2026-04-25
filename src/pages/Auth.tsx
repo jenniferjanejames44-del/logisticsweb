@@ -40,6 +40,7 @@ const AuthForm = () => {
   const [city, setCity] = useState("");
   const [stateRegion, setStateRegion] = useState("");
   const [country, setCountry] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -116,12 +117,16 @@ const AuthForm = () => {
       } else {
         if (!fullName.trim()) throw new Error("Please enter your full name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
+        if (!address.trim()) throw new Error("Please enter your full address");
+        if (!city.trim()) throw new Error("Please enter your city");
+        if (!country.trim()) throw new Error("Please select or enter your country");
         const { error } = await signUp(email, password, fullName, {
           phone: phone.trim(),
           address: address.trim(),
           city: city.trim(),
           state: stateRegion.trim(),
           country: country.trim(),
+          zip_code: zipCode.trim(),
           company_name: companyName.trim(),
           referral_code: referralCode.trim() || undefined,
         });
