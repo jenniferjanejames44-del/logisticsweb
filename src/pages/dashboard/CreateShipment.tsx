@@ -1,6 +1,6 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import Shipping from "@/pages/Shipping";
+import AfricaniesShipmentForm from "@/components/shipments/AfricaniesShipmentForm";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -106,9 +106,7 @@ const CreateShipment = () => {
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_260px]">
           {/* Form column — embeds existing wizard */}
           <div className="min-w-0">
-            <div className="-mx-4 sm:-mx-6 lg:mx-0">
-              <Shipping embedded />
-            </div>
+            <AfricaniesShipmentForm flow={flow as "import" | "export"} />
           </div>
 
           {/* Side info panel — wide desktop only */}
