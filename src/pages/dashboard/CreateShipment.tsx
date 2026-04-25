@@ -1,7 +1,20 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import Shipping from "@/pages/Shipping";
-import { ArrowDownToLine, ArrowUpFromLine, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
+import {
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  Plane,
+  Ship,
+  Truck,
+  ShieldCheck,
+  Clock,
+  HeadphonesIcon,
+  Package,
+} from "lucide-react";
 
 const directionOptions = [
   {
@@ -53,8 +66,125 @@ const CreateShipment = () => {
           </button>
         }
       >
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8 -mt-5 sm:-mt-6">
-          <Shipping embedded />
+        {/* Africanies-style header card */}
+        <div className="mb-5 rounded-xl border border-border/60 bg-white p-4 sm:p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${flow === "import" ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground"}`}>
+                {flow === "import" ? <ArrowDownToLine className="h-5 w-5" /> : <ArrowUpFromLine className="h-5 w-5" />}
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Active flow</p>
+                <h3 className="text-sm sm:text-base font-bold text-foreground">
+                  {flow === "import" ? "Ship To Nigeria" : "Ship From Nigeria"}
+                </h3>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto sm:overflow-visible">
+              <span className="text-[11px] font-medium text-muted-foreground hidden sm:inline">Carriers:</span>
+              {[
+                { name: "RAC", Icon: Package, color: "bg-primary text-primary-foreground" },
+                { name: "DHL", Icon: Plane, color: "bg-yellow-400 text-yellow-950" },
+                { name: "Aramex", Icon: Truck, color: "bg-red-500 text-white" },
+                { name: "Sea Freight", Icon: Ship, color: "bg-blue-500 text-white" },
+              ].map((c) => (
+                <div
+                  key={c.name}
+                  className="flex shrink-0 items-center gap-1.5 rounded-full border border-border/50 bg-muted/30 px-2.5 py-1 text-[11px] font-semibold text-foreground"
+                >
+                  <span className={`flex h-4 w-4 items-center justify-center rounded-full ${c.color}`}>
+                    <c.Icon className="h-2.5 w-2.5" strokeWidth={2.5} />
+                  </span>
+                  {c.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Two-column layout: form + side info panel */}
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+          {/* Form column — embeds existing wizard */}
+          <div className="min-w-0">
+            <div className="-mx-4 sm:-mx-6 lg:mx-0">
+              <Shipping embedded />
+            </div>
+          </div>
+
+          {/* Side info panel — desktop only */}
+          <aside className="hidden lg:block space-y-4">
+            <div className="sticky top-24 space-y-4">
+              {/* Tips card */}
+              <div className="rounded-xl border border-border/60 bg-white p-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-border/30">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/8">
+                    <ShieldCheck className="h-4 w-4 text-primary" />
+                  </div>
+                  <h4 className="text-sm font-bold text-foreground">Shipment Tips</h4>
+                </div>
+                <ul className="mt-3 space-y-3">
+                  {[
+                    "Use full names matching ID for customs clearance.",
+                    "Declared value should reflect true item cost.",
+                    "Add dimensions for accurate volumetric pricing.",
+                    "Insurance recommended for items over $200.",
+                  ].map((tip) => (
+                    <li key={tip} className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" strokeWidth={2.5} />
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Estimated time card */}
+              <div className="rounded-xl border border-border/60 bg-white p-5">
+                <div className="flex items-center gap-2.5 pb-3 border-b border-border/30">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/15">
+                    <Clock className="h-4 w-4 text-accent" />
+                  </div>
+                  <h4 className="text-sm font-bold text-foreground">Delivery Times</h4>
+                </div>
+                <div className="mt-3 space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <Plane className="h-3 w-3" /> Express Air
+                    </span>
+                    <span className="font-semibold text-foreground">5–7 days</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <Plane className="h-3 w-3" /> Standard Air
+                    </span>
+                    <span className="font-semibold text-foreground">10–14 days</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
+                      <Ship className="h-3 w-3" /> Ocean Freight
+                    </span>
+                    <span className="font-semibold text-foreground">25–35 days</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Support card */}
+              <div className="rounded-xl border border-primary/15 bg-primary p-5 text-primary-foreground">
+                <HeadphonesIcon className="h-6 w-6 text-accent mb-2" />
+                <h4 className="text-sm font-bold">Need help?</h4>
+                <p className="mt-1 text-xs text-primary-foreground/80 leading-relaxed">
+                  Our team can guide you through your first shipment.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => navigate("/dashboard/support")}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground hover:bg-accent/90 transition-colors"
+                >
+                  Contact Support
+                  <ArrowRight className="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+          </aside>
         </div>
       </DashboardLayout>
     );
