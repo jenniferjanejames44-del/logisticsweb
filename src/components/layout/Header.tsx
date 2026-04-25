@@ -211,13 +211,13 @@ const Header = () => {
         <div className="flex items-center gap-2.5 md:hidden">
           {/* Visible CTA on tablet like ShipBob */}
           {!user ? (
-            <Button asChild variant="navCta" size="sm" className="hidden xs:inline-flex font-bold whitespace-nowrap px-4 text-sm">
+            <Button asChild variant="navCta" size="sm" className="hidden sm:inline-flex font-bold whitespace-nowrap px-4 text-sm">
               <Link to="/auth">
                 Join Now
               </Link>
             </Button>
           ) : (
-            <Button asChild variant="nav" size="sm" className="hidden xs:inline-flex font-semibold whitespace-nowrap px-4 text-sm">
+            <Button asChild variant="nav" size="sm" className="hidden sm:inline-flex font-semibold whitespace-nowrap px-4 text-sm">
               <Link to="/dashboard">
                 Dashboard
               </Link>
