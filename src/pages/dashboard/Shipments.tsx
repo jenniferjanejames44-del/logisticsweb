@@ -162,7 +162,7 @@ const Shipments = () => {
       description="Manage and track all your shipments"
       action={
         <Button asChild className="h-10 px-4 text-sm bg-accent hover:bg-accent/90 text-white rounded-lg">
-          <a href="/shipping">
+          <a href="/dashboard/shipments/new">
             <Plus className="w-4 h-4" />
             New Shipment
           </a>
@@ -316,7 +316,7 @@ const Shipments = () => {
           }
           action={
             !searchQuery && statusFilter === "all"
-              ? { label: "Create Shipment", href: "/shipping" }
+              ? { label: "Create Shipment", href: "/dashboard/shipments/new" }
               : undefined
           }
         />

@@ -180,7 +180,7 @@ const Overview = () => {
       {/* Quick Actions */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
         {[
-          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping" },
+          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/dashboard/shipments/new" },
           { label: "Get Quote", desc: "Calculate shipping cost", icon: ShoppingBag, href: "/pricing" },
           { label: "Contact Support", desc: "Need help? Reach out", icon: Headphones, href: "/contact" },
         ].map((action) => {
@@ -239,7 +239,7 @@ const Overview = () => {
                 <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
                 <p className="text-sm text-muted-foreground mb-4">No shipments yet</p>
                 <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-white rounded-lg">
-                  <Link to="/shipping">Create Your First Shipment</Link>
+                  <Link to="/dashboard/shipments/new">Create Your First Shipment</Link>
                 </Button>
               </div>
             )}
