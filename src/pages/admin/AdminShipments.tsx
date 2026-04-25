@@ -55,7 +55,7 @@ const Section = ({
   title,
   children,
 }: {
-  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  icon: React.ElementType;
   title: string;
   children: React.ReactNode;
 }) => (
