@@ -37,6 +37,7 @@ interface UserWithRole {
   city: string | null;
   state: string | null;
   country: string | null;
+  zip_code: string | null;
   created_at: string;
   role: string;
   balance?: number;
