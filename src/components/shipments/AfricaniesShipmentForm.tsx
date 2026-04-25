@@ -769,7 +769,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
                   <div className="mt-1 text-2xl font-bold text-foreground">
                     {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
-                      breakdown ? `$${breakdown.total.toFixed(2)}` : "—"}
+                      breakdown ? `$${grandTotal.toFixed(2)}` : "—"}
                   </div>
                 </div>
                 <div className="text-right text-xs text-muted-foreground">
@@ -783,7 +783,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   {breakdown.taxes.map((t) => (
                     <div key={t.name} className="flex justify-between"><span className="text-muted-foreground">{t.name} ({t.rate}%)</span><span className="font-semibold">${t.amount.toFixed(2)}</span></div>
                   ))}
-                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${breakdown.total.toFixed(2)}</span></div>
+                  {selectedPackaging && (
+                    <div className="flex justify-between"><span className="text-muted-foreground">Packaging ({selectedPackaging.name})</span><span className="font-semibold">${packagingPrice.toFixed(2)}</span></div>
+                  )}
+                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${grandTotal.toFixed(2)}</span></div>
                 </div>
               )}
             </div>
