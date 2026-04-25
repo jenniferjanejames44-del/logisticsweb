@@ -451,120 +451,141 @@ const AdminShipments = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-                {filteredShipments.map((shipment) => (
-                  <Card key={shipment.id} className="border-border/70 bg-white/95 shadow-[0_14px_32px_rgba(15,23,42,0.05)] transition-all duration-200 hover:border-primary/20 hover:shadow-[0_18px_38px_rgba(15,23,42,0.07)]">
-                    <CardContent className="space-y-4 p-5">
-                      <div className="flex items-start justify-between gap-3">
+              <div className="space-y-4">
+                {filteredShipments.map((shipment) => {
+                  const vol = calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm);
+                  const chg = calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm);
+                  return (
+                  <Card key={shipment.id} className="border-border/70 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
+                    <CardContent className="p-0">
+                      {/* Header strip: tracking + status + quick actions */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 px-6 py-4">
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 shadow-sm">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                             <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
                           </div>
                           <div className="min-w-0">
-                            <p className="font-mono font-bold text-base text-foreground truncate">{shipment.tracking_number}</p>
-                            <p className="text-xs text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</p>
+                            <p className="font-mono font-bold text-[15px] text-foreground truncate">{shipment.tracking_number}</p>
+                            <p className="text-xs text-muted-foreground">Created {new Date(shipment.created_at).toLocaleDateString()}</p>
                           </div>
                         </div>
-                        <Badge className={`${getStatusColor(shipment.status)} font-semibold capitalize`}>{shipment.status.replace(/_/g, " ")}</Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge className={`${getStatusColor(shipment.status)} font-semibold capitalize`}>{shipment.status.replace(/_/g, " ")}</Badge>
+                          <Badge variant="outline" className={`font-semibold capitalize ${shipment.payment_status === "paid" ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}`}>
+                            {shipment.payment_status}
+                          </Badge>
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 text-sm">
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Origin</p>
-                          <p className="text-foreground font-medium mt-1">{shipment.origin_city}, {shipment.origin_country}</p>
-                        </div>
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Destination</p>
-                          <p className="text-foreground font-medium mt-1">{shipment.destination_city}, {shipment.destination_country}</p>
-                        </div>
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Scale className="w-3 h-3" strokeWidth={2.5} />Weight</p>
-                          <p className="text-foreground font-medium mt-1">{shipment.weight} kg</p>
-                          {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm) > 0 && (
-                            <p className="text-[10px] text-muted-foreground">Vol: {calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg | Chg: {calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm).toFixed(2)} kg</p>
+                      {/* Body: clean two-column section grid */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5 px-6 py-5">
+                        {/* Shipment Overview */}
+                        <Section icon={Truck} title="Shipment Overview">
+                          <Row label="Service" value={shipment.service_type?.replace(/_/g, " ") || "—"} capitalize />
+                          <Row label="Origin" value={`${shipment.origin_city}, ${shipment.origin_country}`} />
+                          <Row label="Destination" value={`${shipment.destination_city}, ${shipment.destination_country}`} />
+                          <Row label="ETA" value={shipment.estimated_delivery ? new Date(shipment.estimated_delivery).toLocaleDateString() : "—"} />
+                          {shipment.description && <Row label="Description" value={shipment.description} />}
+                        </Section>
+
+                        {/* Package Details */}
+                        <Section icon={Scale} title="Package Details">
+                          <Row label="Weight" value={`${shipment.weight} kg`} />
+                          <Row
+                            label="Dimensions"
+                            value={
+                              shipment.length_cm && shipment.width_cm && shipment.height_cm
+                                ? `${shipment.length_cm} × ${shipment.width_cm} × ${shipment.height_cm} cm`
+                                : "Not set"
+                            }
+                          />
+                          {vol > 0 && <Row label="Volumetric Wt" value={`${vol.toFixed(2)} kg`} />}
+                          {vol > 0 && <Row label="Chargeable Wt" value={`${chg.toFixed(2)} kg`} bold />}
+                        </Section>
+
+                        {/* Sender Details */}
+                        <Section icon={User} title="Sender Details">
+                          <Row label="Name" value={shipment.sender_name || "Not provided"} />
+                          <Row label="Phone" value={shipment.sender_phone || "Not provided"} />
+                          {shipment.sender_alt_phone && <Row label="Alt Phone" value={shipment.sender_alt_phone} />}
+                          <Row label="Address" value={shipment.sender_address || "Not provided"} />
+                          {shipment.sender_phone && (
+                            <div className="flex items-center gap-3 pt-1">
+                              <a href={`tel:${shipment.sender_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
+                                <Phone className="w-3 h-3" />Call
+                              </a>
+                              <a href={`https://wa.me/${formatPhoneForWhatsApp(shipment.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium">
+                                <MessageCircle className="w-3 h-3" />WhatsApp
+                              </a>
+                            </div>
                           )}
-                        </div>
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Ruler className="w-3 h-3" strokeWidth={2.5} />Dimensions</p>
-                          <p className="text-foreground font-medium mt-1">
-                            {shipment.length_cm && shipment.width_cm && shipment.height_cm
-                              ? `${shipment.length_cm}×${shipment.width_cm}×${shipment.height_cm} cm`
-                              : "—"}
-                          </p>
-                        </div>
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" strokeWidth={2.5} />Price</p>
-                          <p className={`font-bold text-lg mt-1 ${shipment.price !== null ? "text-primary" : "text-muted-foreground"}`}>
-                            {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
-                          </p>
-                        </div>
-                      </div>
+                        </Section>
 
-                      <div className="grid grid-cols-2 gap-3 text-sm">
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Truck className="w-3 h-3" strokeWidth={2.5} />Service</p>
-                          <p className="text-foreground font-medium mt-1 capitalize">{shipment.service_type?.replace(/_/g, " ") || "—"}</p>
-                        </div>
-                        <div className="rounded-xl border border-border/70 bg-muted/[0.18] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><FileText className="w-3 h-3" strokeWidth={2.5} />Description</p>
-                          <p className="text-foreground text-xs mt-1">{shipment.description || <span className="text-muted-foreground italic">—</span>}</p>
-                        </div>
-                      </div>
-
-                      {/* Contact Details - Always visible */}
-                      <div className="space-y-3">
-                        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4">
-                          <ContactActions phone={shipment.sender_phone} altPhone={shipment.sender_alt_phone} name={shipment.sender_name} label="Sender" />
-                          <ContactActions phone={shipment.receiver_phone} altPhone={shipment.receiver_alt_phone} name={shipment.receiver_name} label="Receiver" />
-                        </div>
-                        {(shipment.sender_address || shipment.receiver_address) && (
-                          <div className="grid grid-cols-2 gap-3 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
-                            <div>
-                              <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Sender Address</p>
-                              <p className="text-foreground text-xs mt-1">{shipment.sender_address || "—"}</p>
+                        {/* Receiver Details */}
+                        <Section icon={User} title="Receiver Details">
+                          <Row label="Name" value={shipment.receiver_name || "Not provided"} />
+                          <Row label="Phone" value={shipment.receiver_phone || "Not provided"} />
+                          {shipment.receiver_alt_phone && <Row label="Alt Phone" value={shipment.receiver_alt_phone} />}
+                          <Row label="Address" value={shipment.receiver_address || "Not provided"} />
+                          {shipment.receiver_phone && (
+                            <div className="flex items-center gap-3 pt-1">
+                              <a href={`tel:${shipment.receiver_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
+                                <Phone className="w-3 h-3" />Call
+                              </a>
+                              <a href={`https://wa.me/${formatPhoneForWhatsApp(shipment.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium">
+                                <MessageCircle className="w-3 h-3" />WhatsApp
+                              </a>
                             </div>
-                            <div>
-                              <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Receiver Address</p>
-                              <p className="text-foreground text-xs mt-1">{shipment.receiver_address || "—"}</p>
-                            </div>
-                          </div>
-                        )}
+                          )}
+                        </Section>
+
+                        {/* Warehouse Details */}
+                        <Section icon={Warehouse} title="Warehouse Details">
+                          <Row label="Warehouse" value={shipment.warehouse_location || "Not assigned"} />
+                          <Row label="Pickup Prepaid" value={shipment.pickup_prepaid ? "Yes" : "No"} />
+                        </Section>
+
+                        {/* Payment Details */}
+                        <Section icon={CreditCard} title="Payment Details">
+                          <Row label="Status" value={shipment.payment_status} capitalize />
+                          <Row
+                            label="Price"
+                            value={shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
+                            bold={shipment.price !== null}
+                          />
+                        </Section>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-2 border-t border-border/40">
-                        <Button
-                          variant="dashAccent"
-                          size="dashSm"
-                          className="h-11 rounded-lg px-4 font-semibold transition-all duration-200"
-                          onClick={() => openPriceDialog(shipment)}
-                        >
-                          <DollarSign className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
-                          {shipment.price !== null ? "Edit Price" : "Set Price"}
-                        </Button>
-                        <Button
-                          variant="dashOutline"
-                          size="dashSm"
-                          className="h-11 rounded-lg px-4 font-semibold transition-all duration-200"
-                          onClick={() => openDimensionDialog(shipment)}
-                        >
-                          <Ruler className="w-4 h-4 mr-1.5" strokeWidth={2.5} />
-                          Edit Dims
-                        </Button>
-                        <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                          <SelectTrigger className="h-11 flex-1 rounded-xl border-border/80 bg-white font-medium shadow-[0_6px_16px_rgba(15,23,42,0.04)] transition-colors hover:border-primary/35"><SelectValue /></SelectTrigger>
-                          <SelectContent>
-                            {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                        <DeleteConfirmDialog
-                          title="Delete Shipment"
-                          description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
-                          onConfirm={() => handleDelete(shipment.id)}
-                        />
+                      {/* Action bar */}
+                      <div className="flex flex-col gap-2 border-t border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Button variant="dashAccent" size="sm" className="h-9 rounded-lg" onClick={() => openPriceDialog(shipment)}>
+                            <DollarSign className="w-3.5 h-3.5 mr-1.5" strokeWidth={2.5} />
+                            {shipment.price !== null ? "Edit Price" : "Set Price"}
+                          </Button>
+                          <Button variant="dashOutline" size="sm" className="h-9 rounded-lg" onClick={() => openDimensionDialog(shipment)}>
+                            <Ruler className="w-3.5 h-3.5 mr-1.5" strokeWidth={2.5} />
+                            Edit Dims
+                          </Button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
+                            <SelectTrigger className="h-9 w-full rounded-lg border-border/80 bg-white text-sm sm:w-56"><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                            </SelectContent>
+                          </Select>
+                          <DeleteConfirmDialog
+                            title="Delete Shipment"
+                            description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
+                            onConfirm={() => handleDelete(shipment.id)}
+                          />
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
             )}
           </CardContent>
