@@ -15,10 +15,30 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AUTH_SIGNOUT_FLAG = "rac-auth-signing-out";
 
+const NOOP_AUTH: AuthContextType = {
+  user: null,
+  session: null,
+  loading: true,
+  signUp: async () => ({ error: new Error("AuthProvider not mounted") }),
+  signIn: async () => ({ error: new Error("AuthProvider not mounted") }),
+  signOut: async () => {},
+};
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    // This typically only happens during Vite HMR when AuthContext.tsx is
+    // hot-replaced and a stale consumer module briefly holds a different
+    // context reference than the live AuthProvider. Returning a safe no-op
+    // default avoids tearing down the whole tree; the next render after HMR
+    // settles will receive the real context.
+    if (typeof window !== "undefined" && import.meta.env.DEV) {
+      console.warn(
+        "[useAuth] Called outside AuthProvider — returning no-op default. " +
+          "This usually indicates a stale HMR boundary; reload the preview if it persists.",
+      );
+    }
+    return NOOP_AUTH;
   }
   return context;
 };
