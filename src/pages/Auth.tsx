@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
   Phone, MapPin, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
@@ -137,11 +138,8 @@ const AuthForm = () => {
         </div>
 
         <div className="relative z-10 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-accent-foreground font-bold text-lg shadow-lg">
-              R
-            </span>
-            <span className="text-lg font-semibold tracking-tight">RAC Logistics</span>
+          <Link to="/" className="flex items-center group">
+            <HeaderLogo className="h-12 w-auto max-w-[200px] [&_g]:fill-white [&_text]:fill-white" />
           </Link>
           <Link to="/" className="text-sm text-primary-foreground/80 hover:text-primary-foreground inline-flex items-center gap-1.5 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to Home
@@ -196,9 +194,8 @@ const AuthForm = () => {
       <main className="flex flex-col min-h-screen">
         {/* Mobile brand strip */}
         <div className="lg:hidden bg-primary text-primary-foreground px-6 py-5 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground font-bold">R</span>
-            <span className="font-semibold">RAC Logistics</span>
+          <Link to="/" className="flex items-center">
+            <HeaderLogo className="h-9 w-auto max-w-[150px] [&_g]:fill-white [&_text]:fill-white" />
           </Link>
           <Link to="/" className="text-xs text-primary-foreground/80 inline-flex items-center gap-1">
             <ArrowLeft className="w-3.5 h-3.5" /> Home
