@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -73,6 +73,17 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setIsMobileServicesOpen(false);
   };
+
+  // Lock body scroll when full-screen mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [isMobileMenuOpen]);
 
   return (
     <header
