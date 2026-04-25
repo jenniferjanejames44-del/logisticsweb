@@ -45,9 +45,53 @@ interface Shipment {
   receiver_alt_phone: string | null;
   receiver_address: string | null;
   warehouse_location: string | null;
+  pickup_prepaid: boolean | null;
 }
 
 const formatPhoneForWhatsApp = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
+
+const Section = ({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+      <Icon className="w-3.5 h-3.5 text-primary" strokeWidth={2.5} />
+      {title}
+    </div>
+    <div className="space-y-1.5 rounded-lg border border-border/60 bg-muted/[0.18] px-4 py-3">
+      {children}
+    </div>
+  </div>
+);
+
+const Row = ({
+  label,
+  value,
+  bold,
+  capitalize,
+}: {
+  label: string;
+  value: string | number | null | undefined;
+  bold?: boolean;
+  capitalize?: boolean;
+}) => (
+  <div className="flex items-baseline justify-between gap-3 text-sm">
+    <span className="shrink-0 text-xs text-muted-foreground">{label}</span>
+    <span
+      className={`text-right text-foreground ${bold ? "font-bold text-primary" : "font-medium"} ${capitalize ? "capitalize" : ""} ${
+        value === "Not provided" || value === "Not set" || value === "Not assigned" || value === "—" ? "text-muted-foreground italic font-normal" : ""
+      }`}
+    >
+      {value ?? "—"}
+    </span>
+  </div>
+);
 
 const ContactActions = ({ phone, altPhone, name, label }: { phone: string | null; altPhone: string | null; name: string | null; label: string }) => {
   return (
