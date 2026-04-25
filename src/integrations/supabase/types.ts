@@ -409,6 +409,7 @@ export type Database = {
       }
       partners: {
         Row: {
+          address: string | null
           approved_at: string | null
           business_name: string | null
           city: string | null
@@ -424,11 +425,14 @@ export type Database = {
           referral_plan: string | null
           rejected_at: string | null
           social_link: string | null
+          state: string | null
           status: string
           updated_at: string
           user_id: string | null
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
           approved_at?: string | null
           business_name?: string | null
           city?: string | null
@@ -444,11 +448,14 @@ export type Database = {
           referral_plan?: string | null
           rejected_at?: string | null
           social_link?: string | null
+          state?: string | null
           status?: string
           updated_at?: string
           user_id?: string | null
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
           approved_at?: string | null
           business_name?: string | null
           city?: string | null
@@ -464,9 +471,11 @@ export type Database = {
           referral_plan?: string | null
           rejected_at?: string | null
           social_link?: string | null
+          state?: string | null
           status?: string
           updated_at?: string
           user_id?: string | null
+          zip_code?: string | null
         }
         Relationships: []
       }
