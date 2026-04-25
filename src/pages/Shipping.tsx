@@ -691,7 +691,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 2: Receiver ===== */}
-                  {step === 2 && (
+                  {(step === 2 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Send className="w-4 h-4 text-primary" strokeWidth={2} /></div>
@@ -770,7 +770,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 3: Package ===== */}
-                  {step === 3 && (
+                  {(step === 3 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/60"><Package className="w-4 h-4 text-accent-foreground" strokeWidth={2} /></div>
@@ -902,7 +902,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 4: Shipping Options ===== */}
-                  {step === 4 && (
+                  {(step === 4 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Truck className="w-4 h-4 text-primary" strokeWidth={2} /></div>
@@ -1157,7 +1157,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 5: Summary ===== */}
-                  {step === 5 && (
+                  {(step === 5 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><CheckCircle2 className="w-4 h-4 text-primary" strokeWidth={2} /></div>
