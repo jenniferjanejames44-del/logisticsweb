@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -69,18 +70,45 @@ import Partner from "./pages/dashboard/Partner";
 import AdminPartners from "./pages/admin/AdminPartners";
 const queryClient = new QueryClient();
 
+// Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
+// boundary briefly leaving useAuth without a provider), keep rendering the
+// app instead of blanking the whole preview.
+class LoginTrackerBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: unknown) {
+    if (import.meta.env.DEV) {
+      console.warn("[LoginTracker] suppressed error, app continues:", error);
+    }
+  }
+  render() {
+    return <>{this.props.children}</>;
+  }
+}
+
 // Component that uses the login tracking hook
 const LoginTracker = ({ children }: { children: React.ReactNode }) => {
   useLoginTracking();
   return <>{children}</>;
 };
 
+const SafeLoginTracker = ({ children }: { children: React.ReactNode }) => (
+  <LoginTrackerBoundary>
+    <LoginTracker>{children}</LoginTracker>
+  </LoginTrackerBoundary>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
       <AuthProvider>
         <CurrencyProvider>
-          <LoginTracker>
+          <SafeLoginTracker>
             <TooltipProvider>
               <Toaster />
               <Sonner />
