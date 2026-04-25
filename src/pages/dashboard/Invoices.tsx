@@ -75,9 +75,44 @@ const Invoices = () => {
   };
 
   const handlePrint = () => {
-    if (iframeRef.current?.contentWindow) {
-      iframeRef.current.contentWindow.print();
+    if (!invoiceHtml) return;
+    try {
+      const win = iframeRef.current?.contentWindow;
+      if (win) {
+        win.focus();
+        win.print();
+        return;
+      }
+    } catch (e) {
+      console.warn("iframe print blocked, falling back to new window", e);
     }
+    // Fallback: open in new window and print there
+    const printWin = window.open("", "_blank");
+    if (!printWin) {
+      toast.error("Pop-ups blocked. Please allow pop-ups or use Save instead.");
+      return;
+    }
+    printWin.document.open();
+    printWin.document.write(invoiceHtml);
+    printWin.document.close();
+    printWin.onload = () => {
+      printWin.focus();
+      printWin.print();
+    };
+  };
+
+  const handleSaveToDevice = () => {
+    if (!invoiceHtml) return;
+    const blob = new Blob([invoiceHtml], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `invoice.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Invoice saved. Open the file and use your browser's Print → Save as PDF.");
   };
 
   const getStatusBadge = (status: string) => {
@@ -225,7 +260,12 @@ const Invoices = () => {
           <DialogHeader className="px-6 pt-5 pb-2 flex-shrink-0">
             <div className="flex items-center justify-between">
               <DialogTitle>Invoice Preview</DialogTitle>
-              <Button size="sm" onClick={handlePrint} className="mr-6 h-8 text-[12px]">Print / Save as PDF</Button>
+              <div className="mr-6 flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={handleSaveToDevice} className="h-8 text-[12px]">
+                  <Download className="w-3.5 h-3.5 mr-1" /> Save
+                </Button>
+                <Button size="sm" onClick={handlePrint} className="h-8 text-[12px]">Print / Save as PDF</Button>
+              </div>
             </div>
           </DialogHeader>
           <div className="flex-1 overflow-hidden px-6 pb-6">
@@ -234,7 +274,7 @@ const Invoices = () => {
               srcDoc={invoiceHtml || ""}
               className="w-full h-full border border-border/50 rounded-lg"
               title="Invoice Preview"
-              sandbox="allow-same-origin allow-scripts"
+              sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-downloads allow-popups-to-escape-sandbox"
             />
           </div>
         </DialogContent>
