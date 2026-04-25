@@ -552,14 +552,16 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
         <section className="section-padding bg-[hsl(220,20%,97%)]">
           <div className="section-container">
             {workflowGuide && (
-              <div className="mx-auto mb-6 max-w-4xl rounded-xl border border-border/60 bg-white p-5 shadow-sm">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-primary">{workflowGuide.badge}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">Need more context first? Review the dedicated service guide before you complete shipment details.</p>
+              <div className="mx-auto mb-5 max-w-4xl rounded-xl border border-border/60 bg-white px-4 py-3 sm:px-5 sm:py-4 shadow-sm">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-primary">{workflowGuide.badge}</p>
+                    <p className="mt-0.5 text-xs sm:text-sm text-muted-foreground leading-snug">
+                      Need context first? Review the service guide before completing shipment details.
+                    </p>
                   </div>
-                  <Button asChild variant="dashOutline" size="sm">
-                    <Link to={workflowGuide.serviceLink}>Back to service guide</Link>
+                  <Button asChild variant="dashOutline" size="sm" className="shrink-0 whitespace-nowrap self-start sm:self-auto">
+                    <Link to={workflowGuide.serviceLink}>View service guide</Link>
                   </Button>
                 </div>
               </div>
