@@ -241,13 +241,25 @@ const Partners = () => {
                         <Input id="country" value={form.country} onChange={handleChange("country")} required maxLength={80} />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="city">City</Label>
-                        <Input id="city" value={form.city} onChange={handleChange("city")} maxLength={80} />
+                        <Label htmlFor="state">State / Region *</Label>
+                        <Input id="state" value={form.state} onChange={handleChange("state")} required maxLength={80} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="city">City *</Label>
+                        <Input id="city" value={form.city} onChange={handleChange("city")} required maxLength={80} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="zip_code">Zip / Postal code *</Label>
+                        <Input id="zip_code" value={form.zip_code} onChange={handleChange("zip_code")} required maxLength={20} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="business_name">Business name (optional)</Label>
                         <Input id="business_name" value={form.business_name} onChange={handleChange("business_name")} maxLength={120} />
                       </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Physical address *</Label>
+                      <Input id="address" value={form.address} onChange={handleChange("address")} required maxLength={255} placeholder="Street, building, apt" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="social_link">Social media / website (optional)</Label>
