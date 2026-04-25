@@ -218,6 +218,16 @@ const Profile = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="zip_code" className="text-[12px]">Zip / Postal Code</Label>
+                  <Input
+                    id="zip_code"
+                    value={formData.zip_code}
+                    onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
+                    placeholder="100001"
+                    className="h-10 text-[13px] border-border/60"
+                  />
+                </div>
               </div>
 
               <Button type="submit" variant="default" size="sm" disabled={saving} className="h-9 text-[13px]">
