@@ -64,6 +64,9 @@ import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
 import AdminRefunds from "./pages/admin/AdminRefunds";
 import Checkout from "./pages/Checkout";
 import DesignSystem from "./pages/DesignSystem";
+import Partners from "./pages/Partners";
+import Partner from "./pages/dashboard/Partner";
+import AdminPartners from "./pages/admin/AdminPartners";
 const queryClient = new QueryClient();
 
 // Component that uses the login tracking hook
@@ -108,6 +111,7 @@ const App = () => (
               <Route path="/track" element={<Track />} />
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/partners" element={<Partners />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
@@ -122,6 +126,7 @@ const App = () => (
               <Route path="/dashboard/support/:id" element={<SupportTicketDetail />} />
               <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
               <Route path="/dashboard/shopping-orders/pay" element={<ShoppingOrderPayment />} />
+              <Route path="/dashboard/partner" element={<Partner />} />
               <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
               {/* Admin Dashboard */}
               <Route path="/admin" element={<AdminDashboard />} />
@@ -134,6 +139,7 @@ const App = () => (
               <Route path="/admin/pricing-engine" element={<AdminPricingEngine />} />
               <Route path="/admin/warehouses" element={<AdminWarehouses />} />
               <Route path="/admin/packaging" element={<AdminPackaging />} />
+              <Route path="/admin/partners" element={<AdminPartners />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/notifications" element={<AdminNotifications />} />
               <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />

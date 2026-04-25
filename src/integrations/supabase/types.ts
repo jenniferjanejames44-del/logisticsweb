@@ -386,6 +386,90 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_settings: {
+        Row: {
+          default_commission_percentage: number
+          id: number
+          minimum_payout_threshold: number
+          updated_at: string
+        }
+        Insert: {
+          default_commission_percentage?: number
+          id?: number
+          minimum_payout_threshold?: number
+          updated_at?: string
+        }
+        Update: {
+          default_commission_percentage?: number
+          id?: number
+          minimum_payout_threshold?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      partners: {
+        Row: {
+          approved_at: string | null
+          business_name: string | null
+          city: string | null
+          commission_percentage: number
+          country: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          message: string | null
+          phone: string | null
+          referral_code: string | null
+          referral_plan: string | null
+          rejected_at: string | null
+          social_link: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          business_name?: string | null
+          city?: string | null
+          commission_percentage?: number
+          country?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          message?: string | null
+          phone?: string | null
+          referral_code?: string | null
+          referral_plan?: string | null
+          rejected_at?: string | null
+          social_link?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          business_name?: string | null
+          city?: string | null
+          commission_percentage?: number
+          country?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+          phone?: string | null
+          referral_code?: string | null
+          referral_plan?: string | null
+          rejected_at?: string | null
+          social_link?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
@@ -511,6 +595,8 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          referred_by_partner_id: string | null
+          signup_referral_code: string | null
           state: string | null
           updated_at: string
           user_id: string
@@ -526,6 +612,8 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          referred_by_partner_id?: string | null
+          signup_referral_code?: string | null
           state?: string | null
           updated_at?: string
           user_id: string
@@ -541,9 +629,56 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          referred_by_partner_id?: string | null
+          signup_referral_code?: string | null
           state?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          commission_amount: number
+          commission_status: string
+          created_at: string
+          first_paid_invoice_id: string | null
+          first_paid_shipment_id: string | null
+          id: string
+          is_converted: boolean
+          paid_at: string | null
+          partner_id: string
+          referral_code: string
+          referred_user_id: string
+          updated_at: string
+        }
+        Insert: {
+          commission_amount?: number
+          commission_status?: string
+          created_at?: string
+          first_paid_invoice_id?: string | null
+          first_paid_shipment_id?: string | null
+          id?: string
+          is_converted?: boolean
+          paid_at?: string | null
+          partner_id: string
+          referral_code: string
+          referred_user_id: string
+          updated_at?: string
+        }
+        Update: {
+          commission_amount?: number
+          commission_status?: string
+          created_at?: string
+          first_paid_invoice_id?: string | null
+          first_paid_shipment_id?: string | null
+          id?: string
+          is_converted?: boolean
+          paid_at?: string | null
+          partner_id?: string
+          referral_code?: string
+          referred_user_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
