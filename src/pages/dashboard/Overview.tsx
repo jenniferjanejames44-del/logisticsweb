@@ -132,6 +132,37 @@ const Overview = () => {
 
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
+      {/* Hero — Create Shipment CTA (Africanies-style) */}
+      <Card className="mb-6 overflow-hidden rounded-2xl border-0 bg-gradient-to-br from-primary via-primary to-[#0a1a6b] shadow-lg">
+        <CardContent className="relative p-6 sm:p-8">
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
+          <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-white/5 blur-2xl" aria-hidden />
+          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="max-w-xl">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white/90">
+                <Package className="h-3 w-3" /> Quick Start
+              </span>
+              <h2 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl">
+                Ready to ship something today?
+              </h2>
+              <p className="mt-1.5 text-sm text-white/70 sm:text-base">
+                Create a new shipment in a few guided steps and we'll calculate the cost automatically.
+              </p>
+            </div>
+            <Button
+              asChild
+              className="h-12 self-start rounded-xl bg-accent px-6 text-sm font-semibold text-white shadow-md hover:bg-accent/90 sm:self-auto"
+            >
+              <Link to="/dashboard/shipments/new">
+                <Plus className="mr-1 h-4 w-4" />
+                Create Shipment
+                <ArrowRight className="ml-1 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Stats Grid */}
       <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {statCards.map((stat) => {
@@ -180,7 +211,7 @@ const Overview = () => {
       {/* Quick Actions */}
       <div className="mb-6 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
         {[
-          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/shipping" },
+          { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/dashboard/shipments/new" },
           { label: "Get Quote", desc: "Calculate shipping cost", icon: ShoppingBag, href: "/pricing" },
           { label: "Contact Support", desc: "Need help? Reach out", icon: Headphones, href: "/contact" },
         ].map((action) => {
@@ -239,7 +270,7 @@ const Overview = () => {
                 <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
                 <p className="text-sm text-muted-foreground mb-4">No shipments yet</p>
                 <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-white rounded-lg">
-                  <Link to="/shipping">Create Your First Shipment</Link>
+                  <Link to="/dashboard/shipments/new">Create Your First Shipment</Link>
                 </Button>
               </div>
             )}

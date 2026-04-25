@@ -31,6 +31,7 @@ import AuthCallback from "./pages/AuthCallback";
 import ResetPassword from "./pages/ResetPassword";
 import Overview from "./pages/dashboard/Overview";
 import Shipments from "./pages/dashboard/Shipments";
+import CreateShipment from "./pages/dashboard/CreateShipment";
 import Wallet from "./pages/dashboard/Wallet";
 import Payments from "./pages/dashboard/Payments";
 import Profile from "./pages/dashboard/Profile";
@@ -112,6 +113,7 @@ const App = () => (
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
               <Route path="/dashboard/shipments" element={<Shipments />} />
+              <Route path="/dashboard/shipments/new" element={<CreateShipment />} />
               <Route path="/dashboard/invoices" element={<Invoices />} />
               <Route path="/dashboard/payments" element={<Payments />} />
               <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />

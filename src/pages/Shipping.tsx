@@ -85,7 +85,11 @@ const SearchableInput = ({
   </div>
 );
 
-const Shipping = () => {
+interface ShippingProps {
+  embedded?: boolean;
+}
+
+const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const { formatUsd } = useCurrency();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -525,9 +529,10 @@ const Shipping = () => {
   ];
 
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className={embedded ? "" : "min-h-screen"}>
+      {!embedded && <Header />}
       <main>
+        {!embedded && (
         <section className="bg-primary pt-28 pb-12 sm:pt-32 sm:pb-16 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/30" />
           <div className="section-container text-center relative z-10">
@@ -542,6 +547,7 @@ const Shipping = () => {
             </p>
           </div>
         </section>
+        )}
 
         <section className="section-padding bg-[hsl(220,20%,97%)]">
           <div className="section-container">
@@ -1431,8 +1437,8 @@ const Shipping = () => {
           </div>
         </section>
       </main>
-      <Footer />
-      <LiveChat />
+      {!embedded && <Footer />}
+      {!embedded && <LiveChat />}
     </div>
   );
 };

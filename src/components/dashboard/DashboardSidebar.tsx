@@ -18,6 +18,7 @@ import {
   ShoppingBag,
   MessageSquare,
   ChevronRight,
+  Plus,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -147,6 +148,18 @@ const DashboardSidebar = () => {
                 {user?.email}
               </p>
             </div>
+          </Link>
+        </div>
+
+        {/* Primary CTA — Create Shipment */}
+        <div className="px-3 pt-3">
+          <Link
+            to="/dashboard/shipments/new"
+            onClick={() => setIsMobileOpen(false)}
+            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent/90 hover:shadow"
+          >
+            <Plus className="h-4 w-4" strokeWidth={2.4} />
+            Create Shipment
           </Link>
         </div>
 
