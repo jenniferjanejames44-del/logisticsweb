@@ -18,7 +18,9 @@ import {
   ShoppingBag,
   MessageSquare,
   ChevronRight,
+  ChevronDown,
   Plus,
+  List,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,8 +28,12 @@ import { supabase } from "@/integrations/supabase/client";
 const mainNav = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
   { icon: Wallet, label: "Wallet", href: "/dashboard/wallet" },
-  { icon: Package, label: "Shipments", href: "/dashboard/shipments" },
   { icon: ShoppingBag, label: "Shopping Orders", href: "/dashboard/shopping-orders" },
+];
+
+const shipmentChildren = [
+  { icon: List, label: "View Shipments", href: "/dashboard/shipments" },
+  { icon: Plus, label: "Create Shipment", href: "/dashboard/shipments/new" },
 ];
 
 const managementNav = [
@@ -47,6 +53,12 @@ const DashboardSidebar = () => {
   const { isAdmin } = useUserRole();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [profileName, setProfileName] = useState<string>("");
+  const isShipmentsRoute = location.pathname.startsWith("/dashboard/shipments");
+  const [shipmentsOpen, setShipmentsOpen] = useState(isShipmentsRoute);
+
+  useEffect(() => {
+    if (isShipmentsRoute) setShipmentsOpen(true);
+  }, [isShipmentsRoute]);
 
   useEffect(() => {
     if (!user) return;
@@ -151,21 +163,52 @@ const DashboardSidebar = () => {
           </Link>
         </div>
 
-        {/* Primary CTA — Create Shipment */}
-        <div className="px-3 pt-3">
-          <Link
-            to="/dashboard/shipments/new"
-            onClick={() => setIsMobileOpen(false)}
-            className="flex items-center justify-center gap-2 rounded-lg bg-accent px-3 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-accent/90 hover:shadow"
-          >
-            <Plus className="h-4 w-4" strokeWidth={2.4} />
-            Create Shipment
-          </Link>
-        </div>
-
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-2">
+        <nav className="flex-1 overflow-y-auto px-3 py-3">
           {renderNavGroup("Main", mainNav)}
+
+          {/* Shipments expandable group */}
+          <div className="mb-1">
+            <button
+              type="button"
+              onClick={() => setShipmentsOpen((o) => !o)}
+              className={`group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
+                isShipmentsRoute
+                  ? "bg-primary/8 text-primary"
+                  : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+              }`}
+              aria-expanded={shipmentsOpen}
+            >
+              <Package className="w-4 h-4 flex-shrink-0" strokeWidth={isShipmentsRoute ? 2.2 : 1.8} />
+              <span className="flex-1 text-left">Shipments</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${shipmentsOpen ? "rotate-0" : "-rotate-90"}`}
+              />
+            </button>
+            {shipmentsOpen && (
+              <div className="mt-0.5 ml-3 space-y-0.5 border-l border-border/40 pl-2.5">
+                {shipmentChildren.map((child) => {
+                  const isChildActive = location.pathname === child.href;
+                  return (
+                    <Link
+                      key={child.href}
+                      to={child.href}
+                      onClick={() => setIsMobileOpen(false)}
+                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                        isChildActive
+                          ? "bg-primary text-primary-foreground shadow-sm"
+                          : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                      }`}
+                    >
+                      <child.icon className="w-3.5 h-3.5 flex-shrink-0" strokeWidth={isChildActive ? 2.4 : 1.8} />
+                      <span>{child.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
           {renderNavGroup("Management", managementNav)}
           {renderNavGroup("Account", accountNav)}
 
