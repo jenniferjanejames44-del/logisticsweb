@@ -113,7 +113,43 @@ const AdminInvoices = () => {
     }
   };
 
-  const handlePrint = () => { iframeRef.current?.contentWindow?.print(); };
+  const handlePrint = () => {
+    if (!invoiceHtml) return;
+    try {
+      const win = iframeRef.current?.contentWindow;
+      if (win) {
+        win.focus();
+        win.print();
+        return;
+      }
+    } catch (e) {
+      console.warn("iframe print blocked, falling back to new window", e);
+    }
+    const printWin = window.open("", "_blank");
+    if (!printWin) {
+      toast.error("Pop-ups blocked. Please allow pop-ups or use Save instead.");
+      return;
+    }
+    printWin.document.open();
+    printWin.document.write(invoiceHtml);
+    printWin.document.close();
+    printWin.onload = () => { printWin.focus(); printWin.print(); };
+  };
+
+  const handleSaveToDevice = () => {
+    if (!invoiceHtml) return;
+    const name = selectedInvoice?.invoice_number || "invoice";
+    const blob = new Blob([invoiceHtml], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${name}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Saved. Open the file and use Print → Save as PDF.");
+  };
 
   const handleExportCsv = () => {
     if (filtered.length === 0) {
@@ -366,16 +402,22 @@ const AdminInvoices = () => {
             <DialogHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-2 flex-shrink-0">
               <div className="flex items-center justify-between">
                 <DialogTitle className="text-base sm:text-lg text-foreground">Invoice Preview</DialogTitle>
-                <Button size="sm" onClick={handlePrint} className="mr-6 rounded-lg">
-                  <Printer className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Print / Save as PDF</span>
-                  <span className="sm:hidden">Print</span>
-                </Button>
+                <div className="mr-6 flex items-center gap-2">
+                  <Button size="sm" variant="outline" onClick={handleSaveToDevice} className="rounded-lg">
+                    <Download className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Save</span>
+                  </Button>
+                  <Button size="sm" onClick={handlePrint} className="rounded-lg">
+                    <Printer className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Print / Save as PDF</span>
+                    <span className="sm:hidden">Print</span>
+                  </Button>
+                </div>
               </div>
             </DialogHeader>
             <div className="flex-1 overflow-y-auto px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
               <div className="h-[55vh] min-h-[400px]">
-                <iframe ref={iframeRef} srcDoc={invoiceHtml || ""} className="w-full h-full border border-border rounded-lg" title="Invoice Preview" sandbox="allow-same-origin allow-scripts" />
+                <iframe ref={iframeRef} srcDoc={invoiceHtml || ""} className="w-full h-full border border-border rounded-lg" title="Invoice Preview" sandbox="allow-same-origin allow-scripts allow-modals allow-popups allow-downloads allow-popups-to-escape-sandbox" />
               </div>
               {selectedInvoice && (
                 <div className="rounded-lg border border-border/60 bg-muted/20 p-4 sm:p-5">
