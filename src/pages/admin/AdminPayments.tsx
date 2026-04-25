@@ -10,7 +10,8 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Search, DollarSign, Clock, Receipt, XCircle, TrendingUp } from "lucide-react";
+import { Search, DollarSign, Clock, Receipt, XCircle, TrendingUp, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -76,6 +77,21 @@ const AdminPayments = () => {
     } catch (error) {
       console.error("Error updating status:", error);
       toast.error("Failed to update payment status");
+    }
+  };
+
+  const handleRetryPayment = async (paymentId: string) => {
+    try {
+      const { error } = await supabase
+        .from("payments")
+        .update({ status: "pending" })
+        .eq("id", paymentId);
+      if (error) throw error;
+      toast.success("Payment queued for retry");
+      fetchPayments();
+    } catch (error) {
+      console.error("Error retrying payment:", error);
+      toast.error("Failed to retry payment");
     }
   };
 
