@@ -20,6 +20,7 @@ interface Profile {
   company_name: string | null;
   address: string | null;
   city: string | null;
+  state: string | null;
   country: string | null;
   avatar_url: string | null;
 }
@@ -36,7 +37,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [formData, setFormData] = useState({
-    full_name: "", phone: "", company_name: "", address: "", city: "", country: "",
+    full_name: "", phone: "", company_name: "", address: "", city: "", state: "", country: "",
   });
 
   useEffect(() => {
@@ -48,13 +49,14 @@ const Profile = () => {
         .eq("user_id", user.id)
         .maybeSingle();
       if (!error && data) {
-        setProfile(data);
+        setProfile(data as any);
         setFormData({
           full_name: data.full_name || "",
           phone: data.phone || "",
           company_name: data.company_name || "",
           address: data.address || "",
           city: data.city || "",
+          state: (data as any).state || "",
           country: data.country || "",
         });
       }
@@ -75,8 +77,9 @@ const Profile = () => {
         company_name: formData.company_name || null,
         address: formData.address || null,
         city: formData.city || null,
+        state: formData.state || null,
         country: formData.country || null,
-      })
+      } as any)
       .eq("user_id", user.id);
     if (error) {
       toast({ title: "Error", description: "Failed to update profile", variant: "destructive" });
@@ -183,6 +186,16 @@ const Profile = () => {
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     placeholder="New York"
+                    className="h-10 text-[13px] border-border/60"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="state" className="text-[12px]">State / Region</Label>
+                  <Input
+                    id="state"
+                    value={formData.state}
+                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                    placeholder="NY"
                     className="h-10 text-[13px] border-border/60"
                   />
                 </div>
