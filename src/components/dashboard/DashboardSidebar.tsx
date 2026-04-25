@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 
-import Logo from "@/components/layout/Logo";
+import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   LayoutDashboard,
   Package,
@@ -138,7 +138,7 @@ const DashboardSidebar = () => {
             onClick={() => setIsMobileOpen(false)}
             aria-label="RAC Logistics home"
           >
-            <Logo className="h-auto w-full max-w-[130px]" />
+            <HeaderLogo className="h-auto w-full max-w-[150px]" />
           </Link>
         </div>
 
