@@ -17,6 +17,18 @@ import {
 const AuthForm = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    // Capture ?ref=CODE for partner attribution and persist for the signup
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref");
+      if (ref) {
+        localStorage.setItem("rac_referral_code", ref.trim().toUpperCase());
+        setReferralCode(ref.trim().toUpperCase());
+      } else {
+        const stored = localStorage.getItem("rac_referral_code");
+        if (stored) setReferralCode(stored);
+      }
+    } catch {}
   }, []);
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -29,6 +41,7 @@ const AuthForm = () => {
   const [stateRegion, setStateRegion] = useState("");
   const [country, setCountry] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
@@ -110,8 +123,11 @@ const AuthForm = () => {
           state: stateRegion.trim(),
           country: country.trim(),
           company_name: companyName.trim(),
+          referral_code: referralCode.trim() || undefined,
         });
         if (error) throw error;
+        // clear stored code after successful signup
+        try { localStorage.removeItem("rac_referral_code"); } catch {}
         setShowVerificationMessage(true);
         toast({ title: "Account created!", description: "Please check your email to verify your account before logging in." });
       }
