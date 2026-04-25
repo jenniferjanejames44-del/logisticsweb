@@ -18,6 +18,37 @@ const compactAddButtonClass = "rounded-[10px] px-4";
 const compactIconButtonClass = "rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60";
 const compactDeleteButtonClass = "rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive";
 
+// ---- Shared section header ----
+const SectionHeader = ({
+  title,
+  count,
+  description,
+  action,
+}: {
+  title: string;
+  count: number;
+  description: string;
+  action: React.ReactNode;
+}) => (
+  <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-w-0">
+      <div className="flex items-center gap-2">
+        <h3 className="text-[15px] font-semibold tracking-tight text-foreground">{title}</h3>
+        <span className="rounded-full bg-muted/60 px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
+          {count}
+        </span>
+      </div>
+      <p className="mt-1 text-[12px] text-muted-foreground">{description}</p>
+    </div>
+    <div className="flex-shrink-0">{action}</div>
+  </div>
+);
+
+const tableWrapperClass =
+  "overflow-hidden rounded-xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.03)]";
+const tableHeaderClass = "bg-muted/30 [&_th]:text-[11px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground";
+const tableRowClass = "transition-colors hover:bg-muted/20 [&_td]:py-3 [&_td]:text-[13px]";
+
 // ---- Generic CRUD helpers ----
 function useCrud(table: string) {
   const [items, setItems] = useState<any[]>([]);
@@ -67,21 +98,23 @@ const ZonesTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Zones ({zones.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Zone</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Zones"
+        count={zones.length}
+        description="Group destination countries into zones for tiered pricing."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Zone</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Description</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Name</TableHead><TableHead>Description</TableHead><TableHead>Active</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             zones.map(z => (
-              <TableRow key={z.id}>
+              <TableRow key={z.id} className={tableRowClass}>
                 <TableCell className="font-medium">{z.name}</TableCell>
                 <TableCell>{z.description || "—"}</TableCell>
                 <TableCell>{z.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Zone" description={`Are you sure you want to delete zone "${z.name}"? This cannot be undone.`} onConfirm={() => remove(z.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(z)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Zone" description={`Are you sure you want to delete zone "${z.name}"? This cannot be undone.`} onConfirm={() => remove(z.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -121,20 +154,22 @@ const ZoneCountriesTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Zone Countries ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => { setForm({ zone_id: "", country: "" }); setOpen(true); }}><Plus className="w-4 h-4 mr-1" />Map Country</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Zone Countries"
+        count={items.length}
+        description="Map each destination country to its corresponding pricing zone."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => { setForm({ zone_id: "", country: "" }); setOpen(true); }}><Plus className="w-4 h-4 mr-1" />Map Country</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Country</TableHead><TableHead>Zone</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Country</TableHead><TableHead>Zone</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={3} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
+              <TableRow key={i.id} className={tableRowClass}>
                 <TableCell className="font-medium">{i.country}</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell><DeleteConfirmDialog title="Delete Country Mapping" description={`Are you sure you want to remove "${i.country}" from this zone?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></TableCell>
+                <TableCell><div className="flex justify-end"><DeleteConfirmDialog title="Delete Country Mapping" description={`Are you sure you want to remove "${i.country}" from this zone?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -187,21 +222,23 @@ const WeightPricingTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Weight Pricing ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Weight Pricing"
+        count={items.length}
+        description="Flat pricing tiers per weight range for each zone."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Tier</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price (USD)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Weight Range</TableHead><TableHead>Zone</TableHead><TableHead>Price (USD)</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
-                <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
+              <TableRow key={i.id} className={tableRowClass}>
+                <TableCell className="font-medium">{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell>${Number(i.price).toLocaleString()}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Weight Pricing" description="Are you sure you want to delete this weight pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell className="font-semibold tabular-nums">${Number(i.price).toLocaleString()}</TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Weight Pricing" description="Are you sure you want to delete this weight pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -253,21 +290,23 @@ const HeavyWeightPricingTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Heavy Weight Pricing ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Heavy Weight Pricing"
+        count={items.length}
+        description="Per-kilogram pricing for shipments exceeding standard weight tiers."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Tier</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Weight Range (KG)</TableHead><TableHead>Zone</TableHead><TableHead>Price/KG (USD)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Weight Range</TableHead><TableHead>Zone</TableHead><TableHead>Price / KG</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
-                <TableCell>{i.min_weight}–{i.max_weight} KG</TableCell>
+              <TableRow key={i.id} className={tableRowClass}>
+                <TableCell className="font-medium">{i.min_weight}–{i.max_weight} KG</TableCell>
                 <TableCell>{getZoneName(i.zone_id)}</TableCell>
-                <TableCell>${Number(i.price_per_kg).toLocaleString()}/KG</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Heavy Weight Pricing" description="Are you sure you want to delete this pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell className="font-semibold tabular-nums">${Number(i.price_per_kg).toLocaleString()}<span className="text-muted-foreground font-normal">/KG</span></TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Heavy Weight Pricing" description="Are you sure you want to delete this pricing rule?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -315,21 +354,23 @@ const ExtraChargesTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Extra Charges ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Extra Charges"
+        count={items.length}
+        description="Optional add-on fees applied to shipments (insurance, handling, etc.)."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Charge</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-        <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Price (USD)</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+        <TableHeader className={tableHeaderClass}><TableRow><TableHead>Name</TableHead><TableHead>Price</TableHead><TableHead>Active</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
+              <TableRow key={i.id} className={tableRowClass}>
                 <TableCell className="font-medium">{i.name}</TableCell>
-                <TableCell>${Number(i.price).toLocaleString()}</TableCell>
+                <TableCell className="font-semibold tabular-nums">${Number(i.price).toLocaleString()}</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Extra Charge" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Extra Charge" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -374,21 +415,23 @@ const TaxesTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Tax Settings ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Tax Settings"
+        count={items.length}
+        description="Configure VAT, customs, and other tax rates applied at checkout."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Tax</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Rate (%)</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Name</TableHead><TableHead>Rate</TableHead><TableHead>Active</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
+              <TableRow key={i.id} className={tableRowClass}>
                 <TableCell className="font-medium">{i.name}</TableCell>
-                <TableCell>{i.rate}%</TableCell>
+                <TableCell className="font-semibold tabular-nums">{i.rate}%</TableCell>
                 <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Tax Setting" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Tax Setting" description={`Are you sure you want to delete "${i.name}"?`} onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -433,21 +476,23 @@ const ProcessingFeesTab = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-foreground">Processing Fees ({items.length})</h3>
-        <Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add</Button>
-      </div>
-      <div className="overflow-x-auto">
+      <SectionHeader
+        title="Processing Fees"
+        count={items.length}
+        description="Tiered service charges based on declared shipment value."
+        action={<Button size="compact" className={compactAddButtonClass} onClick={() => openDialog()}><Plus className="w-4 h-4 mr-1" />Add Tier</Button>}
+      />
+      <div className={tableWrapperClass + " overflow-x-auto"}>
         <Table>
-          <TableHeader><TableRow><TableHead>Value Range ($)</TableHead><TableHead>Type</TableHead><TableHead>Fee</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+          <TableHeader className={tableHeaderClass}><TableRow><TableHead>Value Range</TableHead><TableHead>Type</TableHead><TableHead>Fee</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader>
           <TableBody>
             {loading ? <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
             items.map(i => (
-              <TableRow key={i.id}>
-                <TableCell>${Number(i.min_value).toLocaleString()}–${Number(i.max_value).toLocaleString()}</TableCell>
+              <TableRow key={i.id} className={tableRowClass}>
+                <TableCell className="font-medium tabular-nums">${Number(i.min_value).toLocaleString()}–${Number(i.max_value).toLocaleString()}</TableCell>
                 <TableCell className="capitalize">{i.fee_type}</TableCell>
-                <TableCell>{i.fee_type === "flat" ? `$${i.fee_value}` : `${i.fee_value}%`}</TableCell>
-                <TableCell><div className="flex gap-2"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Processing Fee" description="Are you sure you want to delete this processing fee?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
+                <TableCell className="font-semibold tabular-nums">{i.fee_type === "flat" ? `$${i.fee_value}` : `${i.fee_value}%`}</TableCell>
+                <TableCell><div className="flex gap-2 justify-end"><Button variant="ghost" size="iconSm" className={compactIconButtonClass} onClick={() => openDialog(i)}><Edit2 className="w-4 h-4" /></Button><DeleteConfirmDialog title="Delete Processing Fee" description="Are you sure you want to delete this processing fee?" onConfirm={() => remove(i.id)} buttonClassName={compactDeleteButtonClass} /></div></TableCell>
               </TableRow>
             ))}
           </TableBody>
