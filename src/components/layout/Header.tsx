@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -64,7 +64,7 @@ const Header = () => {
     );
   const mobileNavItemClass = (isActive: boolean) =>
     cn(
-      "font-display block py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
+      "font-display block py-3.5 text-[19px] font-semibold tracking-tight text-primary transition-all duration-200",
       isActive
         ? "text-accent"
         : "hover:text-accent",
@@ -73,6 +73,17 @@ const Header = () => {
     setIsMobileMenuOpen(false);
     setIsMobileServicesOpen(false);
   };
+
+  // Lock body scroll when full-screen mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [isMobileMenuOpen]);
 
   return (
     <header
@@ -222,40 +233,30 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile menu backdrop */}
-      {isMobileMenuOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-foreground/12 transition-opacity duration-300"
-          style={{ zIndex: 9998 }}
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Full screen overlay */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-screen w-[94%] max-w-[408px] overflow-y-auto overscroll-contain border-l border-border/70 bg-background shadow-[0_28px_64px_rgba(6,16,67,0.12)] transition-all duration-300 ease-out isolate ${
-          isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
+        className={`lg:hidden fixed inset-0 h-[100dvh] w-screen overflow-y-auto overscroll-contain bg-background transition-all duration-300 ease-out isolate ${
+          isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
         }`}
         style={{ zIndex: 9999 }}
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/40 bg-background px-4 py-3 sm:px-5">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/40 bg-background px-5 py-3.5">
           <Link to="/" onClick={closeMobileMenu} className="flex items-center">
             <HeaderLogo className="block h-9 w-auto max-w-[164px]" />
           </Link>
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/10 bg-primary/[0.04] text-primary shadow-[0_8px_18px_rgba(15,23,42,0.05)] transition-all duration-200 hover:-translate-y-px hover:rotate-90 hover:border-primary/15 hover:bg-primary/[0.08] hover:text-primary"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/10 bg-primary/[0.04] text-primary transition-all duration-200 hover:rotate-90 hover:bg-primary/[0.08]"
             onClick={closeMobileMenu}
             aria-label="Close menu"
           >
-            <X size={18} strokeWidth={2.5} />
+            <X size={20} strokeWidth={2.5} />
           </button>
         </div>
 
-        <nav className="relative z-10 flex min-h-[calc(100vh-73px)] flex-col bg-transparent px-4 pb-5 pt-3 sm:px-5 sm:pb-6">
+        <nav className="relative z-10 flex flex-col bg-transparent px-5 pb-8 pt-4">
           {mainNavLinks.slice(0, 1).map((link) => (
             <NavLink
               key={link.name}
@@ -271,7 +272,7 @@ const Header = () => {
           <div className="flex flex-col">
             <button
               className={cn(
-                "font-display flex items-center justify-between py-2.5 text-[15px] font-semibold text-primary transition-all duration-200",
+                "font-display flex w-full items-center justify-between py-3.5 text-[19px] font-semibold tracking-tight text-primary transition-all duration-200",
                 isServicesRoute
                   ? "text-accent"
                   : "hover:text-accent",
@@ -280,10 +281,10 @@ const Header = () => {
               aria-expanded={isMobileServicesOpen}
             >
               Services
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isMobileServicesOpen ? "rotate-180" : ""}`} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? "max-h-[640px] opacity-100" : "max-h-0 opacity-0"}`}>
-              <div className="mt-1 space-y-2 pl-3.5">
+              <div className="mt-1 space-y-3 pl-4">
                 {serviceGroups.map((group, groupIndex) => (
                   <div
                     key={group.heading}
@@ -297,7 +298,7 @@ const Header = () => {
                         key={service.name}
                         to={service.href}
                         className={cn(
-                          "group flex items-center gap-3 py-2 text-sm text-primary transition-all duration-200 hover:text-accent",
+                          "group flex items-center gap-3 py-2.5 text-[15px] text-primary transition-all duration-200 hover:text-accent",
                           location.pathname === service.href
                             ? "text-accent"
                             : "",
@@ -327,26 +328,26 @@ const Header = () => {
             </NavLink>
           ))}
           
-          {/* CTA Buttons */}
-          <div className="mt-auto flex flex-col items-start gap-2.5 border-t border-border/70 pt-4">
+          {/* CTA Buttons - directly below links, full-width */}
+          <div className="mt-6 flex flex-col gap-3 border-t border-border/60 pt-6">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button asChild variant="outline" className="button-balance-mobile justify-center">
+                  <Button asChild variant="outline" size="lg" className="w-full justify-center text-base">
                     <Link to="/admin" onClick={closeMobileMenu}>
                       <Shield className="w-4 h-4" />
                       Admin Panel
                     </Link>
                   </Button>
                 )}
-                <Button asChild variant="nav" className="button-balance-mobile justify-center">
+                <Button asChild variant="nav" size="lg" className="w-full justify-center text-base">
                   <Link to="/dashboard" onClick={closeMobileMenu}>
                     <User className="w-4 h-4" />
                     Dashboard
                   </Link>
                 </Button>
                 <button 
-                  className="button-balance-mobile inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-[22px] py-3 text-sm font-semibold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
+                  className="inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-[22px] py-3 text-base font-semibold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
                   onClick={() => {
                     signOut();
                     closeMobileMenu();
@@ -357,15 +358,14 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button asChild variant="outline" className="button-balance-mobile justify-center">
+                <Button asChild variant="outline" size="lg" className="w-full justify-center text-base font-semibold">
                   <Link to="/auth" onClick={closeMobileMenu}>
-                    Login
-                    <ArrowRight className="w-4 h-4" />
+                    Log In
                   </Link>
                 </Button>
-                <Button asChild variant="navCta" className="button-balance-mobile justify-center">
+                <Button asChild variant="navCta" size="lg" className="w-full justify-center text-base font-bold">
                   <Link to="/auth" onClick={closeMobileMenu}>
-                    Join Now
+                    Sign Up
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
