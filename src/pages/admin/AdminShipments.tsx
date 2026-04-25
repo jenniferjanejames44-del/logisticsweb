@@ -500,142 +500,91 @@ const AdminShipments = () => {
                 ))}
               </div>
             ) : (
-              <div className="space-y-4">
-                {filteredShipments.map((shipment) => {
-                  const vol = calcVolWeight(shipment.length_cm, shipment.width_cm, shipment.height_cm);
-                  const chg = calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm);
-                  return (
-                  <Card key={shipment.id} className="border-border/70 bg-white shadow-sm transition-shadow duration-200 hover:shadow-md">
-                    <CardContent className="p-0">
-                      {/* Header strip: tracking + status + quick actions */}
-                      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 px-6 py-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                            <Package className="w-5 h-5 text-primary" strokeWidth={2.5} />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="font-mono font-bold text-[15px] text-foreground truncate">{shipment.tracking_number}</p>
-                            <p className="text-xs text-muted-foreground">Created {new Date(shipment.created_at).toLocaleDateString()}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge className={`${getStatusColor(shipment.status)} font-semibold capitalize`}>{shipment.status.replace(/_/g, " ")}</Badge>
-                          <Badge variant="outline" className={`font-semibold capitalize ${shipment.payment_status === "paid" ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}`}>
-                            {shipment.payment_status}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      {/* Body: clean two-column section grid */}
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5 px-6 py-5">
-                        {/* Shipment Overview */}
-                        <Section icon={Truck} title="Shipment Overview">
-                          <Row label="Service" value={shipment.service_type?.replace(/_/g, " ") || "—"} capitalize />
-                          <Row label="Origin" value={`${shipment.origin_city}, ${shipment.origin_country}`} />
-                          <Row label="Destination" value={`${shipment.destination_city}, ${shipment.destination_country}`} />
-                          <Row label="ETA" value={shipment.estimated_delivery ? new Date(shipment.estimated_delivery).toLocaleDateString() : "—"} />
-                          {shipment.description && <Row label="Description" value={shipment.description} />}
-                        </Section>
-
-                        {/* Package Details */}
-                        <Section icon={Scale} title="Package Details">
-                          <Row label="Weight" value={`${shipment.weight} kg`} />
-                          <Row
-                            label="Dimensions"
-                            value={
-                              shipment.length_cm && shipment.width_cm && shipment.height_cm
-                                ? `${shipment.length_cm} × ${shipment.width_cm} × ${shipment.height_cm} cm`
-                                : "Not set"
-                            }
-                          />
-                          {vol > 0 && <Row label="Volumetric Wt" value={`${vol.toFixed(2)} kg`} />}
-                          {vol > 0 && <Row label="Chargeable Wt" value={`${chg.toFixed(2)} kg`} bold />}
-                        </Section>
-
-                        {/* Sender Details */}
-                        <Section icon={User} title="Sender Details">
-                          <Row label="Name" value={shipment.sender_name || "Not provided"} />
-                          <Row label="Phone" value={shipment.sender_phone || "Not provided"} />
-                          {shipment.sender_alt_phone && <Row label="Alt Phone" value={shipment.sender_alt_phone} />}
-                          <Row label="Address" value={shipment.sender_address || "Not provided"} />
-                          {shipment.sender_phone && (
-                            <div className="flex items-center gap-3 pt-1">
-                              <a href={`tel:${shipment.sender_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
-                                <Phone className="w-3 h-3" />Call
-                              </a>
-                              <a href={`https://wa.me/${formatPhoneForWhatsApp(shipment.sender_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium">
-                                <MessageCircle className="w-3 h-3" />WhatsApp
-                              </a>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tracking</TableHead>
+                    <TableHead>Route</TableHead>
+                    <TableHead>Service</TableHead>
+                    <TableHead>Weight</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Payment</TableHead>
+                    <TableHead className="text-right">Price</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredShipments.map((shipment) => {
+                    const chg = calcChargeableWeight(shipment.weight, shipment.length_cm, shipment.width_cm, shipment.height_cm);
+                    return (
+                      <TableRow key={shipment.id} className="cursor-pointer" onClick={() => { setDetailsShipment(shipment); setDetailsOpen(true); }}>
+                        <TableCell>
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                              <Package className="w-4 h-4 text-primary" strokeWidth={2.5} />
                             </div>
-                          )}
-                        </Section>
-
-                        {/* Receiver Details */}
-                        <Section icon={User} title="Receiver Details">
-                          <Row label="Name" value={shipment.receiver_name || "Not provided"} />
-                          <Row label="Phone" value={shipment.receiver_phone || "Not provided"} />
-                          {shipment.receiver_alt_phone && <Row label="Alt Phone" value={shipment.receiver_alt_phone} />}
-                          <Row label="Address" value={shipment.receiver_address || "Not provided"} />
-                          {shipment.receiver_phone && (
-                            <div className="flex items-center gap-3 pt-1">
-                              <a href={`tel:${shipment.receiver_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium">
-                                <Phone className="w-3 h-3" />Call
-                              </a>
-                              <a href={`https://wa.me/${formatPhoneForWhatsApp(shipment.receiver_phone)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-green-600 hover:underline font-medium">
-                                <MessageCircle className="w-3 h-3" />WhatsApp
-                              </a>
+                            <div className="min-w-0">
+                              <p className="font-mono font-semibold text-[13px] text-foreground truncate">{shipment.tracking_number}</p>
+                              <p className="text-[11px] text-muted-foreground">{new Date(shipment.created_at).toLocaleDateString()}</p>
                             </div>
-                          )}
-                        </Section>
-
-                        {/* Warehouse Details */}
-                        <Section icon={Warehouse} title="Warehouse Details">
-                          <Row label="Warehouse" value={shipment.warehouse_location || "Not assigned"} />
-                          <Row label="Pickup Prepaid" value={shipment.pickup_prepaid ? "Yes" : "No"} />
-                        </Section>
-
-                        {/* Payment Details */}
-                        <Section icon={CreditCard} title="Payment Details">
-                          <Row label="Status" value={shipment.payment_status} capitalize />
-                          <Row
-                            label="Price"
-                            value={shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
-                            bold={shipment.price !== null}
-                          />
-                        </Section>
-                      </div>
-
-                      {/* Action bar */}
-                      <div className="flex flex-col gap-2 border-t border-border/50 bg-muted/30 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Button variant="dashAccent" size="sm" className="h-9 rounded-lg" onClick={() => openPriceDialog(shipment)}>
-                            <DollarSign className="w-3.5 h-3.5 mr-1.5" strokeWidth={2.5} />
-                            {shipment.price !== null ? "Edit Price" : "Set Price"}
-                          </Button>
-                          <Button variant="dashOutline" size="sm" className="h-9 rounded-lg" onClick={() => openDimensionDialog(shipment)}>
-                            <Ruler className="w-3.5 h-3.5 mr-1.5" strokeWidth={2.5} />
-                            Edit Dims
-                          </Button>
-                        </div>
-                        <div className="flex items-center gap-2">
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2 text-sm text-foreground whitespace-nowrap">
+                            <span className="font-medium">{shipment.origin_city}</span>
+                            <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                            <span className="font-medium">{shipment.destination_city}</span>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground">{shipment.origin_country} → {shipment.destination_country}</p>
+                        </TableCell>
+                        <TableCell className="capitalize text-sm text-foreground">{shipment.service_type?.replace(/_/g, " ") || "—"}</TableCell>
+                        <TableCell className="text-sm">
+                          <span className="font-medium text-foreground">{chg.toFixed(2)} kg</span>
+                          <p className="text-[11px] text-muted-foreground">Actual {shipment.weight} kg</p>
+                        </TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
                           <Select value={shipment.status} onValueChange={(v) => handleStatusChange(shipment.id, v)}>
-                            <SelectTrigger className="h-9 w-full rounded-lg border-border/80 bg-white text-sm sm:w-56"><SelectValue /></SelectTrigger>
+                            <SelectTrigger className="h-8 w-[180px] rounded-md border-border/80 bg-white text-xs">
+                              <SelectValue />
+                            </SelectTrigger>
                             <SelectContent>
                               {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
                             </SelectContent>
                           </Select>
-                          <DeleteConfirmDialog
-                            title="Delete Shipment"
-                            description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
-                            onConfirm={() => handleDelete(shipment.id)}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  );
-                })}
-              </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className={`font-semibold capitalize ${shipment.payment_status === "paid" ? "border-success/40 bg-success/10 text-success" : "border-warning/40 bg-warning/10 text-warning"}`}>
+                            {shipment.payment_status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span className={`font-bold text-sm ${shipment.price !== null ? "text-primary" : "text-muted-foreground italic font-normal"}`}>
+                            {shipment.price !== null ? `$${Number(shipment.price).toLocaleString()}` : "Not set"}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                          <div className="flex items-center justify-end gap-1.5">
+                            <Button variant="ghost" size="iconSm" onClick={() => { setDetailsShipment(shipment); setDetailsOpen(true); }} title="View details">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="iconSm" onClick={() => openPriceDialog(shipment)} title={shipment.price !== null ? "Edit price" : "Set price"}>
+                              <DollarSign className="w-4 h-4" />
+                            </Button>
+                            <Button variant="ghost" size="iconSm" onClick={() => openDimensionDialog(shipment)} title="Edit dimensions">
+                              <Ruler className="w-4 h-4" />
+                            </Button>
+                            <DeleteConfirmDialog
+                              title="Delete Shipment"
+                              description={`Are you sure you want to delete shipment ${shipment.tracking_number}? This action cannot be undone.`}
+                              onConfirm={() => handleDelete(shipment.id)}
+                            />
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
