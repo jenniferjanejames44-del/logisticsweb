@@ -619,7 +619,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                 )}
 
                 {/* Form */}
-                <div className="bg-white px-5 py-5 sm:px-6 sm:py-6">
+                <div className={`bg-white px-5 py-5 sm:px-6 sm:py-6 ${embedded ? "[&>div+div]:mt-8 [&>div+div]:pt-8 [&>div+div]:border-t [&>div+div]:border-border/30" : ""}`}>
 
                   {/* ===== STEP 1: Sender ===== */}
                   {(step === 1 || embedded) && (
