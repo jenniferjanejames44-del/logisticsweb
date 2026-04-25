@@ -189,12 +189,25 @@ const AdminPayments = () => {
                     </div>
                     <div className="flex items-center justify-between pt-2 border-t border-border/30">
                       <span className="text-xs text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</span>
-                      <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                        <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                        </SelectContent>
-                      </Select>
+                      <div className="flex items-center gap-2">
+                        {payment.status === "failed" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-9 gap-1.5 rounded-lg border-primary/40 text-primary hover:bg-primary/10"
+                            onClick={() => handleRetryPayment(payment.id)}
+                          >
+                            <RefreshCw className="h-3.5 w-3.5" />
+                            Retry
+                          </Button>
+                        )}
+                        <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
+                          <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
+                          <SelectContent>
+                            {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -224,12 +237,25 @@ const AdminPayments = () => {
                         <TableCell><Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge></TableCell>
                         <TableCell className="text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</TableCell>
                         <TableCell className="text-right">
-                          <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
-                            <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
-                            <SelectContent>
-                              {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
-                            </SelectContent>
-                          </Select>
+                          <div className="flex items-center justify-end gap-2">
+                            {payment.status === "failed" && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-9 gap-1.5 rounded-lg border-primary/40 text-primary hover:bg-primary/10"
+                                onClick={() => handleRetryPayment(payment.id)}
+                              >
+                                <RefreshCw className="h-3.5 w-3.5" />
+                                Retry
+                              </Button>
+                            )}
+                            <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
+                              <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
+                              <SelectContent>
+                                {statusOptions.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
