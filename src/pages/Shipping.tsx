@@ -238,8 +238,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   }, [formData.destination_country, chargeableWeight, formData.declared_value, selectedExtras]);
 
   useEffect(() => {
-    if (step === 5) calculatePrice();
-  }, [step, calculatePrice]);
+    if (step === 5 || embedded) calculatePrice();
+  }, [step, calculatePrice, embedded]);
 
   // Grand total = pricing engine total + packaging + delivery fee + pickup fee (if prepaid)
   const grandTotal = useMemo(() => {
@@ -568,7 +568,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             )}
             <div className="mx-auto max-w-3xl">
               <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
-                {/* Progress */}
+                {/* Progress — hidden in embedded single-page mode */}
+                {!embedded && (
                 <div className="border-b border-border/40 bg-white px-5 py-4 sm:px-6">
                   <div className="mb-3 flex items-center justify-between">
                     <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS} — <span className="text-primary">{progressSteps[step - 1]?.label}</span></p>
@@ -615,18 +616,19 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                     })}
                   </div>
                 </div>
+                )}
 
                 {/* Form */}
-                <div className="bg-white px-5 py-5 sm:px-6 sm:py-6">
+                <div className={`bg-white px-5 py-5 sm:px-6 sm:py-6 ${embedded ? "[&>div+div]:mt-8 [&>div+div]:pt-8 [&>div+div]:border-t [&>div+div]:border-border/30" : ""}`}>
 
                   {/* ===== STEP 1: Sender ===== */}
-                  {step === 1 && (
+                  {(step === 1 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><User className="w-4 h-4 text-primary" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Sender Details</h3><p className="text-xs text-muted-foreground">Who is sending this package?</p></div>
                       </div>
-                      {showStepValidation && !isStep1Complete && (
+                      {!embedded && showStepValidation && !isStep1Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -689,13 +691,13 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 2: Receiver ===== */}
-                  {step === 2 && (
+                  {(step === 2 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Send className="w-4 h-4 text-primary" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Receiver Details</h3><p className="text-xs text-muted-foreground">Who will receive this package?</p></div>
                       </div>
-                      {showStepValidation && !isStep2Complete && (
+                      {!embedded && showStepValidation && !isStep2Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -768,13 +770,13 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 3: Package ===== */}
-                  {step === 3 && (
+                  {(step === 3 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/60"><Package className="w-4 h-4 text-accent-foreground" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Package Details</h3><p className="text-xs text-muted-foreground">What are you shipping?</p></div>
                       </div>
-                      {showStepValidation && !isStep3Complete && (
+                      {!embedded && showStepValidation && !isStep3Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required fields before continuing.</span>
@@ -900,14 +902,14 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 4: Shipping Options ===== */}
-                  {step === 4 && (
+                  {(step === 4 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Truck className="w-4 h-4 text-primary" strokeWidth={2} /></div>
                         <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
                       </div>
 
-                      {showStepValidation && !isStep4Complete && (
+                      {!embedded && showStepValidation && !isStep4Complete && (
                         <div className="flex items-center gap-2 rounded-lg bg-destructive/5 border border-destructive/15 px-3 py-2.5 text-xs text-destructive">
                           <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                           <span>Please complete all required selections before continuing.</span>
@@ -1155,7 +1157,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                   )}
 
                   {/* ===== STEP 5: Summary ===== */}
-                  {step === 5 && (
+                  {(step === 5 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-3 border-b border-border/40 pb-5 mb-1">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><CheckCircle2 className="w-4 h-4 text-primary" strokeWidth={2} /></div>
@@ -1357,6 +1359,39 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
 
                   {/* Navigation */}
                   <div className={actionBarClass}>
+                    {embedded ? (
+                      <Button
+                        type="button"
+                        variant="dashAccent"
+                        size="dash"
+                        disabled={isSubmitting}
+                        onClick={() => {
+                          // Run all step validations together
+                          const allComplete = isStep1Complete && isStep2Complete && isStep3Complete && isStep4Complete;
+                          if (!allComplete) {
+                            setShowStepValidation(true);
+                            // Find first invalid field across all steps
+                            const firstInvalid =
+                              getFirstInvalidField(1) ||
+                              getFirstInvalidField(2) ||
+                              getFirstInvalidField(3) ||
+                              getFirstInvalidField(4);
+                            scrollToInvalidField(firstInvalid);
+                            toast({
+                              title: "Complete required fields",
+                              description: "Please fill in all required fields before submitting.",
+                              variant: "destructive",
+                            });
+                            return;
+                          }
+                          handleSubmit();
+                        }}
+                        className="ml-auto h-12 w-full gap-2 sm:w-auto sm:min-w-[200px]"
+                      >
+                        {isSubmitting ? "Creating shipment…" : "Confirm & Proceed to Payment"} <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    ) : (
+                    <>
                     <Button
                       type="button"
                       variant="dashOutline"
@@ -1406,6 +1441,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                         {isSubmitting ? "Creating..." : "Confirm & Pay"} <ArrowRight className="w-4 h-4" />
                       </Button>
                     )}
+                    </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1413,7 +1450,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
           </div>
         </section>
 
-        {/* How Shipping Works */}
+        {/* How Shipping Works — public route only */}
+        {!embedded && (
         <section className="section-padding bg-background">
           <div className="section-container">
             <div className="mb-12 text-center">
@@ -1438,6 +1476,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             </div>
           </div>
         </section>
+        )}
       </main>
       {!embedded && <Footer />}
       {!embedded && <LiveChat />}
