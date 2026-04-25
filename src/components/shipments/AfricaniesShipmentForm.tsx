@@ -40,6 +40,12 @@ interface Warehouse {
   phone: string | null;
 }
 
+interface PackagingMaterial {
+  id: string;
+  name: string;
+  price: number;
+}
+
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Argentina","Armenia","Australia","Austria","Bangladesh","Belgium","Brazil",
   "Cameroon","Canada","China","Denmark","Egypt","Ethiopia","Finland","France","Germany","Ghana","Greece","India",
@@ -114,6 +120,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   ]);
   const [notes, setNotes] = useState("");
 
+  // Packaging materials (loaded from admin settings)
+  const [packagingOptions, setPackagingOptions] = useState<PackagingMaterial[]>([]);
+  const [packagingId, setPackagingId] = useState<string>("");
+
   // Pricing
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
   const [calculating, setCalculating] = useState(false);
@@ -129,6 +139,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       .order("country")
       .then(({ data }) => {
         if (data) setWarehouses(data as Warehouse[]);
+      });
+  }, []);
+
+  // Load packaging materials configured by admin
+  useEffect(() => {
+    (supabase as any)
+      .from("packaging_materials")
+      .select("id, name, price")
+      .eq("is_active", true)
+      .order("price")
+      .then(({ data }: any) => {
+        if (data) setPackagingOptions(data as PackagingMaterial[]);
       });
   }, []);
 
@@ -159,6 +181,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     () => warehouses.find((w) => w.id === warehouseId),
     [warehouses, warehouseId],
   );
+
+  const selectedPackaging = useMemo(
+    () => packagingOptions.find((p) => p.id === packagingId),
+    [packagingOptions, packagingId],
+  );
+  const packagingPrice = Number(selectedPackaging?.price || 0);
+  const grandTotal = (breakdown?.total || 0) + packagingPrice;
 
   const totalWeight = useMemo(
     () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
