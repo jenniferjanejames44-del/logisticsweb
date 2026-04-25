@@ -411,7 +411,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   </SelectContent>
                 </Select>
               </Field>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {DELIVERY_TYPES.map((d) => {
                   const Icon = d.icon;
                   const active = deliveryType === d.id;
