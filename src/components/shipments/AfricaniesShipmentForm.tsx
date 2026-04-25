@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   User, Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
-  Truck, PackageCheck, Store, MapPin,
+  PackageCheck, Store, MapPin,
 } from "lucide-react";
 
 type Flow = "import" | "export";
@@ -57,7 +57,6 @@ const SHIPPING_METHODS = [
 
 const DELIVERY_TYPES = [
   { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
-  { id: "pickup", label: "Pickup", desc: "I want RAC Logistics to pick up for me", icon: Truck },
   { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
 ];
 
@@ -282,7 +281,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         tracking_number: "",
         price: breakdown?.total || null,
         warehouse_location: selectedWarehouse?.country || null,
-        pickup_prepaid: deliveryType === "pickup",
+          pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
         sender_phone: senderPhone,
