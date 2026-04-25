@@ -22,6 +22,7 @@ interface Profile {
   city: string | null;
   state: string | null;
   country: string | null;
+  zip_code: string | null;
   avatar_url: string | null;
 }
 
@@ -37,7 +38,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [formData, setFormData] = useState({
-    full_name: "", phone: "", company_name: "", address: "", city: "", state: "", country: "",
+    full_name: "", phone: "", company_name: "", address: "", city: "", state: "", country: "", zip_code: "",
   });
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const Profile = () => {
           city: data.city || "",
           state: (data as any).state || "",
           country: data.country || "",
+          zip_code: (data as any).zip_code || "",
         });
       }
       setLoading(false);
@@ -79,6 +81,7 @@ const Profile = () => {
         city: formData.city || null,
         state: formData.state || null,
         country: formData.country || null,
+        zip_code: formData.zip_code || null,
       } as any)
       .eq("user_id", user.id);
     if (error) {
