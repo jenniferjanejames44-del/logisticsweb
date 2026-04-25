@@ -22,6 +22,10 @@ interface PayShipmentDialogProps {
   userBalance: number;
   userId: string;
   onSuccess: () => void;
+  /** Optional display-only details — improves the summary, no backend impact */
+  serviceType?: string;
+  destination?: string;
+  weight?: number | null;
 }
 
 interface WalletPaymentPreview {
@@ -49,6 +53,9 @@ const PayShipmentDialog = ({
   userBalance,
   userId,
   onSuccess,
+  serviceType,
+  destination,
+  weight,
 }: PayShipmentDialogProps) => {
   const { formatConverted } = useCurrency();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("paystack");
@@ -206,16 +213,37 @@ const PayShipmentDialog = ({
 
         {/* Body */}
         <div className="px-6 py-5 space-y-5">
-          {/* Order Summary */}
-          <div className="space-y-2.5">
-            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Order Summary</p>
-            <div className="rounded-lg border border-border/50 p-4 space-y-2.5 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Shipment Price</span>
+          {/* Shipment Summary */}
+          <div className="space-y-3">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Shipment Summary</p>
+            <div className="rounded-xl border border-border/60 p-5 space-y-3 text-sm bg-muted/20">
+              {serviceType && (
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Service Type</span>
+                  <span className="font-semibold text-foreground capitalize text-right">{serviceType.replace(/[-_]/g, " ")}</span>
+                </div>
+              )}
+              {destination && (
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Destination</span>
+                  <span className="font-semibold text-foreground text-right">{destination}</span>
+                </div>
+              )}
+              {weight != null && (
+                <div className="flex justify-between gap-3">
+                  <span className="text-muted-foreground">Weight</span>
+                  <span className="font-semibold text-foreground">{weight} KG</span>
+                </div>
+              )}
+              {(serviceType || destination || weight != null) && (
+                <Separator className="my-1" />
+              )}
+              <div className="flex justify-between gap-3">
+                <span className="text-muted-foreground">Total Price (USD)</span>
                 <span className="font-semibold text-foreground">{formatConverted(price, priceCurrency)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Payment Amount (₦)</span>
+              <div className="flex justify-between gap-3">
+                <span className="text-muted-foreground">Equivalent (NGN)</span>
                 {payableWithPaystack !== null ? (
                   <span className="font-semibold text-foreground">{formatConverted(payableWithPaystack, "NGN")}</span>
                 ) : previewLoading ? (
@@ -227,13 +255,13 @@ const PayShipmentDialog = ({
                 )}
               </div>
               <Separator className="my-1" />
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-foreground">Total Due</span>
-                <span className="text-lg font-bold text-accent">{formatConverted(price, priceCurrency)}</span>
+              <div className="flex justify-between items-center pt-1">
+                <span className="text-base font-bold text-foreground">Total Due</span>
+                <span className="text-xl font-bold text-accent">{formatConverted(price, priceCurrency)}</span>
               </div>
             </div>
             {invoiceNumber && (
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Invoice: <span className="font-medium text-foreground">{invoiceNumber}</span>
               </p>
             )}
