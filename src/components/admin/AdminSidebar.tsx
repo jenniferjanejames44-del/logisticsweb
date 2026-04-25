@@ -23,6 +23,7 @@ import {
   RefreshCw,
   Settings,
   ChevronRight,
+  Handshake,
 } from "lucide-react";
 
 interface NavSection {
@@ -47,6 +48,7 @@ const navSections: NavSection[] = [
       { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
       { name: "Support Tickets", href: "/admin/support", icon: MessageSquare },
       { name: "Refunds", href: "/admin/refunds", icon: RefreshCw },
+      { name: "Partners", href: "/admin/partners", icon: Handshake },
     ],
   },
   {

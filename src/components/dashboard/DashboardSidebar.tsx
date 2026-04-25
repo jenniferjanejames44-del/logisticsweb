@@ -21,6 +21,7 @@ import {
   ChevronDown,
   Plus,
   List,
+  Handshake,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,6 +46,7 @@ const managementNav = [
 const accountNav = [
   { icon: User, label: "Profile", href: "/dashboard/profile" },
   { icon: Bell, label: "Notifications", href: "/dashboard/notifications" },
+  { icon: Handshake, label: "Partner Program", href: "/dashboard/partner" },
 ];
 
 const DashboardSidebar = () => {
