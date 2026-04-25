@@ -181,7 +181,7 @@ const App = () => (
               </Routes>
             </BrowserRouter>
             </TooltipProvider>
-          </LoginTracker>
+          </SafeLoginTracker>
         </CurrencyProvider>
       </AuthProvider>
     </ThemeProvider>
