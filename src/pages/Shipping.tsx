@@ -568,7 +568,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             )}
             <div className="mx-auto max-w-3xl">
               <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
-                {/* Progress */}
+                {/* Progress — hidden in embedded single-page mode */}
+                {!embedded && (
                 <div className="border-b border-border/40 bg-white px-5 py-4 sm:px-6">
                   <div className="mb-3 flex items-center justify-between">
                     <p className="text-sm font-semibold text-foreground">Step {step} of {TOTAL_STEPS} — <span className="text-primary">{progressSteps[step - 1]?.label}</span></p>
@@ -615,12 +616,13 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                     })}
                   </div>
                 </div>
+                )}
 
                 {/* Form */}
                 <div className="bg-white px-5 py-5 sm:px-6 sm:py-6">
 
                   {/* ===== STEP 1: Sender ===== */}
-                  {step === 1 && (
+                  {(step === 1 || embedded) && (
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><User className="w-4 h-4 text-primary" strokeWidth={2} /></div>
