@@ -25,7 +25,10 @@ interface Partner {
   email: string;
   phone: string | null;
   country: string | null;
+  state: string | null;
   city: string | null;
+  address: string | null;
+  zip_code: string | null;
   business_name: string | null;
   social_link: string | null;
   referral_plan: string | null;
@@ -79,6 +82,42 @@ const AdminPartners = () => {
     const { error } = await (supabase as any).from("partners").update(update).eq("id", partner.id);
     if (error) return toast.error(error.message);
     toast.success(`Partner ${status}`);
+
+    // Re-fetch the partner to get the auto-generated referral_code (set by trigger on approval)
+    try {
+      const { data: fresh } = await (supabase as any)
+        .from("partners")
+        .select("*")
+        .eq("id", partner.id)
+        .single();
+      const p = (fresh as Partner) || partner;
+
+      if (status === "approved") {
+        await supabase.functions.invoke("send-notification-email", {
+          body: {
+            type: "partner_approved",
+            data: {
+              partner_email: p.email,
+              partner_name: p.full_name,
+              referral_code: p.referral_code,
+            },
+          },
+        });
+      } else {
+        await supabase.functions.invoke("send-notification-email", {
+          body: {
+            type: "partner_rejected",
+            data: {
+              partner_email: p.email,
+              partner_name: p.full_name,
+            },
+          },
+        });
+      }
+    } catch (emailErr) {
+      console.error("Partner status email failed:", emailErr);
+    }
+
     load();
   };
 
@@ -295,7 +334,11 @@ const AdminPartners = () => {
             <div className="space-y-3 text-sm">
               <Row label="Email" value={viewing.email} />
               <Row label="Phone" value={viewing.phone || "—"} />
-              <Row label="Country / City" value={`${viewing.country || "—"} / ${viewing.city || "—"}`} />
+              <Row label="Address" value={viewing.address || "—"} />
+              <Row label="City" value={viewing.city || "—"} />
+              <Row label="State / Region" value={viewing.state || "—"} />
+              <Row label="Country" value={viewing.country || "—"} />
+              <Row label="Zip / Postal" value={viewing.zip_code || "—"} />
               <Row label="Business" value={viewing.business_name || "—"} />
               <Row label="Social / Site" value={viewing.social_link || "—"} />
               <div>
@@ -310,6 +353,13 @@ const AdminPartners = () => {
               )}
               <Row label="Status" value={viewing.status} />
               <Row label="Referral code" value={viewing.referral_code || "— (assigned on approval)"} />
+              {viewing.referral_code && (
+                <Row
+                  label="Referral link"
+                  value={`https://www.raclogisticltd.com/auth?ref=${viewing.referral_code}`}
+                />
+              )}
+              <Row label="Date applied" value={new Date(viewing.created_at).toLocaleString()} />
               <div className="space-y-2 pt-2 border-t border-border/60">
                 <Label>Commission percentage</Label>
                 <div className="flex gap-2">

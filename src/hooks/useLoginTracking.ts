@@ -79,6 +79,21 @@ export const useLoginTracking = () => {
                   },
                 },
               });
+            } else {
+              // Subsequent sign-ins → security notification
+              await supabase.functions.invoke("send-notification-email", {
+                body: {
+                  type: "login_notification",
+                  data: {
+                    user_email: user.email,
+                    user_name: user.user_metadata?.full_name || "",
+                    login_time: new Date().toISOString(),
+                    device: getDeviceType(),
+                    browser: getBrowser(),
+                    location,
+                  },
+                },
+              });
             }
           } catch (welcomeErr) {
             console.error("Failed to send welcome email:", welcomeErr);

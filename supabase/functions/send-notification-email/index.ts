@@ -40,6 +40,10 @@ function getSenderRole(type: string): "info" | "support" | "billing" | "no-reply
     case "shipment_created":
     case "shipment_status_update":
     case "account_verified":
+    case "partner_application_received":
+    case "partner_admin_notification":
+    case "partner_approved":
+    case "partner_rejected":
       return "info";
 
     // support@ — tickets and replies
@@ -57,6 +61,7 @@ function getSenderRole(type: string): "info" | "support" | "billing" | "no-reply
     // no-reply@ — OTP, security, system
     case "otp_verification":
     case "security_alert":
+    case "login_notification":
       return "no-reply";
 
     default:
@@ -165,6 +170,16 @@ function buildEmails(type: string, data: Record<string, any>): EmailPayload[] {
       return buildAdminTicketReplyEmails(data);
     case "account_verified":
       return buildAccountVerifiedEmails(data);
+    case "login_notification":
+      return buildLoginNotificationEmails(data);
+    case "partner_application_received":
+      return buildPartnerApplicationReceivedEmails(data);
+    case "partner_admin_notification":
+      return buildPartnerAdminNotificationEmails(data);
+    case "partner_approved":
+      return buildPartnerApprovedEmails(data);
+    case "partner_rejected":
+      return buildPartnerRejectedEmails(data);
     default:
       console.warn("Unknown email type:", type);
       return [];
@@ -316,6 +331,197 @@ function buildShipmentCreatedEmails(data: Record<string, any>): EmailPayload[] {
     html: emailWrapper("New Shipment Alert", adminBody),
   });
 
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 10. Login Notification (from: no-reply@)
+// ──────────────────────────────────────
+
+function buildLoginNotificationEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  if (!data.user_email) return emails;
+
+  const when = data.login_time
+    ? new Date(data.login_time).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" })
+    : new Date().toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" });
+
+  const body = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">New sign-in to your account</h2>
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.user_name || "there"}, we noticed a new sign-in to your RAC Logistics account.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fb;border-radius:8px;padding:18px;margin-bottom:20px;">
+      <tr><td style="color:#888;font-size:12px;padding:4px 0;">Time</td><td style="color:#061043;font-size:13px;font-weight:600;text-align:right;">${when}</td></tr>
+      ${data.device ? `<tr><td style="color:#888;font-size:12px;padding:4px 0;">Device</td><td style="color:#061043;font-size:13px;font-weight:600;text-align:right;">${data.device}</td></tr>` : ""}
+      ${data.browser ? `<tr><td style="color:#888;font-size:12px;padding:4px 0;">Browser</td><td style="color:#061043;font-size:13px;font-weight:600;text-align:right;">${data.browser}</td></tr>` : ""}
+      ${data.location ? `<tr><td style="color:#888;font-size:12px;padding:4px 0;">Location</td><td style="color:#061043;font-size:13px;font-weight:600;text-align:right;">${data.location}</td></tr>` : ""}
+    </table>
+
+    <p style="color:#555;font-size:13px;margin:0 0 20px;">If this was you, no action is needed. If you don't recognise this activity, please reset your password immediately and contact our support team.</p>
+
+    ${ctaButton("Review account security", `${SITE_URL}/dashboard/profile`)}
+
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? Reach us at support@raclogisticltd.com</p>
+  `;
+
+  emails.push({
+    to: data.user_email,
+    subject: "New sign-in to your RAC Logistics account",
+    html: emailWrapper("Sign-in notification", body),
+  });
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 11. Partner Application Received (applicant) (from: info@)
+// ──────────────────────────────────────
+
+function buildPartnerApplicationReceivedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  if (!data.applicant_email) return emails;
+
+  const body = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">We've received your partner application 🤝</h2>
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.applicant_name || "there"}, thanks for applying to the RAC Logistics Partner Program. Your application is now under review.</p>
+
+    <div style="background:#fff7ed;border-left:4px solid #DF5101;border-radius:6px;padding:16px;margin-bottom:20px;">
+      <p style="margin:0;color:#9a3412;font-size:13px;font-weight:600;">What happens next?</p>
+      <p style="margin:6px 0 0;color:#7c2d12;font-size:13px;line-height:1.6;">Our team will review your application within 2–3 business days. You'll receive an email as soon as a decision has been made — and if you're approved, your unique referral code and link will be inside.</p>
+    </div>
+
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">In the meantime, feel free to explore our services and learn how partners earn commission on every shipment they refer.</p>
+
+    ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
+
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions about the program? Reply to this email or contact support@raclogisticltd.com</p>
+  `;
+
+  emails.push({
+    to: data.applicant_email,
+    subject: "Your RAC Logistics partner application has been received",
+    html: emailWrapper("Application received", body),
+  });
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 12. Partner Admin Notification (admin) (from: info@)
+// ──────────────────────────────────────
+
+function buildPartnerAdminNotificationEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+
+  const row = (label: string, value?: string | null) =>
+    `<tr><td style="color:#888;font-size:12px;padding:6px 0;width:140px;">${label}</td><td style="color:#061043;font-size:13px;font-weight:600;">${value || '<span style="color:#bbb;font-weight:400;">Not provided</span>'}</td></tr>`;
+
+  const body = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">New partner application 📨</h2>
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">A new partner application has just been submitted. Review the details below and approve or reject from the admin dashboard.</p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8f9fb;border-radius:8px;padding:18px;margin-bottom:20px;">
+      ${row("Full name", data.full_name)}
+      ${row("Email", data.email)}
+      ${row("Phone", data.phone)}
+      ${row("Address", data.address)}
+      ${row("City", data.city)}
+      ${row("State", data.state)}
+      ${row("Country", data.country)}
+      ${row("Zip / Postal", data.zip_code)}
+      ${row("Business name", data.business_name)}
+      ${row("Social / Site", data.social_link)}
+    </table>
+
+    ${data.referral_plan ? `
+      <p style="color:#888;font-size:12px;margin:0 0 6px;">How they plan to refer customers</p>
+      <p style="color:#061043;font-size:13px;background:#f8f9fb;border-radius:6px;padding:12px;margin:0 0 16px;">${data.referral_plan}</p>
+    ` : ""}
+
+    ${data.message ? `
+      <p style="color:#888;font-size:12px;margin:0 0 6px;">Additional message</p>
+      <p style="color:#061043;font-size:13px;background:#f8f9fb;border-radius:6px;padding:12px;margin:0 0 16px;">${data.message}</p>
+    ` : ""}
+
+    ${ctaButton("Review in admin dashboard", `${SITE_URL}/admin/partners`)}
+  `;
+
+  emails.push({
+    to: ADMIN_EMAIL,
+    subject: `New partner application: ${data.full_name || data.email || "Unknown applicant"}`,
+    html: emailWrapper("New partner application", body),
+  });
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 13. Partner Approved (from: info@)
+// ──────────────────────────────────────
+
+function buildPartnerApprovedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  if (!data.partner_email || !data.referral_code) return emails;
+
+  const referralLink = `${SITE_URL}/auth?ref=${encodeURIComponent(data.referral_code)}`;
+  const dashboardLink = `${SITE_URL}/dashboard/partner`;
+
+  const body = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">You're in! Welcome to the RAC Logistics Partner Program 🎉</h2>
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.partner_name || "there"}, congratulations — your partner application has been approved. You can start referring customers and earning commission today.</p>
+
+    <div style="background:#ecfdf5;border-radius:8px;padding:20px;margin-bottom:20px;text-align:center;">
+      <p style="margin:0;color:#065f46;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Your referral code</p>
+      <p style="margin:8px 0 0;color:#061043;font-size:26px;font-weight:800;letter-spacing:2px;">${data.referral_code}</p>
+    </div>
+
+    <p style="color:#888;font-size:12px;margin:0 0 6px;">Your unique referral link</p>
+    <p style="background:#f8f9fb;border:1px solid #e5e7eb;border-radius:6px;padding:12px;color:#061043;font-size:13px;word-break:break-all;margin:0 0 20px;">${referralLink}</p>
+
+    ${ctaButton("Open partner dashboard", dashboardLink)}
+
+    <h3 style="color:#061043;font-size:15px;margin:24px 0 10px;">How to start earning</h3>
+    <ol style="color:#555;font-size:14px;line-height:1.8;padding-left:20px;margin:0 0 20px;">
+      <li>Share your referral link on WhatsApp, Instagram, X, email, or your website.</li>
+      <li>Anyone who signs up through your link is tracked to your partner account.</li>
+      <li>Earn commission on every shipment your referrals pay for — automatically.</li>
+      <li>Track clicks, signups and earnings in your partner dashboard at any time.</li>
+    </ol>
+
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Need promotional materials or have a question? Contact partners@raclogisticltd.com</p>
+  `;
+
+  emails.push({
+    to: data.partner_email,
+    subject: "🎉 Your RAC Logistics partner account is approved",
+    html: emailWrapper("Partner approved", body),
+  });
+  return emails;
+}
+
+// ──────────────────────────────────────
+// 14. Partner Rejected (from: info@)
+// ──────────────────────────────────────
+
+function buildPartnerRejectedEmails(data: Record<string, any>): EmailPayload[] {
+  const emails: EmailPayload[] = [];
+  if (!data.partner_email) return emails;
+
+  const body = `
+    <h2 style="margin:0 0 8px;color:#061043;font-size:20px;">Update on your partner application</h2>
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">Hi ${data.partner_name || "there"}, thank you for your interest in the RAC Logistics Partner Program and for taking the time to apply.</p>
+
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">After careful review, we're unable to approve your application at this time. We receive a high volume of applications and unfortunately can't move forward with every one — this isn't a reflection of your potential as a partner.</p>
+
+    <p style="color:#555;font-size:14px;margin:0 0 20px;">You're welcome to reapply in the future as your business grows or your referral channels expand. In the meantime, you can continue using RAC Logistics as a customer for all your shipping needs.</p>
+
+    ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
+
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? We're happy to help — contact support@raclogisticltd.com</p>
+  `;
+
+  emails.push({
+    to: data.partner_email,
+    subject: "Update on your RAC Logistics partner application",
+    html: emailWrapper("Application update", body),
+  });
   return emails;
 }
 
