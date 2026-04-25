@@ -20,7 +20,10 @@ const applicationSchema = z.object({
   email: z.string().trim().email("Valid email required").max(255),
   phone: z.string().trim().min(5, "Phone is required").max(40),
   country: z.string().trim().min(2, "Country is required").max(80),
-  city: z.string().trim().max(80).optional().or(z.literal("")),
+  state: z.string().trim().min(1, "State / region is required").max(80),
+  city: z.string().trim().min(1, "City is required").max(80),
+  address: z.string().trim().min(3, "Address is required").max(255),
+  zip_code: z.string().trim().min(2, "Zip / postal code is required").max(20),
   business_name: z.string().trim().max(120).optional().or(z.literal("")),
   social_link: z.string().trim().max(255).optional().or(z.literal("")),
   referral_plan: z.string().trim().min(5, "Tell us how you plan to refer").max(500),
@@ -35,7 +38,10 @@ const Partners = () => {
     email: "",
     phone: "",
     country: "",
+    state: "",
     city: "",
+    address: "",
+    zip_code: "",
     business_name: "",
     social_link: "",
     referral_plan: "",
@@ -68,6 +74,26 @@ const Partners = () => {
         status: "pending",
       });
       if (error) throw error;
+      // Fire-and-forget notification emails (applicant + admin)
+      try {
+        await supabase.functions.invoke("send-notification-email", {
+          body: {
+            type: "partner_application_received",
+            data: {
+              applicant_name: parsed.data.full_name,
+              applicant_email: parsed.data.email,
+            },
+          },
+        });
+        await supabase.functions.invoke("send-notification-email", {
+          body: {
+            type: "partner_admin_notification",
+            data: parsed.data,
+          },
+        });
+      } catch (emailErr) {
+        console.error("Partner notification email failed:", emailErr);
+      }
       setSubmitted(true);
       toast.success("Application submitted! We'll review and get back to you soon.");
     } catch (err: any) {
