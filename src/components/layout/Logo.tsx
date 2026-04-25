@@ -23,7 +23,7 @@ const Logo = ({ className = "h-10 sm:h-12" }: { className?: string }) => (
     <text
       x="80"
       y="42"
-      fontFamily="DM Sans, sans-serif"
+      fontFamily="Space Grotesk, Inter, sans-serif"
       fontWeight="900"
       fontSize="40"
       fill="currentColor"
@@ -35,7 +35,7 @@ const Logo = ({ className = "h-10 sm:h-12" }: { className?: string }) => (
     <text
       x="80"
       y="68"
-      fontFamily="DM Sans, sans-serif"
+      fontFamily="Space Grotesk, Inter, sans-serif"
       fontWeight="800"
       fontSize="24"
       fill="currentColor"

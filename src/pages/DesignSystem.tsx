@@ -129,7 +129,7 @@ const DesignSystem = () => {
           <section>
             <h2 className="mb-2">Typography</h2>
             <p className="mb-8">
-              DM Sans is used globally with a clean SaaS hierarchy and
+              Space Grotesk (headings) and Inter (body) are used globally with a clean SaaS hierarchy and
               strong readability across dashboard and marketing surfaces.
             </p>
 
