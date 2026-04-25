@@ -44,6 +44,7 @@ interface Shipment {
   receiver_phone: string | null;
   receiver_alt_phone: string | null;
   receiver_address: string | null;
+  warehouse_location: string | null;
 }
 
 const formatPhoneForWhatsApp = (phone: string) => phone.replace(/[\s\-()]/g, "").replace(/^\+/, "");
