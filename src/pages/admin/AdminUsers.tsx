@@ -35,6 +35,7 @@ interface UserWithRole {
   phone: string | null;
   address: string | null;
   city: string | null;
+  state: string | null;
   country: string | null;
   created_at: string;
   role: string;
@@ -72,6 +73,35 @@ const AdminUsers = () => {
   const [addFundsUserName, setAddFundsUserName] = useState("");
   const isMobile = useIsMobile();
   const [viewProfileUser, setViewProfileUser] = useState<UserWithRole | null>(null);
+  const [profileExtras, setProfileExtras] = useState<{ shipments: number; payments: number; paidAmount: number } | null>(null);
+
+  useEffect(() => {
+    if (!viewProfileUser) {
+      setProfileExtras(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [{ data: ships }, { data: pays }] = await Promise.all([
+          supabase.from("shipments").select("id").eq("user_id", viewProfileUser.user_id),
+          supabase.from("payments").select("amount, status").eq("user_id", viewProfileUser.user_id),
+        ]);
+        if (cancelled) return;
+        const paidAmount = (pays || [])
+          .filter((p: any) => p.status === "completed" || p.status === "success" || p.status === "paid")
+          .reduce((s: number, p: any) => s + Number(p.amount || 0), 0);
+        setProfileExtras({
+          shipments: (ships || []).length,
+          payments: (pays || []).length,
+          paidAmount,
+        });
+      } catch (e) {
+        if (!cancelled) setProfileExtras({ shipments: 0, payments: 0, paidAmount: 0 });
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [viewProfileUser]);
 
   const fetchUsers = async () => {
     try {
