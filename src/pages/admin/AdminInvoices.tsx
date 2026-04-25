@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, FileText, DollarSign, CheckCircle, Loader2, Download, Printer } from "lucide-react";
+import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -125,36 +125,36 @@ const AdminInvoices = () => {
 
   const totalRevenue = invoices.filter(i => i.status === "paid").reduce((s, i) => s + Number(i.amount), 0);
   const totalUnpaid = invoices.filter(i => i.status === "unpaid").reduce((s, i) => s + Number(i.amount), 0);
+  const overdueCount = invoices.filter(i => i.status === "overdue").length;
+  const paidCount = invoices.filter(i => i.status === "paid").length;
+
+  const summaryCards = [
+    { label: "Paid Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: `${paidCount} invoices`, icon: TrendingUp, iconBg: "bg-emerald-50", iconColor: "text-emerald-600" },
+    { label: "Unpaid Balance", value: `$${totalUnpaid.toLocaleString()}`, sub: "Awaiting payment", icon: Clock, iconBg: "bg-amber-50", iconColor: "text-amber-600" },
+    { label: "Total Invoices", value: invoices.length, sub: "All time", icon: FileText, iconBg: "bg-blue-50", iconColor: "text-blue-600" },
+    { label: "Overdue", value: overdueCount, sub: "Needs follow-up", icon: AlertTriangle, iconBg: "bg-red-50", iconColor: "text-red-600" },
+  ];
 
   return (
     <AdminLayout title="Invoice Management" description="Track and manage all customer invoices">
       <div className="space-y-5">
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div><p className="text-xs font-medium text-muted-foreground mb-1">Paid Revenue</p><p className="text-lg sm:text-xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p></div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10"><CheckCircle className="w-[18px] h-[18px] text-success" /></div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div><p className="text-xs font-medium text-muted-foreground mb-1">Unpaid Invoices</p><p className="text-lg sm:text-xl font-bold text-foreground">${totalUnpaid.toLocaleString()}</p></div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10"><DollarSign className="w-[18px] h-[18px] text-warning" /></div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div><p className="text-xs font-medium text-muted-foreground mb-1">Total Invoices</p><p className="text-lg sm:text-xl font-bold text-foreground">{invoices.length}</p></div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><FileText className="w-[18px] h-[18px] text-primary" /></div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {summaryCards.map((c) => {
+            const Icon = c.icon;
+            return (
+              <Card key={c.label} className="border-border/40 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow">
+                <CardContent className="p-4">
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${c.iconBg} mb-3`}>
+                    <Icon className={`w-4 h-4 ${c.iconColor}`} strokeWidth={2} />
+                  </div>
+                  <p className="text-lg font-bold text-foreground tracking-tight tabular-nums leading-none mb-1">{loading ? "—" : c.value}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">{c.label}</p>
+                  <p className="text-[10px] text-muted-foreground/70 mt-0.5">{c.sub}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         <Card className="border-border/60 bg-white shadow-sm">
@@ -231,7 +231,7 @@ const AdminInvoices = () => {
               <div className="overflow-x-auto">
                 <div className="min-w-[1020px]">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="bg-muted/30 [&_th]:text-[11px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
                     <TableRow>
                       <TableHead>Invoice #</TableHead>
                       <TableHead>Customer</TableHead>
@@ -240,23 +240,23 @@ const AdminInvoices = () => {
                       <TableHead>Status</TableHead>
                       <TableHead>Due Date</TableHead>
                       <TableHead>Reference</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filtered.map((invoice) => (
-                      <TableRow key={invoice.id}>
-                        <TableCell className="font-mono font-medium">{invoice.invoice_number}</TableCell>
+                      <TableRow key={invoice.id} className="transition-colors hover:bg-muted/20 [&_td]:py-3 [&_td]:text-[13px]">
+                        <TableCell className="font-mono font-medium text-xs">{invoice.invoice_number}</TableCell>
                         <TableCell>
                           <div><p className="font-medium">{invoice.profiles?.full_name || "N/A"}</p><p className="text-xs text-muted-foreground">{invoice.profiles?.email || ""}</p></div>
                         </TableCell>
-                        <TableCell className="font-mono">{invoice.shipments?.tracking_number || "N/A"}</TableCell>
-                        <TableCell className="font-medium">${Number(invoice.amount).toFixed(2)}</TableCell>
-                        <TableCell><Badge className={getStatusColor(invoice.status)}>{invoice.status}</Badge></TableCell>
-                        <TableCell>{invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "N/A"}</TableCell>
-                        <TableCell>{invoice.payment_reference || "—"}</TableCell>
+                        <TableCell className="font-mono text-xs">{invoice.shipments?.tracking_number || "N/A"}</TableCell>
+                        <TableCell className="font-semibold tabular-nums">${Number(invoice.amount).toFixed(2)}</TableCell>
+                        <TableCell><Badge className={`${getStatusColor(invoice.status)} capitalize`}>{invoice.status}</Badge></TableCell>
+                        <TableCell className="text-muted-foreground">{invoice.due_date ? new Date(invoice.due_date).toLocaleDateString() : "—"}</TableCell>
+                        <TableCell className="text-xs text-muted-foreground">{invoice.payment_reference || "—"}</TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 justify-end">
                             {invoice.status === "unpaid" && (
                               <Button variant="default" size="sm" className="rounded-lg" onClick={() => openPayDialog(invoice)}>
                                 <CheckCircle className="w-3 h-3 mr-1" />Mark Paid
