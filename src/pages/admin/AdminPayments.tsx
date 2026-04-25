@@ -10,7 +10,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
-import { Search, DollarSign } from "lucide-react";
+import { Search, DollarSign, Clock, Receipt, XCircle, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -87,45 +87,36 @@ const AdminPayments = () => {
 
   const totalRevenue = payments.filter((p) => p.status === "completed").reduce((sum, p) => sum + Number(p.amount), 0);
   const pendingAmount = payments.filter((p) => p.status === "pending").reduce((sum, p) => sum + Number(p.amount), 0);
+  const failedCount = payments.filter((p) => p.status === "failed").length;
+  const completedCount = payments.filter((p) => p.status === "completed").length;
+
+  const summaryCards = [
+    { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: `${completedCount} completed`, icon: TrendingUp, iconBg: "bg-emerald-50", iconColor: "text-emerald-600" },
+    { label: "Pending Payments", value: `$${pendingAmount.toLocaleString()}`, sub: "Awaiting confirmation", icon: Clock, iconBg: "bg-amber-50", iconColor: "text-amber-600" },
+    { label: "Total Transactions", value: payments.length, sub: "All time", icon: Receipt, iconBg: "bg-blue-50", iconColor: "text-blue-600" },
+    { label: "Failed", value: failedCount, sub: "Needs review", icon: XCircle, iconBg: "bg-red-50", iconColor: "text-red-600" },
+  ];
 
   return (
     <AdminLayout title="Payment Management" description="Track and manage all customer payments">
       <div className="space-y-5">
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Total Revenue</p>
-                  <p className="text-lg sm:text-xl font-bold text-foreground">${totalRevenue.toLocaleString()}</p>
-                </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/10"><DollarSign className="w-[18px] h-[18px] text-success" /></div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Pending Payments</p>
-                  <p className="text-lg sm:text-xl font-bold text-foreground">${pendingAmount.toLocaleString()}</p>
-                </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10"><DollarSign className="w-[18px] h-[18px] text-warning" /></div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/60 bg-white shadow-sm">
-            <CardContent className="p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-1">Total Transactions</p>
-                  <p className="text-lg sm:text-xl font-bold text-foreground">{payments.length}</p>
-                </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"><DollarSign className="w-[18px] h-[18px] text-primary" /></div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {summaryCards.map((c) => {
+            const Icon = c.icon;
+            return (
+              <Card key={c.label} className="border-border/40 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow">
+                <CardContent className="p-4">
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${c.iconBg} mb-3`}>
+                    <Icon className={`w-4 h-4 ${c.iconColor}`} strokeWidth={2} />
+                  </div>
+                  <p className="text-lg font-bold text-foreground tracking-tight tabular-nums leading-none mb-1">{loading ? "—" : c.value}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">{c.label}</p>
+                  <p className="text-[10px] text-muted-foreground/70 mt-0.5">{c.sub}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         <Card className="border-border/60 bg-white shadow-sm">
@@ -196,7 +187,7 @@ const AdminPayments = () => {
               <div className="overflow-x-auto">
                 <div className="min-w-[860px]">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="bg-muted/30 [&_th]:text-[11px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
                     <TableRow>
                       <TableHead>Transaction ID</TableHead>
                       <TableHead>Amount</TableHead>
@@ -204,19 +195,19 @@ const AdminPayments = () => {
                       <TableHead>Description</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Date</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredPayments.map((payment) => (
-                      <TableRow key={payment.id}>
-                        <TableCell className="font-mono">{payment.transaction_id || "N/A"}</TableCell>
-                        <TableCell className="font-medium">${Number(payment.amount).toLocaleString()}</TableCell>
+                      <TableRow key={payment.id} className="transition-colors hover:bg-muted/20 [&_td]:py-3 [&_td]:text-[13px]">
+                        <TableCell className="font-mono text-xs">{payment.transaction_id || <span className="text-muted-foreground italic">—</span>}</TableCell>
+                        <TableCell className="font-semibold tabular-nums">${Number(payment.amount).toLocaleString()}</TableCell>
                         <TableCell className="capitalize">{payment.payment_method || "N/A"}</TableCell>
-                        <TableCell>{payment.description || "N/A"}</TableCell>
+                        <TableCell className="max-w-[220px] truncate">{payment.description || <span className="text-muted-foreground italic">—</span>}</TableCell>
                         <TableCell><Badge className={`${getStatusColor(payment.status)} capitalize`}>{payment.status}</Badge></TableCell>
-                        <TableCell>{new Date(payment.created_at).toLocaleDateString()}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</TableCell>
+                        <TableCell className="text-right">
                           <Select value={payment.status} onValueChange={(v) => handleStatusChange(payment.id, v)}>
                             <SelectTrigger className="h-9 w-32 rounded-lg border-border/80 bg-muted/30 text-sm"><SelectValue /></SelectTrigger>
                             <SelectContent>
