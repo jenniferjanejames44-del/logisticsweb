@@ -335,6 +335,9 @@ const Shipments = () => {
           userBalance={balance}
           userId={user?.id || ""}
           onSuccess={handlePaymentSuccess}
+          serviceType={selectedShipment.service_type}
+          destination={selectedShipment.destination_country}
+          weight={selectedShipment.weight}
         />
       )}
     </DashboardLayout>
