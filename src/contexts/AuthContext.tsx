@@ -7,7 +7,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, fullName: string, metadata?: { phone?: string; address?: string; city?: string; state?: string; country?: string; company_name?: string; referral_code?: string }) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, fullName: string, metadata?: { phone?: string; address?: string; city?: string; state?: string; country?: string; zip_code?: string; company_name?: string; referral_code?: string }) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, fullName: string, metadata?: { phone?: string; address?: string; city?: string; state?: string; country?: string; company_name?: string; referral_code?: string }) => {
+  const signUp = async (email: string, password: string, fullName: string, metadata?: { phone?: string; address?: string; city?: string; state?: string; country?: string; zip_code?: string; company_name?: string; referral_code?: string }) => {
     if (typeof window !== "undefined") {
       sessionStorage.removeItem(AUTH_SIGNOUT_FLAG);
     }
