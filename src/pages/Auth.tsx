@@ -25,7 +25,9 @@ const AuthForm = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
+  const [stateRegion, setStateRegion] = useState("");
   const [country, setCountry] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
@@ -104,7 +106,9 @@ const AuthForm = () => {
           phone: phone.trim(),
           address: address.trim(),
           city: city.trim(),
+          state: stateRegion.trim(),
           country: country.trim(),
+          company_name: companyName.trim(),
         });
         if (error) throw error;
         setShowVerificationMessage(true);
