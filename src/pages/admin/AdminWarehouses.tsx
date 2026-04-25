@@ -17,7 +17,7 @@ const AdminWarehouses = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-  const [form, setForm] = useState({ country: "", name: "", address: "", phone: "", is_active: true });
+  const [form, setForm] = useState({ country: "", name: "", address: "", city: "", state: "", zip_code: "", phone: "", is_active: true });
 
   const fetch_ = async () => {
     setLoading(true);
@@ -29,14 +29,14 @@ const AdminWarehouses = () => {
   useEffect(() => { fetch_(); }, []);
 
   const openDialog = (i?: any) => {
-    if (i) { setEditing(i); setForm({ country: i.country, name: i.name, address: i.address, phone: i.phone || "", is_active: i.is_active }); }
-    else { setEditing(null); setForm({ country: "", name: "", address: "", phone: "", is_active: true }); }
+    if (i) { setEditing(i); setForm({ country: i.country, name: i.name, address: i.address, city: i.city || "", state: i.state || "", zip_code: i.zip_code || "", phone: i.phone || "", is_active: i.is_active }); }
+    else { setEditing(null); setForm({ country: "", name: "", address: "", city: "", state: "", zip_code: "", phone: "", is_active: true }); }
     setOpen(true);
   };
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = { country: form.country, name: form.name, address: form.address, phone: form.phone || null, is_active: form.is_active };
+    const payload = { country: form.country, name: form.name, address: form.address, city: form.city || null, state: form.state || null, zip_code: form.zip_code || null, phone: form.phone || null, is_active: form.is_active };
     const { error } = editing
       ? await (supabase as any).from("warehouses").update(payload).eq("id", editing.id)
       : await (supabase as any).from("warehouses").insert(payload);
@@ -61,13 +61,14 @@ const AdminWarehouses = () => {
           <CardContent>
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Country</TableHead><TableHead>Address</TableHead><TableHead>Phone</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Country</TableHead><TableHead>City / State</TableHead><TableHead>Address</TableHead><TableHead>Phone</TableHead><TableHead>Active</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader>
                 <TableBody>
-                  {loading ? <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
+                  {loading ? <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground">Loading...</TableCell></TableRow> :
                   items.map(i => (
                     <TableRow key={i.id}>
                       <TableCell className="font-medium">{i.name}</TableCell>
                       <TableCell>{i.country}</TableCell>
+                      <TableCell className="text-sm">{[i.city, i.state].filter(Boolean).join(", ") || "—"}</TableCell>
                       <TableCell className="max-w-[200px] truncate">{i.address}</TableCell>
                       <TableCell>{i.phone || "—"}</TableCell>
                       <TableCell>{i.is_active ? "✓" : "✗"}</TableCell>
@@ -86,6 +87,11 @@ const AdminWarehouses = () => {
             <div className="space-y-2"><Label>Name</Label><Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} required /></div>
             <div className="space-y-2"><Label>Country</Label><Input value={form.country} onChange={e => setForm({...form, country: e.target.value})} required /></div>
             <div className="space-y-2"><Label>Address</Label><Input value={form.address} onChange={e => setForm({...form, address: e.target.value})} required /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2"><Label>City</Label><Input value={form.city} onChange={e => setForm({...form, city: e.target.value})} /></div>
+              <div className="space-y-2"><Label>State / Region</Label><Input value={form.state} onChange={e => setForm({...form, state: e.target.value})} /></div>
+            </div>
+            <div className="space-y-2"><Label>ZIP / Postal Code</Label><Input value={form.zip_code} onChange={e => setForm({...form, zip_code: e.target.value})} /></div>
             <div className="space-y-2"><Label>Phone</Label><Input value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} /></div>
             <div className="flex items-center gap-2"><Switch checked={form.is_active} onCheckedChange={c => setForm({...form, is_active: c})} /><Label>Active</Label></div>
             <Button type="submit" className="w-full">{editing ? "Update" : "Create"}</Button>
