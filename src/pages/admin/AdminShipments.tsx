@@ -30,6 +30,7 @@ interface Shipment {
   height_cm: number | null;
   service_type: string;
   status: string;
+  description: string | null;
   created_at: string;
   estimated_delivery: string | null;
   price: number | null;
