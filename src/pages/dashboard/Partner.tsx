@@ -7,8 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Handshake, Copy, ExternalLink, Users, CheckCircle2, Clock, Wallet, ArrowRight, Share2, Mail, Send, Facebook, Twitter, MessageCircle } from "lucide-react";
+import { Handshake, Copy, ExternalLink, Users, CheckCircle2, Clock, Wallet, ArrowRight, Share2, Mail, Send, Facebook, Twitter, MessageCircle, RotateCcw } from "lucide-react";
 
 interface PartnerRecord {
   id: string;
@@ -35,6 +37,7 @@ const Partner = () => {
   const [loading, setLoading] = useState(true);
   const [partner, setPartner] = useState<PartnerRecord | null>(null);
   const [referrals, setReferrals] = useState<ReferralRow[]>([]);
+  const [shareMessage, setShareMessage] = useState<string>("");
 
   useEffect(() => {
     if (!user) return;
@@ -78,18 +81,44 @@ const Partner = () => {
     ? `${window.location.origin}/auth?ref=${partner.referral_code}`
     : "";
 
+  const defaultMessage = referralLink
+    ? `Ship smarter with RAC Logistics! Use my referral link to sign up and get started: ${referralLink}`
+    : "";
+
+  // Load saved message (per partner) from localStorage, fall back to default
+  useEffect(() => {
+    if (!partner?.id) return;
+    const saved = localStorage.getItem(`rac_partner_share_msg_${partner.id}`);
+    setShareMessage(saved && saved.trim().length > 0 ? saved : defaultMessage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [partner?.id, referralLink]);
+
+  const persistMessage = (val: string) => {
+    setShareMessage(val);
+    if (partner?.id) {
+      localStorage.setItem(`rac_partner_share_msg_${partner.id}`, val);
+    }
+  };
+
+  const resetMessage = () => {
+    persistMessage(defaultMessage);
+    toast.success("Message reset to default");
+  };
+
   const copy = (val: string, label: string) => {
     navigator.clipboard.writeText(val);
     toast.success(`${label} copied`);
   };
 
-  const shareMessage = partner?.referral_code
-    ? `Ship smarter with RAC Logistics! Use my referral link to sign up and get started: ${referralLink}`
-    : "";
-
   const openShare = (url: string) => {
     window.open(url, "_blank", "noopener,noreferrer,width=600,height=600");
   };
+
+  // Ensure the referral link is always present in the outgoing message,
+  // even if the user removes it from the editable field.
+  const messageWithLink = shareMessage.includes(referralLink)
+    ? shareMessage
+    : `${shareMessage.trim()}\n\n${referralLink}`.trim();
 
   const shareTargets = [
     {
@@ -97,21 +126,21 @@ const Partner = () => {
       label: "WhatsApp",
       icon: MessageCircle,
       className: "bg-[#25D366] hover:bg-[#1faa53] text-white border-transparent",
-      url: () => `https://wa.me/?text=${encodeURIComponent(shareMessage)}`,
+      url: () => `https://wa.me/?text=${encodeURIComponent(messageWithLink)}`,
     },
     {
       key: "telegram",
       label: "Telegram",
       icon: Send,
       className: "bg-[#229ED9] hover:bg-[#1b86b8] text-white border-transparent",
-      url: () => `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent("Ship smarter with RAC Logistics!")}`,
+      url: () => `https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(shareMessage)}`,
     },
     {
       key: "twitter",
       label: "X / Twitter",
       icon: Twitter,
       className: "bg-foreground hover:bg-foreground/90 text-background border-transparent",
-      url: () => `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}`,
+      url: () => `https://twitter.com/intent/tweet?text=${encodeURIComponent(messageWithLink)}`,
     },
     {
       key: "facebook",
@@ -125,7 +154,7 @@ const Partner = () => {
       label: "Email",
       icon: Mail,
       className: "bg-primary hover:bg-primary/90 text-primary-foreground border-transparent",
-      url: () => `mailto:?subject=${encodeURIComponent("Try RAC Logistics")}&body=${encodeURIComponent(shareMessage)}`,
+      url: () => `mailto:?subject=${encodeURIComponent("Try RAC Logistics")}&body=${encodeURIComponent(messageWithLink)}`,
     },
   ];
 
@@ -134,14 +163,14 @@ const Partner = () => {
       try {
         await navigator.share({
           title: "RAC Logistics — Partner referral",
-          text: "Ship smarter with RAC Logistics!",
+          text: shareMessage,
           url: referralLink,
         });
       } catch {
         /* user cancelled */
       }
     } else {
-      copy(referralLink, "Link");
+      copy(messageWithLink, "Message");
     }
   };
 
@@ -251,7 +280,29 @@ const Partner = () => {
 
               <div className="pt-2">
                 <div className="flex items-center justify-between gap-2">
-                  <label className="text-xs font-medium text-muted-foreground">Share with one tap</label>
+                  <Label className="text-xs font-medium text-muted-foreground">Your share message</Label>
+                  <Button variant="ghost" size="sm" onClick={resetMessage} className="h-8 text-xs">
+                    <RotateCcw className="w-3.5 h-3.5 mr-1.5" /> Reset
+                  </Button>
+                </div>
+                <Textarea
+                  value={shareMessage}
+                  onChange={(e) => persistMessage(e.target.value)}
+                  rows={3}
+                  className="mt-2 text-sm"
+                  placeholder="Write the message your contacts will see…"
+                />
+                <div className="mt-1 flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    Saved on this device. Your referral link is always appended automatically.
+                  </p>
+                  <Button variant="ghost" size="sm" onClick={() => copy(messageWithLink, "Message")} className="h-7 text-xs">
+                    <Copy className="w-3 h-3 mr-1" /> Copy
+                  </Button>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-2">
+                  <Label className="text-xs font-medium text-muted-foreground">Share with one tap</Label>
                   <Button variant="ghost" size="sm" onClick={handleNativeShare} className="h-8 text-xs">
                     <Share2 className="w-3.5 h-3.5 mr-1.5" /> More
                   </Button>
@@ -271,7 +322,7 @@ const Partner = () => {
                   ))}
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Tap a channel to send your referral link with a ready-made message.
+                  Tap a channel to send your custom message with your referral link.
                 </p>
               </div>
             </CardContent>
