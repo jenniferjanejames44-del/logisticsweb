@@ -18,6 +18,37 @@ const compactAddButtonClass = "rounded-[10px] px-4";
 const compactIconButtonClass = "rounded-[10px] border border-border/70 bg-white/90 shadow-[0_8px_18px_rgba(6,16,67,0.05)] hover:border-primary/20 hover:bg-muted/60";
 const compactDeleteButtonClass = "rounded-[10px] border border-destructive/20 bg-destructive/[0.03] text-destructive shadow-[0_8px_18px_rgba(220,38,38,0.05)] hover:border-destructive/30 hover:bg-destructive/10 hover:text-destructive";
 
+// ---- Shared section header ----
+const SectionHeader = ({
+  title,
+  count,
+  description,
+  action,
+}: {
+  title: string;
+  count: number;
+  description: string;
+  action: React.ReactNode;
+}) => (
+  <div className="flex flex-col gap-3 border-b border-border/40 pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-w-0">
+      <div className="flex items-center gap-2">
+        <h3 className="text-[15px] font-semibold tracking-tight text-foreground">{title}</h3>
+        <span className="rounded-full bg-muted/60 px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
+          {count}
+        </span>
+      </div>
+      <p className="mt-1 text-[12px] text-muted-foreground">{description}</p>
+    </div>
+    <div className="flex-shrink-0">{action}</div>
+  </div>
+);
+
+const tableWrapperClass =
+  "overflow-hidden rounded-xl border border-border/50 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.03)]";
+const tableHeaderClass = "bg-muted/30 [&_th]:text-[11px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground";
+const tableRowClass = "transition-colors hover:bg-muted/20 [&_td]:py-3 [&_td]:text-[13px]";
+
 // ---- Generic CRUD helpers ----
 function useCrud(table: string) {
   const [items, setItems] = useState<any[]>([]);
