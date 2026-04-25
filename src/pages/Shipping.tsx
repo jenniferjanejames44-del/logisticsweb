@@ -238,8 +238,8 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   }, [formData.destination_country, chargeableWeight, formData.declared_value, selectedExtras]);
 
   useEffect(() => {
-    if (step === 5) calculatePrice();
-  }, [step, calculatePrice]);
+    if (step === 5 || embedded) calculatePrice();
+  }, [step, calculatePrice, embedded]);
 
   // Grand total = pricing engine total + packaging + delivery fee + pickup fee (if prepaid)
   const grandTotal = useMemo(() => {
