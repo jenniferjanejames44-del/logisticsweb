@@ -674,6 +674,48 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
+
+              {packagingOptions.length > 0 && (
+                <div className="rounded-xl border border-border/60 bg-muted/20 p-3">
+                  <Label className="text-xs font-semibold text-foreground">
+                    Packaging Material <span className="text-muted-foreground font-normal">(optional)</span>
+                  </Label>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 mb-2">
+                    Choose a box or bag — the price is added to your total.
+                  </p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setPackagingId("")}
+                      className={`text-left rounded-lg border-2 px-3 py-2 transition-all ${
+                        packagingId === ""
+                          ? "border-primary bg-primary/5"
+                          : "border-border/60 bg-white hover:border-primary/40"
+                      }`}
+                    >
+                      <div className="text-xs font-semibold text-foreground">No packaging</div>
+                      <div className="text-[11px] text-muted-foreground">I'll package it myself</div>
+                    </button>
+                    {packagingOptions.map((p) => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => setPackagingId(p.id)}
+                        className={`text-left rounded-lg border-2 px-3 py-2 transition-all ${
+                          packagingId === p.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border/60 bg-white hover:border-primary/40"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs font-semibold text-foreground">{p.name}</span>
+                          <span className="text-xs font-bold text-primary">${Number(p.price).toFixed(2)}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );
