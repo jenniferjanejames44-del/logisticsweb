@@ -785,8 +785,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="grid gap-2 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                       <Field label="Description" required error={errors[`item_${idx}_desc`]}>
-                        <Input value={item.description}
-                          onChange={(e) => updateItem(item.id, { description: e.target.value })}
+                        <SmoothInput value={item.description}
+                          onCommit={(value) => updateItem(item.id, { description: value })}
                           placeholder="e.g. Phone, Clothes, Electronics" />
                       </Field>
                     </div>
@@ -802,22 +802,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       </div>
                     </Field>
                     <Field label="Weight (kg)" required error={errors[`item_${idx}_weight`]}>
-                      <Input type="number" min={0} step="0.1" value={item.weight}
-                        onChange={(e) => updateItem(item.id, { weight: e.target.value })} placeholder="0.0" />
+                      <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={item.weight}
+                        onCommit={(value) => updateItem(item.id, { weight: value })} placeholder="0.0" />
                     </Field>
                     <Field label="Value (USD)" required error={errors[`item_${idx}_value`]}>
-                      <Input type="number" min={0} value={item.value}
-                        onChange={(e) => updateItem(item.id, { value: e.target.value })} placeholder="0" />
+                      <SmoothInput type="number" min={0} inputMode="decimal" value={item.value}
+                        onCommit={(value) => updateItem(item.id, { value })} placeholder="0" />
                     </Field>
                     <div className="grid grid-cols-3 gap-2 sm:col-span-1">
                       <Field label="L (cm)">
-                        <Input type="number" value={item.length || ""} onChange={(e) => updateItem(item.id, { length: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.length || ""} onCommit={(value) => updateItem(item.id, { length: value })} placeholder="—" />
                       </Field>
                       <Field label="W (cm)">
-                        <Input type="number" value={item.width || ""} onChange={(e) => updateItem(item.id, { width: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.width || ""} onCommit={(value) => updateItem(item.id, { width: value })} placeholder="—" />
                       </Field>
                       <Field label="H (cm)">
-                        <Input type="number" value={item.height || ""} onChange={(e) => updateItem(item.id, { height: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.height || ""} onCommit={(value) => updateItem(item.id, { height: value })} placeholder="—" />
                       </Field>
                     </div>
                   </div>
@@ -827,7 +827,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <Plus className="h-4 w-4 mr-1" /> Add another item
               </Button>
               <Field label="Additional notes (optional)">
-                <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
+                <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
 
