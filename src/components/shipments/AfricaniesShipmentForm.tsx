@@ -1,7 +1,8 @@
-import { useState, useEffect, useMemo, ReactNode } from "react";
+import { useState, useEffect, useMemo, useRef, memo, ReactNode, ComponentProps } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import type { TablesInsert } from "@/integrations/supabase/types";
 import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,8 @@ interface PackagingMaterial {
   name: string;
   price: number;
 }
+
+type ShipmentInsert = TablesInsert<"shipments">;
 
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Argentina","Armenia","Australia","Austria","Bangladesh","Belgium","Brazil",
@@ -103,6 +106,164 @@ function SummaryRow({ label, value }: { label: string; value: ReactNode }) {
       <span className="text-muted-foreground">{label}</span>
       <span className="font-semibold text-foreground text-right break-words max-w-[60%]">{value}</span>
     </div>
+  );
+}
+
+type SmoothInputProps = Omit<ComponentProps<typeof Input>, "value" | "onChange" | "defaultValue"> & {
+  value: string | number | null | undefined;
+  onCommit: (value: string) => void;
+  commitDelay?: number;
+};
+
+const toDraft = (value: string | number | null | undefined) => (value == null ? "" : String(value));
+
+const SmoothInput = memo(function SmoothInput({
+  value,
+  onCommit,
+  commitDelay = 220,
+  onBlur,
+  ...props
+}: SmoothInputProps) {
+  const [draft, setDraft] = useState(() => toDraft(value));
+  const lastPropValueRef = useRef(toDraft(value));
+  const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onCommitRef = useRef(onCommit);
+
+  useEffect(() => {
+    onCommitRef.current = onCommit;
+  }, [onCommit]);
+
+  useEffect(() => {
+    const next = toDraft(value);
+    if (next !== lastPropValueRef.current) {
+      lastPropValueRef.current = next;
+      setDraft(next);
+    }
+  }, [value]);
+
+  useEffect(() => () => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+  }, []);
+
+  const flush = (next: string) => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+    lastPropValueRef.current = next;
+    onCommitRef.current(next);
+  };
+
+  const scheduleCommit = (next: string) => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+    commitTimerRef.current = setTimeout(() => flush(next), commitDelay);
+  };
+
+  return (
+    <Input
+      {...props}
+      value={draft}
+      onChange={(e) => {
+        const next = e.target.value;
+        setDraft(next);
+        scheduleCommit(next);
+      }}
+      onBlur={(e) => {
+        flush(e.target.value);
+        onBlur?.(e);
+      }}
+    />
+  );
+});
+
+type SmoothTextareaProps = Omit<ComponentProps<typeof Textarea>, "value" | "onChange" | "defaultValue"> & {
+  value: string | null | undefined;
+  onCommit: (value: string) => void;
+  commitDelay?: number;
+};
+
+const SmoothTextarea = memo(function SmoothTextarea({
+  value,
+  onCommit,
+  commitDelay = 220,
+  onBlur,
+  ...props
+}: SmoothTextareaProps) {
+  const [draft, setDraft] = useState(() => value || "");
+  const lastPropValueRef = useRef(value || "");
+  const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onCommitRef = useRef(onCommit);
+
+  useEffect(() => {
+    onCommitRef.current = onCommit;
+  }, [onCommit]);
+
+  useEffect(() => {
+    const next = value || "";
+    if (next !== lastPropValueRef.current) {
+      lastPropValueRef.current = next;
+      setDraft(next);
+    }
+  }, [value]);
+
+  useEffect(() => () => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+  }, []);
+
+  const flush = (next: string) => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+    lastPropValueRef.current = next;
+    onCommitRef.current(next);
+  };
+
+  const scheduleCommit = (next: string) => {
+    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
+    commitTimerRef.current = setTimeout(() => flush(next), commitDelay);
+  };
+
+  return (
+    <Textarea
+      {...props}
+      value={draft}
+      onChange={(e) => {
+        const next = e.target.value;
+        setDraft(next);
+        scheduleCommit(next);
+      }}
+      onBlur={(e) => {
+        flush(e.target.value);
+        onBlur?.(e);
+      }}
+    />
+  );
+});
+
+function QuantityInput({ value, onCommit }: { value: number; onCommit: (value: number) => void }) {
+  const [draft, setDraft] = useState(String(value));
+
+  useEffect(() => {
+    setDraft(String(value));
+  }, [value]);
+
+  const commit = () => {
+    const parsed = Number.parseInt(draft, 10);
+    const next = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    setDraft(String(next));
+    onCommit(next);
+  };
+
+  return (
+    <input
+      type="number"
+      min={1}
+      inputMode="numeric"
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.currentTarget.blur();
+        }
+      }}
+      className="w-full text-center bg-transparent text-sm font-semibold outline-none"
+    />
   );
 }
 
@@ -194,12 +355,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   }, []);
 
   useEffect(() => {
-    (supabase as any)
+    supabase
       .from("packaging_materials")
       .select("id, name, price")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }: any) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
+      .then(({ data }) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
   }, []);
 
   useEffect(() => {
@@ -373,7 +534,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
 
-      const { data: shipment, error } = await supabase.from("shipments").insert({
+      const shipmentPayload: ShipmentInsert = {
         user_id: user.id,
         origin_country: senderCountry,
         origin_city: senderCity,
@@ -394,7 +555,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
         receiver_address: [receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", "),
-      } as any).select("id").single();
+      };
+
+      const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
 
       if (error) throw error;
 
@@ -410,8 +573,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       toast({ title: "Shipment created!", description: "Redirecting to payment…" });
       navigate(`/dashboard/shipments?pay=${shipment?.id}`);
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Could not create shipment", variant: "destructive" });
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Could not create shipment";
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
@@ -567,13 +731,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">Who is sending the shipment?</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.senderName}>
-                <Input value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="John Doe" />
+                <SmoothInput value={senderName} onCommit={setSenderName} placeholder="John Doe" />
               </Field>
               <Field label="Phone number" required error={errors.senderPhone}>
-                <Input value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} placeholder="+234…" />
+                <SmoothInput value={senderPhone} onCommit={setSenderPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.senderEmail}>
-                <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@example.com" />
+                <SmoothInput type="email" value={senderEmail} onCommit={setSenderEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
                 <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
@@ -584,14 +748,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </Select>
               </Field>
               <Field label="City" required error={errors.senderCity}>
-                <Input value={senderCity} onChange={(e) => setSenderCity(e.target.value)} placeholder="Lagos" />
+                <SmoothInput value={senderCity} onCommit={setSenderCity} placeholder="Lagos" />
               </Field>
               <Field label="Zip / Postal code">
-                <Input value={senderZip} onChange={(e) => setSenderZip(e.target.value)} placeholder="100001" />
+                <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.senderAddress}>
-                  <Input value={senderAddress} onChange={(e) => setSenderAddress(e.target.value)} placeholder="Street, building, apt" />
+                  <SmoothInput value={senderAddress} onCommit={setSenderAddress} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
@@ -609,13 +773,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">Who will receive the shipment?</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.receiverName}>
-                <Input value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Jane Doe" />
+                <SmoothInput value={receiverName} onCommit={setReceiverName} placeholder="Jane Doe" />
               </Field>
               <Field label="Phone number" required error={errors.receiverPhone}>
-                <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+234…" />
+                <SmoothInput value={receiverPhone} onCommit={setReceiverPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.receiverEmail}>
-                <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@example.com" />
+                <SmoothInput type="email" value={receiverEmail} onCommit={setReceiverEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
                 <Select value={receiverCountry} onValueChange={setReceiverCountry} disabled={!isExport}>
@@ -626,14 +790,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </Select>
               </Field>
               <Field label="City" required error={errors.receiverCity}>
-                <Input value={receiverCity} onChange={(e) => setReceiverCity(e.target.value)} placeholder="City" />
+                <SmoothInput value={receiverCity} onCommit={setReceiverCity} placeholder="City" />
               </Field>
               <Field label="Zip / Postal code">
-                <Input value={receiverZip} onChange={(e) => setReceiverZip(e.target.value)} placeholder="00000" />
+                <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.receiverAddress}>
-                  <Input value={receiverAddress} onChange={(e) => setReceiverAddress(e.target.value)} placeholder="Street, building, apt" />
+                  <SmoothInput value={receiverAddress} onCommit={setReceiverAddress} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
@@ -659,8 +823,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="grid gap-2 sm:grid-cols-2">
                     <div className="sm:col-span-2">
                       <Field label="Description" required error={errors[`item_${idx}_desc`]}>
-                        <Input value={item.description}
-                          onChange={(e) => updateItem(item.id, { description: e.target.value })}
+                        <SmoothInput value={item.description}
+                          onCommit={(value) => updateItem(item.id, { description: value })}
                           placeholder="e.g. Phone, Clothes, Electronics" />
                       </Field>
                     </div>
@@ -668,30 +832,31 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       <div className="flex items-center rounded-[16px] border border-border/70 bg-white h-12">
                         <button type="button" onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })}
                           className="px-3 text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
-                        <input type="number" min={1} value={item.quantity}
-                          onChange={(e) => updateItem(item.id, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
-                          className="w-full text-center bg-transparent text-sm font-semibold outline-none" />
+                        <QuantityInput
+                          value={item.quantity}
+                          onCommit={(value) => updateItem(item.id, { quantity: value })}
+                        />
                         <button type="button" onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })}
                           className="px-3 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
                       </div>
                     </Field>
                     <Field label="Weight (kg)" required error={errors[`item_${idx}_weight`]}>
-                      <Input type="number" min={0} step="0.1" value={item.weight}
-                        onChange={(e) => updateItem(item.id, { weight: e.target.value })} placeholder="0.0" />
+                      <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={item.weight}
+                        onCommit={(value) => updateItem(item.id, { weight: value })} placeholder="0.0" />
                     </Field>
                     <Field label="Value (USD)" required error={errors[`item_${idx}_value`]}>
-                      <Input type="number" min={0} value={item.value}
-                        onChange={(e) => updateItem(item.id, { value: e.target.value })} placeholder="0" />
+                      <SmoothInput type="number" min={0} inputMode="decimal" value={item.value}
+                        onCommit={(value) => updateItem(item.id, { value })} placeholder="0" />
                     </Field>
                     <div className="grid grid-cols-3 gap-2 sm:col-span-1">
                       <Field label="L (cm)">
-                        <Input type="number" value={item.length || ""} onChange={(e) => updateItem(item.id, { length: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.length || ""} onCommit={(value) => updateItem(item.id, { length: value })} placeholder="—" />
                       </Field>
                       <Field label="W (cm)">
-                        <Input type="number" value={item.width || ""} onChange={(e) => updateItem(item.id, { width: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.width || ""} onCommit={(value) => updateItem(item.id, { width: value })} placeholder="—" />
                       </Field>
                       <Field label="H (cm)">
-                        <Input type="number" value={item.height || ""} onChange={(e) => updateItem(item.id, { height: e.target.value })} placeholder="—" />
+                        <SmoothInput type="number" inputMode="decimal" value={item.height || ""} onCommit={(value) => updateItem(item.id, { height: value })} placeholder="—" />
                       </Field>
                     </div>
                   </div>
@@ -701,7 +866,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <Plus className="h-4 w-4 mr-1" /> Add another item
               </Button>
               <Field label="Additional notes (optional)">
-                <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)}
+                <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
 
