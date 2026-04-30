@@ -826,9 +826,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       <div className="flex items-center rounded-[16px] border border-border/70 bg-white h-12">
                         <button type="button" onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })}
                           className="px-3 text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
-                        <input type="number" min={1} value={item.quantity}
-                          onChange={(e) => updateItem(item.id, { quantity: Math.max(1, parseInt(e.target.value) || 1) })}
-                          className="w-full text-center bg-transparent text-sm font-semibold outline-none" />
+                        <QuantityInput
+                          value={item.quantity}
+                          onCommit={(value) => updateItem(item.id, { quantity: value })}
+                        />
                         <button type="button" onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })}
                           className="px-3 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
                       </div>
