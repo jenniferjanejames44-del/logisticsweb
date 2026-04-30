@@ -232,6 +232,38 @@ const SmoothTextarea = memo(function SmoothTextarea({
   );
 });
 
+function QuantityInput({ value, onCommit }: { value: number; onCommit: (value: number) => void }) {
+  const [draft, setDraft] = useState(String(value));
+
+  useEffect(() => {
+    setDraft(String(value));
+  }, [value]);
+
+  const commit = () => {
+    const parsed = Number.parseInt(draft, 10);
+    const next = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    setDraft(String(next));
+    onCommit(next);
+  };
+
+  return (
+    <input
+      type="number"
+      min={1}
+      inputMode="numeric"
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.currentTarget.blur();
+        }
+      }}
+      className="w-full text-center bg-transparent text-sm font-semibold outline-none"
+    />
+  );
+}
+
 function Stepper({ step }: { step: number }) {
   return (
     <div className="mb-5 overflow-x-auto">
