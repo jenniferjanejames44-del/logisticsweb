@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef, memo, ReactNode, ComponentProps }
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import type { Tables, TablesInsert } from "@/integrations/supabase/types";
+import type { TablesInsert } from "@/integrations/supabase/types";
 import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
