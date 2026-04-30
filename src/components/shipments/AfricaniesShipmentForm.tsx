@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
-  User, Send, Package, Plus, Minus, Trash2, Loader2,
+  Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
-  PackageCheck, Store, MapPin,
+  PackageCheck, Store, MapPin, Box, Mail, ShoppingBag, Thermometer,
 } from "lucide-react";
 
 type Flow = "import" | "export";
@@ -67,14 +67,76 @@ const DELIVERY_TYPES = [
 ];
 
 const STEPS = [
-  "Method",
-  "Delivery Type",
-  "Warehouse",
-  "Sender",
-  "Receiver",
-  "Items",
-  "Summary",
+  "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
 ] as const;
+
+// Pick an icon for a packaging material based on its name keywords.
+const iconFor = (name: string) => {
+  const n = name.toLowerCase();
+  if (n.includes("envelope") || n.includes("mailer")) return Mail;
+  if (n.includes("vacuum")) return ShoppingBag;
+  if (n.includes("warm") || n.includes("thermal") || n.includes("insulated")) return Thermometer;
+  if (n.includes("bag")) return ShoppingBag;
+  return Box;
+};
+
+// ---------- Hoisted UI helpers (defined OUTSIDE the parent component to
+//             prevent React from remounting inputs on every keystroke) ----------
+
+function Field({
+  label, required, error, children,
+}: { label: string; required?: boolean; error?: string; children: ReactNode }) {
+  return (
+    <div className="space-y-1.5">
+      <Label className="text-xs font-semibold text-foreground">
+        {label} {required && <span className="text-destructive">*</span>}
+      </Label>
+      {children}
+      {error && <p className="text-[11px] text-destructive">{error}</p>}
+    </div>
+  );
+}
+
+function SummaryRow({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3 py-2 border-b border-border/30 last:border-0 text-xs">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-semibold text-foreground text-right break-words max-w-[60%]">{value}</span>
+    </div>
+  );
+}
+
+function Stepper({ step }: { step: number }) {
+  return (
+    <div className="mb-5 overflow-x-auto">
+      <div className="flex items-center gap-1.5 min-w-max sm:min-w-0 sm:justify-between">
+        {STEPS.map((label, i) => {
+          const done = i < step;
+          const active = i === step;
+          return (
+            <div key={label} className="flex items-center gap-1.5">
+              <div
+                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                  active ? "bg-primary text-primary-foreground"
+                  : done ? "bg-primary/10 text-primary"
+                  : "bg-muted text-muted-foreground"
+                }`}
+              >
+                <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${
+                  active ? "bg-white/25" : done ? "bg-primary text-primary-foreground" : "bg-background"
+                }`}>
+                  {done ? <Check className="h-2.5 w-2.5" /> : i + 1}
+                </span>
+                <span className="hidden sm:inline">{label}</span>
+              </div>
+              {i < STEPS.length - 1 && <span className="text-muted-foreground/40 text-xs">›</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const { user } = useAuth();
@@ -85,17 +147,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const [step, setStep] = useState(0);
 
-  // Step 1: Method
   const [method, setMethod] = useState<string>("");
-
-  // Step 2: Delivery type
   const [deliveryType, setDeliveryType] = useState<string>("");
 
-  // Step 3: Warehouse
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [warehouseId, setWarehouseId] = useState<string>("");
 
-  // Step 4: Sender
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
@@ -105,7 +162,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [senderZip, setSenderZip] = useState("");
   const [saveSender, setSaveSender] = useState(false);
 
-  // Step 5: Receiver
   const [receiverName, setReceiverName] = useState("");
   const [receiverPhone, setReceiverPhone] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
@@ -114,47 +170,38 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
 
-  // Step 6: Items
   const [items, setItems] = useState<Item[]>([
     { id: crypto.randomUUID(), description: "", quantity: 1, weight: "", value: "" },
   ]);
   const [notes, setNotes] = useState("");
 
-  // Packaging materials (loaded from admin settings)
+  // Packaging: { materialId: quantity }
   const [packagingOptions, setPackagingOptions] = useState<PackagingMaterial[]>([]);
-  const [packagingId, setPackagingId] = useState<string>("");
+  const [packagingQty, setPackagingQty] = useState<Record<string, number>>({});
 
-  // Pricing
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Load warehouses from DB
   useEffect(() => {
     supabase
       .from("warehouses")
       .select("id, name, country, address, phone")
       .eq("is_active", true)
       .order("country")
-      .then(({ data }) => {
-        if (data) setWarehouses(data as Warehouse[]);
-      });
+      .then(({ data }) => { if (data) setWarehouses(data as Warehouse[]); });
   }, []);
 
-  // Load packaging materials configured by admin
   useEffect(() => {
     (supabase as any)
       .from("packaging_materials")
       .select("id, name, price")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }: any) => {
-        if (data) setPackagingOptions(data as PackagingMaterial[]);
-      });
+      .then(({ data }: any) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
   }, []);
 
-  // Prefill from profile
   useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("full_name, email, phone, address, city, country")
@@ -182,12 +229,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     [warehouses, warehouseId],
   );
 
-  const selectedPackaging = useMemo(
-    () => packagingOptions.find((p) => p.id === packagingId),
-    [packagingOptions, packagingId],
+  // Selected packaging summary: list of {name, qty, unit, lineTotal}
+  const packagingLines = useMemo(() => {
+    return packagingOptions
+      .map((p) => {
+        const qty = packagingQty[p.id] || 0;
+        return { id: p.id, name: p.name, qty, unit: Number(p.price || 0), lineTotal: qty * Number(p.price || 0) };
+      })
+      .filter((l) => l.qty > 0);
+  }, [packagingOptions, packagingQty]);
+
+  const packagingTotal = useMemo(
+    () => packagingLines.reduce((s, l) => s + l.lineTotal, 0),
+    [packagingLines],
   );
-  const packagingPrice = Number(selectedPackaging?.price || 0);
-  const grandTotal = (breakdown?.total || 0) + packagingPrice;
+
+  const grandTotal = (breakdown?.total || 0) + packagingTotal;
 
   const totalWeight = useMemo(
     () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
@@ -200,7 +257,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
-  // Auto price (only on summary step)
   useEffect(() => {
     if (step !== 6) return;
     if (!destinationCountry || totalWeight <= 0) {
@@ -221,6 +277,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     setItems((arr) => [...arr, { id: crypto.randomUUID(), description: "", quantity: 1, weight: "", value: "" }]);
   const removeItem = (id: string) =>
     setItems((arr) => (arr.length > 1 ? arr.filter((i) => i.id !== id) : arr));
+
+  const incPackaging = (id: string) =>
+    setPackagingQty((q) => ({ ...q, [id]: (q[id] || 0) + 1 }));
+  const decPackaging = (id: string) =>
+    setPackagingQty((q) => ({ ...q, [id]: Math.max(0, (q[id] || 0) - 1) }));
 
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
@@ -301,10 +362,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
       );
+      const packagingDesc = packagingLines.length
+        ? `Packaging: ${packagingLines.map((l) => `${l.qty}× ${l.name} ($${l.lineTotal.toFixed(2)})`).join(", ")}`
+        : null;
       const desc = [
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
         selectedWarehouse ? `Warehouse: ${selectedWarehouse.name} (${selectedWarehouse.country})` : null,
-        selectedPackaging ? `Packaging: ${selectedPackaging.name} ($${packagingPrice.toFixed(2)})` : null,
+        packagingDesc,
         `Items: ${itemLines.join("; ")}`,
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
@@ -320,9 +384,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         status: "shipment_created",
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
-          price: breakdown ? grandTotal : null,
+        price: breakdown ? grandTotal : null,
         warehouse_location: selectedWarehouse?.country || null,
-          pickup_prepaid: false,
+        pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
         sender_phone: senderPhone,
@@ -353,51 +417,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     }
   };
 
-  // ---------- UI helpers ----------
-  const Field = ({ label, required, error, children }: any) => (
-    <div className="space-y-1.5">
-      <Label className="text-xs font-semibold text-foreground">
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
-      {children}
-      {error && <p className="text-[11px] text-destructive">{error}</p>}
-    </div>
-  );
-
-  // ---------- Stepper ----------
-  const Stepper = () => (
-    <div className="mb-5 overflow-x-auto">
-      <div className="flex items-center gap-1.5 min-w-max sm:min-w-0 sm:justify-between">
-        {STEPS.map((label, i) => {
-          const done = i < step;
-          const active = i === step;
-          return (
-            <div key={label} className="flex items-center gap-1.5">
-              <div
-                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
-                  active
-                    ? "bg-primary text-primary-foreground"
-                    : done
-                    ? "bg-primary/10 text-primary"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${
-                  active ? "bg-white/25" : done ? "bg-primary text-primary-foreground" : "bg-background"
-                }`}>
-                  {done ? <Check className="h-2.5 w-2.5" /> : i + 1}
-                </span>
-                <span className="hidden sm:inline">{label}</span>
-              </div>
-              {i < STEPS.length - 1 && <span className="text-muted-foreground/40 text-xs">›</span>}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-
-  // ---------- Step bodies ----------
   const renderStep = () => {
     switch (step) {
       case 0:
@@ -477,9 +496,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         );
 
       case 2: {
-        // Build display list: ensure China, USA, UK appear (USA shows "coming soon" if not in DB)
         const displayCountries = ["China", "United States", "United Kingdom"];
-        const items = displayCountries.map((country) => {
+        const wItems = displayCountries.map((country) => {
           const w = warehouses.find((x) => x.country === country);
           return { country, warehouse: w };
         });
@@ -488,7 +506,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
             <p className="mt-1 text-sm text-muted-foreground">Select where your goods will be received.</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {items.map(({ country, warehouse: w }) => {
+              {wItems.map(({ country, warehouse: w }) => {
                 const flag = country === "China" ? "🇨🇳" : country === "United States" ? "🇺🇸" : "🇬🇧";
                 const label = country === "United States" ? "USA" : country === "United Kingdom" ? "UK" : "China";
                 const active = w && warehouseId === w.id;
@@ -688,43 +706,77 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               </Field>
 
               {packagingOptions.length > 0 && (
-                <div className="rounded-xl border border-border/60 bg-muted/20 p-3">
-                  <Label className="text-xs font-semibold text-foreground">
-                    Packaging Material <span className="text-muted-foreground font-normal">(optional)</span>
-                  </Label>
-                  <p className="text-[11px] text-muted-foreground mt-0.5 mb-2">
-                    Choose a box or bag — the price is added to your total.
-                  </p>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <button
-                      type="button"
-                      onClick={() => setPackagingId("")}
-                      className={`text-left rounded-lg border-2 px-3 py-2 transition-all ${
-                        packagingId === ""
-                          ? "border-primary bg-primary/5"
-                          : "border-border/60 bg-white hover:border-primary/40"
-                      }`}
-                    >
-                      <div className="text-xs font-semibold text-foreground">No packaging</div>
-                      <div className="text-[11px] text-muted-foreground">I'll package it myself</div>
-                    </button>
-                    {packagingOptions.map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => setPackagingId(p.id)}
-                        className={`text-left rounded-lg border-2 px-3 py-2 transition-all ${
-                          packagingId === p.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border/60 bg-white hover:border-primary/40"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs font-semibold text-foreground">{p.name}</span>
-                          <span className="text-xs font-bold text-primary">${Number(p.price).toFixed(2)}</span>
+                <div className="rounded-xl border border-border/60 bg-muted/20 p-3 sm:p-4">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                      <Label className="text-sm font-bold text-foreground">Packaging Materials</Label>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        Choose any packaging — quantities are added to your total.
+                      </p>
+                    </div>
+                    {packagingTotal > 0 && (
+                      <div className="text-right shrink-0">
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</div>
+                        <div className="text-sm font-bold text-primary">${packagingTotal.toFixed(2)}</div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-2">
+                    {packagingOptions.map((p) => {
+                      const Icon = iconFor(p.name);
+                      const qty = packagingQty[p.id] || 0;
+                      const active = qty > 0;
+                      const lineTotal = qty * Number(p.price || 0);
+                      return (
+                        <div
+                          key={p.id}
+                          className={`rounded-xl border-2 p-3 transition-all ${
+                            active ? "border-primary bg-primary/5" : "border-border/60 bg-white"
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className={`flex h-10 w-10 items-center justify-center rounded-lg shrink-0 ${
+                              active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                            }`}>
+                              <Icon className="h-5 w-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-sm font-bold text-foreground truncate">{p.name}</div>
+                              <div className="text-[11px] text-muted-foreground">
+                                ${Number(p.price).toFixed(2)} each
+                              </div>
+                            </div>
+                          </div>
+                          <div className="mt-3 flex items-center justify-between gap-2">
+                            <div className="flex items-center rounded-full border border-border/70 bg-white">
+                              <button
+                                type="button"
+                                onClick={() => decPackaging(p.id)}
+                                disabled={qty === 0}
+                                aria-label={`Decrease ${p.name}`}
+                                className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
+                              >
+                                <Minus className="h-3.5 w-3.5" />
+                              </button>
+                              <span className="min-w-[28px] text-center text-sm font-bold text-foreground select-none">
+                                {qty}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => incPackaging(p.id)}
+                                aria-label={`Increase ${p.name}`}
+                                className="flex h-8 w-8 items-center justify-center text-primary hover:text-primary/80"
+                              >
+                                <Plus className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                            <div className="text-sm font-semibold text-foreground">
+                              {qty > 0 ? `$${lineTotal.toFixed(2)}` : "—"}
+                            </div>
+                          </div>
                         </div>
-                      </button>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -735,12 +787,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       case 6: {
         const methodLabel = SHIPPING_METHODS.find((m) => m.id === method)?.label || "—";
         const deliveryLabel = DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label || "—";
-        const SummaryRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
-          <div className="flex items-start justify-between gap-3 py-2 border-b border-border/30 last:border-0 text-xs">
-            <span className="text-muted-foreground">{label}</span>
-            <span className="font-semibold text-foreground text-right break-words max-w-[60%]">{value}</span>
-          </div>
-        );
         return (
           <div className="space-y-4">
             <div>
@@ -773,6 +819,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SummaryRow label="Phone" value={receiverPhone} />
                 <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
+              {packagingLines.length > 0 && (
+                <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Packaging</h3>
+                  {packagingLines.map((l) => (
+                    <SummaryRow
+                      key={l.id}
+                      label={`${l.name} × ${l.qty}`}
+                      value={`$${l.unit.toFixed(2)} → $${l.lineTotal.toFixed(2)}`}
+                    />
+                  ))}
+                  <div className="flex items-center justify-between pt-2 mt-1 text-xs">
+                    <span className="font-bold text-foreground">Packaging total</span>
+                    <span className="font-bold text-primary">${packagingTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5">
@@ -795,8 +857,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   {breakdown.taxes.map((t) => (
                     <div key={t.name} className="flex justify-between"><span className="text-muted-foreground">{t.name} ({t.rate}%)</span><span className="font-semibold">${t.amount.toFixed(2)}</span></div>
                   ))}
-                  {selectedPackaging && (
-                    <div className="flex justify-between"><span className="text-muted-foreground">Packaging ({selectedPackaging.name})</span><span className="font-semibold">${packagingPrice.toFixed(2)}</span></div>
+                  {packagingTotal > 0 && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">
+                        Packaging ({packagingLines.map((l) => `${l.qty}× ${l.name}`).join(", ")})
+                      </span>
+                      <span className="font-semibold">${packagingTotal.toFixed(2)}</span>
+                    </div>
                   )}
                   <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${grandTotal.toFixed(2)}</span></div>
                 </div>
@@ -815,20 +882,20 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   return (
     <div className="rounded-2xl border border-border/60 bg-white p-4 sm:p-6">
-      <Stepper />
+      <Stepper step={step} />
 
       <div className="min-h-[300px]">{renderStep()}</div>
 
-      <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-4 border-t border-border/40">
-        <Button type="button" variant="outline" onClick={back} disabled={step === 0}>
+      <div className="mt-6 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 border-t border-border/40">
+        <Button type="button" variant="outline" onClick={back} disabled={step === 0} className="sm:w-auto">
           <ArrowLeft className="h-4 w-4 mr-1" /> Back
         </Button>
         {!isLast ? (
-          <Button type="button" onClick={next} className="font-semibold">
+          <Button type="button" onClick={next} className="font-semibold sm:w-auto">
             Continue <ArrowRight className="h-4 w-4 ml-1" />
           </Button>
         ) : (
-          <Button type="button" onClick={handleSubmit} disabled={submitting} className="font-bold h-11">
+          <Button type="button" onClick={handleSubmit} disabled={submitting} className="font-bold h-11 sm:w-auto">
             {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating…</> :
               <>Proceed to Payment <ArrowRight className="h-4 w-4 ml-1" /></>}
           </Button>
