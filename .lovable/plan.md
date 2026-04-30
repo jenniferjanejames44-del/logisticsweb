@@ -1,59 +1,62 @@
-## Goals
+## Problem
 
-1. Remove the **Start Your Shipment** form section from the homepage.
-2. Redesign **Login** and **Signup** pages with a modern Africanies-style split layout (branding/marketing panel on the left, clean form on the right), keeping all existing backend logic intact.
-3. Verify backend signup pipeline (profile metadata + email verification) is wired correctly — no schema changes needed (already in place from prior work).
+Supabase's `auth.signUp()` has anti-enumeration behavior built in: when someone signs up with an email that already exists, it returns success without sending a confirmation email. The user sees "Account created!" but never gets an OTP/verification email and is left confused. We need to explicitly block duplicate signups and show "This email is already registered. Please sign in instead."
 
-## Changes
+## Solution
 
-### 1. Homepage — remove shipment entry section
-**File:** `src/pages/Index.tsx`
-- Remove the `<ShipmentEntrySection />` import and usage.
-- Leave file `src/components/home/ShipmentEntrySection.tsx` in place (unused, harmless) so we don't break anything else that may reference it. Can be deleted later.
+### 1. Pre-signup duplicate check (edge function)
 
-### 2. Auth page redesign — `src/pages/Auth.tsx`
+Create a tiny edge function `check-email-exists` that uses the **service role key** to look up whether an email already exists in `auth.users`. This is the only safe way to check, because client-side queries cannot read `auth.users` and the `profiles` table can lag if a signup partially failed.
 
-New layout (desktop ≥ lg):
-```text
-┌─────────────────────────────┬──────────────────────────────┐
-│  BRAND PANEL (primary bg)   │   FORM PANEL (white)         │
-│  • RAC logo                 │   • Tab toggle: Login|Signup │
-│  • Headline + subcopy       │   • Form fields              │
-│  • 3 feature bullets        │   • CTA button (accent)      │
-│  • Trust badge / stats      │   • Forgot password link     │
-└─────────────────────────────┴──────────────────────────────┘
-```
-On mobile (<lg): brand panel collapses to a compact header strip; form fills width.
+- Path: `supabase/functions/check-email-exists/index.ts`
+- Input: `{ email: string }`
+- Logic: use `supabase.auth.admin.listUsers()` filtered by email (or query `auth.users` directly via service role) and return `{ exists: boolean, confirmed: boolean }`
+- CORS enabled, no JWT required (it only returns a boolean)
+- Add a simple in-memory rate limit (max 10 calls/min per IP) to discourage email enumeration abuse
+- Register in `supabase/config.toml` with `verify_jwt = false`
 
-Specifics:
-- Two-column `grid lg:grid-cols-2 min-h-screen`.
-- Left panel: `bg-primary text-primary-foreground` with subtle radial accent overlay, RAC logo, heading "Ship Smarter. Deliver Faster.", short subtext, 3 bullet features (Global Coverage, Real-time Tracking, Secure Payments) using Lucide icons in `bg-accent/15` chips, and a small testimonial/stat block at bottom.
-- Right panel: white card-less form, max-w-md centered, with:
-  - Segmented tab switcher (Login / Sign Up) at top using `bg-muted` rounded pills.
-  - Same fields as today (Login: email + password; Signup: full name, phone *, email, password, address, city, country).
-  - Inputs keep current `pl-10` icon style, height `h-11`, rounded-lg.
-  - Primary CTA: accent (`#DF5101`) full-width button.
-  - "Forgot password?" link in login mode → existing flow preserved.
-  - Footer link to switch modes ("Don't have an account? Sign up" / "Already have an account? Sign in").
-- Header/Footer: keep `<Header />` at top? Africanies-style auth pages typically omit the marketing header to focus the user. We'll **remove** `Header` and `Footer` from this page to match Africanies, but include a small "← Back to home" link in the top-left of the brand panel.
-- Verification message banner & forgot-password sub-views stay functional — rendered inside the right form panel.
+### 2. Wire it into the signup flow (`src/pages/Auth.tsx`)
 
-No changes to:
-- `signUp` / `signIn` logic in `AuthContext.tsx`.
-- Verification gate, resend logic, password reset flow.
-- Form fields collected (still phone/address/city/country → already saved by `handle_new_user` trigger).
+In `handleSubmit`, before calling `signUp(...)` in the signup branch:
 
-### 3. Backend verification (no migration needed)
-- `handle_new_user` trigger already inserts `phone`, `address`, `city`, `country` into `profiles`.
-- `auth-email-hook` already sends branded verification emails from `notify.raclogisticltd.com`.
-- Email verification gate already enforced in `Auth.tsx` (lines 124–135).
-- Nothing to migrate.
+1. Call `supabase.functions.invoke("check-email-exists", { body: { email } })`
+2. If `exists === true && confirmed === true`:
+   - Show toast: **"Email already registered"** — *"This email is already in use. Please sign in or reset your password."*
+   - Auto-switch the form to the Sign In tab and pre-fill the email
+   - Stop — do not call `signUp`
+3. If `exists === true && confirmed === false`:
+   - Show toast: **"Account exists but unverified"** — *"We've already sent a verification link to this email. Please check your inbox or click 'Resend' below."*
+   - Show the existing `showVerificationMessage` panel with the resend button
+   - Stop — do not call `signUp`
+4. Otherwise, proceed with the existing `signUp(...)` call as today.
 
-## Out of scope (failsafe)
-- No DB schema changes.
-- No changes to AuthContext, edge functions, or email templates.
-- Homepage other sections untouched.
+### 3. Belt-and-suspenders: detect silent duplicate from Supabase response
 
-## Files touched
-- `src/pages/Index.tsx` — remove one import + one JSX line.
-- `src/pages/Auth.tsx` — rewrite layout (logic preserved).
+Even with the pre-check, also harden the post-signup path. Supabase returns `data.user.identities = []` when the email is already registered (silent duplicate). After `signUp` succeeds, check this and surface the same "Email already registered" message instead of the misleading "Check your email" success state.
+
+### 4. Login UX (small touch)
+
+Keep the existing "Email not confirmed" handling as-is — it already correctly blocks login and offers a resend button. No changes needed there.
+
+## Files Changed
+
+- **NEW** `supabase/functions/check-email-exists/index.ts` — service-role email lookup
+- **EDIT** `supabase/config.toml` — register new function with `verify_jwt = false`
+- **EDIT** `src/pages/Auth.tsx` — pre-signup check + identities-empty fallback + auto-switch to sign-in
+- **EDIT** `src/contexts/AuthContext.tsx` — make `signUp` return `{ error, alreadyRegistered }` so the UI can branch cleanly
+
+## What this does NOT change
+
+- No database migrations, no schema changes, no RLS changes
+- No changes to login, OTP flow, password reset, dashboards, shipments, payments, partners, or admin
+- No changes to the `auth-email-hook` or email templates — verification emails still work normally for new signups
+- Existing users are unaffected
+
+## Behavior after the fix
+
+| Scenario | Result |
+|---|---|
+| New email → signup | Account created, verification email sent (unchanged) |
+| Existing **verified** email → signup | Blocked with "Email already registered. Please sign in." → auto-switches to Sign In tab |
+| Existing **unverified** email → signup | Blocked with "Account exists but unverified. Resend verification?" → resend button shown |
+| Existing email → login without verifying | Blocked with "Please verify your email" + resend (unchanged) |

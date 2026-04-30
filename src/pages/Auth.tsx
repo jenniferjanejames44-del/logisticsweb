@@ -120,7 +120,45 @@ const AuthForm = () => {
         if (!address.trim()) throw new Error("Please enter your full address");
         if (!city.trim()) throw new Error("Please enter your city");
         if (!country.trim()) throw new Error("Please select or enter your country");
-        const { error } = await signUp(email, password, fullName, {
+
+        // Pre-signup duplicate check — Supabase silently "succeeds" for existing
+        // emails without sending a verification email, so we block it explicitly.
+        try {
+          const { data: check, error: checkErr } = await supabase.functions.invoke(
+            "check-email-exists",
+            { body: { email: email.trim().toLowerCase() } },
+          );
+          if (!checkErr && check?.exists) {
+            if (check.confirmed) {
+              toast({
+                title: "Email already registered",
+                description: "This email is already in use. Please sign in or reset your password.",
+                variant: "destructive",
+              });
+              setIsLogin(true);
+              setShowVerificationMessage(false);
+              return;
+            } else {
+              setShowVerificationMessage(true);
+              toast({
+                title: "Account exists but unverified",
+                description: "We've already sent a verification link to this email. Please check your inbox or resend it below.",
+              });
+              return;
+            }
+          }
+        } catch (preErr) {
+          // Non-fatal: fall through to signUp and rely on the identities-empty fallback below
+          console.warn("Pre-signup email check skipped:", preErr);
+        }
+
+        const { error, data } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: buildAuthCallbackUrl("/auth"),
+            data: {
+              full_name: fullName,
           phone: phone.trim(),
           address: address.trim(),
           city: city.trim(),
@@ -128,9 +166,25 @@ const AuthForm = () => {
           country: country.trim(),
           zip_code: zipCode.trim(),
           company_name: companyName.trim(),
-          referral_code: referralCode.trim() || undefined,
+              referral_code: referralCode.trim() || undefined,
+            },
+          },
         });
         if (error) throw error;
+
+        // Belt-and-suspenders: Supabase returns identities=[] when the email
+        // is already registered (silent duplicate). Catch that here too.
+        if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          toast({
+            title: "Email already registered",
+            description: "This email is already in use. Please sign in or reset your password.",
+            variant: "destructive",
+          });
+          setIsLogin(true);
+          setShowVerificationMessage(false);
+          return;
+        }
+
         // clear stored code after successful signup
         try { localStorage.removeItem("rac_referral_code"); } catch {}
         setShowVerificationMessage(true);
