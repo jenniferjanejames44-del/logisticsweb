@@ -693,13 +693,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">Who is sending the shipment?</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.senderName}>
-                <Input value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="John Doe" />
+                <SmoothInput value={senderName} onCommit={setSenderName} placeholder="John Doe" />
               </Field>
               <Field label="Phone number" required error={errors.senderPhone}>
-                <Input value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} placeholder="+234…" />
+                <SmoothInput value={senderPhone} onCommit={setSenderPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.senderEmail}>
-                <Input type="email" value={senderEmail} onChange={(e) => setSenderEmail(e.target.value)} placeholder="email@example.com" />
+                <SmoothInput type="email" value={senderEmail} onCommit={setSenderEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
                 <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
@@ -710,14 +710,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </Select>
               </Field>
               <Field label="City" required error={errors.senderCity}>
-                <Input value={senderCity} onChange={(e) => setSenderCity(e.target.value)} placeholder="Lagos" />
+                <SmoothInput value={senderCity} onCommit={setSenderCity} placeholder="Lagos" />
               </Field>
               <Field label="Zip / Postal code">
-                <Input value={senderZip} onChange={(e) => setSenderZip(e.target.value)} placeholder="100001" />
+                <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.senderAddress}>
-                  <Input value={senderAddress} onChange={(e) => setSenderAddress(e.target.value)} placeholder="Street, building, apt" />
+                  <SmoothInput value={senderAddress} onCommit={setSenderAddress} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
@@ -735,13 +735,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">Who will receive the shipment?</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.receiverName}>
-                <Input value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Jane Doe" />
+                <SmoothInput value={receiverName} onCommit={setReceiverName} placeholder="Jane Doe" />
               </Field>
               <Field label="Phone number" required error={errors.receiverPhone}>
-                <Input value={receiverPhone} onChange={(e) => setReceiverPhone(e.target.value)} placeholder="+234…" />
+                <SmoothInput value={receiverPhone} onCommit={setReceiverPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.receiverEmail}>
-                <Input type="email" value={receiverEmail} onChange={(e) => setReceiverEmail(e.target.value)} placeholder="email@example.com" />
+                <SmoothInput type="email" value={receiverEmail} onCommit={setReceiverEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
                 <Select value={receiverCountry} onValueChange={setReceiverCountry} disabled={!isExport}>
@@ -752,14 +752,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </Select>
               </Field>
               <Field label="City" required error={errors.receiverCity}>
-                <Input value={receiverCity} onChange={(e) => setReceiverCity(e.target.value)} placeholder="City" />
+                <SmoothInput value={receiverCity} onCommit={setReceiverCity} placeholder="City" />
               </Field>
               <Field label="Zip / Postal code">
-                <Input value={receiverZip} onChange={(e) => setReceiverZip(e.target.value)} placeholder="00000" />
+                <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.receiverAddress}>
-                  <Input value={receiverAddress} onChange={(e) => setReceiverAddress(e.target.value)} placeholder="Street, building, apt" />
+                  <SmoothInput value={receiverAddress} onCommit={setReceiverAddress} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
