@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef, memo, ReactNode, ComponentProps }
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import type { Tables, TablesInsert } from "@/integrations/supabase/types";
 import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,8 @@ interface PackagingMaterial {
   name: string;
   price: number;
 }
+
+type ShipmentInsert = TablesInsert<"shipments">;
 
 const COUNTRIES = [
   "Afghanistan","Albania","Algeria","Argentina","Armenia","Australia","Austria","Bangladesh","Belgium","Brazil",
@@ -352,12 +355,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   }, []);
 
   useEffect(() => {
-    (supabase as any)
+    supabase
       .from("packaging_materials")
       .select("id, name, price")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }: any) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
+      .then(({ data }) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
   }, []);
 
   useEffect(() => {
@@ -531,7 +534,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
 
-      const { data: shipment, error } = await supabase.from("shipments").insert({
+      const shipmentPayload: ShipmentInsert = {
         user_id: user.id,
         origin_country: senderCountry,
         origin_city: senderCity,
@@ -552,7 +555,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
         receiver_address: [receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", "),
-      } as any).select("id").single();
+      };
+
+      const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
 
       if (error) throw error;
 
@@ -568,8 +573,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       toast({ title: "Shipment created!", description: "Redirecting to payment…" });
       navigate(`/dashboard/shipments?pay=${shipment?.id}`);
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Could not create shipment", variant: "destructive" });
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Could not create shipment";
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
