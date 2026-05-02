@@ -155,7 +155,7 @@ const Checkout = () => {
           </div>
         </div>
 
-        <div className="max-w-3xl mx-auto px-4 py-8 sm:px-6 sm:py-12 space-y-6">
+        <div className="max-w-3xl mx-auto px-4 py-6 sm:px-6 sm:py-12 space-y-6 pb-32 sm:pb-12">
           {/* Page title */}
           <div className="text-center space-y-1.5">
             <h1 className="text-2xl font-bold text-foreground sm:text-3xl">Confirm & Pay</h1>
@@ -178,8 +178,11 @@ const Checkout = () => {
             </p>
           </div>
 
-          {/* Action buttons */}
-          <div className="flex flex-col gap-2.5 sm:flex-row-reverse">
+          {/* Action buttons — sticky on mobile so Pay is always visible */}
+          <div className="sm:static sm:bg-transparent sm:border-0 sm:p-0
+                          fixed bottom-0 left-0 right-0 z-20 bg-background border-t border-border/40
+                          px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]
+                          flex flex-col gap-2.5 sm:flex-row-reverse">
             <Button
               onClick={handleProceedToPayment}
               disabled={creatingShipment || !!createdShipmentId}

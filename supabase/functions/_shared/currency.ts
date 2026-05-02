@@ -99,6 +99,34 @@ export async function getUsdExchangeRates() {
     console.error("Failed to fetch exchange rates:", error);
   }
 
+  // Optional admin override (single shared Postgres setting). Only applies to NGN today.
+  try {
+    const supabaseUrl = (globalThis as any).Deno?.env?.get("SUPABASE_URL");
+    const serviceKey = (globalThis as any).Deno?.env?.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (supabaseUrl && serviceKey) {
+      const res = await fetch(
+        `${supabaseUrl}/rest/v1/app_settings?key=eq.usd_to_ngn_override&select=value`,
+        {
+          headers: {
+            apikey: serviceKey,
+            Authorization: `Bearer ${serviceKey}`,
+          },
+        },
+      );
+      if (res.ok) {
+        const rows = await res.json();
+        const raw = rows?.[0]?.value;
+        const overrideRate = typeof raw === "number" ? raw : Number(raw?.rate ?? raw);
+        if (Number.isFinite(overrideRate) && overrideRate > 0) {
+          rates = { ...rates, NGN: overrideRate };
+          source = `${source}+admin_override`;
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Failed to apply USD→NGN admin override:", error);
+  }
+
   exchangeRateCache = { fetchedAt: Date.now(), rates, source };
 
   return {
