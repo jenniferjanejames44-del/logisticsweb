@@ -112,7 +112,6 @@ function SummaryRow({ label, value }: { label: string; value: ReactNode }) {
 type SmoothInputProps = Omit<ComponentProps<typeof Input>, "value" | "onChange" | "defaultValue"> & {
   value: string | number | null | undefined;
   onCommit: (value: string) => void;
-  commitDelay?: number;
 };
 
 const toDraft = (value: string | number | null | undefined) => (value == null ? "" : String(value));
@@ -120,13 +119,12 @@ const toDraft = (value: string | number | null | undefined) => (value == null ? 
 const SmoothInput = memo(function SmoothInput({
   value,
   onCommit,
-  commitDelay = 220,
   onBlur,
   ...props
 }: SmoothInputProps) {
   const [draft, setDraft] = useState(() => toDraft(value));
   const lastPropValueRef = useRef(toDraft(value));
-  const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusedRef = useRef(false);
   const onCommitRef = useRef(onCommit);
 
   useEffect(() => {
@@ -135,38 +133,32 @@ const SmoothInput = memo(function SmoothInput({
 
   useEffect(() => {
     const next = toDraft(value);
-    if (next !== lastPropValueRef.current) {
+    // Never overwrite the user's in-progress typing.
+    if (!focusedRef.current && next !== lastPropValueRef.current) {
       lastPropValueRef.current = next;
       setDraft(next);
     }
   }, [value]);
 
-  useEffect(() => () => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-  }, []);
-
-  const flush = (next: string) => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-    lastPropValueRef.current = next;
-    onCommitRef.current(next);
-  };
-
-  const scheduleCommit = (next: string) => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-    commitTimerRef.current = setTimeout(() => flush(next), commitDelay);
-  };
-
   return (
     <Input
       {...props}
       value={draft}
+      onFocus={(e) => {
+        focusedRef.current = true;
+        props.onFocus?.(e);
+      }}
       onChange={(e) => {
-        const next = e.target.value;
-        setDraft(next);
-        scheduleCommit(next);
+        // Local-only updates while typing — zero parent re-renders.
+        setDraft(e.target.value);
       }}
       onBlur={(e) => {
-        flush(e.target.value);
+        focusedRef.current = false;
+        const next = e.target.value;
+        if (next !== lastPropValueRef.current) {
+          lastPropValueRef.current = next;
+          onCommitRef.current(next);
+        }
         onBlur?.(e);
       }}
     />
@@ -176,19 +168,17 @@ const SmoothInput = memo(function SmoothInput({
 type SmoothTextareaProps = Omit<ComponentProps<typeof Textarea>, "value" | "onChange" | "defaultValue"> & {
   value: string | null | undefined;
   onCommit: (value: string) => void;
-  commitDelay?: number;
 };
 
 const SmoothTextarea = memo(function SmoothTextarea({
   value,
   onCommit,
-  commitDelay = 220,
   onBlur,
   ...props
 }: SmoothTextareaProps) {
   const [draft, setDraft] = useState(() => value || "");
   const lastPropValueRef = useRef(value || "");
-  const commitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const focusedRef = useRef(false);
   const onCommitRef = useRef(onCommit);
 
   useEffect(() => {
@@ -197,38 +187,30 @@ const SmoothTextarea = memo(function SmoothTextarea({
 
   useEffect(() => {
     const next = value || "";
-    if (next !== lastPropValueRef.current) {
+    if (!focusedRef.current && next !== lastPropValueRef.current) {
       lastPropValueRef.current = next;
       setDraft(next);
     }
   }, [value]);
 
-  useEffect(() => () => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-  }, []);
-
-  const flush = (next: string) => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-    lastPropValueRef.current = next;
-    onCommitRef.current(next);
-  };
-
-  const scheduleCommit = (next: string) => {
-    if (commitTimerRef.current) clearTimeout(commitTimerRef.current);
-    commitTimerRef.current = setTimeout(() => flush(next), commitDelay);
-  };
-
   return (
     <Textarea
       {...props}
       value={draft}
+      onFocus={(e) => {
+        focusedRef.current = true;
+        props.onFocus?.(e);
+      }}
       onChange={(e) => {
-        const next = e.target.value;
-        setDraft(next);
-        scheduleCommit(next);
+        setDraft(e.target.value);
       }}
       onBlur={(e) => {
-        flush(e.target.value);
+        focusedRef.current = false;
+        const next = e.target.value;
+        if (next !== lastPropValueRef.current) {
+          lastPropValueRef.current = next;
+          onCommitRef.current(next);
+        }
         onBlur?.(e);
       }}
     />
