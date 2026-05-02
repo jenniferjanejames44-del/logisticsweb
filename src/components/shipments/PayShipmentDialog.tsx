@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import { Loader2, Wallet, AlertTriangle, CreditCard, Shield, ChevronRight } from "lucide-react";
+import { Loader2, Wallet, AlertTriangle, CreditCard, Shield, ChevronRight, X } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 
@@ -197,22 +197,35 @@ const PayShipmentDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px] p-0 gap-0 overflow-hidden rounded-xl border-border/60">
-        {/* Clean Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-border/40">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
+      <DialogContent
+        className="p-0 gap-0 overflow-hidden border-border/60 bg-background flex flex-col
+                   w-screen h-[100dvh] max-w-none rounded-none translate-x-0 translate-y-0 left-0 top-0
+                   sm:w-full sm:h-auto sm:max-h-[90vh] sm:max-w-[480px] sm:rounded-xl sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]"
+      >
+        {/* Sticky Header with always-visible close */}
+        <div className="sticky top-0 z-10 px-5 sm:px-6 pt-5 pb-4 border-b border-border/40 bg-background flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 flex-shrink-0">
               <CreditCard className="w-5 h-5 text-accent" />
             </div>
-            <div>
-              <h2 className="text-base font-bold text-foreground">Payment Checkout</h2>
-              <p className="text-xs text-muted-foreground">Shipment {trackingNumber}</p>
+            <div className="min-w-0">
+              <h2 className="text-base font-bold text-foreground truncate">Payment Checkout</h2>
+              <p className="text-xs text-muted-foreground truncate">Shipment {trackingNumber}</p>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            disabled={isProcessing}
+            aria-label="Close"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 flex-shrink-0"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Body */}
-        <div className="px-6 py-5 space-y-5">
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-5 space-y-5">
           {/* Shipment Summary */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Shipment Summary</p>
@@ -240,7 +253,9 @@ const PayShipmentDialog = ({
               )}
               <div className="flex justify-between gap-3">
                 <span className="text-muted-foreground">Total Price (USD)</span>
-                <span className="font-semibold text-foreground">{formatConverted(price, priceCurrency)}</span>
+                <span className="font-semibold text-foreground">
+                  {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price) || 0)}
+                </span>
               </div>
               <div className="flex justify-between gap-3">
                 <span className="text-muted-foreground">Equivalent (NGN)</span>
@@ -368,12 +383,12 @@ const PayShipmentDialog = ({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="px-6 pb-6 pt-1 flex gap-2.5">
+        {/* Sticky footer — Pay button always visible */}
+        <div className="sticky bottom-0 z-10 border-t border-border/40 bg-background px-5 sm:px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] flex gap-2.5">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="flex-1 h-11"
+            className="flex-1 sm:flex-initial sm:px-6 h-12 sm:h-11"
             disabled={isProcessing}
           >
             Cancel
@@ -381,7 +396,7 @@ const PayShipmentDialog = ({
           <Button
             onClick={handlePay}
             disabled={isProcessing || (selectedMethod === "wallet" && !hasSufficientFunds)}
-            className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+            className="flex-[2] h-12 sm:h-11 bg-accent hover:bg-accent/90 text-white border-0 font-semibold"
           >
             {isProcessing ? (
               <>
