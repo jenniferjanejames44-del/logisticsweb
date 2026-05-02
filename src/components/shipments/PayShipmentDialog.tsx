@@ -6,7 +6,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import { Loader2, Wallet, AlertTriangle, CreditCard, Shield, ChevronRight, X } from "lucide-react";
+import { Loader2, Wallet, AlertTriangle, CreditCard, Shield, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 
@@ -202,8 +202,8 @@ const PayShipmentDialog = ({
                    w-screen h-[100dvh] max-w-none rounded-none translate-x-0 translate-y-0 left-0 top-0
                    sm:w-full sm:h-auto sm:max-h-[90vh] sm:max-w-[480px] sm:rounded-xl sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%]"
       >
-        {/* Sticky Header with always-visible close */}
-        <div className="sticky top-0 z-10 px-5 sm:px-6 pt-5 pb-4 border-b border-border/40 bg-background flex items-center justify-between gap-3">
+        {/* Sticky Header — default Radix close (X) is rendered top-right by DialogContent */}
+        <div className="sticky top-0 z-10 px-5 sm:px-6 pt-5 pb-4 pr-14 border-b border-border/40 bg-background">
           <div className="flex items-center gap-3 min-w-0">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 flex-shrink-0">
               <CreditCard className="w-5 h-5 text-accent" />
@@ -213,15 +213,6 @@ const PayShipmentDialog = ({
               <p className="text-xs text-muted-foreground truncate">Shipment {trackingNumber}</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            disabled={isProcessing}
-            aria-label="Close"
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50 flex-shrink-0"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
         {/* Scrollable body */}
