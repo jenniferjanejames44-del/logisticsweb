@@ -39,8 +39,8 @@ const directionOptions = [
     title: "Ship From Nigeria",
     subtitle: "Send goods from Nigeria to international destinations worldwide.",
     bullets: [
-      "Drop off at our Nigeria warehouse",
-      "Air, ocean or pickup options",
+      "We pick up your items from your address in Nigeria",
+      "Air express, standard air or ocean freight",
       "Live tracking from pickup to delivery",
     ],
     accent: "bg-accent text-accent-foreground",
