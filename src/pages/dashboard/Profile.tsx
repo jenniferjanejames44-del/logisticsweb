@@ -137,78 +137,68 @@ const Profile = () => {
           <CardContent className="px-5">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label htmlFor="full_name" className="text-[12px]">Full Name</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="full_name" className="text-xs font-medium">Full Name</Label>
                   <Input
                     id="full_name"
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                     placeholder="John Doe"
-                    className="h-10 text-[13px] border-border/60"
+                    className="h-11 sm:h-12 text-sm border-border/60"
                   />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="phone" className="text-[12px]">Phone Number</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-xs font-medium">Phone Number</Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+1 234 567 8900"
-                    className="h-10 text-[13px] border-border/60"
+                    className="h-11 sm:h-12 text-sm border-border/60"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="company_name" className="text-[12px]">Company Name</Label>
+              <div className="space-y-2">
+                <Label htmlFor="company_name" className="text-xs font-medium">Company Name</Label>
                 <Input
                   id="company_name"
                   value={formData.company_name}
                   onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                   placeholder="Your Company Inc."
-                  className="h-10 text-[13px] border-border/60"
+                  className="h-11 sm:h-12 text-sm border-border/60"
                 />
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="address" className="text-[12px]">Address</Label>
+              <div className="space-y-2">
+                <Label htmlFor="address" className="text-xs font-medium">Address</Label>
                 <Textarea
                   id="address"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="123 Main Street, Suite 100"
-                  className="min-h-[80px] text-[13px] border-border/60"
+                  className="min-h-[88px] text-sm border-border/60"
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label htmlFor="city" className="text-[12px]">City</Label>
-                  <Input
-                    id="city"
-                    value={formData.city}
+                <div className="space-y-2">
+                  <Label htmlFor="city" className="text-xs font-medium">City</Label>
+                  <Input id="city" value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="New York"
-                    className="h-10 text-[13px] border-border/60"
-                  />
+                    placeholder="New York" className="h-11 sm:h-12 text-sm border-border/60" />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="state" className="text-[12px]">State / Region</Label>
-                  <Input
-                    id="state"
-                    value={formData.state}
+                <div className="space-y-2">
+                  <Label htmlFor="state" className="text-xs font-medium">State / Region</Label>
+                  <Input id="state" value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    placeholder="NY"
-                    className="h-10 text-[13px] border-border/60"
-                  />
+                    placeholder="NY" className="h-11 sm:h-12 text-sm border-border/60" />
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="country" className="text-[12px]">Country</Label>
-                  <Select
-                    value={formData.country}
-                    onValueChange={(value) => setFormData({ ...formData, country: value })}
-                  >
-                    <SelectTrigger id="country" className="h-10 text-[13px] border-border/60">
+                <div className="space-y-2">
+                  <Label htmlFor="country" className="text-xs font-medium">Country</Label>
+                  <Select value={formData.country}
+                    onValueChange={(value) => setFormData({ ...formData, country: value })}>
+                    <SelectTrigger id="country" className="h-11 sm:h-12 text-sm border-border/60">
                       <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
@@ -218,24 +208,24 @@ const Profile = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="zip_code" className="text-[12px]">Zip / Postal Code</Label>
-                  <Input
-                    id="zip_code"
-                    value={formData.zip_code}
+                <div className="space-y-2">
+                  <Label htmlFor="zip_code" className="text-xs font-medium">Zip / Postal Code</Label>
+                  <Input id="zip_code" value={formData.zip_code}
                     onChange={(e) => setFormData({ ...formData, zip_code: e.target.value })}
-                    placeholder="100001"
-                    className="h-10 text-[13px] border-border/60"
-                  />
+                    placeholder="100001" className="h-11 sm:h-12 text-sm border-border/60" />
                 </div>
               </div>
 
-              <Button type="submit" variant="default" size="sm" disabled={saving} className="h-9 text-[13px]">
+              <Button
+                type="submit"
+                disabled={saving}
+                className="h-11 sm:h-12 px-5 text-sm font-semibold bg-accent hover:bg-accent/90 text-white rounded-lg"
+              >
                 {saving ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <>
-                    <Save className="w-3.5 h-3.5" />
+                    <Save className="w-4 h-4" />
                     Save Changes
                   </>
                 )}
