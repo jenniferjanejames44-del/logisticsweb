@@ -26,7 +26,7 @@ const directionOptions = [
     title: "Ship To Nigeria",
     subtitle: "Receive goods from China, USA, UK or other countries into Nigeria.",
     bullets: [
-      "Use a RAC warehouse abroad as drop-off",
+      "We arrange pickup from the sender location",
       "We handle customs & last-mile delivery",
       "Doorstep, office pickup or walk-in",
     ],
