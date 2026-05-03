@@ -1413,7 +1413,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {[
                 { num: 1, title: "Create your shipment online", icon: ClipboardList },
-                { num: 2, title: "Send package to our warehouse", icon: Package },
+                { num: 2, title: "We pick up your package", icon: Package },
                 { num: 3, title: "Our team processes the shipment", icon: Truck },
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },
