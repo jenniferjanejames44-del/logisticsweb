@@ -26,6 +26,7 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 const LiveChat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -49,6 +50,26 @@ const LiveChat = () => {
     
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Hide floating chat/WhatsApp buttons whenever a modal/dialog or sheet is open
+  // so they never cover sticky action buttons (Pay Now, Submit, etc.).
+  useEffect(() => {
+    const check = () => {
+      const hasOpenDialog = !!document.querySelector(
+        '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]'
+      );
+      setDialogOpen(hasOpenDialog);
+    };
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -247,7 +268,10 @@ const LiveChat = () => {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with RAC Logistics on WhatsApp"
-        className="fixed bottom-6 right-4 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_36px_rgba(37,211,102,0.32)] transition-all duration-300 hover:-translate-y-px hover:bg-[#1DA851] hover:shadow-[0_20px_42px_rgba(37,211,102,0.4)] sm:right-6"
+        className={cn(
+          "fixed bottom-6 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_18px_36px_rgba(37,211,102,0.32)] transition-all duration-300 hover:-translate-y-px hover:bg-[#1DA851] hover:shadow-[0_20px_42px_rgba(37,211,102,0.4)] sm:right-6",
+          dialogOpen && "opacity-0 pointer-events-none translate-y-4"
+        )}
       >
         <WhatsAppIcon className="h-7 w-7" />
       </a>
@@ -257,11 +281,11 @@ const LiveChat = () => {
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         className={cn(
-          "fixed bottom-[5.25rem] right-4 z-[9999] flex h-14 w-14 items-center justify-center rounded-xl shadow-lg transition-all duration-300 sm:bottom-24 sm:right-6",
+          "fixed bottom-[5.25rem] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-xl shadow-lg transition-all duration-300 sm:bottom-24 sm:right-6",
           isOpen
             ? "bg-muted text-foreground"
             : "bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-xl",
-          isVisible || isOpen
+          (isVisible || isOpen) && !dialogOpen
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
         )}
