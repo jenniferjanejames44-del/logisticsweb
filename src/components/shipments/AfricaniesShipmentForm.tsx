@@ -351,6 +351,20 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const clearFieldError = (field: string) => {
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const updateField = (field: string, setter: (value: string) => void) => (value: string) => {
+    setter(value);
+    if (value.trim()) clearFieldError(field);
+  };
+
   useEffect(() => {
     supabase
       .from("warehouses")
