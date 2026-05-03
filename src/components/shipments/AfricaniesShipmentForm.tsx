@@ -1097,10 +1097,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="rounded-xl border border-border/60 bg-white p-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Shipment</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                  {isExport ? "Shipping From Nigeria" : "Shipment"}
+                </h3>
                 <SummaryRow label="Method" value={methodLabel} />
                 <SummaryRow label="Delivery type" value={deliveryLabel} />
-                <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
+                {!isExport && (
+                  <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
+                )}
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
@@ -1112,13 +1116,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Sender</h3>
                 <SummaryRow label="Name" value={senderName} />
                 <SummaryRow label="Phone" value={senderPhone} />
-                <SummaryRow label="Address" value={[senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", ")} />
+                <SummaryRow label="Address" value={[senderAddress, senderCity, senderState, senderZip, senderCountry].filter(Boolean).join(", ")} />
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Receiver</h3>
                 <SummaryRow label="Name" value={receiverName} />
                 <SummaryRow label="Phone" value={receiverPhone} />
-                <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
+                <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
               {packagingLines.length > 0 && (
                 <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
