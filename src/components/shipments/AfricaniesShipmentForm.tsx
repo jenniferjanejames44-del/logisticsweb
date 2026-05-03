@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { TablesInsert } from "@/integrations/supabase/types";
-import { calculateShippingCost, PriceBreakdown } from "@/lib/pricingEngine";
+import { calculateShippingCost, PriceBreakdown, PricingError, formatPriceInCurrency } from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -328,6 +328,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
   const [calculating, setCalculating] = useState(false);
+  const [pricingError, setPricingError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -408,12 +409,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     if (step !== 6) return;
     if (!destinationCountry || totalWeight <= 0) {
       setBreakdown(null);
+      setPricingError(null);
       return;
     }
     let cancelled = false;
     setCalculating(true);
+    setPricingError(null);
     calculateShippingCost(destinationCountry, totalWeight, [], totalValue)
       .then((b) => { if (!cancelled) setBreakdown(b); })
+      .catch((err) => {
+        if (cancelled) return;
+        setBreakdown(null);
+        setPricingError(err instanceof PricingError ? err.message : "Could not calculate price.");
+      })
       .finally(() => { if (!cancelled) setCalculating(false); });
     return () => { cancelled = true; };
   }, [step, destinationCountry, totalWeight, totalValue]);
