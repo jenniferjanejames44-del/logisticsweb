@@ -1051,30 +1051,96 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const isLast = step === STEPS.length - 1;
 
   return (
-    <div className="rounded-2xl border border-border/60 bg-white p-4 sm:p-6 pb-[calc(env(safe-area-inset-bottom)+88px)] sm:pb-6">
-      <Stepper step={step} />
+    <>
+      <div className="rounded-xl border border-border/60 bg-white p-4 shadow-sm sm:p-6 pb-[calc(env(safe-area-inset-bottom)+88px)] sm:pb-6">
+        <Stepper step={step} />
 
-      <div className="min-h-[300px]">{renderStep()}</div>
+        <div className="min-h-[300px]">{renderStep()}</div>
 
-      <div
-        className="mt-6 gap-3
-                   fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/40 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex flex-row items-center justify-between
-                   sm:static sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:pb-0 sm:pt-4 sm:border-t sm:border-border/40 sm:flex sm:flex-row sm:items-center sm:justify-between"
-      >
-        <Button type="button" variant="outline" onClick={back} disabled={step === 0} className="sm:w-auto">
-          <ArrowLeft className="h-4 w-4 mr-1" /> Back
-        </Button>
-        {!isLast ? (
-          <Button type="button" onClick={next} className="font-semibold sm:w-auto">
-            Continue <ArrowRight className="h-4 w-4 ml-1" />
+        <div
+          className="mt-6 gap-3
+                     fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/40 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex flex-row items-center justify-between
+                     sm:static sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:pb-0 sm:pt-4 sm:border-t sm:border-border/40 sm:flex sm:flex-row sm:items-center sm:justify-between"
+        >
+          <Button type="button" variant="outline" onClick={back} disabled={step === 0} className="max-w-none sm:w-auto">
+            <ArrowLeft className="h-4 w-4 mr-1" /> Back
           </Button>
-        ) : (
-          <Button type="button" onClick={handleSubmit} disabled={submitting} className="font-bold h-11 sm:w-auto">
-            {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating…</> :
-              <>Proceed to Payment <ArrowRight className="h-4 w-4 ml-1" /></>}
-          </Button>
-        )}
+          {!isLast ? (
+            <Button type="button" onClick={next} className="font-semibold max-w-none sm:w-auto">
+              Continue <ArrowRight className="h-4 w-4 ml-1" />
+            </Button>
+          ) : (
+            <Button type="button" onClick={handleSubmit} disabled={submitting} className="font-bold h-11 max-w-none sm:w-auto">
+              {submitting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creating…</> :
+                <>Proceed to Payment <ArrowRight className="h-4 w-4 ml-1" /></>}
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
+
+      <ModalShell
+        open={itemModalOpen}
+        onOpenChange={setItemModalOpen}
+        ariaTitle={editingItemId ? "Edit item" : "Add item"}
+        ariaDescription="Add shipment item details"
+      >
+        <ModalHeader
+          title={editingItemId ? "Edit item" : "Add item"}
+          subtitle="Enter the item details for this shipment"
+          icon={<Package className="h-5 w-5" />}
+        />
+        <ModalBody className="space-y-4">
+          <Field label="Description" required error={itemModalErrors.description}>
+            <SmoothInput
+              value={itemDraft.description}
+              onCommit={(value) => setItemDraft((draft) => ({ ...draft, description: value }))}
+              placeholder="e.g. Phone, Clothes, Electronics"
+              autoFocus
+            />
+          </Field>
+          <Field label="Quantity" required>
+            <div className="flex h-12 items-center rounded-[10px] border border-border bg-muted/40">
+              <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: Math.max(1, draft.quantity - 1) }))}
+                className="flex h-12 w-12 items-center justify-center text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
+              <QuantityInput
+                value={itemDraft.quantity}
+                onCommit={(value) => setItemDraft((draft) => ({ ...draft, quantity: value }))}
+              />
+              <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: draft.quantity + 1 }))}
+                className="flex h-12 w-12 items-center justify-center text-accent hover:text-accent/80"><Plus className="h-4 w-4" /></button>
+            </div>
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Weight (kg)" required error={itemModalErrors.weight}>
+              <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={itemDraft.weight}
+                onCommit={(value) => setItemDraft((draft) => ({ ...draft, weight: value }))} placeholder="0.0" />
+            </Field>
+            <Field label="Value (USD)" required error={itemModalErrors.value}>
+              <SmoothInput type="number" min={0} inputMode="decimal" value={itemDraft.value}
+                onCommit={(value) => setItemDraft((draft) => ({ ...draft, value }))} placeholder="0" />
+            </Field>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            <Field label="L (cm)">
+              <SmoothInput type="number" inputMode="decimal" value={itemDraft.length || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, length: value }))} placeholder="—" />
+            </Field>
+            <Field label="W (cm)">
+              <SmoothInput type="number" inputMode="decimal" value={itemDraft.width || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, width: value }))} placeholder="—" />
+            </Field>
+            <Field label="H (cm)">
+              <SmoothInput type="number" inputMode="decimal" value={itemDraft.height || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, height: value }))} placeholder="—" />
+            </Field>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button type="button" variant="outline" onClick={() => setItemModalOpen(false)} className="max-w-none flex-1">
+            Cancel
+          </Button>
+          <Button type="button" onClick={saveItemModal} className="max-w-none flex-1">
+            {editingItemId ? "Save Changes" : "Add Item"}
+          </Button>
+        </ModalFooter>
+      </ModalShell>
+    </>
   );
 }
