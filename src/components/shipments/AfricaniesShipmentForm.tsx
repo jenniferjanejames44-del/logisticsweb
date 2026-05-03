@@ -317,10 +317,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverZip, setReceiverZip] = useState("");
 
   const [items, setItems] = useState<Item[]>([]);
-  const [itemModalOpen, setItemModalOpen] = useState(false);
+  const [itemFormOpen, setItemFormOpen] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [itemDraft, setItemDraft] = useState<Item>(createEmptyItem());
-  const [itemModalErrors, setItemModalErrors] = useState<Record<string, string>>({});
+  const [itemFormErrors, setItemFormErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
   // Packaging: { materialId: quantity }
@@ -419,27 +419,27 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     return () => { cancelled = true; };
   }, [step, destinationCountry, totalWeight, totalValue]);
 
-  const openAddItemModal = () => {
+  const openAddItemForm = () => {
     setEditingItemId(null);
     setItemDraft(createEmptyItem());
-    setItemModalErrors({});
-    setItemModalOpen(true);
+    setItemFormErrors({});
+    setItemFormOpen(true);
   };
 
-  const openEditItemModal = (item: Item) => {
+  const openEditItemForm = (item: Item) => {
     setEditingItemId(item.id);
     setItemDraft({ ...item });
-    setItemModalErrors({});
-    setItemModalOpen(true);
+    setItemFormErrors({});
+    setItemFormOpen(true);
   };
 
-  const saveItemModal = () => {
+  const saveItemForm = () => {
     const e: Record<string, string> = {};
     if (!itemDraft.description.trim()) e.description = "Description is required";
     if (!itemDraft.weight || parseFloat(itemDraft.weight) <= 0) e.weight = "Weight must be greater than 0";
     if (!itemDraft.value || parseFloat(itemDraft.value) <= 0) e.value = "Value must be greater than 0";
     if (Object.keys(e).length > 0) {
-      setItemModalErrors(e);
+      setItemFormErrors(e);
       return;
     }
 
@@ -447,7 +447,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (editingItemId) return arr.map((it) => (it.id === editingItemId ? itemDraft : it));
       return [...arr, itemDraft];
     });
-    setItemModalOpen(false);
+    setItemFormOpen(false);
   };
 
   const removeItem = (id: string) =>
