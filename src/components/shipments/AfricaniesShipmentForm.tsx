@@ -482,28 +482,31 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const e: Record<string, string> = {};
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
-    if (s === 0 && !method) e.method = "Please select a shipping method.";
-    if (s === 1 && !deliveryType) e.deliveryType = "Please select a delivery type.";
-    if (s === 2 && !warehouseId) e.warehouse = "Please select a warehouse.";
-    if (s === 3) {
+    const stepName = STEPS[s];
+    if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
+    if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
+    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a warehouse.";
+    if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
       else if (!isPhone(senderPhone)) e.senderPhone = "Enter a valid phone number";
       if (senderEmail.trim() && !isEmail(senderEmail)) e.senderEmail = "Enter a valid email";
       if (!senderCountry) e.senderCountry = "Country is required";
+      if (!senderState.trim()) e.senderState = "Please select or enter your state";
       if (!senderCity.trim()) e.senderCity = "City is required";
       if (!senderAddress.trim()) e.senderAddress = "Street address is required";
     }
-    if (s === 4) {
+    if (stepName === "Receiver") {
       if (!receiverName.trim()) e.receiverName = "Full name is required";
       if (!receiverPhone.trim()) e.receiverPhone = "Phone number is required";
       else if (!isPhone(receiverPhone)) e.receiverPhone = "Enter a valid phone number";
       if (receiverEmail.trim() && !isEmail(receiverEmail)) e.receiverEmail = "Enter a valid email";
       if (!receiverCountry) e.receiverCountry = "Country is required";
+      if (!receiverState.trim()) e.receiverState = "Please select or enter your state";
       if (!receiverCity.trim()) e.receiverCity = "City is required";
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
-    if (s === 5) {
+    if (stepName === "Items") {
       if (items.length === 0) e.items = "Add at least one item.";
       items.forEach((it, idx) => {
         if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
