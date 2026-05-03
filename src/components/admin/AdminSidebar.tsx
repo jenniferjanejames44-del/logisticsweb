@@ -154,7 +154,7 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 lg:hidden"
+        className="fixed left-4 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 lg:hidden"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         aria-label="Toggle menu"
       >
