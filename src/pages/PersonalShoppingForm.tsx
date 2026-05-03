@@ -147,8 +147,8 @@ const PersonalShoppingForm = () => {
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 mb-4">
-              <ShoppingBag className="w-7 h-7 text-primary" />
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary text-primary-foreground shadow-sm mb-4">
+              <ShoppingBag className="w-7 h-7" strokeWidth={2} />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Personal Shopping Request</h1>
             <p className="text-muted-foreground text-sm mt-1">
@@ -243,13 +243,15 @@ const PersonalShoppingForm = () => {
                     onChange={handleImageSelect}
                   />
                   {imagePreview ? (
-                    <div className="relative mt-2 inline-block">
-                      <img src={imagePreview} alt="Preview" className="rounded-lg max-h-40 object-cover" />
+                    <div className="relative mt-2 inline-block rounded-lg border border-border/60 bg-muted/30 p-2">
+                      <img src={imagePreview} alt="Preview" className="rounded-md max-h-40 object-cover block" />
                       <button
+                        type="button"
+                        aria-label="Remove image"
                         onClick={() => { setImageFile(null); setImagePreview(null); }}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center"
+                        className="absolute -top-2.5 -right-2.5 w-7 h-7 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center shadow-md ring-2 ring-background hover:bg-destructive/90 transition-colors"
                       >
-                        <X className="w-3 h-3" />
+                        <X className="w-3.5 h-3.5" strokeWidth={2.5} />
                       </button>
                     </div>
                   ) : (
