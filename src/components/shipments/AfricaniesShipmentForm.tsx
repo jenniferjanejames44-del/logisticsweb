@@ -16,8 +16,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
-  ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
-  PackageCheck, Store, MapPin, Box, Mail, ShoppingBag, Thermometer,
+  ArrowRight, ArrowLeft, Plane, Ship, Check,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer,
 } from "lucide-react";
 import { getStatesForCountry } from "@/lib/states";
 
@@ -32,14 +32,6 @@ interface Item {
   length?: string;
   width?: string;
   height?: string;
-}
-
-interface Warehouse {
-  id: string;
-  name: string;
-  country: string;
-  address: string;
-  phone: string | null;
 }
 
 interface PackagingMaterial {
@@ -67,8 +59,7 @@ const SHIPPING_METHODS = [
 ];
 
 const IMPORT_DELIVERY_TYPES = [
-  { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
-  { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
+  { id: "pickup", label: "Pickup", desc: "We collect your items from the sender or supplier address", icon: PackageCheck },
 ];
 
 const EXPORT_DELIVERY_TYPES = [
@@ -76,7 +67,7 @@ const EXPORT_DELIVERY_TYPES = [
 ];
 
 const IMPORT_STEPS = [
-  "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
   "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
