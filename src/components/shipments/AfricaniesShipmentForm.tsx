@@ -480,7 +480,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const stepName = STEPS[s];
     if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
     if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
-    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a warehouse.";
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
@@ -562,7 +561,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         : null;
       const desc = [
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
-        selectedWarehouse ? `Warehouse: ${selectedWarehouse.name} (${selectedWarehouse.country})` : null,
         packagingDesc,
         `Items: ${itemLines.join("; ")}`,
         notes ? `Notes: ${notes}` : null,
@@ -580,7 +578,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
         price: breakdown ? grandTotal : null,
-        warehouse_location: selectedWarehouse?.country || null,
+        warehouse_location: null,
         pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
