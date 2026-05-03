@@ -1085,7 +1085,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 6: {
+      case "Summary": {
         const methodLabel = SHIPPING_METHODS.find((m) => m.id === method)?.label || "—";
         const deliveryLabel = DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label || "—";
         return (
