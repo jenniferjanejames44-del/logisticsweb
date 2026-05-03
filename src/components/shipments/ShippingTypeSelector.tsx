@@ -1,4 +1,6 @@
 import { ArrowDownToLine, ArrowUpFromLine, AlertCircle, CheckCircle2 } from "lucide-react";
+import importIcon from "@/assets/icon-import-nigeria.png";
+import exportIcon from "@/assets/icon-export-nigeria.png";
 
 export type ShippingType = "import" | "export" | null;
 
@@ -12,6 +14,7 @@ const options = [
   {
     type: "import" as const,
     icon: ArrowDownToLine,
+    image: importIcon,
     title: "Import to Nigeria",
     subtitle: "Receive goods from abroad",
     badge: "🇳🇬 Destination: Nigeria",
@@ -20,6 +23,7 @@ const options = [
   {
     type: "export" as const,
     icon: ArrowUpFromLine,
+    image: exportIcon,
     title: "Export from Nigeria",
     subtitle: "Send goods internationally",
     badge: "🇳🇬 Origin: Nigeria",
@@ -49,7 +53,6 @@ const ShippingTypeSelector = ({ value, onChange, showError }: ShippingTypeSelect
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {options.map((opt) => {
           const isSelected = value === opt.type;
-          const Icon = opt.icon;
           return (
             <button
               key={opt.type}
@@ -64,13 +67,20 @@ const ShippingTypeSelector = ({ value, onChange, showError }: ShippingTypeSelect
               {/* Top row: Icon + Check */}
               <div className="flex items-start justify-between w-full">
                 <div
-                  className={`flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 ${
+                  className={`flex h-20 w-20 items-center justify-center rounded-2xl transition-all duration-300 ${
                     isSelected
-                      ? `bg-gradient-to-br ${opt.gradient} text-white shadow-lg`
-                      : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+                      ? "bg-white shadow-lg ring-1 ring-primary/10 scale-105"
+                      : "bg-muted/40 group-hover:bg-white group-hover:shadow-md"
                   }`}
                 >
-                  <Icon className="h-6 w-6" strokeWidth={2} />
+                  <img
+                    src={opt.image}
+                    alt={opt.title}
+                    width={1024}
+                    height={1024}
+                    loading="lazy"
+                    className="h-16 w-16 object-contain drop-shadow-sm"
+                  />
                 </div>
 
                 {/* Selection indicator */}
