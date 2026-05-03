@@ -25,7 +25,7 @@ const destructiveStyles =
   "border border-destructive bg-destructive text-destructive-foreground shadow-[0_12px_24px_rgba(220,38,38,0.14)] hover:-translate-y-[1px] hover:bg-destructive/90 hover:shadow-[0_14px_28px_rgba(220,38,38,0.16)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(220,38,38,0.12)]";
 
 const buttonVariants = cva(
-  "font-display inline-flex w-auto max-w-[260px] select-none items-center justify-center gap-2 rounded-lg text-center text-[1rem] font-semibold leading-tight tracking-[-0.01em] ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-[18px] [&_svg]:shrink-0",
+  "font-display inline-flex w-auto select-none items-center justify-center gap-2 rounded-lg text-center text-[1rem] font-semibold leading-tight ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/10 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none disabled:transform-none [&_svg]:pointer-events-none [&_svg]:size-[18px] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
