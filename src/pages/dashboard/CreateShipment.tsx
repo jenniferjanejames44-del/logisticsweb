@@ -1,6 +1,8 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AfricaniesShipmentForm from "@/components/shipments/AfricaniesShipmentForm";
+import importIcon from "@/assets/icon-import-nigeria.png";
+import exportIcon from "@/assets/icon-export-nigeria.png";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -20,6 +22,7 @@ const directionOptions = [
   {
     flow: "import" as const,
     icon: ArrowDownToLine,
+    image: importIcon,
     title: "Ship To Nigeria",
     subtitle: "Receive goods from China, USA, UK or other countries into Nigeria.",
     bullets: [
@@ -32,6 +35,7 @@ const directionOptions = [
   {
     flow: "export" as const,
     icon: ArrowUpFromLine,
+    image: exportIcon,
     title: "Ship From Nigeria",
     subtitle: "Send goods from Nigeria to international destinations worldwide.",
     bullets: [
@@ -208,7 +212,6 @@ const CreateShipment = () => {
 
         <div className="grid gap-4 md:grid-cols-2">
           {directionOptions.map((opt) => {
-            const Icon = opt.icon;
             return (
               <button
                 key={opt.flow}
@@ -216,8 +219,15 @@ const CreateShipment = () => {
                 onClick={() => navigate(`/dashboard/shipments/new?flow=${opt.flow}`)}
                 className="group relative flex flex-col items-start gap-4 overflow-hidden rounded-xl border border-border/60 bg-white p-5 sm:p-6 text-left transition-all duration-200 hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5"
               >
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${opt.accent} shadow-sm`}>
-                  <Icon className="h-5 w-5" strokeWidth={2} />
+                <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-muted/30 shadow-sm transition-transform duration-300 group-hover:scale-105 group-hover:bg-white">
+                  <img
+                    src={opt.image}
+                    alt={opt.title}
+                    width={1024}
+                    height={1024}
+                    loading="lazy"
+                    className="h-16 w-16 object-contain drop-shadow-sm"
+                  />
                 </div>
 
                 <div className="space-y-1.5">
