@@ -696,10 +696,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     type="button"
                     disabled={disabled}
                     onClick={() => w && setWarehouseId(w.id)}
-                    className={`rounded-xl border-2 p-4 text-center transition-all ${
-                      active ? "border-primary bg-primary/5 shadow-sm" :
+                    className={`rounded-xl border p-4 text-center transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" :
                       disabled ? "border-border/40 bg-muted/30 opacity-60 cursor-not-allowed" :
-                      "border-border/60 bg-white hover:border-primary/40"
+                      "border-border/60 bg-white hover:border-accent/40"
                     }`}
                   >
                     <div className="text-3xl">{flag}</div>
@@ -714,9 +714,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
 
             {selectedWarehouse && (
-              <div className="mt-5 rounded-xl border border-primary/20 bg-primary/5 p-4">
+              <div className="mt-5 rounded-xl border border-accent/25 bg-accent/5 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground">
                     <Building2 className="h-4 w-4" />
                   </div>
                   <div className="flex-1 min-w-0">
