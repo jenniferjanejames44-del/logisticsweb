@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, Plus, Package, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
 import {
   getShoppingOrderDisplayStatus,
   needsShoppingOrderPayment,
@@ -126,13 +126,11 @@ const ShoppingOrders = () => {
         </div>
       )}
 
-      <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
-        <DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
-          <DialogHeader className="px-5 pt-5">
-            <DialogTitle className="text-base">Order Details</DialogTitle>
-          </DialogHeader>
-          {selectedOrder && (
-            <div className="space-y-4 p-5 pt-3 text-sm">
+      <ModalShell open={!!selectedOrder} onOpenChange={(o) => !o && setSelectedOrder(null)} ariaTitle="Order Details">
+        <ModalHeader title="Order Details" subtitle={selectedOrder?.order_number} />
+        {selectedOrder && (
+          <>
+            <ModalBody className="space-y-4 text-sm">
               <div className="grid grid-cols-2 gap-y-2.5 gap-x-4 rounded-lg border border-border/50 bg-muted/30 p-4">
                 <span className="text-[12px] text-muted-foreground">Order #</span>
                 <span className="text-[12px] font-medium">{selectedOrder.order_number}</span>
@@ -155,11 +153,6 @@ const ShoppingOrders = () => {
                   {selectedOrder.payment_status}
                 </Badge>
               </div>
-              {needsShoppingOrderPayment(selectedOrder.status, selectedOrder.payment_status) && (
-                <div className="flex justify-end">
-                  <Button size="sm" onClick={() => navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${selectedOrder.id}`)} className="h-8 text-[12px]">Pay Now</Button>
-                </div>
-              )}
               {selectedOrder.item_description && (
                 <div className="rounded-lg border border-border/50 p-3">
                   <p className="text-[11px] text-muted-foreground mb-1">Description</p>
@@ -178,10 +171,16 @@ const ShoppingOrders = () => {
                   <img src={selectedOrder.product_image_url} alt="Product" className="rounded-lg max-h-48 object-cover" />
                 </div>
               )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="outline" onClick={() => setSelectedOrder(null)} className="flex-1 h-11 sm:h-12">Close</Button>
+              {needsShoppingOrderPayment(selectedOrder.status, selectedOrder.payment_status) && (
+                <Button onClick={() => navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${selectedOrder.id}`)} className="flex-1 h-11 sm:h-12">Pay Now</Button>
+              )}
+            </ModalFooter>
+          </>
+        )}
+      </ModalShell>
     </DashboardLayout>
   );
 };
