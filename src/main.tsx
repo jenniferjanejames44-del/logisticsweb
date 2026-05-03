@@ -3,6 +3,25 @@ import App from "./App.tsx";
 import "./index.css";
 
 /**
+ * Restore SPA routes redirected by public/404.html.
+ * Some hosts serve /dashboard as /?p=/dashboard after refresh; React Router
+ * must see the original path before the app mounts.
+ */
+(function restoreSpaFallbackPath() {
+  const url = new URL(window.location.href);
+  const redirectedPath = url.searchParams.get("p");
+
+  if (!redirectedPath) return;
+
+  const decodedPath = decodeURIComponent(redirectedPath).replace(/^\/?(?:%2F|2F|252F)/i, "/");
+  const restoredQuery = url.searchParams.get("q")?.replace(/~and~/g, "&") ?? "";
+  const cleanPath = decodedPath.startsWith("/") ? decodedPath : `/${decodedPath}`;
+  const restoredUrl = `${cleanPath}${restoredQuery ? `?${restoredQuery}` : ""}${window.location.hash}`;
+
+  window.history.replaceState(null, "", restoredUrl);
+})();
+
+/**
  * Client-side failsafe: if the user lands on any non-RAC domain with
  * auth parameters or auth callback paths, immediately move the flow to
  * raclogisticltd.com while preserving the full URL payload.
