@@ -302,9 +302,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
 
-  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
-  const [warehouseId, setWarehouseId] = useState<string>("");
-
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
@@ -357,15 +354,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   useEffect(() => {
     supabase
-      .from("warehouses")
-      .select("id, name, country, address, phone")
-      .eq("is_active", true)
-      .order("country")
-      .then(({ data }) => { if (data) setWarehouses(data as Warehouse[]); });
-  }, []);
-
-  useEffect(() => {
-    supabase
       .from("packaging_materials")
       .select("id, name, price")
       .eq("is_active", true)
@@ -396,11 +384,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
-  const selectedWarehouse = useMemo(
-    () => warehouses.find((w) => w.id === warehouseId),
-    [warehouses, warehouseId],
-  );
 
   // Selected packaging summary: list of {name, qty, unit, lineTotal}
   const packagingLines = useMemo(() => {
