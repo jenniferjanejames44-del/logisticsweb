@@ -298,6 +298,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const { toast } = useToast();
 
   const isExport = flow === "export";
+  const STEPS = isExport ? EXPORT_STEPS : IMPORT_STEPS;
+  const DELIVERY_TYPES = isExport ? EXPORT_DELIVERY_TYPES : IMPORT_DELIVERY_TYPES;
 
   const [step, setStep] = useState(0);
 
@@ -311,6 +313,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
   const [senderCountry, setSenderCountry] = useState(isExport ? "Nigeria" : "");
+  const [senderState, setSenderState] = useState("");
   const [senderCity, setSenderCity] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [senderZip, setSenderZip] = useState("");
@@ -320,6 +323,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverPhone, setReceiverPhone] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
   const [receiverCountry, setReceiverCountry] = useState(isExport ? "" : "Nigeria");
+  const [receiverState, setReceiverState] = useState("");
   const [receiverCity, setReceiverCity] = useState("");
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
