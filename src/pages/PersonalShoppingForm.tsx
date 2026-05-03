@@ -418,7 +418,20 @@ const PersonalShoppingForm = () => {
             </Card>
           )}
         </div>
-      </main>
+  );
+
+  if (user) {
+    return (
+      <DashboardLayout title="Personal Shopping" description="Submit a new personal shopping request">
+        {content}
+      </DashboardLayout>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background">
+      <Header />
+      <main className="flex-1 px-4 py-8 pt-24 sm:pt-28">{content}</main>
       <Footer />
     </div>
   );
