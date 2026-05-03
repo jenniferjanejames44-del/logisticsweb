@@ -3,10 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
 import { Loader2, DollarSign, Wallet, Shield, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 
@@ -63,23 +60,13 @@ const AddFundsDialog = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden rounded-xl">
-        {/* Header */}
-        <div className="bg-primary px-6 py-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15">
-              <Wallet className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-base font-semibold text-white">Add Funds</h2>
-              <p className="text-xs text-white/60">Credit to {userName}'s wallet</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Body */}
-        <div className="px-6 py-5 space-y-5">
+    <ModalShell open={open} onOpenChange={onOpenChange} ariaTitle="Add Funds">
+      <ModalHeader
+        title="Add Funds"
+        subtitle={`Credit to ${userName}'s wallet`}
+        icon={<Wallet className="w-5 h-5" />}
+      />
+      <ModalBody className="space-y-5">
           {/* Amount Input */}
           <div>
             <label className="text-[13px] font-medium text-foreground mb-1.5 block">Amount (USD) *</label>
@@ -135,21 +122,19 @@ const AddFundsDialog = ({
             <Shield className="w-3.5 h-3.5 flex-shrink-0" />
             <span>Funds will be credited instantly to the user's wallet.</span>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="px-6 pb-5 flex gap-2.5">
+      </ModalBody>
+      <ModalFooter>
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="flex-1 h-11"
+            className="flex-1 h-11 sm:h-12"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={loading || !amount || parseFloat(amount) <= 0}
-            className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+            className="flex-1 h-11 sm:h-12"
           >
             {loading ? (
               <>
@@ -164,9 +149,8 @@ const AddFundsDialog = ({
               </>
             )}
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </ModalFooter>
+    </ModalShell>
   );
 };
 

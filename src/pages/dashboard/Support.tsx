@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, MessageSquare, Loader2, X } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
 import { Badge } from "@/components/ui/badge";
 
 interface SupportTicket {
@@ -124,18 +124,18 @@ const Support = () => {
       title="Support Center"
       description="Get help with your shipments and account"
       action={
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button variant="default" size="sm" className="h-9 text-[13px]">
-              <Plus className="w-3.5 h-3.5" />
-              New Ticket
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto p-0 gap-0">
-            <DialogHeader className="px-5 pt-5">
-              <DialogTitle className="text-base">Create Support Ticket</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 p-5 pt-3">
+        <>
+          <Button variant="default" size="sm" className="h-9 text-[13px]" onClick={() => setIsDialogOpen(true)}>
+            <Plus className="w-3.5 h-3.5" />
+            New Ticket
+          </Button>
+          <ModalShell
+            open={isDialogOpen}
+            onOpenChange={setIsDialogOpen}
+            ariaTitle="Create Support Ticket"
+          >
+            <ModalHeader title="Create Support Ticket" subtitle="We'll respond within 24 hours" icon={<Plus className="w-5 h-5" />} />
+            <ModalBody className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="subject" className="text-[12px]">Subject *</Label>
                 <Input id="subject" placeholder="Brief description of your issue" value={subject} onChange={(e) => setSubject(e.target.value)} className="h-10 text-[13px] border-border/60" />
@@ -177,12 +177,17 @@ const Support = () => {
                 </div>
                 {attachment && <p className="text-[11px] text-muted-foreground">{attachment.name} ({(attachment.size / 1024).toFixed(2)} KB)</p>}
               </div>
-              <Button onClick={handleCreateTicket} disabled={isCreating || !subject || !category || !message} variant="default" size="sm" className="w-full h-9 text-[13px]">
-                {isCreating ? (<><Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" />Creating...</>) : "Create Ticket"}
+            </ModalBody>
+            <ModalFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="flex-1 h-11 sm:h-12">
+                Cancel
               </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+              <Button onClick={handleCreateTicket} disabled={isCreating || !subject || !category || !message} className="flex-1 h-11 sm:h-12">
+                {isCreating ? (<><Loader2 className="w-4 h-4 animate-spin" />Creating…</>) : "Create Ticket"}
+              </Button>
+            </ModalFooter>
+          </ModalShell>
+        </>
       }
     >
       {loading ? (
