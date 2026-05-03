@@ -794,11 +794,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         );
       }
 
-      case 3:
+      case "Sender":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Sender Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Who is sending the shipment?</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isExport ? "Who is sending from Nigeria?" : "Who is sending the shipment?"}
+            </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.senderName}>
                 <SmoothInput value={senderName} onCommit={setSenderName} placeholder="John Doe" />
@@ -810,13 +812,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={senderEmail} onCommit={setSenderEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
-                <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
+                <Select
+                  value={senderCountry}
+                  onValueChange={(v) => { setSenderCountry(v); setSenderState(""); }}
+                  disabled={isExport}
+                >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
+              {renderStateField(senderCountry, senderState, setSenderState, errors.senderState)}
               <Field label="City" required error={errors.senderCity}>
                 <SmoothInput value={senderCity} onCommit={setSenderCity} placeholder="Lagos" />
               </Field>
@@ -836,7 +843,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 4:
+      case "Receiver":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Receiver Details</h2>
@@ -852,13 +859,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={receiverEmail} onCommit={setReceiverEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
-                <Select value={receiverCountry} onValueChange={setReceiverCountry} disabled={!isExport}>
+                <Select
+                  value={receiverCountry}
+                  onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); }}
+                  disabled={!isExport}
+                >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
+              {renderStateField(receiverCountry, receiverState, setReceiverState, errors.receiverState)}
               <Field label="City" required error={errors.receiverCity}>
                 <SmoothInput value={receiverCity} onCommit={setReceiverCity} placeholder="City" />
               </Field>
@@ -874,7 +886,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 5:
+      case "Items":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Item Details</h2>
