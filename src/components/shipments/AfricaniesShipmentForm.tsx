@@ -419,7 +419,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
   useEffect(() => {
-    if (step !== 6) return;
+    if (STEPS[step] !== "Summary") return;
     if (!destinationCountry || totalWeight <= 0) {
       setBreakdown(null);
       setPricingError(null);
