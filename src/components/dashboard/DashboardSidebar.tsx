@@ -112,7 +112,7 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg lg:hidden"
+        className="fixed left-4 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-transform duration-200 active:scale-95 lg:hidden"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-4.5 h-4.5" /> : <Menu className="w-4.5 h-4.5" />}
@@ -133,7 +133,7 @@ const DashboardSidebar = () => {
         }`}
       >
         {/* Logo */}
-        <div className="px-5 py-4 border-b border-border/40">
+        <div className="border-b border-border/40 py-4 pl-20 pr-5 lg:px-5">
           <Link
             to="/"
             className="flex items-center"
