@@ -83,7 +83,7 @@ const AdminSidebar = () => {
   const NavContent = () => (
     <div className="flex flex-col h-full">
       {/* Brand Header */}
-      <div className="px-5 py-4 border-b border-border/30">
+      <div className="border-b border-border/30 py-4 pl-20 pr-5 lg:px-5">
         <Link to="/admin" className="flex flex-col items-start gap-1" onClick={() => setIsMobileOpen(false)}>
           <HeaderLogo className="h-auto w-full max-w-[160px]" />
           <span className="text-[11px] text-muted-foreground/70 leading-none pl-1">Admin Console</span>
