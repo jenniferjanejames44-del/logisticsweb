@@ -685,7 +685,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">
               {isExport
                 ? "How would you like us to receive your items in Nigeria?"
-                : "How will your goods reach the warehouse?"}
+                : "How would you like us to receive your items?"}
             </p>
             <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
