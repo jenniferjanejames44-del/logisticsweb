@@ -167,8 +167,10 @@ const SmoothInput = memo(function SmoothInput({
         props.onFocus?.(e);
       }}
       onChange={(e) => {
-        // Local-only updates while typing — zero parent re-renders.
-        setDraft(e.target.value);
+        const next = e.target.value;
+        setDraft(next);
+        lastPropValueRef.current = next;
+        onCommitRef.current(next);
       }}
       onBlur={(e) => {
         focusedRef.current = false;
@@ -220,7 +222,10 @@ const SmoothTextarea = memo(function SmoothTextarea({
         props.onFocus?.(e);
       }}
       onChange={(e) => {
-        setDraft(e.target.value);
+        const next = e.target.value;
+        setDraft(next);
+        lastPropValueRef.current = next;
+        onCommitRef.current(next);
       }}
       onBlur={(e) => {
         focusedRef.current = false;
