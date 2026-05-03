@@ -1091,13 +1091,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   Calculated by RAC pricing engine
                 </div>
               </div>
+              {pricingError && (
+                <div className="mt-3 rounded-xl bg-destructive/5 border border-destructive/30 p-3 text-xs text-destructive">
+                  {pricingError}
+                </div>
+              )}
               {breakdown && (
                 <div className="mt-3 rounded-xl bg-white/80 border border-border/40 p-3 space-y-1 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({breakdown.zone || "zone"})</span><span className="font-semibold">${breakdown.shippingCost.toFixed(2)}</span></div>
-                  {breakdown.processingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Processing fee</span><span className="font-semibold">${breakdown.processingFee.toFixed(2)}</span></div>}
-                  {breakdown.taxes.map((t) => (
-                    <div key={t.name} className="flex justify-between"><span className="text-muted-foreground">{t.name} ({t.rate}%)</span><span className="font-semibold">${t.amount.toFixed(2)}</span></div>
-                  ))}
+                  <div className="flex justify-between"><span className="text-muted-foreground">Base price ({breakdown.country})</span><span className="font-semibold">{formatPriceInCurrency(breakdown.basePrice, breakdown.currency)}</span></div>
+                  {breakdown.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(breakdown.handlingFee, breakdown.currency)}</span></div>}
+                  {breakdown.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({breakdown.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.vat, breakdown.currency)}</span></div>}
+                  {breakdown.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({breakdown.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.insurance, breakdown.currency)}</span></div>}
                   {packagingTotal > 0 && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">
@@ -1106,7 +1110,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       <span className="font-semibold">${packagingTotal.toFixed(2)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">${grandTotal.toFixed(2)}</span></div>
+                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency)}</span></div>
                 </div>
               )}
             </div>
