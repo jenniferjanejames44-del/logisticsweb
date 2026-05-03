@@ -109,7 +109,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const fieldRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // DB data
-  const [warehouses, setWarehouses] = useState<any[]>([]);
   const [extraCharges, setExtraCharges] = useState<any[]>([]);
   const [activeRoutes, setActiveRoutes] = useState<any[]>([]);
   const [packagingMaterials, setPackagingMaterials] = useState<any[]>([]);
@@ -157,13 +156,11 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   // Fetch all DB data
   useEffect(() => {
     const fetchData = async () => {
-      const [whRes, routeRes, pkgRes, dmRes] = await Promise.all([
-        (supabase as any).from("warehouses").select("*").eq("is_active", true),
+      const [routeRes, pkgRes, dmRes] = await Promise.all([
         supabase.from("shipping_routes").select("origin_country, destination_country").eq("is_active", true),
         (supabase as any).from("packaging_materials").select("*").eq("is_active", true).order("name"),
         (supabase as any).from("delivery_methods").select("*").eq("is_active", true).order("fee"),
       ]);
-      setWarehouses(whRes.data || []);
       setExtraCharges([]);
       setActiveRoutes(routeRes.data || []);
       setPackagingMaterials(pkgRes.data || []);
