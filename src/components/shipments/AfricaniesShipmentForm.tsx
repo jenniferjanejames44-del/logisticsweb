@@ -695,10 +695,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   </SelectTrigger>
                   <SelectContent>
                     {DELIVERY_TYPES.map((d) => (
-                      <SelectItem key={d.id} value={d.id} className="py-2.5">
-                        <div className="flex flex-col gap-0.5">
+                      <SelectItem key={d.id} value={d.id} className="py-3 pr-3 [&>span:last-child]:w-full">
+                        <div className="flex w-full flex-col gap-0.5">
                           <span className="text-sm font-semibold text-foreground">{d.label}</span>
-                          <span className="text-xs text-muted-foreground whitespace-normal leading-snug">{d.desc}</span>
+                          <span className="block text-xs text-muted-foreground whitespace-normal break-words leading-snug">{d.desc}</span>
                         </div>
                       </SelectItem>
                     ))}
