@@ -34,7 +34,6 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
 interface ShipmentData {
-  id: string;
   tracking_number: string;
   status: string;
   origin_city: string;
@@ -46,8 +45,6 @@ interface ShipmentData {
   actual_delivery: string | null;
   created_at: string;
   updated_at: string;
-  weight: number;
-  description: string | null;
 }
 
 
@@ -81,18 +78,18 @@ const Track = () => {
     if (!shipment) return;
 
     const channel = supabase
-      .channel(`shipment-${shipment.id}`)
+      .channel(`shipment-${shipment.tracking_number}`)
       .on(
         'postgres_changes',
         {
           event: 'UPDATE',
           schema: 'public',
           table: 'shipments',
-          filter: `id=eq.${shipment.id}`,
+          filter: `tracking_number=eq.${shipment.tracking_number}`,
         },
         (payload) => {
           console.log('Shipment updated:', payload);
-          setShipment(payload.new as ShipmentData);
+          setShipment((prev) => ({ ...(prev as ShipmentData), ...(payload.new as ShipmentData) }));
           toast({
             title: "Shipment Updated!",
             description: `Status changed to: ${(payload.new as ShipmentData).status.replace("_", " ")}`,
@@ -104,7 +101,7 @@ const Track = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [shipment?.id, toast]);
+  }, [shipment?.tracking_number, toast]);
 
   // Auto-search if tracking number is in URL
   useEffect(() => {
@@ -128,10 +125,7 @@ const Track = () => {
     setShipment(null);
 
     const { data, error: fetchError } = await supabase
-      .from("shipments")
-      .select("*")
-      .ilike("tracking_number", `%${searchNumber}%`)
-      .limit(1)
+      .rpc("track_shipment_public", { tracking_num: searchNumber })
       .maybeSingle();
 
     setIsLoading(false);
@@ -139,7 +133,7 @@ const Track = () => {
     if (fetchError) {
       setError("Unable to search. Please try again later.");
     } else if (data) {
-      setShipment(data);
+      setShipment(data as ShipmentData);
       setSearchParams({ number: data.tracking_number });
     } else {
       setError("No shipment found with this tracking number. Please check and try again.");
