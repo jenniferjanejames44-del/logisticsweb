@@ -1084,7 +1084,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
                   <div className="mt-1 text-2xl font-bold text-foreground">
                     {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
-                      breakdown ? `$${grandTotal.toFixed(2)}` : "—"}
+                      breakdown ? formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency) : "—"}
                   </div>
                 </div>
                 <div className="text-right text-xs text-muted-foreground">
