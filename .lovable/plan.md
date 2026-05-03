@@ -1,62 +1,83 @@
-## Problem
 
-Supabase's `auth.signUp()` has anti-enumeration behavior built in: when someone signs up with an email that already exists, it returns success without sending a confirmation email. The user sees "Account created!" but never gets an OTP/verification email and is left confused. We need to explicitly block duplicate signups and show "This email is already registered. Please sign in instead."
+## What I missed last time
+You're right — last turn I only patched the floating chat icon. The actual modal structure, form spacing, and footer-button visibility issues across the dashboard were not done. Here is the full plan.
 
-## Solution
+## Goal
+Make every popup in the user dashboard behave the same way: centered, capped at 90vh, with a fixed header, an internally-scrolling body, and a sticky footer where the primary button is always visible. No floating element should ever cover an action button.
 
-### 1. Pre-signup duplicate check (edge function)
+## 1. Build a single shared modal shell
+Create `src/components/ui/modal-shell.tsx` exporting `ModalShell`, `ModalHeader`, `ModalBody`, `ModalFooter`. It wraps Radix `Dialog` with a fixed structure:
 
-Create a tiny edge function `check-email-exists` that uses the **service role key** to look up whether an email already exists in `auth.users`. This is the only safe way to check, because client-side queries cannot read `auth.users` and the `profiles` table can lag if a signup partially failed.
+```text
+ModalShell (DialogContent)
+ ├─ ModalHeader   sticky top, title + close (X)
+ ├─ ModalBody     flex-1, overflow-y-auto, 16-20px gap
+ └─ ModalFooter   sticky bottom, primary right, secondary left
+```
 
-- Path: `supabase/functions/check-email-exists/index.ts`
-- Input: `{ email: string }`
-- Logic: use `supabase.auth.admin.listUsers()` filtered by email (or query `auth.users` directly via service role) and return `{ exists: boolean, confirmed: boolean }`
-- CORS enabled, no JWT required (it only returns a boolean)
-- Add a simple in-memory rate limit (max 10 calls/min per IP) to discourage email enumeration abuse
-- Register in `supabase/config.toml` with `verify_jwt = false`
+Defaults applied automatically:
+- `w-[calc(100%-1rem)] max-w-[420px] sm:max-w-[520px]`
+- `max-h-[90dvh]`, `flex flex-col`, `p-0 gap-0 overflow-hidden`
+- Body padding `px-5 py-5 space-y-4`
+- Footer `px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t bg-background`
+- Header `px-5 py-4 border-b bg-background`, close button always top-right
 
-### 2. Wire it into the signup flow (`src/pages/Auth.tsx`)
+This becomes the standard for every dashboard modal.
 
-In `handleSubmit`, before calling `signUp(...)` in the signup branch:
+## 2. Refactor existing modals to use the shell
+Apply `ModalShell` to:
+- `src/components/shipments/PayShipmentDialog.tsx` (checkout payment popup)
+- `src/components/wallet/CustomerAddFundsDialog.tsx`
+- `src/components/wallet/AddFundsDialog.tsx`
+- `src/pages/dashboard/Support.tsx` (new ticket dialog)
+- `src/pages/dashboard/Invoices.tsx` (preview dialog)
+- `src/pages/dashboard/ShoppingOrders.tsx` (any inline dialogs)
 
-1. Call `supabase.functions.invoke("check-email-exists", { body: { email } })`
-2. If `exists === true && confirmed === true`:
-   - Show toast: **"Email already registered"** — *"This email is already in use. Please sign in or reset your password."*
-   - Auto-switch the form to the Sign In tab and pre-fill the email
-   - Stop — do not call `signUp`
-3. If `exists === true && confirmed === false`:
-   - Show toast: **"Account exists but unverified"** — *"We've already sent a verification link to this email. Please check your inbox or click 'Resend' below."*
-   - Show the existing `showVerificationMessage` panel with the resend button
-   - Stop — do not call `signUp`
-4. Otherwise, proceed with the existing `signUp(...)` call as today.
+Backend calls, props, and pricing logic stay untouched — only the JSX wrapper and class names change.
 
-### 3. Belt-and-suspenders: detect silent duplicate from Supabase response
+## 3. Fix the Create Shipment "Items" section
+File: `src/components/shipments/AfricaniesShipmentForm.tsx`
 
-Even with the pre-check, also harden the post-signup path. Supabase returns `data.user.identities = []` when the email is already registered (silent duplicate). After `signUp` succeeds, check this and surface the same "Email already registered" message instead of the misleading "Check your email" success state.
+The Items step is inline (not a modal), but it has the same overflow problem on mobile. Changes:
+- Each item becomes a clean card: label-above-input, 48px inputs, 10px radius, light-grey bg, 16px gaps.
+- "Add Item" / "Remove" buttons placed in a clear row, never overlapping.
+- The wizard's bottom Next/Back bar becomes sticky on mobile (same pattern as Checkout) so the action button is never hidden under the chat icon.
 
-### 4. Login UX (small touch)
+## 4. Form/input baseline (used by shell + wizard)
+Verify `src/components/ui/input.tsx`, `select.tsx`, `textarea.tsx` render at:
+- height 48px desktop / 44px mobile
+- radius 10px
+- background `bg-muted/40` (maps to the light-grey requested)
+- label always above (no floating labels)
+- 16px gap between fields, 24px between sections
 
-Keep the existing "Email not confirmed" handling as-is — it already correctly blocks login and offers a resend button. No changes needed there.
+These are mostly already correct; only minor class tweaks expected.
 
-## Files Changed
+## 5. Button system inside modals
+Inside any modal footer, enforce:
+- Primary: `variant="default"` (already orange `#DF5101`, white text, 12px/20px padding, 8px radius via the existing button.tsx)
+- Secondary: `variant="outline"` (white bg, navy `#061043` border + text)
 
-- **NEW** `supabase/functions/check-email-exists/index.ts` — service-role email lookup
-- **EDIT** `supabase/config.toml` — register new function with `verify_jwt = false`
-- **EDIT** `src/pages/Auth.tsx` — pre-signup check + identities-empty fallback + auto-switch to sign-in
-- **EDIT** `src/contexts/AuthContext.tsx` — make `signUp` return `{ error, alreadyRegistered }` so the UI can branch cleanly
+No new variants — just consistent usage.
 
-## What this does NOT change
+## 6. Dropdown behavior
+Radix `Select` and `Popover` already use a portal so they don't push layout. I'll verify the open ones inside modals get `position="popper"` + `sideOffset={6}` and `onValueChange` immediately closes them. No layout shift, no reset.
 
-- No database migrations, no schema changes, no RLS changes
-- No changes to login, OTP flow, password reset, dashboards, shipments, payments, partners, or admin
-- No changes to the `auth-email-hook` or email templates — verification emails still work normally for new signups
-- Existing users are unaffected
+## 7. Chat-icon overlay
+Already shipped last turn — floating WhatsApp + AI chat buttons hide automatically while any dialog/sheet is open. Keeping that.
 
-## Behavior after the fix
+## 8. Visual cleanup
+Inside modals, remove nested borders / extra cards / heavy shadows. One outer container (the shell), one subtle divider where needed, that's it.
 
-| Scenario | Result |
-|---|---|
-| New email → signup | Account created, verification email sent (unchanged) |
-| Existing **verified** email → signup | Blocked with "Email already registered. Please sign in." → auto-switches to Sign In tab |
-| Existing **unverified** email → signup | Blocked with "Account exists but unverified. Resend verification?" → resend button shown |
-| Existing email → login without verifying | Blocked with "Please verify your email" + resend (unchanged) |
+## What I will NOT touch
+- Backend logic, edge functions, pricing math, Paystack flow, Supabase schema
+- Public homepage
+- Any color outside the existing `#061043` / `#DF5101` tokens
+
+## Files changed (estimate)
+- new: `src/components/ui/modal-shell.tsx`
+- edited: `PayShipmentDialog.tsx`, `CustomerAddFundsDialog.tsx`, `AddFundsDialog.tsx`, `Support.tsx`, `Invoices.tsx`, `AfricaniesShipmentForm.tsx`
+- minor: `input.tsx`, `select.tsx`, `textarea.tsx` (only if the heights/radius drift from spec)
+
+## Result
+Every dashboard popup will look and behave the same: centered card, never taller than the viewport, body scrolls inside, Pay Now / Submit always visible at the bottom, no chat icon in the way, clean spacing matching the Africaniés-style discipline.
