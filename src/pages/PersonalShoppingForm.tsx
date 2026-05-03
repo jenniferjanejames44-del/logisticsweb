@@ -10,6 +10,7 @@ import {
 } from "@/lib/procurementFees";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +32,7 @@ import {
 } from "lucide-react";
 
 const PersonalShoppingForm = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -140,15 +141,20 @@ const PersonalShoppingForm = () => {
   const canProceedStep1 = form.productName && form.itemDescription && itemValue > 0 && quantity >= 1;
   const canProceedStep2 = true; // optional fields
 
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      <main className="flex-1 py-8 px-4">
-        <div className="max-w-2xl mx-auto">
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+      </div>
+    );
+  }
+
+  const content = (
+        <div className="mx-auto w-full max-w-2xl">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary text-primary-foreground shadow-sm mb-4">
-              <ShoppingBag className="w-7 h-7" strokeWidth={2} />
+          <div className="mb-6 text-center sm:mb-8">
+            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm ring-4 ring-primary/8 sm:h-12 sm:w-12">
+              <ShoppingBag className="h-5 w-5 sm:h-5 sm:w-5" strokeWidth={2.4} />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Personal Shopping Request</h1>
             <p className="text-muted-foreground text-sm mt-1">
