@@ -124,9 +124,10 @@ const Track = () => {
     setError(null);
     setShipment(null);
 
-    const { data, error: fetchError } = await supabase
+    const { data: rpcData, error: fetchError } = await supabase
       .rpc("track_shipment_public", { tracking_num: searchNumber })
       .maybeSingle();
+    const data = rpcData as ShipmentData | null;
 
     setIsLoading(false);
 
@@ -450,23 +451,11 @@ const Track = () => {
                         <p className="font-semibold text-foreground">{formatDate(shipment.estimated_delivery)}</p>
                       </div>
                       <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
-                        <Package className="w-5 h-5 text-accent mb-2" />
-                        <p className="text-sm text-muted-foreground">Weight</p>
-                        <p className="font-semibold text-foreground">{shipment.weight} KG</p>
-                      </div>
-                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <ServiceIcon className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Service</p>
                         <p className="font-semibold text-foreground capitalize">{shipment.service_type.replace("_", " ")}</p>
                       </div>
                     </div>
-
-                    {shipment.description && (
-                      <div className="mt-6 rounded-lg border border-border bg-muted/30 p-5">
-                        <p className="text-sm text-muted-foreground mb-1">Package Description</p>
-                        <p className="text-foreground">{shipment.description}</p>
-                      </div>
-                    )}
 
                     {/* Email Notification Signup */}
                     <div className="mt-8 rounded-lg border border-primary/20 bg-primary/5 p-5 sm:p-6">
