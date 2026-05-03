@@ -827,18 +827,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.senderName}>
-                <SmoothInput value={senderName} onCommit={setSenderName} placeholder="John Doe" />
+                <SmoothInput value={senderName} onCommit={updateField("senderName", setSenderName)} placeholder="John Doe" />
               </Field>
               <Field label="Phone number" required error={errors.senderPhone}>
-                <SmoothInput value={senderPhone} onCommit={setSenderPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
+                <SmoothInput value={senderPhone} onCommit={updateField("senderPhone", setSenderPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.senderEmail}>
-                <SmoothInput type="email" value={senderEmail} onCommit={setSenderEmail} autoComplete="email" placeholder="email@example.com" />
+                <SmoothInput type="email" value={senderEmail} onCommit={updateField("senderEmail", setSenderEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
                 <Select
                   value={senderCountry}
-                  onValueChange={(v) => { setSenderCountry(v); setSenderState(""); }}
+                  onValueChange={(v) => { setSenderCountry(v); setSenderState(""); clearFieldError("senderCountry"); }}
                   disabled={isExport}
                 >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
@@ -847,16 +847,16 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   </SelectContent>
                 </Select>
               </Field>
-              {renderStateField(senderCountry, senderState, setSenderState, errors.senderState)}
+              {renderStateField(senderCountry, senderState, updateField("senderState", setSenderState), errors.senderState)}
               <Field label="City" required error={errors.senderCity}>
-                <SmoothInput value={senderCity} onCommit={setSenderCity} placeholder="Lagos" />
+                <SmoothInput value={senderCity} onCommit={updateField("senderCity", setSenderCity)} placeholder="Lagos" />
               </Field>
               <Field label="Zip / Postal code">
                 <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.senderAddress}>
-                  <SmoothInput value={senderAddress} onCommit={setSenderAddress} autoComplete="street-address" placeholder="Street, building, apt" />
+                  <SmoothInput value={senderAddress} onCommit={updateField("senderAddress", setSenderAddress)} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
@@ -874,18 +874,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">Who will receive the shipment?</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.receiverName}>
-                <SmoothInput value={receiverName} onCommit={setReceiverName} placeholder="Jane Doe" />
+                <SmoothInput value={receiverName} onCommit={updateField("receiverName", setReceiverName)} placeholder="Jane Doe" />
               </Field>
               <Field label="Phone number" required error={errors.receiverPhone}>
-                <SmoothInput value={receiverPhone} onCommit={setReceiverPhone} inputMode="tel" autoComplete="tel" placeholder="+234…" />
+                <SmoothInput value={receiverPhone} onCommit={updateField("receiverPhone", setReceiverPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
               </Field>
               <Field label="Email" error={errors.receiverEmail}>
-                <SmoothInput type="email" value={receiverEmail} onCommit={setReceiverEmail} autoComplete="email" placeholder="email@example.com" />
+                <SmoothInput type="email" value={receiverEmail} onCommit={updateField("receiverEmail", setReceiverEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
                 <Select
                   value={receiverCountry}
-                  onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); }}
+                  onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); clearFieldError("receiverCountry"); }}
                   disabled={!isExport}
                 >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
@@ -894,16 +894,16 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   </SelectContent>
                 </Select>
               </Field>
-              {renderStateField(receiverCountry, receiverState, setReceiverState, errors.receiverState)}
+              {renderStateField(receiverCountry, receiverState, updateField("receiverState", setReceiverState), errors.receiverState)}
               <Field label="City" required error={errors.receiverCity}>
-                <SmoothInput value={receiverCity} onCommit={setReceiverCity} placeholder="City" />
+                <SmoothInput value={receiverCity} onCommit={updateField("receiverCity", setReceiverCity)} placeholder="City" />
               </Field>
               <Field label="Zip / Postal code">
                 <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.receiverAddress}>
-                  <SmoothInput value={receiverAddress} onCommit={setReceiverAddress} autoComplete="street-address" placeholder="Street, building, apt" />
+                  <SmoothInput value={receiverAddress} onCommit={updateField("receiverAddress", setReceiverAddress)} autoComplete="street-address" placeholder="Street, building, apt" />
                 </Field>
               </div>
             </div>
