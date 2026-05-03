@@ -161,10 +161,11 @@ const Shipments = () => {
       title="Shipments"
       description="Manage and track all your shipments"
       action={
-        <Button asChild className="h-10 px-4 text-sm bg-accent hover:bg-accent/90 text-white rounded-lg">
+        <Button asChild className="h-11 sm:h-12 px-4 sm:px-5 text-sm font-semibold bg-accent hover:bg-accent/90 text-white rounded-lg">
           <a href="/dashboard/shipments/new">
             <Plus className="w-4 h-4" />
-            New Shipment
+            <span className="hidden sm:inline">New Shipment</span>
+            <span className="sm:hidden">New</span>
           </a>
         </Button>
       }
@@ -293,8 +294,11 @@ const Shipments = () => {
                       shipment.payment_status === "paid" ? (
                         <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs px-2.5 py-1">Paid</Badge>
                       ) : (
-                        <Button onClick={() => openPaymentDialog(shipment)} className="h-9 text-xs px-4 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold">
-                          <DollarSign className="w-3.5 h-3.5" />
+                        <Button
+                          onClick={() => openPaymentDialog(shipment)}
+                          className="h-11 px-4 text-sm bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold"
+                        >
+                          <DollarSign className="w-4 h-4" />
                           Pay Now
                         </Button>
                       )

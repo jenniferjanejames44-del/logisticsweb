@@ -121,7 +121,8 @@ const DashboardSidebar = () => {
       {/* Overlay */}
       {isMobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40"
+          style={{ backgroundColor: "rgba(0,0,0,0.15)" }}
           onClick={() => setIsMobileOpen(false)}
         />
       )}

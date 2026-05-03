@@ -34,17 +34,21 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
   if (!user) return null;
 
   return (
-    <div className="min-h-screen flex bg-[hsl(220,15%,96%)]">
+    <div className="min-h-screen flex bg-[#f5f5f7] dark:bg-background">
       <DashboardSidebar />
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto min-w-0">
         {/* Top Header Bar */}
-        <div className="sticky top-0 z-30 border-b border-border/40 bg-white">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-14 sm:h-16">
-              <div className="pl-20 lg:pl-0">
-                <h1 className="text-base font-bold text-foreground sm:text-lg">{title}</h1>
+        <div className="sticky top-0 z-30 border-b border-border/40 bg-background">
+          <div className="mx-auto max-w-[1180px] px-4 sm:px-5 lg:px-6">
+            <div className="flex items-center justify-between gap-3 h-16 lg:h-[68px]">
+              <div className="min-w-0 pl-14 lg:pl-0">
+                <h1 className="text-[15px] sm:text-base lg:text-lg font-bold text-foreground truncate leading-tight">
+                  {title}
+                </h1>
                 {description && (
-                  <p className="text-[12px] text-muted-foreground leading-tight hidden sm:block">{description}</p>
+                  <p className="text-[12px] text-muted-foreground leading-tight truncate hidden sm:block">
+                    {description}
+                  </p>
                 )}
               </div>
               {action && <div className="flex-shrink-0">{action}</div>}
@@ -53,7 +57,7 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
         </div>
 
         {/* Page Content */}
-        <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8 sm:py-6">
+        <div className="mx-auto max-w-[1180px] px-4 py-5 sm:px-5 sm:py-6 lg:px-6 lg:py-8">
           {children}
         </div>
       </main>
