@@ -383,7 +383,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
         height_cm: parseFloat(formData.height_cm) || null,
         service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
         description: descParts.filter(Boolean).join(" | ") || null,
-        warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
+        warehouse_location: null,
         pickup_prepaid: isPickupMethod ? pickupFeePrepaid : false,
         status: "shipment_created",
         estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
@@ -412,7 +412,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const isStep1Complete = formData.sender_name && formData.sender_phone && formData.sender_address && formData.sender_city;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_address && formData.receiver_city && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
-  const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && (!requiresWarehouse || formData.warehouse_location) && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
+  const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const isSenderNameInvalid = showStepValidation && !formData.sender_name;
   const isSenderPhoneInvalid = showStepValidation && !formData.sender_phone;
@@ -427,7 +427,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const isOriginInvalid = showStepValidation && !formData.origin_country;
   const isDestinationInvalid = showStepValidation && !formData.destination_country;
   const isRouteInvalid = showStepValidation && !!formData.origin_country && !!formData.destination_country && !isRouteValid;
-  const isWarehouseInvalid = showStepValidation && requiresWarehouse && !formData.warehouse_location;
   const isDeliveryInvalid = showStepValidation && !selectedDeliveryMethod;
   const isPackagingInvalid = showStepValidation && packagingSelectionRequired && !hasPackagingSelection;
 
@@ -463,7 +462,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
       if (!shippingType) return "shipping_type";
       if (!formData.origin_country) return "origin_country";
       if (!formData.destination_country || !isRouteValid) return "destination_country";
-      if (requiresWarehouse && !formData.warehouse_location) return "warehouse_location";
       if (!selectedDeliveryMethod) return "delivery_method";
       if (packagingSelectionRequired && !hasPackagingSelection) return "packaging_materials";
     }
@@ -476,12 +474,10 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
     formData.receiver_phone,
     formData.sender_name,
     formData.sender_phone,
-    formData.warehouse_location,
     formData.weight,
     hasPackagingSelection,
     isRouteValid,
     packagingSelectionRequired,
-    requiresWarehouse,
     selectedDeliveryMethod,
   ]);
 
