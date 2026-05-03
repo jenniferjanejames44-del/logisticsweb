@@ -19,6 +19,7 @@ import {
   ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
   PackageCheck, Store, MapPin, Box, Mail, ShoppingBag, Thermometer,
 } from "lucide-react";
+import { getStatesForCountry } from "@/lib/states";
 
 type Flow = "import" | "export";
 
@@ -64,13 +65,21 @@ const SHIPPING_METHODS = [
   { id: "ocean", label: "Ocean Delivery", days: "25–35 days", icon: Ship, desc: "Affordable for heavy or bulk shipments" },
 ];
 
-const DELIVERY_TYPES = [
+const IMPORT_DELIVERY_TYPES = [
   { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
   { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
 ];
 
-const STEPS = [
+const EXPORT_DELIVERY_TYPES = [
+  { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
+  { id: "drop_off_local", label: "Local Drop Off", desc: "You drop your items at our Nigeria warehouse", icon: Store },
+];
+
+const IMPORT_STEPS = [
   "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
+] as const;
+const EXPORT_STEPS = [
+  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
@@ -257,11 +266,11 @@ function QuantityInput({ value, onCommit }: { value: number; onCommit: (value: n
   );
 }
 
-function Stepper({ step }: { step: number }) {
+function Stepper({ step, steps }: { step: number; steps: readonly string[] }) {
   return (
     <div className="mb-6 overflow-x-auto rounded-xl border border-border/60 bg-muted/30 px-3 py-3">
       <div className="flex items-center gap-2 min-w-max sm:min-w-0 sm:justify-between">
-        {STEPS.map((label, i) => {
+        {steps.map((label, i) => {
           const done = i < step;
           const active = i === step;
           return (
@@ -274,7 +283,7 @@ function Stepper({ step }: { step: number }) {
                 </span>
                 <span className={`hidden text-[11px] font-semibold sm:inline ${active ? "text-accent" : done ? "text-primary" : "text-muted-foreground"}`}>{label}</span>
               </div>
-              {i < STEPS.length - 1 && <span className="h-px w-4 bg-border sm:w-6" />}
+              {i < steps.length - 1 && <span className="h-px w-4 bg-border sm:w-6" />}
             </div>
           );
         })}
@@ -289,6 +298,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const { toast } = useToast();
 
   const isExport = flow === "export";
+  const STEPS = isExport ? EXPORT_STEPS : IMPORT_STEPS;
+  const DELIVERY_TYPES = isExport ? EXPORT_DELIVERY_TYPES : IMPORT_DELIVERY_TYPES;
 
   const [step, setStep] = useState(0);
 
@@ -302,6 +313,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
   const [senderCountry, setSenderCountry] = useState(isExport ? "Nigeria" : "");
+  const [senderState, setSenderState] = useState("");
   const [senderCity, setSenderCity] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [senderZip, setSenderZip] = useState("");
@@ -311,6 +323,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverPhone, setReceiverPhone] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
   const [receiverCountry, setReceiverCountry] = useState(isExport ? "" : "Nigeria");
+  const [receiverState, setReceiverState] = useState("");
   const [receiverCity, setReceiverCity] = useState("");
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
@@ -352,7 +365,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name, email, phone, address, city, country")
+    supabase.from("profiles").select("full_name, email, phone, address, city, state, country")
       .eq("user_id", user.id).single().then(({ data }) => {
         if (!data) return;
         if (isExport) {
@@ -361,12 +374,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           if (!senderPhone && data.phone) setSenderPhone(data.phone);
           if (!senderAddress && data.address) setSenderAddress(data.address);
           if (!senderCity && data.city) setSenderCity(data.city);
+          if (!senderState && data.state) setSenderState(data.state);
         } else {
           if (!receiverName && data.full_name) setReceiverName(data.full_name);
           if (!receiverEmail && data.email) setReceiverEmail(data.email);
           if (!receiverPhone && data.phone) setReceiverPhone(data.phone);
           if (!receiverAddress && data.address) setReceiverAddress(data.address);
           if (!receiverCity && data.city) setReceiverCity(data.city);
+          if (!receiverState && data.state) setReceiverState(data.state);
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -406,7 +421,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
   useEffect(() => {
-    if (step !== 6) return;
+    if (STEPS[step] !== "Summary") return;
     if (!destinationCountry || totalWeight <= 0) {
       setBreakdown(null);
       setPricingError(null);
@@ -469,28 +484,31 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const e: Record<string, string> = {};
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
-    if (s === 0 && !method) e.method = "Please select a shipping method.";
-    if (s === 1 && !deliveryType) e.deliveryType = "Please select a delivery type.";
-    if (s === 2 && !warehouseId) e.warehouse = "Please select a warehouse.";
-    if (s === 3) {
+    const stepName = STEPS[s];
+    if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
+    if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
+    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a warehouse.";
+    if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
       else if (!isPhone(senderPhone)) e.senderPhone = "Enter a valid phone number";
       if (senderEmail.trim() && !isEmail(senderEmail)) e.senderEmail = "Enter a valid email";
       if (!senderCountry) e.senderCountry = "Country is required";
+      if (!senderState.trim()) e.senderState = "Please select or enter your state";
       if (!senderCity.trim()) e.senderCity = "City is required";
       if (!senderAddress.trim()) e.senderAddress = "Street address is required";
     }
-    if (s === 4) {
+    if (stepName === "Receiver") {
       if (!receiverName.trim()) e.receiverName = "Full name is required";
       if (!receiverPhone.trim()) e.receiverPhone = "Phone number is required";
       else if (!isPhone(receiverPhone)) e.receiverPhone = "Enter a valid phone number";
       if (receiverEmail.trim() && !isEmail(receiverEmail)) e.receiverEmail = "Enter a valid email";
       if (!receiverCountry) e.receiverCountry = "Country is required";
+      if (!receiverState.trim()) e.receiverState = "Please select or enter your state";
       if (!receiverCity.trim()) e.receiverCity = "City is required";
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
-    if (s === 5) {
+    if (stepName === "Items") {
       if (items.length === 0) e.items = "Add at least one item.";
       items.forEach((it, idx) => {
         if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
@@ -573,10 +591,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         description: desc,
         sender_name: senderName,
         sender_phone: senderPhone,
-        sender_address: [senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", "),
+        sender_address: [senderAddress, senderCity, senderState, senderZip, senderCountry].filter(Boolean).join(", "),
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
-        receiver_address: [receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", "),
+        receiver_address: [receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", "),
       };
 
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
@@ -589,6 +607,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           phone: senderPhone,
           address: senderAddress,
           city: senderCity,
+          state: senderState,
           country: senderCountry,
         }).eq("user_id", user.id);
       }
@@ -604,8 +623,36 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 0:
+    const stepName = STEPS[step];
+    const renderStateField = (
+      country: string,
+      value: string,
+      onChange: (v: string) => void,
+      error?: string,
+    ) => {
+      const list = getStatesForCountry(country);
+      if (list && list.length > 0) {
+        return (
+          <Field label="State / Province / Region" required error={error}>
+            <Select value={value} onValueChange={onChange} disabled={!country}>
+              <SelectTrigger>
+                <SelectValue placeholder={country ? "Select state" : "Select country first"} />
+              </SelectTrigger>
+              <SelectContent className="max-h-72">
+                {list.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
+        );
+      }
+      return (
+        <Field label="State / Province / Region" required error={error}>
+          <SmoothInput value={value} onCommit={onChange} placeholder="Enter your state or region" />
+        </Field>
+      );
+    };
+    switch (stepName) {
+      case "Method":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Select Your Preferred Shipment Method</h2>
@@ -639,11 +686,15 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 1:
+      case "Delivery Type":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Delivery Type</h2>
-            <p className="mt-1 text-sm text-muted-foreground">How will your goods reach the warehouse?</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isExport
+                ? "How would you like us to receive your items in Nigeria?"
+                : "How will your goods reach the warehouse?"}
+            </p>
             <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
                 <Select value={deliveryType} onValueChange={setDeliveryType}>
@@ -681,7 +732,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 2: {
+      case "Warehouse": {
         const displayCountries = ["China", "United States", "United Kingdom"];
         const wItems = displayCountries.map((country) => {
           const w = warehouses.find((x) => x.country === country);
@@ -746,11 +797,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         );
       }
 
-      case 3:
+      case "Sender":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Sender Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Who is sending the shipment?</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isExport ? "Who is sending from Nigeria?" : "Who is sending the shipment?"}
+            </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <Field label="Full name" required error={errors.senderName}>
                 <SmoothInput value={senderName} onCommit={setSenderName} placeholder="John Doe" />
@@ -762,13 +815,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={senderEmail} onCommit={setSenderEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.senderCountry}>
-                <Select value={senderCountry} onValueChange={setSenderCountry} disabled={isExport}>
+                <Select
+                  value={senderCountry}
+                  onValueChange={(v) => { setSenderCountry(v); setSenderState(""); }}
+                  disabled={isExport}
+                >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
+              {renderStateField(senderCountry, senderState, setSenderState, errors.senderState)}
               <Field label="City" required error={errors.senderCity}>
                 <SmoothInput value={senderCity} onCommit={setSenderCity} placeholder="Lagos" />
               </Field>
@@ -788,7 +846,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 4:
+      case "Receiver":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Receiver Details</h2>
@@ -804,13 +862,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={receiverEmail} onCommit={setReceiverEmail} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <Field label="Country" required error={errors.receiverCountry}>
-                <Select value={receiverCountry} onValueChange={setReceiverCountry} disabled={!isExport}>
+                <Select
+                  value={receiverCountry}
+                  onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); }}
+                  disabled={!isExport}
+                >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
                     {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
+              {renderStateField(receiverCountry, receiverState, setReceiverState, errors.receiverState)}
               <Field label="City" required error={errors.receiverCity}>
                 <SmoothInput value={receiverCity} onCommit={setReceiverCity} placeholder="City" />
               </Field>
@@ -826,7 +889,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 5:
+      case "Items":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Item Details</h2>
@@ -1025,7 +1088,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 6: {
+      case "Summary": {
         const methodLabel = SHIPPING_METHODS.find((m) => m.id === method)?.label || "—";
         const deliveryLabel = DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label || "—";
         return (
@@ -1037,10 +1100,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="rounded-xl border border-border/60 bg-white p-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Shipment</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+                  {isExport ? "Shipping From Nigeria" : "Shipment"}
+                </h3>
                 <SummaryRow label="Method" value={methodLabel} />
                 <SummaryRow label="Delivery type" value={deliveryLabel} />
-                <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
+                {!isExport && (
+                  <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
+                )}
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
@@ -1052,13 +1119,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Sender</h3>
                 <SummaryRow label="Name" value={senderName} />
                 <SummaryRow label="Phone" value={senderPhone} />
-                <SummaryRow label="Address" value={[senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", ")} />
+                <SummaryRow label="Address" value={[senderAddress, senderCity, senderState, senderZip, senderCountry].filter(Boolean).join(", ")} />
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Receiver</h3>
                 <SummaryRow label="Name" value={receiverName} />
                 <SummaryRow label="Phone" value={receiverPhone} />
-                <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
+                <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
               {packagingLines.length > 0 && (
                 <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
@@ -1128,7 +1195,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   return (
     <>
       <div className="rounded-xl border border-border/60 bg-white p-4 shadow-sm sm:p-6 pb-[calc(env(safe-area-inset-bottom)+88px)] sm:pb-6">
-        <Stepper step={step} />
+        <Stepper step={step} steps={STEPS} />
 
         <div className="min-h-[300px]">{renderStep()}</div>
 
