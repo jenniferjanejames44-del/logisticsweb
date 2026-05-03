@@ -164,8 +164,8 @@ const Shipments = () => {
         <Button asChild className="h-11 sm:h-12 px-4 sm:px-5 text-sm font-semibold bg-accent hover:bg-accent/90 text-white rounded-lg">
           <a href="/dashboard/shipments/new">
             <Plus className="w-4 h-4" />
-            <span className="hidden xs:inline sm:inline">New Shipment</span>
-            <span className="xs:hidden sm:hidden">New</span>
+            <span className="hidden sm:inline">New Shipment</span>
+            <span className="sm:hidden">New</span>
           </a>
         </Button>
       }
