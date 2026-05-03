@@ -13,7 +13,7 @@ import "./index.css";
 
   if (!redirectedPath) return;
 
-  const decodedPath = decodeURIComponent(redirectedPath).replace(/^\/?(?:%2F|2F)/i, "/");
+  const decodedPath = decodeURIComponent(redirectedPath).replace(/^\/?(?:%2F|2F|252F)/i, "/");
   const restoredQuery = url.searchParams.get("q")?.replace(/~and~/g, "&") ?? "";
   const cleanPath = decodedPath.startsWith("/") ? decodedPath : `/${decodedPath}`;
   const restoredUrl = `${cleanPath}${restoredQuery ? `?${restoredQuery}` : ""}${window.location.hash}`;
