@@ -61,8 +61,9 @@ const COUNTRIES = [
 ];
 
 const SHIPPING_METHODS = [
-  { id: "air-express", label: "Air Delivery", days: "5–10 days", icon: Plane, desc: "Faster delivery via air freight" },
-  { id: "ocean", label: "Ocean Delivery", days: "25–35 days", icon: Ship, desc: "Affordable for heavy or bulk shipments" },
+  { id: "air-express", label: "Express", days: "3–5 business days", icon: Plane, desc: "Fastest air delivery for urgent shipments" },
+  { id: "air-standard", label: "Standard", days: "14–21 days", icon: Plane, desc: "Reliable air freight at a balanced price" },
+  { id: "ocean", label: "Ocean", days: "45–60 days from vessel sails", icon: Ship, desc: "Most affordable option for heavy or bulk cargo" },
 ];
 
 const IMPORT_DELIVERY_TYPES = [
@@ -558,7 +559,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     setSubmitting(true);
     try {
       const eta = new Date();
-      eta.setDate(eta.getDate() + (method === "ocean" ? 30 : 7));
+      const etaDays = method === "ocean" ? 60 : method === "air-standard" ? 21 : 5;
+      eta.setDate(eta.getDate() + etaDays);
 
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
