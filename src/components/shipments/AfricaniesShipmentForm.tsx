@@ -690,11 +690,16 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
                 <Select value={deliveryType} onValueChange={setDeliveryType}>
-                  <SelectTrigger><SelectValue placeholder="Select a delivery type" /></SelectTrigger>
+                  <SelectTrigger className="h-auto min-h-12 py-2 [&>span]:line-clamp-none [&>span]:whitespace-normal [&>span]:text-left">
+                    <SelectValue placeholder="Select a delivery type" />
+                  </SelectTrigger>
                   <SelectContent>
                     {DELIVERY_TYPES.map((d) => (
-                      <SelectItem key={d.id} value={d.id}>
-                        {d.label} — {d.desc}
+                      <SelectItem key={d.id} value={d.id} className="py-2.5">
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-sm font-semibold text-foreground">{d.label}</span>
+                          <span className="text-xs text-muted-foreground whitespace-normal leading-snug">{d.desc}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
