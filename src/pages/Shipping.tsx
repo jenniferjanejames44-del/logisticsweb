@@ -255,17 +255,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Filter warehouses based on shipping type
-  const filteredWarehouses = useMemo(() => {
-    if (!shippingType) return warehouses;
-    if (shippingType === "import") {
-      // Show international warehouses (not Nigeria)
-      return warehouses.filter((w: any) => w.country?.toLowerCase() !== "nigeria");
-    }
-    // Export: show Nigeria warehouses only
-    return warehouses.filter((w: any) => w.country?.toLowerCase() === "nigeria");
-  }, [warehouses, shippingType]);
-
   // Auto-fill origin/destination based on shipping type
   const handleShippingTypeChange = (type: ShippingType) => {
     setShippingType(type);
@@ -302,10 +291,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
     return ALL_COUNTRIES;
   }, [shippingType]);
 
-  const selectedWarehouse = useMemo(() =>
-    warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
-  );
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setUploadedFiles((prev) => [...prev, ...Array.from(e.target.files!)].slice(0, 5));
   };
@@ -329,7 +314,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
 
   const packagingSelectionRequired = packagingMaterials.length > 0;
   const hasPackagingSelection = Object.values(packagingQuantities).some((qty) => qty > 0);
-  const requiresWarehouse = shippingType === "import";
 
   useEffect(() => {
     if (showStepValidation) {
