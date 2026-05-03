@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
 import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
@@ -72,6 +73,14 @@ const DELIVERY_TYPES = [
 const STEPS = [
   "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
 ] as const;
+
+const createEmptyItem = (): Item => ({
+  id: crypto.randomUUID(),
+  description: "",
+  quantity: 1,
+  weight: "",
+  value: "",
+});
 
 // Pick an icon for a packaging material based on its name keywords.
 const iconFor = (name: string) => {
@@ -251,28 +260,22 @@ function QuantityInput({ value, onCommit }: { value: number; onCommit: (value: n
 
 function Stepper({ step }: { step: number }) {
   return (
-    <div className="mb-5 overflow-x-auto">
-      <div className="flex items-center gap-1.5 min-w-max sm:min-w-0 sm:justify-between">
+    <div className="mb-6 overflow-x-auto rounded-xl border border-border/60 bg-muted/30 px-3 py-3">
+      <div className="flex items-center gap-2 min-w-max sm:min-w-0 sm:justify-between">
         {STEPS.map((label, i) => {
           const done = i < step;
           const active = i === step;
           return (
-            <div key={label} className="flex items-center gap-1.5">
-              <div
-                className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
-                  active ? "bg-primary text-primary-foreground"
-                  : done ? "bg-primary/10 text-primary"
-                  : "bg-muted text-muted-foreground"
-                }`}
-              >
-                <span className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] ${
-                  active ? "bg-white/25" : done ? "bg-primary text-primary-foreground" : "bg-background"
+            <div key={label} className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <span className={`flex h-6 w-6 items-center justify-center rounded-full border text-[11px] font-bold transition-colors ${
+                  active ? "border-accent bg-accent text-accent-foreground" : done ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background text-muted-foreground"
                 }`}>
-                  {done ? <Check className="h-2.5 w-2.5" /> : i + 1}
+                  {done ? <Check className="h-3 w-3" /> : i + 1}
                 </span>
-                <span className="hidden sm:inline">{label}</span>
+                <span className={`hidden text-[11px] font-semibold sm:inline ${active ? "text-accent" : done ? "text-primary" : "text-muted-foreground"}`}>{label}</span>
               </div>
-              {i < STEPS.length - 1 && <span className="text-muted-foreground/40 text-xs">›</span>}
+              {i < STEPS.length - 1 && <span className="h-px w-4 bg-border sm:w-6" />}
             </div>
           );
         })}
