@@ -266,11 +266,11 @@ function QuantityInput({ value, onCommit }: { value: number; onCommit: (value: n
   );
 }
 
-function Stepper({ step }: { step: number }) {
+function Stepper({ step, steps }: { step: number; steps: readonly string[] }) {
   return (
     <div className="mb-6 overflow-x-auto rounded-xl border border-border/60 bg-muted/30 px-3 py-3">
       <div className="flex items-center gap-2 min-w-max sm:min-w-0 sm:justify-between">
-        {STEPS.map((label, i) => {
+        {steps.map((label, i) => {
           const done = i < step;
           const active = i === step;
           return (
@@ -283,7 +283,7 @@ function Stepper({ step }: { step: number }) {
                 </span>
                 <span className={`hidden text-[11px] font-semibold sm:inline ${active ? "text-accent" : done ? "text-primary" : "text-muted-foreground"}`}>{label}</span>
               </div>
-              {i < STEPS.length - 1 && <span className="h-px w-4 bg-border sm:w-6" />}
+              {i < steps.length - 1 && <span className="h-px w-4 bg-border sm:w-6" />}
             </div>
           );
         })}
