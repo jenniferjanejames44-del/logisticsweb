@@ -191,23 +191,26 @@ const CreateShipment = () => {
   // Direction selection screen
   return (
     <DashboardLayout
-      title="Create Shipment"
-      description="Choose a direction to begin — we'll guide you step by step."
+      title="Shipments"
+      description="Create and manage your logistics requests."
     >
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-6 sm:mb-8">
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-primary/8 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
-            Step 1 of 2
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-5 sm:mb-6">
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm ring-4 ring-primary/8">
+            <Package className="h-4.5 w-4.5" />
+          </div>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            New shipment
           </p>
-          <h2 className="mt-3 text-xl sm:text-2xl font-bold text-foreground">
+          <h2 className="mt-1 text-xl font-bold text-foreground sm:text-2xl">
             Where is your shipment going?
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             Pick a direction to start. You can change it any time before submitting.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
           {directionOptions.map((opt) => {
             const Icon = opt.icon;
             return (
