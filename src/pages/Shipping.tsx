@@ -17,8 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import {
   Package, MapPin, Truck, ArrowRight, ArrowLeft, Scale, CheckCircle2,
-  Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
-  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
+  DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
+  MapPinned, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
 import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
@@ -63,7 +63,7 @@ const shipmentWorkflowGuides = {
     badge: "Import workflow",
     shipmentTitle: "Start your import shipment",
     quoteTitle: "Get an import shipping quote",
-    description: "Use this flow when your goods are moving from a supported RAC warehouse country to the final destination.",
+    description: "Use this flow when your goods are moving from another country to the final destination in Nigeria.",
     serviceLink: "/services/import",
   },
   export: {
@@ -109,7 +109,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const fieldRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // DB data
-  const [warehouses, setWarehouses] = useState<any[]>([]);
   const [extraCharges, setExtraCharges] = useState<any[]>([]);
   const [activeRoutes, setActiveRoutes] = useState<any[]>([]);
   const [packagingMaterials, setPackagingMaterials] = useState<any[]>([]);
@@ -157,13 +156,11 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   // Fetch all DB data
   useEffect(() => {
     const fetchData = async () => {
-      const [whRes, routeRes, pkgRes, dmRes] = await Promise.all([
-        (supabase as any).from("warehouses").select("*").eq("is_active", true),
+      const [routeRes, pkgRes, dmRes] = await Promise.all([
         supabase.from("shipping_routes").select("origin_country, destination_country").eq("is_active", true),
         (supabase as any).from("packaging_materials").select("*").eq("is_active", true).order("name"),
         (supabase as any).from("delivery_methods").select("*").eq("is_active", true).order("fee"),
       ]);
-      setWarehouses(whRes.data || []);
       setExtraCharges([]);
       setActiveRoutes(routeRes.data || []);
       setPackagingMaterials(pkgRes.data || []);
@@ -258,17 +255,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
 
   const originCountries = useMemo(() => [...new Set(activeRoutes.map((r: any) => r.origin_country))].sort(), [activeRoutes]);
 
-  // Filter warehouses based on shipping type
-  const filteredWarehouses = useMemo(() => {
-    if (!shippingType) return warehouses;
-    if (shippingType === "import") {
-      // Show international warehouses (not Nigeria)
-      return warehouses.filter((w: any) => w.country?.toLowerCase() !== "nigeria");
-    }
-    // Export: show Nigeria warehouses only
-    return warehouses.filter((w: any) => w.country?.toLowerCase() === "nigeria");
-  }, [warehouses, shippingType]);
-
   // Auto-fill origin/destination based on shipping type
   const handleShippingTypeChange = (type: ShippingType) => {
     setShippingType(type);
@@ -304,10 +290,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
     }
     return ALL_COUNTRIES;
   }, [shippingType]);
-
-  const selectedWarehouse = useMemo(() =>
-    warehouses.find((w: any) => w.id === formData.warehouse_location), [formData.warehouse_location, warehouses]
-  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) setUploadedFiles((prev) => [...prev, ...Array.from(e.target.files!)].slice(0, 5));
@@ -401,7 +383,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
         height_cm: parseFloat(formData.height_cm) || null,
         service_type: shippingSpeed === "express" ? "air-express" : "air-standard",
         description: descParts.filter(Boolean).join(" | ") || null,
-        warehouse_location: selectedWarehouse?.name || formData.warehouse_location || null,
+        warehouse_location: null,
         pickup_prepaid: isPickupMethod ? pickupFeePrepaid : false,
         status: "shipment_created",
         estimated_delivery: estimatedDelivery.toISOString().split("T")[0],
@@ -430,7 +412,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const isStep1Complete = formData.sender_name && formData.sender_phone && formData.sender_address && formData.sender_city;
   const isStep2Complete = formData.receiver_name && formData.receiver_phone && formData.receiver_address && formData.receiver_city && formData.receiver_country;
   const isStep3Complete = formData.weight && parseFloat(formData.weight) > 0;
-  const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && formData.warehouse_location && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
+  const isStep4Complete = shippingType && formData.origin_country && formData.destination_country && isRouteValid && selectedDeliveryMethod && (!packagingSelectionRequired || hasPackagingSelection);
 
   const isSenderNameInvalid = showStepValidation && !formData.sender_name;
   const isSenderPhoneInvalid = showStepValidation && !formData.sender_phone;
@@ -445,7 +427,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   const isOriginInvalid = showStepValidation && !formData.origin_country;
   const isDestinationInvalid = showStepValidation && !formData.destination_country;
   const isRouteInvalid = showStepValidation && !!formData.origin_country && !!formData.destination_country && !isRouteValid;
-  const isWarehouseInvalid = showStepValidation && !formData.warehouse_location;
   const isDeliveryInvalid = showStepValidation && !selectedDeliveryMethod;
   const isPackagingInvalid = showStepValidation && packagingSelectionRequired && !hasPackagingSelection;
 
@@ -481,7 +462,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
       if (!shippingType) return "shipping_type";
       if (!formData.origin_country) return "origin_country";
       if (!formData.destination_country || !isRouteValid) return "destination_country";
-      if (!formData.warehouse_location) return "warehouse_location";
       if (!selectedDeliveryMethod) return "delivery_method";
       if (packagingSelectionRequired && !hasPackagingSelection) return "packaging_materials";
     }
@@ -494,7 +474,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
     formData.receiver_phone,
     formData.sender_name,
     formData.sender_phone,
-    formData.warehouse_location,
     formData.weight,
     hasPackagingSelection,
     isRouteValid,
@@ -905,7 +884,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Truck className="w-4 h-4 text-primary" strokeWidth={2} /></div>
-                        <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, pickup, and delivery preferences</p></div>
                       </div>
 
                       {!embedded && showStepValidation && !isStep4Complete && (
@@ -968,33 +947,6 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                           {formData.origin_country && formData.destination_country && !isRouteValid && (
                             <div className="rounded-xl bg-destructive/[0.04] p-3 text-sm text-destructive ring-1 ring-destructive/20">
                               This route is not currently available. Please select a different origin/destination.
-                            </div>
-                          )}
-
-                          {/* Warehouse */}
-                          <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
-                            <Label className="text-sm font-medium flex items-center gap-1.5">
-                              <Warehouse className="w-3.5 h-3.5" />
-                              {shippingType === "import" ? "Select International Warehouse *" : "Select Nigeria Warehouse *"}
-                            </Label>
-                            <p className="text-xs text-muted-foreground">
-                              {shippingType === "import"
-                                ? "Choose the international warehouse where your goods will be shipped from"
-                                : "Choose the Nigeria warehouse where your goods will be dispatched from"}
-                            </p>
-                            <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
-                              <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
-                              <SelectContent className="bg-card border-border">
-                                {filteredWarehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
-                              </SelectContent>
-                            </Select>
-                            {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
-                          </div>
-                          {selectedWarehouse && (
-                            <div className={`${softPanelClass} bg-white`}>
-                              <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
-                              <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
-                              {selectedWarehouse.phone && <p className="mt-1 flex items-center gap-1 break-words text-sm text-muted-foreground"><Phone className="w-3 h-3 shrink-0" /> {selectedWarehouse.phone}</p>}
                             </div>
                           )}
 
@@ -1173,7 +1125,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                               </span>
                               <p className="text-base font-semibold text-foreground">{formData.origin_country} → {formData.destination_country}</p>
                               <p className="text-sm text-muted-foreground">
-                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • {selectedWarehouse?.name || "Warehouse pending"}
+                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • Pickup from sender address
                               </p>
                             </div>
                             <div className="rounded-lg bg-white px-3 py-2.5 border border-border/40 sm:min-w-[140px] sm:text-right">
@@ -1202,7 +1154,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                           <div className="space-y-2.5">
                             {[
                               `Sender and receiver details captured`,
-                              `Route and warehouse selected`,
+                              `Route and pickup selected`,
                               `${selectedDeliveryMethodData?.name || "Pickup"} delivery confirmed`,
                               packagingCost > 0 ? "Packaging materials included" : "No packaging selected",
                             ].map((item) => (
@@ -1243,7 +1195,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                                 { label: "Volumetric Weight", value: `${volumetricWeight.toFixed(2)} KG` },
                                 { label: "Chargeable Weight", value: `${chargeableWeight.toFixed(2)} KG` },
                               ] : []),
-                              { label: "Warehouse", value: selectedWarehouse?.name || "—" },
+                              { label: "Pickup", value: "Sender address" },
                               { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
@@ -1461,7 +1413,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
             <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-5">
               {[
                 { num: 1, title: "Create your shipment online", icon: ClipboardList },
-                { num: 2, title: "Send package to our warehouse", icon: Package },
+                { num: 2, title: "We pick up your package", icon: Package },
                 { num: 3, title: "Our team processes the shipment", icon: Truck },
                 { num: 4, title: "Track from your dashboard", icon: Globe },
                 { num: 5, title: "Receive delivery or pickup", icon: CheckCircle2 },

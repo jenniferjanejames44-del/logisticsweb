@@ -16,8 +16,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
-  ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
-  PackageCheck, Store, MapPin, Box, Mail, ShoppingBag, Thermometer,
+  ArrowRight, ArrowLeft, Plane, Ship, Check,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer,
 } from "lucide-react";
 import { getStatesForCountry } from "@/lib/states";
 
@@ -32,14 +32,6 @@ interface Item {
   length?: string;
   width?: string;
   height?: string;
-}
-
-interface Warehouse {
-  id: string;
-  name: string;
-  country: string;
-  address: string;
-  phone: string | null;
 }
 
 interface PackagingMaterial {
@@ -67,8 +59,7 @@ const SHIPPING_METHODS = [
 ];
 
 const IMPORT_DELIVERY_TYPES = [
-  { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
-  { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
+  { id: "pickup", label: "Pickup", desc: "We collect your items from the sender or supplier address", icon: PackageCheck },
 ];
 
 const EXPORT_DELIVERY_TYPES = [
@@ -76,7 +67,7 @@ const EXPORT_DELIVERY_TYPES = [
 ];
 
 const IMPORT_STEPS = [
-  "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
   "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
@@ -311,9 +302,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
 
-  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
-  const [warehouseId, setWarehouseId] = useState<string>("");
-
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
@@ -366,15 +354,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   useEffect(() => {
     supabase
-      .from("warehouses")
-      .select("id, name, country, address, phone")
-      .eq("is_active", true)
-      .order("country")
-      .then(({ data }) => { if (data) setWarehouses(data as Warehouse[]); });
-  }, []);
-
-  useEffect(() => {
-    supabase
       .from("packaging_materials")
       .select("id, name, price")
       .eq("is_active", true)
@@ -405,11 +384,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
-  const selectedWarehouse = useMemo(
-    () => warehouses.find((w) => w.id === warehouseId),
-    [warehouses, warehouseId],
-  );
 
   // Selected packaging summary: list of {name, qty, unit, lineTotal}
   const packagingLines = useMemo(() => {
@@ -506,7 +480,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const stepName = STEPS[s];
     if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
     if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
-    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a warehouse.";
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
@@ -588,7 +561,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         : null;
       const desc = [
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
-        selectedWarehouse ? `Warehouse: ${selectedWarehouse.name} (${selectedWarehouse.country})` : null,
         packagingDesc,
         `Items: ${itemLines.join("; ")}`,
         notes ? `Notes: ${notes}` : null,
@@ -606,7 +578,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
         price: breakdown ? grandTotal : null,
-        warehouse_location: selectedWarehouse?.country || null,
+        warehouse_location: null,
         pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
@@ -713,7 +685,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             <p className="mt-1 text-sm text-muted-foreground">
               {isExport
                 ? "How would you like us to receive your items in Nigeria?"
-                : "How will your goods reach the warehouse?"}
+                : "How would you like us to receive your items?"}
             </p>
             <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
@@ -751,71 +723,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
             </div>
           </div>
         );
-
-      case "Warehouse": {
-        const displayCountries = ["China", "United States", "United Kingdom"];
-        const wItems = displayCountries.map((country) => {
-          const w = warehouses.find((x) => x.country === country);
-          return { country, warehouse: w };
-        });
-        return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Select where your goods will be received.</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {wItems.map(({ country, warehouse: w }) => {
-                const flag = country === "China" ? "🇨🇳" : country === "United States" ? "🇺🇸" : "🇬🇧";
-                const label = country === "United States" ? "USA" : country === "United Kingdom" ? "UK" : "China";
-                const active = w && warehouseId === w.id;
-                const disabled = !w;
-                return (
-                  <button
-                    key={country}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => w && setWarehouseId(w.id)}
-                    className={`rounded-xl border p-4 text-center transition-all ${
-                      active ? "border-accent bg-accent/5 shadow-sm" :
-                      disabled ? "border-border/40 bg-muted/30 opacity-60 cursor-not-allowed" :
-                      "border-border/60 bg-white hover:border-accent/40"
-                    }`}
-                  >
-                    <div className="text-3xl">{flag}</div>
-                    <div className="mt-1 text-sm font-bold text-foreground">{label}</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">
-                      {w ? "Available" : "Coming soon"}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
-
-            {selectedWarehouse && (
-              <div className="mt-5 rounded-xl border border-accent/25 bg-accent/5 p-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-accent-foreground">
-                    <Building2 className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-foreground">{selectedWarehouse.name}</div>
-                    <div className="mt-1 grid gap-1 text-xs text-muted-foreground">
-                      <div className="flex items-start gap-1.5">
-                        <MapPin className="h-3 w-3 mt-0.5 shrink-0" />
-                        <span className="break-words">{selectedWarehouse.address}</span>
-                      </div>
-                      <div><span className="font-semibold text-foreground">Country:</span> {selectedWarehouse.country}</div>
-                      {selectedWarehouse.phone && (
-                        <div><span className="font-semibold text-foreground">Phone:</span> {selectedWarehouse.phone}</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      }
 
       case "Sender":
         return (
@@ -1125,9 +1032,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </h3>
                 <SummaryRow label="Method" value={methodLabel} />
                 <SummaryRow label="Delivery type" value={deliveryLabel} />
-                {!isExport && (
-                  <SummaryRow label="Warehouse" value={selectedWarehouse ? `${selectedWarehouse.name} (${selectedWarehouse.country})` : "—"} />
-                )}
+                <SummaryRow label="Pickup" value="Sender address" />
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
