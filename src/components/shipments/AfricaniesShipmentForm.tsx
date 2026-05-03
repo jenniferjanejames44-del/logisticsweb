@@ -1034,9 +1034,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       <div className="min-h-[300px]">{renderStep()}</div>
 
       <div
-        className="mt-6 gap-3 pt-4 border-t border-border/40
-                   fixed bottom-0 left-0 right-0 z-30 bg-background border-border/40 border-t px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex flex-row items-center justify-between
-                   sm:static sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:pb-0 sm:pt-4 sm:border-t sm:flex sm:flex-row sm:items-center sm:justify-between"
+        className="mt-6 gap-3
+                   fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border/40 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex flex-row items-center justify-between
+                   sm:static sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:pb-0 sm:pt-4 sm:border-t sm:border-border/40 sm:flex sm:flex-row sm:items-center sm:justify-between"
       >
         <Button type="button" variant="outline" onClick={back} disabled={step === 0} className="sm:w-auto">
           <ArrowLeft className="h-4 w-4 mr-1" /> Back
