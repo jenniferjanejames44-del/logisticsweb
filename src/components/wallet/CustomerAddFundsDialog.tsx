@@ -3,10 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { useWalletBalance } from "@/hooks/useWalletBalance";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -72,23 +69,13 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
   };
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[440px] p-0 gap-0 overflow-hidden rounded-xl border-border/60">
-        {/* Clean Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-border/40">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-              <Wallet className="w-5 h-5 text-accent" />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-foreground">Add Funds</h2>
-              <p className="text-xs text-muted-foreground">Top up your wallet instantly</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Body */}
-        <div className="px-6 py-5 space-y-5">
+    <ModalShell open={open} onOpenChange={handleClose} ariaTitle="Add Funds">
+      <ModalHeader
+        title="Add Funds"
+        subtitle="Top up your wallet instantly"
+        icon={<Wallet className="w-5 h-5" />}
+      />
+      <ModalBody className="space-y-5">
           {/* Current Balance */}
           <div className="rounded-lg border border-border/50 p-4">
             <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Current Balance</p>
@@ -154,21 +141,19 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
             <Shield className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
             <span>Secured by Paystack. Credited instantly after payment.</span>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="px-6 pb-6 pt-1 flex gap-2.5">
+      </ModalBody>
+      <ModalFooter>
           <Button
             variant="outline"
             onClick={handleClose}
-            className="flex-1 h-11"
+            className="flex-1 h-11 sm:h-12"
           >
             Cancel
           </Button>
           <Button
             onClick={handleProceedToPayment}
             disabled={loading || !amount || parseFloat(amount) < 100}
-            className="flex-1 h-11 bg-accent hover:bg-accent/90 text-white border-0"
+            className="flex-1 h-11 sm:h-12"
           >
             {loading ? (
               <>
@@ -183,9 +168,8 @@ const CustomerAddFundsDialog = ({ open, onOpenChange }: CustomerAddFundsDialogPr
               </>
             )}
           </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </ModalFooter>
+    </ModalShell>
   );
 };
 
