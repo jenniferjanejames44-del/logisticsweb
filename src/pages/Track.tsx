@@ -213,32 +213,17 @@ const Track = () => {
     setIsSubscribing(true);
     
     try {
-      // Check if already subscribed
-      const { data: existing } = await supabase
+      // Insert subscription. If one already exists, the unique constraint
+      // returns a 23505 error which we treat as success (idempotent subscribe).
+      const { error: insertError } = await supabase
         .from("shipment_notifications")
-        .select("id, is_active")
-        .eq("tracking_number", shipment.tracking_number)
-        .eq("email", notifyEmail)
-        .maybeSingle();
-      
-      if (existing) {
-        if (!existing.is_active) {
-          // Reactivate subscription
-          await supabase
-            .from("shipment_notifications")
-            .update({ is_active: true })
-            .eq("id", existing.id);
-        }
-      } else {
-        // Create new subscription
-        const { error: insertError } = await supabase
-          .from("shipment_notifications")
-          .insert({
-            tracking_number: shipment.tracking_number,
-            email: notifyEmail,
-          });
-        
-        if (insertError) throw insertError;
+        .insert({
+          tracking_number: shipment.tracking_number,
+          email: notifyEmail,
+        });
+
+      if (insertError && (insertError as { code?: string }).code !== "23505") {
+        throw insertError;
       }
       
       setIsSubscribed(true);
