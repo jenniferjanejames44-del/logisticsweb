@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Plus, MessageSquare, Loader2, X } from "lucide-react";
 import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
-import { Plus as PlusIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface SupportTicket {
@@ -135,7 +134,7 @@ const Support = () => {
             onOpenChange={setIsDialogOpen}
             ariaTitle="Create Support Ticket"
           >
-            <ModalHeader title="Create Support Ticket" subtitle="We'll respond within 24 hours" icon={<PlusIcon className="w-5 h-5" />} />
+            <ModalHeader title="Create Support Ticket" subtitle="We'll respond within 24 hours" icon={<Plus className="w-5 h-5" />} />
             <ModalBody className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="subject" className="text-[12px]">Subject *</Label>
