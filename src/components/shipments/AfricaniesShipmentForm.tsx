@@ -659,8 +659,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       key={d.id}
                       type="button"
                       onClick={() => setDeliveryType(d.id)}
-                      className={`rounded-xl border-2 p-4 text-left transition-all ${
-                      active ? "border-accent bg-accent/5" : "border-border/60 bg-white hover:border-accent/40"
+                      className={`rounded-xl border p-4 text-left transition-all ${
+                        active ? "border-accent bg-accent/5" : "border-border/60 bg-white hover:border-accent/40"
                       }`}
                     >
                       <span className={`flex h-8 w-8 items-center justify-center rounded-full ${active ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground"}`}><Icon className="h-4 w-4" /></span>
