@@ -823,12 +823,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Item Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Add each item in a clean popup form.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
             <div className="mt-4 space-y-3">
-              {items.length === 0 ? (
+              {items.length === 0 && !itemFormOpen ? (
                 <button
                   type="button"
-                  onClick={openAddItemModal}
+                  onClick={openAddItemForm}
                   className="flex min-h-[148px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 text-center transition-colors hover:border-accent/50 hover:bg-accent/5"
                 >
                   <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
@@ -837,7 +837,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <span className="mt-3 text-sm font-bold text-foreground">Add shipment item</span>
                   <span className="mt-1 text-xs text-muted-foreground">Description, quantity, weight and value</span>
                 </button>
-              ) : (
+              ) : items.length > 0 ? (
                 <div className="space-y-2.5">
                   {items.map((item, idx) => (
                     <div key={item.id} className="rounded-xl border border-border bg-background p-4 shadow-sm">
@@ -854,7 +854,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                           </div>
                         </div>
                         <div className="flex shrink-0 items-center gap-1">
-                          <button type="button" onClick={() => openEditItemModal(item)} className="rounded-lg px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Edit</button>
+                          <button type="button" onClick={() => openEditItemForm(item)} className="rounded-lg px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Edit</button>
                           <button type="button" onClick={() => removeItem(item.id)} className="flex h-8 w-8 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10" aria-label="Remove item">
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -863,10 +863,74 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </div>
                   ))}
                 </div>
+              ) : null}
+
+              {itemFormOpen && (
+                <div className="rounded-xl border border-accent/30 bg-accent/5 p-4 sm:p-5 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+                      <Package className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-bold text-foreground">{editingItemId ? "Edit item" : "Add item"}</h3>
+                      <p className="text-[11px] text-muted-foreground">Enter the item details for this shipment</p>
+                    </div>
+                  </div>
+                  <Field label="Description" required error={itemFormErrors.description}>
+                    <SmoothInput
+                      value={itemDraft.description}
+                      onCommit={(value) => setItemDraft((draft) => ({ ...draft, description: value }))}
+                      placeholder="e.g. Phone, Clothes, Electronics"
+                      autoFocus
+                    />
+                  </Field>
+                  <Field label="Quantity" required>
+                    <div className="flex h-12 items-center rounded-[10px] border border-border bg-white">
+                      <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: Math.max(1, draft.quantity - 1) }))}
+                        className="flex h-12 w-12 items-center justify-center text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
+                      <QuantityInput
+                        value={itemDraft.quantity}
+                        onCommit={(value) => setItemDraft((draft) => ({ ...draft, quantity: value }))}
+                      />
+                      <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: draft.quantity + 1 }))}
+                        className="flex h-12 w-12 items-center justify-center text-accent hover:text-accent/80"><Plus className="h-4 w-4" /></button>
+                    </div>
+                  </Field>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <Field label="Weight (kg)" required error={itemFormErrors.weight}>
+                      <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={itemDraft.weight}
+                        onCommit={(value) => setItemDraft((draft) => ({ ...draft, weight: value }))} placeholder="0.0" />
+                    </Field>
+                    <Field label="Value (USD)" required error={itemFormErrors.value}>
+                      <SmoothInput type="number" min={0} inputMode="decimal" value={itemDraft.value}
+                        onCommit={(value) => setItemDraft((draft) => ({ ...draft, value }))} placeholder="0" />
+                    </Field>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Field label="L (cm)">
+                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.length || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, length: value }))} placeholder="—" />
+                    </Field>
+                    <Field label="W (cm)">
+                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.width || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, width: value }))} placeholder="—" />
+                    </Field>
+                    <Field label="H (cm)">
+                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.height || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, height: value }))} placeholder="—" />
+                    </Field>
+                  </div>
+                  <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <Button type="button" variant="outline" onClick={() => setItemFormOpen(false)} className="sm:w-auto">
+                      Cancel
+                    </Button>
+                    <Button type="button" onClick={saveItemForm} className="sm:w-auto">
+                      {editingItemId ? "Save Changes" : "Add Item"}
+                    </Button>
+                  </div>
+                </div>
               )}
+
               {errors.items && <p className="text-xs text-destructive">{errors.items}</p>}
-              {items.length > 0 && (
-                <Button type="button" variant="outline" onClick={openAddItemModal} className="w-full max-w-none">
+              {items.length > 0 && !itemFormOpen && (
+                <Button type="button" variant="outline" onClick={openAddItemForm} className="w-full max-w-none">
                   <Plus className="h-4 w-4 mr-1" /> Add another item
                 </Button>
               )}
@@ -1077,70 +1141,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           )}
         </div>
       </div>
-
-      <ModalShell
-        open={itemModalOpen}
-        onOpenChange={setItemModalOpen}
-        ariaTitle={editingItemId ? "Edit item" : "Add item"}
-        ariaDescription="Add shipment item details"
-      >
-        <ModalHeader
-          title={editingItemId ? "Edit item" : "Add item"}
-          subtitle="Enter the item details for this shipment"
-          icon={<Package className="h-5 w-5" />}
-        />
-        <ModalBody className="space-y-4">
-          <Field label="Description" required error={itemModalErrors.description}>
-            <SmoothInput
-              value={itemDraft.description}
-              onCommit={(value) => setItemDraft((draft) => ({ ...draft, description: value }))}
-              placeholder="e.g. Phone, Clothes, Electronics"
-              autoFocus
-            />
-          </Field>
-          <Field label="Quantity" required>
-            <div className="flex h-12 items-center rounded-[10px] border border-border bg-muted/40">
-              <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: Math.max(1, draft.quantity - 1) }))}
-                className="flex h-12 w-12 items-center justify-center text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
-              <QuantityInput
-                value={itemDraft.quantity}
-                onCommit={(value) => setItemDraft((draft) => ({ ...draft, quantity: value }))}
-              />
-              <button type="button" onClick={() => setItemDraft((draft) => ({ ...draft, quantity: draft.quantity + 1 }))}
-                className="flex h-12 w-12 items-center justify-center text-accent hover:text-accent/80"><Plus className="h-4 w-4" /></button>
-            </div>
-          </Field>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Weight (kg)" required error={itemModalErrors.weight}>
-              <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={itemDraft.weight}
-                onCommit={(value) => setItemDraft((draft) => ({ ...draft, weight: value }))} placeholder="0.0" />
-            </Field>
-            <Field label="Value (USD)" required error={itemModalErrors.value}>
-              <SmoothInput type="number" min={0} inputMode="decimal" value={itemDraft.value}
-                onCommit={(value) => setItemDraft((draft) => ({ ...draft, value }))} placeholder="0" />
-            </Field>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <Field label="L (cm)">
-              <SmoothInput type="number" inputMode="decimal" value={itemDraft.length || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, length: value }))} placeholder="—" />
-            </Field>
-            <Field label="W (cm)">
-              <SmoothInput type="number" inputMode="decimal" value={itemDraft.width || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, width: value }))} placeholder="—" />
-            </Field>
-            <Field label="H (cm)">
-              <SmoothInput type="number" inputMode="decimal" value={itemDraft.height || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, height: value }))} placeholder="—" />
-            </Field>
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button type="button" variant="outline" onClick={() => setItemModalOpen(false)} className="max-w-none flex-1">
-            Cancel
-          </Button>
-          <Button type="button" onClick={saveItemModal} className="max-w-none flex-1">
-            {editingItemId ? "Save Changes" : "Add Item"}
-          </Button>
-        </ModalFooter>
-      </ModalShell>
     </>
   );
 }
