@@ -451,7 +451,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   const removeItem = (id: string) =>
-    setItems((arr) => (arr.length > 1 ? arr.filter((i) => i.id !== id) : arr));
+    setItems((arr) => arr.filter((i) => i.id !== id));
 
   const incPackaging = (id: string) =>
     setPackagingQty((q) => ({ ...q, [id]: (q[id] || 0) + 1 }));
