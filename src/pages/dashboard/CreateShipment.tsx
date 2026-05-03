@@ -66,7 +66,6 @@ const CreateShipment = () => {
           </button>
         }
       >
-        {/* Africanies-style header card */}
         <div className="mb-5 rounded-xl border border-border/60 bg-white p-4 sm:p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
@@ -102,14 +101,11 @@ const CreateShipment = () => {
           </div>
         </div>
 
-        {/* Two-column layout: form + side info panel */}
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_260px]">
-          {/* Form column — embeds existing wizard */}
           <div className="min-w-0">
             <AfricaniesShipmentForm flow={flow as "import" | "export"} />
           </div>
 
-          {/* Side info panel — wide desktop only */}
           <aside className="hidden xl:block space-y-4">
             <div className="sticky top-24 space-y-4">
               {/* Tips card */}
