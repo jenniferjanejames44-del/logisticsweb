@@ -1188,7 +1188,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   return (
     <>
       <div className="rounded-xl border border-border/60 bg-white p-4 shadow-sm sm:p-6 pb-[calc(env(safe-area-inset-bottom)+88px)] sm:pb-6">
-        <Stepper step={step} />
+        <Stepper step={step} steps={STEPS} />
 
         <div className="min-h-[300px]">{renderStep()}</div>
 
