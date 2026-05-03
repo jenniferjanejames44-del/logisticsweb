@@ -291,59 +291,32 @@ const PayShipmentDialog = ({
               </span>
             </button>
 
-            {/* Wallet Option */}
-            {previewLoading && !walletPreview ? (
-              <div className="flex items-center gap-3.5 rounded-lg border border-border/50 p-3.5">
-                <div className="h-4.5 w-4.5 flex-shrink-0" />
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted/50 flex-shrink-0">
-                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-                </div>
-                <div>
-                  <p className="text-[13px] font-medium text-foreground">Loading wallet…</p>
-                  <p className="text-[11px] text-muted-foreground">Checking balance</p>
-                </div>
+            {/* Bank Transfer Option */}
+            <button
+              type="button"
+              onClick={() => setSelectedMethod("bank_transfer")}
+              className={`flex w-full items-center gap-3.5 rounded-lg border p-3.5 text-left transition-all ${
+                selectedMethod === "bank_transfer"
+                  ? "border-accent bg-accent/[0.04] ring-1 ring-accent/20"
+                  : "border-border/50 hover:border-border"
+              }`}
+            >
+              <div className={`flex h-4.5 w-4.5 items-center justify-center rounded-full border-2 flex-shrink-0 transition-colors ${
+                selectedMethod === "bank_transfer" ? "border-accent bg-accent" : "border-muted-foreground/25"
+              }`}>
+                {selectedMethod === "bank_transfer" && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                )}
               </div>
-            ) : hasSufficientFunds ? (
-              <button
-                type="button"
-                onClick={() => setSelectedMethod("wallet")}
-                className={`flex w-full items-center gap-3.5 rounded-lg border p-3.5 text-left transition-all ${
-                  selectedMethod === "wallet"
-                    ? "border-accent bg-accent/[0.04] ring-1 ring-accent/20"
-                    : "border-border/50 hover:border-border"
-                }`}
-              >
-                <div className={`flex h-4.5 w-4.5 items-center justify-center rounded-full border-2 flex-shrink-0 transition-colors ${
-                  selectedMethod === "wallet" ? "border-accent bg-accent" : "border-muted-foreground/25"
-                }`}>
-                  {selectedMethod === "wallet" && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                  )}
-                </div>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/8 flex-shrink-0">
-                  <Wallet className="w-4 h-4 text-green-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-semibold text-foreground">Pay from Wallet</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    Balance: {formatConverted(walletBalance, "NGN")}
-                  </p>
-                </div>
-              </button>
-            ) : walletPreview ? (
-              <div className="flex items-center gap-3.5 rounded-lg border border-destructive/20 bg-destructive/[0.03] p-3.5">
-                <div className="h-4.5 w-4.5 flex-shrink-0" />
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/8 flex-shrink-0">
-                  <AlertTriangle className="w-4 h-4 text-destructive" />
-                </div>
-                <div>
-                  <p className="text-[13px] font-medium text-destructive">Insufficient Wallet Balance</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    Need {formatConverted(shortfall, "NGN")} more
-                  </p>
-                </div>
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/10 flex-shrink-0">
+                <Building2 className="w-4 h-4 text-green-600" />
               </div>
-            ) : null}
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold text-foreground">Bank Transfer</p>
+                <p className="text-[11px] text-muted-foreground">Chat on WhatsApp to receive account details</p>
+              </div>
+              <MessageCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+            </button>
           </div>
 
           {previewError && (
@@ -369,23 +342,24 @@ const PayShipmentDialog = ({
           </Button>
           <Button
             onClick={handlePay}
-            disabled={isProcessing || (selectedMethod === "wallet" && !hasSufficientFunds)}
-            className="flex-[2] h-11 sm:h-12 font-semibold"
+            disabled={isProcessing}
+            className="flex-1 sm:flex-initial sm:px-7 h-11 sm:h-12 font-semibold"
           >
             {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Processing…
               </>
-            ) : (
+            ) : selectedMethod === "paystack" ? (
               <>
-                {selectedMethod === "paystack" ? (
-                  <CreditCard className="w-4 h-4" />
-                ) : (
-                  <Wallet className="w-4 h-4" />
-                )}
+                <CreditCard className="w-4 h-4" />
                 Pay Now
                 <ChevronRight className="w-4 h-4" />
+              </>
+            ) : (
+              <>
+                <MessageCircle className="w-4 h-4" />
+                Continue on WhatsApp
               </>
             )}
           </Button>
