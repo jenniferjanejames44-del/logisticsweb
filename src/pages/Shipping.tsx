@@ -907,7 +907,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                     <div className={stepPanelClass}>
                       <div className="flex items-center gap-2.5 pb-4 mb-1 border-b border-border/30">
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/8"><Truck className="w-4 h-4 text-primary" strokeWidth={2} /></div>
-                        <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, warehouse, and delivery preferences</p></div>
+                        <div><h3 className="font-semibold text-base text-foreground">Shipping Options</h3><p className="text-xs text-muted-foreground">Route, pickup, and delivery preferences</p></div>
                       </div>
 
                       {!embedded && showStepValidation && !isStep4Complete && (
@@ -973,26 +973,26 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                             </div>
                           )}
 
-                          {/* Warehouse */}
-                          <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
-                            <Label className="text-sm font-medium flex items-center gap-1.5">
-                              <Warehouse className="w-3.5 h-3.5" />
-                              {shippingType === "import" ? "Select International Warehouse *" : "Select Nigeria Warehouse *"}
-                            </Label>
-                            <p className="text-xs text-muted-foreground">
-                              {shippingType === "import"
-                                ? "Choose the international warehouse where your goods will be shipped from"
-                                : "Choose the Nigeria warehouse where your goods will be dispatched from"}
-                            </p>
-                            <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
-                              <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
-                              <SelectContent className="bg-card border-border">
-                                {filteredWarehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
-                              </SelectContent>
-                            </Select>
-                            {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
-                          </div>
-                          {selectedWarehouse && (
+                          {/* Warehouse - import only */}
+                          {requiresWarehouse && (
+                            <div ref={registerFieldRef("warehouse_location")} className="space-y-2">
+                              <Label className="text-sm font-medium flex items-center gap-1.5">
+                                <Warehouse className="w-3.5 h-3.5" />
+                                Select International Warehouse *
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Choose the international warehouse where your goods will be shipped from
+                              </p>
+                              <Select value={formData.warehouse_location} onValueChange={(v) => updateField("warehouse_location", v)}>
+                                <SelectTrigger aria-invalid={isWarehouseInvalid || undefined} className={`${inputClass} ${isWarehouseInvalid ? invalidFieldClass : ""}`}><SelectValue placeholder="Select warehouse" /></SelectTrigger>
+                                <SelectContent className="bg-card border-border">
+                                  {filteredWarehouses.map((wh: any) => <SelectItem key={wh.id} value={wh.id}>{wh.name} ({wh.country})</SelectItem>)}
+                                </SelectContent>
+                              </Select>
+                              {isWarehouseInvalid && <p className="text-xs text-destructive">Please select a warehouse before continuing.</p>}
+                            </div>
+                          )}
+                          {requiresWarehouse && selectedWarehouse && (
                             <div className={`${softPanelClass} bg-white`}>
                               <div className="flex items-center gap-2 mb-1"><Building2 className="w-4 h-4 text-primary" /><span className="font-semibold text-sm text-foreground">{selectedWarehouse.name}</span></div>
                               <p className="break-words text-sm text-muted-foreground">{selectedWarehouse.address}</p>
