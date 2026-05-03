@@ -38,10 +38,10 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
       <DashboardSidebar />
       <main className="flex-1 overflow-auto">
         {/* Top Header Bar */}
-        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border/40">
+        <div className="sticky top-0 z-30 border-b border-border/40 bg-white">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-14 sm:h-16">
-              <div className="pl-12 lg:pl-0">
+              <div className="pl-12 md:pl-0">
                 <h1 className="text-base font-bold text-foreground sm:text-lg">{title}</h1>
                 {description && (
                   <p className="text-[12px] text-muted-foreground leading-tight hidden sm:block">{description}</p>
