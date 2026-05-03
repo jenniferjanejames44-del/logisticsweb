@@ -153,8 +153,8 @@ const PersonalShoppingForm = () => {
         <div className="mx-auto w-full max-w-2xl">
           {/* Header */}
           <div className="mb-6 text-center sm:mb-8">
-            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm ring-4 ring-primary/8 sm:h-12 sm:w-12">
-              <ShoppingBag className="h-5 w-5 sm:h-5 sm:w-5" strokeWidth={2.4} />
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-sm sm:h-11 sm:w-11">
+              <ShoppingBag className="h-4.5 w-4.5 sm:h-5 sm:w-5" strokeWidth={2.4} />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Personal Shopping Request</h1>
             <p className="text-muted-foreground text-sm mt-1">
