@@ -1125,7 +1125,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                               </span>
                               <p className="text-base font-semibold text-foreground">{formData.origin_country} → {formData.destination_country}</p>
                               <p className="text-sm text-muted-foreground">
-                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"}{requiresWarehouse ? ` • ${selectedWarehouse?.name || "Warehouse pending"}` : " • Pickup from sender address"}
+                                {selectedDeliveryMethodData?.name || "Pickup"} • {shippingSpeed === "express" ? "Express" : "Standard"} • Pickup from sender address
                               </p>
                             </div>
                             <div className="rounded-lg bg-white px-3 py-2.5 border border-border/40 sm:min-w-[140px] sm:text-right">
@@ -1154,7 +1154,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                           <div className="space-y-2.5">
                             {[
                               `Sender and receiver details captured`,
-                              requiresWarehouse ? `Route and warehouse selected` : `Route and pickup selected`,
+                              `Route and pickup selected`,
                               `${selectedDeliveryMethodData?.name || "Pickup"} delivery confirmed`,
                               packagingCost > 0 ? "Packaging materials included" : "No packaging selected",
                             ].map((item) => (
@@ -1195,7 +1195,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                                 { label: "Volumetric Weight", value: `${volumetricWeight.toFixed(2)} KG` },
                                 { label: "Chargeable Weight", value: `${chargeableWeight.toFixed(2)} KG` },
                               ] : []),
-                              ...(requiresWarehouse ? [{ label: "Warehouse", value: selectedWarehouse?.name || "—" }] : [{ label: "Pickup", value: "Sender address" }]),
+                              { label: "Pickup", value: "Sender address" },
                               { label: "Delivery", value: selectedDeliveryMethodData?.name || "Pickup" },
                               { label: "Speed", value: shippingSpeed === "express" ? "Express" : "Standard" },
                               { label: "Category", value: formData.category || "—" },
