@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
-import { Loader2, CreditCard, Shield, ChevronRight, Building2, MessageCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Loader2, CreditCard, Shield, Building2, MessageCircle, X, Package, MapPin, Weight } from "lucide-react";
 import { toast } from "sonner";
-import { Separator } from "@/components/ui/separator";
 
 interface PayShipmentDialogProps {
   open: boolean;
@@ -56,7 +55,7 @@ const PayShipmentDialog = ({
   destination,
   weight,
 }: PayShipmentDialogProps) => {
-  const { formatConverted, convertUsdAmount } = useCurrency();
+  const { convertUsdAmount } = useCurrency();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("paystack");
   const [loading, setLoading] = useState(false);
   const [paystackLoading, setPaystackLoading] = useState(false);
@@ -107,12 +106,18 @@ const PayShipmentDialog = ({
     return () => { isActive = false; };
   }, [open, shipmentId, invoiceId]);
 
+  const usdAmount = Number(price) || 0;
   const payableWithPaystack = walletPreview?.charged_amount ?? null;
-  const ngnAmount = payableWithPaystack ?? convertUsdAmount(Number(price) || 0, "NGN");
+  const ngnAmount = payableWithPaystack ?? convertUsdAmount(usdAmount, "NGN");
+
+  const usdFormatted = new Intl.NumberFormat("en-US", {
+    style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2,
+  }).format(usdAmount);
+  const ngnFormatted = new Intl.NumberFormat("en-NG", {
+    style: "currency", currency: "NGN", minimumFractionDigits: 0, maximumFractionDigits: 0,
+  }).format(ngnAmount);
 
   const handleBankTransfer = () => {
-    const usdFmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price) || 0);
-    const ngnFmt = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(ngnAmount);
     const lines = [
       `Hello RAC Logistics,`,
       ``,
@@ -124,8 +129,8 @@ const PayShipmentDialog = ({
       destination ? `*Destination:* ${destination}` : null,
       weight != null ? `*Weight:* ${weight} KG` : null,
       ``,
-      `*Amount (USD):* ${usdFmt}`,
-      `*Amount (NGN):* ${ngnFmt}`,
+      `*Amount (USD):* ${usdFormatted}`,
+      `*Amount (NGN):* ${ngnFormatted}`,
       ``,
       `Please share your bank account details so I can complete the transfer. Thank you.`,
     ].filter(Boolean).join("\n");
@@ -190,182 +195,204 @@ const PayShipmentDialog = ({
   const isProcessing = loading || paystackLoading;
 
   return (
-    <ModalShell
-      open={open}
-      onOpenChange={onOpenChange}
-      ariaTitle="Payment Checkout"
-      ariaDescription={`Pay for shipment ${trackingNumber}`}
-    >
-      <ModalHeader
-        title="Payment Checkout"
-        subtitle={`Shipment ${trackingNumber}`}
-        icon={<CreditCard className="w-5 h-5" />}
-      />
-      <ModalBody className="space-y-5">
-          {/* Shipment Summary */}
-          <div className="space-y-3">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Shipment Summary</p>
-            <div className="rounded-xl border border-border/60 p-5 space-y-3 text-sm bg-muted/20">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        className="[&>button]:hidden p-0 gap-0 border-0 sm:border bg-[#f5f5f7] dark:bg-background flex flex-col w-screen h-[100dvh] max-w-none rounded-none sm:w-[calc(100%-1rem)] sm:max-w-[480px] sm:h-auto sm:max-h-[92dvh] sm:rounded-2xl"
+      >
+        <DialogTitle className="sr-only">Payment Checkout</DialogTitle>
+        <DialogDescription className="sr-only">Pay for shipment {trackingNumber}</DialogDescription>
+
+        {/* HEADER */}
+        <header className="flex items-center justify-between gap-3 border-b border-border/40 bg-background px-4 py-4 sm:px-5">
+          <div className="min-w-0">
+            <h2 className="text-[15px] sm:text-base font-bold text-foreground leading-tight">Payment Checkout</h2>
+            <p className="text-[11px] text-muted-foreground truncate mt-0.5">Shipment {trackingNumber}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            disabled={isProcessing}
+            aria-label="Close"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </header>
+
+        {/* BODY */}
+        <div className="flex-1 overflow-y-auto px-4 py-5 sm:px-5 space-y-5">
+          <section className="rounded-xl bg-background p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-border/40">
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">Shipment Summary</h3>
+            <dl className="space-y-2.5 text-sm">
               {serviceType && (
-                <div className="flex justify-between gap-3">
-                  <span className="text-muted-foreground">Service Type</span>
-                  <span className="font-semibold text-foreground capitalize text-right">{serviceType.replace(/[-_]/g, " ")}</span>
-                </div>
+                <SummaryRow icon={<Package className="h-3.5 w-3.5" />} label="Service Type"
+                  value={serviceType.replace(/[-_]/g, " ")} valueClass="capitalize" />
               )}
               {destination && (
-                <div className="flex justify-between gap-3">
-                  <span className="text-muted-foreground">Destination</span>
-                  <span className="font-semibold text-foreground text-right">{destination}</span>
-                </div>
+                <SummaryRow icon={<MapPin className="h-3.5 w-3.5" />} label="Destination" value={destination} />
               )}
               {weight != null && (
-                <div className="flex justify-between gap-3">
-                  <span className="text-muted-foreground">Weight</span>
-                  <span className="font-semibold text-foreground">{weight} KG</span>
-                </div>
+                <SummaryRow icon={<Weight className="h-3.5 w-3.5" />} label="Weight" value={`${weight} KG`} />
               )}
-              {(serviceType || destination || weight != null) && (
-                <Separator className="my-1" />
+              {!serviceType && !destination && weight == null && (
+                <p className="text-xs text-muted-foreground">Tracking #{trackingNumber}</p>
               )}
-              <div className="flex justify-between gap-3">
-                <span className="text-muted-foreground">Total Price (USD)</span>
-                <span className="font-semibold text-foreground">
-                  {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price) || 0)}
-                </span>
+            </dl>
+          </section>
+
+          <section className="rounded-xl bg-background p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-border/40">
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">Cost Breakdown</h3>
+            <div className="space-y-2.5 text-sm">
+              <CostRow label="Shipment Total (USD)" value={usdFormatted} />
+              {invoiceNumber && (<CostRow label="Invoice" value={invoiceNumber} muted />)}
+            </div>
+            <div className="mt-3 pt-3 border-t border-dashed border-border/60 space-y-1.5">
+              <div className="flex items-baseline justify-between">
+                <span className="text-sm font-semibold text-foreground">Total (USD)</span>
+                <span className="text-lg font-bold text-foreground tabular-nums">{usdFormatted}</span>
               </div>
-              <div className="flex justify-between gap-3">
-                <span className="text-muted-foreground">Equivalent (NGN)</span>
-                {payableWithPaystack !== null ? (
-                  <span className="font-semibold text-foreground">{formatConverted(payableWithPaystack, "NGN")}</span>
-                ) : previewLoading ? (
-                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-baseline justify-between">
+                <span className="text-[11px] text-muted-foreground">Equivalent (NGN)</span>
+                {previewLoading && payableWithPaystack === null ? (
+                  <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                     <Loader2 className="h-3 w-3 animate-spin" /> Calculating…
                   </span>
                 ) : (
-                  <span className="text-xs text-muted-foreground">—</span>
+                  <span className="text-sm font-semibold text-accent tabular-nums">{ngnFormatted}</span>
                 )}
-              </div>
-              <Separator className="my-1" />
-              <div className="flex justify-between items-center pt-1">
-                <span className="text-base font-bold text-foreground">Total Due</span>
-                <span className="text-xl font-bold text-accent">{formatConverted(price, priceCurrency)}</span>
               </div>
             </div>
-            {invoiceNumber && (
-              <p className="text-xs text-muted-foreground">
-                Invoice: <span className="font-medium text-foreground">{invoiceNumber}</span>
+          </section>
+
+          <section className="rounded-xl bg-background p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-border/40">
+            <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">Payment Method</h3>
+            <div className="space-y-2.5">
+              <MethodCard
+                selected={selectedMethod === "paystack"}
+                onClick={() => setSelectedMethod("paystack")}
+                icon={<CreditCard className="h-4 w-4 text-accent" />}
+                iconBg="bg-accent/10"
+                title="Pay with Paystack"
+                subtitle="Card · Bank Transfer · USSD"
+                badge="Recommended"
+              />
+              <MethodCard
+                selected={selectedMethod === "bank_transfer"}
+                onClick={() => setSelectedMethod("bank_transfer")}
+                icon={<Building2 className="h-4 w-4 text-green-600" />}
+                iconBg="bg-green-500/10"
+                title="Bank Transfer"
+                subtitle="Chat on WhatsApp for account details"
+                rightIcon={<MessageCircle className="h-4 w-4 text-green-600" />}
+              />
+            </div>
+            {previewError && (
+              <p className="mt-3 text-[11px] text-muted-foreground bg-muted/40 rounded-lg px-3 py-2">
+                {previewError} You can still pay via Paystack.
               </p>
             )}
-          </div>
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <Shield className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+              <span>Secured & encrypted. PCI-DSS compliant.</span>
+            </div>
+          </section>
+        </div>
 
-          {/* Payment Method Selection */}
-          <div className="space-y-2.5">
-            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Select Payment Method</p>
-
-            {/* Paystack Option */}
-            <button
+        {/* FOOTER */}
+        <footer className="border-t border-border/40 bg-background px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-5 sm:py-4">
+          <div className="flex items-center gap-2.5">
+            <Button
               type="button"
-              onClick={() => setSelectedMethod("paystack")}
-              className={`flex w-full items-center gap-3.5 rounded-lg border p-3.5 text-left transition-all ${
-                selectedMethod === "paystack"
-                  ? "border-accent bg-accent/[0.04] ring-1 ring-accent/20"
-                  : "border-border/50 hover:border-border"
-              }`}
+              onClick={() => onOpenChange(false)}
+              disabled={isProcessing}
+              variant="outline"
+              className="h-[52px] flex-1 rounded-[10px] border-[#061043] text-[#061043] hover:bg-[#061043]/5 font-semibold"
             >
-              <div className={`flex h-4.5 w-4.5 items-center justify-center rounded-full border-2 flex-shrink-0 transition-colors ${
-                selectedMethod === "paystack" ? "border-accent bg-accent" : "border-muted-foreground/25"
-              }`}>
-                {selectedMethod === "paystack" && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                )}
-              </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/8 flex-shrink-0">
-                <CreditCard className="w-4 h-4 text-accent" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-foreground">Pay with Paystack</p>
-                <p className="text-[11px] text-muted-foreground">Card, Bank Transfer, or USSD</p>
-              </div>
-              <span className="text-[10px] font-semibold text-accent bg-accent/8 px-2 py-0.5 rounded flex-shrink-0">
-                Recommended
-              </span>
-            </button>
-
-            {/* Bank Transfer Option */}
-            <button
+              Cancel
+            </Button>
+            <Button
               type="button"
-              onClick={() => setSelectedMethod("bank_transfer")}
-              className={`flex w-full items-center gap-3.5 rounded-lg border p-3.5 text-left transition-all ${
-                selectedMethod === "bank_transfer"
-                  ? "border-accent bg-accent/[0.04] ring-1 ring-accent/20"
-                  : "border-border/50 hover:border-border"
-              }`}
+              onClick={handlePay}
+              disabled={isProcessing}
+              className="h-[52px] flex-[1.4] rounded-[10px] bg-[#DF5101] hover:bg-[#DF5101]/90 text-white border-0 font-semibold text-[15px] shadow-sm"
             >
-              <div className={`flex h-4.5 w-4.5 items-center justify-center rounded-full border-2 flex-shrink-0 transition-colors ${
-                selectedMethod === "bank_transfer" ? "border-accent bg-accent" : "border-muted-foreground/25"
-              }`}>
-                {selectedMethod === "bank_transfer" && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                )}
-              </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-500/10 flex-shrink-0">
-                <Building2 className="w-4 h-4 text-green-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-foreground">Bank Transfer</p>
-                <p className="text-[11px] text-muted-foreground">Chat on WhatsApp to receive account details</p>
-              </div>
-              <MessageCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
-            </button>
+              {isProcessing ? (
+                <><Loader2 className="h-4 w-4 animate-spin" /> Processing…</>
+              ) : selectedMethod === "paystack" ? (
+                <>Pay Now · {usdFormatted}</>
+              ) : (
+                <><MessageCircle className="h-4 w-4" /> Continue on WhatsApp</>
+              )}
+            </Button>
           </div>
-
-          {previewError && (
-            <p className="text-[11px] text-muted-foreground bg-muted/20 rounded-lg px-3 py-2 border border-border/50">
-              {previewError} You can still pay via Paystack.
-            </p>
-          )}
-
-          {/* Security badge */}
-          <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-            <Shield className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
-            <span>Secured by Paystack. All transactions are encrypted.</span>
-          </div>
-      </ModalBody>
-      <ModalFooter>
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            className="flex-1 sm:flex-initial sm:px-6 h-11 sm:h-12"
-            disabled={isProcessing}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handlePay}
-            disabled={isProcessing}
-            className="flex-1 sm:flex-initial sm:px-7 h-11 sm:h-12 font-semibold"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Processing…
-              </>
-            ) : selectedMethod === "paystack" ? (
-              <>
-                <CreditCard className="w-4 h-4" />
-                Pay Now
-                <ChevronRight className="w-4 h-4" />
-              </>
-            ) : (
-              <>
-                <MessageCircle className="w-4 h-4" />
-                Continue on WhatsApp
-              </>
-            )}
-          </Button>
-      </ModalFooter>
-    </ModalShell>
+        </footer>
+      </DialogContent>
+    </Dialog>
   );
 };
+
+function SummaryRow({
+  icon, label, value, valueClass = "",
+}: { icon: React.ReactNode; label: string; value: string; valueClass?: string }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+        <span className="text-accent">{icon}</span>
+        <span className="text-[12px]">{label}</span>
+      </span>
+      <span className={`font-semibold text-foreground text-[13px] text-right truncate ${valueClass}`}>{value}</span>
+    </div>
+  );
+}
+
+function CostRow({ label, value, muted = false }: { label: string; value: string; muted?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-muted-foreground text-[12px]">{label}</span>
+      <span className={`font-semibold tabular-nums text-[13px] ${muted ? "text-muted-foreground" : "text-foreground"}`}>{value}</span>
+    </div>
+  );
+}
+
+function MethodCard({
+  selected, onClick, icon, iconBg, title, subtitle, badge, rightIcon,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  iconBg: string;
+  title: string;
+  subtitle: string;
+  badge?: string;
+  rightIcon?: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`flex w-full items-center gap-3 rounded-xl border-2 p-3.5 text-left transition-all ${
+        selected ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-background hover:border-border"
+      }`}
+    >
+      <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 flex-shrink-0 transition-colors ${
+        selected ? "border-accent bg-accent" : "border-muted-foreground/30"
+      }`}>
+        {selected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+      </div>
+      <div className={`flex h-10 w-10 items-center justify-center rounded-lg flex-shrink-0 ${iconBg}`}>
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[13px] font-semibold text-foreground">{title}</p>
+        <p className="text-[11px] text-muted-foreground truncate">{subtitle}</p>
+      </div>
+      {badge && (
+        <span className="text-[10px] font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded flex-shrink-0">{badge}</span>
+      )}
+      {rightIcon}
+    </button>
+  );
+}
 
 export default PayShipmentDialog;
