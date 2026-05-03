@@ -792,7 +792,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <Select
                   value={receiverCountry}
                   onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); clearFieldError("receiverCountry"); }}
-                  disabled={!isExport}
                 >
                   <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
                   <SelectContent>
