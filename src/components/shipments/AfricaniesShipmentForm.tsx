@@ -621,6 +621,33 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const renderStep = () => {
     const stepName = STEPS[step];
+    const renderStateField = (
+      country: string,
+      value: string,
+      onChange: (v: string) => void,
+      error?: string,
+    ) => {
+      const list = getStatesForCountry(country);
+      if (list && list.length > 0) {
+        return (
+          <Field label="State / Province / Region" required error={error}>
+            <Select value={value} onValueChange={onChange} disabled={!country}>
+              <SelectTrigger>
+                <SelectValue placeholder={country ? "Select state" : "Select country first"} />
+              </SelectTrigger>
+              <SelectContent className="max-h-72">
+                {list.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </Field>
+        );
+      }
+      return (
+        <Field label="State / Province / Region" required error={error}>
+          <SmoothInput value={value} onCommit={onChange} placeholder="Enter your state or region" />
+        </Field>
+      );
+    };
     switch (stepName) {
       case "Method":
         return (
