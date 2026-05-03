@@ -316,7 +316,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
 
-  const [items, setItems] = useState<Item[]>([createEmptyItem()]);
+  const [items, setItems] = useState<Item[]>([]);
   const [itemModalOpen, setItemModalOpen] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [itemDraft, setItemDraft] = useState<Item>(createEmptyItem());
@@ -484,6 +484,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (s === 5) {
+      if (items.length === 0) e.items = "Add at least one item.";
       items.forEach((it, idx) => {
         if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
         if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
@@ -822,63 +823,53 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Item Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">List the items inside your shipment.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Add each item in a clean popup form.</p>
             <div className="mt-4 space-y-3">
-              {items.map((item, idx) => (
-                <div key={item.id} className="rounded-xl border border-border/60 bg-muted/20 p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-muted-foreground">Item #{idx + 1}</span>
-                    {items.length > 1 && (
-                      <button type="button" onClick={() => removeItem(item.id)} className="text-destructive hover:text-destructive/80">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    )}
-                  </div>
-                  <div className="grid gap-2 sm:grid-cols-2">
-                    <div className="sm:col-span-2">
-                      <Field label="Description" required error={errors[`item_${idx}_desc`]}>
-                        <SmoothInput value={item.description}
-                          onCommit={(value) => updateItem(item.id, { description: value })}
-                          placeholder="e.g. Phone, Clothes, Electronics" />
-                      </Field>
-                    </div>
-                    <Field label="Quantity" required>
-                      <div className="flex items-center rounded-[16px] border border-border/70 bg-white h-12">
-                        <button type="button" onClick={() => updateItem(item.id, { quantity: Math.max(1, item.quantity - 1) })}
-                          className="px-3 text-muted-foreground hover:text-foreground"><Minus className="h-4 w-4" /></button>
-                        <QuantityInput
-                          value={item.quantity}
-                          onCommit={(value) => updateItem(item.id, { quantity: value })}
-                        />
-                        <button type="button" onClick={() => updateItem(item.id, { quantity: item.quantity + 1 })}
-                          className="px-3 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+              {items.length === 0 ? (
+                <button
+                  type="button"
+                  onClick={openAddItemModal}
+                  className="flex min-h-[148px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 text-center transition-colors hover:border-accent/50 hover:bg-accent/5"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
+                    <Plus className="h-5 w-5" />
+                  </span>
+                  <span className="mt-3 text-sm font-bold text-foreground">Add shipment item</span>
+                  <span className="mt-1 text-xs text-muted-foreground">Description, quantity, weight and value</span>
+                </button>
+              ) : (
+                <div className="space-y-2.5">
+                  {items.map((item, idx) => (
+                    <div key={item.id} className="rounded-xl border border-border bg-background p-4 shadow-sm">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">{idx + 1}</span>
+                            <h3 className="truncate text-sm font-bold text-foreground">{item.description}</h3>
+                          </div>
+                          <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
+                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Qty</span><b>{item.quantity}</b></div>
+                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Weight</span><b>{item.weight}kg</b></div>
+                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Value</span><b>${item.value}</b></div>
+                          </div>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-1">
+                          <button type="button" onClick={() => openEditItemModal(item)} className="rounded-lg px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Edit</button>
+                          <button type="button" onClick={() => removeItem(item.id)} className="flex h-8 w-8 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10" aria-label="Remove item">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
                       </div>
-                    </Field>
-                    <Field label="Weight (kg)" required error={errors[`item_${idx}_weight`]}>
-                      <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={item.weight}
-                        onCommit={(value) => updateItem(item.id, { weight: value })} placeholder="0.0" />
-                    </Field>
-                    <Field label="Value (USD)" required error={errors[`item_${idx}_value`]}>
-                      <SmoothInput type="number" min={0} inputMode="decimal" value={item.value}
-                        onCommit={(value) => updateItem(item.id, { value })} placeholder="0" />
-                    </Field>
-                    <div className="grid grid-cols-3 gap-2 sm:col-span-1">
-                      <Field label="L (cm)">
-                        <SmoothInput type="number" inputMode="decimal" value={item.length || ""} onCommit={(value) => updateItem(item.id, { length: value })} placeholder="—" />
-                      </Field>
-                      <Field label="W (cm)">
-                        <SmoothInput type="number" inputMode="decimal" value={item.width || ""} onCommit={(value) => updateItem(item.id, { width: value })} placeholder="—" />
-                      </Field>
-                      <Field label="H (cm)">
-                        <SmoothInput type="number" inputMode="decimal" value={item.height || ""} onCommit={(value) => updateItem(item.id, { height: value })} placeholder="—" />
-                      </Field>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-              <Button type="button" variant="outline" onClick={addItem} className="w-full">
-                <Plus className="h-4 w-4 mr-1" /> Add another item
-              </Button>
+              )}
+              {errors.items && <p className="text-xs text-destructive">{errors.items}</p>}
+              {items.length > 0 && (
+                <Button type="button" variant="outline" onClick={openAddItemModal} className="w-full max-w-none">
+                  <Plus className="h-4 w-4 mr-1" /> Add another item
+                </Button>
+              )}
               <Field label="Additional notes (optional)">
                 <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
