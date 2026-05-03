@@ -215,7 +215,7 @@ const PersonalShoppingForm = () => {
                     rows={3}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label>Item Value (USD) *</Label>
                     <Input
@@ -249,13 +249,13 @@ const PersonalShoppingForm = () => {
                     onChange={handleImageSelect}
                   />
                   {imagePreview ? (
-                    <div className="relative mt-2 inline-block rounded-lg border border-border/60 bg-muted/30 p-2">
-                      <img src={imagePreview} alt="Preview" className="rounded-md max-h-40 object-cover block" />
+                    <div className="relative mt-2 w-full rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <img src={imagePreview} alt="Preview" className="h-44 w-full rounded-lg object-cover" />
                       <button
                         type="button"
                         aria-label="Remove image"
                         onClick={() => { setImageFile(null); setImagePreview(null); }}
-                        className="absolute -top-2.5 -right-2.5 w-7 h-7 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center shadow-md ring-2 ring-background hover:bg-destructive/90 transition-colors"
+                        className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-md ring-2 ring-background transition-colors hover:bg-destructive/90"
                       >
                         <X className="w-3.5 h-3.5" strokeWidth={2.5} />
                       </button>
@@ -263,7 +263,7 @@ const PersonalShoppingForm = () => {
                   ) : (
                     <Button
                       variant="outline"
-                      className="mt-2 gap-2 w-full"
+                      className="mt-2 w-full max-w-none gap-2 border-dashed bg-white py-6 text-primary hover:bg-primary hover:text-primary-foreground"
                       onClick={() => fileRef.current?.click()}
                     >
                       <Upload className="w-4 h-4" />
@@ -285,7 +285,7 @@ const PersonalShoppingForm = () => {
                 <Button
                   variant="dashAccent"
                   size="dash"
-                  className="w-full gap-2"
+                  className="w-full max-w-none gap-2"
                   disabled={!canProceedStep1}
                   onClick={() => setStep(2)}
                 >
