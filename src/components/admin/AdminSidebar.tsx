@@ -83,7 +83,7 @@ const AdminSidebar = () => {
   const NavContent = () => (
     <div className="flex flex-col h-full">
       {/* Brand Header */}
-      <div className="px-5 py-4 border-b border-border/30">
+      <div className="border-b border-border/30 py-4 pl-20 pr-5 lg:px-5">
         <Link to="/admin" className="flex flex-col items-start gap-1" onClick={() => setIsMobileOpen(false)}>
           <HeaderLogo className="h-auto w-full max-w-[160px]" />
           <span className="text-[11px] text-muted-foreground/70 leading-none pl-1">Admin Console</span>
@@ -154,7 +154,7 @@ const AdminSidebar = () => {
     <>
       {/* Mobile Menu Button */}
       <button
-        className="fixed left-4 top-4 z-50 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 lg:hidden"
+        className="fixed left-4 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-all duration-200 active:scale-95 lg:hidden"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         aria-label="Toggle menu"
       >

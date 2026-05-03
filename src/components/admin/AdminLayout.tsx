@@ -47,7 +47,7 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
       <main className="flex-1 ml-0 overflow-auto lg:ml-[260px]">
         <div className="mx-auto max-w-[1200px] px-4 py-5 pt-16 sm:px-6 lg:px-8 lg:pt-6 lg:py-6">
           {title && (
-            <div className="mb-6">
+            <div className="mb-6 pl-16 lg:pl-0">
               <h1 className="text-xl font-bold text-foreground sm:text-2xl tracking-tight">{title}</h1>
               {description && (
                 <p className="mt-0.5 text-[13px] text-muted-foreground">{description}</p>
