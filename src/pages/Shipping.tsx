@@ -17,8 +17,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import {
   Package, MapPin, Truck, ArrowRight, ArrowLeft, Scale, CheckCircle2,
-  Warehouse, DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
-  MapPinned, Building2, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
+  DollarSign, User, Mail, Phone, Upload, ClipboardList, Globe,
+  MapPinned, Tag, Send, Shield, Box, Zap, Search, Minus, Plus, AlertCircle, FileText,
 } from "lucide-react";
 import LocationPicker from "@/components/shipments/LocationPicker";
 import ShippingTypeSelector, { type ShippingType } from "@/components/shipments/ShippingTypeSelector";
@@ -63,7 +63,7 @@ const shipmentWorkflowGuides = {
     badge: "Import workflow",
     shipmentTitle: "Start your import shipment",
     quoteTitle: "Get an import shipping quote",
-    description: "Use this flow when your goods are moving from a supported RAC warehouse country to the final destination.",
+    description: "Use this flow when your goods are moving from another country to the final destination in Nigeria.",
     serviceLink: "/services/import",
   },
   export: {
