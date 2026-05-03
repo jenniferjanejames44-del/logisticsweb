@@ -73,7 +73,6 @@ const IMPORT_DELIVERY_TYPES = [
 
 const EXPORT_DELIVERY_TYPES = [
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
-  { id: "drop_off_local", label: "Local Drop Off", desc: "You drop your items at our Nigeria warehouse", icon: Store },
 ];
 
 const IMPORT_STEPS = [
