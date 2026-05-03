@@ -559,7 +559,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     setSubmitting(true);
     try {
       const eta = new Date();
-      eta.setDate(eta.getDate() + (method === "ocean" ? 30 : 7));
+      const etaDays = method === "ocean" ? 60 : method === "air-standard" ? 21 : 5;
+      eta.setDate(eta.getDate() + etaDays);
 
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
