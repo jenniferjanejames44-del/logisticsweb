@@ -106,7 +106,7 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('Error generating invoice:', error);
-    return new Response(JSON.stringify({ error: (error as Error).message }), {
+    return new Response(JSON.stringify({ error: 'Failed to generate invoice' }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
