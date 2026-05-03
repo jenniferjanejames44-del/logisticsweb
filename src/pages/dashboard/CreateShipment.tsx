@@ -197,7 +197,7 @@ const CreateShipment = () => {
       <div className="mx-auto max-w-4xl">
         <div className="mb-5 sm:mb-6">
           <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm ring-4 ring-primary/8">
-            <Package className="h-4.5 w-4.5" />
+            <Package className="h-4 w-4" />
           </div>
           <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             New shipment
