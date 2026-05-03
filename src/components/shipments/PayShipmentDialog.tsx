@@ -3,7 +3,7 @@ import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ModalShell, ModalHeader, ModalBody, ModalFooter } from "@/components/ui/modal-shell";
-import { Loader2, Wallet, AlertTriangle, CreditCard, Shield, ChevronRight } from "lucide-react";
+import { Loader2, CreditCard, Shield, ChevronRight, Building2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 
@@ -36,7 +36,9 @@ interface WalletPaymentPreview {
   base_currency?: string;
 }
 
-type PaymentMethod = "paystack" | "wallet";
+type PaymentMethod = "paystack" | "bank_transfer";
+
+const WHATSAPP_NUMBER = "2348185956707";
 
 const PayShipmentDialog = ({
   open,
@@ -54,7 +56,7 @@ const PayShipmentDialog = ({
   destination,
   weight,
 }: PayShipmentDialogProps) => {
-  const { formatConverted } = useCurrency();
+  const { formatConverted, convertUsdAmount } = useCurrency();
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("paystack");
   const [loading, setLoading] = useState(false);
   const [paystackLoading, setPaystackLoading] = useState(false);
@@ -106,34 +108,29 @@ const PayShipmentDialog = ({
   }, [open, shipmentId, invoiceId]);
 
   const payableWithPaystack = walletPreview?.charged_amount ?? null;
-  const walletBalance = walletPreview?.wallet_balance ?? userBalance;
-  const hasSufficientFunds = walletPreview?.has_sufficient_funds ?? false;
-  const shortfall = walletPreview ? Math.max(walletPreview.charged_amount - walletPreview.wallet_balance, 0) : 0;
+  const ngnAmount = payableWithPaystack ?? convertUsdAmount(Number(price) || 0, "NGN");
 
-  const handleWalletPayment = async () => {
-    if (!walletPreview) {
-      toast.error("Still loading the exact wallet debit. Please wait.");
-      return;
-    }
-    if (!hasSufficientFunds) {
-      toast.error("Insufficient balance");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { error } = await supabase.functions.invoke("wallet-pay-shipment", {
-        body: { shipment_id: shipmentId, invoice_id: invoiceId },
-      });
-      if (error) throw error;
-      toast.success("Payment successful!");
-      onOpenChange(false);
-      onSuccess();
-    } catch (error) {
-      console.error("Error processing payment:", error);
-      toast.error("Payment failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  const handleBankTransfer = () => {
+    const usdFmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(price) || 0);
+    const ngnFmt = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(ngnAmount);
+    const lines = [
+      `Hello RAC Logistics,`,
+      ``,
+      `I would like to pay for my shipment via *Bank Transfer*.`,
+      ``,
+      `*Tracking Number:* ${trackingNumber}`,
+      invoiceNumber ? `*Invoice:* ${invoiceNumber}` : null,
+      serviceType ? `*Service:* ${serviceType.replace(/[-_]/g, " ")}` : null,
+      destination ? `*Destination:* ${destination}` : null,
+      weight != null ? `*Weight:* ${weight} KG` : null,
+      ``,
+      `*Amount (USD):* ${usdFmt}`,
+      `*Amount (NGN):* ${ngnFmt}`,
+      ``,
+      `Please share your bank account details so I can complete the transfer. Thank you.`,
+    ].filter(Boolean).join("\n");
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handlePaystackPayment = async () => {
@@ -186,7 +183,7 @@ const PayShipmentDialog = ({
     if (selectedMethod === "paystack") {
       handlePaystackPayment();
     } else {
-      handleWalletPayment();
+      handleBankTransfer();
     }
   };
 
