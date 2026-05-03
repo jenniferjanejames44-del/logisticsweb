@@ -157,15 +157,14 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
   // Fetch all DB data
   useEffect(() => {
     const fetchData = async () => {
-      const [whRes, ecRes, routeRes, pkgRes, dmRes] = await Promise.all([
+      const [whRes, routeRes, pkgRes, dmRes] = await Promise.all([
         (supabase as any).from("warehouses").select("*").eq("is_active", true),
-        (supabase as any).from("extra_charges").select("*").eq("is_active", true),
         supabase.from("shipping_routes").select("origin_country, destination_country").eq("is_active", true),
         (supabase as any).from("packaging_materials").select("*").eq("is_active", true).order("name"),
         (supabase as any).from("delivery_methods").select("*").eq("is_active", true).order("fee"),
       ]);
       setWarehouses(whRes.data || []);
-      setExtraCharges(ecRes.data || []);
+      setExtraCharges([]);
       setActiveRoutes(routeRes.data || []);
       setPackagingMaterials(pkgRes.data || []);
       setDeliveryMethods(dmRes.data || []);

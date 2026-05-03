@@ -26,8 +26,11 @@ const CostEstimator = () => {
 
   useEffect(() => {
     const fetchRoutePrices = async () => {
-      const { data } = await supabase.from("route_prices").select("*");
-      if (data) setRoutePrices(data);
+      const { data } = await supabase
+        .from("shipping_routes")
+        .select("origin_country, destination_country, price_per_kg")
+        .eq("is_active", true);
+      if (data) setRoutePrices(data as RoutePrice[]);
     };
     fetchRoutePrices();
   }, []);
