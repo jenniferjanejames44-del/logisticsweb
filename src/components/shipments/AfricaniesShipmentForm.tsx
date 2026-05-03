@@ -612,11 +612,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     key={m.id}
                     type="button"
                     onClick={() => setMethod(m.id)}
-                    className={`group rounded-2xl border-2 p-5 text-left transition-all ${
-                      active ? "border-primary bg-primary/5 shadow-sm" : "border-border/60 bg-white hover:border-primary/40"
+                    className={`group rounded-xl border p-5 text-left transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
                     }`}
                   >
-                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-full ${active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"}`}>
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="mt-3 text-sm font-bold text-foreground">{m.label}</div>
@@ -660,10 +660,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       type="button"
                       onClick={() => setDeliveryType(d.id)}
                       className={`rounded-xl border-2 p-4 text-left transition-all ${
-                        active ? "border-primary bg-primary/5" : "border-border/60 bg-white hover:border-primary/40"
+                      active ? "border-accent bg-accent/5" : "border-border/60 bg-white hover:border-accent/40"
                       }`}
                     >
-                      <Icon className={`h-5 w-5 ${active ? "text-primary" : "text-muted-foreground"}`} />
+                      <span className={`flex h-8 w-8 items-center justify-center rounded-full ${active ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground"}`}><Icon className="h-4 w-4" /></span>
                       <div className="mt-2 text-sm font-bold text-foreground">{d.label}</div>
                       <div className="text-[11px] text-muted-foreground leading-relaxed mt-0.5">{d.desc}</div>
                     </button>
