@@ -316,9 +316,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
 
-  const [items, setItems] = useState<Item[]>([
-    { id: crypto.randomUUID(), description: "", quantity: 1, weight: "", value: "" },
-  ]);
+  const [items, setItems] = useState<Item[]>([createEmptyItem()]);
+  const [itemModalOpen, setItemModalOpen] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [itemDraft, setItemDraft] = useState<Item>(createEmptyItem());
+  const [itemModalErrors, setItemModalErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
   // Packaging: { materialId: quantity }
@@ -417,10 +419,37 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     return () => { cancelled = true; };
   }, [step, destinationCountry, totalWeight, totalValue]);
 
-  const updateItem = (id: string, patch: Partial<Item>) =>
-    setItems((arr) => arr.map((it) => (it.id === id ? { ...it, ...patch } : it)));
-  const addItem = () =>
-    setItems((arr) => [...arr, { id: crypto.randomUUID(), description: "", quantity: 1, weight: "", value: "" }]);
+  const openAddItemModal = () => {
+    setEditingItemId(null);
+    setItemDraft(createEmptyItem());
+    setItemModalErrors({});
+    setItemModalOpen(true);
+  };
+
+  const openEditItemModal = (item: Item) => {
+    setEditingItemId(item.id);
+    setItemDraft({ ...item });
+    setItemModalErrors({});
+    setItemModalOpen(true);
+  };
+
+  const saveItemModal = () => {
+    const e: Record<string, string> = {};
+    if (!itemDraft.description.trim()) e.description = "Description is required";
+    if (!itemDraft.weight || parseFloat(itemDraft.weight) <= 0) e.weight = "Weight must be greater than 0";
+    if (!itemDraft.value || parseFloat(itemDraft.value) <= 0) e.value = "Value must be greater than 0";
+    if (Object.keys(e).length > 0) {
+      setItemModalErrors(e);
+      return;
+    }
+
+    setItems((arr) => {
+      if (editingItemId) return arr.map((it) => (it.id === editingItemId ? itemDraft : it));
+      return [...arr, itemDraft];
+    });
+    setItemModalOpen(false);
+  };
+
   const removeItem = (id: string) =>
     setItems((arr) => (arr.length > 1 ? arr.filter((i) => i.id !== id) : arr));
 
