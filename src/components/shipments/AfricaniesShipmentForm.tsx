@@ -365,7 +365,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name, email, phone, address, city, country")
+    supabase.from("profiles").select("full_name, email, phone, address, city, state, country")
       .eq("user_id", user.id).single().then(({ data }) => {
         if (!data) return;
         if (isExport) {
@@ -374,12 +374,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           if (!senderPhone && data.phone) setSenderPhone(data.phone);
           if (!senderAddress && data.address) setSenderAddress(data.address);
           if (!senderCity && data.city) setSenderCity(data.city);
+          if (!senderState && data.state) setSenderState(data.state);
         } else {
           if (!receiverName && data.full_name) setReceiverName(data.full_name);
           if (!receiverEmail && data.email) setReceiverEmail(data.email);
           if (!receiverPhone && data.phone) setReceiverPhone(data.phone);
           if (!receiverAddress && data.address) setReceiverAddress(data.address);
           if (!receiverCity && data.city) setReceiverCity(data.city);
+          if (!receiverState && data.state) setReceiverState(data.state);
         }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -589,10 +591,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         description: desc,
         sender_name: senderName,
         sender_phone: senderPhone,
-        sender_address: [senderAddress, senderCity, senderZip, senderCountry].filter(Boolean).join(", "),
+        sender_address: [senderAddress, senderCity, senderState, senderZip, senderCountry].filter(Boolean).join(", "),
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
-        receiver_address: [receiverAddress, receiverCity, receiverZip, receiverCountry].filter(Boolean).join(", "),
+        receiver_address: [receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", "),
       };
 
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
@@ -605,6 +607,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           phone: senderPhone,
           address: senderAddress,
           city: senderCity,
+          state: senderState,
           country: senderCountry,
         }).eq("user_id", user.id);
       }
