@@ -12,7 +12,27 @@ Deno.serve(async (req) => {
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const anonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+
+    // Require authenticated caller
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    const userClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    const token = authHeader.replace('Bearer ', '');
+    const { data: claimsData, error: claimsError } = await userClient.auth.getClaims(token);
+    if (claimsError || !claimsData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    const callerId = claimsData.claims.sub as string;
     const supabase = createClient(supabaseUrl, serviceKey);
 
     const { invoice_id } = await req.json();
@@ -32,6 +52,19 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: 'Invoice not found' }), {
         status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
+    }
+
+    // Authorize: only invoice owner or an admin may generate this PDF
+    if (invoice.user_id !== callerId) {
+      const { data: isAdmin } = await supabase.rpc('has_role', {
+        _user_id: callerId,
+        _role: 'admin',
+      });
+      if (!isAdmin) {
+        return new Response(JSON.stringify({ error: 'Forbidden' }), {
+          status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+      }
     }
 
     const { data: shipment } = await supabase
@@ -73,7 +106,7 @@ Deno.serve(async (req) => {
     });
   } catch (error) {
     console.error('Error generating invoice:', error);
-    return new Response(JSON.stringify({ error: (error as Error).message }), {
+    return new Response(JSON.stringify({ error: 'Failed to generate invoice' }), {
       status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }

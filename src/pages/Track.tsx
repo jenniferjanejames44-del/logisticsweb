@@ -34,7 +34,6 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
 interface ShipmentData {
-  id: string;
   tracking_number: string;
   status: string;
   origin_city: string;
@@ -46,8 +45,6 @@ interface ShipmentData {
   actual_delivery: string | null;
   created_at: string;
   updated_at: string;
-  weight: number;
-  description: string | null;
 }
 
 
@@ -81,18 +78,18 @@ const Track = () => {
     if (!shipment) return;
 
     const channel = supabase
-      .channel(`shipment-${shipment.id}`)
+      .channel(`shipment-${shipment.tracking_number}`)
       .on(
         'postgres_changes',
         {
           event: 'UPDATE',
           schema: 'public',
           table: 'shipments',
-          filter: `id=eq.${shipment.id}`,
+          filter: `tracking_number=eq.${shipment.tracking_number}`,
         },
         (payload) => {
           console.log('Shipment updated:', payload);
-          setShipment(payload.new as ShipmentData);
+          setShipment((prev) => ({ ...(prev as ShipmentData), ...(payload.new as ShipmentData) }));
           toast({
             title: "Shipment Updated!",
             description: `Status changed to: ${(payload.new as ShipmentData).status.replace("_", " ")}`,
@@ -104,7 +101,7 @@ const Track = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [shipment?.id, toast]);
+  }, [shipment?.tracking_number, toast]);
 
   // Auto-search if tracking number is in URL
   useEffect(() => {
@@ -127,19 +124,17 @@ const Track = () => {
     setError(null);
     setShipment(null);
 
-    const { data, error: fetchError } = await supabase
-      .from("shipments")
-      .select("*")
-      .ilike("tracking_number", `%${searchNumber}%`)
-      .limit(1)
+    const { data: rpcData, error: fetchError } = await supabase
+      .rpc("track_shipment_public", { tracking_num: searchNumber })
       .maybeSingle();
+    const data = rpcData as ShipmentData | null;
 
     setIsLoading(false);
 
     if (fetchError) {
       setError("Unable to search. Please try again later.");
     } else if (data) {
-      setShipment(data);
+      setShipment(data as ShipmentData);
       setSearchParams({ number: data.tracking_number });
     } else {
       setError("No shipment found with this tracking number. Please check and try again.");
@@ -218,32 +213,17 @@ const Track = () => {
     setIsSubscribing(true);
     
     try {
-      // Check if already subscribed
-      const { data: existing } = await supabase
+      // Insert subscription. If one already exists, the unique constraint
+      // returns a 23505 error which we treat as success (idempotent subscribe).
+      const { error: insertError } = await supabase
         .from("shipment_notifications")
-        .select("id, is_active")
-        .eq("tracking_number", shipment.tracking_number)
-        .eq("email", notifyEmail)
-        .maybeSingle();
-      
-      if (existing) {
-        if (!existing.is_active) {
-          // Reactivate subscription
-          await supabase
-            .from("shipment_notifications")
-            .update({ is_active: true })
-            .eq("id", existing.id);
-        }
-      } else {
-        // Create new subscription
-        const { error: insertError } = await supabase
-          .from("shipment_notifications")
-          .insert({
-            tracking_number: shipment.tracking_number,
-            email: notifyEmail,
-          });
-        
-        if (insertError) throw insertError;
+        .insert({
+          tracking_number: shipment.tracking_number,
+          email: notifyEmail,
+        });
+
+      if (insertError && (insertError as { code?: string }).code !== "23505") {
+        throw insertError;
       }
       
       setIsSubscribed(true);
@@ -456,23 +436,11 @@ const Track = () => {
                         <p className="font-semibold text-foreground">{formatDate(shipment.estimated_delivery)}</p>
                       </div>
                       <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
-                        <Package className="w-5 h-5 text-accent mb-2" />
-                        <p className="text-sm text-muted-foreground">Weight</p>
-                        <p className="font-semibold text-foreground">{shipment.weight} KG</p>
-                      </div>
-                      <div className="rounded-lg border border-border bg-background p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
                         <ServiceIcon className="w-5 h-5 text-accent mb-2" />
                         <p className="text-sm text-muted-foreground">Service</p>
                         <p className="font-semibold text-foreground capitalize">{shipment.service_type.replace("_", " ")}</p>
                       </div>
                     </div>
-
-                    {shipment.description && (
-                      <div className="mt-6 rounded-lg border border-border bg-muted/30 p-5">
-                        <p className="text-sm text-muted-foreground mb-1">Package Description</p>
-                        <p className="text-foreground">{shipment.description}</p>
-                      </div>
-                    )}
 
                     {/* Email Notification Signup */}
                     <div className="mt-8 rounded-lg border border-primary/20 bg-primary/5 p-5 sm:p-6">

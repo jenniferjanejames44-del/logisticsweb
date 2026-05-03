@@ -1332,6 +1332,22 @@ export type Database = {
           read_ct: number
         }[]
       }
+      track_shipment_public: {
+        Args: { tracking_num: string }
+        Returns: {
+          actual_delivery: string
+          created_at: string
+          destination_city: string
+          destination_country: string
+          estimated_delivery: string
+          origin_city: string
+          origin_country: string
+          service_type: string
+          status: string
+          tracking_number: string
+          updated_at: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "customer"
