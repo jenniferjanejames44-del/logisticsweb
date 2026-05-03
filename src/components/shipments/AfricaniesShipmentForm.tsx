@@ -620,8 +620,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 0:
+    const stepName = STEPS[step];
+    switch (stepName) {
+      case "Method":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Select Your Preferred Shipment Method</h2>
@@ -655,11 +656,15 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 1:
+      case "Delivery Type":
         return (
           <div>
             <h2 className="text-lg font-bold text-foreground">Delivery Type</h2>
-            <p className="mt-1 text-sm text-muted-foreground">How will your goods reach the warehouse?</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isExport
+                ? "How would you like us to receive your items in Nigeria?"
+                : "How will your goods reach the warehouse?"}
+            </p>
             <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
                 <Select value={deliveryType} onValueChange={setDeliveryType}>
@@ -697,7 +702,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case 2: {
+      case "Warehouse": {
         const displayCountries = ["China", "United States", "United Kingdom"];
         const wItems = displayCountries.map((country) => {
           const w = warehouses.find((x) => x.country === country);
