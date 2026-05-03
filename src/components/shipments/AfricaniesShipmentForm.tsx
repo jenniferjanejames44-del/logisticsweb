@@ -19,6 +19,7 @@ import {
   ArrowRight, ArrowLeft, Building2, Plane, Ship, Check,
   PackageCheck, Store, MapPin, Box, Mail, ShoppingBag, Thermometer,
 } from "lucide-react";
+import { getStatesForCountry } from "@/lib/states";
 
 type Flow = "import" | "export";
 
@@ -64,13 +65,21 @@ const SHIPPING_METHODS = [
   { id: "ocean", label: "Ocean Delivery", days: "25–35 days", icon: Ship, desc: "Affordable for heavy or bulk shipments" },
 ];
 
-const DELIVERY_TYPES = [
+const IMPORT_DELIVERY_TYPES = [
   { id: "drop_off", label: "Drop Off", desc: "I will use my courier to deliver to your warehouse", icon: PackageCheck },
   { id: "walk_in", label: "Walk-In", desc: "I will bring items to your warehouse", icon: Store },
 ];
 
-const STEPS = [
+const EXPORT_DELIVERY_TYPES = [
+  { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
+  { id: "drop_off_local", label: "Local Drop Off", desc: "You drop your items at our Nigeria warehouse", icon: Store },
+];
+
+const IMPORT_STEPS = [
   "Method", "Delivery Type", "Warehouse", "Sender", "Receiver", "Items", "Summary",
+] as const;
+const EXPORT_STEPS = [
+  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
