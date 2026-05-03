@@ -900,13 +900,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                       return (
                         <div
                           key={p.id}
-                          className={`rounded-xl border-2 p-3 transition-all ${
-                            active ? "border-primary bg-primary/5" : "border-border/60 bg-white"
+                          className={`rounded-xl border p-3 transition-all ${
+                            active ? "border-accent bg-accent/5" : "border-border/60 bg-white"
                           }`}
                         >
                           <div className="flex items-start gap-3">
                             <div className={`flex h-10 w-10 items-center justify-center rounded-lg shrink-0 ${
-                              active ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
+                              active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"
                             }`}>
                               <Icon className="h-5 w-5" />
                             </div>
@@ -935,7 +935,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                                 type="button"
                                 onClick={() => incPackaging(p.id)}
                                 aria-label={`Increase ${p.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-primary hover:text-primary/80"
+                                className="flex h-8 w-8 items-center justify-center text-accent hover:text-accent/80"
                               >
                                 <Plus className="h-3.5 w-3.5" />
                               </button>
