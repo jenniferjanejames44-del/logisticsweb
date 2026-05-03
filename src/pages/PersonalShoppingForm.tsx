@@ -10,6 +10,7 @@ import {
 } from "@/lib/procurementFees";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +32,7 @@ import {
 } from "lucide-react";
 
 const PersonalShoppingForm = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -140,15 +141,20 @@ const PersonalShoppingForm = () => {
   const canProceedStep1 = form.productName && form.itemDescription && itemValue > 0 && quantity >= 1;
   const canProceedStep2 = true; // optional fields
 
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      <main className="flex-1 py-8 px-4">
-        <div className="max-w-2xl mx-auto">
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+      </div>
+    );
+  }
+
+  const content = (
+        <div className="mx-auto w-full max-w-2xl">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary text-primary-foreground shadow-sm mb-4">
-              <ShoppingBag className="w-7 h-7" strokeWidth={2} />
+          <div className="mb-6 text-center sm:mb-8">
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-sm sm:h-11 sm:w-11">
+              <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" strokeWidth={2.4} />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Personal Shopping Request</h1>
             <p className="text-muted-foreground text-sm mt-1">
@@ -209,7 +215,7 @@ const PersonalShoppingForm = () => {
                     rows={3}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label>Item Value (USD) *</Label>
                     <Input
@@ -243,13 +249,13 @@ const PersonalShoppingForm = () => {
                     onChange={handleImageSelect}
                   />
                   {imagePreview ? (
-                    <div className="relative mt-2 inline-block rounded-lg border border-border/60 bg-muted/30 p-2">
-                      <img src={imagePreview} alt="Preview" className="rounded-md max-h-40 object-cover block" />
+                    <div className="relative mt-2 w-full rounded-xl border border-border/60 bg-muted/30 p-3">
+                      <img src={imagePreview} alt="Preview" className="h-44 w-full rounded-lg object-cover" />
                       <button
                         type="button"
                         aria-label="Remove image"
                         onClick={() => { setImageFile(null); setImagePreview(null); }}
-                        className="absolute -top-2.5 -right-2.5 w-7 h-7 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center shadow-md ring-2 ring-background hover:bg-destructive/90 transition-colors"
+                        className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-md ring-2 ring-background transition-colors hover:bg-destructive/90"
                       >
                         <X className="w-3.5 h-3.5" strokeWidth={2.5} />
                       </button>
@@ -257,7 +263,7 @@ const PersonalShoppingForm = () => {
                   ) : (
                     <Button
                       variant="outline"
-                      className="mt-2 gap-2 w-full"
+                      className="mt-2 w-full max-w-none gap-2 border-dashed bg-white py-6 text-primary hover:bg-primary hover:text-primary-foreground"
                       onClick={() => fileRef.current?.click()}
                     >
                       <Upload className="w-4 h-4" />
@@ -279,7 +285,7 @@ const PersonalShoppingForm = () => {
                 <Button
                   variant="dashAccent"
                   size="dash"
-                  className="w-full gap-2"
+                  className="w-full max-w-none gap-2"
                   disabled={!canProceedStep1}
                   onClick={() => setStep(2)}
                 >
@@ -412,7 +418,20 @@ const PersonalShoppingForm = () => {
             </Card>
           )}
         </div>
-      </main>
+  );
+
+  if (user) {
+    return (
+      <DashboardLayout title="Personal Shopping" description="Submit a new personal shopping request">
+        {content}
+      </DashboardLayout>
+    );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background">
+      <Header />
+      <main className="flex-1 px-4 py-8 pt-24 sm:pt-28">{content}</main>
       <Footer />
     </div>
   );
