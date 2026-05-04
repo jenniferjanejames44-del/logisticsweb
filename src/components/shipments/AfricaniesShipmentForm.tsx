@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Plane, Ship, Check,
-  PackageCheck, Box, Mail, ShoppingBag, Thermometer,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
 } from "lucide-react";
 import { getStatesForCountry } from "@/lib/states";
 
@@ -59,15 +59,45 @@ const SHIPPING_METHODS = [
 ];
 
 const IMPORT_DELIVERY_TYPES = [
-  { id: "pickup", label: "Pickup", desc: "We collect your items from the sender or supplier address", icon: PackageCheck },
+  { id: "drop_off", label: "Drop-off at warehouse", desc: "Your sender drops the items off at the selected RAC warehouse", icon: Warehouse },
+  { id: "pickup", label: "Pickup to warehouse", desc: "RAC picks up from the sender's address and delivers to the warehouse", icon: PackageCheck },
 ];
 
 const EXPORT_DELIVERY_TYPES = [
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
 ];
 
+// RAC Logistics overseas warehouses for IMPORT shipments. Senders abroad
+// drop off / ship items to one of these addresses.
+const IMPORT_WAREHOUSES = [
+  {
+    id: "usa_warehouse",
+    name: "USA Warehouse",
+    flag: "🇺🇸",
+    country: "United States",
+    lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
+    phone: "+1 281 591 9189",
+  },
+  {
+    id: "uk_warehouse",
+    name: "UK Warehouse",
+    flag: "🇬🇧",
+    country: "United Kingdom",
+    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
+    phone: null,
+  },
+  {
+    id: "china_warehouse",
+    name: "China Warehouse",
+    flag: "🇨🇳",
+    country: "China",
+    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
+    phone: null,
+  },
+] as const;
+
 const IMPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
   "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
@@ -301,6 +331,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
+  const [warehouseId, setWarehouseId] = useState<string>("");
+  const selectedWarehouse = useMemo(
+    () => IMPORT_WAREHOUSES.find((w) => w.id === warehouseId) || null,
+    [warehouseId],
+  );
 
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
@@ -479,6 +514,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
     const stepName = STEPS[s];
     if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
+    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
     if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
@@ -560,6 +596,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         ? `Packaging: ${packagingLines.map((l) => `${l.qty}× ${l.name} ($${l.lineTotal.toFixed(2)})`).join(", ")}`
         : null;
       const desc = [
+        !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
         packagingDesc,
         `Items: ${itemLines.join("; ")}`,
@@ -578,7 +615,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
         price: breakdown ? grandTotal : null,
-        warehouse_location: null,
+        warehouse_location: isExport ? null : (warehouseId || null),
         pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
@@ -675,6 +712,61 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               })}
             </div>
             {errors.method && <p className="mt-2 text-xs text-destructive">{errors.method}</p>}
+          </div>
+        );
+
+      case "Warehouse":
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Your sender abroad will drop off or ship the goods to the RAC warehouse you select below.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {IMPORT_WAREHOUSES.map((w) => {
+                const active = warehouseId === w.id;
+                return (
+                  <button
+                    key={w.id}
+                    type="button"
+                    onClick={() => { setWarehouseId(w.id); clearFieldError("warehouse"); }}
+                    className={`group rounded-xl border p-4 text-left transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{w.flag}</span>
+                      <span className="text-sm font-bold text-foreground">{w.name}</span>
+                    </div>
+                    <div className="mt-2 text-[11px] text-muted-foreground">{w.country}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
+
+            {selectedWarehouse && (
+              <div className="mt-5 rounded-xl border border-primary/20 bg-primary/[0.04] p-4">
+                <div className="flex items-center gap-2">
+                  <Warehouse className="h-4 w-4 text-primary" />
+                  <h3 className="text-sm font-bold text-foreground">{selectedWarehouse.name} address</h3>
+                </div>
+                <div className="mt-2 flex items-start gap-2 text-xs text-foreground">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  <div className="leading-relaxed">
+                    {selectedWarehouse.lines.map((l) => <div key={l}>{l}</div>)}
+                  </div>
+                </div>
+                {selectedWarehouse.phone && (
+                  <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+                    <Phone className="h-3.5 w-3.5" /> {selectedWarehouse.phone}
+                  </div>
+                )}
+                <p className="mt-3 text-[11px] text-muted-foreground">
+                  Share this address with your sender so they can drop off or ship the items to RAC.
+                </p>
+              </div>
+            )}
           </div>
         );
 
@@ -1036,7 +1128,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </h3>
                 <SummaryRow label="Method" value={methodLabel} />
                 <SummaryRow label="Delivery type" value={deliveryLabel} />
-                <SummaryRow label="Pickup" value="Sender address" />
+                {!isExport && selectedWarehouse && (
+                  <SummaryRow
+                    label="RAC warehouse"
+                    value={`${selectedWarehouse.flag} ${selectedWarehouse.name}`}
+                  />
+                )}
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
