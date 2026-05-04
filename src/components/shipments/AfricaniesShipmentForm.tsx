@@ -17,7 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Plane, Ship, Check,
-  PackageCheck, Box, Mail, ShoppingBag, Thermometer,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
 } from "lucide-react";
 import { getStatesForCountry } from "@/lib/states";
 
@@ -66,8 +66,37 @@ const EXPORT_DELIVERY_TYPES = [
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
 ];
 
+// RAC Logistics overseas warehouses for IMPORT shipments. Senders abroad
+// drop off / ship items to one of these addresses.
+const IMPORT_WAREHOUSES = [
+  {
+    id: "usa_warehouse",
+    name: "USA Warehouse",
+    flag: "🇺🇸",
+    country: "United States",
+    lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
+    phone: "+1 281 591 9189",
+  },
+  {
+    id: "uk_warehouse",
+    name: "UK Warehouse",
+    flag: "🇬🇧",
+    country: "United Kingdom",
+    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
+    phone: null,
+  },
+  {
+    id: "china_warehouse",
+    name: "China Warehouse",
+    flag: "🇨🇳",
+    country: "China",
+    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
+    phone: null,
+  },
+] as const;
+
 const IMPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
   "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
