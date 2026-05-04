@@ -330,6 +330,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
+  const [warehouseId, setWarehouseId] = useState<string>("");
+  const selectedWarehouse = useMemo(
+    () => IMPORT_WAREHOUSES.find((w) => w.id === warehouseId) || null,
+    [warehouseId],
+  );
 
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
@@ -508,6 +513,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
     const stepName = STEPS[s];
     if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
+    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
     if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
