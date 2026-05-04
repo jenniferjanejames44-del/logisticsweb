@@ -1127,7 +1127,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </h3>
                 <SummaryRow label="Method" value={methodLabel} />
                 <SummaryRow label="Delivery type" value={deliveryLabel} />
-                <SummaryRow label="Pickup" value="Sender address" />
+                {!isExport && selectedWarehouse && (
+                  <SummaryRow
+                    label="RAC warehouse"
+                    value={`${selectedWarehouse.flag} ${selectedWarehouse.name}`}
+                  />
+                )}
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
