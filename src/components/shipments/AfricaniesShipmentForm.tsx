@@ -59,7 +59,8 @@ const SHIPPING_METHODS = [
 ];
 
 const IMPORT_DELIVERY_TYPES = [
-  { id: "pickup", label: "Pickup", desc: "We collect your items from the sender or supplier address", icon: PackageCheck },
+  { id: "drop_off", label: "Drop-off at warehouse", desc: "Your sender drops the items off at the selected RAC warehouse", icon: Warehouse },
+  { id: "pickup", label: "Pickup to warehouse", desc: "RAC picks up from the sender's address and delivers to the warehouse", icon: PackageCheck },
 ];
 
 const EXPORT_DELIVERY_TYPES = [
