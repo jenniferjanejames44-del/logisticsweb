@@ -713,6 +713,61 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
+      case "Warehouse":
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Your sender abroad will drop off or ship the goods to the RAC warehouse you select below.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {IMPORT_WAREHOUSES.map((w) => {
+                const active = warehouseId === w.id;
+                return (
+                  <button
+                    key={w.id}
+                    type="button"
+                    onClick={() => { setWarehouseId(w.id); clearFieldError("warehouse"); }}
+                    className={`group rounded-xl border p-4 text-left transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{w.flag}</span>
+                      <span className="text-sm font-bold text-foreground">{w.name}</span>
+                    </div>
+                    <div className="mt-2 text-[11px] text-muted-foreground">{w.country}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
+
+            {selectedWarehouse && (
+              <div className="mt-5 rounded-xl border border-primary/20 bg-primary/[0.04] p-4">
+                <div className="flex items-center gap-2">
+                  <Warehouse className="h-4 w-4 text-primary" />
+                  <h3 className="text-sm font-bold text-foreground">{selectedWarehouse.name} address</h3>
+                </div>
+                <div className="mt-2 flex items-start gap-2 text-xs text-foreground">
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  <div className="leading-relaxed">
+                    {selectedWarehouse.lines.map((l) => <div key={l}>{l}</div>)}
+                  </div>
+                </div>
+                {selectedWarehouse.phone && (
+                  <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+                    <Phone className="h-3.5 w-3.5" /> {selectedWarehouse.phone}
+                  </div>
+                )}
+                <p className="mt-3 text-[11px] text-muted-foreground">
+                  Share this address with your sender so they can drop off or ship the items to RAC.
+                </p>
+              </div>
+            )}
+          </div>
+        );
+
       case "Delivery Type":
         return (
           <div>
