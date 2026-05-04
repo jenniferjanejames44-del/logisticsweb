@@ -596,6 +596,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         ? `Packaging: ${packagingLines.map((l) => `${l.qty}× ${l.name} ($${l.lineTotal.toFixed(2)})`).join(", ")}`
         : null;
       const desc = [
+        !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
         packagingDesc,
         `Items: ${itemLines.join("; ")}`,
