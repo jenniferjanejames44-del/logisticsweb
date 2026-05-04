@@ -613,7 +613,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
         price: breakdown ? grandTotal : null,
-        warehouse_location: null,
+        warehouse_location: isExport ? null : (warehouseId || null),
         pickup_prepaid: false,
         description: desc,
         sender_name: senderName,
