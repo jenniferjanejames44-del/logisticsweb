@@ -293,13 +293,13 @@ ${isPaid ? `.document::after{
 @media screen and (max-width:800px){
   html,body{background:#fff;}
   .document{width:100%;margin:0;padding:14px;box-shadow:none;}
-  .brand-logo{height:46px;}
-  .title-row,.title-row tbody,.title-row tr,.title-row td{display:block;width:100%;}
-  .title-left{margin-bottom:10px;}
-  .title-right{text-align:left;}
-  .qr-img{width:84px;height:84px;}
+  .top-head,.top-head tbody,.top-head tr,.top-head td{display:block;width:100%!important;padding:0!important;}
+  .brand-logo{height:46px;max-width:260px;}
+  .doc-cell{text-align:left;margin-top:12px;}
+  .doc-title{text-align:left;font-size:28px;letter-spacing:3px;margin-bottom:8px;}
+  .doc-meta{max-width:100%;}
+  .qr-img{width:76px;height:76px;}
   .qr-cap{text-align:left;}
-  .doc-title{font-size:24px;letter-spacing:3px;}
   .addr,.addr tbody,.addr tr,.addr td{display:block;width:100%!important;padding:0!important;}
   .addr td{margin-bottom:10px;}
   .chrg-wrap,.addl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;}
@@ -310,9 +310,10 @@ ${isPaid ? `.document::after{
 }
 @media screen and (max-width:480px){
   .document{padding:8px;}
-  .brand-logo{height:38px;}
+  .brand-logo{height:38px;max-width:220px;}
   .brand-details{font-size:8.5px;}
-  .doc-title{font-size:18px;letter-spacing:1px;}
+  .doc-title{font-size:24px;letter-spacing:1.5px;}
+  .doc-meta div{font-size:8.7px;}
   .bar{font-size:9.5px;padding:4px 8px;}
   .bar-sm{font-size:8.5px;}
   .info-tbl td{font-size:9.5px;padding:4px 6px;}
