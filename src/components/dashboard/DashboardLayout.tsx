@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import DashboardSidebar from "./DashboardSidebar";
+import DashboardHero from "./DashboardHero";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -37,10 +38,15 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
     <div className="min-h-screen flex bg-[#f5f5f7] dark:bg-background">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto min-w-0">
-        {/* Top Header Bar */}
-        <div className="sticky top-0 z-30 border-b border-border/40 bg-background">
+        {/* Sticky Africanies-style header — persists across every dashboard page */}
+        <div className="sticky top-0 z-30 border-b border-white/10 shadow-sm">
+          <DashboardHero />
+        </div>
+
+        {/* Page title bar */}
+        <div className="border-b border-border/40 bg-background">
           <div className="mx-auto max-w-[1180px] px-4 sm:px-5 lg:px-6">
-            <div className="flex items-center justify-between gap-3 h-16 lg:h-[68px]">
+            <div className="flex items-center justify-between gap-3 py-3 lg:py-4">
               <div className="min-w-0 pl-14 lg:pl-0">
                 <h1 className="text-[15px] sm:text-base lg:text-lg font-bold text-foreground truncate leading-tight">
                   {title}
