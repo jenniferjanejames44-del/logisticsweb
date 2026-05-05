@@ -201,29 +201,29 @@ table{border-collapse:collapse;}
 /* ══════════════════════════
    HEADER
    ══════════════════════════ */
-.hdr{width:100%;margin-bottom:0;}
-.brand-logo{height:58px;width:auto;display:block;margin-bottom:6px;}
+.top-head{width:100%;margin-bottom:14px;table-layout:fixed;}
+.top-head td{vertical-align:top;padding:0;}
+.brand-cell{width:60%;padding-right:18px!important;}
+.doc-cell{width:40%;text-align:right;padding-left:18px!important;}
+.brand-logo{height:62px;width:auto;max-width:330px;display:block;margin-bottom:8px;}
 .brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}
-.brand-details{font-size:10px;color:#444;line-height:1.7;}
-.rc-label{font-size:10px;color:#444;font-weight:600;margin-top:6px;}
-
-/* Title row: doc title on the left, QR on the right */
-.title-row{width:100%;margin-bottom:12px;}
-.title-row td{vertical-align:middle;padding:0;}
-.title-left{width:70%;}
-.title-right{width:30%;text-align:right;}
-.qr-img{width:96px;height:96px;display:inline-block;}
-.qr-cap{font-size:8.5px;color:#666;margin-top:3px;text-align:right;letter-spacing:.3px;}
+.brand-details{font-size:9.8px;color:#444;line-height:1.65;}
+.rc-label{font-size:10px;color:#444;font-weight:700;margin-top:6px;}
+.doc-title{
+  font-size:39px;font-weight:900;color:var(--navy);
+  letter-spacing:4px;text-align:right;margin:0 0 10px;
+  text-transform:uppercase;line-height:.92;
+}
+.doc-meta{display:inline-table;width:100%;max-width:220px;border-top:3px solid var(--navy);border-bottom:1px solid var(--border);margin-bottom:10px;}
+.doc-meta div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);padding:5px 0;font-size:9.5px;}
+.doc-meta div:last-child{border-bottom:0;}
+.doc-meta span:first-child{color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.doc-meta span:last-child{color:var(--text);font-weight:800;text-align:right;}
+.qr-img{width:78px;height:78px;display:inline-block;}
+.qr-cap{font-size:8.5px;color:#666;margin-top:2px;text-align:right;letter-spacing:.3px;}
 
 /* ── Divider ── */
-.divider{height:3.5px;background:var(--navy);margin:10px 0 14px 0;}
-
-/* ── Doc title ── */
-.doc-title{
-  font-size:34px;font-weight:900;color:var(--navy);
-  letter-spacing:5px;text-align:left;margin:0;
-  text-transform:uppercase;line-height:1;
-}
+.divider{height:3.5px;background:var(--navy);margin:0 0 14px 0;}
 
 /* ── Blue bar ── */
 .bar{background:var(--navy);color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;letter-spacing:.3px;}
