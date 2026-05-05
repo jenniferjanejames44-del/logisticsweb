@@ -333,37 +333,39 @@ ${isPaid ? `.document::after{
 <div class="document">
 
   <!-- ═══ HEADER ═══ -->
-  <table class="hdr">
-    <tr>
-      <td class="hdr-left">
-        <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
-          <g fill="#07145C">
-            <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
-            <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
-            <rect x="126" y="111" width="112" height="64" rx="2"/>
-          </g>
-          <circle cx="144" cy="188" r="29" fill="#DF5101"/>
-          <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
-          <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
-        </svg>
-        <div class="brand-sub">Courier &amp; Freight Services</div>
-        <div class="brand-details">
-          29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
-          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
-        </div>
-        <div class="rc-label">RC: 1454183</div>
-      </td>
-      <td class="hdr-right">
-        <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
-        <div style="font-size:8.5px;color:#666;margin-top:4px;text-align:right;">Scan to track</div>
-      </td>
-    </tr>
-  </table>
+  <div class="hdr">
+    <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+      <g fill="#07145C">
+        <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
+        <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
+        <rect x="126" y="111" width="112" height="64" rx="2"/>
+      </g>
+      <circle cx="144" cy="188" r="29" fill="#DF5101"/>
+      <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
+      <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
+    </svg>
+    <div class="brand-sub">Courier &amp; Freight Services</div>
+    <div class="brand-details">
+      29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
+      +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
+    </div>
+    <div class="rc-label">RC: 1454183</div>
+  </div>
 
   <div class="divider"></div>
 
-  <!-- ═══ TITLE ═══ -->
-  <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+  <!-- ═══ TITLE + QR ═══ -->
+  <table class="title-row">
+    <tr>
+      <td class="title-left">
+        <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+      </td>
+      <td class="title-right">
+        <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
+        <div class="qr-cap">Scan to track</div>
+      </td>
+    </tr>
+  </table>
 
   <!-- ═══ PAYMENT DATE BAR ═══ -->
   <div class="bar">Payment Date &nbsp;&nbsp;&nbsp;&nbsp; ${paidDate}</div>
