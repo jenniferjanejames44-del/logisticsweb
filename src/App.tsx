@@ -69,6 +69,8 @@ import DesignSystem from "./pages/DesignSystem";
 import Partners from "./pages/Partners";
 import Partner from "./pages/dashboard/Partner";
 import AdminPartners from "./pages/admin/AdminPartners";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 const queryClient = new QueryClient();
 
 // Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
@@ -141,6 +143,8 @@ const App = () => (
               <Route path="/shipping" element={<Shipping />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/partners" element={<Partners />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy" element={<Privacy />} />
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<Overview />} />
               <Route path="/dashboard/wallet" element={<Wallet />} />
