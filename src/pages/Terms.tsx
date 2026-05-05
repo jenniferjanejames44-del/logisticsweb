@@ -14,10 +14,10 @@ const Terms = () => {
     <div className="min-h-screen">
       <Header />
       <main className="bg-background">
-        <div className="bg-primary text-white py-16">
+        <div className="bg-primary text-white pt-[100px] pb-12 sm:pt-[112px] sm:pb-14 lg:pt-[128px] lg:pb-16">
           <div className="section-container">
-            <h1 className="text-3xl sm:text-4xl font-bold">Terms and Conditions</h1>
-            <p className="mt-3 text-white/70">RAC Logistics Ltd — Last updated: 2026</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight">Terms and Conditions</h1>
+            <p className="mt-3 text-sm sm:text-base text-white/70">RAC Logistics Ltd — Last updated: 2026</p>
           </div>
         </div>
         <article className="section-container py-12 max-w-4xl">
