@@ -220,9 +220,9 @@ table{border-collapse:collapse;}
 
 /* ── Doc title ── */
 .doc-title{
-  font-size:30px;font-weight:900;color:var(--navy);
-  letter-spacing:4px;text-align:right;margin-bottom:12px;
-  text-transform:uppercase;
+  font-size:34px;font-weight:900;color:var(--navy);
+  letter-spacing:5px;text-align:left;margin:0;
+  text-transform:uppercase;line-height:1;
 }
 
 /* ── Blue bar ── */
