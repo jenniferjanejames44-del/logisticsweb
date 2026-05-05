@@ -203,22 +203,16 @@ table{border-collapse:collapse;}
    ══════════════════════════ */
 .hdr{width:100%;margin-bottom:0;}
 .hdr td{vertical-align:top;padding:0;}
-.hdr-left{width:52%;}
-.hdr-center{width:18%;text-align:center;padding-top:6px;}
-.hdr-right{width:30%;text-align:right;}
+.hdr-left{width:62%;}
+.hdr-right{width:38%;text-align:right;}
 
-.brand-row{display:flex;align-items:flex-start;gap:12px;}
-.brand-icon{
-  width:52px;height:52px;background:var(--navy);border-radius:5px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.brand-name{font-size:19px;font-weight:900;color:var(--navy);letter-spacing:-.3px;line-height:1.15;}
-.brand-sub{font-size:8.5px;color:#777;font-style:italic;margin-top:1px;}
-.brand-details{font-size:9.5px;color:#444;line-height:1.65;margin-top:4px;}
+.brand-logo{height:54px;width:auto;display:block;margin-bottom:8px;}
+.brand-sub{font-size:8.5px;color:#777;font-style:italic;margin-bottom:4px;letter-spacing:.4px;text-transform:uppercase;}
+.brand-details{font-size:9.5px;color:#444;line-height:1.65;}
 
-.rc-label{font-size:10px;color:#444;font-weight:600;}
+.rc-label{font-size:10px;color:#444;font-weight:600;margin-top:6px;}
 
-.qr-img{width:120px;height:120px;display:block;margin-left:auto;}
+.qr-img{width:110px;height:110px;display:block;margin-left:auto;}
 
 /* ── Divider ── */
 .divider{height:3.5px;background:var(--navy);margin:10px 0 14px 0;}
