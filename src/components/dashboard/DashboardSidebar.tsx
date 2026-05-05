@@ -27,7 +27,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 const mainNav = [
-  { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
+  { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
   { icon: Wallet, label: "Wallet", href: "/dashboard/wallet" },
   { icon: ShoppingBag, label: "Shopping Orders", href: "/dashboard/shopping-orders" },
 ];
@@ -142,27 +142,6 @@ const DashboardSidebar = () => {
             aria-label="RAC Logistics home"
           >
             <HeaderLogo className="h-auto w-full max-w-[150px]" />
-          </Link>
-        </div>
-
-        {/* User Profile Card */}
-        <div className="px-3 py-3 border-b border-border/40">
-          <Link
-            to="/dashboard/profile"
-            onClick={() => setIsMobileOpen(false)}
-            className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-muted/60 transition-colors"
-          >
-            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <User className="w-3.5 h-3.5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold text-foreground truncate">
-                {profileName || "User"}
-              </p>
-              <p className="text-xs text-muted-foreground truncate">
-                {user?.email}
-              </p>
-            </div>
           </Link>
         </div>
 
