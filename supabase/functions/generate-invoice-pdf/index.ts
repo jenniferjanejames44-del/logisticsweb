@@ -201,29 +201,29 @@ table{border-collapse:collapse;}
 /* ══════════════════════════
    HEADER
    ══════════════════════════ */
-.hdr{width:100%;margin-bottom:0;}
-.brand-logo{height:58px;width:auto;display:block;margin-bottom:6px;}
+.top-head{width:100%;margin-bottom:14px;table-layout:fixed;}
+.top-head td{vertical-align:top;padding:0;}
+.brand-cell{width:60%;padding-right:18px!important;}
+.doc-cell{width:40%;text-align:right;padding-left:18px!important;}
+.brand-logo{height:62px;width:auto;max-width:330px;display:block;margin-bottom:8px;}
 .brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}
-.brand-details{font-size:10px;color:#444;line-height:1.7;}
-.rc-label{font-size:10px;color:#444;font-weight:600;margin-top:6px;}
-
-/* Title row: doc title on the left, QR on the right */
-.title-row{width:100%;margin-bottom:12px;}
-.title-row td{vertical-align:middle;padding:0;}
-.title-left{width:70%;}
-.title-right{width:30%;text-align:right;}
-.qr-img{width:96px;height:96px;display:inline-block;}
-.qr-cap{font-size:8.5px;color:#666;margin-top:3px;text-align:right;letter-spacing:.3px;}
+.brand-details{font-size:9.8px;color:#444;line-height:1.65;}
+.rc-label{font-size:10px;color:#444;font-weight:700;margin-top:6px;}
+.doc-title{
+  font-size:39px;font-weight:900;color:var(--navy);
+  letter-spacing:4px;text-align:right;margin:0 0 10px;
+  text-transform:uppercase;line-height:.92;
+}
+.doc-meta{display:inline-table;width:100%;max-width:220px;border-top:3px solid var(--navy);border-bottom:1px solid var(--border);margin-bottom:10px;}
+.doc-meta div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);padding:5px 0;font-size:9.5px;}
+.doc-meta div:last-child{border-bottom:0;}
+.doc-meta span:first-child{color:#666;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.doc-meta span:last-child{color:var(--text);font-weight:800;text-align:right;}
+.qr-img{width:78px;height:78px;display:inline-block;}
+.qr-cap{font-size:8.5px;color:#666;margin-top:2px;text-align:right;letter-spacing:.3px;}
 
 /* ── Divider ── */
-.divider{height:3.5px;background:var(--navy);margin:10px 0 14px 0;}
-
-/* ── Doc title ── */
-.doc-title{
-  font-size:34px;font-weight:900;color:var(--navy);
-  letter-spacing:5px;text-align:left;margin:0;
-  text-transform:uppercase;line-height:1;
-}
+.divider{height:3.5px;background:var(--navy);margin:0 0 14px 0;}
 
 /* ── Blue bar ── */
 .bar{background:var(--navy);color:#fff;font-size:10.5px;font-weight:700;padding:5px 10px;letter-spacing:.3px;}
@@ -293,13 +293,13 @@ ${isPaid ? `.document::after{
 @media screen and (max-width:800px){
   html,body{background:#fff;}
   .document{width:100%;margin:0;padding:14px;box-shadow:none;}
-  .brand-logo{height:46px;}
-  .title-row,.title-row tbody,.title-row tr,.title-row td{display:block;width:100%;}
-  .title-left{margin-bottom:10px;}
-  .title-right{text-align:left;}
-  .qr-img{width:84px;height:84px;}
+  .top-head,.top-head tbody,.top-head tr,.top-head td{display:block;width:100%!important;padding:0!important;}
+  .brand-logo{height:46px;max-width:260px;}
+  .doc-cell{text-align:left;margin-top:12px;}
+  .doc-title{text-align:left;font-size:28px;letter-spacing:3px;margin-bottom:8px;}
+  .doc-meta{max-width:100%;}
+  .qr-img{width:76px;height:76px;}
   .qr-cap{text-align:left;}
-  .doc-title{font-size:24px;letter-spacing:3px;}
   .addr,.addr tbody,.addr tr,.addr td{display:block;width:100%!important;padding:0!important;}
   .addr td{margin-bottom:10px;}
   .chrg-wrap,.addl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;}
@@ -310,9 +310,10 @@ ${isPaid ? `.document::after{
 }
 @media screen and (max-width:480px){
   .document{padding:8px;}
-  .brand-logo{height:38px;}
+  .brand-logo{height:38px;max-width:220px;}
   .brand-details{font-size:8.5px;}
-  .doc-title{font-size:18px;letter-spacing:1px;}
+  .doc-title{font-size:24px;letter-spacing:1.5px;}
+  .doc-meta div{font-size:8.7px;}
   .bar{font-size:9.5px;padding:4px 8px;}
   .bar-sm{font-size:8.5px;}
   .info-tbl td{font-size:9.5px;padding:4px 6px;}
@@ -333,39 +334,40 @@ ${isPaid ? `.document::after{
 <div class="document">
 
   <!-- ═══ HEADER ═══ -->
-  <div class="hdr">
-    <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
-      <g fill="#07145C">
-        <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
-        <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
-        <rect x="126" y="111" width="112" height="64" rx="2"/>
-      </g>
-      <circle cx="144" cy="188" r="29" fill="#DF5101"/>
-      <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
-      <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
-    </svg>
-    <div class="brand-sub">Courier &amp; Freight Services</div>
-    <div class="brand-details">
-      29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
-      +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
-    </div>
-    <div class="rc-label">RC: 1454183</div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- ═══ TITLE + QR ═══ -->
-  <table class="title-row">
+  <table class="top-head">
     <tr>
-      <td class="title-left">
-        <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+      <td class="brand-cell">
+        <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+          <g fill="#07145C">
+            <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
+            <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
+            <rect x="126" y="111" width="112" height="64" rx="2"/>
+          </g>
+          <circle cx="144" cy="188" r="29" fill="#DF5101"/>
+          <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
+          <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
+        </svg>
+        <div class="brand-sub">Courier &amp; Freight Services</div>
+        <div class="brand-details">
+          29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
+          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
+        </div>
+        <div class="rc-label">RC: 1454183</div>
       </td>
-      <td class="title-right">
+      <td class="doc-cell">
+        <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+        <div class="doc-meta">
+          <div><span>No.</span><span>${invoice.invoice_number}</span></div>
+          <div><span>Date</span><span>${date}</span></div>
+          <div><span>Status</span><span>${isPaid ? 'Paid' : 'Unpaid'}</span></div>
+        </div>
         <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
         <div class="qr-cap">Scan to track</div>
       </td>
     </tr>
   </table>
+
+  <div class="divider"></div>
 
   <!-- ═══ PAYMENT DATE BAR ═══ -->
   <div class="bar">Payment Date &nbsp;&nbsp;&nbsp;&nbsp; ${paidDate}</div>
