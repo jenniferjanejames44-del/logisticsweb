@@ -329,44 +329,46 @@ const Header = () => {
             </NavLink>
           ))}
           
-          {/* CTA Buttons - directly below links, full-width */}
-          <div className="mt-6 flex flex-col gap-3 border-t border-border/60 pt-6">
+          {/* CTA Buttons - compact, matching desktop style */}
+          <div className="mt-6 flex flex-row items-center gap-2.5 border-t border-border/60 pt-6">
             {user ? (
               <>
                 {isAdmin && (
-                  <Button asChild variant="outline" size="lg" className="w-full justify-center text-base">
+                  <Button asChild variant="outline" size="sm" className="font-semibold text-[15px] whitespace-nowrap px-5">
                     <Link to="/admin" onClick={closeMobileMenu}>
                       <Shield className="w-4 h-4" />
-                      Admin Panel
+                      Admin
                     </Link>
                   </Button>
                 )}
-                <Button asChild variant="nav" size="lg" className="w-full justify-center text-base">
+                <Button asChild variant="nav" size="sm" className="font-semibold text-[15px] whitespace-nowrap px-5">
                   <Link to="/dashboard" onClick={closeMobileMenu}>
                     <User className="w-4 h-4" />
                     Dashboard
                   </Link>
                 </Button>
-                <button 
-                  className="inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-[22px] py-3 text-base font-semibold text-destructive transition-colors hover:bg-destructive hover:text-destructive-foreground"
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="font-semibold text-[15px] whitespace-nowrap px-5"
                   onClick={() => {
                     signOut();
                     closeMobileMenu();
                   }}
                 >
                   Sign Out
-                </button>
+                </Button>
               </>
             ) : (
               <>
-                <Button asChild variant="outline" size="lg" className="w-full justify-center text-base font-semibold">
+                <Button asChild variant="outline" size="sm" className="font-semibold text-[15px] whitespace-nowrap px-5">
                   <Link to="/auth" onClick={closeMobileMenu}>
                     Log In
                   </Link>
                 </Button>
-                <Button asChild variant="navCta" size="lg" className="w-full justify-center text-base font-bold">
+                <Button asChild variant="navCta" size="sm" className="font-bold whitespace-nowrap px-5">
                   <Link to="/auth" onClick={closeMobileMenu}>
-                    Sign Up
+                    Join Now
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
