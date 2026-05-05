@@ -346,7 +346,7 @@ const AuthForm = () => {
                         onChange={(e) => setEmail(e.target.value)} className="h-11 rounded-lg pl-10" required />
                     </div>
                   </div>
-                  <Button type="submit" variant="accent" size="lg" className="w-full" disabled={isLoading}>
+                  <Button type="submit" variant="navCta" size="sm" className="font-bold whitespace-nowrap px-6" disabled={isLoading}>
                     {isLoading ? (
                       <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                     ) : (<>Send Reset Link <ArrowRight className="w-4 h-4 ml-2" /></>)}
@@ -486,10 +486,10 @@ const AuthForm = () => {
                     </>
                   )}
 
-                  <Button type="submit" variant="accent" size="lg" className="w-full mt-2" disabled={isLoading}>
+                  <Button type="submit" variant="navCta" size="sm" className="mt-2 font-bold whitespace-nowrap px-6" disabled={isLoading}>
                     {isLoading ? (
                       <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    ) : (<>{isLogin ? "Sign In" : "Create Account"} <ArrowRight className="w-4 h-4 ml-2" /></>)}
+                    ) : (<>{isLogin ? "Log In" : "Join Now"} <ArrowRight className="w-4 h-4 ml-2" /></>)}
                   </Button>
                 </form>
 
