@@ -281,41 +281,42 @@ const Shipments = () => {
                   </div>
 
                   {/* Price + Action */}
-                  <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end lg:gap-2 flex-shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-border/40 lg:min-w-[150px]">
-                    {shipment.price !== null ? (
-                      <p className="text-base font-bold text-foreground">
-                        {shipment.invoices?.[0]
-                          ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
-                          : formatUsd(Number(shipment.price))}
-                      </p>
-                    ) : (
-                      <Badge variant="secondary" className="text-[11px]">Price Pending</Badge>
-                    )}
-                    {shipment.price !== null && (
-                      shipment.payment_status === "paid" ? (
-                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs px-2.5 py-1">Paid</Badge>
+                  <div className="flex flex-col gap-3 flex-shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-border/40 lg:min-w-[170px] lg:items-end">
+                    <div className="flex items-center justify-between w-full lg:w-auto lg:flex-col lg:items-end gap-2">
+                      {shipment.price !== null ? (
+                        <p className="text-base font-bold text-foreground">
+                          {shipment.invoices?.[0]
+                            ? formatConverted(Number(shipment.invoices[0].amount), shipment.invoices[0].currency || "USD")
+                            : formatUsd(Number(shipment.price))}
+                        </p>
                       ) : (
-                        <Button
-                          onClick={() => openPaymentDialog(shipment)}
-                          className="h-11 px-4 text-sm bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold"
-                        >
-                          <DollarSign className="w-4 h-4" />
-                          Pay Now
-                        </Button>
-                      )
-                    )}
-                    <div className="flex gap-2 w-full lg:w-auto lg:justify-end">
-                      <Button asChild variant="outline" className="h-10 px-3 text-xs flex-1 lg:flex-none rounded-lg">
+                        <Badge variant="secondary" className="text-[11px]">Price Pending</Badge>
+                      )}
+                      {shipment.price !== null && shipment.payment_status === "paid" && (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs px-2.5 py-1">Paid</Badge>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 w-full lg:flex lg:flex-col lg:w-[170px]">
+                      <Button asChild variant="outline" className="h-10 px-3 text-xs rounded-lg w-full">
                         <a href={`/dashboard/shipments/${shipment.id}`}>
                           <Eye className="w-3.5 h-3.5" /> View
                         </a>
                       </Button>
                       {["unpaid","pending"].includes(shipment.payment_status) &&
                        ["draft","pending","shipment_created","awaiting_warehouse"].includes(shipment.status) && (
-                        <Button asChild variant="outline" className="h-10 px-3 text-xs flex-1 lg:flex-none rounded-lg">
+                        <Button asChild variant="outline" className="h-10 px-3 text-xs rounded-lg w-full">
                           <a href={`/dashboard/shipments/${shipment.id}?edit=1`}>
                             <Pencil className="w-3.5 h-3.5" /> Edit
                           </a>
+                        </Button>
+                      )}
+                      {shipment.price !== null && shipment.payment_status !== "paid" && (
+                        <Button
+                          onClick={() => openPaymentDialog(shipment)}
+                          className="h-10 px-3 text-xs col-span-2 bg-accent hover:bg-accent/90 text-white rounded-lg font-semibold w-full"
+                        >
+                          <DollarSign className="w-3.5 h-3.5" />
+                          Pay Now
                         </Button>
                       )}
                     </div>
