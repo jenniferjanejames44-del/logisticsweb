@@ -364,7 +364,7 @@ ${isPaid ? `.document::after{
         </div>
       </td>
       <td class="hdr-center">
-        <div class="rc-label" style="margin-top:12px;">RC: XXXXXXX</div>
+        <div class="rc-label" style="margin-top:12px;">RC: 1454183</div>
       </td>
       <td class="hdr-right">
         <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
