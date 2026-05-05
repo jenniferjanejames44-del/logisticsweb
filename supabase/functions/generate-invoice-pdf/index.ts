@@ -334,33 +334,26 @@ ${isPaid ? `.document::after{
   <table class="hdr">
     <tr>
       <td class="hdr-left">
-        <div class="brand-row">
-          <div class="brand-icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:34px;">
-              <path d="M4 4C4 4 14 2 24 8C29 11 31 15 31 15L19 15C12 15 7 11 4 4Z" fill="white"/>
-              <rect x="4" y="17" width="13" height="13" rx="2" fill="white"/>
-              <path d="M19 17H29C29 17 33 17 33 23C33 29 29 30 26 30H19V17Z" fill="white"/>
-              <circle cx="20" cy="27" r="3.5" fill="#FF4D00"/>
-            </svg>
-          </div>
-          <div>
-            <div class="brand-name">RAC LOGISTICS LTD</div>
-            <div class="brand-sub">Courier &amp; Freight Services</div>
-            <div class="brand-details">
-              29b Osolo Way, Opposite Polaris Bank<br>
-              Ajao Estate, Isolo, Lagos State<br>
-              +234 818 595 6707<br>
-              info@raclogistic.com<br>
-              www.raclogistics.com
-            </div>
-          </div>
+        <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+          <g fill="#07145C">
+            <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
+            <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
+            <rect x="126" y="111" width="112" height="64" rx="2"/>
+          </g>
+          <circle cx="144" cy="188" r="29" fill="#DF5101"/>
+          <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
+          <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
+        </svg>
+        <div class="brand-sub">Courier &amp; Freight Services</div>
+        <div class="brand-details">
+          29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
+          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
         </div>
-      </td>
-      <td class="hdr-center">
-        <div class="rc-label" style="margin-top:12px;">RC: 1454183</div>
+        <div class="rc-label">RC: 1454183</div>
       </td>
       <td class="hdr-right">
         <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
+        <div style="font-size:8.5px;color:#666;margin-top:4px;text-align:right;">Scan to track</div>
       </td>
     </tr>
   </table>
