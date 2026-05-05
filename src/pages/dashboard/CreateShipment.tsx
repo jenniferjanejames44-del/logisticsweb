@@ -88,7 +88,8 @@ const CreateShipment = () => {
               {[
                 { name: "RAC", Icon: Package, color: "bg-primary text-primary-foreground" },
                 { name: "DHL", Icon: Plane, color: "bg-yellow-400 text-yellow-950" },
-                { name: "Aramex", Icon: Truck, color: "bg-red-500 text-white" },
+                { name: "FedEx", Icon: Plane, color: "bg-purple-600 text-white" },
+                { name: "UPS", Icon: Truck, color: "bg-amber-700 text-white" },
                 { name: "Sea Freight", Icon: Ship, color: "bg-blue-500 text-white" },
               ].map((c) => (
                 <div
