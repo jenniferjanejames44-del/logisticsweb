@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { OverviewSkeleton } from "@/components/dashboard/DashboardSkeletons";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import StatusBadge from "@/components/shipments/StatusBadge";
 import {
   Package,
@@ -21,6 +22,11 @@ import {
   ArrowUpCircle,
   ShoppingBag,
   Headphones,
+  Search,
+  Globe2,
+  User as UserIcon,
+  Copy,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 
@@ -54,6 +60,7 @@ interface CompletedPayment {
 
 const Overview = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { balance } = useWalletBalance(user?.id);
   const { convertAmount, formatMoney, selectedCurrency } = useCurrency();
   const [stats, setStats] = useState<ShipmentStats>({ total: 0, pending: 0, inTransit: 0, delivered: 0 });
@@ -61,6 +68,9 @@ const Overview = () => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [completedPayments, setCompletedPayments] = useState<CompletedPayment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<{ full_name: string | null; country: string | null } | null>(null);
+  const [trackingQuery, setTrackingQuery] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,6 +111,13 @@ const Overview = () => {
         setCompletedPayments(payments);
       }
 
+      const { data: prof } = await supabase
+        .from("profiles")
+        .select("full_name, country")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (prof) setProfile({ full_name: prof.full_name ?? null, country: prof.country ?? null });
+
       setLoading(false);
     };
 
@@ -123,42 +140,117 @@ const Overview = () => {
     );
   }
 
+  const fullName =
+    profile?.full_name ||
+    (user?.user_metadata as { full_name?: string } | undefined)?.full_name ||
+    user?.email?.split("@")[0] ||
+    "there";
+  const firstName = fullName.split(" ")[0];
+  const country =
+    profile?.country ||
+    (user?.user_metadata as { country?: string } | undefined)?.country ||
+    "Nigeria";
+  const userShortId = user?.id ? `RAC-${user.id.slice(0, 8).toUpperCase()}` : "";
+
+  const handleTrackingSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = trackingQuery.trim();
+    if (!q) return;
+    navigate(`/track?id=${encodeURIComponent(q)}`);
+  };
+
+  const copyId = async () => {
+    if (!userShortId) return;
+    try {
+      await navigator.clipboard.writeText(userShortId);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* ignore */
+    }
+  };
+
   const statCards = [
     { label: "Total Shipments", value: stats.total, icon: Package, color: "text-primary", bg: "bg-primary/8" },
     { label: "In Transit", value: stats.inTransit, icon: Truck, color: "text-blue-600", bg: "bg-blue-500/8" },
-    { label: "Delivered", value: stats.delivered, icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
-    { label: "Total Spent", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, color: "text-accent", bg: "bg-accent/8" },
+    { label: "Total Deliveries", value: stats.delivered, icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
+    { label: "Total Value", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, color: "text-accent", bg: "bg-accent/8" },
   ];
 
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
-      {/* Hero — Create Shipment CTA (Africanies-style) */}
+      {/* Hero — Africanies-style: Greeting (left) · Create Shipment (center) · Tracking search (right) */}
       <Card className="mb-6 overflow-hidden rounded-2xl border-0 bg-gradient-to-br from-primary via-primary to-[#0a1a6b] shadow-lg">
-        <CardContent className="relative p-6 sm:p-8">
+        <CardContent className="relative p-5 sm:p-7">
           <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
           <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-white/5 blur-2xl" aria-hidden />
-          <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="max-w-xl">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white/90">
-                <Package className="h-3 w-3" /> Quick Start
-              </span>
-              <h2 className="mt-3 text-2xl font-bold leading-tight text-white sm:text-3xl">
-                Ready to ship something today?
-              </h2>
-              <p className="mt-1.5 text-sm text-white/70 sm:text-base">
-                Create a new shipment in a few guided steps and we'll calculate the cost automatically.
-              </p>
+
+          <div className="relative grid grid-cols-1 items-center gap-5 lg:grid-cols-3">
+            {/* LEFT — Greeting + profile + ID */}
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/20">
+                <UserIcon className="h-5 w-5 text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-base font-bold text-white sm:text-lg truncate">
+                  Hello, {firstName} 👋
+                </p>
+                <div className="mt-1 flex items-center gap-1.5 text-[11px] text-white/70">
+                  <Globe2 className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">Shipping from {country} to the world</span>
+                </div>
+                {userShortId && (
+                  <button
+                    type="button"
+                    onClick={copyId}
+                    className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-mono font-semibold text-white/85 hover:bg-white/15 transition-colors"
+                    aria-label="Copy your customer ID"
+                  >
+                    <span>ID: {userShortId}</span>
+                    {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                  </button>
+                )}
+              </div>
             </div>
-            <Button
-              asChild
-              className="h-12 self-start rounded-xl bg-accent px-6 text-sm font-semibold text-white shadow-md hover:bg-accent/90 sm:self-auto"
-            >
-              <Link to="/dashboard/shipments/new">
-                <Plus className="mr-1 h-4 w-4" />
-                Create Shipment
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
+
+            {/* CENTER — Create Shipment CTA */}
+            <div className="flex justify-center">
+              <Button
+                asChild
+                className="h-14 w-full max-w-xs rounded-2xl bg-accent px-6 text-sm font-bold text-white shadow-lg hover:bg-accent/90 hover:scale-[1.02] transition-transform"
+              >
+                <Link to="/dashboard/shipments/new" className="flex items-center justify-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+                    <Plus className="h-4 w-4" />
+                  </span>
+                  Create Shipment
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+
+            {/* RIGHT — Tracking search */}
+            <form onSubmit={handleTrackingSearch} className="lg:justify-self-end w-full lg:max-w-sm">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-white/70">
+                Track a shipment
+              </label>
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={trackingQuery}
+                  onChange={(e) => setTrackingQuery(e.target.value)}
+                  placeholder="Enter Tracking ID"
+                  className="h-11 rounded-xl bg-white pl-9 pr-24 text-sm text-foreground placeholder:text-muted-foreground/70 border-0 focus-visible:ring-2 focus-visible:ring-accent"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="absolute right-1.5 top-1/2 h-8 -translate-y-1/2 rounded-lg bg-accent px-3 text-xs font-semibold text-white hover:bg-accent/90"
+                >
+                  Track
+                </Button>
+              </div>
+            </form>
           </div>
         </CardContent>
       </Card>
