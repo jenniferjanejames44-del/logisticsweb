@@ -18,7 +18,7 @@ import StatusBadge from "@/components/shipments/StatusBadge";
 import EmptyState from "@/components/ui/EmptyState";
 import {
   Package, Plus, Search,
-  MapPin, Calendar, DollarSign, Wallet, Phone, MessageCircle,
+  MapPin, Calendar, DollarSign, Wallet, Phone, MessageCircle, Eye, Pencil,
 } from "lucide-react";
 
 interface Shipment {
@@ -60,6 +60,7 @@ const Shipments = () => {
   const { formatConverted, formatUsd } = useCurrency();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
+  // navigation handled via anchors / window.location for simplicity
   const { balance, refetch: refetchBalance } = useWalletBalance(user?.id);
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -303,6 +304,21 @@ const Shipments = () => {
                         </Button>
                       )
                     )}
+                    <div className="flex gap-2 w-full lg:w-auto lg:justify-end">
+                      <Button asChild variant="outline" className="h-10 px-3 text-xs flex-1 lg:flex-none rounded-lg">
+                        <a href={`/dashboard/shipments/${shipment.id}`}>
+                          <Eye className="w-3.5 h-3.5" /> View
+                        </a>
+                      </Button>
+                      {["unpaid","pending"].includes(shipment.payment_status) &&
+                       ["draft","pending","shipment_created","awaiting_warehouse"].includes(shipment.status) && (
+                        <Button asChild variant="outline" className="h-10 px-3 text-xs flex-1 lg:flex-none rounded-lg">
+                          <a href={`/dashboard/shipments/${shipment.id}?edit=1`}>
+                            <Pencil className="w-3.5 h-3.5" /> Edit
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </CardContent>
