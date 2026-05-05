@@ -64,6 +64,7 @@ const IMPORT_DELIVERY_TYPES = [
 ];
 
 const EXPORT_DELIVERY_TYPES = [
+  { id: "drop_off", label: "Drop-off at office", desc: "You bring your items to the RAC Logistics office in Nigeria", icon: Warehouse },
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
 ];
 
