@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
@@ -81,6 +81,7 @@ const canEditShipment = (s: Shipment) => {
 const ShipmentDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { formatConverted, formatUsd } = useCurrency();
   const { balance, refetch: refetchBalance } = useWalletBalance(user?.id);
@@ -113,6 +114,12 @@ const ShipmentDetail = () => {
   };
 
   useEffect(() => { load(); }, [id, user?.id]);
+
+  useEffect(() => {
+    if (shipment && searchParams.get("edit") === "1" && canEditShipment(shipment)) {
+      setEditing(true);
+    }
+  }, [shipment, searchParams]);
 
   const editable = useMemo(() => (shipment ? canEditShipment(shipment) : false), [shipment]);
 
