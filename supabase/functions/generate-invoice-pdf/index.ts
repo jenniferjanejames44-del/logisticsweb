@@ -202,26 +202,27 @@ table{border-collapse:collapse;}
    HEADER
    ══════════════════════════ */
 .hdr{width:100%;margin-bottom:0;}
-.hdr td{vertical-align:top;padding:0;}
-.hdr-left{width:62%;}
-.hdr-right{width:38%;text-align:right;}
-
-.brand-logo{height:54px;width:auto;display:block;margin-bottom:8px;}
-.brand-sub{font-size:8.5px;color:#777;font-style:italic;margin-bottom:4px;letter-spacing:.4px;text-transform:uppercase;}
-.brand-details{font-size:9.5px;color:#444;line-height:1.65;}
-
+.brand-logo{height:58px;width:auto;display:block;margin-bottom:6px;}
+.brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}
+.brand-details{font-size:10px;color:#444;line-height:1.7;}
 .rc-label{font-size:10px;color:#444;font-weight:600;margin-top:6px;}
 
-.qr-img{width:110px;height:110px;display:block;margin-left:auto;}
+/* Title row: doc title on the left, QR on the right */
+.title-row{width:100%;margin-bottom:12px;}
+.title-row td{vertical-align:middle;padding:0;}
+.title-left{width:70%;}
+.title-right{width:30%;text-align:right;}
+.qr-img{width:96px;height:96px;display:inline-block;}
+.qr-cap{font-size:8.5px;color:#666;margin-top:3px;text-align:right;letter-spacing:.3px;}
 
 /* ── Divider ── */
 .divider{height:3.5px;background:var(--navy);margin:10px 0 14px 0;}
 
 /* ── Doc title ── */
 .doc-title{
-  font-size:30px;font-weight:900;color:var(--navy);
-  letter-spacing:4px;text-align:right;margin-bottom:12px;
-  text-transform:uppercase;
+  font-size:34px;font-weight:900;color:var(--navy);
+  letter-spacing:5px;text-align:left;margin:0;
+  text-transform:uppercase;line-height:1;
 }
 
 /* ── Blue bar ── */
@@ -292,12 +293,13 @@ ${isPaid ? `.document::after{
 @media screen and (max-width:800px){
   html,body{background:#fff;}
   .document{width:100%;margin:0;padding:14px;box-shadow:none;}
-  .hdr,.hdr tbody,.hdr tr,.hdr td{display:block;width:100%;}
-  .hdr-left{margin-bottom:10px;}
-  .hdr-right{text-align:left;margin-bottom:8px;}
-  .qr-img{margin-left:0;width:90px;height:90px;}
-  .brand-logo{height:44px;}
-  .doc-title{font-size:22px;text-align:center;letter-spacing:2px;}
+  .brand-logo{height:46px;}
+  .title-row,.title-row tbody,.title-row tr,.title-row td{display:block;width:100%;}
+  .title-left{margin-bottom:10px;}
+  .title-right{text-align:left;}
+  .qr-img{width:84px;height:84px;}
+  .qr-cap{text-align:left;}
+  .doc-title{font-size:24px;letter-spacing:3px;}
   .addr,.addr tbody,.addr tr,.addr td{display:block;width:100%!important;padding:0!important;}
   .addr td{margin-bottom:10px;}
   .chrg-wrap,.addl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;}
@@ -331,37 +333,39 @@ ${isPaid ? `.document::after{
 <div class="document">
 
   <!-- ═══ HEADER ═══ -->
-  <table class="hdr">
-    <tr>
-      <td class="hdr-left">
-        <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
-          <g fill="#07145C">
-            <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
-            <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
-            <rect x="126" y="111" width="112" height="64" rx="2"/>
-          </g>
-          <circle cx="144" cy="188" r="29" fill="#DF5101"/>
-          <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
-          <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
-        </svg>
-        <div class="brand-sub">Courier &amp; Freight Services</div>
-        <div class="brand-details">
-          29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
-          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
-        </div>
-        <div class="rc-label">RC: 1454183</div>
-      </td>
-      <td class="hdr-right">
-        <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
-        <div style="font-size:8.5px;color:#666;margin-top:4px;text-align:right;">Scan to track</div>
-      </td>
-    </tr>
-  </table>
+  <div class="hdr">
+    <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+      <g fill="#07145C">
+        <path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/>
+        <path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/>
+        <rect x="126" y="111" width="112" height="64" rx="2"/>
+      </g>
+      <circle cx="144" cy="188" r="29" fill="#DF5101"/>
+      <text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text>
+      <text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text>
+    </svg>
+    <div class="brand-sub">Courier &amp; Freight Services</div>
+    <div class="brand-details">
+      29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
+      +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
+    </div>
+    <div class="rc-label">RC: 1454183</div>
+  </div>
 
   <div class="divider"></div>
 
-  <!-- ═══ TITLE ═══ -->
-  <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+  <!-- ═══ TITLE + QR ═══ -->
+  <table class="title-row">
+    <tr>
+      <td class="title-left">
+        <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+      </td>
+      <td class="title-right">
+        <img src="${qrUrl}" class="qr-img" alt="QR Code"/>
+        <div class="qr-cap">Scan to track</div>
+      </td>
+    </tr>
+  </table>
 
   <!-- ═══ PAYMENT DATE BAR ═══ -->
   <div class="bar">Payment Date &nbsp;&nbsp;&nbsp;&nbsp; ${paidDate}</div>
