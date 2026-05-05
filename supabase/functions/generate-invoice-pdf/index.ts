@@ -294,10 +294,9 @@ ${isPaid ? `.document::after{
   .document{width:100%;margin:0;padding:14px;box-shadow:none;}
   .hdr,.hdr tbody,.hdr tr,.hdr td{display:block;width:100%;}
   .hdr-left{margin-bottom:10px;}
-  .hdr-center{text-align:left;margin-bottom:6px;}
   .hdr-right{text-align:left;margin-bottom:8px;}
   .qr-img{margin-left:0;width:90px;height:90px;}
-  .brand-name{font-size:16px;}
+  .brand-logo{height:44px;}
   .doc-title{font-size:22px;text-align:center;letter-spacing:2px;}
   .addr,.addr tbody,.addr tr,.addr td{display:block;width:100%!important;padding:0!important;}
   .addr td{margin-bottom:10px;}
@@ -309,7 +308,7 @@ ${isPaid ? `.document::after{
 }
 @media screen and (max-width:480px){
   .document{padding:8px;}
-  .brand-name{font-size:14px;}
+  .brand-logo{height:38px;}
   .brand-details{font-size:8.5px;}
   .doc-title{font-size:18px;letter-spacing:1px;}
   .bar{font-size:9.5px;padding:4px 8px;}
