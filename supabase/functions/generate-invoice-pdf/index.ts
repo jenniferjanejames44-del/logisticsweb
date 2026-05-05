@@ -293,12 +293,13 @@ ${isPaid ? `.document::after{
 @media screen and (max-width:800px){
   html,body{background:#fff;}
   .document{width:100%;margin:0;padding:14px;box-shadow:none;}
-  .hdr,.hdr tbody,.hdr tr,.hdr td{display:block;width:100%;}
-  .hdr-left{margin-bottom:10px;}
-  .hdr-right{text-align:left;margin-bottom:8px;}
-  .qr-img{margin-left:0;width:90px;height:90px;}
-  .brand-logo{height:44px;}
-  .doc-title{font-size:22px;text-align:center;letter-spacing:2px;}
+  .brand-logo{height:46px;}
+  .title-row,.title-row tbody,.title-row tr,.title-row td{display:block;width:100%;}
+  .title-left{margin-bottom:10px;}
+  .title-right{text-align:left;}
+  .qr-img{width:84px;height:84px;}
+  .qr-cap{text-align:left;}
+  .doc-title{font-size:24px;letter-spacing:3px;}
   .addr,.addr tbody,.addr tr,.addr td{display:block;width:100%!important;padding:0!important;}
   .addr td{margin-bottom:10px;}
   .chrg-wrap,.addl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;}
