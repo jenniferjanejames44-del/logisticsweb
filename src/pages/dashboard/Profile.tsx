@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { User, Mail, Building, Globe, Save, Loader2 } from "lucide-react";
+import LocationSelector from "@/components/shipments/LocationSelector";
 
 interface Profile {
   id: string;
@@ -25,11 +26,6 @@ interface Profile {
   zip_code: string | null;
   avatar_url: string | null;
 }
-
-const countries = [
-  "United States", "United Kingdom", "Germany", "France", "China",
-  "Japan", "Australia", "Canada", "Nigeria", "UAE", "Singapore", "India"
-];
 
 const Profile = () => {
   const { user } = useAuth();
@@ -182,31 +178,18 @@ const Profile = () => {
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="text-xs font-medium">City</Label>
-                  <Input id="city" value={formData.city}
-                    onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    placeholder="New York" className="h-11 sm:h-12 text-sm border-border/60" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="state" className="text-xs font-medium">State / Region</Label>
-                  <Input id="state" value={formData.state}
-                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    placeholder="NY" className="h-11 sm:h-12 text-sm border-border/60" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="country" className="text-xs font-medium">Country</Label>
-                  <Select value={formData.country}
-                    onValueChange={(value) => setFormData({ ...formData, country: value })}>
-                    <SelectTrigger id="country" className="h-11 sm:h-12 text-sm border-border/60">
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countries.map((country) => (
-                        <SelectItem key={country} value={country}>{country}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-xs font-medium">Country / State / City</Label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <LocationSelector
+                      country={formData.country}
+                      state={formData.state}
+                      city={formData.city}
+                      onCountryChange={(v) => setFormData((f) => ({ ...f, country: v, state: "", city: "" }))}
+                      onStateChange={(v) => setFormData((f) => ({ ...f, state: v, city: "" }))}
+                      onCityChange={(v) => setFormData((f) => ({ ...f, city: v }))}
+                    />
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="zip_code" className="text-xs font-medium">Zip / Postal Code</Label>
