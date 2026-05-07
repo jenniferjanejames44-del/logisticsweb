@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { User, Mail, Building, Globe, Save, Loader2 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
+import LocationPicker from "@/components/shipments/LocationPicker";
 
 interface Profile {
   id: string;
@@ -168,12 +168,14 @@ const Profile = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="address" className="text-xs font-medium">Address</Label>
-                <Textarea
-                  id="address"
+                <LocationPicker
                   value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="123 Main Street, Suite 100"
-                  className="min-h-[88px] text-sm border-border/60"
+                  onChange={(value) => setFormData({ ...formData, address: value })}
+                  country={formData.country}
+                  state={formData.state}
+                  city={formData.city}
+                  placeholder="Search street, building, landmark"
+                  className="h-11 sm:h-12 text-sm border-border/60"
                 />
               </div>
 
