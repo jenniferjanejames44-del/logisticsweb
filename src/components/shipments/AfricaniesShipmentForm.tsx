@@ -19,7 +19,7 @@ import {
   ArrowRight, ArrowLeft, Plane, Ship, Check,
   PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
 } from "lucide-react";
-import { getStatesForCountry } from "@/lib/states";
+import LocationSelector from "@/components/shipments/LocationSelector";
 
 type Flow = "import" | "export";
 
@@ -654,33 +654,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const renderStep = () => {
     const stepName = STEPS[step];
-    const renderStateField = (
-      country: string,
-      value: string,
-      onChange: (v: string) => void,
-      error?: string,
-    ) => {
-      const list = getStatesForCountry(country);
-      if (list && list.length > 0) {
-        return (
-          <Field label="State / Province / Region" required error={error}>
-            <Select value={value} onValueChange={onChange} disabled={!country}>
-              <SelectTrigger>
-                <SelectValue placeholder={country ? "Select state" : "Select country first"} />
-              </SelectTrigger>
-              <SelectContent className="max-h-72">
-                {list.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-              </SelectContent>
-            </Select>
-          </Field>
-        );
-      }
-      return (
-        <Field label="State / Province / Region" required error={error}>
-          <SmoothInput value={value} onCommit={onChange} placeholder="Enter your state or region" />
-        </Field>
-      );
-    };
     switch (stepName) {
       case "Method":
         return (
@@ -839,22 +812,21 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Email" error={errors.senderEmail}>
                 <SmoothInput type="email" value={senderEmail} onCommit={updateField("senderEmail", setSenderEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
-              <Field label="Country" required error={errors.senderCountry}>
-                <Select
-                  value={senderCountry}
-                  onValueChange={(v) => { setSenderCountry(v); setSenderState(""); clearFieldError("senderCountry"); }}
-                  disabled={isExport}
-                >
-                  <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
-                  <SelectContent>
-                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </Field>
-              {renderStateField(senderCountry, senderState, updateField("senderState", setSenderState), errors.senderState)}
-              <Field label="City" required error={errors.senderCity}>
-                <SmoothInput value={senderCity} onCommit={updateField("senderCity", setSenderCity)} placeholder="Lagos" />
-              </Field>
+              <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
+                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+                <LocationSelector
+                  country={senderCountry}
+                  state={senderState}
+                  city={senderCity}
+                  onCountryChange={(v) => { setSenderCountry(v); setSenderState(""); setSenderCity(""); clearFieldError("senderCountry"); }}
+                  onStateChange={(v) => { setSenderState(v); setSenderCity(""); clearFieldError("senderState"); }}
+                  onCityChange={(v) => { setSenderCity(v); clearFieldError("senderCity"); }}
+                  countryDisabled={isExport}
+                  errors={{ country: errors.senderCountry, state: errors.senderState, city: errors.senderCity }}
+                />
+              </div>
               <Field label="Zip / Postal code">
                 <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
               </Field>
@@ -886,21 +858,20 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               <Field label="Email" error={errors.receiverEmail}>
                 <SmoothInput type="email" value={receiverEmail} onCommit={updateField("receiverEmail", setReceiverEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
-              <Field label="Country" required error={errors.receiverCountry}>
-                <Select
-                  value={receiverCountry}
-                  onValueChange={(v) => { setReceiverCountry(v); setReceiverState(""); clearFieldError("receiverCountry"); }}
-                >
-                  <SelectTrigger><SelectValue placeholder="Select country" /></SelectTrigger>
-                  <SelectContent>
-                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </Field>
-              {renderStateField(receiverCountry, receiverState, updateField("receiverState", setReceiverState), errors.receiverState)}
-              <Field label="City" required error={errors.receiverCity}>
-                <SmoothInput value={receiverCity} onCommit={updateField("receiverCity", setReceiverCity)} placeholder="City" />
-              </Field>
+              <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
+                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+                <LocationSelector
+                  country={receiverCountry}
+                  state={receiverState}
+                  city={receiverCity}
+                  onCountryChange={(v) => { setReceiverCountry(v); setReceiverState(""); setReceiverCity(""); clearFieldError("receiverCountry"); }}
+                  onStateChange={(v) => { setReceiverState(v); setReceiverCity(""); clearFieldError("receiverState"); }}
+                  onCityChange={(v) => { setReceiverCity(v); clearFieldError("receiverCity"); }}
+                  errors={{ country: errors.receiverCountry, state: errors.receiverState, city: errors.receiverCity }}
+                />
+              </div>
               <Field label="Zip / Postal code">
                 <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
               </Field>

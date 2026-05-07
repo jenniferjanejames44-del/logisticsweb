@@ -13,6 +13,7 @@ import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
   Phone, MapPin, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
 } from "lucide-react";
+import LocationSelector from "@/components/shipments/LocationSelector";
 
 const AuthForm = () => {
   useEffect(() => {
@@ -118,8 +119,9 @@ const AuthForm = () => {
         if (!fullName.trim()) throw new Error("Please enter your full name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
         if (!address.trim()) throw new Error("Please enter your full address");
-        if (!city.trim()) throw new Error("Please enter your city");
         if (!country.trim()) throw new Error("Please select or enter your country");
+        if (!stateRegion.trim()) throw new Error("Please select your state / region");
+        if (!city.trim()) throw new Error("Please enter your city / LGA");
 
         // Pre-signup duplicate check — Supabase silently "succeeds" for existing
         // emails without sending a verification email, so we block it explicitly.
@@ -451,23 +453,21 @@ const AuthForm = () => {
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-2">
-                          <Label htmlFor="city" className="text-sm font-medium">City</Label>
-                          <div className="relative">
-                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <Input id="city" type="text" placeholder="Lagos" value={city}
-                              onChange={(e) => setCity(e.target.value)} className="h-11 rounded-lg pl-10" required={!isLogin} />
+                        <div className="space-y-2 col-span-2">
+                          <Label className="text-sm font-medium">Country / State / City *</Label>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <LocationSelector
+                              country={country}
+                              state={stateRegion}
+                              city={city}
+                              onCountryChange={setCountry}
+                              onStateChange={setStateRegion}
+                              onCityChange={setCity}
+                            />
                           </div>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="state" className="text-sm font-medium">State / Region</Label>
-                          <Input id="state" type="text" placeholder="Lagos State" value={stateRegion}
-                            onChange={(e) => setStateRegion(e.target.value)} className="h-11 rounded-lg" />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="country" className="text-sm font-medium">Country</Label>
-                          <Input id="country" type="text" placeholder="Nigeria" value={country}
-                            onChange={(e) => setCountry(e.target.value)} className="h-11 rounded-lg" required={!isLogin} />
+                          <p className="text-[11px] text-muted-foreground">
+                            Pick your country, then state, then city / LGA.
+                          </p>
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="zip" className="text-sm font-medium">Zip / Postal Code</Label>

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import LocationSelector from "@/components/shipments/LocationSelector";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
@@ -236,18 +237,19 @@ const Partners = () => {
                         <Label htmlFor="phone">Phone *</Label>
                         <Input id="phone" type="tel" value={form.phone} onChange={handleChange("phone")} required maxLength={40} />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="country">Country *</Label>
-                        <Input id="country" value={form.country} onChange={handleChange("country")} required maxLength={80} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="state">State / Region *</Label>
-                        <Input id="state" value={form.state} onChange={handleChange("state")} required maxLength={80} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="city">City *</Label>
-                        <Input id="city" value={form.city} onChange={handleChange("city")} required maxLength={80} />
-                      </div>
+                       <div className="space-y-2 sm:col-span-2">
+                         <Label>Country / State / City *</Label>
+                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                           <LocationSelector
+                             country={form.country}
+                             state={form.state}
+                             city={form.city}
+                             onCountryChange={(v) => setForm((f: any) => ({ ...f, country: v, state: "", city: "" }))}
+                             onStateChange={(v) => setForm((f: any) => ({ ...f, state: v, city: "" }))}
+                             onCityChange={(v) => setForm((f: any) => ({ ...f, city: v }))}
+                           />
+                         </div>
+                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="zip_code">Zip / Postal code *</Label>
                         <Input id="zip_code" value={form.zip_code} onChange={handleChange("zip_code")} required maxLength={20} />
