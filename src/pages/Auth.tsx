@@ -445,18 +445,6 @@ const AuthForm = () => {
 
                   {!isLogin && (
                     <>
-                      <div className="space-y-2">
-                        <Label htmlFor="address" className="text-sm font-medium">Address</Label>
-                        <LocationPicker
-                          value={address}
-                          onChange={setAddress}
-                          country={country}
-                          state={stateRegion}
-                          city={city}
-                          placeholder="Search street, building, landmark"
-                          className="h-11 rounded-lg"
-                        />
-                      </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2 col-span-2">
                           <Label className="text-sm font-medium">Country / State / City *</Label>
@@ -473,6 +461,18 @@ const AuthForm = () => {
                           <p className="text-[11px] text-muted-foreground">
                             Pick your country, then state, then city / LGA.
                           </p>
+                        </div>
+                        <div className="space-y-2 col-span-2">
+                          <Label htmlFor="address" className="text-sm font-medium">Street Address *</Label>
+                          <LocationPicker
+                            value={address}
+                            onChange={setAddress}
+                            country={country}
+                            state={stateRegion}
+                            city={city}
+                            placeholder="Search street, building, landmark"
+                            className="h-11 rounded-lg"
+                          />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="zip" className="text-sm font-medium">Zip / Postal Code</Label>
