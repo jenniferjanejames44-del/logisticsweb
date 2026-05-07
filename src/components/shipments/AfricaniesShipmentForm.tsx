@@ -813,27 +813,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={senderEmail} onCommit={updateField("senderEmail", setSenderEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
-                <Field label="Country" required error={errors.senderCountry}>
-                  <span />
-                </Field>
-                <Field label="State / Region" required error={errors.senderState}>
-                  <span />
-                </Field>
-                <Field label="City / LGA" required error={errors.senderCity}>
-                  <span />
-                </Field>
-                <div className="sm:col-span-3 grid gap-3 sm:grid-cols-3 -mt-3">
-                  <LocationSelector
-                    country={senderCountry}
-                    state={senderState}
-                    city={senderCity}
-                    onCountryChange={(v) => { setSenderCountry(v); setSenderState(""); setSenderCity(""); clearFieldError("senderCountry"); }}
-                    onStateChange={(v) => { setSenderState(v); setSenderCity(""); clearFieldError("senderState"); }}
-                    onCityChange={(v) => { setSenderCity(v); clearFieldError("senderCity"); }}
-                    countryDisabled={isExport}
-                    errors={{ country: errors.senderCountry, state: errors.senderState, city: errors.senderCity }}
-                  />
-                </div>
+                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+                <LocationSelector
+                  country={senderCountry}
+                  state={senderState}
+                  city={senderCity}
+                  onCountryChange={(v) => { setSenderCountry(v); setSenderState(""); setSenderCity(""); clearFieldError("senderCountry"); }}
+                  onStateChange={(v) => { setSenderState(v); setSenderCity(""); clearFieldError("senderState"); }}
+                  onCityChange={(v) => { setSenderCity(v); clearFieldError("senderCity"); }}
+                  countryDisabled={isExport}
+                  errors={{ country: errors.senderCountry, state: errors.senderState, city: errors.senderCity }}
+                />
               </div>
               <Field label="Zip / Postal code">
                 <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
@@ -867,26 +859,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothInput type="email" value={receiverEmail} onCommit={updateField("receiverEmail", setReceiverEmail)} autoComplete="email" placeholder="email@example.com" />
               </Field>
               <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
-                <Field label="Country" required error={errors.receiverCountry}>
-                  <span />
-                </Field>
-                <Field label="State / Region" required error={errors.receiverState}>
-                  <span />
-                </Field>
-                <Field label="City / LGA" required error={errors.receiverCity}>
-                  <span />
-                </Field>
-                <div className="sm:col-span-3 grid gap-3 sm:grid-cols-3 -mt-3">
-                  <LocationSelector
-                    country={receiverCountry}
-                    state={receiverState}
-                    city={receiverCity}
-                    onCountryChange={(v) => { setReceiverCountry(v); setReceiverState(""); setReceiverCity(""); clearFieldError("receiverCountry"); }}
-                    onStateChange={(v) => { setReceiverState(v); setReceiverCity(""); clearFieldError("receiverState"); }}
-                    onCityChange={(v) => { setReceiverCity(v); clearFieldError("receiverCity"); }}
-                    errors={{ country: errors.receiverCountry, state: errors.receiverState, city: errors.receiverCity }}
-                  />
-                </div>
+                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
+                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+                <LocationSelector
+                  country={receiverCountry}
+                  state={receiverState}
+                  city={receiverCity}
+                  onCountryChange={(v) => { setReceiverCountry(v); setReceiverState(""); setReceiverCity(""); clearFieldError("receiverCountry"); }}
+                  onStateChange={(v) => { setReceiverState(v); setReceiverCity(""); clearFieldError("receiverState"); }}
+                  onCityChange={(v) => { setReceiverCity(v); clearFieldError("receiverCity"); }}
+                  errors={{ country: errors.receiverCountry, state: errors.receiverState, city: errors.receiverCity }}
+                />
               </div>
               <Field label="Zip / Postal code">
                 <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
