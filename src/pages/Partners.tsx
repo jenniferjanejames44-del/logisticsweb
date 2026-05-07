@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import LocationSelector from "@/components/shipments/LocationSelector";
+import LocationPicker from "@/components/shipments/LocationPicker";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
@@ -261,7 +262,14 @@ const Partners = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="address">Physical address *</Label>
-                      <Input id="address" value={form.address} onChange={handleChange("address")} required maxLength={255} placeholder="Street, building, apt" />
+                      <LocationPicker
+                        value={form.address}
+                        onChange={(value) => setForm((f) => ({ ...f, address: value }))}
+                        country={form.country}
+                        state={form.state}
+                        city={form.city}
+                        placeholder="Search street, building, landmark"
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="social_link">Social media / website (optional)</Label>
