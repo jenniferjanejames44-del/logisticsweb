@@ -11,9 +11,10 @@ import { useToast } from "@/hooks/use-toast";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
-  Phone, MapPin, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
+  Phone, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
+import LocationPicker from "@/components/shipments/LocationPicker";
 
 const AuthForm = () => {
   useEffect(() => {
@@ -446,11 +447,15 @@ const AuthForm = () => {
                     <>
                       <div className="space-y-2">
                         <Label htmlFor="address" className="text-sm font-medium">Address</Label>
-                        <div className="relative">
-                          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input id="address" type="text" placeholder="123 Main Street" value={address}
-                            onChange={(e) => setAddress(e.target.value)} className="h-11 rounded-lg pl-10" required={!isLogin} />
-                        </div>
+                        <LocationPicker
+                          value={address}
+                          onChange={setAddress}
+                          country={country}
+                          state={stateRegion}
+                          city={city}
+                          placeholder="Search street, building, landmark"
+                          className="h-11 rounded-lg"
+                        />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-2 col-span-2">
