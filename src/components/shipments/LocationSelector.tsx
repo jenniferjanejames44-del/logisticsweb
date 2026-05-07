@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import SearchableCountrySelect from "./SearchableCountrySelect";
+import AsyncCitySelect from "./AsyncCitySelect";
 import { Input } from "@/components/ui/input";
 import { getCountries, getStates, getCities } from "@/lib/locationData";
 
@@ -93,25 +94,16 @@ const LocationSelector = ({
 
       {/* City */}
       <div className="space-y-1.5">
-        {cities.length > 0 ? (
-          <SearchableCountrySelect
-            value={city}
-            onChange={onCityChange}
-            countries={cities}
-            placeholder={state ? "Select city / LGA" : "Select state first"}
-            disabled={disabled || !state}
-            aria-invalid={!!errors.city}
-          />
-        ) : (
-          <Input
-            value={city}
-            onChange={(e) => onCityChange(e.target.value)}
-            placeholder={state ? "Enter city / LGA" : "Select state first"}
-            disabled={disabled || !state}
-            aria-invalid={!!errors.city}
-            className={baseInput + (errors.city ? " border-destructive/50 ring-1 ring-destructive/15" : " border-border/60")}
-          />
-        )}
+        <AsyncCitySelect
+          value={city}
+          onChange={onCityChange}
+          baseOptions={cities}
+          country={country}
+          state={state}
+          placeholder={state ? "Select or search city / LGA" : "Select state first"}
+          disabled={disabled || !state}
+          aria-invalid={!!errors.city}
+        />
         {errors.city && <p className="text-[11px] text-destructive">{errors.city}</p>}
       </div>
     </div>
