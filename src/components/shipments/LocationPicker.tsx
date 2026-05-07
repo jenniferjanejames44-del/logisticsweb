@@ -17,6 +17,9 @@ interface LocationPickerProps {
   onLocationSelect?: (data: LocationData) => void;
   placeholder?: string;
   className?: string;
+  country?: string;
+  state?: string;
+  city?: string;
 }
 
 interface NominatimResult {
@@ -36,7 +39,7 @@ interface NominatimResult {
   };
 }
 
-const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Search address...", className }: LocationPickerProps) => {
+const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Search address...", className, country, state, city }: LocationPickerProps) => {
   const [query, setQuery] = useState(value || "");
   const [results, setResults] = useState<NominatimResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -58,7 +61,8 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
     if (q.length < 3) { setResults([]); return; }
     setIsSearching(true);
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(q)}`, {
+      const scopedQuery = [q, city, state, country].filter(Boolean).join(", ");
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&q=${encodeURIComponent(scopedQuery)}`, {
         headers: { "Accept-Language": "en" },
       });
       const data: NominatimResult[] = await res.json();
@@ -66,7 +70,7 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
       setShowDropdown(data.length > 0);
     } catch { setResults([]); }
     setIsSearching(false);
-  }, []);
+  }, [city, country, state]);
 
   const handleInputChange = (val: string) => {
     setQuery(val);

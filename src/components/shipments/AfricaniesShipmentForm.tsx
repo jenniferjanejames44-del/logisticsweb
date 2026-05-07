@@ -20,6 +20,7 @@ import {
   PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
+import LocationPicker from "@/components/shipments/LocationPicker";
 
 type Flow = "import" | "export";
 
@@ -832,7 +833,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.senderAddress}>
-                  <SmoothInput value={senderAddress} onCommit={updateField("senderAddress", setSenderAddress)} autoComplete="street-address" placeholder="Street, building, apt" />
+                  <LocationPicker
+                    value={senderAddress}
+                    onChange={updateField("senderAddress", setSenderAddress)}
+                    country={senderCountry}
+                    state={senderState}
+                    city={senderCity}
+                    placeholder="Search street, building, landmark"
+                  />
                 </Field>
               </div>
             </div>
@@ -877,7 +885,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               </Field>
               <div className="sm:col-span-2">
                 <Field label="Street address" required error={errors.receiverAddress}>
-                  <SmoothInput value={receiverAddress} onCommit={updateField("receiverAddress", setReceiverAddress)} autoComplete="street-address" placeholder="Street, building, apt" />
+                  <LocationPicker
+                    value={receiverAddress}
+                    onChange={updateField("receiverAddress", setReceiverAddress)}
+                    country={receiverCountry}
+                    state={receiverState}
+                    city={receiverCity}
+                    placeholder="Search street, building, landmark"
+                  />
                 </Field>
               </div>
             </div>
