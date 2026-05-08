@@ -49,6 +49,13 @@ type Shipment = {
   estimated_delivery: string | null;
   created_at: string;
   updated_at: string;
+  package_name?: string | null;
+  package_price?: number | null;
+  actual_weight?: number | null;
+  volumetric_weight?: number | null;
+  chargeable_weight?: number | null;
+  volumetric_divisor?: number | null;
+  items_json?: any;
   invoices?: { id: string; invoice_number: string; amount: number; currency: string | null; status: string }[] | null;
 };
 
