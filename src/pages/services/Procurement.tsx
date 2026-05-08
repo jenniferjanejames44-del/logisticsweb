@@ -128,12 +128,25 @@ const Procurement = () => {
   };
 
   const heroImages = [
-    "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=600&q=80",
-    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=700&q=80", // laptop
+    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80", // phone
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80", // sneakers/luxury
+    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=700&q=80", // headphones
+    "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80", // watch
+    "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=700&q=80", // playstation/console
+  ];
+
+  // Real brand logos (Wikimedia / official mark SVGs). Rendered white via CSS filter
+  // so they sit on the navy strip the same way Africanies presents their press logos.
+  const brandLogos = [
+    { name: "Amazon", src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
+    { name: "Walmart", src: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg" },
+    { name: "eBay", src: "https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg" },
+    { name: "Alibaba", src: "https://upload.wikimedia.org/wikipedia/commons/9/96/Alibaba-Logo.svg" },
+    { name: "AliExpress", src: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Aliexpress_logo.svg" },
+    { name: "Shopify", src: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg" },
+    { name: "Target", src: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Target_logo.svg" },
+    { name: "Best Buy", src: "https://upload.wikimedia.org/wikipedia/commons/f/f5/Best_Buy_Logo.svg" },
   ];
 
   const categories = [
@@ -176,17 +189,17 @@ const Procurement = () => {
       </header>
       <main>
         {/* HERO — Navy split with image collage */}
-        <section className="relative overflow-hidden bg-primary pb-16 pt-28 md:pb-24 md:pt-36">
+        <section className="relative overflow-hidden bg-primary pb-12 pt-10 md:pb-24 md:pt-20">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_45%)]" />
-          <div className="section-container relative z-10 grid gap-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-accent to-amber-500 px-5 py-2 text-sm font-semibold text-white shadow-lg">
+          <div className="section-container relative z-10 grid gap-10 md:grid-cols-2 md:items-center md:gap-12">
+            <div className="text-left">
+              <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-600 via-accent to-amber-500 px-5 py-2 text-sm font-semibold text-white shadow-lg md:text-base">
                 Attention!!! Online Shoppers
               </span>
-              <h1 className="mb-6 font-serif text-4xl font-bold leading-[1.1] text-white md:text-5xl lg:text-6xl">
-                We Buy Anything For You Globally — Tax-Free, And Deliver It Safely To Nigeria
+              <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-6xl">
+                We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
               </h1>
-              <ul className="mb-8 space-y-2 text-lg text-white/90">
+              <ul className="mb-7 space-y-1.5 text-base text-white/90 md:text-lg">
                 <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
                 <li className="flex items-center gap-2"><span className="text-accent">•</span> Verified Suppliers Only</li>
                 <li className="flex items-center gap-2"><span className="text-accent">•</span> Fully Insured Delivery</li>
@@ -200,12 +213,50 @@ const Procurement = () => {
             </div>
 
             {/* Image collage */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:gap-4">
               {heroImages.map((src, i) => (
-                <div key={i} className={`overflow-hidden rounded-2xl bg-white/5 shadow-2xl ${i === 0 ? "row-span-2" : ""}`}>
+                <div
+                  key={i}
+                  className={`overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-white/10 ${
+                    i === 0 ? "row-span-2 aspect-[3/5]" : "aspect-square"
+                  }`}
+                >
                   <img src={src} alt="Procurement showcase" className="h-full w-full object-cover" loading="lazy" />
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TRUSTED BRAND LOGOS — white, shaking marquee */}
+        <section className="relative overflow-hidden border-y border-white/5 bg-primary py-10">
+          <div className="section-container">
+            <p className="mb-6 text-center text-xs font-bold uppercase tracking-[0.22em] text-white/55">
+              We buy from the world's top stores
+            </p>
+            <div className="relative overflow-hidden">
+              <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-primary to-transparent md:w-28" />
+              <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-primary to-transparent md:w-28" />
+              <div className="flex w-max animate-marquee items-center gap-12 md:gap-20">
+                {[...brandLogos, ...brandLogos, ...brandLogos].map((b, i) => (
+                  <div
+                    key={`${b.name}-${i}`}
+                    className="flex h-10 shrink-0 items-center justify-center md:h-12"
+                    style={{ animationDelay: `${(i % brandLogos.length) * 0.15}s` }}
+                  >
+                    <img
+                      src={b.src}
+                      alt={b.name}
+                      className="h-full w-auto animate-logo-shake object-contain opacity-90 transition-opacity hover:opacity-100"
+                      style={{
+                        filter: "brightness(0) invert(1)",
+                        animationDelay: `${(i % brandLogos.length) * 0.18}s`,
+                      }}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -219,18 +270,6 @@ const Procurement = () => {
             <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground md:text-lg">
               We handle payment, verification, purchase, shipping, and delivery to Nigeria — safely and fast.
             </p>
-
-            {/* Brand strip */}
-            <div className="mt-10 grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-3 md:grid-cols-6">
-              {["amazon", "Walmart", "eBay", "Alibaba", "AliExpress", "Shopify"].map((brand) => (
-                <span
-                  key={brand}
-                  className="font-serif text-2xl font-extrabold tracking-tight text-primary/80 transition-colors hover:text-primary"
-                >
-                  {brand}
-                </span>
-              ))}
-            </div>
 
             <div className="mt-10">
               <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
