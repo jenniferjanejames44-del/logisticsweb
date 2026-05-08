@@ -348,12 +348,48 @@ const ShipmentDetail = () => {
               ) : (
                 <div>
                   <Row label="Description" value={<NV v={shipment.description} />} />
+                  {shipment.package_name && (
+                    <Row label="Package" value={
+                      <span>
+                        {shipment.package_name}
+                        {shipment.package_price ? ` · ${formatUsd(Number(shipment.package_price))}` : ""}
+                      </span>
+                    } />
+                  )}
                   <Row label="Weight" value={`${shipment.weight} kg`} />
+                  {shipment.actual_weight != null && (
+                    <Row label="Actual weight" value={`${Number(shipment.actual_weight).toFixed(2)} kg`} />
+                  )}
+                  {shipment.volumetric_weight != null && (
+                    <Row label="Volumetric weight" value={`${Number(shipment.volumetric_weight).toFixed(2)} kg`} />
+                  )}
+                  {shipment.chargeable_weight != null && (
+                    <Row label="Chargeable weight" value={
+                      <span className="font-semibold">{Number(shipment.chargeable_weight).toFixed(2)} kg</span>
+                    } />
+                  )}
                   <Row label="Dimensions" value={
                     shipment.length_cm || shipment.width_cm || shipment.height_cm
                       ? `${shipment.length_cm || "?"} × ${shipment.width_cm || "?"} × ${shipment.height_cm || "?"} cm`
                       : <NV />
                   } />
+                  {Array.isArray(shipment.items_json) && shipment.items_json.length > 0 && (
+                    <div className="pt-3 mt-2 border-t border-border/40">
+                      <p className="text-xs font-semibold text-muted-foreground mb-2">Items</p>
+                      <div className="space-y-1.5">
+                        {shipment.items_json.map((it: any, i: number) => (
+                          <div key={i} className="flex justify-between text-sm">
+                            <span className="text-foreground">
+                              {it.name || `Item ${i + 1}`} <span className="text-muted-foreground">× {it.quantity || 1}</span>
+                            </span>
+                            <span className="text-muted-foreground tabular-nums">
+                              {Number(it.weightKg || it.weight || 0).toFixed(2)} kg
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
