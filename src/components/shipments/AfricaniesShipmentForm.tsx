@@ -338,7 +338,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     [warehouseId],
   );
 
-  const [senderName, setSenderName] = useState("");
+  const [senderFirstName, setSenderFirstName] = useState("");
+  const [senderLastName, setSenderLastName] = useState("");
+  const senderName = [senderFirstName, senderLastName].filter(Boolean).join(" ").trim();
   const [senderPhone, setSenderPhone] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
   const [senderCountry, setSenderCountry] = useState(isExport ? "Nigeria" : "");
@@ -346,9 +348,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [senderCity, setSenderCity] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
   const [senderZip, setSenderZip] = useState("");
+  const [senderHouseNumber, setSenderHouseNumber] = useState("");
+  const [senderStreetName, setSenderStreetName] = useState("");
+  const [senderLandmark, setSenderLandmark] = useState("");
   const [saveSender, setSaveSender] = useState(false);
 
-  const [receiverName, setReceiverName] = useState("");
+  const [receiverFirstName, setReceiverFirstName] = useState("");
+  const [receiverLastName, setReceiverLastName] = useState("");
+  const receiverName = [receiverFirstName, receiverLastName].filter(Boolean).join(" ").trim();
   const [receiverPhone, setReceiverPhone] = useState("");
   const [receiverEmail, setReceiverEmail] = useState("");
   const [receiverCountry, setReceiverCountry] = useState(isExport ? "" : "Nigeria");
@@ -356,6 +363,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverCity, setReceiverCity] = useState("");
   const [receiverAddress, setReceiverAddress] = useState("");
   const [receiverZip, setReceiverZip] = useState("");
+  const [receiverHouseNumber, setReceiverHouseNumber] = useState("");
+  const [receiverStreetName, setReceiverStreetName] = useState("");
+  const [receiverLandmark, setReceiverLandmark] = useState("");
 
   const [items, setItems] = useState<Item[]>([]);
   const [itemFormOpen, setItemFormOpen] = useState(false);
