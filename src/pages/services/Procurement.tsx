@@ -87,17 +87,17 @@ const Procurement = () => {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_55%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.06),transparent_50%)]" />
           <div className="section-container">
-            {/* Logo pinned at the very top — no space above */}
-            <div className="relative z-10 mb-6 flex items-center md:mb-8">
-              <span className="inline-flex animate-logo-shake items-center justify-center rounded-xl bg-white px-4 py-2 shadow-lg ring-1 ring-white/10">
+            {/* Small circular logo centered at the very top — Africanies style */}
+            <div className="relative z-10 mb-6 flex items-center justify-center md:mb-8">
+              <span className="inline-flex h-14 w-14 animate-logo-shake items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-white/10 md:h-16 md:w-16">
                 <HeaderLogo className="block h-8 w-auto md:h-10" />
               </span>
             </div>
-            <div className="relative z-10 grid gap-8 md:grid-cols-2 md:items-center md:gap-12">
+            <div className="relative z-10 grid gap-8 md:grid-cols-2 md:items-start md:gap-12">
               <div className="text-left">
-                <span className="mb-5 inline-flex items-center rounded-full bg-gradient-to-r from-accent to-orange-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-md md:text-sm">
-                  Attention!!! Online Shoppers
-                </span>
+                <div className="mb-6 w-full rounded-md bg-gradient-to-r from-red-600 via-accent to-orange-500 px-6 py-3 text-center shadow-lg">
+                  <span className="text-base font-semibold text-white md:text-lg">Attention!!! Online Shoppers</span>
+                </div>
                 <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-[56px]">
                   We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
                 </h1>
