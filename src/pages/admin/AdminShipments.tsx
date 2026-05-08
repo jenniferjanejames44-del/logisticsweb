@@ -450,11 +450,11 @@ const AdminShipments = () => {
                         <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
                           <div>
                             <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Sender Address</p>
-                            <p className="text-foreground text-xs mt-1">{shipment.sender_address || "—"}</p>
+                            <p className="text-foreground text-xs mt-1 whitespace-pre-line leading-relaxed">{shipment.sender_address ? shipment.sender_address.split(", ").filter(Boolean).join("\n") : "—"}</p>
                           </div>
                           <div>
                             <p className="text-[11px] text-muted-foreground uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" strokeWidth={2.5} />Receiver Address</p>
-                            <p className="text-foreground text-xs mt-1">{shipment.receiver_address || "—"}</p>
+                            <p className="text-foreground text-xs mt-1 whitespace-pre-line leading-relaxed">{shipment.receiver_address ? shipment.receiver_address.split(", ").filter(Boolean).join("\n") : "—"}</p>
                           </div>
                         </div>
                       )}
@@ -717,7 +717,14 @@ const AdminShipments = () => {
                       <Row label="Name" value={s.sender_name || "Not provided"} />
                       <Row label="Phone" value={s.sender_phone || "Not provided"} />
                       {s.sender_alt_phone && <Row label="Alt Phone" value={s.sender_alt_phone} />}
-                      <Row label="Address" value={s.sender_address || "Not provided"} />
+                      {s.sender_address ? (
+                        <div className="space-y-1 pt-1">
+                          <p className="text-xs text-muted-foreground">Address</p>
+                          <p className="text-sm text-foreground font-medium whitespace-pre-line leading-relaxed">{s.sender_address.split(", ").filter(Boolean).join("\n")}</p>
+                        </div>
+                      ) : (
+                        <Row label="Address" value="Not provided" />
+                      )}
                       {s.sender_phone && (
                         <div className="flex items-center gap-3 pt-1">
                           <a href={`tel:${s.sender_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"><Phone className="w-3 h-3" />Call</a>
@@ -729,7 +736,14 @@ const AdminShipments = () => {
                       <Row label="Name" value={s.receiver_name || "Not provided"} />
                       <Row label="Phone" value={s.receiver_phone || "Not provided"} />
                       {s.receiver_alt_phone && <Row label="Alt Phone" value={s.receiver_alt_phone} />}
-                      <Row label="Address" value={s.receiver_address || "Not provided"} />
+                      {s.receiver_address ? (
+                        <div className="space-y-1 pt-1">
+                          <p className="text-xs text-muted-foreground">Address</p>
+                          <p className="text-sm text-foreground font-medium whitespace-pre-line leading-relaxed">{s.receiver_address.split(", ").filter(Boolean).join("\n")}</p>
+                        </div>
+                      ) : (
+                        <Row label="Address" value="Not provided" />
+                      )}
                       {s.receiver_phone && (
                         <div className="flex items-center gap-3 pt-1">
                           <a href={`tel:${s.receiver_phone}`} className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium"><Phone className="w-3 h-3" />Call</a>
