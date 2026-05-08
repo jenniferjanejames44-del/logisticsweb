@@ -144,8 +144,26 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const amountPaid = isPaid ? totalAmount : 0;
   const totalDue = totalAmount - amountPaid;
   const currency = 'USD';
-  const weight = shipment?.weight || invoice.weight_value || 0;
-  const dimensions = invoice.dimensions || shipment?.description || 'N/A';
+  const chargeable = Number(shipment?.chargeable_weight || 0);
+  const actualW = Number(shipment?.actual_weight || 0);
+  const volW = Number(shipment?.volumetric_weight || 0);
+  const weight = chargeable || shipment?.weight || invoice.weight_value || 0;
+  const dimsParts = [shipment?.length_cm, shipment?.width_cm, shipment?.height_cm].filter((v: any) => v);
+  const dimensions = dimsParts.length === 3
+    ? `${dimsParts[0]} × ${dimsParts[1]} × ${dimsParts[2]} cm`
+    : (invoice.dimensions || shipment?.description || 'N/A');
+  const packageName = shipment?.package_name || '';
+  const items: any[] = Array.isArray(shipment?.items_json) ? shipment.items_json : [];
+  const itemsRows = items.length > 0
+    ? items.map((it, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td style="text-align:left;">${(it.name || `Item ${i + 1}`).toString().replace(/</g,'&lt;')}</td>
+          <td>${it.quantity || 1}</td>
+          <td>${Number(it.weightKg || it.weight || 0).toFixed(2)} kg</td>
+          <td>${it.declaredValue ? fmt(Number(it.declaredValue), currency) : '—'}</td>
+        </tr>`).join('')
+    : '';
   const serviceType = shipment?.service_type?.replace(/[-_]/g, ' ') || 'N/A';
   const trackingNumber = shipment?.tracking_number || 'N/A';
 
@@ -438,6 +456,32 @@ ${isPaid ? `.document::after{
     </tbody>
   </table>
   </div>
+
+  ${packageName || items.length > 0 ? `
+  <div class="bar">Package & Items</div>
+  <table class="info-tbl">
+    ${packageName ? `<tr><td class="lbl">Package</td><td class="val">${packageName}</td></tr>` : ''}
+    ${dimsParts.length === 3 ? `<tr><td class="lbl">Dimensions</td><td class="val">${dimensions}</td></tr>` : ''}
+    ${actualW ? `<tr><td class="lbl">Actual Weight</td><td class="val">${actualW.toFixed(2)} kg</td></tr>` : ''}
+    ${volW ? `<tr><td class="lbl">Volumetric Weight</td><td class="val">${volW.toFixed(2)} kg</td></tr>` : ''}
+    ${chargeable ? `<tr><td class="lbl">Chargeable Weight</td><td class="val"><strong>${chargeable.toFixed(2)} kg</strong></td></tr>` : ''}
+  </table>
+  ${items.length > 0 ? `
+  <div class="addl-wrap">
+  <table class="addl">
+    <thead>
+      <tr>
+        <th style="width:8%;">#</th>
+        <th style="width:42%;">Item</th>
+        <th style="width:14%;">Qty</th>
+        <th style="width:18%;">Weight</th>
+        <th style="width:18%;">Declared Value</th>
+      </tr>
+    </thead>
+    <tbody>${itemsRows}</tbody>
+  </table>
+  </div>` : ''}
+  ` : ''}
 
   <!-- ═══ ADDITIONAL SERVICES ═══ -->
   <div class="addl-wrap">
