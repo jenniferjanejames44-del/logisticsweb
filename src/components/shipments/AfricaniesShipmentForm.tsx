@@ -1024,17 +1024,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                         onCommit={(value) => setItemDraft((draft) => ({ ...draft, value }))} placeholder="0" />
                     </Field>
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <Field label="L (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.length || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, length: value }))} placeholder="—" />
-                    </Field>
-                    <Field label="W (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.width || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, width: value }))} placeholder="—" />
-                    </Field>
-                    <Field label="H (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.height || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, height: value }))} placeholder="—" />
-                    </Field>
-                  </div>
                   <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <Button type="button" variant="outline" onClick={() => setItemFormOpen(false)} className="sm:w-auto">
                       Cancel
@@ -1056,82 +1045,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
-
-              {packagingOptions.length > 0 && (
-                <div className="rounded-xl border border-border/60 bg-muted/20 p-3 sm:p-4">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div>
-                      <Label className="text-sm font-bold text-foreground">Packaging Materials</Label>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">
-                        Choose any packaging — quantities are added to your total.
-                      </p>
-                    </div>
-                    {packagingTotal > 0 && (
-                      <div className="text-right shrink-0">
-                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</div>
-                        <div className="text-sm font-bold text-primary">${packagingTotal.toFixed(2)}</div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-2">
-                    {packagingOptions.map((p) => {
-                      const Icon = iconFor(p.name);
-                      const qty = packagingQty[p.id] || 0;
-                      const active = qty > 0;
-                      const lineTotal = qty * Number(p.price || 0);
-                      return (
-                        <div
-                          key={p.id}
-                          className={`rounded-xl border p-3 transition-all ${
-                            active ? "border-accent bg-accent/5" : "border-border/60 bg-white"
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className={`flex h-10 w-10 items-center justify-center rounded-lg shrink-0 ${
-                              active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"
-                            }`}>
-                              <Icon className="h-5 w-5" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-bold text-foreground truncate">{p.name}</div>
-                              <div className="text-[11px] text-muted-foreground">
-                                ${Number(p.price).toFixed(2)} each
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mt-3 flex items-center justify-between gap-2">
-                            <div className="flex items-center rounded-full border border-border/70 bg-white">
-                              <button
-                                type="button"
-                                onClick={() => decPackaging(p.id)}
-                                disabled={qty === 0}
-                                aria-label={`Decrease ${p.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-                              >
-                                <Minus className="h-3.5 w-3.5" />
-                              </button>
-                              <span className="min-w-[28px] text-center text-sm font-bold text-foreground select-none">
-                                {qty}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => incPackaging(p.id)}
-                                aria-label={`Increase ${p.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-accent hover:text-accent/80"
-                              >
-                                <Plus className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                            <div className="text-sm font-semibold text-foreground">
-                              {qty > 0 ? `$${lineTotal.toFixed(2)}` : "—"}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         );
