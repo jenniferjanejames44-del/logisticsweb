@@ -366,6 +366,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   // Package selection (one package per shipment)
   const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
+  const [packageLoading, setPackageLoading] = useState(true);
   const [selectedPackageId, setSelectedPackageId] = useState<string>("");
   const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
 
@@ -391,15 +392,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   useEffect(() => {
+    setPackageLoading(true);
     supabase
       .from("packaging_materials")
       .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) {
+          toast({ title: "Packaging unavailable", description: "Could not load packaging options. Please try again.", variant: "destructive" });
+          setPackageOptions([]);
+          return;
+        }
         if (data) setPackageOptions(data as unknown as PackageOption[]);
-      });
-  }, []);
+      })
+      .finally(() => setPackageLoading(false));
+  }, [toast]);
 
   useEffect(() => {
     if (!user) return;
