@@ -1091,20 +1091,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SummaryRow label="Phone" value={receiverPhone} />
                 <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
-              {packagingLines.length > 0 && (
+              {selectedPackage && (
                 <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Packaging</h3>
-                  {packagingLines.map((l) => (
-                    <SummaryRow
-                      key={l.id}
-                      label={`${l.name} × ${l.qty}`}
-                      value={`$${l.unit.toFixed(2)} → $${l.lineTotal.toFixed(2)}`}
-                    />
-                  ))}
-                  <div className="flex items-center justify-between pt-2 mt-1 text-xs">
-                    <span className="font-bold text-foreground">Packaging total</span>
-                    <span className="font-bold text-primary">${packagingTotal.toFixed(2)}</span>
-                  </div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Package</h3>
+                  <SummaryRow label="Type" value={selectedPackage.name} />
+                  <SummaryRow label="Dimensions" value={`${effectiveDims.length_cm} × ${effectiveDims.width_cm} × ${effectiveDims.height_cm} cm`} />
+                  <SummaryRow label="Package cost" value={`$${Number(selectedPackage.price).toFixed(2)}`} />
+                  {totals && (
+                    <>
+                      <SummaryRow label="Actual weight" value={`${totals.actualWeight.toFixed(2)} kg`} />
+                      <SummaryRow label="Volumetric weight" value={`${totals.volumetricWeight.toFixed(2)} kg`} />
+                      <SummaryRow label="Chargeable weight" value={`${totals.chargeableWeight.toFixed(2)} kg`} />
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -1115,7 +1114,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
                   <div className="mt-1 text-2xl font-bold text-foreground">
                     {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
-                      breakdown ? formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency) : "—"}
+                      totals && pricingRule ? formatPriceInCurrency(totals.total, totals.currency) : "—"}
                   </div>
                 </div>
                 <div className="text-right text-xs text-muted-foreground">
@@ -1127,21 +1126,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   {pricingError}
                 </div>
               )}
-              {breakdown && (
+              {totals && pricingRule && (
                 <div className="mt-3 rounded-xl bg-white/80 border border-border/40 p-3 space-y-1 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Base price ({breakdown.country})</span><span className="font-semibold">{formatPriceInCurrency(breakdown.basePrice, breakdown.currency)}</span></div>
-                  {breakdown.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(breakdown.handlingFee, breakdown.currency)}</span></div>}
-                  {breakdown.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({breakdown.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.vat, breakdown.currency)}</span></div>}
-                  {breakdown.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({breakdown.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.insurance, breakdown.currency)}</span></div>}
-                  {packagingTotal > 0 && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">
-                        Packaging ({packagingLines.map((l) => `${l.qty}× ${l.name}`).join(", ")})
-                      </span>
-                      <span className="font-semibold">${packagingTotal.toFixed(2)}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency)}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({totals.chargeableWeight.toFixed(2)} kg × {pricingRule.country})</span><span className="font-semibold">{formatPriceInCurrency(totals.shippingCost, totals.currency)}</span></div>
+                  {totals.packagingCost > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Package ({selectedPackage?.name})</span><span className="font-semibold">{formatPriceInCurrency(totals.packagingCost, totals.currency)}</span></div>}
+                  {totals.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(totals.handlingFee, totals.currency)}</span></div>}
+                  {totals.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({totals.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(totals.vat, totals.currency)}</span></div>}
+                  {totals.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({totals.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(totals.insurance, totals.currency)}</span></div>}
+                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(totals.total, totals.currency)}</span></div>
                 </div>
               )}
             </div>
