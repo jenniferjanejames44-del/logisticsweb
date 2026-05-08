@@ -82,52 +82,40 @@ const Procurement = () => {
   return (
     <div className="min-h-screen bg-white">
       <main>
-        {/* TOP MARQUEE BANNER — full width, brand colors, moving */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-red-600 via-accent to-amber-500 py-3 shadow-lg">
-          <div className="flex w-max animate-marquee items-center gap-12 px-6 text-sm font-bold uppercase tracking-[0.2em] text-white md:text-base">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <span key={i} className="flex shrink-0 items-center gap-3">
-                <span>Attention!!! Online Shoppers</span>
-                <span className="text-white/70">★</span>
-                <span>We Buy & Ship For You — Tax-Free</span>
-                <span className="text-white/70">★</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* HERO — two-column: left has logo + Attention pill + headline + bullets + CTA, right has floating image collage */}
-        <section className="relative overflow-hidden bg-white pb-14 pt-10 md:pb-24 md:pt-16">
+        {/* HERO — navy background, two-column: left has stacked logo + Attention pill + headline + bullets + CTA, right has floating image collage */}
+        <section className="relative overflow-hidden bg-primary pb-16 pt-12 md:pb-28 md:pt-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.06),transparent_50%)]" />
           <div className="section-container">
-            <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-14">
+            <div className="relative z-10 grid gap-10 md:grid-cols-2 md:items-center md:gap-14">
               <div className="text-left">
-                {/* Logo above the "Attention" label */}
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="inline-flex animate-logo-shake items-center justify-center rounded-2xl bg-white px-4 py-2 shadow-md ring-1 ring-border/40">
-                    <HeaderLogo className="block h-9 w-auto md:h-10" />
+                {/* Logo stacked ABOVE the "Attention" pill */}
+                <div className="mb-6 flex flex-col items-start gap-3">
+                  <span className="inline-flex animate-logo-shake items-center justify-center rounded-2xl bg-white px-5 py-3 shadow-xl ring-1 ring-white/10">
+                    <HeaderLogo className="block h-10 w-auto md:h-12" />
                   </span>
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-red-600 to-accent px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-md md:text-sm">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-orange-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-md md:text-sm">
                     Attention!!! Online Shoppers
                   </span>
                 </div>
 
-                <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-foreground sm:text-4xl md:text-5xl lg:text-[56px]">
+                <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-[56px]">
                   We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
                 </h1>
-                <ul className="mb-7 space-y-1.5 text-base text-muted-foreground md:text-lg">
+                <ul className="mb-7 space-y-1.5 text-base text-white/80 md:text-lg">
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Verified Suppliers Only</li>
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Fully Insured Delivery</li>
                 </ul>
                 <CtaButton />
-                <p className="mt-3 text-sm text-muted-foreground">Takes less than 2 minutes. No obligation.</p>
+                <p className="mt-3 text-sm text-white/65">Takes less than 2 minutes. No obligation.</p>
               </div>
 
               <div className="grid grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:gap-4">
                 {heroImages.map((src, i) => (
                   <div
                     key={i}
-                    className={`overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-border/40 animate-soft-float ${
+                    className={`overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-white/15 animate-soft-float ${
                       i === 0 ? "row-span-2 aspect-[3/5]" : "aspect-square"
                     }`}
                     style={{ animationDelay: `${i * 0.35}s`, animationDuration: `${5 + (i % 3)}s` }}
