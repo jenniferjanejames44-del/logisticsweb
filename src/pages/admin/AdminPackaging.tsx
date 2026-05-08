@@ -20,6 +20,12 @@ interface PackagingMaterial {
   price: number;
   is_active: boolean;
   created_at: string;
+  description?: string | null;
+  length_cm?: number | null;
+  width_cm?: number | null;
+  height_cm?: number | null;
+  icon_key?: string | null;
+  is_custom?: boolean;
 }
 
 const AdminPackaging = () => {
@@ -27,7 +33,17 @@ const AdminPackaging = () => {
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editing, setEditing] = useState<PackagingMaterial | null>(null);
-  const [formData, setFormData] = useState({ name: "", price: "", is_active: true });
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    is_active: true,
+    description: "",
+    length_cm: "",
+    width_cm: "",
+    height_cm: "",
+    icon_key: "box",
+    is_custom: false,
+  });
   const isMobile = useIsMobile();
 
   const fetchItems = async () => {
@@ -42,17 +58,40 @@ const AdminPackaging = () => {
   const openDialog = (item?: PackagingMaterial) => {
     if (item) {
       setEditing(item);
-      setFormData({ name: item.name, price: item.price.toString(), is_active: item.is_active });
+      setFormData({
+        name: item.name,
+        price: item.price.toString(),
+        is_active: item.is_active,
+        description: item.description ?? "",
+        length_cm: item.length_cm?.toString() ?? "",
+        width_cm: item.width_cm?.toString() ?? "",
+        height_cm: item.height_cm?.toString() ?? "",
+        icon_key: item.icon_key ?? "box",
+        is_custom: !!item.is_custom,
+      });
     } else {
       setEditing(null);
-      setFormData({ name: "", price: "", is_active: true });
+      setFormData({
+        name: "", price: "", is_active: true, description: "",
+        length_cm: "", width_cm: "", height_cm: "", icon_key: "box", is_custom: false,
+      });
     }
     setIsDialogOpen(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = { name: formData.name, price: parseFloat(formData.price), is_active: formData.is_active };
+    const payload = {
+      name: formData.name,
+      price: parseFloat(formData.price) || 0,
+      is_active: formData.is_active,
+      description: formData.description || null,
+      length_cm: formData.is_custom ? null : (formData.length_cm ? parseFloat(formData.length_cm) : null),
+      width_cm: formData.is_custom ? null : (formData.width_cm ? parseFloat(formData.width_cm) : null),
+      height_cm: formData.is_custom ? null : (formData.height_cm ? parseFloat(formData.height_cm) : null),
+      icon_key: formData.icon_key || null,
+      is_custom: formData.is_custom,
+    };
     try {
       if (editing) {
         const { error } = await (supabase as any).from("packaging_materials").update(payload).eq("id", editing.id);
