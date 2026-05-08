@@ -870,25 +870,51 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       case "Sender":
         return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Sender Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {isExport ? "Who is sending from Nigeria?" : "Who is sending the shipment?"}
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Field label="Full name" required error={errors.senderName}>
-                <SmoothInput value={senderName} onCommit={updateField("senderName", setSenderName)} placeholder="John Doe" />
-              </Field>
-              <Field label="Phone number" required error={errors.senderPhone}>
-                <SmoothInput value={senderPhone} onCommit={updateField("senderPhone", setSenderPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
-              </Field>
-              <Field label="Email" error={errors.senderEmail}>
-                <SmoothInput type="email" value={senderEmail} onCommit={updateField("senderEmail", setSenderEmail)} autoComplete="email" placeholder="email@example.com" />
-              </Field>
-              <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
-                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
-                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
-                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-foreground">Sender's Address</h2>
+              <span className="inline-flex items-center rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground shadow-sm">
+                {isExport ? "You are shipping from Nigeria to the World" : "You are shipping from the World to Nigeria"}
+              </span>
+            </div>
+
+            {/* Address block */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-foreground">Address details</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSenderAddress(""); setSenderHouseNumber(""); setSenderStreetName("");
+                    if (!isExport) { setSenderCountry(""); setSenderState(""); setSenderCity(""); }
+                    setSenderZip(""); setSenderLandmark("");
+                  }}
+                  className="text-xs font-semibold text-accent hover:underline"
+                >
+                  Clear Address
+                </button>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="sm:col-span-2">
+                  <Field label="Add New Address" required error={errors.senderAddress}>
+                    <LocationPicker
+                      value={senderAddress}
+                      onChange={updateField("senderAddress", setSenderAddress)}
+                      country={senderCountry}
+                      state={senderState}
+                      city={senderCity}
+                      placeholder="Enter Address"
+                    />
+                  </Field>
+                </div>
+                <Field label="House Number" required error={errors.senderHouseNumber}>
+                  <SmoothInput value={senderHouseNumber} onCommit={setSenderHouseNumber} placeholder="4A/B" />
+                </Field>
+                <Field label="Street Name" required error={errors.senderStreetName}>
+                  <SmoothInput value={senderStreetName} onCommit={setSenderStreetName} placeholder="Enter Street Name" />
+                </Field>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <LocationSelector
                   country={senderCountry}
                   state={senderState}
@@ -899,24 +925,35 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   countryDisabled={isExport}
                   errors={{ country: errors.senderCountry, state: errors.senderState, city: errors.senderCity }}
                 />
+                <Field label="Zip Code">
+                  <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="Enter Postal Code" />
+                </Field>
               </div>
-              <Field label="Zip / Postal code">
-                <SmoothInput value={senderZip} onCommit={setSenderZip} inputMode="text" autoComplete="postal-code" placeholder="100001" />
+              <Field label="Landmark (additional address info)">
+                <SmoothInput value={senderLandmark} onCommit={setSenderLandmark} placeholder="Enter Address Info" />
               </Field>
-              <div className="sm:col-span-2">
-                <Field label="Street address" required error={errors.senderAddress}>
-                  <LocationPicker
-                    value={senderAddress}
-                    onChange={updateField("senderAddress", setSenderAddress)}
-                    country={senderCountry}
-                    state={senderState}
-                    city={senderCity}
-                    placeholder="Search street, building, landmark"
-                  />
+            </div>
+
+            {/* Personal info */}
+            <div className="space-y-4 pt-2">
+              <p className="text-sm font-semibold text-foreground">Personal Information</p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <Field label="First Name" required error={errors.senderName}>
+                  <SmoothInput value={senderFirstName} onCommit={(v) => { setSenderFirstName(v); clearFieldError("senderName"); }} placeholder="First name" />
+                </Field>
+                <Field label="Last Name" required>
+                  <SmoothInput value={senderLastName} onCommit={setSenderLastName} placeholder="Last name" />
+                </Field>
+                <Field label="Email" error={errors.senderEmail}>
+                  <SmoothInput type="email" value={senderEmail} onCommit={updateField("senderEmail", setSenderEmail)} autoComplete="email" placeholder="email@example.com" />
+                </Field>
+                <Field label="Phone" required error={errors.senderPhone}>
+                  <SmoothInput value={senderPhone} onCommit={updateField("senderPhone", setSenderPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
                 </Field>
               </div>
             </div>
-            <label className="mt-4 flex items-center gap-2 cursor-pointer">
+
+            <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={saveSender} onCheckedChange={(v) => setSaveSender(Boolean(v))} />
               <span className="text-xs text-foreground">Save as default sender</span>
             </label>
@@ -925,23 +962,50 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       case "Receiver":
         return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Receiver Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Who will receive the shipment?</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Field label="Full name" required error={errors.receiverName}>
-                <SmoothInput value={receiverName} onCommit={updateField("receiverName", setReceiverName)} placeholder="Jane Doe" />
-              </Field>
-              <Field label="Phone number" required error={errors.receiverPhone}>
-                <SmoothInput value={receiverPhone} onCommit={updateField("receiverPhone", setReceiverPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
-              </Field>
-              <Field label="Email" error={errors.receiverEmail}>
-                <SmoothInput type="email" value={receiverEmail} onCommit={updateField("receiverEmail", setReceiverEmail)} autoComplete="email" placeholder="email@example.com" />
-              </Field>
-              <div className="sm:col-span-2 grid gap-3 sm:grid-cols-3">
-                <Label className="text-xs font-semibold sm:col-span-1">Country <span className="text-destructive">*</span></Label>
-                <Label className="text-xs font-semibold sm:col-span-1">State / Region <span className="text-destructive">*</span></Label>
-                <Label className="text-xs font-semibold sm:col-span-1">City / LGA <span className="text-destructive">*</span></Label>
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-bold text-foreground">Receiver's Address</h2>
+              <span className="inline-flex items-center rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground shadow-sm">
+                {isExport ? "Delivering to international destination" : "Delivering anywhere in Nigeria"}
+              </span>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-foreground">Address details</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReceiverAddress(""); setReceiverHouseNumber(""); setReceiverStreetName("");
+                    if (isExport) { setReceiverCountry(""); setReceiverState(""); setReceiverCity(""); }
+                    setReceiverZip(""); setReceiverLandmark("");
+                  }}
+                  className="text-xs font-semibold text-accent hover:underline"
+                >
+                  Clear Address
+                </button>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="sm:col-span-2">
+                  <Field label="Add New Address" required error={errors.receiverAddress}>
+                    <LocationPicker
+                      value={receiverAddress}
+                      onChange={updateField("receiverAddress", setReceiverAddress)}
+                      country={receiverCountry}
+                      state={receiverState}
+                      city={receiverCity}
+                      placeholder="Enter Address"
+                    />
+                  </Field>
+                </div>
+                <Field label="House Number" required error={errors.receiverHouseNumber}>
+                  <SmoothInput value={receiverHouseNumber} onCommit={setReceiverHouseNumber} placeholder="4A/B" />
+                </Field>
+                <Field label="Street Name" required error={errors.receiverStreetName}>
+                  <SmoothInput value={receiverStreetName} onCommit={setReceiverStreetName} placeholder="Enter Street Name" />
+                </Field>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <LocationSelector
                   country={receiverCountry}
                   state={receiverState}
@@ -949,22 +1013,32 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   onCountryChange={(v) => { setReceiverCountry(v); setReceiverState(""); setReceiverCity(""); clearFieldError("receiverCountry"); }}
                   onStateChange={(v) => { setReceiverState(v); setReceiverCity(""); clearFieldError("receiverState"); }}
                   onCityChange={(v) => { setReceiverCity(v); clearFieldError("receiverCity"); }}
+                  countryDisabled={!isExport}
                   errors={{ country: errors.receiverCountry, state: errors.receiverState, city: errors.receiverCity }}
                 />
+                <Field label="Zip Code">
+                  <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="Enter Postal Code" />
+                </Field>
               </div>
-              <Field label="Zip / Postal code">
-                <SmoothInput value={receiverZip} onCommit={setReceiverZip} inputMode="text" autoComplete="postal-code" placeholder="00000" />
+              <Field label="Landmark (additional address info)">
+                <SmoothInput value={receiverLandmark} onCommit={setReceiverLandmark} placeholder="Enter Address Info" />
               </Field>
-              <div className="sm:col-span-2">
-                <Field label="Street address" required error={errors.receiverAddress}>
-                  <LocationPicker
-                    value={receiverAddress}
-                    onChange={updateField("receiverAddress", setReceiverAddress)}
-                    country={receiverCountry}
-                    state={receiverState}
-                    city={receiverCity}
-                    placeholder="Search street, building, landmark"
-                  />
+            </div>
+
+            <div className="space-y-4 pt-2">
+              <p className="text-sm font-semibold text-foreground">Personal Information</p>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                <Field label="First Name" required error={errors.receiverName}>
+                  <SmoothInput value={receiverFirstName} onCommit={(v) => { setReceiverFirstName(v); clearFieldError("receiverName"); }} placeholder="First name" />
+                </Field>
+                <Field label="Last Name" required>
+                  <SmoothInput value={receiverLastName} onCommit={setReceiverLastName} placeholder="Last name" />
+                </Field>
+                <Field label="Email" error={errors.receiverEmail}>
+                  <SmoothInput type="email" value={receiverEmail} onCommit={updateField("receiverEmail", setReceiverEmail)} autoComplete="email" placeholder="email@example.com" />
+                </Field>
+                <Field label="Phone" required error={errors.receiverPhone}>
+                  <SmoothInput value={receiverPhone} onCommit={updateField("receiverPhone", setReceiverPhone)} inputMode="tel" autoComplete="tel" placeholder="+234…" />
                 </Field>
               </div>
             </div>
