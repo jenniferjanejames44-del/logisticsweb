@@ -1008,17 +1008,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                           <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                             <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Qty</span><b>{item.quantity}</b></div>
                             <div className="rounded-lg bg-muted/40 px-3 py-2">
-                              <span className="block text-muted-foreground">
-                                {item.weightMode === "per_item" ? "Per item" : "Total weight"}
-                              </span>
-                              <b>
-                                {item.weight}kg
-                                {item.weightMode === "per_item" && item.quantity > 1 && (
-                                  <span className="ml-1 font-normal text-muted-foreground">
-                                    (= {((parseFloat(item.weight) || 0) * item.quantity).toFixed(2)}kg)
-                                  </span>
-                                )}
-                              </b>
+                              <span className="block text-muted-foreground">Total weight</span>
+                              <b>{item.weight}kg</b>
                             </div>
                             <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Value</span><b>${item.value}</b></div>
                           </div>
@@ -1066,48 +1057,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                         className="flex h-12 w-12 items-center justify-center text-accent hover:text-accent/80"><Plus className="h-4 w-4" /></button>
                     </div>
                   </Field>
-                  <Field label="Weight entry mode" required>
-                    <div className="grid grid-cols-2 gap-2">
-                      {([
-                        { id: "total", title: "Total Shipment Weight", desc: "Combined weight of all items" },
-                        { id: "per_item", title: "Weight Per Item", desc: "Weight of one unit × quantity" },
-                      ] as const).map((opt) => {
-                        const active = itemDraft.weightMode === opt.id;
-                        return (
-                          <button
-                            key={opt.id}
-                            type="button"
-                            onClick={() => setItemDraft((draft) => ({ ...draft, weightMode: opt.id }))}
-                            className={`rounded-lg border p-3 text-left transition-all ${
-                              active ? "border-accent bg-accent/10" : "border-border bg-white hover:border-accent/40"
-                            }`}
-                          >
-                            <div className="text-xs font-bold text-foreground">{opt.title}</div>
-                            <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{opt.desc}</div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </Field>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <Field
-                      label={itemDraft.weightMode === "per_item" ? "Weight Per Item (kg)" : "Total Shipment Weight (kg)"}
+                      label="Total Package Weight (kg)"
                       required
                       error={itemFormErrors.weight}
                     >
                       <SmoothInput type="number" min={0} step="0.1" inputMode="decimal" value={itemDraft.weight}
                         onCommit={(value) => setItemDraft((draft) => ({ ...draft, weight: value }))} placeholder="0.0" />
-                      {itemDraft.weightMode === "per_item" && itemDraft.quantity > 1 && parseFloat(itemDraft.weight) > 0 && (
-                        <p className="text-[11px] text-muted-foreground mt-1">
-                          Final actual weight: {(parseFloat(itemDraft.weight) * itemDraft.quantity).toFixed(2)} kg
-                          ({itemDraft.quantity} × {parseFloat(itemDraft.weight)} kg)
-                        </p>
-                      )}
-                      {itemDraft.weightMode === "total" && (
-                        <p className="text-[11px] text-muted-foreground mt-1">
-                          Quantity will not multiply this weight.
-                        </p>
-                      )}
+                      <p className="text-[11px] text-muted-foreground mt-1">
+                        Enter the total weight of the full package. Quantity will not multiply this weight.
+                      </p>
                     </Field>
                     <Field label="Value (USD)" required error={itemFormErrors.value}>
                       <SmoothInput type="number" min={0} inputMode="decimal" value={itemDraft.value}
