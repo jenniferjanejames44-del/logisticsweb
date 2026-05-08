@@ -1014,7 +1014,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                           </div>
                           <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                             <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Qty</span><b>{item.quantity}</b></div>
-                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Weight</span><b>{item.weight}kg</b></div>
+                            <div className="rounded-lg bg-muted/40 px-3 py-2">
+                              <span className="block text-muted-foreground">
+                                {item.weightMode === "per_item" ? "Per item" : "Total weight"}
+                              </span>
+                              <b>
+                                {item.weight}kg
+                                {item.weightMode === "per_item" && item.quantity > 1 && (
+                                  <span className="ml-1 font-normal text-muted-foreground">
+                                    (= {((parseFloat(item.weight) || 0) * item.quantity).toFixed(2)}kg)
+                                  </span>
+                                )}
+                              </b>
+                            </div>
                             <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Value</span><b>${item.value}</b></div>
                           </div>
                         </div>
