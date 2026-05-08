@@ -1205,34 +1205,78 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
               )}
             </div>
 
-            <div className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-accent/5 p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
-                  <div className="mt-1 text-2xl font-bold text-foreground">
-                    {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
-                      totals && pricingRule ? formatPriceInCurrency(totals.total, totals.currency) : "—"}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-[#0a1a6b] text-white shadow-lg">
+              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/20 blur-3xl" />
+              <div className="absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-white/5 blur-2xl" />
+              <div className="relative p-5 sm:p-6">
+                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+                  <span className="inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                  Order Total
+                </div>
+                <div className="mt-2 flex items-baseline gap-3 flex-wrap">
+                  {calculating ? (
+                    <Loader2 className="h-7 w-7 animate-spin text-white/80" />
+                  ) : totals && pricingRule ? (
+                    <>
+                      <p className="text-3xl font-bold tracking-tight sm:text-4xl">
+                        {formatPriceInCurrency(totals.total, totals.currency)}
+                      </p>
+                      <span className="text-xs font-medium text-white/70">{totals.currency}</span>
+                    </>
+                  ) : (
+                    <p className="text-base font-medium text-white/80">
+                      Calculating your shipping rate…
+                    </p>
+                  )}
+                </div>
+                {pricingError && (
+                  <p className="mt-3 text-xs text-white/80">
+                    Rates for this destination are being finalised. Our team will confirm
+                    your final price shortly after you submit.
+                  </p>
+                )}
+
+                {totals && pricingRule && (
+                  <div className="mt-4 rounded-xl bg-white/10 backdrop-blur-sm p-4 space-y-1.5 text-xs">
+                    <div className="flex justify-between text-white/90">
+                      <span>Shipping · {totals.chargeableWeight.toFixed(2)} kg</span>
+                      <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.shippingCost, totals.currency)}</span>
+                    </div>
+                    {totals.packagingCost > 0 && (
+                      <div className="flex justify-between text-white/90">
+                        <span>Packaging</span>
+                        <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.packagingCost, totals.currency)}</span>
+                      </div>
+                    )}
+                    {totals.handlingFee > 0 && (
+                      <div className="flex justify-between text-white/90">
+                        <span>Handling &amp; Customs</span>
+                        <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.handlingFee, totals.currency)}</span>
+                      </div>
+                    )}
+                    {totals.vat > 0 && (
+                      <div className="flex justify-between text-white/90">
+                        <span>VAT ({totals.vatPercent}%)</span>
+                        <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.vat, totals.currency)}</span>
+                      </div>
+                    )}
+                    {totals.insurance > 0 && (
+                      <div className="flex justify-between text-white/90">
+                        <span>Insurance</span>
+                        <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.insurance, totals.currency)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between border-t border-white/15 pt-2 mt-2">
+                      <span className="font-bold text-white">Total</span>
+                      <span className="font-bold text-white tabular-nums">{formatPriceInCurrency(totals.total, totals.currency)}</span>
+                    </div>
                   </div>
-                </div>
-                <div className="text-right text-xs text-muted-foreground">
-                  Calculated by RAC pricing engine
-                </div>
+                )}
+
+                <p className="mt-3 text-[11px] text-white/60">
+                  Final price confirmed at checkout. Includes door-to-door tracking and standard insurance.
+                </p>
               </div>
-              {pricingError && (
-                <div className="mt-3 rounded-xl bg-destructive/5 border border-destructive/30 p-3 text-xs text-destructive">
-                  {pricingError}
-                </div>
-              )}
-              {totals && pricingRule && (
-                <div className="mt-3 rounded-xl bg-white/80 border border-border/40 p-3 space-y-1 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({totals.chargeableWeight.toFixed(2)} kg × {pricingRule.country})</span><span className="font-semibold">{formatPriceInCurrency(totals.shippingCost, totals.currency)}</span></div>
-                  {totals.packagingCost > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Package ({selectedPackage?.name})</span><span className="font-semibold">{formatPriceInCurrency(totals.packagingCost, totals.currency)}</span></div>}
-                  {totals.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(totals.handlingFee, totals.currency)}</span></div>}
-                  {totals.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({totals.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(totals.vat, totals.currency)}</span></div>}
-                  {totals.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({totals.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(totals.insurance, totals.currency)}</span></div>}
-                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(totals.total, totals.currency)}</span></div>
-                </div>
-              )}
             </div>
           </div>
         );
