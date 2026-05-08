@@ -364,11 +364,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [itemFormErrors, setItemFormErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
-  // Packaging: { materialId: quantity }
-  const [packagingOptions, setPackagingOptions] = useState<PackagingMaterial[]>([]);
-  const [packagingQty, setPackagingQty] = useState<Record<string, number>>({});
+  // Package selection (one package per shipment)
+  const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
+  const [selectedPackageId, setSelectedPackageId] = useState<string>("");
+  const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
 
-  const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
+  const [pricingRule, setPricingRule] = useState<CountryPricingRule | null>(null);
+  const [totals, setTotals] = useState<ShipmentTotals | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -391,10 +393,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   useEffect(() => {
     supabase
       .from("packaging_materials")
-      .select("id, name, price")
+      .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
+      .then(({ data }) => {
+        if (data) setPackageOptions(data as unknown as PackageOption[]);
+      });
   }, []);
 
   useEffect(() => {
@@ -421,22 +425,26 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // Selected packaging summary: list of {name, qty, unit, lineTotal}
-  const packagingLines = useMemo(() => {
-    return packagingOptions
-      .map((p) => {
-        const qty = packagingQty[p.id] || 0;
-        return { id: p.id, name: p.name, qty, unit: Number(p.price || 0), lineTotal: qty * Number(p.price || 0) };
-      })
-      .filter((l) => l.qty > 0);
-  }, [packagingOptions, packagingQty]);
-
-  const packagingTotal = useMemo(
-    () => packagingLines.reduce((s, l) => s + l.lineTotal, 0),
-    [packagingLines],
+  const selectedPackage = useMemo(
+    () => packageOptions.find((p) => p.id === selectedPackageId) || null,
+    [packageOptions, selectedPackageId],
   );
 
-  const grandTotal = (breakdown?.total || 0) + packagingTotal;
+  const effectiveDims = useMemo(() => {
+    if (!selectedPackage) return { length_cm: 0, width_cm: 0, height_cm: 0 };
+    if (selectedPackage.is_custom) {
+      return {
+        length_cm: parseFloat(customDims.length_cm) || 0,
+        width_cm: parseFloat(customDims.width_cm) || 0,
+        height_cm: parseFloat(customDims.height_cm) || 0,
+      };
+    }
+    return {
+      length_cm: Number(selectedPackage.length_cm) || 0,
+      width_cm: Number(selectedPackage.width_cm) || 0,
+      height_cm: Number(selectedPackage.height_cm) || 0,
+    };
+  }, [selectedPackage, customDims]);
 
   const totalWeight = useMemo(
     () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
@@ -449,26 +457,43 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
+  // Fetch country pricing rule when destination changes
   useEffect(() => {
-    if (STEPS[step] !== "Summary") return;
-    if (!destinationCountry || totalWeight <= 0) {
-      setBreakdown(null);
-      setPricingError(null);
-      return;
-    }
+    if (!destinationCountry) { setPricingRule(null); return; }
     let cancelled = false;
     setCalculating(true);
     setPricingError(null);
-    calculateShippingCost(destinationCountry, totalWeight, [], totalValue)
-      .then((b) => { if (!cancelled) setBreakdown(b); })
-      .catch((err) => {
+    fetchCountryPricingRule(destinationCountry)
+      .then((rule) => {
         if (cancelled) return;
-        setBreakdown(null);
-        setPricingError(err instanceof PricingError ? err.message : "Could not calculate price.");
+        if (!rule) {
+          setPricingError(`We don't ship to ${destinationCountry} yet. Please contact support.`);
+          setPricingRule(null);
+        } else {
+          setPricingRule(rule);
+        }
       })
+      .catch(() => { if (!cancelled) setPricingError("Could not load pricing."); })
       .finally(() => { if (!cancelled) setCalculating(false); });
     return () => { cancelled = true; };
-  }, [step, destinationCountry, totalWeight, totalValue]);
+  }, [destinationCountry]);
+
+  // Recompute totals whenever inputs change
+  useEffect(() => {
+    const t = computeShipmentTotals({
+      packageDims: effectiveDims,
+      divisor: DEFAULT_VOLUMETRIC_DIVISOR,
+      items: items.map((i) => ({
+        quantity: i.quantity || 0,
+        weightKg: parseFloat(i.weight) || 0,
+        declaredValue: parseFloat(i.value) || 0,
+      })),
+      packagePrice: Number(selectedPackage?.price || 0),
+      rule: pricingRule,
+      declaredValue: totalValue,
+    });
+    setTotals(t);
+  }, [effectiveDims, items, selectedPackage, pricingRule, totalValue]);
 
   const openAddItemForm = () => {
     setEditingItemId(null);
