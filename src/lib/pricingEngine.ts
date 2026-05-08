@@ -160,6 +160,13 @@ export interface ShipmentItemInput {
   quantity: number;
   weightKg: number; // weight per single unit
   declaredValue?: number;
+  /**
+   * How `weightKg` should be interpreted:
+   *  - "total"    : weightKg is the TOTAL weight for this line (do NOT multiply by quantity)
+   *  - "per_item" : weightKg is the weight of ONE unit (multiply by quantity)
+   * Defaults to "total" (safer — prevents accidental weight explosion).
+   */
+  weightMode?: "total" | "per_item";
 }
 
 export interface PackageDims {
@@ -203,7 +210,12 @@ export function computeShipmentTotals({
 }: ComputeShipmentArgs): ShipmentTotals {
   const actualWeight = round2(
     items.reduce(
-      (sum, it) => sum + (Number(it.quantity) || 0) * (Number(it.weightKg) || 0),
+      (sum, it) => {
+        const qty = Number(it.quantity) || 0;
+        const w = Number(it.weightKg) || 0;
+        const lineWeight = it.weightMode === "per_item" ? qty * w : w;
+        return sum + lineWeight;
+      },
       0,
     ),
   );
