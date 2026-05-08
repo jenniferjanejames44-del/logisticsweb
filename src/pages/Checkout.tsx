@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
-import { calculateShipmentPrice } from "@/lib/pricing";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CheckoutSummaryCard from "@/components/checkout/CheckoutSummaryCard";
@@ -66,8 +65,9 @@ const Checkout = () => {
 
   const createShipment = async () => {
     if (!user || !quote) throw new Error("Missing data");
-    const enginePrice = await calculateShipmentPrice(quote.service_type, parseFloat(quote.weight));
-    const finalPrice = enginePrice ?? quote.calculated_price;
+    // Use the quoted price as the single source of truth across summary,
+    // checkout, invoice, and Paystack. Do NOT recalculate here.
+    const finalPrice = quote.calculated_price;
     const estimatedDays = quote.service_type.includes("express") ? 3 :
       quote.service_type.includes("ocean") ? 25 : 7;
     const estimatedDelivery = new Date();
