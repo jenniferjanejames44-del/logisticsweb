@@ -148,3 +148,123 @@ export function formatPriceInCurrency(amount: number, currency: string) {
     return `${currency} ${amount.toFixed(2)}`;
   }
 }
+
+// =====================================================================
+// Package-based dimensional weight engine — single source of truth used
+// by the shipment form, summary, checkout, invoice, and admin dashboards.
+// =====================================================================
+
+export const DEFAULT_VOLUMETRIC_DIVISOR = 5000;
+
+export interface ShipmentItemInput {
+  quantity: number;
+  weightKg: number; // weight per single unit
+  declaredValue?: number;
+}
+
+export interface PackageDims {
+  length_cm: number | null | undefined;
+  width_cm: number | null | undefined;
+  height_cm: number | null | undefined;
+}
+
+export interface ShipmentTotals {
+  actualWeight: number;
+  volumetricWeight: number;
+  chargeableWeight: number;
+  declaredValue: number;
+  packagingCost: number;
+  shippingCost: number;
+  handlingFee: number;
+  vat: number;
+  vatPercent: number;
+  insurance: number;
+  insurancePercent: number;
+  total: number;
+  currency: string;
+}
+
+export interface ComputeShipmentArgs {
+  packageDims: PackageDims;
+  divisor?: number;
+  items: ShipmentItemInput[];
+  packagePrice?: number;
+  rule: CountryPricingRule | null;
+  declaredValue?: number;
+}
+
+export function computeShipmentTotals({
+  packageDims,
+  divisor = DEFAULT_VOLUMETRIC_DIVISOR,
+  items,
+  packagePrice = 0,
+  rule,
+  declaredValue,
+}: ComputeShipmentArgs): ShipmentTotals {
+  const actualWeight = round2(
+    items.reduce(
+      (sum, it) => sum + (Number(it.quantity) || 0) * (Number(it.weightKg) || 0),
+      0,
+    ),
+  );
+
+  const l = Number(packageDims.length_cm) || 0;
+  const w = Number(packageDims.width_cm) || 0;
+  const h = Number(packageDims.height_cm) || 0;
+  const safeDivisor = divisor > 0 ? divisor : DEFAULT_VOLUMETRIC_DIVISOR;
+  const volumetricWeight = l > 0 && w > 0 && h > 0 ? round2((l * w * h) / safeDivisor) : 0;
+
+  const chargeableWeight = round2(Math.max(actualWeight, volumetricWeight));
+
+  const computedDeclared =
+    declaredValue ??
+    items.reduce(
+      (sum, it) => sum + (Number(it.quantity) || 0) * (Number(it.declaredValue) || 0),
+      0,
+    );
+
+  if (!rule) {
+    return {
+      actualWeight,
+      volumetricWeight,
+      chargeableWeight,
+      declaredValue: round2(computedDeclared),
+      packagingCost: round2(packagePrice),
+      shippingCost: 0,
+      handlingFee: 0,
+      vat: 0,
+      vatPercent: 0,
+      insurance: 0,
+      insurancePercent: 0,
+      total: round2(packagePrice),
+      currency: "USD",
+    };
+  }
+
+  const shippingCost =
+    chargeableWeight <= Number(rule.flat_weight_threshold_kg)
+      ? Number(rule.flat_price)
+      : chargeableWeight * Number(rule.price_per_kg);
+
+  const handlingFee = Number(rule.handling_fee);
+  const subtotal = shippingCost + handlingFee + Number(packagePrice || 0);
+  const vat = (subtotal * Number(rule.vat_percent)) / 100;
+  const insurance = (Number(computedDeclared || 0) * Number(rule.insurance_percent)) / 100;
+  const total = subtotal + vat + insurance;
+
+  return {
+    actualWeight,
+    volumetricWeight,
+    chargeableWeight,
+    declaredValue: round2(computedDeclared),
+    packagingCost: round2(packagePrice),
+    shippingCost: round2(shippingCost),
+    handlingFee: round2(handlingFee),
+    vat: round2(vat),
+    vatPercent: Number(rule.vat_percent),
+    insurance: round2(insurance),
+    insurancePercent: Number(rule.insurance_percent),
+    total: round2(total),
+    currency: rule.currency,
+  };
+}

@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { TablesInsert } from "@/integrations/supabase/types";
-import { calculateShippingCost, PriceBreakdown, PricingError, formatPriceInCurrency } from "@/lib/pricingEngine";
+import {
+  fetchCountryPricingRule,
+  computeShipmentTotals,
+  formatPriceInCurrency,
+  DEFAULT_VOLUMETRIC_DIVISOR,
+  type CountryPricingRule,
+  type ShipmentTotals,
+} from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +28,7 @@ import {
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
 import LocationPicker from "@/components/shipments/LocationPicker";
+import PackageSelector, { type PackageOption, iconForPackage } from "@/components/shipments/PackageSelector";
 
 type Flow = "import" | "export";
 
@@ -30,15 +38,6 @@ interface Item {
   quantity: number;
   weight: string;
   value: string;
-  length?: string;
-  width?: string;
-  height?: string;
-}
-
-interface PackagingMaterial {
-  id: string;
-  name: string;
-  price: number;
 }
 
 type ShipmentInsert = TablesInsert<"shipments">;
@@ -99,10 +98,10 @@ const IMPORT_WAREHOUSES = [
 ] as const;
 
 const IMPORT_STEPS = [
-  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
@@ -365,11 +364,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [itemFormErrors, setItemFormErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
-  // Packaging: { materialId: quantity }
-  const [packagingOptions, setPackagingOptions] = useState<PackagingMaterial[]>([]);
-  const [packagingQty, setPackagingQty] = useState<Record<string, number>>({});
+  // Package selection (one package per shipment)
+  const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
+  const [selectedPackageId, setSelectedPackageId] = useState<string>("");
+  const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
 
-  const [breakdown, setBreakdown] = useState<PriceBreakdown | null>(null);
+  const [pricingRule, setPricingRule] = useState<CountryPricingRule | null>(null);
+  const [totals, setTotals] = useState<ShipmentTotals | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -392,10 +393,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   useEffect(() => {
     supabase
       .from("packaging_materials")
-      .select("id, name, price")
+      .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
       .eq("is_active", true)
       .order("price")
-      .then(({ data }) => { if (data) setPackagingOptions(data as PackagingMaterial[]); });
+      .then(({ data }) => {
+        if (data) setPackageOptions(data as unknown as PackageOption[]);
+      });
   }, []);
 
   useEffect(() => {
@@ -422,22 +425,26 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  // Selected packaging summary: list of {name, qty, unit, lineTotal}
-  const packagingLines = useMemo(() => {
-    return packagingOptions
-      .map((p) => {
-        const qty = packagingQty[p.id] || 0;
-        return { id: p.id, name: p.name, qty, unit: Number(p.price || 0), lineTotal: qty * Number(p.price || 0) };
-      })
-      .filter((l) => l.qty > 0);
-  }, [packagingOptions, packagingQty]);
-
-  const packagingTotal = useMemo(
-    () => packagingLines.reduce((s, l) => s + l.lineTotal, 0),
-    [packagingLines],
+  const selectedPackage = useMemo(
+    () => packageOptions.find((p) => p.id === selectedPackageId) || null,
+    [packageOptions, selectedPackageId],
   );
 
-  const grandTotal = (breakdown?.total || 0) + packagingTotal;
+  const effectiveDims = useMemo(() => {
+    if (!selectedPackage) return { length_cm: 0, width_cm: 0, height_cm: 0 };
+    if (selectedPackage.is_custom) {
+      return {
+        length_cm: parseFloat(customDims.length_cm) || 0,
+        width_cm: parseFloat(customDims.width_cm) || 0,
+        height_cm: parseFloat(customDims.height_cm) || 0,
+      };
+    }
+    return {
+      length_cm: Number(selectedPackage.length_cm) || 0,
+      width_cm: Number(selectedPackage.width_cm) || 0,
+      height_cm: Number(selectedPackage.height_cm) || 0,
+    };
+  }, [selectedPackage, customDims]);
 
   const totalWeight = useMemo(
     () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
@@ -450,26 +457,43 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
 
+  // Fetch country pricing rule when destination changes
   useEffect(() => {
-    if (STEPS[step] !== "Summary") return;
-    if (!destinationCountry || totalWeight <= 0) {
-      setBreakdown(null);
-      setPricingError(null);
-      return;
-    }
+    if (!destinationCountry) { setPricingRule(null); return; }
     let cancelled = false;
     setCalculating(true);
     setPricingError(null);
-    calculateShippingCost(destinationCountry, totalWeight, [], totalValue)
-      .then((b) => { if (!cancelled) setBreakdown(b); })
-      .catch((err) => {
+    fetchCountryPricingRule(destinationCountry)
+      .then((rule) => {
         if (cancelled) return;
-        setBreakdown(null);
-        setPricingError(err instanceof PricingError ? err.message : "Could not calculate price.");
+        if (!rule) {
+          setPricingError(`We don't ship to ${destinationCountry} yet. Please contact support.`);
+          setPricingRule(null);
+        } else {
+          setPricingRule(rule);
+        }
       })
+      .catch(() => { if (!cancelled) setPricingError("Could not load pricing."); })
       .finally(() => { if (!cancelled) setCalculating(false); });
     return () => { cancelled = true; };
-  }, [step, destinationCountry, totalWeight, totalValue]);
+  }, [destinationCountry]);
+
+  // Recompute totals whenever inputs change
+  useEffect(() => {
+    const t = computeShipmentTotals({
+      packageDims: effectiveDims,
+      divisor: DEFAULT_VOLUMETRIC_DIVISOR,
+      items: items.map((i) => ({
+        quantity: i.quantity || 0,
+        weightKg: parseFloat(i.weight) || 0,
+        declaredValue: parseFloat(i.value) || 0,
+      })),
+      packagePrice: Number(selectedPackage?.price || 0),
+      rule: pricingRule,
+      declaredValue: totalValue,
+    });
+    setTotals(t);
+  }, [effectiveDims, items, selectedPackage, pricingRule, totalValue]);
 
   const openAddItemForm = () => {
     setEditingItemId(null);
@@ -504,11 +528,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   const removeItem = (id: string) =>
     setItems((arr) => arr.filter((i) => i.id !== id));
-
-  const incPackaging = (id: string) =>
-    setPackagingQty((q) => ({ ...q, [id]: (q[id] || 0) + 1 }));
-  const decPackaging = (id: string) =>
-    setPackagingQty((q) => ({ ...q, [id]: Math.max(0, (q[id] || 0) - 1) }));
 
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
@@ -545,6 +564,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
         if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
       });
+    }
+    if (stepName === "Package") {
+      if (!selectedPackage) e.package = "Please select a package.";
+      if (selectedPackage?.is_custom) {
+        if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
+        if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
+        if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
+      }
     }
     setErrors(e);
     if (Object.keys(e).length > 0) {
@@ -594,8 +621,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
       );
-      const packagingDesc = packagingLines.length
-        ? `Packaging: ${packagingLines.map((l) => `${l.qty}× ${l.name} ($${l.lineTotal.toFixed(2)})`).join(", ")}`
+      const packagingDesc = selectedPackage
+        ? `Package: ${selectedPackage.name} (${effectiveDims.length_cm}×${effectiveDims.width_cm}×${effectiveDims.height_cm}cm, $${Number(selectedPackage.price).toFixed(2)})`
         : null;
       const desc = [
         !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
@@ -611,12 +638,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         origin_city: senderCity,
         destination_country: receiverCountry,
         destination_city: receiverCity,
-        weight: totalWeight,
+        weight: totals?.chargeableWeight ?? totalWeight,
         service_type: method,
         status: "shipment_created",
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
-        price: breakdown ? grandTotal : null,
+        price: totals && pricingRule ? totals.total : null,
         warehouse_location: isExport ? null : (warehouseId || null),
         pickup_prepaid: false,
         description: desc,
@@ -626,6 +653,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
         receiver_address: [receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", "),
+        length_cm: effectiveDims.length_cm || null,
+        width_cm: effectiveDims.width_cm || null,
+        height_cm: effectiveDims.height_cm || null,
+        package_id: selectedPackage?.id ?? null,
+        package_name: selectedPackage?.name ?? null,
+        package_price: Number(selectedPackage?.price || 0),
+        actual_weight: totals?.actualWeight ?? totalWeight,
+        volumetric_weight: totals?.volumetricWeight ?? 0,
+        chargeable_weight: totals?.chargeableWeight ?? totalWeight,
+        volumetric_divisor: DEFAULT_VOLUMETRIC_DIVISOR,
+        items_json: items as unknown as ShipmentInsert["items_json"],
       };
 
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
@@ -986,17 +1024,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                         onCommit={(value) => setItemDraft((draft) => ({ ...draft, value }))} placeholder="0" />
                     </Field>
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <Field label="L (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.length || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, length: value }))} placeholder="—" />
-                    </Field>
-                    <Field label="W (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.width || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, width: value }))} placeholder="—" />
-                    </Field>
-                    <Field label="H (cm)">
-                      <SmoothInput type="number" inputMode="decimal" value={itemDraft.height || ""} onCommit={(value) => setItemDraft((draft) => ({ ...draft, height: value }))} placeholder="—" />
-                    </Field>
-                  </div>
                   <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                     <Button type="button" variant="outline" onClick={() => setItemFormOpen(false)} className="sm:w-auto">
                       Cancel
@@ -1018,82 +1045,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
-
-              {packagingOptions.length > 0 && (
-                <div className="rounded-xl border border-border/60 bg-muted/20 p-3 sm:p-4">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div>
-                      <Label className="text-sm font-bold text-foreground">Packaging Materials</Label>
-                      <p className="text-[11px] text-muted-foreground mt-0.5">
-                        Choose any packaging — quantities are added to your total.
-                      </p>
-                    </div>
-                    {packagingTotal > 0 && (
-                      <div className="text-right shrink-0">
-                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Subtotal</div>
-                        <div className="text-sm font-bold text-primary">${packagingTotal.toFixed(2)}</div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-2">
-                    {packagingOptions.map((p) => {
-                      const Icon = iconFor(p.name);
-                      const qty = packagingQty[p.id] || 0;
-                      const active = qty > 0;
-                      const lineTotal = qty * Number(p.price || 0);
-                      return (
-                        <div
-                          key={p.id}
-                          className={`rounded-xl border p-3 transition-all ${
-                            active ? "border-accent bg-accent/5" : "border-border/60 bg-white"
-                          }`}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className={`flex h-10 w-10 items-center justify-center rounded-lg shrink-0 ${
-                              active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"
-                            }`}>
-                              <Icon className="h-5 w-5" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="text-sm font-bold text-foreground truncate">{p.name}</div>
-                              <div className="text-[11px] text-muted-foreground">
-                                ${Number(p.price).toFixed(2)} each
-                              </div>
-                            </div>
-                          </div>
-                          <div className="mt-3 flex items-center justify-between gap-2">
-                            <div className="flex items-center rounded-full border border-border/70 bg-white">
-                              <button
-                                type="button"
-                                onClick={() => decPackaging(p.id)}
-                                disabled={qty === 0}
-                                aria-label={`Decrease ${p.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground disabled:opacity-40"
-                              >
-                                <Minus className="h-3.5 w-3.5" />
-                              </button>
-                              <span className="min-w-[28px] text-center text-sm font-bold text-foreground select-none">
-                                {qty}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => incPackaging(p.id)}
-                                aria-label={`Increase ${p.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-accent hover:text-accent/80"
-                              >
-                                <Plus className="h-3.5 w-3.5" />
-                              </button>
-                            </div>
-                            <div className="text-sm font-semibold text-foreground">
-                              {qty > 0 ? `$${lineTotal.toFixed(2)}` : "—"}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         );
@@ -1140,20 +1091,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SummaryRow label="Phone" value={receiverPhone} />
                 <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
-              {packagingLines.length > 0 && (
+              {selectedPackage && (
                 <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Packaging</h3>
-                  {packagingLines.map((l) => (
-                    <SummaryRow
-                      key={l.id}
-                      label={`${l.name} × ${l.qty}`}
-                      value={`$${l.unit.toFixed(2)} → $${l.lineTotal.toFixed(2)}`}
-                    />
-                  ))}
-                  <div className="flex items-center justify-between pt-2 mt-1 text-xs">
-                    <span className="font-bold text-foreground">Packaging total</span>
-                    <span className="font-bold text-primary">${packagingTotal.toFixed(2)}</span>
-                  </div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Package</h3>
+                  <SummaryRow label="Type" value={selectedPackage.name} />
+                  <SummaryRow label="Dimensions" value={`${effectiveDims.length_cm} × ${effectiveDims.width_cm} × ${effectiveDims.height_cm} cm`} />
+                  <SummaryRow label="Package cost" value={`$${Number(selectedPackage.price).toFixed(2)}`} />
+                  {totals && (
+                    <>
+                      <SummaryRow label="Actual weight" value={`${totals.actualWeight.toFixed(2)} kg`} />
+                      <SummaryRow label="Volumetric weight" value={`${totals.volumetricWeight.toFixed(2)} kg`} />
+                      <SummaryRow label="Chargeable weight" value={`${totals.chargeableWeight.toFixed(2)} kg`} />
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -1164,7 +1114,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Estimated total</div>
                   <div className="mt-1 text-2xl font-bold text-foreground">
                     {calculating ? <Loader2 className="h-6 w-6 animate-spin" /> :
-                      breakdown ? formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency) : "—"}
+                      totals && pricingRule ? formatPriceInCurrency(totals.total, totals.currency) : "—"}
                   </div>
                 </div>
                 <div className="text-right text-xs text-muted-foreground">
@@ -1176,21 +1126,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   {pricingError}
                 </div>
               )}
-              {breakdown && (
+              {totals && pricingRule && (
                 <div className="mt-3 rounded-xl bg-white/80 border border-border/40 p-3 space-y-1 text-xs">
-                  <div className="flex justify-between"><span className="text-muted-foreground">Base price ({breakdown.country})</span><span className="font-semibold">{formatPriceInCurrency(breakdown.basePrice, breakdown.currency)}</span></div>
-                  {breakdown.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(breakdown.handlingFee, breakdown.currency)}</span></div>}
-                  {breakdown.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({breakdown.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.vat, breakdown.currency)}</span></div>}
-                  {breakdown.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({breakdown.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(breakdown.insurance, breakdown.currency)}</span></div>}
-                  {packagingTotal > 0 && (
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">
-                        Packaging ({packagingLines.map((l) => `${l.qty}× ${l.name}`).join(", ")})
-                      </span>
-                      <span className="font-semibold">${packagingTotal.toFixed(2)}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(breakdown.total + packagingTotal, breakdown.currency)}</span></div>
+                  <div className="flex justify-between"><span className="text-muted-foreground">Shipping ({totals.chargeableWeight.toFixed(2)} kg × {pricingRule.country})</span><span className="font-semibold">{formatPriceInCurrency(totals.shippingCost, totals.currency)}</span></div>
+                  {totals.packagingCost > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Package ({selectedPackage?.name})</span><span className="font-semibold">{formatPriceInCurrency(totals.packagingCost, totals.currency)}</span></div>}
+                  {totals.handlingFee > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Handling / Customs</span><span className="font-semibold">{formatPriceInCurrency(totals.handlingFee, totals.currency)}</span></div>}
+                  {totals.vat > 0 && <div className="flex justify-between"><span className="text-muted-foreground">VAT ({totals.vatPercent}%)</span><span className="font-semibold">{formatPriceInCurrency(totals.vat, totals.currency)}</span></div>}
+                  {totals.insurance > 0 && <div className="flex justify-between"><span className="text-muted-foreground">Insurance ({totals.insurancePercent}% of declared)</span><span className="font-semibold">{formatPriceInCurrency(totals.insurance, totals.currency)}</span></div>}
+                  <div className="flex justify-between border-t border-border/30 pt-1 mt-1"><span className="font-bold">Total</span><span className="font-bold text-primary">{formatPriceInCurrency(totals.total, totals.currency)}</span></div>
                 </div>
               )}
             </div>

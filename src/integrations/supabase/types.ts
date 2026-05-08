@@ -363,27 +363,45 @@ export type Database = {
       packaging_materials: {
         Row: {
           created_at: string
+          description: string | null
+          height_cm: number | null
+          icon_key: string | null
           id: string
           is_active: boolean
+          is_custom: boolean
+          length_cm: number | null
           name: string
           price: number
           updated_at: string
+          width_cm: number | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
+          height_cm?: number | null
+          icon_key?: string | null
           id?: string
           is_active?: boolean
+          is_custom?: boolean
+          length_cm?: number | null
           name: string
           price?: number
           updated_at?: string
+          width_cm?: number | null
         }
         Update: {
           created_at?: string
+          description?: string | null
+          height_cm?: number | null
+          icon_key?: string | null
           id?: string
           is_active?: boolean
+          is_custom?: boolean
+          length_cm?: number | null
           name?: string
           price?: number
           updated_at?: string
+          width_cm?: number | null
         }
         Relationships: []
       }
@@ -725,6 +743,8 @@ export type Database = {
       shipments: {
         Row: {
           actual_delivery: string | null
+          actual_weight: number | null
+          chargeable_weight: number | null
           created_at: string
           description: string | null
           destination_city: string
@@ -732,9 +752,13 @@ export type Database = {
           estimated_delivery: string | null
           height_cm: number | null
           id: string
+          items_json: Json | null
           length_cm: number | null
           origin_city: string
           origin_country: string
+          package_id: string | null
+          package_name: string | null
+          package_price: number
           payment_status: string
           pickup_prepaid: boolean
           price: number | null
@@ -751,12 +775,16 @@ export type Database = {
           tracking_number: string
           updated_at: string
           user_id: string
+          volumetric_divisor: number
+          volumetric_weight: number | null
           warehouse_location: string | null
           weight: number
           width_cm: number | null
         }
         Insert: {
           actual_delivery?: string | null
+          actual_weight?: number | null
+          chargeable_weight?: number | null
           created_at?: string
           description?: string | null
           destination_city: string
@@ -764,9 +792,13 @@ export type Database = {
           estimated_delivery?: string | null
           height_cm?: number | null
           id?: string
+          items_json?: Json | null
           length_cm?: number | null
           origin_city: string
           origin_country: string
+          package_id?: string | null
+          package_name?: string | null
+          package_price?: number
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
@@ -783,12 +815,16 @@ export type Database = {
           tracking_number: string
           updated_at?: string
           user_id: string
+          volumetric_divisor?: number
+          volumetric_weight?: number | null
           warehouse_location?: string | null
           weight: number
           width_cm?: number | null
         }
         Update: {
           actual_delivery?: string | null
+          actual_weight?: number | null
+          chargeable_weight?: number | null
           created_at?: string
           description?: string | null
           destination_city?: string
@@ -796,9 +832,13 @@ export type Database = {
           estimated_delivery?: string | null
           height_cm?: number | null
           id?: string
+          items_json?: Json | null
           length_cm?: number | null
           origin_city?: string
           origin_country?: string
+          package_id?: string | null
+          package_name?: string | null
+          package_price?: number
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
@@ -815,6 +855,8 @@ export type Database = {
           tracking_number?: string
           updated_at?: string
           user_id?: string
+          volumetric_divisor?: number
+          volumetric_weight?: number | null
           warehouse_location?: string | null
           weight?: number
           width_cm?: number | null
