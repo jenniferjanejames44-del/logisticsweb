@@ -392,21 +392,25 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   useEffect(() => {
+    let cancelled = false;
     setPackageLoading(true);
-    supabase
-      .from("packaging_materials")
-      .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
-      .eq("is_active", true)
-      .order("price")
-      .then(({ data, error }) => {
-        if (error) {
-          toast({ title: "Packaging unavailable", description: "Could not load packaging options. Please try again.", variant: "destructive" });
-          setPackageOptions([]);
-          return;
-        }
-        if (data) setPackageOptions(data as unknown as PackageOption[]);
-      })
-      .finally(() => setPackageLoading(false));
+    const loadPackages = async () => {
+      const { data, error } = await supabase
+        .from("packaging_materials")
+        .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
+        .eq("is_active", true)
+        .order("price");
+      if (cancelled) return;
+      if (error) {
+        toast({ title: "Packaging unavailable", description: "Could not load packaging options. Please try again.", variant: "destructive" });
+        setPackageOptions([]);
+      } else if (data) {
+        setPackageOptions(data as unknown as PackageOption[]);
+      }
+      setPackageLoading(false);
+    };
+    loadPackages();
+    return () => { cancelled = true; };
   }, [toast]);
 
   useEffect(() => {
