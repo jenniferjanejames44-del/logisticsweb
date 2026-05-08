@@ -141,9 +141,50 @@ const AdminPackaging = () => {
                   <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required placeholder="e.g. Small Box" />
                 </div>
                 <div className="space-y-2">
+                  <Label>Description</Label>
+                  <Input value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="e.g. Best for documents" />
+                </div>
+                <div className="space-y-2">
                   <Label>Price (USD)</Label>
                   <Input type="number" min="0" step="0.01" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required />
                 </div>
+                <div className="space-y-2">
+                  <Label>Icon Key</Label>
+                  <select
+                    value={formData.icon_key}
+                    onChange={(e) => setFormData({ ...formData, icon_key: e.target.value })}
+                    className="flex h-12 w-full rounded-[10px] border border-border bg-muted/40 px-4 text-sm"
+                  >
+                    <option value="envelope">Envelope</option>
+                    <option value="box">Box</option>
+                    <option value="small-box">Small Box</option>
+                    <option value="medium-box">Medium Box</option>
+                    <option value="large-box">Large Box</option>
+                    <option value="vacuum-bag">Vacuum Bag</option>
+                    <option value="warm-bag">Warm Bag</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch checked={formData.is_custom} onCheckedChange={(c) => setFormData({ ...formData, is_custom: c })} />
+                  <Label>Custom package (user enters dimensions)</Label>
+                </div>
+                {!formData.is_custom && (
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="space-y-1">
+                      <Label className="text-xs">L (cm)</Label>
+                      <Input type="number" min="0" step="0.1" value={formData.length_cm} onChange={(e) => setFormData({ ...formData, length_cm: e.target.value })} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs">W (cm)</Label>
+                      <Input type="number" min="0" step="0.1" value={formData.width_cm} onChange={(e) => setFormData({ ...formData, width_cm: e.target.value })} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs">H (cm)</Label>
+                      <Input type="number" min="0" step="0.1" value={formData.height_cm} onChange={(e) => setFormData({ ...formData, height_cm: e.target.value })} />
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
                   <Switch checked={formData.is_active} onCheckedChange={(c) => setFormData({ ...formData, is_active: c })} />
                   <Label>Active</Label>
