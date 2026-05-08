@@ -457,6 +457,32 @@ ${isPaid ? `.document::after{
   </table>
   </div>
 
+  ${packageName || items.length > 0 ? `
+  <div class="bar">Package & Items</div>
+  <table class="info-tbl">
+    ${packageName ? `<tr><td class="lbl">Package</td><td class="val">${packageName}</td></tr>` : ''}
+    ${dimsParts.length === 3 ? `<tr><td class="lbl">Dimensions</td><td class="val">${dimensions}</td></tr>` : ''}
+    ${actualW ? `<tr><td class="lbl">Actual Weight</td><td class="val">${actualW.toFixed(2)} kg</td></tr>` : ''}
+    ${volW ? `<tr><td class="lbl">Volumetric Weight</td><td class="val">${volW.toFixed(2)} kg</td></tr>` : ''}
+    ${chargeable ? `<tr><td class="lbl">Chargeable Weight</td><td class="val"><strong>${chargeable.toFixed(2)} kg</strong></td></tr>` : ''}
+  </table>
+  ${items.length > 0 ? `
+  <div class="addl-wrap">
+  <table class="addl">
+    <thead>
+      <tr>
+        <th style="width:8%;">#</th>
+        <th style="width:42%;">Item</th>
+        <th style="width:14%;">Qty</th>
+        <th style="width:18%;">Weight</th>
+        <th style="width:18%;">Declared Value</th>
+      </tr>
+    </thead>
+    <tbody>${itemsRows}</tbody>
+  </table>
+  </div>` : ''}
+  ` : ''}
+
   <!-- ═══ ADDITIONAL SERVICES ═══ -->
   <div class="addl-wrap">
   <table class="addl">
