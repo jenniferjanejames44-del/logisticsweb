@@ -158,15 +158,8 @@ export const DEFAULT_VOLUMETRIC_DIVISOR = 5000;
 
 export interface ShipmentItemInput {
   quantity: number;
-  weightKg: number; // weight per single unit
+  weightKg: number; // total weight for this line (NOT per unit)
   declaredValue?: number;
-  /**
-   * How `weightKg` should be interpreted:
-   *  - "total"    : weightKg is the TOTAL weight for this line (do NOT multiply by quantity)
-   *  - "per_item" : weightKg is the weight of ONE unit (multiply by quantity)
-   * Defaults to "total" (safer — prevents accidental weight explosion).
-   */
-  weightMode?: "total" | "per_item";
 }
 
 export interface PackageDims {
@@ -211,10 +204,9 @@ export function computeShipmentTotals({
   const actualWeight = round2(
     items.reduce(
       (sum, it) => {
-        const qty = Number(it.quantity) || 0;
         const w = Number(it.weightKg) || 0;
-        const lineWeight = it.weightMode === "per_item" ? qty * w : w;
-        return sum + lineWeight;
+        // weightKg is ALWAYS the total weight for the line — never multiply by quantity.
+        return sum + w;
       },
       0,
     ),
