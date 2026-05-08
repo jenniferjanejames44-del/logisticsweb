@@ -147,12 +147,6 @@ const Procurement = () => {
     { name: "Bulk Business Supplies", img: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80" },
   ];
 
-  const shippingOptions = [
-    { icon: Plane, title: "Express Shipping", duration: "3 – 5 Business Days", desc: "Fastest air-freight delivery for urgent and high-value items." },
-    { icon: Truck, title: "Air Cargo Shipping", duration: "5 – 10 Business Days", desc: "Balanced speed and cost for everyday electronics, fashion and gadgets." },
-    { icon: Ship, title: "Container Shipping", duration: "6 – 8 Weeks", desc: "Bulk and oversized procurement for businesses and full-vehicle imports." },
-  ];
-
   const testimonials = [
     { name: "Funke Adeyemi", quote: "I shipped my car and personal items from the U.S. without any hassle. I got updates every step of the way. Super professional!" },
     { name: "Emeka Nnamdi", quote: "My electronics arrived safely and on time. The container shipping option saved me real money and stress. Amazing service." },
