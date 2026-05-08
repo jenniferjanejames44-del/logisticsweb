@@ -38,6 +38,7 @@ interface Item {
   quantity: number;
   weight: string;
   value: string;
+  weightMode: "total" | "per_item";
 }
 
 type ShipmentInsert = TablesInsert<"shipments">;
@@ -110,6 +111,7 @@ const createEmptyItem = (): Item => ({
   quantity: 1,
   weight: "",
   value: "",
+  weightMode: "total",
 });
 
 // Pick an icon for a packaging material based on its name keywords.
@@ -459,7 +461,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   }, [selectedPackage, customDims]);
 
   const totalWeight = useMemo(
-    () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0) * (i.quantity || 1), 0),
+    () => items.reduce((s, i) => {
+      const w = parseFloat(i.weight) || 0;
+      const q = i.quantity || 1;
+      return s + (i.weightMode === "per_item" ? w * q : w);
+    }, 0),
     [items],
   );
   const totalValue = useMemo(
@@ -499,6 +505,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         quantity: i.quantity || 0,
         weightKg: parseFloat(i.weight) || 0,
         declaredValue: parseFloat(i.value) || 0,
+        weightMode: i.weightMode,
       })),
       packagePrice: Number(selectedPackage?.price || 0),
       rule: pricingRule,
