@@ -1,143 +1,36 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ArrowRight, CheckCircle2, BadgeDollarSign, ClipboardList, Truck, Plane, Ship, Star, Quote, Phone, Mail, MapPin } from "lucide-react";
+import { CheckCircle2, Star, Quote, Phone, Mail, MapPin, Truck, Plane, Ship, ArrowRight } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCurrency } from "@/contexts/CurrencyContext";
-import { supabase } from "@/integrations/supabase/client";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import LiveChat from "@/components/LiveChat";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { toast } from "@/hooks/use-toast";
-import {
-  calculateProcessingFeeFromBands,
-  fetchProcessingFeeBands,
-  formatProcessingFeeBand,
-  type ProcessingFeeBand,
-} from "@/lib/procurementFees";
-import { savePendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
+
+const PROCUREMENT_FORM_ROUTE = "/personal-shopping/new";
 
 const Procurement = () => {
   const { user } = useAuth();
-  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
-  const [submitting, setSubmitting] = useState(false);
-  const [feeBands, setFeeBands] = useState<ProcessingFeeBand[]>([]);
-  const [loadingFees, setLoadingFees] = useState(true);
-  const [attachment, setAttachment] = useState<File | null>(null);
-  const [form, setForm] = useState({
-    productName: "",
-    productLink: "",
-    quantity: "1",
-    estimatedPrice: "",
-    specialInstructions: "",
-  });
 
-  useEffect(() => {
-    fetchProcessingFeeBands().then((bands) => {
-      setFeeBands(bands);
-      setLoadingFees(false);
-    });
-  }, []);
-
-  const quantity = Math.max(1, parseInt(form.quantity || "1", 10) || 1);
-  const estimatedUnitPrice = parseFloat(form.estimatedPrice) || 0;
-  const estimatedOrderValue = quantity * estimatedUnitPrice;
-  const processingFee = useMemo(() => calculateProcessingFeeFromBands(estimatedOrderValue, feeBands), [estimatedOrderValue, feeBands]);
-  const estimatedTotal = estimatedOrderValue + processingFee;
-
-  const updateField = (field: keyof typeof form, value: string) => setForm((prev) => ({ ...prev, [field]: value }));
-
-  const handleAttachmentChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Please upload a file under 5MB.", variant: "destructive" });
-      return;
-    }
-    setAttachment(file);
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!user) {
-      savePendingShoppingOrder({
-        productName: form.productName,
-        productLink: form.productLink,
-        itemDescription: form.specialInstructions || form.productName,
-        itemValue: estimatedOrderValue,
-        quantity,
-        processingFee,
-        totalCost: estimatedTotal,
-        additionalNotes: form.specialInstructions,
-      });
-      localStorage.setItem("post_auth_redirect", SHOPPING_ORDER_PAYMENT_ROUTE);
-      toast({ title: "Log in required", description: "Please log in to continue to payment for this request." });
-      navigate("/auth");
-      return;
-    }
-
-    setSubmitting(true);
-    try {
-      let fileUrl: string | null = null;
-      if (attachment) {
-        const ext = attachment.name.split(".").pop();
-        const path = `${user.id}/${Date.now()}.${ext}`;
-        const { error: uploadErr } = await supabase.storage.from("shopping-images").upload(path, attachment);
-        if (!uploadErr) {
-          const { data: publicUrl } = supabase.storage.from("shopping-images").getPublicUrl(path);
-          fileUrl = publicUrl.publicUrl;
-        }
-      }
-
-      const { data, error } = await supabase.from("shopping_orders").insert({
-        user_id: user.id,
-        order_number: "",
-        product_name: form.productName,
-        product_link: form.productLink || null,
-        item_description: form.specialInstructions || form.productName,
-        item_value: estimatedOrderValue,
-        quantity,
-        processing_fee: processingFee,
-        total_cost: estimatedTotal,
-        product_image_url: fileUrl,
-        additional_notes: form.specialInstructions || null,
-        status: "pending_payment",
-        payment_status: "unpaid",
-      }).select("id").single();
-
-      if (error) throw error;
-
-      toast({ title: "Procurement request submitted", description: "Continue to payment to confirm your order." });
-      navigate(`${SHOPPING_ORDER_PAYMENT_ROUTE}?orderId=${data.id}`);
-    } catch (error) {
-      toast({
-        title: "Submission failed",
-        description: error instanceof Error ? error.message : "Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setSubmitting(false);
+  const goToProcurement = () => {
+    if (user) {
+      navigate(PROCUREMENT_FORM_ROUTE);
+    } else {
+      localStorage.setItem("post_auth_redirect", PROCUREMENT_FORM_ROUTE);
+      navigate("/auth?mode=signup");
     }
   };
 
   const heroImages = [
-    "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=700&q=80", // laptop
-    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80", // phone
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80", // sneakers/luxury
-    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=700&q=80", // headphones
-    "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80", // watch
-    "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=700&q=80", // playstation/console
+    "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=700&q=80",
+    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80",
+    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",
+    "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=700&q=80",
+    "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80",
+    "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=700&q=80",
   ];
 
-  // Real brand logos (Wikimedia / official mark SVGs). Rendered white via CSS filter
-  // so they sit on the navy strip the same way Africanies presents their press logos.
   const brandLogos = [
     { name: "Amazon", src: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
     { name: "Walmart", src: "https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg" },
@@ -175,85 +68,67 @@ const Procurement = () => {
     { q: "How do I know what the final cost will be?", a: "We share a clear, itemised cost breakdown — product cost, procurement fee and shipping — for your approval before any purchase." },
   ];
 
+  const CtaButton = ({ className = "" }: { className?: string }) => (
+    <Button
+      onClick={goToProcurement}
+      size="lg"
+      className={`rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95 ${className}`}
+    >
+      Sign Up For A Tax-Free Shopping
+      <ArrowRight className="ml-1 h-4 w-4" />
+    </Button>
+  );
+
   return (
-    <div className="min-h-screen">
-      {/* Minimal Africanies-style header — only on this procurement page */}
-      <header className="sticky top-0 z-50 bg-primary py-4 shadow-lg">
-        <div className="section-container flex items-center justify-center">
-          <Link to="/" aria-label="RAC Logistics home" className="flex items-center">
-            <span className="rounded-full bg-white px-5 py-2 shadow-md">
-              <HeaderLogo className="block h-8 w-auto" />
-            </span>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
       <main>
-        {/* HERO — Navy split with image collage */}
-        <section className="relative overflow-hidden bg-primary pb-12 pt-10 md:pb-24 md:pt-20">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(223,81,1,0.22),transparent_45%)]" />
-          <div className="section-container relative z-10 grid gap-10 md:grid-cols-2 md:items-center md:gap-12">
-            <div className="text-left">
-              <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-red-600 via-accent to-amber-500 px-5 py-2 text-sm font-semibold text-white shadow-lg md:text-base">
-                Attention!!! Online Shoppers
-              </span>
-              <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-6xl">
-                We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
-              </h1>
-              <ul className="mb-7 space-y-1.5 text-base text-white/90 md:text-lg">
-                <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
-                <li className="flex items-center gap-2"><span className="text-accent">•</span> Verified Suppliers Only</li>
-                <li className="flex items-center gap-2"><span className="text-accent">•</span> Fully Insured Delivery</li>
-              </ul>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
-                  <Link to="#procurement-form">Sign Up For Tax-Free Shopping</Link>
-                </Button>
-              </div>
-              <p className="mt-3 text-sm text-white/70">Takes less than 2 minutes. No obligation.</p>
-            </div>
-
-            {/* Image collage */}
-            <div className="grid grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:gap-4">
-              {heroImages.map((src, i) => (
-                <div
-                  key={i}
-                  className={`overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-white/10 ${
-                    i === 0 ? "row-span-2 aspect-[3/5]" : "aspect-square"
-                  }`}
-                >
-                  <img src={src} alt="Procurement showcase" className="h-full w-full object-cover" loading="lazy" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* TRUSTED BRAND LOGOS — white, shaking marquee */}
-        <section className="relative overflow-hidden border-y border-white/5 bg-primary py-10">
+        {/* HERO — white background, centered shaking logo, marquee banner */}
+        <section className="relative overflow-hidden bg-white pb-12 pt-8 md:pb-20 md:pt-14">
           <div className="section-container">
-            <p className="mb-6 text-center text-xs font-bold uppercase tracking-[0.22em] text-white/55">
-              We buy from the world's top stores
-            </p>
-            <div className="relative overflow-hidden">
-              <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-primary to-transparent md:w-28" />
-              <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-primary to-transparent md:w-28" />
-              <div className="flex w-max animate-marquee items-center gap-12 md:gap-20">
-                {[...brandLogos, ...brandLogos, ...brandLogos].map((b, i) => (
+            {/* Centered shaking logo (replaces page header) */}
+            <div className="mb-6 flex justify-center md:mb-8">
+              <span className="inline-flex animate-logo-shake items-center justify-center rounded-2xl bg-white px-6 py-3 shadow-md ring-1 ring-border/40">
+                <HeaderLogo className="block h-9 w-auto md:h-11" />
+              </span>
+            </div>
+
+            {/* Moving "Attention" banner */}
+            <div className="relative mb-10 overflow-hidden rounded-full bg-gradient-to-r from-red-600 via-accent to-amber-500 py-3 shadow-lg">
+              <div className="flex w-max animate-marquee items-center gap-12 px-6 text-sm font-bold uppercase tracking-[0.2em] text-white md:text-base">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <span key={i} className="flex shrink-0 items-center gap-3">
+                    <span>Attention!!! Online Shoppers</span>
+                    <span className="text-white/70">★</span>
+                    <span>We Buy & Ship For You — Tax-Free</span>
+                    <span className="text-white/70">★</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-12">
+              <div className="text-left">
+                <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-foreground sm:text-4xl md:text-5xl lg:text-[56px]">
+                  We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
+                </h1>
+                <ul className="mb-7 space-y-1.5 text-base text-muted-foreground md:text-lg">
+                  <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
+                  <li className="flex items-center gap-2"><span className="text-accent">•</span> Verified Suppliers Only</li>
+                  <li className="flex items-center gap-2"><span className="text-accent">•</span> Fully Insured Delivery</li>
+                </ul>
+                <CtaButton />
+                <p className="mt-3 text-sm text-muted-foreground">Sign up first — you'll fill the procurement details inside your dashboard.</p>
+              </div>
+
+              <div className="grid grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:gap-4">
+                {heroImages.map((src, i) => (
                   <div
-                    key={`${b.name}-${i}`}
-                    className="flex h-10 shrink-0 items-center justify-center md:h-12"
-                    style={{ animationDelay: `${(i % brandLogos.length) * 0.15}s` }}
+                    key={i}
+                    className={`overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-border/40 ${
+                      i === 0 ? "row-span-2 aspect-[3/5]" : "aspect-square"
+                    }`}
                   >
-                    <img
-                      src={b.src}
-                      alt={b.name}
-                      className="h-full w-auto animate-logo-shake object-contain opacity-90 transition-opacity hover:opacity-100"
-                      style={{
-                        filter: "brightness(0) invert(1)",
-                        animationDelay: `${(i % brandLogos.length) * 0.18}s`,
-                      }}
-                      loading="lazy"
-                    />
+                    <img src={src} alt="Procurement showcase" className="h-full w-full object-cover" loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -261,21 +136,28 @@ const Procurement = () => {
           </div>
         </section>
 
-        {/* INTRO STRIP */}
-        <section className="bg-background py-14">
-          <div className="section-container text-center">
-            <h2 className="mx-auto max-w-4xl text-2xl font-bold text-foreground md:text-3xl">
-              We help you buy from Amazon, Walmart, eBay, Alibaba, dealerships, manufacturers, or private suppliers.
-            </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground md:text-lg">
-              We handle payment, verification, purchase, shipping, and delivery to Nigeria — safely and fast.
+        {/* TRUSTED STORES — shaking marquee on white */}
+        <section className="relative overflow-hidden border-y border-border/60 bg-white py-10">
+          <div className="section-container">
+            <p className="mb-6 text-center text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              We buy from the world's top stores
             </p>
-
-            <div className="mt-10">
-              <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
-                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
-              </Button>
-              <p className="mt-3 text-sm text-muted-foreground">Takes less than 2 minutes. No obligation.</p>
+            <div className="relative overflow-hidden">
+              <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-white to-transparent md:w-28" />
+              <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-white to-transparent md:w-28" />
+              <div className="flex w-max animate-marquee items-center gap-12 md:gap-20">
+                {[...brandLogos, ...brandLogos, ...brandLogos].map((b, i) => (
+                  <div key={`${b.name}-${i}`} className="flex h-10 shrink-0 items-center justify-center md:h-12">
+                    <img
+                      src={b.src}
+                      alt={b.name}
+                      className="h-full w-auto animate-logo-shake object-contain opacity-80 transition-opacity hover:opacity-100"
+                      style={{ animationDelay: `${(i % brandLogos.length) * 0.18}s` }}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -305,11 +187,12 @@ const Procurement = () => {
                 </Card>
               ))}
             </div>
+            <div className="mt-12 text-center"><CtaButton /></div>
           </div>
         </section>
 
-        {/* CATEGORIES — What can we buy for you */}
-        <section className="bg-background py-20">
+        {/* CATEGORIES */}
+        <section className="bg-white py-20">
           <div className="section-container">
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">What Can We Buy For You?</h2>
@@ -364,24 +247,19 @@ const Procurement = () => {
                 );
               })}
             </div>
-            <div className="mt-12 text-center">
-              <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
-                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
-              </Button>
-              <p className="mt-3 text-sm text-white/70">Takes less than 2 minutes. No obligation.</p>
-            </div>
+            <div className="mt-12 text-center"><CtaButton /></div>
           </div>
         </section>
 
-        {/* WHAT YOU GET */}
-        <section className="bg-background py-20">
+        {/* WHAT YOU CAN COUNT ON */}
+        <section className="bg-white py-20">
           <div className="section-container grid items-center gap-12 lg:grid-cols-2">
             <div className="overflow-hidden rounded-3xl shadow-2xl">
               <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80" alt="Happy customer with package" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div>
-              <span className="mb-3 inline-block rounded-full bg-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">Why RAC Logistics</span>
-              <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">What You Get When You Choose Us To Procure For You</h2>
+              <span className="mb-3 inline-block rounded-full bg-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">What You Can Count On</span>
+              <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">Everything You Get When RAC Procures For You</h2>
               <ul className="space-y-4">
                 {[
                   "Instant tracking updates once your item is secured and shipped",
@@ -398,6 +276,7 @@ const Procurement = () => {
                   </li>
                 ))}
               </ul>
+              <div className="mt-8"><CtaButton /></div>
             </div>
           </div>
         </section>
@@ -434,7 +313,7 @@ const Procurement = () => {
         </section>
 
         {/* FAQ */}
-        <section className="bg-background py-20">
+        <section className="bg-white py-20">
           <div className="section-container max-w-4xl">
             <div className="mb-10 text-center">
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">Frequently Asked Questions</h2>
@@ -447,137 +326,18 @@ const Procurement = () => {
                 </AccordionItem>
               ))}
             </Accordion>
-            <div className="mt-10 text-center">
-              <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
-                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
-              </Button>
-            </div>
+            <div className="mt-10 text-center"><CtaButton /></div>
           </div>
         </section>
 
-        {/* FORM + FEES (logic preserved) */}
-        <section id="procurement-form" className="bg-muted/30 py-20">
-          <div className="section-container grid gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="space-y-6">
-              <div>
-                <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground">
-                  <BadgeDollarSign className="h-4 w-4" /> Procurement fees
-                </span>
-	                <h2 className="text-foreground">Processing / Procurement Fee Structure</h2>
-                <p className="mt-2 text-muted-foreground">These fee tiers are read from the admin-managed processing fee configuration and applied to the estimated order value.</p>
-              </div>
-
-              <Card className="border-border/60 bg-card shadow-[0_14px_34px_rgba(15,23,42,0.04)]">
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Order value</TableHead>
-                        <TableHead>Fee</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {loadingFees ? (
-                        <TableRow><TableCell colSpan={2} className="py-8 text-center text-muted-foreground">Loading fee tiers...</TableCell></TableRow>
-                      ) : (
-                        feeBands.map((band) => {
-                          const { rangeLabel, feeLabel } = formatProcessingFeeBand(band, formatUsd);
-                          return (
-                            <TableRow key={`${band.min_value}-${band.max_value}`}>
-                              <TableCell className="font-medium">{rangeLabel}</TableCell>
-                              <TableCell>{feeLabel}</TableCell>
-                            </TableRow>
-                          );
-                        })
-                      )}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/60 bg-card">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex items-center gap-3">
-                    <span className="icon-surface h-11 w-11 border-primary/10 bg-primary/5"><ClipboardList className="h-5 w-5 text-primary" /></span>
-                    <div>
-                      <h3 className="text-foreground">How procurement works</h3>
-                      <p className="text-sm text-muted-foreground">A simple public workflow, backed by the existing order system.</p>
-                    </div>
-                  </div>
-                  <div className="space-y-4 text-sm text-muted-foreground">
-                    <p><span className="font-semibold text-foreground">1.</span> Submit product details, supplier link, quantity, price estimate, and any supporting file.</p>
-                    <p><span className="font-semibold text-foreground">2.</span> RAC reviews the request and processes it inside the current procurement queue.</p>
-                    <p><span className="font-semibold text-foreground">3.</span> After purchase, the goods continue into the standard shipment and delivery journey.</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="border-border/60 bg-card shadow-[0_14px_34px_rgba(15,23,42,0.04)]">
-              <CardContent className="p-6 sm:p-8">
-                <div className="mb-6">
-                  <h2 className="text-foreground">Submit a buy request</h2>
-                  <p className="mt-2 text-muted-foreground">If you are not logged in, you will be redirected to sign in before the request is submitted.</p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="productName">Product name</Label>
-                    <Input id="productName" value={form.productName} onChange={(e) => updateField("productName", e.target.value)} placeholder="e.g. Nike Air Force 1" required />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="productLink">Product link (Amazon / Alibaba / etc)</Label>
-                    <Input id="productLink" type="url" value={form.productLink} onChange={(e) => updateField("productLink", e.target.value)} placeholder="https://..." />
-                  </div>
-
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="quantity">Quantity</Label>
-                      <Input id="quantity" type="number" min="1" value={form.quantity} onChange={(e) => updateField("quantity", e.target.value)} required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="estimatedPrice">Estimated price (per unit, USD)</Label>
-                      <Input id="estimatedPrice" type="number" min="0" step="0.01" value={form.estimatedPrice} onChange={(e) => updateField("estimatedPrice", e.target.value)} required />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="specialInstructions">Special instructions</Label>
-                    <Textarea id="specialInstructions" value={form.specialInstructions} onChange={(e) => updateField("specialInstructions", e.target.value)} placeholder="Color, size, preferred seller, quality expectations, consolidation notes, etc." rows={5} />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="attachment">File upload</Label>
-                    <label htmlFor="attachment" className="flex cursor-pointer items-center justify-between rounded-2xl border border-dashed border-border/70 bg-background px-4 py-4 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground">
-                      <span>{attachment ? attachment.name : "Upload a screenshot, reference image, or PDF under 5MB"}</span>
-                      <Upload className="h-4 w-4 text-primary" />
-                    </label>
-                    <Input id="attachment" type="file" accept="image/*,.pdf" className="hidden" onChange={handleAttachmentChange} />
-                  </div>
-
-                  <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>Estimated order value</span>
-                      <span className="font-medium text-foreground">{formatUsd(estimatedOrderValue)}</span>
-                    </div>
-                    <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
-                      <span>Estimated procurement fee</span>
-                      <span className="font-medium text-foreground">{formatUsd(processingFee)}</span>
-                    </div>
-                    <div className="mt-3 flex items-center justify-between border-t border-primary/10 pt-3 text-base font-semibold text-foreground">
-                      <span>Estimated total</span>
-                      <span>{formatUsd(estimatedTotal)}</span>
-                    </div>
-                  </div>
-
-                  <Button type="submit" variant="default" size="lg" className="w-full" disabled={submitting || loadingFees}>
-                    {submitting ? "Submitting request..." : loadingFees ? "Loading fee configuration..." : "Submit Procurement Request"}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+        {/* FINAL CTA banner */}
+        <section className="bg-gradient-to-r from-accent to-orange-600 py-16">
+          <div className="section-container text-center">
+            <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">Ready To Start Shopping Tax-Free?</h2>
+            <p className="mx-auto mb-7 max-w-2xl text-white/90">Create your account, then submit your procurement details inside the dashboard.</p>
+            <Button onClick={goToProcurement} size="lg" className="rounded-full bg-white px-8 text-base font-semibold text-accent shadow-xl hover:bg-white/95">
+              Sign Up Now <ArrowRight className="ml-1 h-4 w-4" />
+            </Button>
           </div>
         </section>
       </main>
@@ -609,19 +369,20 @@ const Procurement = () => {
             </div>
 
             <p className="mt-10 max-w-4xl text-sm leading-relaxed text-white/70">
-              <span className="font-semibold text-white">Disclaimer:</span> RAC Logistics acts solely as a procurement and shipping coordination service. While we take all reasonable steps to verify suppliers, inspect items, and ensure proper handling, we do not manufacture or own the products being procured. Delivery timelines are estimates and may be affected by factors beyond our control, including customs, port operations, or regulatory processes. For container shipping, clients are responsible for ensuring all items loaded inside vehicles comply with shipping and customs regulations.
+              RAC Logistics acts as your trusted procurement and shipping partner. We do not own the products we purchase on your behalf — we source, verify, buy and ship them safely to your door.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-semibold">
-              <Link to="/privacy" className="text-white/85 hover:text-accent">Privacy Policy</Link>
-              <Link to="/contact" className="text-white/85 hover:text-accent">Contact</Link>
-              <Link to="/terms" className="text-white/85 hover:text-accent">Terms &amp; Conditions</Link>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-5 text-sm">
+              <Link to="/privacy" className="text-white/70 hover:text-white">Privacy</Link>
+              <Link to="/contact" className="text-white/70 hover:text-white">Contact</Link>
+              <Link to="/terms" className="text-white/70 hover:text-white">Terms</Link>
             </div>
 
-            <p className="mt-8 text-xs text-white/50">Copyright {new Date().getFullYear()} © RAC Logistics. All Rights Reserved.</p>
+            <p className="mt-8 text-xs text-white/50">© {new Date().getFullYear()} RAC Logistics. All rights reserved.</p>
           </div>
         </div>
       </footer>
+
       <LiveChat />
     </div>
   );
