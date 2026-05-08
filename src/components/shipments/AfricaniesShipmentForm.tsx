@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { TablesInsert } from "@/integrations/supabase/types";
-import { calculateShippingCost, PriceBreakdown, PricingError, formatPriceInCurrency } from "@/lib/pricingEngine";
+import {
+  fetchCountryPricingRule,
+  computeShipmentTotals,
+  formatPriceInCurrency,
+  DEFAULT_VOLUMETRIC_DIVISOR,
+  type CountryPricingRule,
+  type ShipmentTotals,
+} from "@/lib/pricingEngine";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,6 +28,7 @@ import {
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
 import LocationPicker from "@/components/shipments/LocationPicker";
+import PackageSelector, { type PackageOption, iconForPackage } from "@/components/shipments/PackageSelector";
 
 type Flow = "import" | "export";
 
@@ -30,15 +38,6 @@ interface Item {
   quantity: number;
   weight: string;
   value: string;
-  length?: string;
-  width?: string;
-  height?: string;
-}
-
-interface PackagingMaterial {
-  id: string;
-  name: string;
-  price: number;
 }
 
 type ShipmentInsert = TablesInsert<"shipments">;
@@ -99,10 +98,10 @@ const IMPORT_WAREHOUSES = [
 ] as const;
 
 const IMPORT_STEPS = [
-  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Items", "Summary",
+  "Method", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
