@@ -1,11 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Upload, ArrowRight, CheckCircle2, BadgeDollarSign, ClipboardList, ShieldCheck, Truck, Plane, Ship, Star, Quote } from "lucide-react";
+import { Upload, ArrowRight, CheckCircle2, BadgeDollarSign, ClipboardList, Truck, Plane, Ship, Star, Quote, Phone, Mail, MapPin } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { supabase } from "@/integrations/supabase/client";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import HeaderLogo from "@/components/layout/HeaderLogo";
 import LiveChat from "@/components/LiveChat";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -148,12 +147,6 @@ const Procurement = () => {
     { name: "Bulk Business Supplies", img: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80" },
   ];
 
-  const shippingOptions = [
-    { icon: Plane, title: "Express Shipping", duration: "3 – 5 Business Days", desc: "Fastest air-freight delivery for urgent and high-value items." },
-    { icon: Truck, title: "Air Cargo Shipping", duration: "5 – 10 Business Days", desc: "Balanced speed and cost for everyday electronics, fashion and gadgets." },
-    { icon: Ship, title: "Container Shipping", duration: "6 – 8 Weeks", desc: "Bulk and oversized procurement for businesses and full-vehicle imports." },
-  ];
-
   const testimonials = [
     { name: "Funke Adeyemi", quote: "I shipped my car and personal items from the U.S. without any hassle. I got updates every step of the way. Super professional!" },
     { name: "Emeka Nnamdi", quote: "My electronics arrived safely and on time. The container shipping option saved me real money and stress. Amazing service." },
@@ -171,7 +164,16 @@ const Procurement = () => {
 
   return (
     <div className="min-h-screen">
-      <Header />
+      {/* Minimal Africanies-style header — only on this procurement page */}
+      <header className="sticky top-0 z-50 bg-primary py-4 shadow-lg">
+        <div className="section-container flex items-center justify-center">
+          <Link to="/" aria-label="RAC Logistics home" className="flex items-center">
+            <span className="rounded-full bg-white px-5 py-2 shadow-md">
+              <HeaderLogo className="block h-8 w-auto" />
+            </span>
+          </Link>
+        </div>
+      </header>
       <main>
         {/* HERO — Navy split with image collage */}
         <section className="relative overflow-hidden bg-primary pb-16 pt-28 md:pb-24 md:pt-36">
@@ -217,6 +219,25 @@ const Procurement = () => {
             <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground md:text-lg">
               We handle payment, verification, purchase, shipping, and delivery to Nigeria — safely and fast.
             </p>
+
+            {/* Brand strip */}
+            <div className="mt-10 grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-3 md:grid-cols-6">
+              {["amazon", "Walmart", "eBay", "Alibaba", "AliExpress", "Shopify"].map((brand) => (
+                <span
+                  key={brand}
+                  className="font-serif text-2xl font-extrabold tracking-tight text-primary/80 transition-colors hover:text-primary"
+                >
+                  {brand}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-10">
+              <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
+                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
+              </Button>
+              <p className="mt-3 text-sm text-muted-foreground">Takes less than 2 minutes. No obligation.</p>
+            </div>
           </div>
         </section>
 
@@ -280,24 +301,35 @@ const Procurement = () => {
               <p className="mx-auto mt-3 max-w-2xl text-white/75">Choose the speed and cost that fits your order.</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-              {shippingOptions.map((opt) => {
-                const Icon = opt.icon;
+              {[
+                { Icon: Plane, title: "Express Shipping", duration: "3 – 5 Business Days", desc: "Fastest air-freight delivery for urgent and high-value items.", img: "https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=900&q=80" },
+                { Icon: Truck, title: "Aircargo Shipping", duration: "5 – 10 Business Days", desc: "Balanced speed and cost for everyday electronics, fashion and gadgets.", img: "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=900&q=80" },
+                { Icon: Ship, title: "Container Shipping", duration: "6 – 8 Weeks", desc: "Bulk and oversized procurement for businesses and full-vehicle imports.", img: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=900&q=80" },
+              ].map((opt) => {
+                const Icon = opt.Icon;
                 return (
-                  <div key={opt.title} className="rounded-2xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm transition-all hover:border-accent/40 hover:bg-white/[0.08]">
-                    <span className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-accent text-white shadow-lg">
-                      <Icon className="h-6 w-6" />
-                    </span>
-                    <h3 className="text-xl font-bold text-white">{opt.title}</h3>
-                    <p className="mt-1 text-sm font-semibold uppercase tracking-wider text-accent">{opt.duration}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-white/75">{opt.desc}</p>
+                  <div key={opt.title} className="group overflow-hidden rounded-3xl bg-white shadow-2xl transition-all hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(223,81,1,0.25)]">
+                    <div className="relative h-56 overflow-hidden">
+                      <img src={opt.img} alt={opt.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary/85 via-primary/30 to-transparent" />
+                      <span className="absolute left-5 top-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-white shadow-lg">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <div className="absolute bottom-4 left-5 right-5">
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">{opt.duration}</p>
+                        <h3 className="mt-1 text-xl font-bold uppercase text-white">{opt.title}</h3>
+                      </div>
+                    </div>
+                    <p className="p-6 text-sm leading-relaxed text-muted-foreground">{opt.desc}</p>
                   </div>
                 );
               })}
             </div>
-            <div className="mt-10 text-center">
+            <div className="mt-12 text-center">
               <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
-                <Link to="#procurement-form">Sign Up For Tax-Free Shopping</Link>
+                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
               </Button>
+              <p className="mt-3 text-sm text-white/70">Takes less than 2 minutes. No obligation.</p>
             </div>
           </div>
         </section>
@@ -376,6 +408,11 @@ const Procurement = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+            <div className="mt-10 text-center">
+              <Button asChild size="lg" className="rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95">
+                <Link to="#procurement-form">Sign Up For A Tax-Free Shopping</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -505,7 +542,47 @@ const Procurement = () => {
           </div>
         </section>
       </main>
-      <Footer />
+
+      {/* Africanies-style minimal procurement footer */}
+      <footer className="bg-primary text-white">
+        <div className="section-container py-14">
+          <div className="flex flex-col items-center text-center">
+            <span className="rounded-full bg-white px-5 py-2 shadow-md">
+              <HeaderLogo className="block h-8 w-auto" />
+            </span>
+
+            <div className="mt-8 grid w-full max-w-3xl grid-cols-1 gap-5 sm:grid-cols-3">
+              <div className="flex flex-col items-center gap-2">
+                <Phone className="h-5 w-5 text-accent" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/60">Nigeria</p>
+                <a href="tel:+2348185956707" className="text-base font-semibold hover:text-accent">+234 818 595 6707</a>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <Mail className="h-5 w-5 text-accent" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/60">Email</p>
+                <a href="mailto:info@raclogisticltd.com" className="text-base font-semibold hover:text-accent">info@raclogisticltd.com</a>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <MapPin className="h-5 w-5 text-accent" />
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/60">Lagos Office</p>
+                <p className="text-sm text-white/85">29b Osolo Way, Ajao Estate, Isolo, Lagos</p>
+              </div>
+            </div>
+
+            <p className="mt-10 max-w-4xl text-sm leading-relaxed text-white/70">
+              <span className="font-semibold text-white">Disclaimer:</span> RAC Logistics acts solely as a procurement and shipping coordination service. While we take all reasonable steps to verify suppliers, inspect items, and ensure proper handling, we do not manufacture or own the products being procured. Delivery timelines are estimates and may be affected by factors beyond our control, including customs, port operations, or regulatory processes. For container shipping, clients are responsible for ensuring all items loaded inside vehicles comply with shipping and customs regulations.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-semibold">
+              <Link to="/privacy" className="text-white/85 hover:text-accent">Privacy Policy</Link>
+              <Link to="/contact" className="text-white/85 hover:text-accent">Contact</Link>
+              <Link to="/terms" className="text-white/85 hover:text-accent">Terms &amp; Conditions</Link>
+            </div>
+
+            <p className="mt-8 text-xs text-white/50">Copyright {new Date().getFullYear()} © RAC Logistics. All Rights Reserved.</p>
+          </div>
+        </div>
+      </footer>
       <LiveChat />
     </div>
   );
