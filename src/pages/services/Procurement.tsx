@@ -82,32 +82,35 @@ const Procurement = () => {
   return (
     <div className="min-h-screen bg-white">
       <main>
-        {/* HERO — white background, centered shaking logo, marquee banner */}
-        <section className="relative overflow-hidden bg-white pb-12 pt-8 md:pb-20 md:pt-14">
-          <div className="section-container">
-            {/* Centered shaking logo (replaces page header) */}
-            <div className="mb-6 flex justify-center md:mb-8">
-              <span className="inline-flex animate-logo-shake items-center justify-center rounded-2xl bg-white px-6 py-3 shadow-md ring-1 ring-border/40">
-                <HeaderLogo className="block h-9 w-auto md:h-11" />
+        {/* TOP MARQUEE BANNER — full width, brand colors, moving */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-red-600 via-accent to-amber-500 py-3 shadow-lg">
+          <div className="flex w-max animate-marquee items-center gap-12 px-6 text-sm font-bold uppercase tracking-[0.2em] text-white md:text-base">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span key={i} className="flex shrink-0 items-center gap-3">
+                <span>Attention!!! Online Shoppers</span>
+                <span className="text-white/70">★</span>
+                <span>We Buy & Ship For You — Tax-Free</span>
+                <span className="text-white/70">★</span>
               </span>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            {/* Moving "Attention" banner */}
-            <div className="relative mb-10 overflow-hidden rounded-full bg-gradient-to-r from-red-600 via-accent to-amber-500 py-3 shadow-lg">
-              <div className="flex w-max animate-marquee items-center gap-12 px-6 text-sm font-bold uppercase tracking-[0.2em] text-white md:text-base">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <span key={i} className="flex shrink-0 items-center gap-3">
-                    <span>Attention!!! Online Shoppers</span>
-                    <span className="text-white/70">★</span>
-                    <span>We Buy & Ship For You — Tax-Free</span>
-                    <span className="text-white/70">★</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-12">
+        {/* HERO — two-column: left has logo + Attention pill + headline + bullets + CTA, right has floating image collage */}
+        <section className="relative overflow-hidden bg-white pb-14 pt-10 md:pb-24 md:pt-16">
+          <div className="section-container">
+            <div className="grid gap-10 md:grid-cols-2 md:items-center md:gap-14">
               <div className="text-left">
+                {/* Logo above the "Attention" label */}
+                <div className="mb-5 flex items-center gap-3">
+                  <span className="inline-flex animate-logo-shake items-center justify-center rounded-2xl bg-white px-4 py-2 shadow-md ring-1 ring-border/40">
+                    <HeaderLogo className="block h-9 w-auto md:h-10" />
+                  </span>
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-red-600 to-accent px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-md md:text-sm">
+                    Attention!!! Online Shoppers
+                  </span>
+                </div>
+
                 <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-foreground sm:text-4xl md:text-5xl lg:text-[56px]">
                   We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
                 </h1>
@@ -117,16 +120,17 @@ const Procurement = () => {
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Fully Insured Delivery</li>
                 </ul>
                 <CtaButton />
-                <p className="mt-3 text-sm text-muted-foreground">Sign up first — you'll fill the procurement details inside your dashboard.</p>
+                <p className="mt-3 text-sm text-muted-foreground">Takes less than 2 minutes. No obligation.</p>
               </div>
 
               <div className="grid grid-cols-2 grid-rows-3 gap-2.5 sm:gap-3 md:gap-4">
                 {heroImages.map((src, i) => (
                   <div
                     key={i}
-                    className={`overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-border/40 ${
+                    className={`overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-border/40 animate-soft-float ${
                       i === 0 ? "row-span-2 aspect-[3/5]" : "aspect-square"
                     }`}
+                    style={{ animationDelay: `${i * 0.35}s`, animationDuration: `${5 + (i % 3)}s` }}
                   >
                     <img src={src} alt="Procurement showcase" className="h-full w-full object-cover" loading="lazy" />
                   </div>
@@ -282,7 +286,7 @@ const Procurement = () => {
         </section>
 
         {/* TESTIMONIALS */}
-        <section className="bg-muted/30 py-20">
+        <section className="bg-white py-20">
           <div className="section-container">
             <div className="mb-12 text-center">
               <h2 className="text-3xl font-bold text-foreground md:text-4xl">Hear From Our Happy Customers</h2>
@@ -312,11 +316,22 @@ const Procurement = () => {
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* FAQ — two-column: image on the left, accordion on the right */}
         <section className="bg-white py-20">
-          <div className="section-container max-w-4xl">
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Frequently Asked Questions</h2>
+          <div className="section-container grid items-start gap-12 lg:grid-cols-2">
+            <div className="lg:sticky lg:top-24">
+              <span className="mb-3 inline-block rounded-full bg-accent/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">FAQs</span>
+              <h2 className="mb-5 text-3xl font-bold text-foreground md:text-4xl">Frequently Asked Questions</h2>
+              <p className="mb-6 text-muted-foreground">Everything you need to know before you let us shop and ship for you. Still have questions? Our team is ready to help.</p>
+              <div className="overflow-hidden rounded-3xl shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1000&q=80"
+                  alt="Procurement support"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="mt-6"><CtaButton /></div>
             </div>
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((f, i) => (
@@ -326,7 +341,6 @@ const Procurement = () => {
                 </AccordionItem>
               ))}
             </Accordion>
-            <div className="mt-10 text-center"><CtaButton /></div>
           </div>
         </section>
 

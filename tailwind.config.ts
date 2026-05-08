@@ -168,6 +168,10 @@ export default {
           "60%": { transform: "translateY(-2px) rotate(-1deg)" },
           "80%": { transform: "translateY(0) rotate(1deg)" },
         },
+        "soft-float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -187,6 +191,7 @@ export default {
         glow: "glow 2s ease-in-out infinite",
         wiggle: "wiggle 1s ease-in-out infinite",
         "logo-shake": "logo-shake 2.4s ease-in-out infinite",
+        "soft-float": "soft-float 5s ease-in-out infinite",
       },
       boxShadow: {
         "xs": "0 1px 2px 0 hsl(222 47% 11% / 0.05)",
