@@ -428,15 +428,27 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     supabase.from("profiles").select("full_name, email, phone, address, city, state, country")
       .eq("user_id", user.id).single().then(({ data }) => {
         if (!data) return;
+        const splitName = (full: string): [string, string] => {
+          const parts = full.trim().split(/\s+/);
+          return [parts[0] || "", parts.slice(1).join(" ")];
+        };
         if (isExport) {
-          if (!senderName && data.full_name) setSenderName(data.full_name);
+          if (!senderName && data.full_name) {
+            const [fn, ln] = splitName(data.full_name);
+            setSenderFirstName(fn);
+            setSenderLastName(ln);
+          }
           if (!senderEmail && data.email) setSenderEmail(data.email);
           if (!senderPhone && data.phone) setSenderPhone(data.phone);
           if (!senderAddress && data.address) setSenderAddress(data.address);
           if (!senderCity && data.city) setSenderCity(data.city);
           if (!senderState && data.state) setSenderState(data.state);
         } else {
-          if (!receiverName && data.full_name) setReceiverName(data.full_name);
+          if (!receiverName && data.full_name) {
+            const [fn, ln] = splitName(data.full_name);
+            setReceiverFirstName(fn);
+            setReceiverLastName(ln);
+          }
           if (!receiverEmail && data.email) setReceiverEmail(data.email);
           if (!receiverPhone && data.phone) setReceiverPhone(data.phone);
           if (!receiverAddress && data.address) setReceiverAddress(data.address);
