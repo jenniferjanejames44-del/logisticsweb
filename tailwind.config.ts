@@ -157,6 +157,17 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px hsl(239 84% 67% / 0.4)" },
           "50%": { boxShadow: "0 0 40px hsl(239 84% 67% / 0.7)" },
         },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
+        "logo-shake": {
+          "0%, 100%": { transform: "translateY(0) rotate(0deg)" },
+          "20%": { transform: "translateY(-3px) rotate(-2deg)" },
+          "40%": { transform: "translateY(0) rotate(2deg)" },
+          "60%": { transform: "translateY(-2px) rotate(-1deg)" },
+          "80%": { transform: "translateY(0) rotate(1deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -174,6 +185,8 @@ export default {
         shimmer: "shimmer 2s linear infinite",
         "pulse-ring": "pulse-ring 1.5s ease-out infinite",
         glow: "glow 2s ease-in-out infinite",
+        wiggle: "wiggle 1s ease-in-out infinite",
+        "logo-shake": "logo-shake 2.4s ease-in-out infinite",
       },
       boxShadow: {
         "xs": "0 1px 2px 0 hsl(222 47% 11% / 0.05)",
