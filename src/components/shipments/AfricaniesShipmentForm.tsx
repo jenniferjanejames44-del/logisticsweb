@@ -366,6 +366,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   // Package selection (one package per shipment)
   const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
+  const [packageLoading, setPackageLoading] = useState(true);
   const [selectedPackageId, setSelectedPackageId] = useState<string>("");
   const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
 
@@ -391,15 +392,26 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   useEffect(() => {
-    supabase
-      .from("packaging_materials")
-      .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
-      .eq("is_active", true)
-      .order("price")
-      .then(({ data }) => {
-        if (data) setPackageOptions(data as unknown as PackageOption[]);
-      });
-  }, []);
+    let cancelled = false;
+    setPackageLoading(true);
+    const loadPackages = async () => {
+      const { data, error } = await supabase
+        .from("packaging_materials")
+        .select("id, name, price, description, icon_key, is_custom, length_cm, width_cm, height_cm")
+        .eq("is_active", true)
+        .order("price");
+      if (cancelled) return;
+      if (error) {
+        toast({ title: "Packaging unavailable", description: "Could not load packaging options. Please try again.", variant: "destructive" });
+        setPackageOptions([]);
+      } else if (data) {
+        setPackageOptions(data as unknown as PackageOption[]);
+      }
+      setPackageLoading(false);
+    };
+    loadPackages();
+    return () => { cancelled = true; };
+  }, [toast]);
 
   useEffect(() => {
     if (!user) return;
@@ -933,6 +945,34 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   />
                 </Field>
               </div>
+            </div>
+          </div>
+        );
+
+      case "Package":
+        return (
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
+            <div className="mt-4">
+              {packageLoading ? (
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
+                </div>
+              ) : packageOptions.length > 0 ? (
+                <PackageSelector
+                  options={packageOptions}
+                  selectedId={selectedPackageId}
+                  onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
+                  customDims={customDims}
+                  onCustomDimsChange={setCustomDims}
+                  errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
+                />
+              ) : (
+                <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
+                  No active packaging materials are available. Please add or enable packaging in Admin Packaging.
+                </div>
+              )}
             </div>
           </div>
         );
