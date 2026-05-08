@@ -529,11 +529,6 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const removeItem = (id: string) =>
     setItems((arr) => arr.filter((i) => i.id !== id));
 
-  const incPackaging = (id: string) =>
-    setPackagingQty((q) => ({ ...q, [id]: (q[id] || 0) + 1 }));
-  const decPackaging = (id: string) =>
-    setPackagingQty((q) => ({ ...q, [id]: Math.max(0, (q[id] || 0) - 1) }));
-
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -569,6 +564,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
         if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
       });
+    }
+    if (stepName === "Package") {
+      if (!selectedPackage) e.package = "Please select a package.";
+      if (selectedPackage?.is_custom) {
+        if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
+        if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
+        if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
+      }
     }
     setErrors(e);
     if (Object.keys(e).length > 0) {
@@ -618,8 +621,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const itemLines = items.map((i) =>
         `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
       );
-      const packagingDesc = packagingLines.length
-        ? `Packaging: ${packagingLines.map((l) => `${l.qty}× ${l.name} ($${l.lineTotal.toFixed(2)})`).join(", ")}`
+      const packagingDesc = selectedPackage
+        ? `Package: ${selectedPackage.name} (${effectiveDims.length_cm}×${effectiveDims.width_cm}×${effectiveDims.height_cm}cm, $${Number(selectedPackage.price).toFixed(2)})`
         : null;
       const desc = [
         !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
@@ -635,12 +638,12 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         origin_city: senderCity,
         destination_country: receiverCountry,
         destination_city: receiverCity,
-        weight: totalWeight,
+        weight: totals?.chargeableWeight ?? totalWeight,
         service_type: method,
         status: "shipment_created",
         estimated_delivery: eta.toISOString().split("T")[0],
         tracking_number: "",
-        price: breakdown ? grandTotal : null,
+        price: totals && pricingRule ? totals.total : null,
         warehouse_location: isExport ? null : (warehouseId || null),
         pickup_prepaid: false,
         description: desc,
@@ -650,6 +653,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         receiver_name: receiverName,
         receiver_phone: receiverPhone,
         receiver_address: [receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", "),
+        length_cm: effectiveDims.length_cm || null,
+        width_cm: effectiveDims.width_cm || null,
+        height_cm: effectiveDims.height_cm || null,
+        package_id: selectedPackage?.id ?? null,
+        package_name: selectedPackage?.name ?? null,
+        package_price: Number(selectedPackage?.price || 0),
+        actual_weight: totals?.actualWeight ?? totalWeight,
+        volumetric_weight: totals?.volumetricWeight ?? 0,
+        chargeable_weight: totals?.chargeableWeight ?? totalWeight,
+        volumetric_divisor: DEFAULT_VOLUMETRIC_DIVISOR,
+        items_json: items as unknown as ShipmentInsert["items_json"],
       };
 
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
