@@ -182,6 +182,8 @@ const App = () => (
               <Route path="/admin/support" element={<AdminSupport />} />
               <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
               <Route path="/admin/refunds" element={<AdminRefunds />} />
+              <Route path="/admin/email" element={<AdminEmail />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
