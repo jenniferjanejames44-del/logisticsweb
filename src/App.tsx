@@ -50,6 +50,8 @@ import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
 import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import AdminPackaging from "./pages/admin/AdminPackaging";
+import AdminEmail from "./pages/admin/AdminEmail";
+import Unsubscribe from "./pages/Unsubscribe";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import Support from "./pages/dashboard/Support";
@@ -180,6 +182,8 @@ const App = () => (
               <Route path="/admin/support" element={<AdminSupport />} />
               <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
               <Route path="/admin/refunds" element={<AdminRefunds />} />
+              <Route path="/admin/email" element={<AdminEmail />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

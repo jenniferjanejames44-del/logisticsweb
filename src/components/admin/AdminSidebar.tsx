@@ -24,6 +24,7 @@ import {
   Settings,
   ChevronRight,
   Handshake,
+  Mail,
 } from "lucide-react";
 
 interface NavSection {
@@ -65,6 +66,7 @@ const navSections: NavSection[] = [
       { name: "Pricing Plans", href: "/admin/pricing", icon: Settings },
       { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
       { name: "Notifications", href: "/admin/notifications", icon: Bell },
+      { name: "Email Campaigns", href: "/admin/email", icon: Mail },
       { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     ],
   },
