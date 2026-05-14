@@ -79,7 +79,6 @@ const AdminUsers = () => {
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [addAdminOpen, setAddAdminOpen] = useState(false);
   const [newAdminEmail, setNewAdminEmail] = useState("");
-  const [newAdminPassword, setNewAdminPassword] = useState("");
   const [newAdminName, setNewAdminName] = useState("");
   const [creatingAdmin, setCreatingAdmin] = useState(false);
   const [resetPasswordOpen, setResetPasswordOpen] = useState(false);
@@ -207,20 +206,19 @@ const AdminUsers = () => {
   };
 
   const handleCreateAdmin = async () => {
-    if (!newAdminEmail || !newAdminPassword) { toast.error("Email and password are required"); return; }
-    if (newAdminPassword.length < 6) { toast.error("Password must be at least 6 characters"); return; }
+    if (!newAdminEmail) { toast.error("Email is required"); return; }
     setCreatingAdmin(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-admin`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token}` },
-        body: JSON.stringify({ email: newAdminEmail, password: newAdminPassword, fullName: newAdminName }),
+        body: JSON.stringify({ email: newAdminEmail, fullName: newAdminName }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Failed to create admin");
-      toast.success("New admin created successfully!");
-      setAddAdminOpen(false); setNewAdminEmail(""); setNewAdminPassword(""); setNewAdminName("");
+      if (!response.ok) throw new Error(result.error || "Failed to invite admin");
+      toast.success("Invitation sent! The new admin will receive an email to set their password.");
+      setAddAdminOpen(false); setNewAdminEmail(""); setNewAdminName("");
       fetchUsers();
     } catch (error: any) {
       console.error("Error creating admin:", error);
@@ -298,8 +296,8 @@ const AdminUsers = () => {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md rounded-xl border border-border/60 bg-white p-0">
                     <DialogHeader className="border-b border-border/40 px-5 py-4">
-                      <DialogTitle className="text-foreground text-base">Add New Admin</DialogTitle>
-                      <DialogDescription className="text-sm">Create a new admin account with full dashboard access.</DialogDescription>
+                      <DialogTitle className="text-foreground text-base">Invite New Admin</DialogTitle>
+                      <DialogDescription className="text-sm">Enter the new admin's email. They'll receive an invitation to set their own password.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 px-5 py-4">
                       <div className="space-y-1.5">
@@ -308,17 +306,13 @@ const AdminUsers = () => {
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="admin-email" className="text-sm">Email *</Label>
-                        <Input id="admin-email" type="email" placeholder="Enter email address" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label htmlFor="admin-password" className="text-sm">Password *</Label>
-                        <Input id="admin-password" type="password" placeholder="Min 6 characters" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminPassword} onChange={(e) => setNewAdminPassword(e.target.value)} />
+                        <Input id="admin-email" type="email" placeholder="admin@example.com" className="h-10 rounded-lg border-border/80 bg-white text-sm" value={newAdminEmail} onChange={(e) => setNewAdminEmail(e.target.value)} />
                       </div>
                     </div>
                     <DialogFooter className="border-t border-border/40 px-5 py-4">
                       <Button variant="outline" onClick={() => setAddAdminOpen(false)} className="h-10 w-full rounded-lg sm:w-auto text-sm">Cancel</Button>
                       <Button onClick={handleCreateAdmin} disabled={creatingAdmin} className="h-10 w-full rounded-lg sm:w-auto text-sm">
-                        {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Creating...</> : <><UserPlus className="w-4 h-4 mr-2" />Create Admin</>}
+                        {creatingAdmin ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Sending...</> : <><Mail className="w-4 h-4 mr-2" />Send Invitation</>}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
