@@ -58,10 +58,13 @@ Deno.serve(async (req) => {
     if (test_email) {
       const html = renderCampaignEmail({
         subject: campaign.subject,
+        preheader: campaign.preheader,
         heading: campaign.heading,
         bodyHtml: campaign.body_html,
         ctaLabel: campaign.cta_label,
         ctaUrl: campaign.cta_url,
+        secondaryCtaLabel: campaign.secondary_cta_label,
+        secondaryCtaUrl: campaign.secondary_cta_url,
         bannerUrl: campaign.banner_url,
         footerText: campaign.footer_text,
         recipientName: "there",
@@ -102,10 +105,13 @@ Deno.serve(async (req) => {
 
       const html = renderCampaignEmail({
         subject: campaign.subject,
+        preheader: campaign.preheader,
         heading: campaign.heading,
         bodyHtml: campaign.body_html,
         ctaLabel: campaign.cta_label,
         ctaUrl: wrappedCta,
+        secondaryCtaLabel: campaign.secondary_cta_label,
+        secondaryCtaUrl: campaign.secondary_cta_url,
         bannerUrl: campaign.banner_url,
         footerText: campaign.footer_text,
         recipientName: s.full_name || s.email.split("@")[0],
