@@ -13,21 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { getCountries } from "@/lib/locationData";
 
-const countries = [
-  { code: "US", name: "United States" },
-  { code: "UK", name: "United Kingdom" },
-  { code: "DE", name: "Germany" },
-  { code: "FR", name: "France" },
-  { code: "CN", name: "China" },
-  { code: "JP", name: "Japan" },
-  { code: "AU", name: "Australia" },
-  { code: "CA", name: "Canada" },
-  { code: "NG", name: "Nigeria" },
-  { code: "AE", name: "United Arab Emirates" },
-  { code: "SG", name: "Singapore" },
-  { code: "IN", name: "India" },
-];
+const allCountries = getCountries();
 
 const services = [
   { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "3–5 Business Days" },
