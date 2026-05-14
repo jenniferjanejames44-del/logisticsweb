@@ -40,6 +40,12 @@ const serviceSlugMap: Record<string, string> = {
   ocean: "ocean-sea-freight",
 };
 
+interface RoutePrice {
+  origin_country: string;
+  destination_country: string;
+  price_per_kg: number;
+}
+
 const Pricing = () => {
   const [searchParams] = useSearchParams();
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
