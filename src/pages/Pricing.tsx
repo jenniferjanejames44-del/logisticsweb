@@ -71,7 +71,7 @@ const Pricing = () => {
   const handleContinueToCheckout = () => {
     if (!selectedCountry || !weight || !selectedService || calculatedPrice === null) return;
     
-    const country = countries.find(c => c.code === selectedCountry);
+    const country = allCountries.find(c => c.isoCode === selectedCountry);
     const service = services.find(s => s.id === selectedService);
     
     // Store quote data for checkout
