@@ -72,10 +72,10 @@ const Procurement = () => {
     <Button
       onClick={goToProcurement}
       size="lg"
-      className={`rounded-full bg-gradient-to-r from-accent to-orange-600 px-8 text-base font-semibold text-white shadow-xl hover:opacity-95 ${className}`}
+      className={`w-full sm:w-auto rounded-full bg-gradient-to-r from-accent to-orange-600 px-6 sm:px-8 text-base font-semibold text-white shadow-xl hover:opacity-95 whitespace-normal text-center ${className}`}
     >
-      Sign Up For A Tax-Free Shopping
-      <ArrowRight className="ml-1 h-4 w-4" />
+      Sign Up For Shopping
+      <ArrowRight className="ml-1 h-4 w-4 shrink-0" />
     </Button>
   );
 
@@ -99,7 +99,7 @@ const Procurement = () => {
                   <span className="text-base font-semibold text-white md:text-lg">Attention!!! Online Shoppers</span>
                 </div>
                 <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-[56px]">
-                  We Buy Anything For You In The USA Tax-Free And Deliver It Safely To Nigeria
+                  We Buy Anything For You In The USA And Deliver It Safely To Nigeria
                 </h1>
                 <ul className="mb-7 space-y-1.5 text-base text-white/80 md:text-lg">
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
@@ -334,10 +334,10 @@ const Procurement = () => {
         {/* FINAL CTA banner */}
         <section className="bg-gradient-to-r from-accent to-orange-600 py-16">
           <div className="section-container text-center">
-            <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">Ready To Start Shopping Tax-Free?</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">Ready To Start Shopping?</h2>
             <p className="mx-auto mb-7 max-w-2xl text-white/90">Create your account, then submit your procurement details inside the dashboard.</p>
-            <Button onClick={goToProcurement} size="lg" className="rounded-full bg-white px-8 text-base font-semibold text-accent shadow-xl hover:bg-white/95">
-              Sign Up Now <ArrowRight className="ml-1 h-4 w-4" />
+            <Button onClick={goToProcurement} size="lg" className="w-full sm:w-auto rounded-full bg-white px-6 sm:px-8 text-base font-semibold text-accent shadow-xl hover:bg-white/95 whitespace-normal text-center">
+              Sign Up Now <ArrowRight className="ml-1 h-4 w-4 shrink-0" />
             </Button>
           </div>
         </section>
