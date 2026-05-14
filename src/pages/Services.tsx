@@ -56,10 +56,10 @@ const Services = () => {
                 Our Services
               </span>
               <h1 className="text-white mb-6 leading-tight">
-                Comprehensive Logistics Solutions
+                Global Shipping Solutions
               </h1>
               <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
-                From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
+                Air Express, Standard Shipping, and Ocean Freight — tailored delivery options to match your timeline and budget.
               </p>
               <div className="page-hero-actions">
                 <Button asChild size="lg" variant="heroPrimary">
