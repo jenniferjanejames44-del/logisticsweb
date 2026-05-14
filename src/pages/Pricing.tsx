@@ -104,7 +104,7 @@ const Pricing = () => {
       setIsCalculating(true);
       
       const timer = setTimeout(() => {
-        const country = countries.find(c => c.code === selectedCountry);
+        const country = allCountries.find(c => c.isoCode === selectedCountry);
         const service = services.find(s => s.id === selectedService);
         
         if (country && service) {
@@ -190,8 +190,8 @@ const Pricing = () => {
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                       <SelectTrigger id="country" className="h-11 rounded-lg border-border bg-white"><SelectValue placeholder="Select destination country" /></SelectTrigger>
                       <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code}>{country.name}</SelectItem>
+                        {allCountries.map((country) => (
+                          <SelectItem key={country.isoCode} value={country.isoCode}>{country.name}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
