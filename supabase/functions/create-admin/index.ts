@@ -49,34 +49,27 @@ Deno.serve(async (req) => {
     }
 
     // Get the new admin details from the request body
-    const { email, password, fullName } = await req.json()
-    
-    if (!email || !password) {
-      return new Response(JSON.stringify({ error: 'Email and password are required' }), {
+    const { email, fullName } = await req.json()
+
+    if (!email) {
+      return new Response(JSON.stringify({ error: 'Email is required' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
     }
 
-    if (password.length < 6) {
-      return new Response(JSON.stringify({ error: 'Password must be at least 6 characters' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    }
-
-    // Use service role client to create user
+    // Use service role client to invite user
     const adminClient = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Create the new user
-    const { data: newUser, error: createError } = await adminClient.auth.admin.createUser({
+    // Invite the new user by email — they'll set their own password via the link
+    const redirectTo = 'https://www.raclogisticltd.com/reset-password'
+    const { data: newUser, error: createError } = await adminClient.auth.admin.inviteUserByEmail(
       email,
-      password,
-      email_confirm: true, // Auto-confirm the email
-      user_metadata: {
-        full_name: fullName || '',
+      {
+        data: { full_name: fullName || '' },
+        redirectTo,
       },
-    })
+    )
 
     if (createError) {
       console.error('Error creating user:', createError)
