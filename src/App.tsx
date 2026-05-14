@@ -50,6 +50,8 @@ import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
 import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import AdminPackaging from "./pages/admin/AdminPackaging";
+import AdminEmail from "./pages/admin/AdminEmail";
+import Unsubscribe from "./pages/Unsubscribe";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
 import Support from "./pages/dashboard/Support";
