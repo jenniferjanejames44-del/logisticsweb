@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { Mail, Send, Users, FileText, BarChart3, Calendar, Loader2 } from "lucide-react";
 import EmailPreview from "@/components/admin/email/EmailPreview";
+import ImageUpload from "@/components/admin/email/ImageUpload";
 import { listCampaigns, listTemplates, listSubscribers, sendCampaign, audienceCount, type EmailCampaign, type EmailTemplate, type EmailSubscriber, type AudienceFilter } from "@/lib/emailCampaigns";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -192,10 +193,13 @@ export default function AdminEmail() {
 function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; onSaved: () => void }) {
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
+  const [preheader, setPreheader] = useState("");
   const [heading, setHeading] = useState("");
   const [body, setBody] = useState("<p>Hi {{name}},</p><p>Write your message here.</p>");
   const [ctaLabel, setCtaLabel] = useState("Visit RAC Logistics");
   const [ctaUrl, setCtaUrl] = useState("https://raclogisticltd.com");
+  const [secCtaLabel, setSecCtaLabel] = useState("");
+  const [secCtaUrl, setSecCtaUrl] = useState("");
   const [banner, setBanner] = useState("");
   const [footer, setFooter] = useState("RAC Logistics — moving the world for you.");
   const [scope, setScope] = useState<AudienceFilter["scope"]>("all");
@@ -203,6 +207,7 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
   const [testEmail, setTestEmail] = useState("");
   const [count, setCount] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => { audienceCount({ scope }).then(setCount).catch(() => setCount(null)); }, [scope]);
 
@@ -218,7 +223,9 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
     setBusy(true);
     try {
       const payload: any = {
-        name, subject, heading, body_html: body, cta_label: ctaLabel, cta_url: ctaUrl,
+        name, subject, preheader, heading, body_html: body,
+        cta_label: ctaLabel, cta_url: ctaUrl,
+        secondary_cta_label: secCtaLabel || null, secondary_cta_url: secCtaUrl || null,
         banner_url: banner || null, footer_text: footer,
         audience_filter: { scope },
         status: status === "send_now" ? "draft" : status,
@@ -244,8 +251,10 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
     setBusy(true);
     try {
       const { data, error } = await supabase.from("email_campaigns" as any).insert({
-        name: name || "Test campaign", subject, heading, body_html: body,
-        cta_label: ctaLabel, cta_url: ctaUrl, banner_url: banner || null, footer_text: footer,
+        name: name || "Test campaign", subject, preheader, heading, body_html: body,
+        cta_label: ctaLabel, cta_url: ctaUrl,
+        secondary_cta_label: secCtaLabel || null, secondary_cta_url: secCtaUrl || null,
+        banner_url: banner || null, footer_text: footer,
         audience_filter: { scope }, status: "draft",
       }).select().single();
       if (error) throw error;
@@ -257,26 +266,71 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
 
   return (
     <div className="grid lg:grid-cols-2 gap-6">
-      <Card className="p-5 space-y-4">
-        <div>
-          <Label>Start from template</Label>
+      <Card className="p-6 space-y-6">
+        {/* SECTION: Template */}
+        <section className="space-y-2">
+          <SectionTitle>1. Start from a template</SectionTitle>
           <Select onValueChange={applyTemplate}>
-            <SelectTrigger><SelectValue placeholder="Choose a template…"/></SelectTrigger>
+            <SelectTrigger><SelectValue placeholder="Choose a template (optional)…"/></SelectTrigger>
             <SelectContent>{templates.map(t => <SelectItem key={t.id} value={t.slug}>{t.name}</SelectItem>)}</SelectContent>
           </Select>
-        </div>
-        <div><Label>Campaign name</Label><Input value={name} onChange={e => setName(e.target.value)} placeholder="December Promo"/></div>
-        <div><Label>Subject line</Label><Input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Special holiday rates inside"/></div>
-        <div><Label>Heading</Label><Input value={heading} onChange={e => setHeading(e.target.value)} placeholder="Save big this season"/></div>
-        <div><Label>Body (HTML supported, use &#123;&#123;name&#125;&#125; for personalization)</Label><Textarea rows={6} value={body} onChange={e => setBody(e.target.value)}/></div>
-        <div className="grid grid-cols-2 gap-3">
-          <div><Label>CTA label</Label><Input value={ctaLabel} onChange={e => setCtaLabel(e.target.value)}/></div>
-          <div><Label>CTA link</Label><Input value={ctaUrl} onChange={e => setCtaUrl(e.target.value)}/></div>
-        </div>
-        <div><Label>Banner image URL (optional)</Label><Input value={banner} onChange={e => setBanner(e.target.value)} placeholder="https://…"/></div>
-        <div><Label>Footer note</Label><Input value={footer} onChange={e => setFooter(e.target.value)}/></div>
+        </section>
 
-        <div className="border-t border-border/50 pt-4 space-y-3">
+        {/* SECTION: Setup */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>2. Campaign setup</SectionTitle>
+          <div><Label>Campaign name</Label><Input value={name} onChange={e => setName(e.target.value)} placeholder="December Promo"/></div>
+          <div><Label>Subject line</Label><Input value={subject} onChange={e => setSubject(e.target.value)} placeholder="Special holiday rates inside"/></div>
+          <div>
+            <Label>Preheader text <span className="text-xs text-muted-foreground font-normal">(preview snippet in inbox)</span></Label>
+            <Input value={preheader} onChange={e => setPreheader(e.target.value)} placeholder="A short hook your subscribers see before opening"/>
+          </div>
+        </section>
+
+        {/* SECTION: Hero image */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>3. Hero banner</SectionTitle>
+          <ImageUpload value={banner} onChange={setBanner} label="" hint="Recommended 1200×400px. Used at the top of your email." />
+        </section>
+
+        {/* SECTION: Content */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>4. Content</SectionTitle>
+          <div><Label>Headline</Label><Input value={heading} onChange={e => setHeading(e.target.value)} placeholder="Save big this season"/></div>
+          <div>
+            <div className="flex items-center justify-between">
+              <Label>Body</Label>
+              <span className="text-[11px] text-muted-foreground">HTML supported · use {"{{name}}"} to personalize</span>
+            </div>
+            <Textarea ref={bodyRef} rows={8} value={body} onChange={e => setBody(e.target.value)} className="font-mono text-[13px]"/>
+            <InsertImageButton onInsert={(url) => {
+              const tag = `\n<img src="${url}" alt="" style="max-width:100%;height:auto;border-radius:8px;margin:12px 0;"/>\n`;
+              const el = bodyRef.current;
+              if (el) {
+                const start = el.selectionStart || body.length;
+                setBody(body.slice(0, start) + tag + body.slice(start));
+              } else { setBody(body + tag); }
+            }}/>
+          </div>
+        </section>
+
+        {/* SECTION: CTAs */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>5. Call to action</SectionTitle>
+          <div className="grid grid-cols-2 gap-3">
+            <div><Label>Primary button</Label><Input value={ctaLabel} onChange={e => setCtaLabel(e.target.value)} placeholder="Get a quote"/></div>
+            <div><Label>Primary link</Label><Input value={ctaUrl} onChange={e => setCtaUrl(e.target.value)} placeholder="https://…"/></div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><Label>Secondary button <span className="text-xs text-muted-foreground font-normal">(optional)</span></Label><Input value={secCtaLabel} onChange={e => setSecCtaLabel(e.target.value)} placeholder="Learn more"/></div>
+            <div><Label>Secondary link</Label><Input value={secCtaUrl} onChange={e => setSecCtaUrl(e.target.value)} placeholder="https://…"/></div>
+          </div>
+          <div><Label>Footer note</Label><Input value={footer} onChange={e => setFooter(e.target.value)}/></div>
+        </section>
+
+        {/* SECTION: Audience */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>6. Audience</SectionTitle>
           <Label className="text-sm font-semibold">Audience</Label>
           <Select value={scope} onValueChange={(v: any) => setScope(v)}>
             <SelectTrigger><SelectValue/></SelectTrigger>
@@ -289,22 +343,25 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">{count ?? "—"} matching subscribers (opted in)</p>
-        </div>
+        </section>
 
-        <div className="border-t border-border/50 pt-4 space-y-3">
-          <Label className="text-sm font-semibold">Schedule (optional)</Label>
-          <Input type="datetime-local" value={scheduleAt} onChange={e => setScheduleAt(e.target.value)} />
-        </div>
-
-        <div className="border-t border-border/50 pt-4 space-y-2">
-          <Label className="text-sm font-semibold">Send test</Label>
-          <div className="flex gap-2">
-            <Input value={testEmail} onChange={e => setTestEmail(e.target.value)} placeholder="you@example.com" type="email"/>
-            <Button variant="outline" disabled={busy} onClick={sendTest}>Test</Button>
+        {/* SECTION: Schedule + Test */}
+        <section className="space-y-3 border-t border-border/50 pt-5">
+          <SectionTitle>7. Schedule &amp; test</SectionTitle>
+          <div>
+            <Label>Send at <span className="text-xs text-muted-foreground font-normal">(optional)</span></Label>
+            <Input type="datetime-local" value={scheduleAt} onChange={e => setScheduleAt(e.target.value)} />
           </div>
-        </div>
+          <div>
+            <Label>Send a test to your inbox</Label>
+            <div className="flex gap-2">
+              <Input value={testEmail} onChange={e => setTestEmail(e.target.value)} placeholder="you@example.com" type="email"/>
+              <Button variant="outline" disabled={busy} onClick={sendTest}>Send test</Button>
+            </div>
+          </div>
+        </section>
 
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="flex flex-wrap gap-2 pt-2 border-t border-border/50">
           <Button variant="outline" disabled={busy} onClick={() => save("draft")}>Save draft</Button>
           <Button variant="outline" disabled={busy || !scheduleAt} onClick={() => save("scheduled")}>Schedule</Button>
           <Button disabled={busy} onClick={() => save("send_now")}>{busy ? <Loader2 className="w-4 h-4 animate-spin"/> : "Send now"}</Button>
@@ -312,8 +369,31 @@ function CampaignBuilder({ templates, onSaved }: { templates: EmailTemplate[]; o
       </Card>
 
       <div className="lg:sticky lg:top-6 self-start">
-        <EmailPreview subject={subject} heading={heading} bodyHtml={body} ctaLabel={ctaLabel} ctaUrl={ctaUrl} bannerUrl={banner} footerText={footer}/>
+        <EmailPreview
+          subject={subject}
+          preheader={preheader}
+          heading={heading}
+          bodyHtml={body}
+          ctaLabel={ctaLabel}
+          ctaUrl={ctaUrl}
+          secondaryCtaLabel={secCtaLabel}
+          secondaryCtaUrl={secCtaUrl}
+          bannerUrl={banner}
+          footerText={footer}
+        />
       </div>
+    </div>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-[13px] font-semibold uppercase tracking-wider text-primary">{children}</h3>;
+}
+
+function InsertImageButton({ onInsert }: { onInsert: (url: string) => void }) {
+  return (
+    <div className="mt-2">
+      <ImageUpload value="" onChange={(url) => url && onInsert(url)} label="Insert image into body" aspect="aspect-[6/1]" hint="Uploaded image will be inserted at your cursor position." />
     </div>
   );
 }

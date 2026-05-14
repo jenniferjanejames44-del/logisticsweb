@@ -13,10 +13,13 @@ export interface EmailCampaign {
   name: string;
   template_id: string | null;
   subject: string;
+  preheader: string | null;
   heading: string | null;
   body_html: string | null;
   cta_label: string | null;
   cta_url: string | null;
+  secondary_cta_label: string | null;
+  secondary_cta_url: string | null;
   banner_url: string | null;
   footer_text: string | null;
   audience_filter: AudienceFilter;
