@@ -5,64 +5,29 @@ import LiveChat from "@/components/LiveChat";
 import { useInView } from "@/hooks/useInView";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Ship, ShoppingBag, Globe, Send, Warehouse, FileCheck, ArrowRight, PackageCheck } from "lucide-react";
+import { Plane, Ship, Package, ArrowRight } from "lucide-react";
 
 const services = [
   {
     icon: Plane,
-    title: "Air Shipping",
-    description: "Fast and reliable air freight solutions for time-sensitive cargo. Global coverage with express delivery options.",
+    title: "Air Express",
+    description: "Premium express air freight for urgent shipments. Fast, reliable delivery with full tracking coverage to major destinations worldwide.",
     link: "/services/air-shipping",
-    features: ["Express Delivery", "Global Coverage", "Real-time Tracking", "Temperature Control"]
+    features: ["3–5 Business Days", "Express Delivery", "Global Coverage", "Real-time Tracking"]
+  },
+  {
+    icon: Package,
+    title: "Standard Shipping",
+    description: "Reliable standard air freight balancing speed and cost. Ideal for regular business shipments with dependable scheduled departures.",
+    link: "/services/import",
+    features: ["14 Days Delivery", "Cost-Effective", "Scheduled Departures", "Door-to-Door"]
   },
   {
     icon: Ship,
-    title: "Ocean Shipping",
-    description: "Cost-effective sea freight for large shipments. FCL and LCL options with worldwide port coverage.",
+    title: "Ocean / Sea Freight",
+    description: "Economical sea freight for large-volume and heavy cargo. FCL and LCL options with worldwide port-to-port and door-to-door service.",
     link: "/services/ocean-shipping",
-    features: ["FCL & LCL Options", "Worldwide Ports", "Bulk Cargo", "Container Tracking"]
-  },
-  {
-    icon: Globe,
-    title: "Import",
-    description: "Ship from supported RAC warehouse countries into your destination market with a guided import workflow.",
-    link: "/services/import",
-    features: ["Warehouse Countries", "Import Workflow", "Delivery Timeline", "Shipment Booking"]
-  },
-  {
-    icon: Send,
-    title: "Export",
-    description: "Ship items internationally with supported destination guidance, packaging rules, and export steps.",
-    link: "/services/export",
-    features: ["Supported Destinations", "Packaging Guidance", "Export Rules", "Shipment Creation"]
-  },
-  {
-    icon: ShoppingBag,
-    title: "Buy For Me / Procurement",
-    description: "Submit product links publicly and let RAC purchase items on your behalf using the existing procurement system.",
-    link: "/services/procurement",
-    features: ["Public Request Form", "Admin Fee Bands", "File Upload", "Existing Procurement Queue"]
-  },
-  {
-    icon: PackageCheck,
-    title: "Global Pickup",
-    description: "We arrange package pickup from suppliers, warehouses, and businesses globally, transporting items safely to your destination.",
-    link: "/services/global-pickup",
-    features: ["Worldwide Coordination", "Secure Handling", "Fast Shipping", "Real-time Tracking"]
-  },
-  {
-    icon: Warehouse,
-    title: "Warehousing",
-    description: "Secure storage solutions with inventory management. Fulfillment and distribution services.",
-    link: "/services/warehousing",
-    features: ["Secure Storage", "Inventory Management", "Order Fulfillment", "Distribution"]
-  },
-  {
-    icon: FileCheck,
-    title: "Customs Clearance",
-    description: "Expert customs brokerage services. Fast clearance with full regulatory compliance.",
-    link: "/services/customs-clearance",
-    features: ["Fast Clearance", "Regulatory Compliance", "Duty Optimization", "Documentation"]
+    features: ["45–60 Days Transit", "FCL & LCL Options", "Bulk Cargo", "Container Tracking"]
   }
 ];
 
@@ -91,10 +56,10 @@ const Services = () => {
                 Our Services
               </span>
               <h1 className="text-white mb-6 leading-tight">
-                Comprehensive Logistics Solutions
+                Global Shipping Solutions
               </h1>
               <p className="hero-subtext mb-6 max-w-2xl mx-auto text-lg leading-relaxed md:text-xl">
-                From air freight to customs clearance, we offer end-to-end logistics services tailored to your needs. Experience seamless shipping with RAC Logistics.
+                Air Express, Standard Shipping, and Ocean Freight — tailored delivery options to match your timeline and budget.
               </p>
               <div className="page-hero-actions">
                 <Button asChild size="lg" variant="heroPrimary">
@@ -122,11 +87,11 @@ const Services = () => {
                 Explore Our <span className="text-primary">Services</span>
               </h2>
               <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-                Comprehensive logistics solutions designed for your business needs.
+                Three shipping tiers designed to match your timeline and budget.
               </p>
             </div>
             
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-7">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 max-w-5xl mx-auto">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
