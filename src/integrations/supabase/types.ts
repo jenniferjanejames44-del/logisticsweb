@@ -210,7 +210,10 @@ export type Database = {
           id: string
           name: string
           opened_count: number
+          preheader: string | null
           scheduled_at: string | null
+          secondary_cta_label: string | null
+          secondary_cta_url: string | null
           sent_at: string | null
           sent_count: number
           status: string
@@ -234,7 +237,10 @@ export type Database = {
           id?: string
           name: string
           opened_count?: number
+          preheader?: string | null
           scheduled_at?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_url?: string | null
           sent_at?: string | null
           sent_count?: number
           status?: string
@@ -258,7 +264,10 @@ export type Database = {
           id?: string
           name?: string
           opened_count?: number
+          preheader?: string | null
           scheduled_at?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_url?: string | null
           sent_at?: string | null
           sent_count?: number
           status?: string
@@ -406,6 +415,9 @@ export type Database = {
           id: string
           is_system: boolean
           name: string
+          preheader: string | null
+          secondary_cta_label: string | null
+          secondary_cta_url: string | null
           slug: string
           subject: string
           updated_at: string
@@ -424,6 +436,9 @@ export type Database = {
           id?: string
           is_system?: boolean
           name: string
+          preheader?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_url?: string | null
           slug: string
           subject: string
           updated_at?: string
@@ -442,6 +457,9 @@ export type Database = {
           id?: string
           is_system?: boolean
           name?: string
+          preheader?: string | null
+          secondary_cta_label?: string | null
+          secondary_cta_url?: string | null
           slug?: string
           subject?: string
           updated_at?: string
