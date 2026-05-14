@@ -87,11 +87,11 @@ const Services = () => {
                 Explore Our <span className="text-primary">Services</span>
               </h2>
               <p className="text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-                Comprehensive logistics solutions designed for your business needs.
+                Three shipping tiers designed to match your timeline and budget.
               </p>
             </div>
             
-            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-7">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 max-w-5xl mx-auto">
               {services.map((service, index) => (
                 <Card
                   key={service.title}
