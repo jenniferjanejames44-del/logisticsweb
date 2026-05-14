@@ -47,19 +47,19 @@ const ServicesSection = () => {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            Comprehensive Logistics Solutions
+            Global Shipping Solutions
           </h2>
           <p
             className={`mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground transition-all duration-500 delay-150 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
-            End-to-end logistics services tailored to your business needs with unmatched reliability.
+            Air Express, Standard Shipping, and Ocean Freight — choose the tier that fits your timeline and budget.
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4 xl:gap-7">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 max-w-5xl mx-auto">
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
