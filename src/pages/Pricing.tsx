@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calculator, Plane, Ship, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
 
 const countries = [
   { code: "US", name: "United States" },
