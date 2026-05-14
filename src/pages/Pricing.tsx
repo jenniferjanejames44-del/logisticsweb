@@ -30,28 +30,14 @@ const countries = [
 ];
 
 const services = [
-  { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "1-3 days delivery" },
-  { id: "air-standard", name: "Air Standard", icon: Plane, fallbackRate: 18, description: "3-5 days delivery" },
-  { id: "ocean-fcl", name: "Ocean FCL", icon: Ship, fallbackRate: 8, description: "15-30 days delivery" },
-  { id: "ocean-lcl", name: "Ocean LCL", icon: Ship, fallbackRate: 5, description: "20-35 days delivery" },
-  { id: "personal-shopping", name: "Personal Shopping", icon: ShoppingBag, fallbackRate: 15, description: "Varies by source" },
-  { id: "procurement", name: "Procurement", icon: Package, fallbackRate: 12, description: "Custom timeline" },
+  { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "3–5 Business Days" },
+  { id: "standard-shipping", name: "Standard Shipping", icon: Package, fallbackRate: 18, description: "14 Business Days" },
+  { id: "ocean-sea-freight", name: "Ocean / Sea Freight", icon: Ship, fallbackRate: 8, description: "45–60 Days" },
 ];
-
-interface RoutePrice {
-  origin_country: string;
-  destination_country: string;
-  price_per_kg: number;
-}
 
 const serviceSlugMap: Record<string, string> = {
   air: "air-express",
-  ocean: "ocean-fcl",
-  pickup: "personal-shopping",
-  warehouse: "procurement",
-  customs: "procurement",
-  shopping: "personal-shopping",
-  procurement: "procurement",
+  ocean: "ocean-sea-freight",
 };
 
 const Pricing = () => {
