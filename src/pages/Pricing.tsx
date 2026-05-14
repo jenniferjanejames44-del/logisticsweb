@@ -13,21 +13,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { getCountries } from "@/lib/locationData";
 
-const countries = [
-  { code: "US", name: "United States" },
-  { code: "UK", name: "United Kingdom" },
-  { code: "DE", name: "Germany" },
-  { code: "FR", name: "France" },
-  { code: "CN", name: "China" },
-  { code: "JP", name: "Japan" },
-  { code: "AU", name: "Australia" },
-  { code: "CA", name: "Canada" },
-  { code: "NG", name: "Nigeria" },
-  { code: "AE", name: "United Arab Emirates" },
-  { code: "SG", name: "Singapore" },
-  { code: "IN", name: "India" },
-];
+const allCountries = getCountries();
 
 const services = [
   { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "3–5 Business Days" },
@@ -83,7 +71,7 @@ const Pricing = () => {
   const handleContinueToCheckout = () => {
     if (!selectedCountry || !weight || !selectedService || calculatedPrice === null) return;
     
-    const country = countries.find(c => c.code === selectedCountry);
+    const country = allCountries.find(c => c.isoCode === selectedCountry);
     const service = services.find(s => s.id === selectedService);
     
     // Store quote data for checkout
@@ -116,7 +104,7 @@ const Pricing = () => {
       setIsCalculating(true);
       
       const timer = setTimeout(() => {
-        const country = countries.find(c => c.code === selectedCountry);
+        const country = allCountries.find(c => c.isoCode === selectedCountry);
         const service = services.find(s => s.id === selectedService);
         
         if (country && service) {
@@ -202,8 +190,8 @@ const Pricing = () => {
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                       <SelectTrigger id="country" className="h-11 rounded-lg border-border bg-white"><SelectValue placeholder="Select destination country" /></SelectTrigger>
                       <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.code} value={country.code}>{country.name}</SelectItem>
+                        {allCountries.map((country) => (
+                          <SelectItem key={country.isoCode} value={country.isoCode}>{country.name}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
