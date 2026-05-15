@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp, FileDown, Circle } from "lucide-react";
+import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp, FileDown, Circle, Mail, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -53,6 +53,8 @@ const AdminInvoices = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [paymentRef, setPaymentRef] = useState("");
   const [marking, setMarking] = useState(false);
+  const [resending, setResending] = useState<string | null>(null);
+  const [regenerating, setRegenerating] = useState<string | null>(null);
   const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const isMobile = useIsMobile();
