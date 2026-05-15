@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Menu, X, User, Shield, ChevronDown, PlaneTakeoff, Anchor, ShoppingBag, Earth, Container, FileCheck, ArrowRight, Send } from "lucide-react";
 import HeaderLogo from "@/components/layout/HeaderLogo";
+import ContactStrip from "@/components/layout/ContactStrip";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -88,9 +89,10 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-[68px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[72px] lg:h-20"
+      className="fixed top-0 left-0 right-0 z-50 h-[104px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[112px] lg:h-[120px]"
     >
-      <div className="section-container flex h-full items-center justify-between gap-3 sm:gap-6">
+      <ContactStrip variant="header" />
+      <div className="section-container flex h-[68px] items-center justify-between gap-3 sm:h-[72px] sm:gap-6 lg:h-20">
         {/* Logo */}
         <Link to="/" className="group flex shrink-0 items-center">
           <HeaderLogo className="block h-9 w-auto max-w-[160px] sm:h-10 sm:max-w-[180px] lg:h-[50px] lg:max-w-[240px]" />
