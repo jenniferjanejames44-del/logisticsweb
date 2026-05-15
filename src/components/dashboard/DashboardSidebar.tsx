@@ -9,8 +9,6 @@ import {
   User,
   Bell,
   LogOut,
-  Menu,
-  X,
   Shield,
   FileText,
   MessageSquare,
