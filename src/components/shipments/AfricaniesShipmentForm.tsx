@@ -98,10 +98,10 @@ const IMPORT_WAREHOUSES = [
 ] as const;
 
 const IMPORT_STEPS = [
-  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
+  "Shipping", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
+  "Shipping", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
@@ -568,9 +568,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
     const stepName = STEPS[s];
-    if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
-    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
-    if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
+    if (stepName === "Shipping") {
+      if (!method) e.method = "Please select a shipping method.";
+      if (!isExport && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
+      if (!deliveryType) e.deliveryType = "Please select a delivery type.";
+    }
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
@@ -592,20 +594,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (stepName === "Items") {
-      if (items.length === 0) e.items = "Add at least one item.";
-      items.forEach((it, idx) => {
-        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
-        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
-        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
-      });
-    }
-    if (stepName === "Package") {
       if (!selectedPackage) e.package = "Please select a package.";
       if (selectedPackage?.is_custom) {
         if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
         if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
         if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
       }
+      if (items.length === 0) e.items = "Add at least one item.";
+      items.forEach((it, idx) => {
+        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
+        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
+        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
+      });
     }
     setErrors(e);
     if (Object.keys(e).length > 0) {
@@ -744,48 +744,47 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const renderStep = () => {
     const stepName = STEPS[step];
     switch (stepName) {
-      case "Method":
+      case "Shipping":
         return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Select Your Preferred Shipment Method</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Choose how you'd like your goods to travel.</p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {SHIPPING_METHODS.map((m) => {
-                const Icon = m.icon;
-                const active = method === m.id;
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setMethod(m.id)}
-                    className={`group rounded-xl border p-5 text-left transition-all ${
-                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
-                    }`}
-                  >
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-full ${active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"}`}>
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="mt-3 text-sm font-bold text-foreground">{m.label}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{m.desc}</div>
-                    <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-foreground">
-                      {m.days}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-            {errors.method && <p className="mt-2 text-xs text-destructive">{errors.method}</p>}
-          </div>
-        );
+          <div className="space-y-8">
+            <section>
+              <h2 className="text-lg font-bold text-foreground">Shipping Method</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Choose how you'd like your goods to travel.</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {SHIPPING_METHODS.map((m) => {
+                  const Icon = m.icon;
+                  const active = method === m.id;
+                  return (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => { setMethod(m.id); clearFieldError("method"); }}
+                      className={`group rounded-xl border p-4 text-left transition-all ${
+                        active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
+                      }`}
+                    >
+                      <div className={`flex h-9 w-9 items-center justify-center rounded-full ${active ? "bg-accent text-accent-foreground" : "bg-muted text-foreground"}`}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="mt-2.5 text-sm font-bold text-foreground">{m.label}</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">{m.desc}</div>
+                      <div className="mt-2 inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-foreground">
+                        {m.days}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              {errors.method && <p className="mt-2 text-xs text-destructive">{errors.method}</p>}
+            </section>
 
-      case "Warehouse":
-        return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Choose RAC Warehouse</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Your sender abroad will drop off or ship the goods to the RAC warehouse you select below.
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {!isExport && (
+              <section className="border-t border-border/40 pt-6">
+                <h2 className="text-lg font-bold text-foreground">RAC Warehouse</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your sender abroad will drop off or ship the goods to the RAC warehouse you select below.
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
               {IMPORT_WAREHOUSES.map((w) => {
                 const active = warehouseId === w.id;
                 return (
@@ -805,11 +804,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   </button>
                 );
               })}
-            </div>
-            {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
+                </div>
+                {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
 
-            {selectedWarehouse && (
-              <div className="mt-5 rounded-xl border border-primary/20 bg-primary/[0.04] p-4">
+                {selectedWarehouse && (
+                  <div className="mt-5 rounded-xl border border-primary/20 bg-primary/[0.04] p-4">
                 <div className="flex items-center gap-2">
                   <Warehouse className="h-4 w-4 text-primary" />
                   <h3 className="text-sm font-bold text-foreground">{selectedWarehouse.name} address</h3>
@@ -828,21 +827,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <p className="mt-3 text-[11px] text-muted-foreground">
                   Share this address with your sender so they can drop off or ship the items to RAC.
                 </p>
-              </div>
+                  </div>
+                )}
+              </section>
             )}
-          </div>
-        );
 
-      case "Delivery Type":
-        return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Delivery Type</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {isExport
-                ? "How would you like us to receive your items in Nigeria?"
-                : "How would you like us to receive your items?"}
-            </p>
-            <div className="mt-4">
+            <section className="border-t border-border/40 pt-6">
+              <h2 className="text-lg font-bold text-foreground">Delivery Type</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {isExport
+                  ? "How would you like us to receive your items in Nigeria?"
+                  : "How would you like us to receive your items?"}
+              </p>
+              <div className="mt-4">
               <Field label="Delivery type" required error={errors.deliveryType}>
                 <Select value={deliveryType} onValueChange={setDeliveryType}>
                   <SelectTrigger className="h-auto min-h-12 py-2 [&>span]:line-clamp-none [&>span]:whitespace-normal [&>span]:text-left">
@@ -880,7 +877,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   );
                 })}
               </div>
-            </div>
+              </div>
+            </section>
           </div>
         );
 
@@ -1061,40 +1059,38 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case "Package":
-        return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
-            <div className="mt-4">
-              {packageLoading ? (
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
-                </div>
-              ) : packageOptions.length > 0 ? (
-                <PackageSelector
-                  options={packageOptions}
-                  selectedId={selectedPackageId}
-                  onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
-                  customDims={customDims}
-                  onCustomDimsChange={setCustomDims}
-                  errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
-                />
-              ) : (
-                <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
-                  No active packaging materials are available. Please add or enable packaging in Admin Packaging.
-                </div>
-              )}
-            </div>
-          </div>
-        );
-
       case "Items":
         return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Item Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
-            <div className="mt-4 space-y-3">
+          <div className="space-y-8">
+            <section>
+              <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
+              <div className="mt-4">
+                {packageLoading ? (
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
+                  </div>
+                ) : packageOptions.length > 0 ? (
+                  <PackageSelector
+                    options={packageOptions}
+                    selectedId={selectedPackageId}
+                    onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
+                    customDims={customDims}
+                    onCustomDimsChange={setCustomDims}
+                    errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
+                  />
+                ) : (
+                  <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
+                    No active packaging materials are available. Please add or enable packaging in Admin Packaging.
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="border-t border-border/40 pt-6">
+              <h2 className="text-lg font-bold text-foreground">Item Details</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
+              <div className="mt-4 space-y-3">
               {items.length === 0 && !itemFormOpen ? (
                 <button
                   type="button"
@@ -1207,7 +1203,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
-            </div>
+              </div>
+            </section>
           </div>
         );
 
