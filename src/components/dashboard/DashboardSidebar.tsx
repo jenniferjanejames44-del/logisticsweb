@@ -52,6 +52,25 @@ const DashboardSidebar = () => {
   const isShipmentsRoute = location.pathname.startsWith("/dashboard/shipments");
   const [shipmentsOpen, setShipmentsOpen] = useState(isShipmentsRoute);
 
+  // Detect active shipping flow from URL so the mode buttons can swap states
+  // (Africanies-style: inactive = white, active = brand color)
+  const search = location.search;
+  const activeFlow = (() => {
+    if (!location.pathname.startsWith("/dashboard/shipments/new")) return null;
+    const params = new URLSearchParams(search);
+    const f = params.get("flow");
+    return f === "import" || f === "export" ? f : null;
+  })();
+  const importActive = activeFlow === "import";
+  const exportActive = activeFlow === "export";
+
+  const inactiveModeClass =
+    "border border-border bg-white text-foreground hover:border-foreground/30";
+  const activeImportClass =
+    "bg-primary text-primary-foreground border border-primary shadow-sm hover:bg-[hsl(var(--primary-hover))]";
+  const activeExportClass =
+    "bg-accent text-accent-foreground border border-accent shadow-sm hover:bg-[hsl(var(--accent-orange-hover))]";
+
   useEffect(() => {
     if (isShipmentsRoute) setShipmentsOpen(true);
   }, [isShipmentsRoute]);
@@ -149,7 +168,9 @@ const DashboardSidebar = () => {
             <Link
               to="/dashboard/shipments/new?flow=import"
               onClick={() => setIsMobileOpen(false)}
-              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-primary px-2 text-center text-[12px] font-semibold leading-tight text-primary-foreground shadow-sm transition-colors hover:bg-[hsl(var(--primary-hover))]"
+              className={`flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg px-2 text-center text-[12px] font-semibold leading-tight transition-colors ${
+                importActive ? activeImportClass : inactiveModeClass
+              }`}
             >
               <Package className="h-5 w-5" strokeWidth={2.3} />
               Ship to Nigeria
@@ -157,7 +178,9 @@ const DashboardSidebar = () => {
             <Link
               to="/dashboard/shipments/new?flow=export"
               onClick={() => setIsMobileOpen(false)}
-              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-accent px-2 text-center text-[12px] font-semibold leading-tight text-accent-foreground shadow-sm transition-colors hover:bg-[hsl(var(--accent-orange-hover))]"
+              className={`flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg px-2 text-center text-[12px] font-semibold leading-tight transition-colors ${
+                exportActive ? activeExportClass : inactiveModeClass
+              }`}
             >
               <Package className="h-5 w-5" strokeWidth={2.1} />
               Ship from Nigeria
