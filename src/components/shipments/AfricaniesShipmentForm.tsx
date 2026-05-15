@@ -795,15 +795,27 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     key={w.id}
                     type="button"
                     onClick={() => { setWarehouseId(w.id); clearFieldError("warehouse"); }}
-                    className={`group rounded-xl border p-4 text-left transition-all ${
-                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
+                    className={`group relative overflow-hidden rounded-xl border p-4 text-left transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40 hover:shadow-sm"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{w.flag}</span>
-                      <span className="text-sm font-bold text-foreground">{w.name}</span>
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white shadow-sm">
+                        <img
+                          src={`https://flagcdn.com/w80/${w.countryCode}.png`}
+                          alt={`${w.country} flag`}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      </span>
+                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${active ? "border-accent bg-accent text-accent-foreground" : "border-border text-transparent"}`}>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                      </span>
                     </div>
-                    <div className="mt-2 text-[11px] text-muted-foreground">{w.country}</div>
+                    <div className="mt-3">
+                      <div className="text-sm font-bold text-foreground">{w.name}</div>
+                      <div className="mt-1 text-[11px] font-medium text-muted-foreground">{w.city}, {w.country}</div>
+                    </div>
                   </button>
                 );
               })}
@@ -917,6 +929,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     <LocationPicker
                       value={senderAddress}
                       onChange={updateField("senderAddress", setSenderAddress)}
+                      onLocationSelect={(loc) => {
+                        setSenderAddress(loc.address || senderAddress);
+                        setSenderHouseNumber(loc.houseNumber || senderHouseNumber);
+                        setSenderStreetName(loc.streetName || senderStreetName);
+                        if (!isExport) setSenderCountry(loc.country || senderCountry);
+                        setSenderState(loc.state || senderState);
+                        setSenderCity(loc.city || senderCity);
+                        setSenderZip(loc.postcode || senderZip);
+                        clearFieldError("senderAddress");
+                        clearFieldError("senderCountry");
+                        clearFieldError("senderState");
+                        clearFieldError("senderCity");
+                      }}
                       country={senderCountry}
                       state={senderState}
                       city={senderCity}
@@ -1008,6 +1033,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     <LocationPicker
                       value={receiverAddress}
                       onChange={updateField("receiverAddress", setReceiverAddress)}
+                      onLocationSelect={(loc) => {
+                        setReceiverAddress(loc.address || receiverAddress);
+                        setReceiverHouseNumber(loc.houseNumber || receiverHouseNumber);
+                        setReceiverStreetName(loc.streetName || receiverStreetName);
+                        if (isExport) setReceiverCountry(loc.country || receiverCountry);
+                        setReceiverState(loc.state || receiverState);
+                        setReceiverCity(loc.city || receiverCity);
+                        setReceiverZip(loc.postcode || receiverZip);
+                        clearFieldError("receiverAddress");
+                        clearFieldError("receiverCountry");
+                        clearFieldError("receiverState");
+                        clearFieldError("receiverCity");
+                      }}
                       country={receiverCountry}
                       state={receiverState}
                       city={receiverCity}
@@ -1231,7 +1269,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 {!isExport && selectedWarehouse && (
                   <SummaryRow
                     label="RAC warehouse"
-                    value={`${selectedWarehouse.flag} ${selectedWarehouse.name}`}
+                    value={`${selectedWarehouse.name} — ${selectedWarehouse.city}, ${selectedWarehouse.country}`}
                   />
                 )}
               </div>
