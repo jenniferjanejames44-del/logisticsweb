@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 const phones = [
   { label: "0903 399 4545", href: "tel:+2349033994545" },
   { label: "0813 860 3860", href: "tel:+2348138603860" },
-  { label: "0809 666 6337", href: "tel:+2348096666337" },
+  { label: "0818 000 6321", href: "tel:+2348180006321" },
 ];
 
 const socials = [
