@@ -121,8 +121,7 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
-              <Route path="/" element={<ComingSoon />} />
-              <Route path="*" element={<ComingSoon />} />
+              <Route path="/" element={<Index />} />
               {/* Original routes preserved below — re-enable by removing the catch-all above */}
               <Route path="/__site/" element={<Index />} />
               <Route path="/about" element={<About />} />
