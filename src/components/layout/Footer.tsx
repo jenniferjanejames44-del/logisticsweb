@@ -89,7 +89,7 @@ const Footer = () => {
           </div>
 
           {/* Connect */}
-          <div className="space-y-4">
+          <div className="flex flex-col items-start gap-4">
             <h4 className="text-sm font-bold uppercase tracking-[0.22em] text-accent">Connect</h4>
 
             <div>
