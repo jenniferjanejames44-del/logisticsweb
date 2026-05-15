@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AUTH_SIGNOUT_FLAG, useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { getPendingShoppingOrder, SHOPPING_ORDER_PAYMENT_ROUTE } from "@/lib/shoppingOrders";
+import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
 interface AuthRedirectProps {
   children: React.ReactNode;
@@ -44,55 +43,9 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
       }
 
       try {
-        console.log("AuthRedirect: Fetching role for user:", user.id);
-
-        // Fetch role directly from database
-        const { data, error } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", user.id)
-          .maybeSingle();
-
-        if (error) {
-          console.error("AuthRedirect: Error fetching role:", error);
-          // Default to customer on error
-          setHasRedirected(true);
-          navigate("/dashboard", { replace: true });
-          return;
-        }
-
-        const role = data?.role || "customer";
-        console.log("AuthRedirect: Role fetched:", role);
-
+        const redirectTo = await getPostAuthRedirectPath(user.id);
         setHasRedirected(true);
-
-        if (role === "admin") {
-          console.log("AuthRedirect: Redirecting to /admin");
-          navigate("/admin", { replace: true });
-        } else {
-          const hasPendingShoppingOrder = !!getPendingShoppingOrder();
-
-          // Check for pending redirect (shipment/procurement/public workflow)
-          const postAuthRedirect = localStorage.getItem("post_auth_redirect");
-          const pendingRedirect = postAuthRedirect || localStorage.getItem("pending_shipment_redirect") || (hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : null);
-          if (pendingRedirect) {
-            if (postAuthRedirect) {
-              localStorage.removeItem("post_auth_redirect");
-            }
-            localStorage.removeItem("pending_shipment_redirect");
-            console.log("AuthRedirect: Redirecting to pending workflow:", pendingRedirect);
-            navigate(pendingRedirect, { replace: true });
-          } else {
-            // Always land on the main dashboard after login/signup.
-            // Stale `pending_shipment_data` in localStorage should NOT hijack
-            // the user to the shipments list — only explicit workflow
-            // redirects (post_auth_redirect / pending_shipment_redirect /
-            // pending shopping order) above are allowed to override this.
-            const redirectTo = hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : "/dashboard";
-            console.log("AuthRedirect: Redirecting to", redirectTo);
-            navigate(redirectTo, { replace: true });
-          }
-        }
+        navigate(redirectTo, { replace: true });
       } catch (err) {
         console.error("AuthRedirect: Unexpected error:", err);
         setHasRedirected(true);
