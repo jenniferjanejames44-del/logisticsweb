@@ -8,6 +8,7 @@ interface SearchableCountrySelectProps {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  allowCustom?: boolean;
   "aria-invalid"?: boolean;
 }
 
@@ -18,6 +19,7 @@ const SearchableCountrySelect = ({
   placeholder = "Select country",
   disabled = false,
   className = "",
+  allowCustom = false,
   "aria-invalid": ariaInvalid,
 }: SearchableCountrySelectProps) => {
   const [open, setOpen] = useState(false);
@@ -88,9 +90,20 @@ const SearchableCountrySelect = ({
           </div>
           <div className="max-h-56 overflow-y-auto py-1">
             {filtered.length === 0 ? (
-              <p className="px-3 py-4 text-center text-sm text-muted-foreground">No countries found</p>
+              allowCustom && search.trim() ? (
+                <button
+                  type="button"
+                  onClick={() => { onChange(search.trim()); setOpen(false); setSearch(""); }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-accent/50"
+                >
+                  Use "{search.trim()}"
+                </button>
+              ) : (
+                <p className="px-3 py-4 text-center text-sm text-muted-foreground">No matches</p>
+              )
             ) : (
-              filtered.map((country) => (
+              <>
+              {filtered.map((country) => (
                 <button
                   key={country}
                   type="button"
@@ -106,7 +119,17 @@ const SearchableCountrySelect = ({
                   <span>{country}</span>
                   {value === country && <Check className="h-3.5 w-3.5 text-primary" />}
                 </button>
-              ))
+              ))}
+              {allowCustom && search.trim() && !filtered.some((c) => c.toLowerCase() === search.trim().toLowerCase()) && (
+                <button
+                  type="button"
+                  onClick={() => { onChange(search.trim()); setOpen(false); setSearch(""); }}
+                  className="flex w-full items-center gap-2 border-t border-border/40 px-3 py-2 text-sm text-primary hover:bg-accent/50"
+                >
+                  Use "{search.trim()}"
+                </button>
+              )}
+              </>
             )}
           </div>
         </div>
