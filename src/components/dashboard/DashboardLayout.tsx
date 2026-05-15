@@ -55,7 +55,7 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
         <div className="border-b border-border/30 bg-muted">
           <div className="mx-auto max-w-[1180px] px-4 sm:px-5 lg:px-6">
             <div className="flex items-center justify-between gap-3 py-3 lg:py-4">
-              <div className="min-w-0 pl-14 lg:pl-0">
+              <div className="min-w-0">
                 <h1 className="text-[15px] sm:text-base lg:text-lg font-bold text-foreground truncate leading-tight">
                   {title}
                 </h1>

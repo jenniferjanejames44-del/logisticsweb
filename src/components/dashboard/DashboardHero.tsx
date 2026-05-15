@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Copy, Check, Package } from "lucide-react";
+import { Search, Copy, Check, Package, Menu } from "lucide-react";
 
 const DashboardHero = () => {
   const { user } = useAuth();
@@ -67,7 +67,15 @@ const DashboardHero = () => {
       <div className="mx-auto max-w-[1180px] px-4 py-3 sm:px-5 lg:px-6">
         {/* MOBILE / TABLET: reference-style structured stack */}
         <div className="lg:hidden">
-          <div className="grid grid-cols-[40px_1fr] items-center gap-3 pl-12">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent("dashboard-sidebar:toggle"))}
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-border/70 bg-card text-primary transition-transform duration-200 active:scale-95"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" strokeWidth={2.2} />
+            </button>
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground text-[12px] font-bold ring-1 ring-border/60">
               {initials || "U"}
             </div>
@@ -89,7 +97,7 @@ const DashboardHero = () => {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.2fr] sm:items-center sm:pl-12">
+          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1.2fr] sm:items-center">
             <Button
               asChild
               className="h-11 rounded-md bg-accent px-5 text-[13px] font-bold text-accent-foreground hover:bg-accent/90 shadow-sm"
@@ -105,7 +113,7 @@ const DashboardHero = () => {
             </div>
           </div>
 
-          <form onSubmit={handleTrackingSearch} className="mt-3 w-full sm:pl-12">
+          <form onSubmit={handleTrackingSearch} className="mt-3 w-full">
             <div className="relative rounded-full bg-muted/60">
               <Input
                 value={trackingQuery}
