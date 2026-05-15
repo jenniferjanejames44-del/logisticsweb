@@ -828,12 +828,12 @@ const ShipmentCreationForm = () => {
                         </div>
                         {shippingType === "import" ? (
                           <div className="flex items-center gap-3 rounded-xl bg-primary/[0.04] border border-primary/10 px-4 py-3">
-                            <span className="text-xl">🇳🇬</span>
-                            <div>
-                              <p className="text-sm font-semibold text-foreground">Nigeria Warehouse (Lagos)</p>
-                              <p className="text-xs text-muted-foreground">Auto-selected for import shipments</p>
+                            <img src="https://flagcdn.com/w80/ng.png" alt="Nigeria flag" className="h-8 w-12 rounded-sm object-cover ring-1 ring-border/40" loading="lazy" />
+                            <div className="flex-1">
+                              <p className="text-sm font-semibold text-foreground">Nigeria Warehouse</p>
+                              <p className="text-xs text-muted-foreground">Lagos, Nigeria · Auto-selected for import</p>
                             </div>
-                            <CheckCircle2 className="w-5 h-5 text-primary ml-auto" />
+                            <CheckCircle2 className="w-5 h-5 text-primary" />
                           </div>
                         ) : (
                           <div className="grid sm:grid-cols-3 gap-3">
@@ -844,18 +844,34 @@ const ShipmentCreationForm = () => {
                                   key={wh.id}
                                   type="button"
                                   onClick={() => setFormData({ ...formData, warehouse_location: wh.id })}
-                                  className={`flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all duration-200 ${
+                                  className={`group relative flex flex-col items-start gap-3 rounded-xl border p-4 text-left transition-all duration-200 ${
                                     isSelected
-                                      ? "border-primary bg-primary/[0.04] shadow-sm"
-                                      : "border-border/50 bg-white hover:border-primary/20"
+                                      ? "border-primary bg-primary/[0.04] shadow-[0_4px_14px_rgba(6,16,67,0.08)]"
+                                      : "border-border/60 bg-white hover:border-primary/30 hover:shadow-sm"
                                   }`}
                                 >
-                                  <span className="text-2xl">{wh.flag}</span>
-                                  <p className={`text-sm font-semibold ${isSelected ? "text-primary" : "text-foreground"}`}>{wh.name}</p>
-                                  <div className={`h-4 w-4 rounded-full border-2 flex items-center justify-center ${
-                                    isSelected ? "border-primary bg-primary" : "border-border"
-                                  }`}>
-                                    {isSelected && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                                  <div className="flex w-full items-start justify-between">
+                                    <img
+                                      src={`https://flagcdn.com/w80/${wh.code}.png`}
+                                      srcSet={`https://flagcdn.com/w160/${wh.code}.png 2x`}
+                                      alt={`${wh.country} flag`}
+                                      className="h-9 w-14 rounded-sm object-cover ring-1 ring-border/50 shadow-sm"
+                                      loading="lazy"
+                                    />
+                                    <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                                      isSelected ? "border-primary bg-primary" : "border-border group-hover:border-primary/40"
+                                    }`}>
+                                      {isSelected && <CheckCircle2 className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
+                                    </div>
+                                  </div>
+                                  <div className="space-y-0.5">
+                                    <p className={`text-[11px] uppercase tracking-wider font-semibold ${isSelected ? "text-primary/70" : "text-muted-foreground"}`}>
+                                      {wh.country}
+                                    </p>
+                                    <p className={`text-sm font-bold leading-tight ${isSelected ? "text-primary" : "text-foreground"}`}>
+                                      {wh.name}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">{wh.city}</p>
                                   </div>
                                 </button>
                               );
