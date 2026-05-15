@@ -187,7 +187,7 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${isPaid ? 'Receipt' : 'Invoice'} – ${invoice.invoice_number}</title>
+<title>Invoice – ${invoice.invoice_number}</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
@@ -372,12 +372,12 @@ ${isPaid ? `.document::after{
         <div class="brand-sub">Courier &amp; Freight Services</div>
         <div class="brand-details">
           29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
-          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogistics.com
+          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogisticltd.com
         </div>
         <div class="rc-label">RC: 1454183</div>
       </td>
       <td class="doc-cell">
-        <div class="doc-title">${isPaid ? 'Receipt' : 'Invoice'}</div>
+        <div class="doc-title">Invoice</div>
         <div class="doc-meta">
           <div><span>No.</span><span>${invoice.invoice_number}</span></div>
           <div><span>Date</span><span>${date}</span></div>
