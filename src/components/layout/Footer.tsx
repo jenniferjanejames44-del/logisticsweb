@@ -48,9 +48,9 @@ const Footer = () => {
             <Link
               to="/"
               aria-label="RAC Logistics home"
-              className="inline-flex items-center justify-center rounded-2xl bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.15)]"
+              className="inline-flex items-center justify-center rounded-xl bg-white p-2 shadow-[0_4px_14px_rgba(0,0,0,0.18)]"
             >
-              <HeaderLogo className="h-16 w-auto sm:h-[72px]" />
+              <HeaderLogo className="h-9 w-auto sm:h-10" />
             </Link>
           </div>
 
