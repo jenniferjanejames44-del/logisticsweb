@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import AuthRedirect from "@/components/AuthRedirect";
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
 import LocationPicker from "@/components/shipments/LocationPicker";
+import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
 const AuthForm = () => {
   useEffect(() => {
@@ -53,6 +54,7 @@ const AuthForm = () => {
 
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,6 +118,8 @@ const AuthForm = () => {
           throw new Error("Please verify your email before logging in. Check your inbox for the verification link.");
         }
         toast({ title: "Welcome back!", description: "You have been signed in successfully." });
+        const redirectTo = await getPostAuthRedirectPath(data.user.id);
+        navigate(redirectTo, { replace: true });
       } else {
         if (!fullName.trim()) throw new Error("Please enter your full name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
