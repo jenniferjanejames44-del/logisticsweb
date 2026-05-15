@@ -6,16 +6,13 @@ import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   LayoutDashboard,
   Package,
-  CreditCard,
   User,
   Bell,
   LogOut,
   Menu,
   X,
   Shield,
-  Wallet,
   FileText,
-  ShoppingBag,
   MessageSquare,
   ChevronRight,
   ChevronDown,
@@ -28,8 +25,6 @@ import { supabase } from "@/integrations/supabase/client";
 
 const mainNav = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-  { icon: Wallet, label: "Wallet", href: "/dashboard/wallet" },
-  { icon: ShoppingBag, label: "Shopping Orders", href: "/dashboard/shopping-orders" },
 ];
 
 const shipmentChildren = [
@@ -39,7 +34,6 @@ const shipmentChildren = [
 
 const managementNav = [
   { icon: FileText, label: "Invoices", href: "/dashboard/invoices" },
-  { icon: CreditCard, label: "Payments", href: "/dashboard/payments" },
   { icon: MessageSquare, label: "Support", href: "/dashboard/support" },
 ];
 
@@ -117,7 +111,7 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-3 top-3 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary border border-border/60 shadow-[0_2px_8px_rgba(6,16,67,0.08)] transition-transform duration-200 active:scale-95 lg:hidden"
+        className="fixed left-3 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full bg-card text-primary border border-border/70 shadow-sm transition-transform duration-200 active:scale-95 lg:hidden"
         aria-label="Toggle menu"
       >
         {isMobileOpen ? <X className="w-5 h-5" strokeWidth={2.2} /> : <Menu className="w-5 h-5" strokeWidth={2.2} />}
@@ -134,12 +128,12 @@ const DashboardSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-white border-r border-border/50 transition-transform duration-300 lg:sticky ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-[270px] flex-col bg-card border-r border-border/50 transition-transform duration-300 lg:sticky ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo */}
-        <div className="border-b border-border/30 py-5 pl-20 pr-5 lg:px-6">
+        <div className="border-b border-border/30 py-5 pl-20 pr-5 lg:px-7">
           <Link
             to="/"
             className="flex items-center"
@@ -150,8 +144,31 @@ const DashboardSidebar = () => {
           </Link>
         </div>
 
+        {/* Shipping mode */}
+        <div className="border-b border-border/40 px-5 py-5">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-wide text-foreground">Shipping Mode</p>
+          <div className="grid grid-cols-2 gap-3">
+            <Link
+              to="/dashboard/shipments/new"
+              onClick={() => setIsMobileOpen(false)}
+              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-accent px-2 text-center text-[12px] font-semibold leading-tight text-accent-foreground shadow-sm"
+            >
+              <Package className="h-5 w-5" strokeWidth={2.3} />
+              Ship to Nigeria
+            </Link>
+            <Link
+              to="/dashboard/shipments/new"
+              onClick={() => setIsMobileOpen(false)}
+              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg border border-border bg-card px-2 text-center text-[12px] font-semibold leading-tight text-foreground hover:border-accent/50 hover:text-accent"
+            >
+              <Package className="h-5 w-5" strokeWidth={2.1} />
+              Ship from Nigeria
+            </Link>
+          </div>
+        </div>
+
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <nav className="flex-1 overflow-y-auto px-4 py-4">
           {renderNavGroup("Main", mainNav)}
 
           {/* Shipments expandable group */}
