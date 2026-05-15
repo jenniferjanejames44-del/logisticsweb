@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { MapPin, Loader2, X } from "lucide-react";
-import { findCountryByName } from "@/lib/locationData";
+import { findCountryByName, findStateByName } from "@/lib/locationData";
 
 interface LocationData {
   address: string;
@@ -76,6 +76,14 @@ const parseStreetParts = (streetLine: string, fallback: string) => {
   return { houseNumber: "", streetName: cleanLine, street: cleanLine };
 };
 
+const normalizeStateName = (countryName: string, stateName: string) => {
+  if (!countryName || !stateName) return stateName;
+  const direct = findStateByName(countryName, stateName);
+  if (direct) return direct.name;
+  const cleaned = stateName.replace(/\s+State$/i, "").replace(/^Federal Capital Territory$/i, "FCT - Abuja");
+  return findStateByName(countryName, cleaned)?.name || cleaned || stateName;
+};
+
 const buildLocationData = (result: NominatimResult, fallbackQuery: string): LocationData => {
   const addr = result.address || {};
   const namedPlace = pickFirst(addr.building, addr.house_name, addr.amenity, addr.shop, addr.office, result.name);
@@ -87,13 +95,16 @@ const buildLocationData = (result: NominatimResult, fallbackQuery: string): Loca
   const streetName = pickFirst(addr.road, parsedStreet.streetName, parsedQuery.streetName, namedPlace);
   const street = [houseNumber, streetName].filter(Boolean).join(" ") || parsedStreet.street || result.display_name.split(",")[0];
 
+  const country = addr.country || "";
+  const state = pickFirst(addr.state, addr.region, addr.province, addr.state_district, addr.county);
+
   return {
     address: street,
     houseNumber,
     streetName,
     city: pickFirst(addr.city, addr.town, addr.village, addr.municipality, addr.city_district, addr.suburb, addr.neighbourhood, addr.county),
-    state: pickFirst(addr.state, addr.region, addr.province, addr.state_district, addr.county),
-    country: addr.country || "",
+    state: normalizeStateName(country, state),
+    country,
     postcode: pickFirst(addr.postcode, parsePostcode(result.display_name)),
     lat: parseFloat(result.lat),
     lng: parseFloat(result.lon),
