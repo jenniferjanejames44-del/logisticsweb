@@ -122,7 +122,19 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
     setIsSearching(true);
     try {
       const scopedQuery = [q, city, state, country].filter(Boolean).join(", ");
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&q=${encodeURIComponent(scopedQuery)}`, {
+      const selectedCountry = country ? findCountryByName(country) : null;
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        addressdetails: "1",
+        extratags: "1",
+        namedetails: "1",
+        dedupe: "1",
+        limit: "8",
+        q: scopedQuery,
+      });
+      if (selectedCountry?.isoCode) params.set("countrycodes", selectedCountry.isoCode.toLowerCase());
+
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
         headers: { "Accept-Language": "en" },
       });
       const data: NominatimResult[] = await res.json();
@@ -140,31 +152,13 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
   };
 
   const selectResult = (r: NominatimResult) => {
-    const addr = r.address;
-    const houseNumber = addr.house_number || "";
-    const streetName = addr.road || "";
-    const street = [houseNumber, streetName].filter(Boolean).join(" ") || r.display_name.split(",")[0];
-    const city = addr.city || addr.town || addr.village || addr.suburb || "";
-    const state = addr.state || addr.state_district || addr.county || "";
-    const country = addr.country || "";
-    const postcode = addr.postcode || "";
+    const selected = buildLocationData(r, query);
 
-    setQuery(street);
-    onChange(street);
+    setQuery(selected.address);
+    onChange(selected.address);
     setShowDropdown(false);
     setResults([]);
-
-    onLocationSelect?.({
-      address: street,
-      houseNumber,
-      streetName,
-      city,
-      state,
-      country,
-      postcode,
-      lat: parseFloat(r.lat),
-      lng: parseFloat(r.lon),
-    });
+    onLocationSelect?.(selected);
   };
 
   return (
