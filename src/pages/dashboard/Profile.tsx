@@ -170,6 +170,15 @@ const Profile = () => {
                 <LocationPicker
                   value={formData.address}
                   onChange={(value) => setFormData({ ...formData, address: value })}
+                  onLocationSelect={(loc) =>
+                    setFormData((f) => ({
+                      ...f,
+                      address: loc.address || f.address,
+                      city: loc.city || f.city,
+                      state: loc.state || f.state,
+                      country: loc.country || f.country,
+                    }))
+                  }
                   country={formData.country}
                   state={formData.state}
                   city={formData.city}
