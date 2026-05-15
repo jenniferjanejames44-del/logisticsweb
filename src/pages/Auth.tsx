@@ -11,10 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
-  Phone, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
+  Phone, Globe, Truck, ShieldCheck, ArrowLeft,
 } from "lucide-react";
-import LocationSelector from "@/components/shipments/LocationSelector";
-import LocationPicker from "@/components/shipments/LocationPicker";
 import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
 const AuthForm = () => {
@@ -42,12 +40,6 @@ const AuthForm = () => {
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [stateRegion, setStateRegion] = useState("");
-  const [country, setCountry] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [companyName, setCompanyName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -144,10 +136,6 @@ const AuthForm = () => {
         if (!firstName.trim()) throw new Error("Please enter your first name");
         if (!lastName.trim()) throw new Error("Please enter your last name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
-        if (!address.trim()) throw new Error("Please enter your full address");
-        if (!country.trim()) throw new Error("Please select or enter your country");
-        if (!stateRegion.trim()) throw new Error("Please select your state / region");
-        if (!city.trim()) throw new Error("Please enter your city / LGA");
         if (password.length < 8) throw new Error("Password must be at least 8 characters");
         if (password !== confirmPassword) throw new Error("Passwords do not match");
 
@@ -193,13 +181,10 @@ const AuthForm = () => {
             emailRedirectTo: buildAuthCallbackUrl("/auth"),
             data: {
               full_name: fullName,
-          phone: phone.trim(),
-          address: address.trim(),
-          city: city.trim(),
-          state: stateRegion.trim(),
-          country: country.trim(),
-          zip_code: zipCode.trim(),
-          company_name: companyName.trim(),
+              first_name: firstName.trim(),
+              last_name: lastName.trim(),
+              middle_name: middleName.trim() || undefined,
+              phone: phone.trim(),
               referral_code: referralCode.trim() || undefined,
             },
           },
