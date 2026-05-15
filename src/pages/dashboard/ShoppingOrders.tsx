@@ -58,8 +58,8 @@ const ShoppingOrders = () => {
 
   return (
     <DashboardLayout
-      title="Shopping Orders"
-      description="Track your personal shopping requests"
+      title="Shop For Me"
+      description="We can source anything for you in the US, UK, etc., and deliver to your doorstep in Nigeria."
       action={
         <Button variant="default" size="sm" onClick={() => navigate("/personal-shopping/new")} className="h-9 text-[13px]">
           <Plus className="w-3.5 h-3.5" />
