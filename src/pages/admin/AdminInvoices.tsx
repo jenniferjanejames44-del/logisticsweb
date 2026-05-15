@@ -370,6 +370,14 @@ const AdminInvoices = () => {
                         <Download className="w-3.5 h-3.5 mr-1" />View
                       </Button>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" className="h-8 flex-1 rounded-lg text-xs" onClick={() => handleResendEmail(invoice)} disabled={resending === invoice.id}>
+                        {resending === invoice.id ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Mail className="w-3 h-3 mr-1" />}Email
+                      </Button>
+                      <Button variant="outline" className="h-8 flex-1 rounded-lg text-xs" onClick={() => handleRegenerate(invoice)} disabled={regenerating === invoice.id}>
+                        {regenerating === invoice.id ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <RefreshCw className="w-3 h-3 mr-1" />}Regenerate
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -410,6 +418,12 @@ const AdminInvoices = () => {
                             )}
                             <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleDownload(invoice)}>
                               <Download className="w-3 h-3 mr-1" />View
+                            </Button>
+                            <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleResendEmail(invoice)} disabled={resending === invoice.id} title="Resend invoice email">
+                              {resending === invoice.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                            </Button>
+                            <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleRegenerate(invoice)} disabled={regenerating === invoice.id} title="Regenerate invoice">
+                              {regenerating === invoice.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
                             </Button>
                           </div>
                         </TableCell>
