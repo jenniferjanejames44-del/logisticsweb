@@ -82,8 +82,9 @@ const buildLocationData = (result: NominatimResult, fallbackQuery: string): Loca
   const directStreetName = pickFirst(addr.road, namedPlace, result.display_name.split(",")[0]);
   const directStreet = [addr.house_number, directStreetName].filter(Boolean).join(" ");
   const parsedStreet = parseStreetParts(directStreet || result.display_name, fallbackQuery);
-  const houseNumber = pickFirst(addr.house_number, parsedStreet.houseNumber);
-  const streetName = pickFirst(addr.road, parsedStreet.streetName, namedPlace);
+  const parsedQuery = parseStreetParts(fallbackQuery, "");
+  const houseNumber = pickFirst(addr.house_number, parsedStreet.houseNumber, parsedQuery.houseNumber);
+  const streetName = pickFirst(addr.road, parsedStreet.streetName, parsedQuery.streetName, namedPlace);
   const street = [houseNumber, streetName].filter(Boolean).join(" ") || parsedStreet.street || result.display_name.split(",")[0];
 
   return {
