@@ -24,7 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Plane, Ship, Check,
-  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone, CheckCircle2,
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
 import LocationPicker from "@/components/shipments/LocationPicker";
@@ -74,24 +74,27 @@ const IMPORT_WAREHOUSES = [
   {
     id: "usa_warehouse",
     name: "USA Warehouse",
-    flag: "🇺🇸",
+    countryCode: "us",
     country: "United States",
+    city: "Richmond, TX",
     lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
     phone: "+1 281 591 9189",
   },
   {
     id: "uk_warehouse",
     name: "UK Warehouse",
-    flag: "🇬🇧",
+    countryCode: "gb",
     country: "United Kingdom",
+    city: "London",
     lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
     phone: null,
   },
   {
     id: "china_warehouse",
     name: "China Warehouse",
-    flag: "🇨🇳",
+    countryCode: "cn",
     country: "China",
+    city: "Guangzhou",
     lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
     phone: null,
   },
