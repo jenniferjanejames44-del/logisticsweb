@@ -424,16 +424,25 @@ const AuthForm = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {!isLogin && (
                     <>
-                      <div className="space-y-2">
-                        <Label htmlFor="fullName" className="text-sm font-medium">Full Name *</Label>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input id="fullName" type="text" placeholder="John Doe" value={fullName}
-                            onChange={(e) => setFullName(e.target.value)} className="h-11 rounded-lg pl-10" required={!isLogin} />
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor="firstName" className="text-sm font-medium">First Name <span className="text-destructive">*</span></Label>
+                          <Input id="firstName" type="text" placeholder="John" value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)} className="h-11 rounded-lg" required={!isLogin} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="lastName" className="text-sm font-medium">Last Name <span className="text-destructive">*</span></Label>
+                          <Input id="lastName" type="text" placeholder="Doe" value={lastName}
+                            onChange={(e) => setLastName(e.target.value)} className="h-11 rounded-lg" required={!isLogin} />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="phone" className="text-sm font-medium">Phone Number *</Label>
+                        <Label htmlFor="middleName" className="text-sm font-medium">Middle Name <span className="text-muted-foreground font-normal">(Optional)</span></Label>
+                        <Input id="middleName" type="text" placeholder="(Optional)" value={middleName}
+                          onChange={(e) => setMiddleName(e.target.value)} className="h-11 rounded-lg" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone" className="text-sm font-medium">Phone Number <span className="text-destructive">*</span></Label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                           <Input id="phone" type="tel" placeholder="+234 800 000 0000" value={phone}
@@ -472,7 +481,37 @@ const AuthForm = () => {
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
+                    {!isLogin && password && (
+                      <div className="space-y-1.5 pt-1">
+                        <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                          <div className={`h-full ${pwStrength.color} ${pwStrength.width} transition-all duration-300`} />
+                        </div>
+                        <p className={`text-xs font-medium ${pwStrength.text}`}>
+                          Password strength: {pwStrength.label}
+                          {pwStrength.label === "Weak" && " — use 8+ chars with uppercase, numbers & symbols"}
+                        </p>
+                      </div>
+                    )}
                   </div>
+
+                  {!isLogin && (
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password <span className="text-destructive">*</span></Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input id="confirmPassword" type={showConfirmPassword ? "text" : "password"} placeholder="••••••••"
+                          value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}
+                          className={`h-11 rounded-lg pl-10 pr-10 ${!passwordsMatch ? "border-destructive" : ""}`} required={!isLogin} />
+                        <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      {!passwordsMatch && (
+                        <p className="text-xs text-destructive">Passwords do not match</p>
+                      )}
+                    </div>
+                  )}
 
                   {!isLogin && (
                     <>
