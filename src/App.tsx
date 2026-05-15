@@ -191,7 +191,7 @@ const App = () => (
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              {/* Catch-all handled by ComingSoon above while site is in pre-launch mode */}
               </Routes>
             </BrowserRouter>
             </TooltipProvider>
