@@ -4,13 +4,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import type { TablesInsert } from "@/integrations/supabase/types";
 import {
-  fetchCountryPricingRule,
   computeShipmentTotals,
   formatPriceInCurrency,
   DEFAULT_VOLUMETRIC_DIVISOR,
   type CountryPricingRule,
   type ShipmentTotals,
 } from "@/lib/pricingEngine";
+import { matchPricingRule, toLegacyRule, getNgnRate, type PricingRuleV2 } from "@/lib/pricingEngineV2";
 import { savePendingShipment } from "@/lib/pricing";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -418,6 +418,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
 
   const [pricingRule, setPricingRule] = useState<CountryPricingRule | null>(null);
+  const [matchedRule, setMatchedRule] = useState<PricingRuleV2 | null>(null);
+  const [ngnRate, setNgnRate] = useState<number>(0);
   const [totals, setTotals] = useState<ShipmentTotals | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
@@ -527,27 +529,45 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   );
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
+  const warehouseCountryForRule = !isExport ? selectedWarehouse?.country : null;
 
-  // Fetch country pricing rule when destination changes
+  // Match a pricing rule whenever the shipment route or method changes
   useEffect(() => {
-    if (!destinationCountry) { setPricingRule(null); return; }
+    if (isExport && !receiverCountry) { setPricingRule(null); setMatchedRule(null); return; }
+    if (!isExport && !warehouseCountryForRule) { setPricingRule(null); setMatchedRule(null); return; }
+    if (!method) { setPricingRule(null); setMatchedRule(null); return; }
     let cancelled = false;
     setCalculating(true);
     setPricingError(null);
-    fetchCountryPricingRule(destinationCountry)
-      .then((rule) => {
+    matchPricingRule({
+      shipmentType: isExport ? "export" : "import",
+      originCountry: isExport ? "Nigeria" : warehouseCountryForRule,
+      destinationCountry: isExport ? receiverCountry : "Nigeria",
+      warehouseCountry: isExport ? null : warehouseCountryForRule,
+      shippingMethod: method,
+    })
+      .then(async (rule) => {
         if (cancelled) return;
         if (!rule) {
-          setPricingError(`We don't ship to ${destinationCountry} yet. Please contact support.`);
+          setPricingError("No pricing rule found for this route. Please contact support.");
           setPricingRule(null);
+          setMatchedRule(null);
+          setNgnRate(0);
         } else {
-          setPricingRule(rule);
+          setMatchedRule(rule);
+          setPricingRule(toLegacyRule(rule));
+          if (rule.currency !== "NGN") {
+            const r = await getNgnRate(rule.currency);
+            if (!cancelled) setNgnRate(r);
+          } else {
+            setNgnRate(1);
+          }
         }
       })
       .catch(() => { if (!cancelled) setPricingError("Could not load pricing."); })
       .finally(() => { if (!cancelled) setCalculating(false); });
     return () => { cancelled = true; };
-  }, [destinationCountry]);
+  }, [isExport, receiverCountry, warehouseCountryForRule, method]);
 
   // Recompute totals whenever inputs change
   useEffect(() => {
@@ -756,6 +776,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
 
       if (error) throw error;
+
+      // Sync invoice currency/amount to the matched pricing rule so Paystack converts properly.
+      if (shipment?.id && matchedRule && totals) {
+        await (supabase as any)
+          .from("invoices")
+          .update({
+            currency: matchedRule.currency,
+            amount: totals.total,
+            subtotal: totals.total,
+            shipping_rate: totals.shippingCost,
+          })
+          .eq("shipment_id", shipment.id);
+      }
 
       if (saveSender) {
         await supabase.from("profiles").update({
