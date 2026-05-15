@@ -99,7 +99,7 @@ const Procurement = () => {
                   <span className="text-base font-semibold text-white md:text-lg">Attention!!! Online Shoppers</span>
                 </div>
                 <h1 className="mb-5 font-serif text-[28px] font-bold leading-[1.1] text-white sm:text-4xl md:text-5xl lg:text-[56px]">
-                  We Buy Anything For You In The USA And Deliver It Safely To Nigeria
+                  We Can Source Anything For You In The US, UK, Etc., And Deliver To Your Doorstep In Nigeria
                 </h1>
                 <ul className="mb-7 space-y-1.5 text-base text-white/80 md:text-lg">
                   <li className="flex items-center gap-2"><span className="text-accent">•</span> Pay in Naira</li>
