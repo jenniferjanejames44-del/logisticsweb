@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 import HeaderLogo from "./HeaderLogo";
+import ContactStrip from "./Footer".replace("./Footer", "./ContactStrip") as unknown as string;
 
 const Footer = () => {
   const companyLinks = [
