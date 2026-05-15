@@ -18,6 +18,8 @@ import {
   ArrowRight,
   Headphones,
   Calculator,
+  Calendar,
+  ArrowUpRight,
   type LucideIcon,
 } from "lucide-react";
 
@@ -120,38 +122,71 @@ const Overview = () => {
   }
 
   const statCards = [
-    { label: "Total Shipments", value: stats.total, icon: Package, color: "text-primary", bg: "bg-primary/8" },
-    { label: "In Transit", value: stats.inTransit, icon: Truck, color: "text-blue-600", bg: "bg-blue-500/8" },
-    { label: "Total Deliveries", value: stats.delivered, icon: CheckCircle, color: "text-green-600", bg: "bg-green-500/8" },
-    { label: "Total Value", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard, color: "text-accent", bg: "bg-accent/8" },
+    { label: "Total Shipments", value: stats.total, icon: Package },
+    { label: "In Transit", value: stats.inTransit, icon: Truck },
+    { label: "Total Deliveries", value: stats.delivered, icon: CheckCircle },
+    { label: "Total Value", value: formatMoney(totalSpent, selectedCurrency), icon: CreditCard },
   ];
 
   return (
     <DashboardLayout title="Dashboard" description="Welcome back! Here's an overview of your shipments.">
-      {/* Stats Grid */}
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        {statCards.map((stat) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label} className="rounded-xl border-border/60">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
-                    <p className="mt-2 text-2xl font-bold text-foreground leading-tight">{stat.value}</p>
-                  </div>
-                  <div className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl ${stat.bg}`}>
-                    <Icon className={`w-5 h-5 ${stat.color}`} strokeWidth={2} />
-                  </div>
+      <section className="mb-4 rounded-xl bg-card p-3 shadow-sm sm:p-4">
+        <div className="mb-4 flex items-center justify-between gap-3 px-1">
+          <h2 className="text-base font-bold text-foreground">Performance Summary</h2>
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-[11px] font-bold uppercase text-foreground">
+            <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+            {new Date().toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {statCards.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <div key={stat.label} className="rounded-xl bg-muted p-4 sm:p-5">
+                <div className="mb-4 flex items-start justify-between gap-3">
+                  <p className="text-[10.5px] font-bold uppercase tracking-wide text-foreground">{stat.label}</p>
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-border bg-card text-primary">
+                    <Icon className="h-4 w-4" strokeWidth={2} />
+                  </span>
                 </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                <p className="text-2xl font-bold leading-none text-foreground">{stat.value}</p>
+                <p className="mt-3 text-[11px] font-medium text-muted-foreground">vs last month <span className="text-accent">↗ 0%</span></p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="mb-4 grid gap-3 lg:grid-cols-[1.3fr_1fr]">
+        <div className="rounded-xl bg-card p-4 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-4">
+          <div className="flex items-start gap-3">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+              <ArrowUpRight className="h-5 w-5" strokeWidth={2.2} />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-foreground">Upgrade Account</h3>
+              <p className="mt-1 text-sm leading-snug text-muted-foreground">Unlock better shipping tools and priority account support.</p>
+            </div>
+          </div>
+          <Button asChild className="mt-4 h-10 w-full rounded-md bg-accent text-accent-foreground hover:bg-accent/90 sm:mt-0 sm:w-auto sm:px-7">
+            <Link to="/dashboard/partner">Upgrade Now</Link>
+          </Button>
+        </div>
+
+        <div className="rounded-xl bg-card p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-bold text-foreground">Shipment Readiness</p>
+            <span className="rounded-md bg-accent/10 px-2 py-1 text-[11px] font-bold text-accent">Active</span>
+          </div>
+          <div className="h-1.5 rounded-full bg-muted">
+            <div className="h-full w-full rounded-full bg-accent" />
+          </div>
+          <p className="mt-2 text-xs leading-snug text-muted-foreground">Your dashboard is ready for creating and tracking shipments.</p>
+        </div>
+      </section>
 
       {/* Quick Actions */}
-      <div className="mb-6 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {[
           { label: "Create Shipment", desc: "Start a new shipment", icon: Plus, href: "/dashboard/shipments/new" },
           { label: "Get Quote", desc: "Calculate shipping cost", icon: Calculator, href: "/pricing" },
@@ -160,9 +195,9 @@ const Overview = () => {
           const Icon = action.icon;
           return (
             <Link key={action.label} to={action.href}>
-              <Card className="h-full cursor-pointer rounded-xl border-border/60 hover:border-accent/40 hover:shadow-md transition-all duration-200">
+              <Card className="h-full cursor-pointer rounded-xl border-0 shadow-sm hover:shadow-md transition-all duration-200">
                 <CardContent className="flex items-center gap-3.5 p-5">
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10">
                     <Icon className="w-5 h-5 text-accent" strokeWidth={2} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -179,7 +214,7 @@ const Overview = () => {
 
       {/* Recent Shipments + Activity */}
       <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-5">
-        <Card className="lg:col-span-3 rounded-xl border-border/60">
+        <Card className="lg:col-span-3 rounded-xl border-0 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-3 px-5 sm:px-6 pt-5">
             <CardTitle className="text-base font-semibold">Recent Shipments</CardTitle>
             <Link to="/dashboard/shipments" className="text-xs font-semibold text-accent hover:underline">
@@ -208,10 +243,13 @@ const Overview = () => {
                 ))}
               </div>
             ) : (
-              <div className="py-12 text-center">
-                <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
-                <p className="text-sm text-muted-foreground mb-4">No shipments yet</p>
-                <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-white rounded-lg">
+              <div className="rounded-xl border border-border/60 py-14 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                  <Package className="w-8 h-8 text-muted-foreground/70" />
+                </div>
+                <p className="text-base font-semibold text-foreground">No Shipments Yet</p>
+                <p className="mb-5 mt-1 text-sm text-muted-foreground">Start creating shipments</p>
+                <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-accent-foreground rounded-md">
                   <Link to="/dashboard/shipments/new">Create Your First Shipment</Link>
                 </Button>
               </div>
@@ -219,7 +257,7 @@ const Overview = () => {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2 rounded-xl border-border/60">
+        <Card className="lg:col-span-2 rounded-xl border-0 shadow-sm">
           <CardHeader className="px-5 sm:px-6 pt-5 pb-3">
             <CardTitle className="text-base font-semibold">Recent Activity</CardTitle>
           </CardHeader>
@@ -250,6 +288,24 @@ const Overview = () => {
           </CardContent>
         </Card>
       </div>
+
+      <section className="mt-6 rounded-xl bg-primary p-5 text-primary-foreground shadow-sm">
+        <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-6">
+          {[
+            ["Total Shipments", stats.total],
+            ["On-Time Deliveries", "0%"],
+            ["Delayed Shipments", "0%"],
+            ["Failed Deliveries", "0%"],
+            ["Ongoing Shipments", stats.inTransit],
+            ["Total Weight Shipped", "0lbs"],
+          ].map(([label, value]) => (
+            <div key={label} className="min-w-0">
+              <p className="text-[11px] font-medium leading-tight text-primary-foreground/65">{label}</p>
+              <p className="mt-1 text-xl font-bold leading-none text-primary-foreground">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </DashboardLayout>
   );
 };

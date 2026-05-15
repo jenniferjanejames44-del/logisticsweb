@@ -35,16 +35,24 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
   if (!user) return null;
 
   return (
-    <div className="min-h-screen flex bg-[#f5f5f7] dark:bg-background">
+    <div className="min-h-screen flex bg-muted dark:bg-background">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto min-w-0">
         {/* Sticky Africanies-style header — persists across every dashboard page */}
-        <div className="sticky top-0 z-30 border-b border-border/50 bg-white">
+        <div className="sticky top-0 z-30 border-b border-border/40 bg-card">
           <DashboardHero />
         </div>
 
+        <div className="bg-primary px-4 py-2 text-primary-foreground lg:px-6">
+          <div className="mx-auto flex max-w-[1180px] items-center gap-6 overflow-hidden text-[12px] font-semibold leading-tight">
+            <span className="whitespace-nowrap">Ensure your package is clearly labeled with your RAC customer ID.</span>
+            <span className="h-1 w-1 flex-shrink-0 rounded-full bg-accent" aria-hidden />
+            <span className="whitespace-nowrap">We ship import and export packages with fast, secure updates.</span>
+          </div>
+        </div>
+
         {/* Page title bar */}
-        <div className="border-b border-border/40 bg-background">
+        <div className="border-b border-border/30 bg-muted">
           <div className="mx-auto max-w-[1180px] px-4 sm:px-5 lg:px-6">
             <div className="flex items-center justify-between gap-3 py-3 lg:py-4">
               <div className="min-w-0 pl-14 lg:pl-0">
