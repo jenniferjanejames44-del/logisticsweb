@@ -226,14 +226,13 @@ const AuthForm = () => {
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-5 py-10 sm:px-8 sm:py-14">
       <main className="w-full max-w-md">
         <div className="w-full">
-            {/* Round brand mark */}
+            {/* Brand logo */}
             <Link
               to="/"
               aria-label="RAC Logistics — Home"
-              className="relative mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-[0_8px_24px_rgba(6,16,67,0.18)] ring-1 ring-primary/10 transition-transform hover:scale-105"
+              className="mx-auto mb-6 flex items-center justify-center transition-transform hover:scale-[1.02]"
             >
-              <span className="font-display text-lg font-extrabold tracking-tight text-white">RAC</span>
-              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-accent ring-2 ring-[#f5f5f7]" aria-hidden />
+              <HeaderLogo className="h-12 w-auto sm:h-14" />
             </Link>
 
             {/* Heading */}
