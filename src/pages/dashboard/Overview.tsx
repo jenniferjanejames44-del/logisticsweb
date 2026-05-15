@@ -214,7 +214,7 @@ const Overview = () => {
 
       {/* Recent Shipments + Activity */}
       <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-5">
-        <Card className="lg:col-span-3 rounded-xl border-border/60">
+        <Card className="lg:col-span-3 rounded-xl border-0 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-3 px-5 sm:px-6 pt-5">
             <CardTitle className="text-base font-semibold">Recent Shipments</CardTitle>
             <Link to="/dashboard/shipments" className="text-xs font-semibold text-accent hover:underline">
@@ -243,10 +243,13 @@ const Overview = () => {
                 ))}
               </div>
             ) : (
-              <div className="py-12 text-center">
-                <Package className="mx-auto mb-3 w-10 h-10 text-muted-foreground/30" />
-                <p className="text-sm text-muted-foreground mb-4">No shipments yet</p>
-                <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-white rounded-lg">
+              <div className="rounded-xl border border-border/60 py-14 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                  <Package className="w-8 h-8 text-muted-foreground/70" />
+                </div>
+                <p className="text-base font-semibold text-foreground">No Shipments Yet</p>
+                <p className="mb-5 mt-1 text-sm text-muted-foreground">Start creating shipments</p>
+                <Button asChild className="h-10 px-5 bg-accent hover:bg-accent/90 text-accent-foreground rounded-md">
                   <Link to="/dashboard/shipments/new">Create Your First Shipment</Link>
                 </Button>
               </div>
@@ -254,7 +257,7 @@ const Overview = () => {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2 rounded-xl border-border/60">
+        <Card className="lg:col-span-2 rounded-xl border-0 shadow-sm">
           <CardHeader className="px-5 sm:px-6 pt-5 pb-3">
             <CardTitle className="text-base font-semibold">Recent Activity</CardTitle>
           </CardHeader>
@@ -285,6 +288,24 @@ const Overview = () => {
           </CardContent>
         </Card>
       </div>
+
+      <section className="mt-6 rounded-xl bg-primary p-5 text-primary-foreground shadow-sm">
+        <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-6">
+          {[
+            ["Total Shipments", stats.total],
+            ["On-Time Deliveries", "0%"],
+            ["Delayed Shipments", "0%"],
+            ["Failed Deliveries", "0%"],
+            ["Ongoing Shipments", stats.inTransit],
+            ["Total Weight Shipped", "0lbs"],
+          ].map(([label, value]) => (
+            <div key={label} className="min-w-0">
+              <p className="text-[11px] font-medium leading-tight text-primary-foreground/65">{label}</p>
+              <p className="mt-1 text-xl font-bold leading-none text-primary-foreground">{value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </DashboardLayout>
   );
 };
