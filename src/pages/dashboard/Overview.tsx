@@ -19,7 +19,6 @@ import {
   Headphones,
   Calculator,
   Calendar,
-  ArrowUpRight,
   type LucideIcon,
 } from "lucide-react";
 
