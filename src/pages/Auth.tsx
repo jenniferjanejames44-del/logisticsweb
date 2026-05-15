@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
-  Phone, Globe, Truck, ShieldCheck, ArrowLeft,
+  Phone,
 } from "lucide-react";
 import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
