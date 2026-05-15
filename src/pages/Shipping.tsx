@@ -645,6 +645,9 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                             if (loc.state) updateField("sender_state", loc.state);
                             if (loc.country) updateField("sender_country", loc.country);
                           }}
+                          country={formData.sender_country || formData.origin_country}
+                          state={formData.sender_state}
+                          city={formData.sender_city}
                           placeholder="Search your address"
                           className={`${inputClass} ${isSenderAddressInvalid ? invalidFieldClass : ""}`}
                         />
@@ -715,6 +718,9 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                             if (loc.country) updateField("receiver_country", loc.country);
                             if (loc.postcode) updateField("receiver_postal_code", loc.postcode);
                           }}
+                          country={formData.receiver_country || formData.destination_country}
+                          state={formData.receiver_state}
+                          city={formData.receiver_city}
                           placeholder="Search destination address"
                           className={`${inputClass} ${isReceiverAddressInvalid ? invalidFieldClass : ""}`}
                         />

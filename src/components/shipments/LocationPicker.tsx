@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { MapPin, Loader2, X } from "lucide-react";
+import { findCountryByName, findStateByName } from "@/lib/locationData";
 
 interface LocationData {
   address: string;
@@ -29,20 +30,86 @@ interface NominatimResult {
   display_name: string;
   lat: string;
   lon: string;
+  name?: string;
   address: {
+    amenity?: string;
+    building?: string;
+    shop?: string;
+    office?: string;
+    house_name?: string;
     road?: string;
     house_number?: string;
+    neighbourhood?: string;
+    quarter?: string;
     suburb?: string;
     city?: string;
     town?: string;
     village?: string;
+    municipality?: string;
+    city_district?: string;
+    district?: string;
     state?: string;
+    region?: string;
+    province?: string;
     country?: string;
     postcode?: string;
     county?: string;
     state_district?: string;
   };
 }
+
+const pickFirst = (...values: Array<string | undefined>) => values.find((value) => value?.trim())?.trim() || "";
+
+const parsePostcode = (value: string) => {
+  const parts = value.split(",").map((part) => part.trim()).reverse();
+  return parts.find((part) => /^(?:\d{5}(?:-\d{4})?|\d{6}|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})$/i.test(part)) || "";
+};
+
+const parseStreetParts = (streetLine: string, fallback: string) => {
+  const cleanLine = (streetLine || fallback).split(",")[0]?.trim() || "";
+  const numberFirst = cleanLine.match(/^(\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?)\s+(.+)$/);
+  if (numberFirst) return { houseNumber: numberFirst[1], streetName: numberFirst[2].trim(), street: cleanLine };
+
+  const numberLast = cleanLine.match(/^(.+?)\s+(\d+[A-Za-z]?(?:[-/]\d+[A-Za-z]?)?)$/);
+  if (numberLast) return { houseNumber: numberLast[2], streetName: numberLast[1].trim(), street: cleanLine };
+
+  return { houseNumber: "", streetName: cleanLine, street: cleanLine };
+};
+
+const normalizeStateName = (countryName: string, stateName: string) => {
+  if (!countryName || !stateName) return stateName;
+  const direct = findStateByName(countryName, stateName);
+  if (direct) return direct.name;
+  const cleaned = stateName.replace(/\s+State$/i, "").replace(/^Federal Capital Territory$/i, "FCT - Abuja");
+  return findStateByName(countryName, cleaned)?.name || cleaned || stateName;
+};
+
+const buildLocationData = (result: NominatimResult, fallbackQuery: string): LocationData => {
+  const addr = result.address || {};
+  const namedPlace = pickFirst(addr.building, addr.house_name, addr.amenity, addr.shop, addr.office, result.name);
+  const directStreetName = pickFirst(addr.road, namedPlace, result.display_name.split(",")[0]);
+  const directStreet = [addr.house_number, directStreetName].filter(Boolean).join(" ");
+  const parsedStreet = parseStreetParts(directStreet || result.display_name, fallbackQuery);
+  const parsedQuery = parseStreetParts(fallbackQuery, "");
+  const houseNumber = pickFirst(addr.house_number, parsedStreet.houseNumber, parsedQuery.houseNumber);
+  const streetName = pickFirst(addr.road, parsedStreet.streetName, parsedQuery.streetName, namedPlace);
+  const street = [houseNumber, streetName].filter(Boolean).join(" ") || parsedStreet.street || result.display_name.split(",")[0];
+
+  const country = addr.country || "";
+  const state = pickFirst(addr.state, addr.region, addr.province, addr.state_district, addr.county);
+
+  return {
+    address: street,
+    houseNumber,
+    streetName,
+    city: pickFirst(addr.city, addr.town, addr.village, addr.municipality, addr.city_district, addr.suburb, addr.neighbourhood, addr.county),
+    state: normalizeStateName(country, state),
+    country,
+    postcode: pickFirst(addr.postcode, parsePostcode(result.display_name)),
+    lat: parseFloat(result.lat),
+    lng: parseFloat(result.lon),
+  };
+};
 
 const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Search address...", className, country, state, city }: LocationPickerProps) => {
   const [query, setQuery] = useState(value || "");
@@ -67,7 +134,19 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
     setIsSearching(true);
     try {
       const scopedQuery = [q, city, state, country].filter(Boolean).join(", ");
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=8&q=${encodeURIComponent(scopedQuery)}`, {
+      const selectedCountry = country ? findCountryByName(country) : null;
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        addressdetails: "1",
+        extratags: "1",
+        namedetails: "1",
+        dedupe: "1",
+        limit: "8",
+        q: scopedQuery,
+      });
+      if (selectedCountry?.isoCode) params.set("countrycodes", selectedCountry.isoCode.toLowerCase());
+
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
         headers: { "Accept-Language": "en" },
       });
       const data: NominatimResult[] = await res.json();
@@ -84,32 +163,39 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
     debounceRef.current = setTimeout(() => searchAddress(val), 400);
   };
 
-  const selectResult = (r: NominatimResult) => {
-    const addr = r.address;
-    const houseNumber = addr.house_number || "";
-    const streetName = addr.road || "";
-    const street = [houseNumber, streetName].filter(Boolean).join(" ") || r.display_name.split(",")[0];
-    const city = addr.city || addr.town || addr.village || addr.suburb || "";
-    const state = addr.state || addr.state_district || addr.county || "";
-    const country = addr.country || "";
-    const postcode = addr.postcode || "";
+  const enrichResult = async (result: NominatimResult) => {
+    try {
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        addressdetails: "1",
+        extratags: "1",
+        namedetails: "1",
+        lat: result.lat,
+        lon: result.lon,
+        zoom: "18",
+      });
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?${params.toString()}`, {
+        headers: { "Accept-Language": "en" },
+      });
+      if (!res.ok) return result;
+      const data = await res.json();
+      return { ...result, ...data, address: { ...result.address, ...(data.address || {}) } } as NominatimResult;
+    } catch {
+      return result;
+    }
+  };
 
-    setQuery(street);
-    onChange(street);
+  const selectResult = async (r: NominatimResult) => {
+    setIsSearching(true);
+    const enriched = await enrichResult(r);
+    const selected = buildLocationData(enriched, query);
+
+    setQuery(selected.address);
+    onChange(selected.address);
     setShowDropdown(false);
     setResults([]);
-
-    onLocationSelect?.({
-      address: street,
-      houseNumber,
-      streetName,
-      city,
-      state,
-      country,
-      postcode,
-      lat: parseFloat(r.lat),
-      lng: parseFloat(r.lon),
-    });
+    setIsSearching(false);
+    onLocationSelect?.(selected);
   };
 
   return (
