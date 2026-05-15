@@ -11,10 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
-  Phone, Building2, Globe, Truck, ShieldCheck, ArrowLeft,
+  Phone, Globe, Truck, ShieldCheck, ArrowLeft,
 } from "lucide-react";
-import LocationSelector from "@/components/shipments/LocationSelector";
-import LocationPicker from "@/components/shipments/LocationPicker";
 import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
 const AuthForm = () => {
@@ -42,12 +40,6 @@ const AuthForm = () => {
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [stateRegion, setStateRegion] = useState("");
-  const [country, setCountry] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [companyName, setCompanyName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -144,10 +136,6 @@ const AuthForm = () => {
         if (!firstName.trim()) throw new Error("Please enter your first name");
         if (!lastName.trim()) throw new Error("Please enter your last name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
-        if (!address.trim()) throw new Error("Please enter your full address");
-        if (!country.trim()) throw new Error("Please select or enter your country");
-        if (!stateRegion.trim()) throw new Error("Please select your state / region");
-        if (!city.trim()) throw new Error("Please enter your city / LGA");
         if (password.length < 8) throw new Error("Password must be at least 8 characters");
         if (password !== confirmPassword) throw new Error("Passwords do not match");
 
@@ -193,13 +181,10 @@ const AuthForm = () => {
             emailRedirectTo: buildAuthCallbackUrl("/auth"),
             data: {
               full_name: fullName,
-          phone: phone.trim(),
-          address: address.trim(),
-          city: city.trim(),
-          state: stateRegion.trim(),
-          country: country.trim(),
-          zip_code: zipCode.trim(),
-          company_name: companyName.trim(),
+              first_name: firstName.trim(),
+              last_name: lastName.trim(),
+              middle_name: middleName.trim() || undefined,
+              phone: phone.trim(),
               referral_code: referralCode.trim() || undefined,
             },
           },
@@ -511,54 +496,6 @@ const AuthForm = () => {
                         <p className="text-xs text-destructive">Passwords do not match</p>
                       )}
                     </div>
-                  )}
-
-                  {!isLogin && (
-                    <>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-2 col-span-2">
-                          <Label className="text-sm font-medium">Country / State / City *</Label>
-                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <LocationSelector
-                              country={country}
-                              state={stateRegion}
-                              city={city}
-                              onCountryChange={setCountry}
-                              onStateChange={setStateRegion}
-                              onCityChange={setCity}
-                            />
-                          </div>
-                          <p className="text-[11px] text-muted-foreground">
-                            Pick your country, then state, then city / LGA.
-                          </p>
-                        </div>
-                        <div className="space-y-2 col-span-2">
-                          <Label htmlFor="address" className="text-sm font-medium">Street Address *</Label>
-                          <LocationPicker
-                            value={address}
-                            onChange={setAddress}
-                            country={country}
-                            state={stateRegion}
-                            city={city}
-                            placeholder="Search street, building, landmark"
-                            className="h-11 rounded-lg"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="zip" className="text-sm font-medium">Zip / Postal Code</Label>
-                          <Input id="zip" type="text" placeholder="100001" value={zipCode}
-                            onChange={(e) => setZipCode(e.target.value)} className="h-11 rounded-lg" />
-                        </div>
-                        <div className="space-y-2 col-span-2">
-                          <Label htmlFor="company" className="text-sm font-medium">Company (optional)</Label>
-                          <div className="relative">
-                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                            <Input id="company" type="text" placeholder="Acme Inc." value={companyName}
-                              onChange={(e) => setCompanyName(e.target.value)} className="h-11 rounded-lg pl-10" />
-                          </div>
-                        </div>
-                      </div>
-                    </>
                   )}
 
                   <Button type="submit" variant="navCta" size="sm" className="mt-2 font-bold whitespace-nowrap px-6" disabled={isLoading}>
