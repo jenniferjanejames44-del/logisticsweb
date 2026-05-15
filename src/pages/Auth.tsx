@@ -143,6 +143,27 @@ const AuthForm = () => {
           .filter(Boolean)
           .join(" ");
 
+        // Phone duplicate check — block reuse of an existing phone number
+        try {
+          const normalizedPhone = phone.trim().replace(/\s+/g, "");
+          const { data: phoneMatch } = await supabase
+            .from("profiles")
+            .select("user_id")
+            .eq("phone", normalizedPhone)
+            .limit(1)
+            .maybeSingle();
+          if (phoneMatch) {
+            toast({
+              title: "Phone number already in use",
+              description: "This phone number is already linked to another account. Please use a different number or sign in.",
+              variant: "destructive",
+            });
+            return;
+          }
+        } catch (phoneErr) {
+          console.warn("Phone duplicate check skipped:", phoneErr);
+        }
+
         // Pre-signup duplicate check — Supabase silently "succeeds" for existing
         // emails without sending a verification email, so we block it explicitly.
         try {
@@ -153,8 +174,8 @@ const AuthForm = () => {
           if (!checkErr && check?.exists) {
             if (check.confirmed) {
               toast({
-                title: "Email already registered",
-                description: "This email is already in use. Please sign in or reset your password.",
+                title: "This email is already registered",
+                description: "An account already exists with this email. Please sign in instead, or reset your password if you've forgotten it.",
                 variant: "destructive",
               });
               setIsLogin(true);
@@ -226,14 +247,13 @@ const AuthForm = () => {
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-5 py-10 sm:px-8 sm:py-14">
       <main className="w-full max-w-md">
         <div className="w-full">
-            {/* Round brand mark */}
+            {/* Brand logo */}
             <Link
               to="/"
               aria-label="RAC Logistics — Home"
-              className="relative mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-[0_8px_24px_rgba(6,16,67,0.18)] ring-1 ring-primary/10 transition-transform hover:scale-105"
+              className="mx-auto mb-6 flex items-center justify-center transition-transform hover:scale-[1.02]"
             >
-              <span className="font-display text-lg font-extrabold tracking-tight text-white">RAC</span>
-              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-accent ring-2 ring-[#f5f5f7]" aria-hidden />
+              <HeaderLogo className="h-12 w-auto sm:h-14" />
             </Link>
 
             {/* Heading */}
