@@ -157,22 +157,7 @@ const Overview = () => {
         </div>
       </section>
 
-      <section className="mb-4 grid gap-3 lg:grid-cols-[1.3fr_1fr]">
-        <div className="rounded-xl bg-card p-4 shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-4">
-          <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
-              <ArrowUpRight className="h-5 w-5" strokeWidth={2.2} />
-            </span>
-            <div>
-              <h3 className="text-base font-bold text-foreground">Upgrade Account</h3>
-              <p className="mt-1 text-sm leading-snug text-muted-foreground">Unlock better shipping tools and priority account support.</p>
-            </div>
-          </div>
-          <Button asChild className="mt-4 h-10 w-full rounded-md bg-accent text-accent-foreground hover:bg-accent/90 sm:mt-0 sm:w-auto sm:px-7">
-            <Link to="/dashboard/partner">Upgrade Now</Link>
-          </Button>
-        </div>
-
+      <section className="mb-4">
         <div className="rounded-xl bg-card p-4 shadow-sm">
           <div className="mb-3 flex items-center justify-between gap-3">
             <p className="text-sm font-bold text-foreground">Shipment Readiness</p>
