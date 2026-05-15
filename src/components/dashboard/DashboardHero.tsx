@@ -68,7 +68,7 @@ const DashboardHero = () => {
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
       <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-white/5 blur-2xl" aria-hidden />
 
-      <div className="relative mx-auto max-w-[1180px] px-4 py-4 sm:px-5 sm:py-5 lg:px-6">
+      <div className="relative mx-auto max-w-[1180px] pl-16 pr-4 py-4 sm:pl-5 sm:pr-5 sm:py-5 lg:px-6">
         <div className="grid grid-cols-1 items-center gap-4 lg:grid-cols-3">
           {/* LEFT — Greeting + ID */}
           <div className="flex items-center gap-3 min-w-0">
