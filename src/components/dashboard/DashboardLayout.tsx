@@ -39,7 +39,7 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
       <DashboardSidebar />
       <main className="flex-1 overflow-auto min-w-0">
         {/* Sticky Africanies-style header — persists across every dashboard page */}
-        <div className="sticky top-0 z-30 border-b border-white/10 shadow-sm">
+        <div className="sticky top-0 z-30 border-b border-border/50 bg-white">
           <DashboardHero />
         </div>
 

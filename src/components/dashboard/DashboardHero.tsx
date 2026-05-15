@@ -4,15 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Plus,
-  ArrowRight,
-  Search,
-  Globe2,
-  User as UserIcon,
-  Copy,
-  Check,
-} from "lucide-react";
+import { Plus, Search, Copy, Check } from "lucide-react";
 
 const DashboardHero = () => {
   const { user } = useAuth();
@@ -44,6 +36,13 @@ const DashboardHero = () => {
     (user?.user_metadata as { country?: string } | undefined)?.country ||
     "Nigeria";
   const userShortId = user?.id ? `RAC-${user.id.slice(0, 8).toUpperCase()}` : "";
+  const initials = fullName
+    .split(" ")
+    .map((n) => n[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   const handleTrackingSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,72 +63,119 @@ const DashboardHero = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-[#0a1a6b]">
-      <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent/20 blur-3xl" aria-hidden />
-      <div className="absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-white/5 blur-2xl" aria-hidden />
-
-      <div className="relative mx-auto max-w-[1180px] pl-16 pr-4 py-4 sm:pl-5 sm:pr-5 sm:py-5 lg:px-6">
-        <div className="grid grid-cols-1 items-center gap-4 lg:grid-cols-3">
-          {/* LEFT — Greeting + ID */}
+    <div className="bg-white">
+      <div className="mx-auto max-w-[1180px] pl-16 pr-4 py-3 sm:pl-5 sm:pr-5 sm:py-4 lg:px-6">
+        {/* MOBILE / TABLET: stacked layout */}
+        <div className="flex flex-col gap-3 lg:hidden">
+          {/* Top row: avatar + greeting */}
           <div className="flex items-center gap-3 min-w-0">
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-white/15 ring-2 ring-white/20">
-              <UserIcon className="h-5 w-5 text-white" />
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/[0.08] text-primary text-[13px] font-bold ring-1 ring-primary/10">
+              {initials || "U"}
             </div>
-            <div className="min-w-0">
-              <p className="text-sm font-bold text-white sm:text-base truncate">
+            <div className="min-w-0 flex-1">
+              <p className="text-[14px] font-semibold text-foreground leading-tight truncate">
                 Hello, {firstName} 👋
               </p>
-              <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/70">
-                <Globe2 className="h-3 w-3 flex-shrink-0" />
-                <span className="truncate">Shipping from {country} to the world</span>
-              </div>
               {userShortId && (
                 <button
                   type="button"
                   onClick={copyId}
-                  className="mt-1 inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-mono font-semibold text-white/85 hover:bg-white/15 transition-colors"
+                  className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
                   aria-label="Copy your customer ID"
                 >
-                  <span>ID: {userShortId}</span>
-                  {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                  <span>{userShortId}</span>
+                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
+                </button>
+              )}
+              <p className="text-[11px] text-muted-foreground/80 leading-tight mt-0.5 truncate">
+                Shipping from {country} to the world
+              </p>
+            </div>
+          </div>
+
+          {/* Action row: Create + Track */}
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              className="h-10 flex-shrink-0 rounded-lg bg-accent px-3.5 text-[13px] font-semibold text-white hover:bg-accent/90 shadow-none"
+            >
+              <Link to="/dashboard/shipments/new" className="flex items-center gap-1.5">
+                <Plus className="h-4 w-4" />
+                <span className="hidden xs:inline">Create</span>
+                <span className="xs:hidden">New</span>
+              </Link>
+            </Button>
+            <form onSubmit={handleTrackingSearch} className="flex-1 min-w-0">
+              <div className="relative">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" />
+                <Input
+                  value={trackingQuery}
+                  onChange={(e) => setTrackingQuery(e.target.value)}
+                  placeholder="Track shipment"
+                  className="h-10 rounded-lg bg-muted/40 pl-9 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 border border-border/60 focus-visible:ring-1 focus-visible:ring-accent focus-visible:bg-white"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* DESKTOP: 3-col layout (Africanies style) */}
+        <div className="hidden lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6">
+          {/* LEFT — Profile */}
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/[0.08] text-primary text-sm font-bold ring-1 ring-primary/10">
+              {initials || "U"}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[15px] font-semibold text-foreground leading-tight">
+                Hello, {firstName} 👋
+              </p>
+              {userShortId && (
+                <button
+                  type="button"
+                  onClick={copyId}
+                  className="mt-0.5 inline-flex items-center gap-1 text-[11.5px] font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <span>{userShortId}</span>
+                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
                 </button>
               )}
             </div>
           </div>
 
-          {/* CENTER — Create Shipment CTA */}
-          <div className="flex justify-center">
+          {/* CENTER — Create Shipment */}
+          <div className="flex flex-col items-center">
             <Button
               asChild
-              className="h-12 w-full max-w-xs rounded-xl bg-accent px-5 text-sm font-bold text-white shadow-lg hover:bg-accent/90 hover:scale-[1.02] transition-transform"
+              className="h-11 rounded-full bg-accent px-6 text-[14px] font-semibold text-white hover:bg-accent/90 shadow-[0_4px_14px_-4px_rgba(223,81,1,0.45)]"
             >
-              <Link to="/dashboard/shipments/new" className="flex items-center justify-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
-                  <Plus className="h-4 w-4" />
-                </span>
+              <Link to="/dashboard/shipments/new" className="flex items-center gap-2">
+                <Plus className="h-4 w-4" strokeWidth={2.5} />
                 Create Shipment
-                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
+            <p className="mt-1.5 text-[11px] text-muted-foreground">
+              Shipping from <span className="font-semibold text-foreground">{country}</span> to the World
+            </p>
           </div>
 
-          {/* RIGHT — Tracking search */}
-          <form onSubmit={handleTrackingSearch} className="lg:justify-self-end w-full lg:max-w-sm">
+          {/* RIGHT — Tracking */}
+          <form onSubmit={handleTrackingSearch} className="justify-self-end w-full max-w-[320px]">
             <div className="relative">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" />
               <Input
                 value={trackingQuery}
                 onChange={(e) => setTrackingQuery(e.target.value)}
-                placeholder="Enter Tracking ID"
-                className="h-11 rounded-xl bg-white pl-9 pr-24 text-sm text-foreground placeholder:text-muted-foreground/70 border-0 focus-visible:ring-2 focus-visible:ring-accent"
+                placeholder="Track shipment"
+                className="h-11 rounded-full bg-muted/40 pl-10 pr-12 text-[13.5px] text-foreground placeholder:text-muted-foreground/60 border border-border/60 focus-visible:ring-1 focus-visible:ring-accent focus-visible:bg-white"
               />
-              <Button
+              <button
                 type="submit"
-                size="sm"
-                className="absolute right-1.5 top-1/2 h-8 -translate-y-1/2 rounded-lg bg-accent px-3 text-xs font-semibold text-white hover:bg-accent/90"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white hover:bg-accent/90 transition-colors"
+                aria-label="Track"
               >
-                Track
-              </Button>
+                <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+              </button>
             </div>
           </form>
         </div>

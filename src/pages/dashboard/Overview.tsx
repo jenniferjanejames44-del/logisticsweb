@@ -154,20 +154,25 @@ const Overview = () => {
         })}
       </div>
 
-      {/* Wallet Banner */}
-      <Card className="mb-6 bg-primary border-0 overflow-hidden rounded-xl">
+      {/* Wallet Banner — flat & friendly */}
+      <Card className="mb-6 bg-white border border-border/60 overflow-hidden rounded-xl">
         <CardContent className="p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
-                <Wallet className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-4 min-w-0">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-accent/10">
+                <Wallet className="w-5 h-5 text-accent" strokeWidth={2} />
               </div>
-              <div>
-                <p className="text-xs font-medium text-white/60 uppercase tracking-wide">Wallet Balance</p>
-                <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">{formatMoney(convertAmount(balance, "NGN", "USD"), "USD")}</p>
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Wallet Balance</p>
+                <p className="mt-1 text-2xl font-bold text-foreground sm:text-[28px] leading-tight">
+                  {formatMoney(convertAmount(balance, "NGN", "USD"), "USD")}
+                </p>
               </div>
             </div>
-            <Button asChild className="bg-accent hover:bg-accent/90 text-white border-0 h-11 px-5 text-sm font-semibold rounded-lg">
+            <Button
+              asChild
+              className="bg-accent hover:bg-accent/90 text-white border-0 h-11 px-5 text-sm font-semibold rounded-lg w-full sm:w-auto"
+            >
               <Link to="/dashboard/wallet">
                 <ArrowUpCircle className="w-4 h-4" />
                 Add Funds
