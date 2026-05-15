@@ -865,13 +865,10 @@ const ShipmentCreationForm = () => {
                                     </div>
                                   </div>
                                   <div className="space-y-0.5">
-                                    <p className={`text-[11px] uppercase tracking-wider font-semibold ${isSelected ? "text-primary/70" : "text-muted-foreground"}`}>
-                                      {wh.country}
-                                    </p>
                                     <p className={`text-sm font-bold leading-tight ${isSelected ? "text-primary" : "text-foreground"}`}>
                                       {wh.name}
                                     </p>
-                                    <p className="text-xs text-muted-foreground">{wh.city}</p>
+                                    <p className="text-xs text-muted-foreground">{wh.city}, {wh.country}</p>
                                   </div>
                                 </button>
                               );
