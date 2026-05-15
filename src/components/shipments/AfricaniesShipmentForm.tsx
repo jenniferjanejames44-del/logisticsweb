@@ -777,6 +777,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       if (error) throw error;
 
+      // Sync invoice currency/amount to the matched pricing rule so Paystack converts properly.
+      if (shipment?.id && matchedRule && totals) {
+        await (supabase as any)
+          .from("invoices")
+          .update({
+            currency: matchedRule.currency,
+            amount: totals.total,
+            subtotal: totals.total,
+            shipping_rate: totals.shippingCost,
+          })
+          .eq("shipment_id", shipment.id);
+      }
+
       if (saveSender) {
         await supabase.from("profiles").update({
           full_name: senderName,
