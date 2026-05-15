@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
-  FileText, Search, Download, Calendar, DollarSign, CheckCircle, Clock, AlertTriangle, type LucideIcon,
+  FileText, Search, Download, Calendar, DollarSign, CheckCircle, Clock, AlertTriangle, Share2, type LucideIcon,
 } from "lucide-react";
 
 interface Invoice {
@@ -103,16 +103,38 @@ const Invoices = () => {
 
   const handleSaveToDevice = () => {
     if (!invoiceHtml) return;
+    const name = currentInvoice?.invoice_number || "invoice";
     const blob = new Blob([invoiceHtml], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `invoice.html`;
+    a.download = `RAC-Invoice-${name}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     toast.success("Invoice saved. Open the file and use your browser's Print → Save as PDF.");
+  };
+
+  const handleShare = async () => {
+    if (!invoiceHtml || !currentInvoice) return;
+    const name = currentInvoice.invoice_number;
+    try {
+      const blob = new Blob([invoiceHtml], { type: "text/html" });
+      const file = new File([blob], `RAC-Invoice-${name}.html`, { type: "text/html" });
+      const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean; share?: (d: ShareData) => Promise<void> };
+      if (nav.canShare?.({ files: [file] })) {
+        await nav.share!({ files: [file], title: `RAC Invoice ${name}`, text: "Your RAC Logistics invoice" });
+        return;
+      }
+      if (nav.share) {
+        await nav.share({ title: `RAC Invoice ${name}`, text: `Invoice ${name} from RAC Logistics` });
+        return;
+      }
+      handleSaveToDevice();
+    } catch (e) {
+      console.warn("Share failed", e);
+    }
   };
 
   const getStatusBadge = (status: string) => {
