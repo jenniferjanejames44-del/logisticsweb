@@ -79,11 +79,11 @@ const DashboardSidebar = () => {
   };
 
   const renderNavGroup = (label: string, items: typeof mainNav) => (
-    <div className="mb-1">
-      <p className="px-3 pb-1.5 pt-4 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground/60 first:pt-0">
+    <div className="mb-2">
+      <p className="px-3 pb-2 pt-5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/55 first:pt-1">
         {label}
       </p>
-      <div className="space-y-0.5">
+      <div className="space-y-1">
         {items.map((item) => {
           const isActive = location.pathname === item.href;
           return (
@@ -91,15 +91,20 @@ const DashboardSidebar = () => {
               key={item.href}
               to={item.href}
               onClick={() => setIsMobileOpen(false)}
-              className={`group flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
+              className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium transition-colors duration-150 ${
                 isActive
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                  ? "bg-primary/[0.06] text-primary"
+                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
               }`}
             >
-              <item.icon className="w-4 h-4 flex-shrink-0" strokeWidth={isActive ? 2.2 : 1.8} />
+              {isActive && (
+                <span
+                  aria-hidden
+                  className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-full bg-accent"
+                />
+              )}
+              <item.icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={isActive ? 2.2 : 1.7} />
               <span className="flex-1">{item.label}</span>
-              {isActive && <ChevronRight className="w-3.5 h-3.5 opacity-60" />}
             </Link>
           );
         })}
@@ -112,10 +117,10 @@ const DashboardSidebar = () => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-4 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg transition-transform duration-200 active:scale-95 lg:hidden"
+        className="fixed left-3 top-3 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white text-primary border border-border/60 shadow-[0_2px_8px_rgba(6,16,67,0.08)] transition-transform duration-200 active:scale-95 lg:hidden"
         aria-label="Toggle menu"
       >
-        {isMobileOpen ? <X className="w-4.5 h-4.5" /> : <Menu className="w-4.5 h-4.5" />}
+        {isMobileOpen ? <X className="w-5 h-5" strokeWidth={2.2} /> : <Menu className="w-5 h-5" strokeWidth={2.2} />}
       </button>
 
       {/* Overlay */}
@@ -129,12 +134,12 @@ const DashboardSidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-[252px] flex-col bg-white border-r border-border/60 transition-transform duration-300 lg:sticky ${
+        className={`fixed left-0 top-0 z-50 flex h-screen w-[260px] flex-col bg-white border-r border-border/50 transition-transform duration-300 lg:sticky ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo */}
-        <div className="border-b border-border/40 py-4 pl-20 pr-5 lg:px-5">
+        <div className="border-b border-border/30 py-5 pl-20 pr-5 lg:px-6">
           <Link
             to="/"
             className="flex items-center"
@@ -146,29 +151,32 @@ const DashboardSidebar = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-3">
+        <nav className="flex-1 overflow-y-auto px-3 py-4">
           {renderNavGroup("Main", mainNav)}
 
           {/* Shipments expandable group */}
-          <div className="mb-1">
+          <div className="mb-2">
             <button
               type="button"
               onClick={() => setShipmentsOpen((o) => !o)}
-              className={`group flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
+              className={`group relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium transition-colors duration-150 ${
                 isShipmentsRoute
-                  ? "bg-primary/8 text-primary"
-                  : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                  ? "bg-primary/[0.06] text-primary"
+                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
               }`}
               aria-expanded={shipmentsOpen}
             >
-              <Package className="w-4 h-4 flex-shrink-0" strokeWidth={isShipmentsRoute ? 2.2 : 1.8} />
+              {isShipmentsRoute && (
+                <span aria-hidden className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-full bg-accent" />
+              )}
+              <Package className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={isShipmentsRoute ? 2.2 : 1.7} />
               <span className="flex-1 text-left">Shipments</span>
               <ChevronDown
                 className={`w-3.5 h-3.5 transition-transform duration-200 ${shipmentsOpen ? "rotate-0" : "-rotate-90"}`}
               />
             </button>
             {shipmentsOpen && (
-              <div className="mt-0.5 ml-3 space-y-0.5 border-l border-border/40 pl-2.5">
+              <div className="mt-1 ml-[18px] space-y-1 border-l border-border/40 pl-3">
                 {shipmentChildren.map((child) => {
                   const isChildActive = location.pathname === child.href;
                   return (
@@ -176,13 +184,13 @@ const DashboardSidebar = () => {
                       key={child.href}
                       to={child.href}
                       onClick={() => setIsMobileOpen(false)}
-                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
+                      className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
                         isChildActive
-                          ? "bg-primary text-primary-foreground shadow-sm"
-                          : "text-muted-foreground hover:bg-muted/80 hover:text-foreground"
+                          ? "bg-primary/[0.06] text-primary"
+                          : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                       }`}
                     >
-                      <child.icon className="w-3.5 h-3.5 flex-shrink-0" strokeWidth={isChildActive ? 2.4 : 1.8} />
+                      <child.icon className="w-4 h-4 flex-shrink-0" strokeWidth={isChildActive ? 2.2 : 1.7} />
                       <span>{child.label}</span>
                     </Link>
                   );
@@ -195,17 +203,17 @@ const DashboardSidebar = () => {
           {renderNavGroup("Account", accountNav)}
 
           {isAdmin && (
-            <div className="mb-1">
-              <div className="my-2 border-t border-border/40" />
-              <p className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground/60">
+            <div className="mb-2">
+              <div className="my-3 border-t border-border/40" />
+              <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/55">
                 Admin
               </p>
               <Link
                 to="/admin"
                 onClick={() => setIsMobileOpen(false)}
-                className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-accent hover:bg-accent/5 transition-colors"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-accent hover:bg-accent/5 transition-colors"
               >
-                <Shield className="w-4 h-4 flex-shrink-0" />
+                <Shield className="w-[18px] h-[18px] flex-shrink-0" />
                 <span>Admin Dashboard</span>
               </Link>
             </div>
@@ -213,12 +221,12 @@ const DashboardSidebar = () => {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-border/40 p-3">
+        <div className="border-t border-border/30 p-3">
           <button
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
             onClick={handleSignOut}
           >
-            <LogOut className="w-4 h-4 flex-shrink-0" />
+            <LogOut className="w-[18px] h-[18px] flex-shrink-0" />
             <span>Sign Out</span>
           </button>
         </div>
