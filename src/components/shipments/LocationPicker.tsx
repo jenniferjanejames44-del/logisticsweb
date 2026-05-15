@@ -151,13 +151,38 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
     debounceRef.current = setTimeout(() => searchAddress(val), 400);
   };
 
-  const selectResult = (r: NominatimResult) => {
-    const selected = buildLocationData(r, query);
+  const enrichResult = async (result: NominatimResult) => {
+    try {
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        addressdetails: "1",
+        extratags: "1",
+        namedetails: "1",
+        lat: result.lat,
+        lon: result.lon,
+        zoom: "18",
+      });
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?${params.toString()}`, {
+        headers: { "Accept-Language": "en" },
+      });
+      if (!res.ok) return result;
+      const data = await res.json();
+      return { ...result, ...data, address: { ...result.address, ...(data.address || {}) } } as NominatimResult;
+    } catch {
+      return result;
+    }
+  };
+
+  const selectResult = async (r: NominatimResult) => {
+    setIsSearching(true);
+    const enriched = await enrichResult(r);
+    const selected = buildLocationData(enriched, query);
 
     setQuery(selected.address);
     onChange(selected.address);
     setShowDropdown(false);
     setResults([]);
+    setIsSearching(false);
     onLocationSelect?.(selected);
   };
 
