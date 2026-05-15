@@ -65,58 +65,61 @@ const DashboardHero = () => {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-[1180px] pl-16 pr-4 py-3 sm:pl-5 sm:pr-5 sm:py-4 lg:px-6">
-        {/* MOBILE / TABLET: stacked layout */}
+        {/* MOBILE / TABLET: clean vertical stack */}
         <div className="flex flex-col gap-3 lg:hidden">
-          {/* Top row: avatar + greeting */}
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary/[0.08] text-primary text-[13px] font-bold ring-1 ring-primary/10">
+          {/* Row 1: avatar + greeting + ID */}
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/[0.08] text-primary text-[12px] font-bold ring-1 ring-primary/10">
               {initials || "U"}
             </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[14px] font-semibold text-foreground leading-tight truncate">
+            <div className="min-w-0 flex-1 leading-tight">
+              <p className="text-[14px] font-semibold text-foreground truncate">
                 Hello, {firstName} 👋
               </p>
               {userShortId && (
                 <button
                   type="button"
                   onClick={copyId}
-                  className="mt-0.5 inline-flex items-center gap-1 text-[11px] font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
+                  className="mt-0.5 inline-flex items-center gap-1 text-[10.5px] font-mono font-medium text-muted-foreground hover:text-primary transition-colors"
                   aria-label="Copy your customer ID"
                 >
                   <span>{userShortId}</span>
-                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
+                  {copied ? <Check className="h-2.5 w-2.5 text-accent" /> : <Copy className="h-2.5 w-2.5" />}
                 </button>
               )}
-              <p className="text-[11px] text-muted-foreground/80 leading-tight mt-0.5 truncate">
-                Shipping from {country} to the world
-              </p>
             </div>
           </div>
 
-          {/* Action row: Create + Track */}
-          <div className="flex items-center gap-2">
-            <Button
-              asChild
-              className="h-10 flex-shrink-0 rounded-lg bg-accent px-3.5 text-[13px] font-semibold text-white hover:bg-accent/90 shadow-none"
-            >
-              <Link to="/dashboard/shipments/new" className="flex items-center gap-1.5">
-                <Plus className="h-4 w-4" />
-                <span className="hidden xs:inline">Create</span>
-                <span className="xs:hidden">New</span>
-              </Link>
-            </Button>
-            <form onSubmit={handleTrackingSearch} className="flex-1 min-w-0">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" />
-                <Input
-                  value={trackingQuery}
-                  onChange={(e) => setTrackingQuery(e.target.value)}
-                  placeholder="Track shipment"
-                  className="h-10 rounded-lg bg-muted/40 pl-9 pr-3 text-[13px] text-foreground placeholder:text-muted-foreground/60 border border-border/60 focus-visible:ring-1 focus-visible:ring-accent focus-visible:bg-white"
-                />
-              </div>
-            </form>
-          </div>
+          {/* Row 2: Full-width Create Shipment */}
+          <Button
+            asChild
+            className="h-11 w-full rounded-full bg-accent px-5 text-[14px] font-semibold text-white hover:bg-accent/90 shadow-[0_4px_14px_-4px_rgba(223,81,1,0.4)]"
+          >
+            <Link to="/dashboard/shipments/new" className="flex items-center justify-center gap-2">
+              <Plus className="h-4 w-4" strokeWidth={2.5} />
+              Create Shipment
+            </Link>
+          </Button>
+
+          {/* Row 3: Tracking search */}
+          <form onSubmit={handleTrackingSearch} className="w-full">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/70" />
+              <Input
+                value={trackingQuery}
+                onChange={(e) => setTrackingQuery(e.target.value)}
+                placeholder="Track shipment"
+                className="h-11 rounded-full bg-muted/40 pl-10 pr-12 text-[13.5px] text-foreground placeholder:text-muted-foreground/60 border border-border/60 focus-visible:ring-1 focus-visible:ring-accent focus-visible:bg-white"
+              />
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-white hover:bg-accent/90 transition-colors"
+                aria-label="Track"
+              >
+                <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+              </button>
+            </div>
+          </form>
         </div>
 
         {/* DESKTOP: 3-col layout (Africanies style) */}
