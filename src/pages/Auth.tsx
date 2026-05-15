@@ -227,9 +227,13 @@ const AuthForm = () => {
       <main className="w-full max-w-md">
         <div className="w-full">
             {/* Round brand mark */}
-            <Link to="/" className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-md ring-1 ring-primary/10">
-              <span className="font-display text-xl font-extrabold tracking-tight text-white">RAC</span>
-              <span className="absolute mt-8 ml-10 h-2.5 w-2.5 rounded-full bg-accent" aria-hidden />
+            <Link
+              to="/"
+              aria-label="RAC Logistics — Home"
+              className="relative mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-[0_8px_24px_rgba(6,16,67,0.18)] ring-1 ring-primary/10 transition-transform hover:scale-105"
+            >
+              <span className="font-display text-lg font-extrabold tracking-tight text-white">RAC</span>
+              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-accent ring-2 ring-[#f5f5f7]" aria-hidden />
             </Link>
 
             {/* Heading */}
@@ -427,11 +431,12 @@ const AuthForm = () => {
               </>
             )}
 
-            <p className="mt-8 text-center text-xs text-muted-foreground">
+            </div>
+
+            <p className="mt-6 text-center text-xs text-muted-foreground">
               By continuing you agree to RAC Logistics' Terms & Privacy Policy.
             </p>
           </div>
-        </div>
       </main>
     </div>
   );
