@@ -43,14 +43,6 @@ const DashboardLayout = ({ children, title, description, action }: DashboardLayo
           <DashboardHero />
         </div>
 
-        <div className="bg-primary px-4 py-2 text-primary-foreground lg:px-6">
-          <div className="mx-auto flex max-w-[1180px] items-center gap-6 overflow-hidden text-[12px] font-semibold leading-tight">
-            <span className="whitespace-nowrap">Ensure your package is clearly labeled with your RAC customer ID.</span>
-            <span className="h-1 w-1 flex-shrink-0 rounded-full bg-accent" aria-hidden />
-            <span className="whitespace-nowrap">We ship import and export packages with fast, secure updates.</span>
-          </div>
-        </div>
-
         {/* Page title bar */}
         <div className="border-b border-border/30 bg-muted">
           <div className="mx-auto max-w-[1180px] px-4 sm:px-5 lg:px-6">
