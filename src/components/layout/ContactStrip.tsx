@@ -26,7 +26,7 @@ const ContactStrip = ({ variant = "header", className }: ContactStripProps) => {
       : "bg-primary/95 text-white border-b border-white/10";
 
   return (
-    <div className={cn("w-full", surface, className)}>
+    <div className={cn("hidden w-full lg:block", surface, className)}>
       <div className="section-container flex h-9 items-center justify-between gap-3 sm:h-10">
         {/* Left: email + phones — horizontal scroll on small screens */}
         <div className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap text-[12px] font-medium leading-none sm:gap-6 sm:text-[12.5px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
