@@ -1203,7 +1203,8 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
                   placeholder="Special handling instructions, fragile items, etc." />
               </Field>
-            </div>
+              </div>
+            </section>
           </div>
         );
 
