@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import HeaderLogo from "@/components/layout/HeaderLogo";
 import {
   Eye, EyeOff, Mail, Lock, User, ArrowRight, AlertCircle, CheckCircle2,
-  Phone, Globe, Truck, ShieldCheck, ArrowLeft,
+  Phone,
 } from "lucide-react";
 import { getPostAuthRedirectPath } from "@/lib/postAuthRedirect";
 
@@ -223,118 +223,34 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-background">
-      {/* LEFT — Brand panel */}
-      <aside className="relative hidden lg:flex flex-col justify-between bg-primary text-primary-foreground p-12 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -left-24 w-96 h-96 rounded-full bg-accent/20 blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[28rem] h-[28rem] rounded-full bg-accent/10 blur-3xl" />
-        </div>
+    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-5 py-10 sm:px-8 sm:py-14">
+      <main className="w-full max-w-md">
+        <div className="w-full">
+            {/* Round brand mark */}
+            <Link
+              to="/"
+              aria-label="RAC Logistics — Home"
+              className="relative mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary shadow-[0_8px_24px_rgba(6,16,67,0.18)] ring-1 ring-primary/10 transition-transform hover:scale-105"
+            >
+              <span className="font-display text-lg font-extrabold tracking-tight text-white">RAC</span>
+              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-accent ring-2 ring-[#f5f5f7]" aria-hidden />
+            </Link>
 
-        <div className="relative z-10 flex items-center justify-between">
-          <Link to="/" className="flex items-center group">
-            <HeaderLogo className="h-12 w-auto max-w-[200px] [&_g]:fill-white [&_text]:fill-white" />
-          </Link>
-          <Link to="/" className="text-sm text-primary-foreground/80 hover:text-primary-foreground inline-flex items-center gap-1.5 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Home
-          </Link>
-        </div>
-
-        <div className="relative z-10 max-w-md space-y-8">
-          <div>
-            <h1 className="text-4xl xl:text-5xl font-bold leading-tight">
-              Ship Smarter.<br />
-              <span className="text-accent">Deliver Faster.</span>
-            </h1>
-            <p className="mt-4 text-base text-primary-foreground/80 leading-relaxed">
-              Join thousands of businesses moving cargo across borders with RAC Logistics — fast clearance, real-time tracking, and trusted global partners.
-            </p>
-          </div>
-
-          <ul className="space-y-4">
-            {[
-              { icon: Globe, title: "Global Coverage", desc: "Air & ocean freight across 40+ countries." },
-              { icon: Truck, title: "Real-time Tracking", desc: "Know where your shipment is, every step." },
-              { icon: ShieldCheck, title: "Secure Payments", desc: "Pay safely in NGN, USD, or wallet credit." },
-            ].map(({ icon: Icon, title, desc }) => (
-              <li key={title} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-accent/15 ring-1 ring-accent/30">
-                  <Icon className="w-5 h-5 text-accent" />
-                </span>
-                <div>
-                  <p className="font-semibold text-sm">{title}</p>
-                  <p className="text-sm text-primary-foreground/70">{desc}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="relative z-10 grid grid-cols-3 gap-4 pt-6 border-t border-primary-foreground/15">
-          {[
-            { v: "10K+", l: "Shipments" },
-            { v: "40+", l: "Countries" },
-            { v: "99%", l: "On-time" },
-          ].map((s) => (
-            <div key={s.l}>
-              <div className="text-2xl font-bold text-accent">{s.v}</div>
-              <div className="text-xs text-primary-foreground/70 mt-1">{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </aside>
-
-      {/* RIGHT — Form panel */}
-      <main className="flex flex-col min-h-screen">
-        {/* Mobile brand strip */}
-        <div className="lg:hidden bg-primary text-primary-foreground px-6 py-5 flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <HeaderLogo className="h-9 w-auto max-w-[150px] [&_g]:fill-white [&_text]:fill-white" />
-          </Link>
-          <Link to="/" className="text-xs text-primary-foreground/80 inline-flex items-center gap-1">
-            <ArrowLeft className="w-3.5 h-3.5" /> Home
-          </Link>
-        </div>
-
-        <div className="flex-1 flex items-center justify-center px-5 py-10 sm:px-8 sm:py-14">
-          <div className="w-full max-w-md">
             {/* Heading */}
-            <div className="mb-7">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+            <div className="mb-7 text-center">
+              <h2 className="text-2xl sm:text-[28px] font-bold text-foreground tracking-tight">
                 {isForgotPassword ? "Reset your password" : isLogin ? "Welcome back" : "Create your account"}
               </h2>
-              <p className="mt-1.5 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm text-muted-foreground">
                 {isForgotPassword
                   ? "Enter your email and we'll send you a reset link."
                   : isLogin
-                  ? "Sign in to manage your shipments and wallet."
+                  ? "Sign in to continue managing your shipments."
                   : "Start shipping globally in just a few minutes."}
               </p>
             </div>
 
-            {/* Tab switcher (hidden on forgot-password view) */}
-            {!isForgotPassword && (
-              <div className="mb-6 inline-flex w-full rounded-xl bg-muted p-1">
-                <button
-                  type="button"
-                  onClick={() => switchMode(true)}
-                  className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
-                    isLogin ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  onClick={() => switchMode(false)}
-                  className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
-                    !isLogin ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Sign Up
-                </button>
-              </div>
-            )}
+            <div className="rounded-2xl bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(6,16,67,0.06)] ring-1 ring-border/60">
 
             {/* Forgot password */}
             {isForgotPassword ? (
@@ -515,11 +431,12 @@ const AuthForm = () => {
               </>
             )}
 
-            <p className="mt-8 text-center text-xs text-muted-foreground">
+            </div>
+
+            <p className="mt-6 text-center text-xs text-muted-foreground">
               By continuing you agree to RAC Logistics' Terms & Privacy Policy.
             </p>
           </div>
-        </div>
       </main>
     </div>
   );
