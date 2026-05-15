@@ -15,7 +15,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp, FileDown, Circle } from "lucide-react";
+import { Search, FileText, CheckCircle, Loader2, Download, Printer, Clock, AlertTriangle, TrendingUp, FileDown, Circle, Mail, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -53,6 +53,8 @@ const AdminInvoices = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [paymentRef, setPaymentRef] = useState("");
   const [marking, setMarking] = useState(false);
+  const [resending, setResending] = useState<string | null>(null);
+  const [regenerating, setRegenerating] = useState<string | null>(null);
   const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const isMobile = useIsMobile();
@@ -149,6 +151,53 @@ const AdminInvoices = () => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     toast.success("Saved. Open the file and use Print → Save as PDF.");
+  };
+
+  const handleResendEmail = async (invoice: Invoice) => {
+    setResending(invoice.id);
+    try {
+      const { data: shipment } = await supabase
+        .from("shipments")
+        .select("tracking_number")
+        .eq("id", invoice.shipment_id)
+        .maybeSingle();
+      const { error } = await supabase.functions.invoke("send-notification-email", {
+        body: {
+          type: invoice.status === "paid" ? "payment_confirmation" : "invoice_ready",
+          user_name: invoice.profiles?.full_name || "Customer",
+          user_email: invoice.profiles?.email,
+          amount: Number(invoice.amount),
+          currency: "USD",
+          invoice_number: invoice.invoice_number,
+          tracking_number: shipment?.tracking_number,
+          payment_channel: "manual",
+          reference: invoice.payment_reference || "",
+        },
+      });
+      if (error) throw error;
+      toast.success(`Invoice email sent to ${invoice.profiles?.email}`);
+    } catch (err) {
+      console.error("Resend email error:", err);
+      toast.error("Failed to send email");
+    } finally {
+      setResending(null);
+    }
+  };
+
+  const handleRegenerate = async (invoice: Invoice) => {
+    setRegenerating(invoice.id);
+    try {
+      const { error } = await supabase.functions.invoke("generate-invoice-pdf", {
+        body: { invoice_id: invoice.id },
+      });
+      if (error) throw error;
+      toast.success("Invoice regenerated");
+    } catch (err) {
+      console.error("Regenerate error:", err);
+      toast.error("Failed to regenerate invoice");
+    } finally {
+      setRegenerating(null);
+    }
   };
 
   const handleExportCsv = () => {
@@ -321,6 +370,14 @@ const AdminInvoices = () => {
                         <Download className="w-3.5 h-3.5 mr-1" />View
                       </Button>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" className="h-8 flex-1 rounded-lg text-xs" onClick={() => handleResendEmail(invoice)} disabled={resending === invoice.id}>
+                        {resending === invoice.id ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Mail className="w-3 h-3 mr-1" />}Email
+                      </Button>
+                      <Button variant="outline" className="h-8 flex-1 rounded-lg text-xs" onClick={() => handleRegenerate(invoice)} disabled={regenerating === invoice.id}>
+                        {regenerating === invoice.id ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <RefreshCw className="w-3 h-3 mr-1" />}Regenerate
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -361,6 +418,12 @@ const AdminInvoices = () => {
                             )}
                             <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleDownload(invoice)}>
                               <Download className="w-3 h-3 mr-1" />View
+                            </Button>
+                            <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleResendEmail(invoice)} disabled={resending === invoice.id} title="Resend invoice email">
+                              {resending === invoice.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                            </Button>
+                            <Button variant="outline" size="sm" className="rounded-lg" onClick={() => handleRegenerate(invoice)} disabled={regenerating === invoice.id} title="Regenerate invoice">
+                              {regenerating === invoice.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
                             </Button>
                           </div>
                         </TableCell>

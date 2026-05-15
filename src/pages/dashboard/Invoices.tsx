@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
-  FileText, Search, Download, Calendar, DollarSign, CheckCircle, Clock, AlertTriangle, type LucideIcon,
+  FileText, Search, Download, Calendar, DollarSign, CheckCircle, Clock, AlertTriangle, Share2, type LucideIcon,
 } from "lucide-react";
 
 interface Invoice {
@@ -37,6 +37,7 @@ const Invoices = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [downloading, setDownloading] = useState<string | null>(null);
   const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
+  const [currentInvoice, setCurrentInvoice] = useState<Invoice | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const fetchInvoices = useCallback(async () => {
@@ -65,6 +66,7 @@ const Invoices = () => {
       const { data: fileData, error: dlError } = await supabase.storage.from("invoices").download(filePath);
       if (dlError) throw dlError;
       const htmlText = await fileData.text();
+      setCurrentInvoice(invoice);
       setInvoiceHtml(htmlText);
     } catch (err) {
       console.error("Download error:", err);
@@ -103,16 +105,38 @@ const Invoices = () => {
 
   const handleSaveToDevice = () => {
     if (!invoiceHtml) return;
+    const name = currentInvoice?.invoice_number || "invoice";
     const blob = new Blob([invoiceHtml], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `invoice.html`;
+    a.download = `RAC-Invoice-${name}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     toast.success("Invoice saved. Open the file and use your browser's Print → Save as PDF.");
+  };
+
+  const handleShare = async () => {
+    if (!invoiceHtml || !currentInvoice) return;
+    const name = currentInvoice.invoice_number;
+    try {
+      const blob = new Blob([invoiceHtml], { type: "text/html" });
+      const file = new File([blob], `RAC-Invoice-${name}.html`, { type: "text/html" });
+      const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean; share?: (d: ShareData) => Promise<void> };
+      if (nav.canShare?.({ files: [file] })) {
+        await nav.share!({ files: [file], title: `RAC Invoice ${name}`, text: "Your RAC Logistics invoice" });
+        return;
+      }
+      if (nav.share) {
+        await nav.share({ title: `RAC Invoice ${name}`, text: `Invoice ${name} from RAC Logistics` });
+        return;
+      }
+      handleSaveToDevice();
+    } catch (e) {
+      console.warn("Share failed", e);
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -261,6 +285,9 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <DialogTitle>Invoice Preview</DialogTitle>
               <div className="mr-6 flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={handleShare} className="h-8 text-[12px]">
+                  <Share2 className="w-3.5 h-3.5 mr-1" /> Share
+                </Button>
                 <Button size="sm" variant="outline" onClick={handleSaveToDevice} className="h-8 text-[12px]">
                   <Download className="w-3.5 h-3.5 mr-1" /> Save
                 </Button>
