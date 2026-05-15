@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin, MessageCircle } from "lucide-react";
+import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 import HeaderLogo from "./HeaderLogo";
 
 const Footer = () => {
@@ -24,7 +24,7 @@ const Footer = () => {
   const phones = [
     { label: "0903 399 4545", href: "tel:+2349033994545" },
     { label: "0813 860 3860", href: "tel:+2348138603860" },
-    { label: "0809 666 6337", href: "tel:+2348096666337" },
+    { label: "0818 000 6321", href: "tel:+2348180006321" },
   ];
 
   const socials = [
@@ -109,8 +109,8 @@ const Footer = () => {
               to="/contact"
               className="inline-flex h-10 items-center gap-2 rounded-full bg-accent px-5 text-sm font-bold text-white shadow-[0_8px_20px_-6px_rgba(223,81,1,0.55)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent/90"
             >
-              <MessageCircle className="h-4 w-4" strokeWidth={2.4} />
-              Chat Us
+              <Phone className="h-4 w-4" strokeWidth={2.4} />
+              Call Us
             </Link>
 
             <ul className="space-y-2 pt-1">
