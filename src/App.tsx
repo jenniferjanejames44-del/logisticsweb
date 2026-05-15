@@ -140,7 +140,7 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/auth" element={<Auth />} />
+              <Route path="/auth" element={<AuthRedirect><Auth /></AuthRedirect>} />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/auth/confirm" element={<AuthConfirm />} />
               <Route path="/reset-password" element={<ResetPassword />} />
