@@ -568,9 +568,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
     const stepName = STEPS[s];
-    if (stepName === "Method" && !method) e.method = "Please select a shipping method.";
-    if (stepName === "Warehouse" && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
-    if (stepName === "Delivery Type" && !deliveryType) e.deliveryType = "Please select a delivery type.";
+    if (stepName === "Shipping") {
+      if (!method) e.method = "Please select a shipping method.";
+      if (!isExport && !warehouseId) e.warehouse = "Please select a RAC warehouse.";
+      if (!deliveryType) e.deliveryType = "Please select a delivery type.";
+    }
     if (stepName === "Sender") {
       if (!senderName.trim()) e.senderName = "Full name is required";
       if (!senderPhone.trim()) e.senderPhone = "Phone number is required";
@@ -592,20 +594,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (stepName === "Items") {
-      if (items.length === 0) e.items = "Add at least one item.";
-      items.forEach((it, idx) => {
-        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
-        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
-        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
-      });
-    }
-    if (stepName === "Package") {
       if (!selectedPackage) e.package = "Please select a package.";
       if (selectedPackage?.is_custom) {
         if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
         if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
         if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
       }
+      if (items.length === 0) e.items = "Add at least one item.";
+      items.forEach((it, idx) => {
+        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
+        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
+        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
+      });
     }
     setErrors(e);
     if (Object.keys(e).length > 0) {
