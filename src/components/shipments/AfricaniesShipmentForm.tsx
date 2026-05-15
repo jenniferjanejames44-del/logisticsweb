@@ -835,12 +835,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white shadow-sm">
-                        <img
-                          src={`https://flagcdn.com/w80/${w.countryCode}.png`}
-                          alt={`${w.country} flag`}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
+                        {renderWarehouseFlag(w.countryCode, w.country)}
                       </span>
                       <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${active ? "border-accent bg-accent text-accent-foreground" : "border-border text-transparent"}`}>
                         <CheckCircle2 className="h-3.5 w-3.5" />
