@@ -144,6 +144,10 @@ function generateInvoiceHTML(invoice: any, shipment: any, profile: any) {
   const amountPaid = isPaid ? totalAmount : 0;
   const totalDue = totalAmount - amountPaid;
   const currency = 'USD';
+  // VAT is shown as inclusive of total (Nigerian standard 7.5%) for transparency
+  const VAT_RATE = 7.5;
+  const vatAmount = +(totalAmount - totalAmount / (1 + VAT_RATE / 100)).toFixed(2);
+  const netAmount = +(totalAmount - vatAmount).toFixed(2);
   const chargeable = Number(shipment?.chargeable_weight || 0);
   const actualW = Number(shipment?.actual_weight || 0);
   const volW = Number(shipment?.volumetric_weight || 0);
