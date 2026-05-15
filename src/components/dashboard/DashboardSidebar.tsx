@@ -56,6 +56,13 @@ const DashboardSidebar = () => {
     if (isShipmentsRoute) setShipmentsOpen(true);
   }, [isShipmentsRoute]);
 
+  // Allow other components (e.g. DashboardHero) to open the mobile sidebar
+  useEffect(() => {
+    const handler = () => setIsMobileOpen((v) => !v);
+    window.addEventListener("dashboard-sidebar:toggle", handler);
+    return () => window.removeEventListener("dashboard-sidebar:toggle", handler);
+  }, []);
+
   useEffect(() => {
     if (!user) return;
     supabase
@@ -108,15 +115,6 @@ const DashboardSidebar = () => {
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed left-3 top-4 z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full bg-card text-primary border border-border/70 shadow-sm transition-transform duration-200 active:scale-95 lg:hidden"
-        aria-label="Toggle menu"
-      >
-        {isMobileOpen ? <X className="w-5 h-5" strokeWidth={2.2} /> : <Menu className="w-5 h-5" strokeWidth={2.2} />}
-      </button>
-
       {/* Overlay */}
       {isMobileOpen && (
         <div
