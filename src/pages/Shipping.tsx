@@ -713,6 +713,7 @@ const Shipping = ({ embedded = false }: ShippingProps = {}) => {
                             if (loc.city) updateField("receiver_city", loc.city);
                             if (loc.state) updateField("receiver_state", loc.state);
                             if (loc.country) updateField("receiver_country", loc.country);
+                            if (loc.postcode) updateField("receiver_postal_code", loc.postcode);
                           }}
                           placeholder="Search destination address"
                           className={`${inputClass} ${isReceiverAddressInvalid ? invalidFieldClass : ""}`}

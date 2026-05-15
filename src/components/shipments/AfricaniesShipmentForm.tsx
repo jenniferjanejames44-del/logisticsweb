@@ -24,7 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Send, Package, Plus, Minus, Trash2, Loader2,
   ArrowRight, ArrowLeft, Plane, Ship, Check,
-  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone,
+  PackageCheck, Box, Mail, ShoppingBag, Thermometer, Warehouse, MapPin, Phone, CheckCircle2,
 } from "lucide-react";
 import LocationSelector from "@/components/shipments/LocationSelector";
 import LocationPicker from "@/components/shipments/LocationPicker";
@@ -74,28 +74,65 @@ const IMPORT_WAREHOUSES = [
   {
     id: "usa_warehouse",
     name: "USA Warehouse",
-    flag: "🇺🇸",
+    countryCode: "us",
     country: "United States",
+    city: "Richmond, TX",
     lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
     phone: "+1 281 591 9189",
   },
   {
     id: "uk_warehouse",
     name: "UK Warehouse",
-    flag: "🇬🇧",
+    countryCode: "gb",
     country: "United Kingdom",
+    city: "London",
     lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
     phone: null,
   },
   {
     id: "china_warehouse",
     name: "China Warehouse",
-    flag: "🇨🇳",
+    countryCode: "cn",
     country: "China",
+    city: "Guangzhou",
     lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
     phone: null,
   },
 ] as const;
+
+const renderWarehouseFlag = (countryCode: string, country: string) => {
+  if (countryCode === "us") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(0 0% 100%)" />
+        {[0, 10, 20, 30, 40, 50, 60].map((y) => <rect key={y} y={y} width="64" height="5" fill="hsl(355 78% 46%)" />)}
+        <rect width="30" height="28" fill="hsl(220 70% 28%)" />
+        {[6, 16, 26].map((x) => [6, 14, 22].map((y) => <circle key={`${x}-${y}`} cx={x} cy={y} r="1.5" fill="hsl(0 0% 100%)" />))}
+      </svg>
+    );
+  }
+  if (countryCode === "gb") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(224 72% 32%)" />
+        <path d="M0 0 64 64M64 0 0 64" stroke="hsl(0 0% 100%)" strokeWidth="12" />
+        <path d="M0 0 64 64M64 0 0 64" stroke="hsl(355 78% 46%)" strokeWidth="6" />
+        <path d="M32 0v64M0 32h64" stroke="hsl(0 0% 100%)" strokeWidth="18" />
+        <path d="M32 0v64M0 32h64" stroke="hsl(355 78% 46%)" strokeWidth="10" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+      <rect width="64" height="64" fill="hsl(0 74% 45%)" />
+      <polygon points="18,10 20.5,17 28,17 22,21.5 24,29 18,24.5 12,29 14,21.5 8,17 15.5,17" fill="hsl(48 96% 55%)" />
+      <circle cx="36" cy="14" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="43" cy="22" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="43" cy="34" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="36" cy="42" r="2.5" fill="hsl(48 96% 55%)" />
+    </svg>
+  );
+};
 
 const IMPORT_STEPS = [
   "Shipping", "Sender", "Receiver", "Items", "Summary",
@@ -792,15 +829,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     key={w.id}
                     type="button"
                     onClick={() => { setWarehouseId(w.id); clearFieldError("warehouse"); }}
-                    className={`group rounded-xl border p-4 text-left transition-all ${
-                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40"
+                    className={`group relative overflow-hidden rounded-xl border p-4 text-left transition-all ${
+                      active ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 bg-white hover:border-accent/40 hover:shadow-sm"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{w.flag}</span>
-                      <span className="text-sm font-bold text-foreground">{w.name}</span>
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white shadow-sm">
+                        {renderWarehouseFlag(w.countryCode, w.country)}
+                      </span>
+                      <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${active ? "border-accent bg-accent text-accent-foreground" : "border-border text-transparent"}`}>
+                        <CheckCircle2 className="h-3.5 w-3.5" />
+                      </span>
                     </div>
-                    <div className="mt-2 text-[11px] text-muted-foreground">{w.country}</div>
+                    <div className="mt-3">
+                      <div className="text-sm font-bold text-foreground">{w.name}</div>
+                      <div className="mt-1 text-[11px] font-medium text-muted-foreground">{w.city}, {w.country}</div>
+                    </div>
                   </button>
                 );
               })}
@@ -914,6 +958,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     <LocationPicker
                       value={senderAddress}
                       onChange={updateField("senderAddress", setSenderAddress)}
+                      onLocationSelect={(loc) => {
+                        setSenderAddress(loc.address || senderAddress);
+                        setSenderHouseNumber(loc.houseNumber || senderHouseNumber);
+                        setSenderStreetName(loc.streetName || senderStreetName);
+                        if (!isExport) setSenderCountry(loc.country || senderCountry);
+                        setSenderState(loc.state || senderState);
+                        setSenderCity(loc.city || senderCity);
+                        setSenderZip(loc.postcode || senderZip);
+                        clearFieldError("senderAddress");
+                        clearFieldError("senderCountry");
+                        clearFieldError("senderState");
+                        clearFieldError("senderCity");
+                      }}
                       country={senderCountry}
                       state={senderState}
                       city={senderCity}
@@ -1005,6 +1062,19 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     <LocationPicker
                       value={receiverAddress}
                       onChange={updateField("receiverAddress", setReceiverAddress)}
+                      onLocationSelect={(loc) => {
+                        setReceiverAddress(loc.address || receiverAddress);
+                        setReceiverHouseNumber(loc.houseNumber || receiverHouseNumber);
+                        setReceiverStreetName(loc.streetName || receiverStreetName);
+                        if (isExport) setReceiverCountry(loc.country || receiverCountry);
+                        setReceiverState(loc.state || receiverState);
+                        setReceiverCity(loc.city || receiverCity);
+                        setReceiverZip(loc.postcode || receiverZip);
+                        clearFieldError("receiverAddress");
+                        clearFieldError("receiverCountry");
+                        clearFieldError("receiverState");
+                        clearFieldError("receiverCity");
+                      }}
                       country={receiverCountry}
                       state={receiverState}
                       city={receiverCity}
@@ -1228,7 +1298,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 {!isExport && selectedWarehouse && (
                   <SummaryRow
                     label="RAC warehouse"
-                    value={`${selectedWarehouse.flag} ${selectedWarehouse.name}`}
+                    value={`${selectedWarehouse.name} — ${selectedWarehouse.city}, ${selectedWarehouse.country}`}
                   />
                 )}
               </div>

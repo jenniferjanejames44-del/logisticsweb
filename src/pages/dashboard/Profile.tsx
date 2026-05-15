@@ -177,6 +177,7 @@ const Profile = () => {
                       city: loc.city || f.city,
                       state: loc.state || f.state,
                       country: loc.country || f.country,
+                      zip_code: loc.postcode || f.zip_code,
                     }))
                   }
                   country={formData.country}
