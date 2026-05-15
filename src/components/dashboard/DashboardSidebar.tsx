@@ -17,6 +17,7 @@ import {
   Plus,
   List,
   Handshake,
+  ShoppingBag,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +32,7 @@ const shipmentChildren = [
 ];
 
 const managementNav = [
+  { icon: ShoppingBag, label: "Shop For Me", href: "/dashboard/shopping-orders" },
   { icon: FileText, label: "Invoices", href: "/dashboard/invoices" },
   { icon: MessageSquare, label: "Support", href: "/dashboard/support" },
 ];
