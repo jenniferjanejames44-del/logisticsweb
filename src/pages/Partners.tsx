@@ -265,6 +265,14 @@ const Partners = () => {
                       <LocationPicker
                         value={form.address}
                         onChange={(value) => setForm((f) => ({ ...f, address: value }))}
+                        onLocationSelect={(loc) => setForm((f) => ({
+                          ...f,
+                          address: loc.address || f.address,
+                          country: loc.country || f.country,
+                          state: loc.state || f.state,
+                          city: loc.city || f.city,
+                          zip_code: loc.postcode || f.zip_code,
+                        }))}
                         country={form.country}
                         state={form.state}
                         city={form.city}
