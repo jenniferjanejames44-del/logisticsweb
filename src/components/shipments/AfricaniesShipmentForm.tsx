@@ -98,10 +98,10 @@ const IMPORT_WAREHOUSES = [
 ] as const;
 
 const IMPORT_STEPS = [
-  "Method", "Warehouse", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
+  "Shipping", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 const EXPORT_STEPS = [
-  "Method", "Delivery Type", "Sender", "Receiver", "Package", "Items", "Summary",
+  "Shipping", "Sender", "Receiver", "Items", "Summary",
 ] as const;
 
 const createEmptyItem = (): Item => ({
