@@ -147,17 +147,17 @@ const DashboardSidebar = () => {
           <p className="mb-3 text-[11px] font-bold uppercase tracking-wide text-foreground">Shipping Mode</p>
           <div className="grid grid-cols-2 gap-3">
             <Link
-              to="/dashboard/shipments/new"
+              to="/dashboard/shipments/new?flow=import"
               onClick={() => setIsMobileOpen(false)}
-              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-accent px-2 text-center text-[12px] font-semibold leading-tight text-accent-foreground shadow-sm"
+              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-primary px-2 text-center text-[12px] font-semibold leading-tight text-primary-foreground shadow-sm transition-colors hover:bg-[hsl(var(--primary-hover))]"
             >
               <Package className="h-5 w-5" strokeWidth={2.3} />
               Ship to Nigeria
             </Link>
             <Link
-              to="/dashboard/shipments/new"
+              to="/dashboard/shipments/new?flow=export"
               onClick={() => setIsMobileOpen(false)}
-              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg border border-border bg-card px-2 text-center text-[12px] font-semibold leading-tight text-foreground hover:border-accent/50 hover:text-accent"
+              className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-lg bg-accent px-2 text-center text-[12px] font-semibold leading-tight text-accent-foreground shadow-sm transition-colors hover:bg-[hsl(var(--accent-orange-hover))]"
             >
               <Package className="h-5 w-5" strokeWidth={2.1} />
               Ship from Nigeria
