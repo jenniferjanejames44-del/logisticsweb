@@ -490,6 +490,39 @@ export type Database = {
         }
         Relationships: []
       }
+      exchange_rates: {
+        Row: {
+          created_at: string
+          from_currency: string
+          id: string
+          is_active: boolean
+          rate: number
+          to_currency: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          from_currency: string
+          id?: string
+          is_active?: boolean
+          rate: number
+          to_currency: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          from_currency?: string
+          id?: string
+          is_active?: boolean
+          rate?: number
+          to_currency?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           additional_charges: number | null
@@ -871,6 +904,93 @@ export type Database = {
           price_per_kg?: number
           service_type?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      pricing_rules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          currency: string
+          customs_fee: number
+          destination_country: string
+          estimated_days_max: number | null
+          estimated_days_min: number | null
+          flat_price: number
+          flat_weight_threshold_kg: number
+          handling_fee: number
+          id: string
+          insurance_percent: number
+          is_active: boolean
+          max_weight_kg: number | null
+          min_weight_kg: number | null
+          name: string
+          notes: string | null
+          origin_country: string
+          price_per_kg: number
+          priority: number
+          service_type: string | null
+          shipment_type: string
+          shipping_method: string
+          updated_at: string
+          vat_percent: number
+          warehouse_country: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customs_fee?: number
+          destination_country: string
+          estimated_days_max?: number | null
+          estimated_days_min?: number | null
+          flat_price?: number
+          flat_weight_threshold_kg?: number
+          handling_fee?: number
+          id?: string
+          insurance_percent?: number
+          is_active?: boolean
+          max_weight_kg?: number | null
+          min_weight_kg?: number | null
+          name: string
+          notes?: string | null
+          origin_country: string
+          price_per_kg?: number
+          priority?: number
+          service_type?: string | null
+          shipment_type: string
+          shipping_method: string
+          updated_at?: string
+          vat_percent?: number
+          warehouse_country?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customs_fee?: number
+          destination_country?: string
+          estimated_days_max?: number | null
+          estimated_days_min?: number | null
+          flat_price?: number
+          flat_weight_threshold_kg?: number
+          handling_fee?: number
+          id?: string
+          insurance_percent?: number
+          is_active?: boolean
+          max_weight_kg?: number | null
+          min_weight_kg?: number | null
+          name?: string
+          notes?: string | null
+          origin_country?: string
+          price_per_kg?: number
+          priority?: number
+          service_type?: string | null
+          shipment_type?: string
+          shipping_method?: string
+          updated_at?: string
+          vat_percent?: number
+          warehouse_country?: string | null
         }
         Relationships: []
       }
