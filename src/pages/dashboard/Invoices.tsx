@@ -285,6 +285,9 @@ const Invoices = () => {
             <div className="flex items-center justify-between">
               <DialogTitle>Invoice Preview</DialogTitle>
               <div className="mr-6 flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={handleShare} className="h-8 text-[12px]">
+                  <Share2 className="w-3.5 h-3.5 mr-1" /> Share
+                </Button>
                 <Button size="sm" variant="outline" onClick={handleSaveToDevice} className="h-8 text-[12px]">
                   <Download className="w-3.5 h-3.5 mr-1" /> Save
                 </Button>
