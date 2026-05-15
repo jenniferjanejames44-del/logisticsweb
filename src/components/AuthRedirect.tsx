@@ -83,8 +83,12 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
             console.log("AuthRedirect: Redirecting to pending workflow:", pendingRedirect);
             navigate(pendingRedirect, { replace: true });
           } else {
-            const hasPending = localStorage.getItem("pending_shipment_data");
-            const redirectTo = hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : hasPending ? "/dashboard/shipments" : "/dashboard";
+            // Always land on the main dashboard after login/signup.
+            // Stale `pending_shipment_data` in localStorage should NOT hijack
+            // the user to the shipments list — only explicit workflow
+            // redirects (post_auth_redirect / pending_shipment_redirect /
+            // pending shopping order) above are allowed to override this.
+            const redirectTo = hasPendingShoppingOrder ? SHOPPING_ORDER_PAYMENT_ROUTE : "/dashboard";
             console.log("AuthRedirect: Redirecting to", redirectTo);
             navigate(redirectTo, { replace: true });
           }
