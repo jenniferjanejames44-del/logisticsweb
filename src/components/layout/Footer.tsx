@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 import HeaderLogo from "./HeaderLogo";
-import ContactStrip from "./Footer".replace("./Footer", "./ContactStrip") as unknown as string;
+import ContactStrip from "./ContactStrip";
 
 const Footer = () => {
   const companyLinks = [
@@ -64,6 +64,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary text-white">
+      <ContactStrip variant="footer" />
       <div className="section-container pb-10 pt-12 sm:pt-14 lg:pt-[60px]">
         <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[1.15fr_0.82fr_0.95fr_1.08fr]">
           <div className="space-y-6">
