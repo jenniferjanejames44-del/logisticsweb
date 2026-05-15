@@ -154,6 +154,57 @@ const AdminInvoices = () => {
   };
 
   const handleExportCsv = () => {
+    void 0;
+  };
+
+  const handleResendEmail = async (invoice: Invoice) => {
+    setResending(invoice.id);
+    try {
+      const { data: shipment } = await supabase
+        .from("shipments")
+        .select("tracking_number")
+        .eq("id", invoice.shipment_id)
+        .maybeSingle();
+      const { error } = await supabase.functions.invoke("send-notification-email", {
+        body: {
+          type: invoice.status === "paid" ? "payment_confirmation" : "invoice_ready",
+          user_name: invoice.profiles?.full_name || "Customer",
+          user_email: invoice.profiles?.email,
+          amount: Number(invoice.amount),
+          currency: "USD",
+          invoice_number: invoice.invoice_number,
+          tracking_number: shipment?.tracking_number,
+          payment_channel: "manual",
+          reference: invoice.payment_reference || "",
+        },
+      });
+      if (error) throw error;
+      toast.success(`Invoice email sent to ${invoice.profiles?.email}`);
+    } catch (err) {
+      console.error("Resend email error:", err);
+      toast.error("Failed to send email");
+    } finally {
+      setResending(null);
+    }
+  };
+
+  const handleRegenerate = async (invoice: Invoice) => {
+    setRegenerating(invoice.id);
+    try {
+      const { error } = await supabase.functions.invoke("generate-invoice-pdf", {
+        body: { invoice_id: invoice.id },
+      });
+      if (error) throw error;
+      toast.success("Invoice regenerated");
+    } catch (err) {
+      console.error("Regenerate error:", err);
+      toast.error("Failed to regenerate invoice");
+    } finally {
+      setRegenerating(null);
+    }
+  };
+
+  const handleExportCsvOriginal = () => {
     if (filtered.length === 0) {
       toast.error("No invoices to export");
       return;
