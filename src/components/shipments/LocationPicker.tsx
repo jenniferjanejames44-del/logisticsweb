@@ -4,9 +4,12 @@ import { MapPin, Loader2, X } from "lucide-react";
 
 interface LocationData {
   address: string;
+  houseNumber: string;
+  streetName: string;
   city: string;
   state: string;
   country: string;
+  postcode: string;
   lat: number;
   lng: number;
 }
@@ -36,6 +39,8 @@ interface NominatimResult {
     state?: string;
     country?: string;
     postcode?: string;
+    county?: string;
+    state_district?: string;
   };
 }
 
@@ -81,10 +86,13 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
 
   const selectResult = (r: NominatimResult) => {
     const addr = r.address;
-    const street = [addr.house_number, addr.road].filter(Boolean).join(" ") || r.display_name.split(",")[0];
-    const city = addr.city || addr.town || addr.village || "";
-    const state = addr.state || "";
+    const houseNumber = addr.house_number || "";
+    const streetName = addr.road || "";
+    const street = [houseNumber, streetName].filter(Boolean).join(" ") || r.display_name.split(",")[0];
+    const city = addr.city || addr.town || addr.village || addr.suburb || "";
+    const state = addr.state || addr.state_district || addr.county || "";
     const country = addr.country || "";
+    const postcode = addr.postcode || "";
 
     setQuery(street);
     onChange(street);
@@ -93,9 +101,12 @@ const LocationPicker = ({ value, onChange, onLocationSelect, placeholder = "Sear
 
     onLocationSelect?.({
       address: street,
+      houseNumber,
+      streetName,
       city,
       state,
       country,
+      postcode,
       lat: parseFloat(r.lat),
       lng: parseFloat(r.lon),
     });
