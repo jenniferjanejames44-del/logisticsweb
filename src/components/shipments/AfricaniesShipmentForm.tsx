@@ -100,6 +100,40 @@ const IMPORT_WAREHOUSES = [
   },
 ] as const;
 
+const renderWarehouseFlag = (countryCode: string, country: string) => {
+  if (countryCode === "us") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(0 0% 100%)" />
+        {[0, 10, 20, 30, 40, 50, 60].map((y) => <rect key={y} y={y} width="64" height="5" fill="hsl(355 78% 46%)" />)}
+        <rect width="30" height="28" fill="hsl(220 70% 28%)" />
+        {[6, 16, 26].map((x) => [6, 14, 22].map((y) => <circle key={`${x}-${y}`} cx={x} cy={y} r="1.5" fill="hsl(0 0% 100%)" />))}
+      </svg>
+    );
+  }
+  if (countryCode === "gb") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(224 72% 32%)" />
+        <path d="M0 0 64 64M64 0 0 64" stroke="hsl(0 0% 100%)" strokeWidth="12" />
+        <path d="M0 0 64 64M64 0 0 64" stroke="hsl(355 78% 46%)" strokeWidth="6" />
+        <path d="M32 0v64M0 32h64" stroke="hsl(0 0% 100%)" strokeWidth="18" />
+        <path d="M32 0v64M0 32h64" stroke="hsl(355 78% 46%)" strokeWidth="10" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+      <rect width="64" height="64" fill="hsl(0 74% 45%)" />
+      <polygon points="18,10 20.5,17 28,17 22,21.5 24,29 18,24.5 12,29 14,21.5 8,17 15.5,17" fill="hsl(48 96% 55%)" />
+      <circle cx="36" cy="14" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="43" cy="22" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="43" cy="34" r="2.5" fill="hsl(48 96% 55%)" />
+      <circle cx="36" cy="42" r="2.5" fill="hsl(48 96% 55%)" />
+    </svg>
+  );
+};
+
 const IMPORT_STEPS = [
   "Shipping", "Sender", "Receiver", "Items", "Summary",
 ] as const;
