@@ -89,7 +89,7 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 h-[104px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[112px] lg:h-[120px]"
+      className="fixed top-0 left-0 right-0 z-50 h-[68px] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.04)] transition-all duration-300 sm:h-[72px] lg:h-[120px]"
     >
       <ContactStrip variant="header" />
       <div className="section-container flex h-[68px] items-center justify-between gap-3 sm:h-[72px] sm:gap-6 lg:h-20">
