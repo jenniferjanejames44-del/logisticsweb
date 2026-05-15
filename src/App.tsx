@@ -73,7 +73,6 @@ import Partner from "./pages/dashboard/Partner";
 import AdminPartners from "./pages/admin/AdminPartners";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import ComingSoon from "./pages/ComingSoon";
 const queryClient = new QueryClient();
 
 // Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
