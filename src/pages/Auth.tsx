@@ -37,7 +37,10 @@ const AuthForm = () => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -47,6 +50,7 @@ const AuthForm = () => {
   const [companyName, setCompanyName] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [isResending, setIsResending] = useState(false);
@@ -98,6 +102,22 @@ const AuthForm = () => {
     }
   };
 
+  // Password strength meter
+  const getPasswordStrength = (pw: string) => {
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[a-z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    if (score <= 2) return { label: "Weak", color: "bg-destructive", text: "text-destructive", width: "w-1/4" };
+    if (score === 3) return { label: "Fair", color: "bg-amber-500", text: "text-amber-600", width: "w-2/4" };
+    if (score === 4) return { label: "Good", color: "bg-blue-500", text: "text-blue-600", width: "w-3/4" };
+    return { label: "Strong", color: "bg-emerald-500", text: "text-emerald-600", width: "w-full" };
+  };
+  const pwStrength = getPasswordStrength(password);
+  const passwordsMatch = !confirmPassword || password === confirmPassword;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -121,12 +141,19 @@ const AuthForm = () => {
         const redirectTo = await getPostAuthRedirectPath(data.user.id);
         navigate(redirectTo, { replace: true });
       } else {
-        if (!fullName.trim()) throw new Error("Please enter your full name");
+        if (!firstName.trim()) throw new Error("Please enter your first name");
+        if (!lastName.trim()) throw new Error("Please enter your last name");
         if (!phone.trim()) throw new Error("Please enter your phone number");
         if (!address.trim()) throw new Error("Please enter your full address");
         if (!country.trim()) throw new Error("Please select or enter your country");
         if (!stateRegion.trim()) throw new Error("Please select your state / region");
         if (!city.trim()) throw new Error("Please enter your city / LGA");
+        if (password.length < 8) throw new Error("Password must be at least 8 characters");
+        if (password !== confirmPassword) throw new Error("Passwords do not match");
+
+        const fullName = [firstName.trim(), middleName.trim(), lastName.trim()]
+          .filter(Boolean)
+          .join(" ");
 
         // Pre-signup duplicate check — Supabase silently "succeeds" for existing
         // emails without sending a verification email, so we block it explicitly.
