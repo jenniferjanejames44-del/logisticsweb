@@ -77,6 +77,7 @@ const LocationSelector = ({
             countries={states.map((s) => s.name)}
             placeholder={country ? "Select state / region" : "Select country first"}
             disabled={disabled || !country}
+            allowCustom
             aria-invalid={!!errors.state}
           />
         ) : (
