@@ -536,6 +536,8 @@ ${isPaid ? `.document::after{
         <table class="sum" style="width:100%;">
           <tr><td class="lbl">Additional Charges</td><td class="val">${fmt(additionalCharges, currency)}</td></tr>
           <tr><td class="lbl">Pickup Charges</td><td class="val">${fmt(pickupCharges, currency)}</td></tr>
+          <tr><td class="lbl">Net (excl. VAT)</td><td class="val">${fmt(netAmount, currency)}</td></tr>
+          <tr><td class="lbl">VAT (${VAT_RATE}%)</td><td class="val">${fmt(vatAmount, currency)}</td></tr>
           <tr class="${isPaid ? 'paid' : ''}"><td class="lbl">Amount Paid (${currency})</td><td class="val">${fmt(amountPaid, currency)}</td></tr>
           <tr class="total"><td class="lbl">Total Due (${currency})</td><td class="val">${fmt(totalDue, currency)}</td></tr>
         </table>
