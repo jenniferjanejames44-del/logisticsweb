@@ -1059,40 +1059,38 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           </div>
         );
 
-      case "Package":
-        return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
-            <div className="mt-4">
-              {packageLoading ? (
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
-                </div>
-              ) : packageOptions.length > 0 ? (
-                <PackageSelector
-                  options={packageOptions}
-                  selectedId={selectedPackageId}
-                  onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
-                  customDims={customDims}
-                  onCustomDimsChange={setCustomDims}
-                  errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
-                />
-              ) : (
-                <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
-                  No active packaging materials are available. Please add or enable packaging in Admin Packaging.
-                </div>
-              )}
-            </div>
-          </div>
-        );
-
       case "Items":
         return (
-          <div>
-            <h2 className="text-lg font-bold text-foreground">Item Details</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
-            <div className="mt-4 space-y-3">
+          <div className="space-y-8">
+            <section>
+              <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
+              <div className="mt-4">
+                {packageLoading ? (
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
+                  </div>
+                ) : packageOptions.length > 0 ? (
+                  <PackageSelector
+                    options={packageOptions}
+                    selectedId={selectedPackageId}
+                    onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
+                    customDims={customDims}
+                    onCustomDimsChange={setCustomDims}
+                    errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
+                  />
+                ) : (
+                  <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
+                    No active packaging materials are available. Please add or enable packaging in Admin Packaging.
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <section className="border-t border-border/40 pt-6">
+              <h2 className="text-lg font-bold text-foreground">Item Details</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
+              <div className="mt-4 space-y-3">
               {items.length === 0 && !itemFormOpen ? (
                 <button
                   type="button"
