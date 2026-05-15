@@ -153,10 +153,6 @@ const AdminInvoices = () => {
     toast.success("Saved. Open the file and use Print → Save as PDF.");
   };
 
-  const handleExportCsv = () => {
-    void 0;
-  };
-
   const handleResendEmail = async (invoice: Invoice) => {
     setResending(invoice.id);
     try {
@@ -204,7 +200,7 @@ const AdminInvoices = () => {
     }
   };
 
-  const handleExportCsvOriginal = () => {
+  const handleExportCsv = () => {
     if (filtered.length === 0) {
       toast.error("No invoices to export");
       return;
