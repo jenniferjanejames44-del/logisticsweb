@@ -73,7 +73,6 @@ import Partner from "./pages/dashboard/Partner";
 import AdminPartners from "./pages/admin/AdminPartners";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import ComingSoon from "./pages/ComingSoon";
 const queryClient = new QueryClient();
 
 // Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
@@ -121,8 +120,7 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
-              <Route path="/" element={<ComingSoon />} />
-              <Route path="*" element={<ComingSoon />} />
+              <Route path="/" element={<Index />} />
               {/* Original routes preserved below — re-enable by removing the catch-all above */}
               <Route path="/__site/" element={<Index />} />
               <Route path="/about" element={<About />} />
@@ -191,7 +189,7 @@ const App = () => (
               {/* Design System */}
               <Route path="/design-system" element={<DesignSystem />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              {/* Catch-all handled by ComingSoon above while site is in pre-launch mode */}
+              <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
             </TooltipProvider>
