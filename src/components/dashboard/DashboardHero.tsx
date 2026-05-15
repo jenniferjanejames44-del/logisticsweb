@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search, Copy, Check, Package } from "lucide-react";
+import { Search, Copy, Check, Package } from "lucide-react";
 
 const DashboardHero = () => {
   const { user } = useAuth();
