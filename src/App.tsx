@@ -73,6 +73,7 @@ import Partner from "./pages/dashboard/Partner";
 import AdminPartners from "./pages/admin/AdminPartners";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import ComingSoon from "./pages/ComingSoon";
 const queryClient = new QueryClient();
 
 // Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
@@ -120,7 +121,10 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<ComingSoon />} />
+              <Route path="*" element={<ComingSoon />} />
+              {/* Original routes preserved below — re-enable by removing the catch-all above */}
+              <Route path="/__site/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
               <Route path="/services/air-shipping" element={<AirShipping />} />
