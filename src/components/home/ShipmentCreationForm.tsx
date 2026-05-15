@@ -53,13 +53,13 @@ const serviceTypes = [
 ];
 
 const exportWarehouses = [
-  { id: "usa_warehouse", name: "USA Warehouse", flag: "🇺🇸" },
-  { id: "uk_warehouse", name: "UK Warehouse", flag: "🇬🇧" },
-  { id: "china_warehouse", name: "China Warehouse", flag: "🇨🇳" },
+  { id: "usa_warehouse", name: "USA Warehouse", country: "United States", city: "Richmond, TX", code: "us" },
+  { id: "uk_warehouse", name: "UK Warehouse", country: "United Kingdom", city: "London", code: "gb" },
+  { id: "china_warehouse", name: "China Warehouse", country: "China", city: "Guangzhou", code: "cn" },
 ];
 
 const importWarehouses = [
-  { id: "nigeria_warehouse", name: "Nigeria Warehouse (Lagos)", flag: "🇳🇬" },
+  { id: "nigeria_warehouse", name: "Nigeria Warehouse", country: "Nigeria", city: "Lagos", code: "ng" },
 ];
 
 const warehouseLocations = [
