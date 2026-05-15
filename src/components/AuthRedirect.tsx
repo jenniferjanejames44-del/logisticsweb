@@ -43,7 +43,14 @@ const AuthRedirect = ({ children }: AuthRedirectProps) => {
       }
 
       try {
-        const redirectTo = await getPostAuthRedirectPath(user.id);
+        // Race the role lookup against a timeout so a hung network
+        // request never traps the user on the auth page with a spinner.
+        const redirectTo = await Promise.race<string>([
+          getPostAuthRedirectPath(user.id),
+          new Promise<string>((resolve) =>
+            setTimeout(() => resolve("/dashboard"), 4000),
+          ),
+        ]);
         setHasRedirected(true);
         navigate(redirectTo, { replace: true });
       } catch (err) {

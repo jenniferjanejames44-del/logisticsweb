@@ -83,9 +83,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       setLoading(false);
+    }).catch((err) => {
+      console.error("[Auth] getSession failed:", err);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Safety net: never let the auth loading state hang forever.
+    // If neither getSession nor onAuthStateChange has resolved within 6s
+    // (e.g. transient network issue), unblock the UI so the auth form is
+    // usable instead of showing "Signing you in..." indefinitely.
+    const safetyTimeout = setTimeout(() => {
+      setLoading((prev) => {
+        if (prev) {
+          console.warn("[Auth] Safety timeout reached — releasing loading state.");
+        }
+        return false;
+      });
+    }, 6000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(safetyTimeout);
+    };
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string, metadata?: { phone?: string; address?: string; city?: string; state?: string; country?: string; zip_code?: string; company_name?: string; referral_code?: string }) => {
