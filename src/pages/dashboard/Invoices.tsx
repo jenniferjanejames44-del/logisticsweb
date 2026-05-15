@@ -37,6 +37,7 @@ const Invoices = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [downloading, setDownloading] = useState<string | null>(null);
   const [invoiceHtml, setInvoiceHtml] = useState<string | null>(null);
+  const [currentInvoice, setCurrentInvoice] = useState<Invoice | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const fetchInvoices = useCallback(async () => {
@@ -65,6 +66,7 @@ const Invoices = () => {
       const { data: fileData, error: dlError } = await supabase.storage.from("invoices").download(filePath);
       if (dlError) throw dlError;
       const htmlText = await fileData.text();
+      setCurrentInvoice(invoice);
       setInvoiceHtml(htmlText);
     } catch (err) {
       console.error("Download error:", err);
