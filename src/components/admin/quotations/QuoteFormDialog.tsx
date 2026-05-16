@@ -114,7 +114,12 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
       }
       const totals = computeShipmentTotals({
         rule: toLegacyRule(rule),
-        chargeableWeightKg: chargeable,
+        packageDims: {
+          length_cm: Number(form.length_cm) || 0,
+          width_cm: Number(form.width_cm) || 0,
+          height_cm: Number(form.height_cm) || 0,
+        },
+        items: [{ name: form.description || "Package", quantity: 1, weightKg: Number(form.weight_kg) || 0, declaredValue: Number(form.declared_value) || 0 }],
         declaredValue: Number(form.declared_value) || 0,
       });
       const ngnRate = await getNgnRate(rule.currency);
