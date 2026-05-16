@@ -12,7 +12,8 @@ import { matchPricingRule, toLegacyRule, getNgnRate } from "@/lib/pricingEngineV
 import { computeShipmentTotals } from "@/lib/pricingEngine";
 import { formatMoney, formatNgn, type Quotation } from "@/lib/quotations";
 import { toast } from "sonner";
-import { Loader2, FileText, Calculator } from "lucide-react";
+import { Loader2, FileText, Calculator, Settings2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface Props {
   open: boolean;
@@ -43,12 +44,23 @@ const defaultForm = {
   notes: "",
 };
 
+const defaultManual = {
+  currency: "USD",
+  shipping_cost: "",
+  handling_fee: "",
+  customs_fee: "",
+  vat_percent: "7.5",
+  insurance_percent: "1.5",
+};
+
 const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
   const [form, setForm] = useState(defaultForm);
   const [saving, setSaving] = useState(false);
   const [calc, setCalc] = useState<any>(null);
   const [calculating, setCalculating] = useState(false);
   const [ngnTotal, setNgnTotal] = useState<number | null>(null);
+  const [manualMode, setManualMode] = useState(false);
+  const [manual, setManual] = useState(defaultManual);
 
   useEffect(() => {
     if (open) {
@@ -79,6 +91,8 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
       }
       setCalc(null);
       setNgnTotal(null);
+      setManualMode(false);
+      setManual(defaultManual);
     }
   }, [open, initial]);
 
@@ -98,6 +112,33 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
     setCalculating(true);
     try {
       const chargeable = computeChargeable();
+      if (manualMode) {
+        const shipping = Number(manual.shipping_cost) || 0;
+        const handling = Number(manual.handling_fee) || 0;
+        const customs = Number(manual.customs_fee) || 0;
+        const vatPct = Number(manual.vat_percent) || 0;
+        const insPct = Number(manual.insurance_percent) || 0;
+        const declared = Number(form.declared_value) || 0;
+        const subtotal = shipping + handling + customs;
+        const vat = +(subtotal * vatPct / 100).toFixed(2);
+        const insurance = +(declared * insPct / 100).toFixed(2);
+        const total = +(subtotal + vat + insurance).toFixed(2);
+        const fakeRule = {
+          id: null,
+          name: "Manual Pricing",
+          currency: manual.currency,
+          handling_fee: handling,
+          customs_fee: customs,
+          vat_percent: vatPct,
+          insurance_percent: insPct,
+        };
+        const totals = { shippingCost: shipping, packagingCost: 0, handling, customs, vat, insurance, total };
+        const ngnRate = await getNgnRate(manual.currency);
+        const ngn = ngnRate ? Math.round(total * ngnRate) : null;
+        setCalc({ rule: fakeRule, totals, chargeable, manual: true });
+        setNgnTotal(ngn);
+        return;
+      }
       const rule = await matchPricingRule({
         shipmentType: form.shipment_type,
         originCountry: form.shipment_type === "import" ? form.origin_country : "Nigeria",
@@ -108,7 +149,8 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
         chargeableWeight: chargeable,
       });
       if (!rule) {
-        toast.error("No pricing rule found for this route");
+        toast.error("No pricing rule found — switched to Manual Pricing. Enter prices below.");
+        setManualMode(true);
         setCalc(null);
         return;
       }
@@ -164,15 +206,15 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
         chargeable_weight: chargeable,
         description: form.description || null,
         declared_value: Number(form.declared_value) || 0,
-        pricing_rule_id: rule.id,
+        pricing_rule_id: rule.id || null,
         currency: rule.currency,
-        subtotal: totals.shippingCost + (totals as any).packagingCost,
+        subtotal: totals.shippingCost + ((totals as any).packagingCost || 0),
         handling_fee: rule.handling_fee,
         customs_fee: rule.customs_fee,
         vat: totals.vat,
         insurance: totals.insurance,
         total: totals.total,
-        pricing_snapshot: { rule, totals, chargeable },
+        pricing_snapshot: { rule, totals, chargeable, manual: !!calc.manual },
         ngn_total: ngnTotal,
         valid_until: form.valid_until,
         notes: form.notes || null,
@@ -316,11 +358,57 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
         <section className="space-y-3 rounded-xl border border-border/60 bg-muted/30 p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pricing</h3>
-            <Button type="button" variant="outline" size="sm" onClick={handleCalculate} disabled={calculating}>
-              {calculating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calculator className="w-4 h-4" />}
-              {calc ? "Recalculate" : "Calculate"}
-            </Button>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 text-xs">
+                <Settings2 className="w-3.5 h-3.5" />
+                <span>Manual</span>
+                <Switch checked={manualMode} onCheckedChange={(v) => { setManualMode(v); setCalc(null); }} />
+              </label>
+              <Button type="button" variant="outline" size="sm" onClick={handleCalculate} disabled={calculating}>
+                {calculating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calculator className="w-4 h-4" />}
+                {calc ? "Recalculate" : "Calculate"}
+              </Button>
+            </div>
           </div>
+          {manualMode && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-lg bg-background/60 p-3 border border-border/40">
+              <div>
+                <Label className="text-xs">Currency</Label>
+                <Select value={manual.currency} onValueChange={(v) => setManual((m) => ({ ...m, currency: v }))}>
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="NGN">NGN</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Shipping Cost</Label>
+                <Input type="number" min="0" value={manual.shipping_cost} onChange={(e) => setManual((m) => ({ ...m, shipping_cost: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Handling Fee</Label>
+                <Input type="number" min="0" value={manual.handling_fee} onChange={(e) => setManual((m) => ({ ...m, handling_fee: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Customs Fee</Label>
+                <Input type="number" min="0" value={manual.customs_fee} onChange={(e) => setManual((m) => ({ ...m, customs_fee: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">VAT %</Label>
+                <Input type="number" min="0" value={manual.vat_percent} onChange={(e) => setManual((m) => ({ ...m, vat_percent: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Insurance %</Label>
+                <Input type="number" min="0" value={manual.insurance_percent} onChange={(e) => setManual((m) => ({ ...m, insurance_percent: e.target.value }))} />
+              </div>
+              <p className="col-span-full text-[11px] text-muted-foreground">
+                Insurance is calculated on declared value. VAT applies to shipping + handling + customs.
+              </p>
+            </div>
+          )}
           {calc ? (
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">Rule</span><span className="font-medium">{calc.rule.name}</span></div>
