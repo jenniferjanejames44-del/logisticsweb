@@ -17,37 +17,60 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
   const [loading, setLoading] = useState(false);
   const [html, setHtml] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const lastGeneratedQuoteId = useRef<string | null>(null);
+  const pendingRequest = useRef<{ quoteId: string; promise: Promise<string | null> } | null>(null);
+  const onUpdatedRef = useRef(onUpdated);
+
+  useEffect(() => {
+    onUpdatedRef.current = onUpdated;
+  }, [onUpdated]);
 
   useEffect(() => {
     if (!open || !quote) return;
     let cancelled = false;
     (async () => {
+      if (lastGeneratedQuoteId.current === quote.id && html) return;
       setLoading(true);
+      setHtml(null);
       try {
-        const { data, error } = await supabase.functions.invoke("generate-quotation-pdf", {
-          body: { quotation_id: quote.id },
-        });
-        if (error) throw error;
+        const promise = pendingRequest.current?.quoteId === quote.id
+          ? pendingRequest.current.promise
+          : (async () => {
+              const generated = await supabase.functions.invoke("generate-quotation-pdf", {
+                body: { quotation_id: quote.id },
+              });
+              if (generated.error) throw generated.error;
+              const data = generated.data as { file_path?: string } | null;
+              if (!data?.file_path) return null;
+              const { data: file, error } = await supabase.storage
+                .from("invoices")
+                .download(data.file_path);
+              if (error) throw error;
+              return file ? await file.text() : null;
+            })().finally(() => {
+              if (pendingRequest.current?.quoteId === quote.id) pendingRequest.current = null;
+            });
+
+        if (!pendingRequest.current || pendingRequest.current.quoteId !== quote.id) {
+          pendingRequest.current = { quoteId: quote.id, promise };
+        }
+
+        const text = await promise;
         if (cancelled) return;
-        if (data?.file_path) {
-          const { data: file } = await supabase.storage
-            .from("invoices")
-            .download(data.file_path);
-          if (file) {
-            const text = await file.text();
-            setHtml(text);
-          }
-          onUpdated?.();
+        if (text) {
+          setHtml(text);
+          lastGeneratedQuoteId.current = quote.id;
+          onUpdatedRef.current?.();
         }
       } catch (e: any) {
         console.error(e);
         toast.error(e.message || "Failed to generate quotation PDF");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     })();
     return () => { cancelled = true; };
-  }, [open, quote, onUpdated]);
+  }, [open, quote?.id, quote?.pdf_url, html]);
 
   const handlePrint = () => iframeRef.current?.contentWindow?.print();
   const handleDownload = () => {
@@ -56,7 +79,7 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${quote.quote_number}.html`;
+    a.download = `${quote.quote_number}-RAC-Quotation.html`;
     a.click();
     URL.revokeObjectURL(url);
   };

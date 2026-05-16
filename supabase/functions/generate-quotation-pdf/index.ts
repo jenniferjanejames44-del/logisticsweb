@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
     }
 
     const html = renderHTML(quote);
-    const filePath = `quotations/${quote.quote_number}.html`;
+    const filePath = `quotations/${quote.id}/${quote.quote_number}-RAC-Quotation.html`;
     const { error: upErr } = await supabase.storage.from('invoices').upload(filePath, new Blob([html], { type: 'text/html' }), { contentType: 'text/html', upsert: true });
     if (upErr) {
       return new Response(JSON.stringify({ error: 'Upload failed' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
@@ -53,92 +53,125 @@ Deno.serve(async (req) => {
   }
 });
 
+function escapeHtml(value: unknown) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function fmt(n: number, c: string) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: (c || 'USD').toUpperCase(), minimumFractionDigits: 2 }).format(Number(n || 0));
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: (c || 'USD').toUpperCase(),
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(n || 0));
+}
+
+function fmtDate(value: string) {
+  return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
+}
+
+function chargeRow(label: string, amount: number, currency: string, note = '') {
+  return `<tr><td>${escapeHtml(label)}${note ? `<small>${escapeHtml(note)}</small>` : ''}</td><td class="r">${fmt(amount, currency)}</td></tr>`;
 }
 
 function renderHTML(q: any) {
-  const created = new Date(q.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-  const valid = new Date(q.valid_until).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
-  const ngnLine = q.ngn_total && (q.currency || '').toUpperCase() !== 'NGN'
-    ? `<div class="row"><span>NGN equivalent</span><span>₦${Number(q.ngn_total).toLocaleString('en-NG')}</span></div>` : '';
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Quotation ${q.quote_number}</title>
+  const created = fmtDate(q.created_at);
+  const valid = fmtDate(q.valid_until);
+  const currency = (q.currency || 'USD').toUpperCase();
+  const chargeable = Number(q.chargeable_weight || q.weight_kg || 0);
+  const dims = [q.length_cm, q.width_cm, q.height_cm].filter(Boolean).length === 3
+    ? `${q.length_cm} × ${q.width_cm} × ${q.height_cm} cm`
+    : 'Not specified';
+  const reference = `RAC-QTN-${String(q.id || '').slice(0, 8).toUpperCase()}`;
+  const status = String(q.status || 'draft').replace(/_/g, ' ').toUpperCase();
+  const ngnLine = q.ngn_total && currency !== 'NGN'
+    ? `<tr><td>NGN payable estimate</td><td class="r">&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
+
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>RAC Logistics Quotation ${escapeHtml(q.quote_number)}</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;color:#0f172a;background:#f5f5f7;padding:24px;}
-.doc{max-width:780px;margin:0 auto;background:#fff;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,.06);border-radius:12px;}
-.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #061043;padding-bottom:20px;margin-bottom:24px;}
-.brand h1{font-size:24px;color:#061043;letter-spacing:-.5px;}
-.brand p{font-size:11px;color:#64748b;margin-top:4px;letter-spacing:.5px;text-transform:uppercase;}
-.doc-meta{text-align:right;}
-.doc-meta .tag{display:inline-block;background:#DF5101;color:#fff;padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
-.doc-meta h2{font-size:18px;margin-top:8px;color:#061043;}
-.doc-meta p{font-size:12px;color:#64748b;margin-top:4px;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-.card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;}
-.card h3{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:10px;}
-.card p{font-size:13px;line-height:1.7;color:#1e293b;}
-.card p strong{color:#0f172a;}
-table{width:100%;border-collapse:collapse;margin-bottom:24px;}
-thead{background:#061043;color:#fff;}
-th{text-align:left;padding:12px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;}
-th.r,td.r{text-align:right;}
-td{padding:12px 14px;font-size:13px;border-bottom:1px solid #e2e8f0;}
-tr:last-child td{border-bottom:none;}
-.totals{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;margin-left:auto;max-width:340px;}
-.row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:#475569;}
-.row.total{border-top:2px solid #061043;margin-top:8px;padding-top:12px;font-size:16px;font-weight:800;color:#061043;}
-.notice{margin-top:24px;padding:14px 18px;background:#fef3e7;border-left:4px solid #DF5101;border-radius:6px;font-size:12px;color:#7c2d12;}
-.footer{margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;font-size:11px;color:#94a3b8;}
+body{font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1d2433;background:#e9ecef;font-size:11px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+.document{width:210mm;min-height:297mm;margin:18px auto;background:#fff;padding:18mm;box-shadow:0 2px 20px rgba(0,0,0,.12);position:relative;overflow:hidden;}
+:root{--navy:#061043;--orange:#DF5101;--ink:#1d2433;--muted:#667085;--line:#cbd5e1;--soft:#f4f7fb;}
+table{width:100%;border-collapse:collapse;}.r{text-align:right;}.muted{color:var(--muted);}.strong{font-weight:800;color:var(--navy);}small{display:block;color:var(--muted);font-size:8.5px;margin-top:2px;}
+.top{width:100%;margin-bottom:14px;table-layout:fixed;}.top td{vertical-align:top;padding:0;}.brand-cell{width:61%;padding-right:18px!important;}.doc-cell{width:39%;text-align:right;padding-left:18px!important;}
+.brand-logo{height:60px;width:auto;max-width:330px;display:block;margin-bottom:8px;}.brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}.brand-details{font-size:9.8px;color:#444;line-height:1.65;}.rc-label{font-size:10px;color:#444;font-weight:700;margin-top:6px;}
+.doc-title{font-size:35px;font-weight:900;color:var(--navy);letter-spacing:3.5px;text-transform:uppercase;line-height:.95;margin-bottom:10px;}.status{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:9px;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;margin-bottom:8px;}
+.doc-meta{display:inline-table;width:100%;max-width:245px;border-top:3px solid var(--navy);border-bottom:1px solid var(--line);}.doc-meta div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:5px 0;font-size:9.5px;}.doc-meta div:last-child{border-bottom:0;}.doc-meta span:first-child{color:#666;font-weight:800;text-transform:uppercase;}.doc-meta span:last-child{font-weight:800;text-align:right;color:var(--ink);}
+.divider{height:3.5px;background:var(--navy);margin:0 0 14px;}.bar{background:var(--navy);color:#fff;font-size:10px;font-weight:800;padding:6px 10px;letter-spacing:.4px;text-transform:uppercase;}.bar.orange{background:var(--orange);}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}.box{border:1px solid var(--line);background:#fff;}.box-body{padding:10px;font-size:10.5px;line-height:1.75;min-height:82px;}.box-body strong{color:var(--navy);font-size:11.5px;}.route{background:var(--soft);border:1px solid var(--line);padding:10px 12px;margin-bottom:14px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:center;}.route h2{font-size:18px;color:var(--navy);line-height:1.2;}.route p{font-size:10px;color:var(--muted);margin-top:4px;}.route-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}.pill{border:1px solid var(--line);background:#fff;padding:7px 8px;}.pill span{display:block;color:var(--muted);font-size:8px;font-weight:800;text-transform:uppercase;}.pill strong{display:block;color:var(--ink);font-size:10px;margin-top:2px;}
+.charges{border:1px solid var(--line);margin-bottom:14px;}.charges th{background:var(--navy);color:#fff;padding:7px 10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.35px;}.charges td{padding:8px 10px;font-size:10.5px;border:1px solid var(--line);}.charges td:first-child{font-weight:700;color:var(--ink);}.charges .r{font-weight:800;white-space:nowrap;}
+.bottom{margin-top:4px;}.bottom>tbody>tr>td{vertical-align:top;}.terms{border:1px solid var(--line);}.terms-body{padding:10px;font-size:9.5px;color:#475467;line-height:1.7;}.sum{border:1px solid var(--line);}.sum td{padding:6px 10px;font-size:10.5px;border:1px solid var(--line);}.sum td:first-child{font-weight:700;background:var(--soft);}.sum td:last-child{text-align:right;font-weight:800;}.sum .grand td{background:var(--navy);color:#fff;font-size:12px;font-weight:900;}.sum .ngn td{background:#fff7ed;color:#7c2d12;}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}.sig-line{border-top:1px solid var(--line);padding-top:6px;font-size:9px;color:var(--muted);}.notice{margin-top:14px;padding:10px 12px;background:#fff7ed;border-left:4px solid var(--orange);font-size:9.5px;color:#7c2d12;}.footer{margin-top:20px;padding-top:10px;border-top:3px solid var(--navy);text-align:center;}.footer .ftr-brand{font-size:12px;font-weight:900;color:var(--navy);letter-spacing:1px;}.footer p{font-size:9.5px;color:#666;margin-bottom:3px;}
+@media screen and (max-width:800px){html,body{background:#fff;}.document{width:100%;min-height:auto;margin:0;padding:14px;box-shadow:none;}.top,.top tbody,.top tr,.top td{display:block;width:100%!important;padding:0!important;}.doc-cell{text-align:left;margin-top:14px;}.doc-title{text-align:left;font-size:28px;}.doc-meta{max-width:100%;}.intro,.route,.sign{grid-template-columns:1fr;}.charges{min-width:520px;}.charges-wrap{overflow-x:auto;}.bottom,.bottom tbody,.bottom tr,.bottom td{display:block;width:100%!important;padding:0!important;}.bottom td{margin-bottom:10px;}}
+@media print{html,body{background:#fff;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}.document{width:100%;min-height:auto;margin:0;padding:10mm 14mm;box-shadow:none;}}
 </style></head><body>
-<div class="doc">
-  <div class="head">
-    <div class="brand"><h1>RAC Logistics</h1><p>Global Logistics Solutions</p></div>
-    <div class="doc-meta">
-      <span class="tag">Quotation</span>
-      <h2>${q.quote_number}</h2>
-      <p>Issued ${created}<br>Valid until ${valid}</p>
+<div class="document">
+  <table class="top"><tr>
+    <td class="brand-cell">
+      <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet"><g fill="#07145C"><path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/><path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/><rect x="126" y="111" width="112" height="64" rx="2"/></g><circle cx="144" cy="188" r="29" fill="#DF5101"/><text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text><text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text></svg>
+      <div class="brand-sub">Courier &amp; Freight Services</div>
+      <div class="brand-details">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>+234 818 595 6707 &nbsp;·&nbsp; info@raclogisticltd.com &nbsp;·&nbsp; www.raclogisticltd.com</div>
+      <div class="rc-label">RC: 1454183</div>
+    </td>
+    <td class="doc-cell">
+      <div class="status">${escapeHtml(status)}</div>
+      <div class="doc-title">Quotation</div>
+      <div class="doc-meta">
+        <div><span>No.</span><span>${escapeHtml(q.quote_number)}</span></div>
+        <div><span>Date</span><span>${created}</span></div>
+        <div><span>Valid Until</span><span>${valid}</span></div>
+        <div><span>Ref</span><span>${reference}</span></div>
+      </div>
+    </td>
+  </tr></table>
+  <div class="divider"></div>
+
+  <div class="intro">
+    <div class="box"><div class="bar">Prepared For</div><div class="box-body"><strong>${escapeHtml(q.customer_name)}</strong><br>${q.customer_email ? `${escapeHtml(q.customer_email)}<br>` : ''}${q.customer_phone ? `${escapeHtml(q.customer_phone)}<br>` : ''}<span class="muted">Customer quotation for RAC Logistics freight service.</span></div></div>
+    <div class="box"><div class="bar orange">Quotation Summary</div><div class="box-body"><strong>${escapeHtml(String(q.shipment_type || '').toUpperCase())} SHIPMENT</strong><br>${escapeHtml(String(q.shipping_method || '').toUpperCase())}${q.service_type ? ` · ${escapeHtml(q.service_type)}` : ''}<br><span class="muted">Service subject to verified shipment details and final operational review.</span></div></div>
+  </div>
+
+  <div class="route">
+    <div><h2>${escapeHtml(q.origin_country)}${q.origin_city ? `, ${escapeHtml(q.origin_city)}` : ''} &rarr; ${escapeHtml(q.destination_country)}${q.destination_city ? `, ${escapeHtml(q.destination_city)}` : ''}</h2><p>${escapeHtml(q.description || 'General logistics shipment')}</p></div>
+    <div class="route-grid">
+      <div class="pill"><span>Actual Weight</span><strong>${Number(q.weight_kg || 0).toFixed(2)} KG</strong></div>
+      <div class="pill"><span>Chargeable</span><strong>${chargeable.toFixed(2)} KG</strong></div>
+      <div class="pill"><span>Dimensions</span><strong>${escapeHtml(dims)}</strong></div>
+      <div class="pill"><span>Declared Value</span><strong>${fmt(Number(q.declared_value || 0), currency)}</strong></div>
     </div>
   </div>
 
-  <div class="grid">
-    <div class="card">
-      <h3>Customer</h3>
-      <p><strong>${q.customer_name}</strong></p>
-      ${q.customer_email ? `<p>${q.customer_email}</p>` : ''}
-      ${q.customer_phone ? `<p>${q.customer_phone}</p>` : ''}
-    </div>
-    <div class="card">
-      <h3>Shipment</h3>
-      <p><strong>${(q.shipment_type || '').toUpperCase()}</strong> · ${(q.shipping_method || '').toUpperCase()}</p>
-      <p>${q.origin_country}${q.origin_city ? ', ' + q.origin_city : ''} → ${q.destination_country}${q.destination_city ? ', ' + q.destination_city : ''}</p>
-      <p>Weight: ${Number(q.weight_kg).toFixed(2)} kg${q.chargeable_weight ? ` (Chargeable ${Number(q.chargeable_weight).toFixed(2)} kg)` : ''}</p>
-    </div>
-  </div>
-
-  <table>
+  <div class="charges-wrap"><table class="charges">
     <thead><tr><th>Description</th><th class="r">Amount</th></tr></thead>
     <tbody>
-      <tr><td>Shipping (${Number(q.chargeable_weight || q.weight_kg).toFixed(2)} kg)</td><td class="r">${fmt(q.subtotal, q.currency)}</td></tr>
-      <tr><td>Handling &amp; Customs</td><td class="r">${fmt(Number(q.handling_fee) + Number(q.customs_fee), q.currency)}</td></tr>
-      <tr><td>VAT</td><td class="r">${fmt(q.vat, q.currency)}</td></tr>
-      <tr><td>Insurance</td><td class="r">${fmt(q.insurance, q.currency)}</td></tr>
+      ${chargeRow(`Freight charge (${chargeable.toFixed(2)} KG)`, Number(q.subtotal || 0), currency, 'Calculated from RAC Logistics pricing engine')}
+      ${chargeRow('Handling fee', Number(q.handling_fee || 0), currency)}
+      ${chargeRow('Customs / clearing estimate', Number(q.customs_fee || 0), currency)}
+      ${chargeRow('VAT', Number(q.vat || 0), currency)}
+      ${chargeRow('Insurance', Number(q.insurance || 0), currency)}
     </tbody>
-  </table>
+  </table></div>
 
-  <div class="totals">
-    <div class="row"><span>Subtotal</span><span>${fmt(Number(q.subtotal) + Number(q.handling_fee) + Number(q.customs_fee), q.currency)}</span></div>
-    <div class="row"><span>VAT + Insurance</span><span>${fmt(Number(q.vat) + Number(q.insurance), q.currency)}</span></div>
-    <div class="row total"><span>Total</span><span>${fmt(q.total, q.currency)}</span></div>
-    ${ngnLine}
-  </div>
+  <table class="bottom"><tr>
+    <td style="width:55%;padding-right:10px;"><div class="terms"><div class="bar">Terms &amp; Notes</div><div class="terms-body">This quotation is valid until <strong>${valid}</strong>. Pricing is based on the details provided and may change after physical verification, dimensional weight confirmation, customs assessment, or special handling requirements.${q.notes ? `<br><br><strong>Admin Note:</strong> ${escapeHtml(q.notes)}` : ''}</div></div></td>
+    <td style="width:45%;"><table class="sum">
+      <tr><td>Subtotal</td><td>${fmt(Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0), currency)}</td></tr>
+      <tr><td>VAT + Insurance</td><td>${fmt(Number(q.vat || 0) + Number(q.insurance || 0), currency)}</td></tr>
+      ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
+      <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
+    </table></td>
+  </tr></table>
 
-  <div class="notice">This quotation is valid until ${valid}. Pricing is subject to change after this date. Final invoice may include verified weight adjustments.</div>
-
-  ${q.notes ? `<div class="card" style="margin-top:20px;"><h3>Notes</h3><p>${q.notes}</p></div>` : ''}
-
-  <div class="footer">RAC Logistics · info@raclogisticltd.com · Thank you for your business.</div>
+  <div class="sign"><div class="sig-line">Prepared by RAC Logistics</div><div class="sig-line">Customer Approval / Signature</div></div>
+  <div class="notice">For payment or shipment conversion, this quotation should be reviewed and confirmed from the RAC Logistics dashboard or by an authorized RAC Logistics representative.</div>
+  <div class="footer"><p class="ftr-brand">RAC LOGISTICS LTD</p><p>Thank you for choosing RAC Logistics.</p><p>Questions about this quotation? Contact info@raclogisticltd.com or +234 818 595 6707.</p></div>
 </div>
 </body></html>`;
 }
