@@ -166,7 +166,7 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
         declared_value: Number(form.declared_value) || 0,
         pricing_rule_id: rule.id,
         currency: rule.currency,
-        subtotal: totals.subtotal,
+        subtotal: totals.shippingCost + (totals as any).packagingCost,
         handling_fee: rule.handling_fee,
         customs_fee: rule.customs_fee,
         vat: totals.vat,
