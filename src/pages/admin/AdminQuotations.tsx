@@ -25,7 +25,10 @@ import QuotationStatusBadge from "@/components/admin/quotations/QuotationStatusB
 import QuoteFormDialog from "@/components/admin/quotations/QuoteFormDialog";
 import WhatsAppShareDialog from "@/components/admin/quotations/WhatsAppShareDialog";
 import PdfPreviewDialog from "@/components/admin/quotations/PdfPreviewDialog";
-import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const AdminQuotations = () => {
   const [rows, setRows] = useState<Quotation[]>([]);
@@ -252,13 +255,22 @@ const AdminQuotations = () => {
       <QuoteFormDialog open={formOpen} onOpenChange={setFormOpen} initial={editing} onSaved={fetchRows} />
       <WhatsAppShareDialog open={!!waQuote} onOpenChange={(o) => !o && setWaQuote(null)} quote={waQuote} onSent={fetchRows} />
       <PdfPreviewDialog open={!!pdfQuote} onOpenChange={(o) => !o && setPdfQuote(null)} quote={pdfQuote} onUpdated={fetchRows} />
-      <DeleteConfirmDialog
-        open={!!delQuote}
-        onOpenChange={(o) => !o && setDelQuote(null)}
-        title="Delete Quotation"
-        description={`Delete quotation ${delQuote?.quote_number}? This cannot be undone.`}
-        onConfirm={handleDelete}
-      />
+      <AlertDialog open={!!delQuote} onOpenChange={(o) => !o && setDelQuote(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Quotation</AlertDialogTitle>
+            <AlertDialogDescription>
+              Delete quotation {delQuote?.quote_number}? This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };
