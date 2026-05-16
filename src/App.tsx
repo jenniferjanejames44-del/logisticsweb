@@ -48,6 +48,7 @@ import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
 import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
+import AdminQuotations from "./pages/admin/AdminQuotations";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import AdminPackaging from "./pages/admin/AdminPackaging";
 import AdminEmail from "./pages/admin/AdminEmail";
@@ -171,6 +172,7 @@ const App = () => (
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/shipments" element={<AdminShipments />} />
               <Route path="/admin/invoices" element={<AdminInvoices />} />
+              <Route path="/admin/quotations" element={<AdminQuotations />} />
               <Route path="/admin/payments" element={<AdminPayments />} />
               <Route path="/admin/pricing" element={<AdminPricing />} />
               <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
