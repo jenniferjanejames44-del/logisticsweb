@@ -358,11 +358,57 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
         <section className="space-y-3 rounded-xl border border-border/60 bg-muted/30 p-4">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Pricing</h3>
-            <Button type="button" variant="outline" size="sm" onClick={handleCalculate} disabled={calculating}>
-              {calculating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calculator className="w-4 h-4" />}
-              {calc ? "Recalculate" : "Calculate"}
-            </Button>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-2 text-xs">
+                <Settings2 className="w-3.5 h-3.5" />
+                <span>Manual</span>
+                <Switch checked={manualMode} onCheckedChange={(v) => { setManualMode(v); setCalc(null); }} />
+              </label>
+              <Button type="button" variant="outline" size="sm" onClick={handleCalculate} disabled={calculating}>
+                {calculating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calculator className="w-4 h-4" />}
+                {calc ? "Recalculate" : "Calculate"}
+              </Button>
+            </div>
           </div>
+          {manualMode && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-lg bg-background/60 p-3 border border-border/40">
+              <div>
+                <Label className="text-xs">Currency</Label>
+                <Select value={manual.currency} onValueChange={(v) => setManual((m) => ({ ...m, currency: v }))}>
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="NGN">NGN</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs">Shipping Cost</Label>
+                <Input type="number" min="0" value={manual.shipping_cost} onChange={(e) => setManual((m) => ({ ...m, shipping_cost: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Handling Fee</Label>
+                <Input type="number" min="0" value={manual.handling_fee} onChange={(e) => setManual((m) => ({ ...m, handling_fee: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Customs Fee</Label>
+                <Input type="number" min="0" value={manual.customs_fee} onChange={(e) => setManual((m) => ({ ...m, customs_fee: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">VAT %</Label>
+                <Input type="number" min="0" value={manual.vat_percent} onChange={(e) => setManual((m) => ({ ...m, vat_percent: e.target.value }))} />
+              </div>
+              <div>
+                <Label className="text-xs">Insurance %</Label>
+                <Input type="number" min="0" value={manual.insurance_percent} onChange={(e) => setManual((m) => ({ ...m, insurance_percent: e.target.value }))} />
+              </div>
+              <p className="col-span-full text-[11px] text-muted-foreground">
+                Insurance is calculated on declared value. VAT applies to shipping + handling + customs.
+              </p>
+            </div>
+          )}
           {calc ? (
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">Rule</span><span className="font-medium">{calc.rule.name}</span></div>
