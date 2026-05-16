@@ -1081,6 +1081,147 @@ export type Database = {
         }
         Relationships: []
       }
+      quotations: {
+        Row: {
+          accepted_at: string | null
+          chargeable_weight: number | null
+          converted_at: string | null
+          converted_invoice_id: string | null
+          converted_shipment_id: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          customer_email: string | null
+          customer_name: string
+          customer_phone: string | null
+          customs_fee: number
+          declared_value: number | null
+          description: string | null
+          destination_city: string | null
+          destination_country: string
+          handling_fee: number
+          height_cm: number | null
+          id: string
+          insurance: number
+          length_cm: number | null
+          ngn_total: number | null
+          notes: string | null
+          origin_city: string | null
+          origin_country: string
+          pdf_url: string | null
+          pricing_rule_id: string | null
+          pricing_snapshot: Json | null
+          quote_number: string
+          rejected_at: string | null
+          sent_at: string | null
+          service_type: string | null
+          shipment_type: string
+          shipping_method: string
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string | null
+          valid_until: string
+          vat: number
+          warehouse_country: string | null
+          weight_kg: number
+          width_cm: number | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          chargeable_weight?: number | null
+          converted_at?: string | null
+          converted_invoice_id?: string | null
+          converted_shipment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customer_email?: string | null
+          customer_name: string
+          customer_phone?: string | null
+          customs_fee?: number
+          declared_value?: number | null
+          description?: string | null
+          destination_city?: string | null
+          destination_country: string
+          handling_fee?: number
+          height_cm?: number | null
+          id?: string
+          insurance?: number
+          length_cm?: number | null
+          ngn_total?: number | null
+          notes?: string | null
+          origin_city?: string | null
+          origin_country: string
+          pdf_url?: string | null
+          pricing_rule_id?: string | null
+          pricing_snapshot?: Json | null
+          quote_number: string
+          rejected_at?: string | null
+          sent_at?: string | null
+          service_type?: string | null
+          shipment_type: string
+          shipping_method: string
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+          valid_until?: string
+          vat?: number
+          warehouse_country?: string | null
+          weight_kg?: number
+          width_cm?: number | null
+        }
+        Update: {
+          accepted_at?: string | null
+          chargeable_weight?: number | null
+          converted_at?: string | null
+          converted_invoice_id?: string | null
+          converted_shipment_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customer_email?: string | null
+          customer_name?: string
+          customer_phone?: string | null
+          customs_fee?: number
+          declared_value?: number | null
+          description?: string | null
+          destination_city?: string | null
+          destination_country?: string
+          handling_fee?: number
+          height_cm?: number | null
+          id?: string
+          insurance?: number
+          length_cm?: number | null
+          ngn_total?: number | null
+          notes?: string | null
+          origin_city?: string | null
+          origin_country?: string
+          pdf_url?: string | null
+          pricing_rule_id?: string | null
+          pricing_snapshot?: Json | null
+          quote_number?: string
+          rejected_at?: string | null
+          sent_at?: string | null
+          service_type?: string | null
+          shipment_type?: string
+          shipping_method?: string
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+          valid_until?: string
+          vat?: number
+          warehouse_country?: string | null
+          weight_kg?: number
+          width_cm?: number | null
+        }
+        Relationships: []
+      }
       referrals: {
         Row: {
           commission_amount: number
