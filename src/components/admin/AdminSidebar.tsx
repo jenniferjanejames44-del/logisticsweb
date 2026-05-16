@@ -25,6 +25,7 @@ import {
   ChevronRight,
   Handshake,
   Mail,
+  FileSignature,
 } from "lucide-react";
 
 interface NavSection {
@@ -45,6 +46,7 @@ const navSections: NavSection[] = [
       { name: "Users", href: "/admin/users", icon: Users },
       { name: "Shipments", href: "/admin/shipments", icon: Package },
       { name: "Invoices", href: "/admin/invoices", icon: FileText },
+      { name: "Quotations", href: "/admin/quotations", icon: FileSignature },
       { name: "Payments", href: "/admin/payments", icon: DollarSign },
       { name: "Shopping Orders", href: "/admin/shopping-orders", icon: ShoppingBag },
       { name: "Support Tickets", href: "/admin/support", icon: MessageSquare },
