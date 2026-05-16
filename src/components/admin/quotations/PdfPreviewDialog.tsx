@@ -32,15 +32,11 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
       setLoading(true);
       setHtml(null);
       try {
-        const existingPath = quote.pdf_url || undefined;
-        let data: { file_path?: string } | null = existingPath ? { file_path: existingPath } : null;
-        if (!existingPath) {
-          const generated = await supabase.functions.invoke("generate-quotation-pdf", {
-            body: { quotation_id: quote.id },
-          });
-          if (generated.error) throw generated.error;
-          data = generated.data;
-        }
+        const generated = await supabase.functions.invoke("generate-quotation-pdf", {
+          body: { quotation_id: quote.id },
+        });
+        if (generated.error) throw generated.error;
+        const data = generated.data as { file_path?: string } | null;
         if (cancelled) return;
         if (data?.file_path) {
           const { data: file } = await supabase.storage
@@ -51,7 +47,7 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
             setHtml(text);
             lastGeneratedQuoteId.current = quote.id;
           }
-          if (!existingPath) onUpdatedRef.current?.();
+          onUpdatedRef.current?.();
         }
       } catch (e: any) {
         console.error(e);
