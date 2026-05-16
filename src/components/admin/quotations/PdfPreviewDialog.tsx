@@ -33,15 +33,14 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
       setHtml(null);
       try {
         const existingPath = quote.pdf_url || undefined;
-        const data = existingPath
-          ? { file_path: existingPath }
-          : (await supabase.functions.invoke("generate-quotation-pdf", {
-              body: { quotation_id: quote.id },
-            })).data;
-        const error = existingPath
-          ? null
-          : (await Promise.resolve({ error: null })).error;
-        if (error) throw error;
+        let data: { file_path?: string } | null = existingPath ? { file_path: existingPath } : null;
+        if (!existingPath) {
+          const generated = await supabase.functions.invoke("generate-quotation-pdf", {
+            body: { quotation_id: quote.id },
+          });
+          if (generated.error) throw generated.error;
+          data = generated.data;
+        }
         if (cancelled) return;
         if (data?.file_path) {
           const { data: file } = await supabase.storage
