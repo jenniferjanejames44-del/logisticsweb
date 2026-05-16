@@ -18,6 +18,7 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
   const [html, setHtml] = useState<string | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastGeneratedQuoteId = useRef<string | null>(null);
+  const pendingRequest = useRef<{ quoteId: string; promise: Promise<string | null> } | null>(null);
   const onUpdatedRef = useRef(onUpdated);
 
   useEffect(() => {
@@ -32,21 +33,33 @@ const PdfPreviewDialog = ({ open, onOpenChange, quote, onUpdated }: Props) => {
       setLoading(true);
       setHtml(null);
       try {
-        const generated = await supabase.functions.invoke("generate-quotation-pdf", {
-          body: { quotation_id: quote.id },
-        });
-        if (generated.error) throw generated.error;
-        const data = generated.data as { file_path?: string } | null;
+        const promise = pendingRequest.current?.quoteId === quote.id
+          ? pendingRequest.current.promise
+          : (async () => {
+              const generated = await supabase.functions.invoke("generate-quotation-pdf", {
+                body: { quotation_id: quote.id },
+              });
+              if (generated.error) throw generated.error;
+              const data = generated.data as { file_path?: string } | null;
+              if (!data?.file_path) return null;
+              const { data: file, error } = await supabase.storage
+                .from("invoices")
+                .download(data.file_path);
+              if (error) throw error;
+              return file ? await file.text() : null;
+            })().finally(() => {
+              if (pendingRequest.current?.quoteId === quote.id) pendingRequest.current = null;
+            });
+
+        if (!pendingRequest.current || pendingRequest.current.quoteId !== quote.id) {
+          pendingRequest.current = { quoteId: quote.id, promise };
+        }
+
+        const text = await promise;
         if (cancelled) return;
-        if (data?.file_path) {
-          const { data: file } = await supabase.storage
-            .from("invoices")
-            .download(data.file_path);
-          if (file) {
-            const text = await file.text();
-            setHtml(text);
-            lastGeneratedQuoteId.current = quote.id;
-          }
+        if (text) {
+          setHtml(text);
+          lastGeneratedQuoteId.current = quote.id;
           onUpdatedRef.current?.();
         }
       } catch (e: any) {
