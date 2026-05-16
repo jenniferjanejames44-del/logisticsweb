@@ -119,7 +119,7 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
           width_cm: Number(form.width_cm) || 0,
           height_cm: Number(form.height_cm) || 0,
         },
-        items: [{ name: form.description || "Package", quantity: 1, weightKg: Number(form.weight_kg) || 0, declaredValue: Number(form.declared_value) || 0 }],
+        items: [{ quantity: 1, weightKg: Number(form.weight_kg) || 0, declaredValue: Number(form.declared_value) || 0 }],
         declaredValue: Number(form.declared_value) || 0,
       });
       const ngnRate = await getNgnRate(rule.currency);
@@ -325,7 +325,7 @@ const QuoteFormDialog = ({ open, onOpenChange, initial, onSaved }: Props) => {
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">Rule</span><span className="font-medium">{calc.rule.name}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Chargeable Weight</span><span>{calc.chargeable.toFixed(2)} kg</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span>{formatMoney(calc.totals.subtotal, calc.rule.currency)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span>{formatMoney(calc.totals.shippingCost, calc.rule.currency)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Handling + Customs</span><span>{formatMoney(Number(calc.rule.handling_fee) + Number(calc.rule.customs_fee), calc.rule.currency)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">VAT</span><span>{formatMoney(calc.totals.vat, calc.rule.currency)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Insurance</span><span>{formatMoney(calc.totals.insurance, calc.rule.currency)}</span></div>
