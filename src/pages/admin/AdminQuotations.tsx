@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const AdminQuotations = () => {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<Quotation[]>([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
@@ -74,8 +76,9 @@ const AdminQuotations = () => {
     });
   }, [rows, q, status]);
 
-  const handleCreate = () => { setEditing(null); setFormOpen(true); };
-  const handleEdit = (row: Quotation) => { setEditing(row); setFormOpen(true); };
+  const handleCreate = () => navigate("/admin/quotations/new");
+  const handleCreateAuto = () => { setEditing(null); setFormOpen(true); };
+  const handleEdit = (row: Quotation) => navigate(`/admin/quotations/${row.id}/edit`);
 
   const handleConvertShipment = async (row: Quotation) => {
     if (!row.user_id) {
@@ -170,7 +173,10 @@ const AdminQuotations = () => {
                 </SelectContent>
               </Select>
               <Button onClick={handleCreate}>
-                <Plus className="w-4 h-4 mr-2" /> Create Quotation
+                <Plus className="w-4 h-4 mr-2" /> New Quotation
+              </Button>
+              <Button variant="outline" onClick={handleCreateAuto}>
+                Auto Pricing
               </Button>
             </div>
           </CardContent>
