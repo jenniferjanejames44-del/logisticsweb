@@ -92,6 +92,60 @@ function renderHTML(q: any) {
   const ngnLine = q.ngn_total && currency !== 'NGN'
     ? `<tr><td>NGN payable estimate</td><td class="r">&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
 
+  const lineItems = Array.isArray(q.line_items) ? q.line_items : [];
+  const useLineItems = lineItems.length > 0;
+  const subtotal = useLineItems
+    ? lineItems.reduce((s: number, r: any) => s + Number(r.quantity || 0) * Number(r.unit_price || 0), 0)
+    : Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0);
+  const discount = Number(q.discount || 0);
+
+  const itemsTable = useLineItems
+    ? `<table class="charges">
+        <thead><tr><th style="width:54%">Description</th><th class="r" style="width:10%">Qty</th><th class="r" style="width:18%">Unit Price</th><th class="r" style="width:18%">Amount</th></tr></thead>
+        <tbody>
+          ${lineItems.map((r: any) => {
+            const amt = Number(r.quantity || 0) * Number(r.unit_price || 0);
+            return `<tr>
+              <td>${escapeHtml(r.description || '')}</td>
+              <td class="r">${Number(r.quantity || 0)}</td>
+              <td class="r">${fmt(Number(r.unit_price || 0), currency)}</td>
+              <td class="r">${fmt(amt, currency)}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>`
+    : `<table class="charges">
+        <thead><tr><th>Description</th><th class="r">Amount</th></tr></thead>
+        <tbody>
+          ${chargeRow(`Freight charge (${chargeable.toFixed(2)} KG)`, Number(q.subtotal || 0), currency, 'Calculated from RAC Logistics pricing engine')}
+          ${chargeRow('Handling fee', Number(q.handling_fee || 0), currency)}
+          ${chargeRow('Customs / clearing estimate', Number(q.customs_fee || 0), currency)}
+          ${chargeRow('VAT', Number(q.vat || 0), currency)}
+          ${chargeRow('Insurance', Number(q.insurance || 0), currency)}
+        </tbody>
+      </table>`;
+
+  const summaryTable = useLineItems
+    ? `<table class="sum">
+        <tr><td>Subtotal</td><td>${fmt(subtotal, currency)}</td></tr>
+        ${discount > 0 ? `<tr><td>Discount</td><td>− ${fmt(discount, currency)}</td></tr>` : ''}
+        ${Number(q.vat || 0) > 0 ? `<tr><td>VAT</td><td>${fmt(Number(q.vat), currency)}</td></tr>` : ''}
+        ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
+        <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
+      </table>`
+    : `<table class="sum">
+        <tr><td>Subtotal</td><td>${fmt(Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0), currency)}</td></tr>
+        <tr><td>VAT + Insurance</td><td>${fmt(Number(q.vat || 0) + Number(q.insurance || 0), currency)}</td></tr>
+        ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
+        <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
+      </table>`;
+
+  const customerAddress = q.customer_address ? `${escapeHtml(q.customer_address).replace(/\n/g, '<br>')}<br>` : '';
+  const customerCompany = q.customer_company ? `${escapeHtml(q.customer_company)}<br>` : '';
+  const termsText = q.terms
+    ? escapeHtml(q.terms)
+    : `This quotation is valid until <strong>${valid}</strong>. Pricing is based on the details provided and may change after physical verification, dimensional weight confirmation, customs assessment, or special handling requirements.`;
+
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>RAC Logistics Quotation ${escapeHtml(q.quote_number)}</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
@@ -134,11 +188,11 @@ table{width:100%;border-collapse:collapse;}.r{text-align:right;}.muted{color:var
   <div class="divider"></div>
 
   <div class="intro">
-    <div class="box"><div class="bar">Prepared For</div><div class="box-body"><strong>${escapeHtml(q.customer_name)}</strong><br>${q.customer_email ? `${escapeHtml(q.customer_email)}<br>` : ''}${q.customer_phone ? `${escapeHtml(q.customer_phone)}<br>` : ''}<span class="muted">Customer quotation for RAC Logistics freight service.</span></div></div>
+    <div class="box"><div class="bar">Prepared For</div><div class="box-body"><strong>${escapeHtml(q.customer_name)}</strong><br>${customerCompany}${customerAddress}${q.customer_email ? `${escapeHtml(q.customer_email)}<br>` : ''}${q.customer_phone ? `${escapeHtml(q.customer_phone)}<br>` : ''}</div></div>
     <div class="box"><div class="bar orange">Quotation Summary</div><div class="box-body"><strong>${escapeHtml(String(q.shipment_type || '').toUpperCase())} SHIPMENT</strong><br>${escapeHtml(String(q.shipping_method || '').toUpperCase())}${q.service_type ? ` · ${escapeHtml(q.service_type)}` : ''}<br><span class="muted">Service subject to verified shipment details and final operational review.</span></div></div>
   </div>
 
-  <div class="route">
+  ${(q.origin_country && q.origin_country !== '—') || (q.destination_country && q.destination_country !== '—') ? `<div class="route">
     <div><h2>${escapeHtml(q.origin_country)}${q.origin_city ? `, ${escapeHtml(q.origin_city)}` : ''} &rarr; ${escapeHtml(q.destination_country)}${q.destination_city ? `, ${escapeHtml(q.destination_city)}` : ''}</h2><p>${escapeHtml(q.description || 'General logistics shipment')}</p></div>
     <div class="route-grid">
       <div class="pill"><span>Actual Weight</span><strong>${Number(q.weight_kg || 0).toFixed(2)} KG</strong></div>
@@ -146,30 +200,19 @@ table{width:100%;border-collapse:collapse;}.r{text-align:right;}.muted{color:var
       <div class="pill"><span>Dimensions</span><strong>${escapeHtml(dims)}</strong></div>
       <div class="pill"><span>Declared Value</span><strong>${fmt(Number(q.declared_value || 0), currency)}</strong></div>
     </div>
-  </div>
+  </div>` : ''}
 
-  <div class="charges-wrap"><table class="charges">
-    <thead><tr><th>Description</th><th class="r">Amount</th></tr></thead>
-    <tbody>
-      ${chargeRow(`Freight charge (${chargeable.toFixed(2)} KG)`, Number(q.subtotal || 0), currency, 'Calculated from RAC Logistics pricing engine')}
-      ${chargeRow('Handling fee', Number(q.handling_fee || 0), currency)}
-      ${chargeRow('Customs / clearing estimate', Number(q.customs_fee || 0), currency)}
-      ${chargeRow('VAT', Number(q.vat || 0), currency)}
-      ${chargeRow('Insurance', Number(q.insurance || 0), currency)}
-    </tbody>
-  </table></div>
+  <div class="charges-wrap">${itemsTable}</div>
 
   <table class="bottom"><tr>
-    <td style="width:55%;padding-right:10px;"><div class="terms"><div class="bar">Terms &amp; Notes</div><div class="terms-body">This quotation is valid until <strong>${valid}</strong>. Pricing is based on the details provided and may change after physical verification, dimensional weight confirmation, customs assessment, or special handling requirements.${q.notes ? `<br><br><strong>Admin Note:</strong> ${escapeHtml(q.notes)}` : ''}</div></div></td>
-    <td style="width:45%;"><table class="sum">
-      <tr><td>Subtotal</td><td>${fmt(Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0), currency)}</td></tr>
-      <tr><td>VAT + Insurance</td><td>${fmt(Number(q.vat || 0) + Number(q.insurance || 0), currency)}</td></tr>
-      ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
-      <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
-    </table></td>
+    <td style="width:55%;padding-right:10px;"><div class="terms"><div class="bar">Special Notes &amp; Terms</div><div class="terms-body">${termsText}${q.notes ? `<br><br><strong>Notes:</strong> ${escapeHtml(q.notes)}` : ''}</div></div></td>
+    <td style="width:45%;">${summaryTable}</td>
   </tr></table>
 
-  <div class="sign"><div class="sig-line">Prepared by RAC Logistics</div><div class="sig-line">Customer Approval / Signature</div></div>
+  <div class="sign">
+    <div class="sig-line">Prepared by RAC Logistics<br><br><br>Authorised Signatory · ${created}</div>
+    <div class="sig-line">Customer Acceptance<br><br><br>Signature · Printed Name · Date</div>
+  </div>
   <div class="notice">For payment or shipment conversion, this quotation should be reviewed and confirmed from the RAC Logistics dashboard or by an authorized RAC Logistics representative.</div>
   <div class="footer"><p class="ftr-brand">RAC LOGISTICS LTD</p><p>Thank you for choosing RAC Logistics.</p><p>Questions about this quotation? Contact info@raclogisticltd.com or +234 818 595 6707.</p></div>
 </div>
