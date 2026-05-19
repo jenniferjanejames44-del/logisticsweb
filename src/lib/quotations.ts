@@ -51,8 +51,20 @@ export interface Quotation {
   converted_shipment_id: string | null;
   converted_invoice_id: string | null;
   notes: string | null;
+  terms?: string | null;
+  customer_company?: string | null;
+  customer_address?: string | null;
+  discount?: number;
+  line_items?: QuoteLineItem[];
   created_at: string;
   updated_at: string;
+}
+
+export interface QuoteLineItem {
+  id: string;
+  description: string;
+  quantity: number;
+  unit_price: number;
 }
 
 export const QUOTE_STATUSES: QuoteStatus[] = [
