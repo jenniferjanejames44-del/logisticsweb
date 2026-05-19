@@ -209,22 +209,12 @@ const AdminQuotationBuilder = () => {
     if (!q) return;
     setEmailing(true);
     try {
-      await supabase.functions.invoke("generate-quotation-pdf", { body: { quotation_id: q.id } });
-      const { data, error } = await supabase.functions.invoke("send-notification-email", {
-        body: {
-          to: form.customer_email,
-          subject: `Your RAC Logistics Quotation ${q.quote_number}`,
-          html: `<p>Hello ${form.customer_name},</p>
-            <p>Please find your RAC Logistics quotation <strong>${q.quote_number}</strong> attached.</p>
-            <p><strong>Total:</strong> ${formatMoney(q.total, q.currency)}<br/>
-            <strong>Valid Until:</strong> ${new Date(q.valid_until).toLocaleDateString()}</p>
-            <p>Reply to this email if you have any questions.</p>
-            <p>— RAC Logistics</p>`,
-        },
+      const { data, error } = await supabase.functions.invoke("send-quotation-email", {
+        body: { quotation_id: q.id },
       });
       if (error) throw error;
       if ((data as any)?.error) throw new Error((data as any).error);
-      toast.success("Email sent");
+      toast.success("Quotation email sent");
     } catch (e: any) {
       toast.error(e.message || "Failed to send email");
     } finally {
