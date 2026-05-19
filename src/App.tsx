@@ -49,6 +49,7 @@ import AdminInvoices from "./pages/admin/AdminInvoices";
 import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
 import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
 import AdminQuotations from "./pages/admin/AdminQuotations";
+import AdminQuotationBuilder from "./pages/admin/AdminQuotationBuilder";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import AdminPackaging from "./pages/admin/AdminPackaging";
 import AdminEmail from "./pages/admin/AdminEmail";
