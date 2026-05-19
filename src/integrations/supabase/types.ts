@@ -1091,6 +1091,8 @@ export type Database = {
           created_at: string
           created_by: string | null
           currency: string
+          customer_address: string | null
+          customer_company: string | null
           customer_email: string | null
           customer_name: string
           customer_phone: string | null
@@ -1098,16 +1100,18 @@ export type Database = {
           declared_value: number | null
           description: string | null
           destination_city: string | null
-          destination_country: string
+          destination_country: string | null
+          discount: number
           handling_fee: number
           height_cm: number | null
           id: string
           insurance: number
           length_cm: number | null
+          line_items: Json
           ngn_total: number | null
           notes: string | null
           origin_city: string | null
-          origin_country: string
+          origin_country: string | null
           pdf_url: string | null
           pricing_rule_id: string | null
           pricing_snapshot: Json | null
@@ -1115,10 +1119,11 @@ export type Database = {
           rejected_at: string | null
           sent_at: string | null
           service_type: string | null
-          shipment_type: string
-          shipping_method: string
+          shipment_type: string | null
+          shipping_method: string | null
           status: string
           subtotal: number
+          terms: string | null
           total: number
           updated_at: string
           user_id: string | null
@@ -1137,6 +1142,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           currency?: string
+          customer_address?: string | null
+          customer_company?: string | null
           customer_email?: string | null
           customer_name: string
           customer_phone?: string | null
@@ -1144,16 +1151,18 @@ export type Database = {
           declared_value?: number | null
           description?: string | null
           destination_city?: string | null
-          destination_country: string
+          destination_country?: string | null
+          discount?: number
           handling_fee?: number
           height_cm?: number | null
           id?: string
           insurance?: number
           length_cm?: number | null
+          line_items?: Json
           ngn_total?: number | null
           notes?: string | null
           origin_city?: string | null
-          origin_country: string
+          origin_country?: string | null
           pdf_url?: string | null
           pricing_rule_id?: string | null
           pricing_snapshot?: Json | null
@@ -1161,10 +1170,11 @@ export type Database = {
           rejected_at?: string | null
           sent_at?: string | null
           service_type?: string | null
-          shipment_type: string
-          shipping_method: string
+          shipment_type?: string | null
+          shipping_method?: string | null
           status?: string
           subtotal?: number
+          terms?: string | null
           total?: number
           updated_at?: string
           user_id?: string | null
@@ -1183,6 +1193,8 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           currency?: string
+          customer_address?: string | null
+          customer_company?: string | null
           customer_email?: string | null
           customer_name?: string
           customer_phone?: string | null
@@ -1190,16 +1202,18 @@ export type Database = {
           declared_value?: number | null
           description?: string | null
           destination_city?: string | null
-          destination_country?: string
+          destination_country?: string | null
+          discount?: number
           handling_fee?: number
           height_cm?: number | null
           id?: string
           insurance?: number
           length_cm?: number | null
+          line_items?: Json
           ngn_total?: number | null
           notes?: string | null
           origin_city?: string | null
-          origin_country?: string
+          origin_country?: string | null
           pdf_url?: string | null
           pricing_rule_id?: string | null
           pricing_snapshot?: Json | null
@@ -1207,10 +1221,11 @@ export type Database = {
           rejected_at?: string | null
           sent_at?: string | null
           service_type?: string | null
-          shipment_type?: string
-          shipping_method?: string
+          shipment_type?: string | null
+          shipping_method?: string | null
           status?: string
           subtotal?: number
+          terms?: string | null
           total?: number
           updated_at?: string
           user_id?: string | null
