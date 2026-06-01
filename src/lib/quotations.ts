@@ -65,6 +65,9 @@ export interface QuoteLineItem {
   description: string;
   quantity: number;
   unit_price: number;
+  length_cm?: number | null;
+  width_cm?: number | null;
+  height_cm?: number | null;
 }
 
 export const QUOTE_STATUSES: QuoteStatus[] = [

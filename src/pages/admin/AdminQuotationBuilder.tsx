@@ -20,11 +20,17 @@ import WhatsAppShareDialog from "@/components/admin/quotations/WhatsAppShareDial
 
 const newId = () => Math.random().toString(36).slice(2, 10);
 
-const defaultRows: QuoteLineItem[] = [
-  { id: newId(), description: "Freight / Shipping", quantity: 1, unit_price: 0 },
-  { id: newId(), description: "Handling Fee", quantity: 1, unit_price: 0 },
-  { id: newId(), description: "Customs Clearance", quantity: 1, unit_price: 0 },
-];
+const blankRow = (): QuoteLineItem => ({
+  id: newId(),
+  description: "",
+  quantity: 1,
+  unit_price: 0,
+  length_cm: null,
+  width_cm: null,
+  height_cm: null,
+});
+
+const defaultRows: QuoteLineItem[] = [blankRow()];
 
 const defaults = {
   customer_name: "",
@@ -45,6 +51,10 @@ const defaults = {
   vat_percent: "7.5",
   vat_enabled: true,
   discount: "0",
+  freight: "0",
+  handling: "0",
+  customs: "0",
+  insurance: "0",
   valid_until: new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10),
   weight_kg: "0",
 };
@@ -73,6 +83,7 @@ const AdminQuotationBuilder = () => {
       if (error || !data) { toast.error("Quote not found"); navigate("/admin/quotations"); return; }
       const q = data as Quotation;
       setSavedQuote(q);
+      const snap = (q.pricing_snapshot as any) || {};
       setForm({
         customer_name: q.customer_name || "",
         customer_company: q.customer_company || "",
@@ -90,6 +101,10 @@ const AdminQuotationBuilder = () => {
         vat_percent: String(q.subtotal ? ((Number(q.vat) / Number(q.subtotal)) * 100).toFixed(2) : "7.5"),
         vat_enabled: Number(q.vat) > 0,
         discount: String(q.discount || 0),
+        freight: String(snap.freight ?? 0),
+        handling: String(q.handling_fee || 0),
+        customs: String(q.customs_fee || 0),
+        insurance: String(q.insurance || 0),
         valid_until: q.valid_until,
         weight_kg: String(q.weight_kg || 0),
       });
@@ -103,26 +118,36 @@ const AdminQuotationBuilder = () => {
     setForm((f) => ({ ...f, [k]: v }));
 
   const totals = useMemo(() => {
-    const subtotal = rows.reduce(
+    const itemsSubtotal = rows.reduce(
       (s, r) => s + Number(r.quantity || 0) * Number(r.unit_price || 0),
       0
     );
-    const discount = Math.min(Number(form.discount) || 0, subtotal);
-    const taxable = Math.max(subtotal - discount, 0);
+    const freight = Number(form.freight) || 0;
+    const handling = Number(form.handling) || 0;
+    const customs = Number(form.customs) || 0;
+    const insurance = Number(form.insurance) || 0;
+    const charges = freight + handling + customs + insurance;
+    const preDiscount = itemsSubtotal + charges;
+    const discount = Math.min(Number(form.discount) || 0, preDiscount);
+    const taxable = Math.max(preDiscount - discount, 0);
     const vat = form.vat_enabled ? +(taxable * (Number(form.vat_percent) || 0) / 100).toFixed(2) : 0;
     const total = +(taxable + vat).toFixed(2);
-    return { subtotal: +subtotal.toFixed(2), discount, vat, total };
-  }, [rows, form.discount, form.vat_enabled, form.vat_percent]);
+    return {
+      itemsSubtotal: +itemsSubtotal.toFixed(2),
+      freight, handling, customs, insurance,
+      discount, vat, total,
+    };
+  }, [rows, form.discount, form.vat_enabled, form.vat_percent, form.freight, form.handling, form.customs, form.insurance]);
 
-  const addRow = () => setRows((r) => [...r, { id: newId(), description: "", quantity: 1, unit_price: 0 }]);
+  const addRow = () => setRows((r) => [...r, blankRow()]);
   const removeRow = (rid: string) => setRows((r) => (r.length > 1 ? r.filter((x) => x.id !== rid) : r));
   const updateRow = (rid: string, patch: Partial<QuoteLineItem>) =>
     setRows((r) => r.map((x) => (x.id === rid ? { ...x, ...patch } : x)));
 
   const validate = () => {
     if (!form.customer_name.trim()) { toast.error("Customer name is required"); return false; }
-    if (!rows.some((r) => r.description.trim() && Number(r.unit_price) > 0)) {
-      toast.error("Add at least one line item with a price"); return false;
+    if (!rows.some((r) => r.description.trim())) {
+      toast.error("Add at least one item / box description"); return false;
     }
     return true;
   };
@@ -144,21 +169,29 @@ const AdminQuotationBuilder = () => {
     weight_kg: Number(form.weight_kg) || 0,
     declared_value: 0,
     line_items: rows
-      .filter((r) => r.description.trim() || Number(r.unit_price) > 0)
+      .filter((r) => r.description.trim() || Number(r.unit_price) > 0 || Number(r.quantity) > 0)
       .map((r) => ({
         id: r.id,
         description: r.description,
         quantity: Number(r.quantity) || 0,
         unit_price: Number(r.unit_price) || 0,
+        length_cm: r.length_cm != null && r.length_cm !== ("" as any) ? Number(r.length_cm) : null,
+        width_cm: r.width_cm != null && r.width_cm !== ("" as any) ? Number(r.width_cm) : null,
+        height_cm: r.height_cm != null && r.height_cm !== ("" as any) ? Number(r.height_cm) : null,
       })),
-    subtotal: totals.subtotal,
+    subtotal: totals.itemsSubtotal,
     discount: totals.discount,
-    handling_fee: 0,
-    customs_fee: 0,
-    insurance: 0,
+    handling_fee: totals.handling,
+    customs_fee: totals.customs,
+    insurance: totals.insurance,
     vat: totals.vat,
     total: totals.total,
-    pricing_snapshot: { manual_builder: true, totals, vat_percent: Number(form.vat_percent) || 0 },
+    pricing_snapshot: {
+      manual_builder: true,
+      totals,
+      freight: totals.freight,
+      vat_percent: Number(form.vat_percent) || 0,
+    },
     valid_until: form.valid_until,
     ...(status ? { status } : {}),
   });
@@ -333,19 +366,23 @@ const AdminQuotationBuilder = () => {
             <Card>
               <CardContent className="p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <SectionTitle>Pricing Items</SectionTitle>
+                  <SectionTitle>Items / Boxes Being Picked Up</SectionTitle>
                   <Button size="sm" variant="outline" onClick={addRow} className="gap-2">
-                    <Plus className="w-4 h-4" /> Add Row
+                    <Plus className="w-4 h-4" /> Add Box / Item
                   </Button>
                 </div>
+                <p className="text-xs text-muted-foreground -mt-2">
+                  Describe each physical box / item separately. Freight, customs, handling, VAT and insurance go in the Cost Breakdown section below.
+                </p>
                 <div className="overflow-x-auto -mx-2 sm:mx-0">
-                  <table className="w-full text-sm min-w-[640px]">
+                  <table className="w-full text-sm min-w-[860px]">
                     <thead>
                       <tr className="text-xs uppercase tracking-wider text-muted-foreground border-b">
-                        <th className="text-left font-semibold py-2 px-2 w-[50%]">Description</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[12%]">Qty</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[18%]">Unit Price</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[18%]">Amount</th>
+                        <th className="text-left font-semibold py-2 px-2 w-[34%]">Description / Contents</th>
+                        <th className="text-left font-semibold py-2 px-2 w-[20%]">Dimensions (L×W×H cm)</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[10%]">Qty</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[14%]">Unit Price</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[14%]">Amount</th>
                         <th className="w-10" />
                       </tr>
                     </thead>
@@ -355,7 +392,16 @@ const AdminQuotationBuilder = () => {
                         return (
                           <tr key={r.id} className="border-b last:border-0">
                             <td className="py-2 px-2">
-                              <Input value={r.description} onChange={(e) => updateRow(r.id, { description: e.target.value })} placeholder="e.g. Air Freight (Shanghai → Lagos)" />
+                              <Input value={r.description} onChange={(e) => updateRow(r.id, { description: e.target.value })} placeholder="e.g. Box 1 — clothes & shoes" />
+                            </td>
+                            <td className="py-2 px-2">
+                              <div className="flex items-center gap-1">
+                                <Input type="number" min="0" step="0.1" value={r.length_cm ?? ""} onChange={(e) => updateRow(r.id, { length_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="L" className="text-center px-2" />
+                                <span className="text-muted-foreground">×</span>
+                                <Input type="number" min="0" step="0.1" value={r.width_cm ?? ""} onChange={(e) => updateRow(r.id, { width_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="W" className="text-center px-2" />
+                                <span className="text-muted-foreground">×</span>
+                                <Input type="number" min="0" step="0.1" value={r.height_cm ?? ""} onChange={(e) => updateRow(r.id, { height_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="H" className="text-center px-2" />
+                              </div>
                             </td>
                             <td className="py-2 px-2">
                               <Input type="number" min="0" step="1" value={r.quantity} onChange={(e) => updateRow(r.id, { quantity: Number(e.target.value) })} className="text-right" />
@@ -398,7 +444,7 @@ const AdminQuotationBuilder = () => {
           <div className="space-y-5">
             <Card className="lg:sticky lg:top-6">
               <CardContent className="p-5 space-y-4">
-                <SectionTitle>Totals</SectionTitle>
+                <SectionTitle>Cost Breakdown</SectionTitle>
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Currency">
                     <Select value={form.currency} onValueChange={(v) => upd("currency", v)}>
@@ -411,6 +457,18 @@ const AdminQuotationBuilder = () => {
                       </SelectContent>
                     </Select>
                   </Field>
+                  <Field label="Freight / Shipping">
+                    <Input type="number" min="0" step="0.01" value={form.freight} onChange={(e) => upd("freight", e.target.value)} />
+                  </Field>
+                  <Field label="Customs Clearance">
+                    <Input type="number" min="0" step="0.01" value={form.customs} onChange={(e) => upd("customs", e.target.value)} />
+                  </Field>
+                  <Field label="Handling Fee">
+                    <Input type="number" min="0" step="0.01" value={form.handling} onChange={(e) => upd("handling", e.target.value)} />
+                  </Field>
+                  <Field label="Insurance">
+                    <Input type="number" min="0" step="0.01" value={form.insurance} onChange={(e) => upd("insurance", e.target.value)} />
+                  </Field>
                   <Field label="Discount">
                     <Input type="number" min="0" value={form.discount} onChange={(e) => upd("discount", e.target.value)} />
                   </Field>
@@ -418,7 +476,7 @@ const AdminQuotationBuilder = () => {
                 <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
                   <div className="text-sm">
                     <p className="font-semibold">Apply VAT</p>
-                    <p className="text-xs text-muted-foreground">Tax on subtotal − discount</p>
+                    <p className="text-xs text-muted-foreground">Tax on subtotal + charges − discount</p>
                   </div>
                   <Switch checked={form.vat_enabled} onCheckedChange={(v) => upd("vat_enabled", v)} />
                 </div>
@@ -428,7 +486,11 @@ const AdminQuotationBuilder = () => {
                   </Field>
                 )}
                 <div className="space-y-2 border-t pt-4 text-sm">
-                  <Row label="Subtotal" value={formatMoney(totals.subtotal, form.currency)} />
+                  <Row label="Items Subtotal" value={formatMoney(totals.itemsSubtotal, form.currency)} />
+                  {totals.freight > 0 && <Row label="Freight / Shipping" value={formatMoney(totals.freight, form.currency)} />}
+                  {totals.customs > 0 && <Row label="Customs Clearance" value={formatMoney(totals.customs, form.currency)} />}
+                  {totals.handling > 0 && <Row label="Handling Fee" value={formatMoney(totals.handling, form.currency)} />}
+                  {totals.insurance > 0 && <Row label="Insurance" value={formatMoney(totals.insurance, form.currency)} />}
                   {totals.discount > 0 && <Row label="Discount" value={`− ${formatMoney(totals.discount, form.currency)}`} />}
                   {form.vat_enabled && <Row label={`VAT (${form.vat_percent}%)`} value={formatMoney(totals.vat, form.currency)} />}
                   <div className="flex items-center justify-between rounded-md bg-primary px-3 py-2.5 text-primary-foreground">
