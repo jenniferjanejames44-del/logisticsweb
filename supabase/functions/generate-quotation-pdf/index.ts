@@ -75,70 +75,73 @@ function fmtDate(value: string) {
   return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
 }
 
-function chargeRow(label: string, amount: number, currency: string, note = '') {
-  return `<tr><td>${escapeHtml(label)}${note ? `<small>${escapeHtml(note)}</small>` : ''}</td><td class="r">${fmt(amount, currency)}</td></tr>`;
+function sumRow(label: string, amount: number, currency: string, opts: { strong?: boolean; muted?: boolean } = {}) {
+  const cls = opts.strong ? ' class="grand"' : opts.muted ? ' class="muted-row"' : '';
+  return `<tr${cls}><td>${escapeHtml(label)}</td><td>${fmt(amount, currency)}</td></tr>`;
 }
 
 function renderHTML(q: any) {
   const created = fmtDate(q.created_at);
   const valid = fmtDate(q.valid_until);
   const currency = (q.currency || 'USD').toUpperCase();
-  const chargeable = Number(q.chargeable_weight || q.weight_kg || 0);
-  const dims = [q.length_cm, q.width_cm, q.height_cm].filter(Boolean).length === 3
-    ? `${q.length_cm} × ${q.width_cm} × ${q.height_cm} cm`
-    : 'Not specified';
   const reference = `RAC-QTN-${String(q.id || '').slice(0, 8).toUpperCase()}`;
   const status = String(q.status || 'draft').replace(/_/g, ' ').toUpperCase();
   const ngnLine = q.ngn_total && currency !== 'NGN'
-    ? `<tr><td>NGN payable estimate</td><td class="r">&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
+    ? `<tr class="ngn"><td>NGN payable estimate</td><td>&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
 
   const lineItems = Array.isArray(q.line_items) ? q.line_items : [];
-  const useLineItems = lineItems.length > 0;
-  const subtotal = useLineItems
-    ? lineItems.reduce((s: number, r: any) => s + Number(r.quantity || 0) * Number(r.unit_price || 0), 0)
-    : Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0);
+  const itemsSubtotal = lineItems.reduce(
+    (s: number, r: any) => s + Number(r.quantity || 0) * Number(r.unit_price || 0),
+    0,
+  );
+  const snap = (q.pricing_snapshot && typeof q.pricing_snapshot === 'object') ? q.pricing_snapshot : {};
+  const freight = Number(snap.freight ?? 0);
+  const handling = Number(q.handling_fee || 0);
+  const customs = Number(q.customs_fee || 0);
+  const insurance = Number(q.insurance || 0);
+  const vat = Number(q.vat || 0);
   const discount = Number(q.discount || 0);
 
-  const itemsTable = useLineItems
+  // Hide price columns if no items have a unit price (admin only described items, charges section carries the totals)
+  const anyItemPrice = lineItems.some((r: any) => Number(r.unit_price || 0) > 0);
+
+  const itemsTable = lineItems.length > 0
     ? `<table class="charges">
-        <thead><tr><th style="width:54%">Description</th><th class="r" style="width:10%">Qty</th><th class="r" style="width:18%">Unit Price</th><th class="r" style="width:18%">Amount</th></tr></thead>
+        <thead><tr>
+          <th style="width:8%" class="c">#</th>
+          <th style="width:${anyItemPrice ? '34%' : '52%'}">Description / Contents</th>
+          <th style="width:22%" class="c">Dimensions (L×W×H cm)</th>
+          <th style="width:8%" class="c">Qty</th>
+          ${anyItemPrice ? '<th class="r" style="width:14%">Unit Price</th><th class="r" style="width:14%">Amount</th>' : ''}
+        </tr></thead>
         <tbody>
-          ${lineItems.map((r: any) => {
+          ${lineItems.map((r: any, i: number) => {
             const amt = Number(r.quantity || 0) * Number(r.unit_price || 0);
+            const hasDims = r.length_cm && r.width_cm && r.height_cm;
+            const dimStr = hasDims ? `${r.length_cm} × ${r.width_cm} × ${r.height_cm}` : '—';
             return `<tr>
+              <td class="c">${i + 1}</td>
               <td>${escapeHtml(r.description || '')}</td>
-              <td class="r">${Number(r.quantity || 0)}</td>
-              <td class="r">${fmt(Number(r.unit_price || 0), currency)}</td>
-              <td class="r">${fmt(amt, currency)}</td>
+              <td class="c">${escapeHtml(dimStr)}</td>
+              <td class="c">${Number(r.quantity || 0)}</td>
+              ${anyItemPrice ? `<td class="r">${fmt(Number(r.unit_price || 0), currency)}</td><td class="r">${fmt(amt, currency)}</td>` : ''}
             </tr>`;
           }).join('')}
         </tbody>
       </table>`
-    : `<table class="charges">
-        <thead><tr><th>Description</th><th class="r">Amount</th></tr></thead>
-        <tbody>
-          ${chargeRow(`Freight charge (${chargeable.toFixed(2)} KG)`, Number(q.subtotal || 0), currency, 'Calculated from RAC Logistics pricing engine')}
-          ${chargeRow('Handling fee', Number(q.handling_fee || 0), currency)}
-          ${chargeRow('Customs / clearing estimate', Number(q.customs_fee || 0), currency)}
-          ${chargeRow('VAT', Number(q.vat || 0), currency)}
-          ${chargeRow('Insurance', Number(q.insurance || 0), currency)}
-        </tbody>
-      </table>`;
+    : `<div class="empty">No items described.</div>`;
 
-  const summaryTable = useLineItems
-    ? `<table class="sum">
-        <tr><td>Subtotal</td><td>${fmt(subtotal, currency)}</td></tr>
-        ${discount > 0 ? `<tr><td>Discount</td><td>− ${fmt(discount, currency)}</td></tr>` : ''}
-        ${Number(q.vat || 0) > 0 ? `<tr><td>VAT</td><td>${fmt(Number(q.vat), currency)}</td></tr>` : ''}
-        ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
-        <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
-      </table>`
-    : `<table class="sum">
-        <tr><td>Subtotal</td><td>${fmt(Number(q.subtotal || 0) + Number(q.handling_fee || 0) + Number(q.customs_fee || 0), currency)}</td></tr>
-        <tr><td>VAT + Insurance</td><td>${fmt(Number(q.vat || 0) + Number(q.insurance || 0), currency)}</td></tr>
-        ${ngnLine ? ngnLine.replace('<tr>', '<tr class="ngn">') : ''}
-        <tr class="grand"><td>Total Due (${currency})</td><td>${fmt(q.total, currency)}</td></tr>
-      </table>`;
+  const summaryRows: string[] = [];
+  if (anyItemPrice) summaryRows.push(`<tr><td>Items Subtotal</td><td>${fmt(itemsSubtotal, currency)}</td></tr>`);
+  if (freight > 0) summaryRows.push(`<tr><td>Freight / Shipping</td><td>${fmt(freight, currency)}</td></tr>`);
+  if (customs > 0) summaryRows.push(`<tr><td>Customs Clearance</td><td>${fmt(customs, currency)}</td></tr>`);
+  if (handling > 0) summaryRows.push(`<tr><td>Handling Fee</td><td>${fmt(handling, currency)}</td></tr>`);
+  if (insurance > 0) summaryRows.push(`<tr><td>Insurance</td><td>${fmt(insurance, currency)}</td></tr>`);
+  if (discount > 0) summaryRows.push(`<tr><td>Discount</td><td>− ${fmt(discount, currency)}</td></tr>`);
+  if (vat > 0) summaryRows.push(`<tr><td>VAT</td><td>${fmt(vat, currency)}</td></tr>`);
+  if (ngnLine) summaryRows.push(ngnLine);
+  summaryRows.push(`<tr class="grand"><td>Grand Total (${currency})</td><td>${fmt(q.total, currency)}</td></tr>`);
+  const summaryTable = `<table class="sum">${summaryRows.join('')}</table>`;
 
   const customerAddress = q.customer_address ? `${escapeHtml(q.customer_address).replace(/\n/g, '<br>')}<br>` : '';
   const customerCompany = q.customer_company ? `${escapeHtml(q.customer_company)}<br>` : '';
@@ -153,24 +156,26 @@ function renderHTML(q: any) {
 body{font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1d2433;background:#e9ecef;font-size:11px;line-height:1.45;-webkit-font-smoothing:antialiased;}
 .document{width:210mm;min-height:297mm;margin:18px auto;background:#fff;padding:18mm;box-shadow:0 2px 20px rgba(0,0,0,.12);position:relative;overflow:hidden;}
 :root{--navy:#061043;--orange:#DF5101;--ink:#1d2433;--muted:#667085;--line:#cbd5e1;--soft:#f4f7fb;}
-table{width:100%;border-collapse:collapse;}.r{text-align:right;}.muted{color:var(--muted);}.strong{font-weight:800;color:var(--navy);}small{display:block;color:var(--muted);font-size:8.5px;margin-top:2px;}
+table{width:100%;border-collapse:collapse;}.r{text-align:right;}.c{text-align:center;}.muted{color:var(--muted);}.strong{font-weight:800;color:var(--navy);}small{display:block;color:var(--muted);font-size:8.5px;margin-top:2px;}
 .top{width:100%;margin-bottom:14px;table-layout:fixed;}.top td{vertical-align:top;padding:0;}.brand-cell{width:61%;padding-right:18px!important;}.doc-cell{width:39%;text-align:right;padding-left:18px!important;}
 .brand-logo{height:60px;width:auto;max-width:330px;display:block;margin-bottom:8px;}.brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}.brand-details{font-size:9.8px;color:#444;line-height:1.65;}.rc-label{font-size:10px;color:#444;font-weight:700;margin-top:6px;}
 .doc-title{font-size:35px;font-weight:900;color:var(--navy);letter-spacing:3.5px;text-transform:uppercase;line-height:.95;margin-bottom:10px;}.status{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:9px;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;margin-bottom:8px;}
 .doc-meta{display:inline-table;width:100%;max-width:245px;border-top:3px solid var(--navy);border-bottom:1px solid var(--line);}.doc-meta div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:5px 0;font-size:9.5px;}.doc-meta div:last-child{border-bottom:0;}.doc-meta span:first-child{color:#666;font-weight:800;text-transform:uppercase;}.doc-meta span:last-child{font-weight:800;text-align:right;color:var(--ink);}
 .divider{height:3.5px;background:var(--navy);margin:0 0 14px;}.bar{background:var(--navy);color:#fff;font-size:10px;font-weight:800;padding:6px 10px;letter-spacing:.4px;text-transform:uppercase;}.bar.orange{background:var(--orange);}
-.intro{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}.box{border:1px solid var(--line);background:#fff;}.box-body{padding:10px;font-size:10.5px;line-height:1.75;min-height:82px;}.box-body strong{color:var(--navy);font-size:11.5px;}.route{background:var(--soft);border:1px solid var(--line);padding:10px 12px;margin-bottom:14px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:center;}.route h2{font-size:18px;color:var(--navy);line-height:1.2;}.route p{font-size:10px;color:var(--muted);margin-top:4px;}.route-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}.pill{border:1px solid var(--line);background:#fff;padding:7px 8px;}.pill span{display:block;color:var(--muted);font-size:8px;font-weight:800;text-transform:uppercase;}.pill strong{display:block;color:var(--ink);font-size:10px;margin-top:2px;}
-.charges{border:1px solid var(--line);margin-bottom:14px;}.charges th{background:var(--navy);color:#fff;padding:7px 10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.35px;}.charges td{padding:8px 10px;font-size:10.5px;border:1px solid var(--line);}.charges td:first-child{font-weight:700;color:var(--ink);}.charges .r{font-weight:800;white-space:nowrap;}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}.box{border:1px solid var(--line);background:#fff;}.box-body{padding:10px;font-size:10.5px;line-height:1.75;min-height:82px;}.box-body strong{color:var(--navy);font-size:11.5px;}.route{background:var(--soft);border:1px solid var(--line);padding:10px 12px;margin-bottom:14px;}.route h2{font-size:16px;color:var(--navy);line-height:1.2;}.route p{font-size:10px;color:var(--muted);margin-top:4px;}
+.charges{border:1px solid var(--line);margin-bottom:14px;}.charges th{background:var(--navy);color:#fff;padding:7px 10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.35px;border:1px solid var(--navy);}.charges td{padding:8px 10px;font-size:10.5px;border:1px solid var(--line);vertical-align:top;}.charges td:nth-child(2){font-weight:700;color:var(--ink);}.charges .r{font-weight:800;white-space:nowrap;}
+.empty{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);margin-bottom:14px;font-style:italic;}
 .bottom{margin-top:4px;}.bottom>tbody>tr>td{vertical-align:top;}.terms{border:1px solid var(--line);}.terms-body{padding:10px;font-size:9.5px;color:#475467;line-height:1.7;}.sum{border:1px solid var(--line);}.sum td{padding:6px 10px;font-size:10.5px;border:1px solid var(--line);}.sum td:first-child{font-weight:700;background:var(--soft);}.sum td:last-child{text-align:right;font-weight:800;}.sum .grand td{background:var(--navy);color:#fff;font-size:12px;font-weight:900;}.sum .ngn td{background:#fff7ed;color:#7c2d12;}
 .sign{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}.sig-line{border-top:1px solid var(--line);padding-top:6px;font-size:9px;color:var(--muted);}.notice{margin-top:14px;padding:10px 12px;background:#fff7ed;border-left:4px solid var(--orange);font-size:9.5px;color:#7c2d12;}.footer{margin-top:20px;padding-top:10px;border-top:3px solid var(--navy);text-align:center;}.footer .ftr-brand{font-size:12px;font-weight:900;color:var(--navy);letter-spacing:1px;}.footer p{font-size:9.5px;color:#666;margin-bottom:3px;}
-@media screen and (max-width:800px){html,body{background:#fff;}.document{width:100%;min-height:auto;margin:0;padding:14px;box-shadow:none;}.top,.top tbody,.top tr,.top td{display:block;width:100%!important;padding:0!important;}.doc-cell{text-align:left;margin-top:14px;}.doc-title{text-align:left;font-size:28px;}.doc-meta{max-width:100%;}.intro,.route,.sign{grid-template-columns:1fr;}.charges{min-width:520px;}.charges-wrap{overflow-x:auto;}.bottom,.bottom tbody,.bottom tr,.bottom td{display:block;width:100%!important;padding:0!important;}.bottom td{margin-bottom:10px;}}
-@media print{html,body{background:#fff;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}.document{width:100%;min-height:auto;margin:0;padding:10mm 14mm;box-shadow:none;}}
+@media screen and (max-width:800px){html,body{background:#fff;}.document{width:100%;min-height:auto;margin:0;padding:14px;box-shadow:none;}.top,.top tbody,.top tr,.top td{display:block;width:100%!important;padding:0!important;}.doc-cell{text-align:left;margin-top:14px;}.doc-title{text-align:left;font-size:28px;}.doc-meta{max-width:100%;}.intro,.sign{grid-template-columns:1fr;}.charges{min-width:520px;}.charges-wrap{overflow-x:auto;}.bottom,.bottom tbody,.bottom tr,.bottom td{display:block;width:100%!important;padding:0!important;}.bottom td{margin-bottom:10px;}}
+@page{size:A4;margin:12mm;}
+@media print{html,body{background:#fff;}body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:10.5px;}.document{width:100%;min-height:auto;margin:0;padding:0;box-shadow:none;}.charges,.sum,.terms,.box,.footer,.sign,.notice{page-break-inside:avoid;}}
 </style></head><body>
 <div class="document">
   <table class="top"><tr>
     <td class="brand-cell">
       <svg class="brand-logo" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet"><g fill="#07145C"><path d="M22 26h104c62 0 110 16 141 56l13 18H114c-42 0-72-9-91-26C11 64 4 48 0 26h22Z"/><path d="M10 111h106v110c-39 0-70-11-91-31C7 170 0 144 0 111h10Z"/><rect x="126" y="111" width="112" height="64" rx="2"/></g><circle cx="144" cy="188" r="29" fill="#DF5101"/><text x="286" y="122" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="126" font-weight="900" letter-spacing="-5">RAC</text><text x="290" y="194" fill="#07145C" font-family="'DM Sans','Helvetica Neue',Arial,sans-serif" font-size="72" font-weight="800" letter-spacing="2">LOGISTICS</text></svg>
-      <div class="brand-sub">Courier &amp; Freight Services</div>
+      <div class="brand-sub">Procurement | Shipping | Customs Clearing</div>
       <div class="brand-details">29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>+234 818 595 6707 &nbsp;·&nbsp; info@raclogisticltd.com &nbsp;·&nbsp; www.raclogisticltd.com</div>
       <div class="rc-label">RC: 1454183</div>
     </td>
@@ -193,20 +198,15 @@ table{width:100%;border-collapse:collapse;}.r{text-align:right;}.muted{color:var
   </div>
 
   ${(q.origin_country && q.origin_country !== '—') || (q.destination_country && q.destination_country !== '—') ? `<div class="route">
-    <div><h2>${escapeHtml(q.origin_country)}${q.origin_city ? `, ${escapeHtml(q.origin_city)}` : ''} &rarr; ${escapeHtml(q.destination_country)}${q.destination_city ? `, ${escapeHtml(q.destination_city)}` : ''}</h2><p>${escapeHtml(q.description || 'General logistics shipment')}</p></div>
-    <div class="route-grid">
-      <div class="pill"><span>Actual Weight</span><strong>${Number(q.weight_kg || 0).toFixed(2)} KG</strong></div>
-      <div class="pill"><span>Chargeable</span><strong>${chargeable.toFixed(2)} KG</strong></div>
-      <div class="pill"><span>Dimensions</span><strong>${escapeHtml(dims)}</strong></div>
-      <div class="pill"><span>Declared Value</span><strong>${fmt(Number(q.declared_value || 0), currency)}</strong></div>
-    </div>
+    <h2>${escapeHtml(q.origin_country)}${q.origin_city ? `, ${escapeHtml(q.origin_city)}` : ''} &rarr; ${escapeHtml(q.destination_country)}${q.destination_city ? `, ${escapeHtml(q.destination_city)}` : ''}</h2>
+    ${q.description ? `<p>${escapeHtml(q.description)}</p>` : ''}
   </div>` : ''}
 
   <div class="charges-wrap">${itemsTable}</div>
 
   <table class="bottom"><tr>
     <td style="width:55%;padding-right:10px;"><div class="terms"><div class="bar">Special Notes &amp; Terms</div><div class="terms-body">${termsText}${q.notes ? `<br><br><strong>Notes:</strong> ${escapeHtml(q.notes)}` : ''}</div></div></td>
-    <td style="width:45%;">${summaryTable}</td>
+    <td style="width:45%;"><div class="bar orange">Cost Breakdown</div>${summaryTable}</td>
   </tr></table>
 
   <div class="sign">
