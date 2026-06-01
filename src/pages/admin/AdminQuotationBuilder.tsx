@@ -366,19 +366,23 @@ const AdminQuotationBuilder = () => {
             <Card>
               <CardContent className="p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <SectionTitle>Pricing Items</SectionTitle>
+                  <SectionTitle>Items / Boxes Being Picked Up</SectionTitle>
                   <Button size="sm" variant="outline" onClick={addRow} className="gap-2">
-                    <Plus className="w-4 h-4" /> Add Row
+                    <Plus className="w-4 h-4" /> Add Box / Item
                   </Button>
                 </div>
+                <p className="text-xs text-muted-foreground -mt-2">
+                  Describe each physical box / item separately. Freight, customs, handling, VAT and insurance go in the Cost Breakdown section below.
+                </p>
                 <div className="overflow-x-auto -mx-2 sm:mx-0">
-                  <table className="w-full text-sm min-w-[640px]">
+                  <table className="w-full text-sm min-w-[860px]">
                     <thead>
                       <tr className="text-xs uppercase tracking-wider text-muted-foreground border-b">
-                        <th className="text-left font-semibold py-2 px-2 w-[50%]">Description</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[12%]">Qty</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[18%]">Unit Price</th>
-                        <th className="text-right font-semibold py-2 px-2 w-[18%]">Amount</th>
+                        <th className="text-left font-semibold py-2 px-2 w-[34%]">Description / Contents</th>
+                        <th className="text-left font-semibold py-2 px-2 w-[20%]">Dimensions (L×W×H cm)</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[10%]">Qty</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[14%]">Unit Price</th>
+                        <th className="text-right font-semibold py-2 px-2 w-[14%]">Amount</th>
                         <th className="w-10" />
                       </tr>
                     </thead>
@@ -388,7 +392,16 @@ const AdminQuotationBuilder = () => {
                         return (
                           <tr key={r.id} className="border-b last:border-0">
                             <td className="py-2 px-2">
-                              <Input value={r.description} onChange={(e) => updateRow(r.id, { description: e.target.value })} placeholder="e.g. Air Freight (Shanghai → Lagos)" />
+                              <Input value={r.description} onChange={(e) => updateRow(r.id, { description: e.target.value })} placeholder="e.g. Box 1 — clothes & shoes" />
+                            </td>
+                            <td className="py-2 px-2">
+                              <div className="flex items-center gap-1">
+                                <Input type="number" min="0" step="0.1" value={r.length_cm ?? ""} onChange={(e) => updateRow(r.id, { length_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="L" className="text-center px-2" />
+                                <span className="text-muted-foreground">×</span>
+                                <Input type="number" min="0" step="0.1" value={r.width_cm ?? ""} onChange={(e) => updateRow(r.id, { width_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="W" className="text-center px-2" />
+                                <span className="text-muted-foreground">×</span>
+                                <Input type="number" min="0" step="0.1" value={r.height_cm ?? ""} onChange={(e) => updateRow(r.id, { height_cm: e.target.value === "" ? null : Number(e.target.value) })} placeholder="H" className="text-center px-2" />
+                              </div>
                             </td>
                             <td className="py-2 px-2">
                               <Input type="number" min="0" step="1" value={r.quantity} onChange={(e) => updateRow(r.id, { quantity: Number(e.target.value) })} className="text-right" />
@@ -431,7 +444,7 @@ const AdminQuotationBuilder = () => {
           <div className="space-y-5">
             <Card className="lg:sticky lg:top-6">
               <CardContent className="p-5 space-y-4">
-                <SectionTitle>Totals</SectionTitle>
+                <SectionTitle>Cost Breakdown</SectionTitle>
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Currency">
                     <Select value={form.currency} onValueChange={(v) => upd("currency", v)}>
@@ -444,6 +457,18 @@ const AdminQuotationBuilder = () => {
                       </SelectContent>
                     </Select>
                   </Field>
+                  <Field label="Freight / Shipping">
+                    <Input type="number" min="0" step="0.01" value={form.freight} onChange={(e) => upd("freight", e.target.value)} />
+                  </Field>
+                  <Field label="Customs Clearance">
+                    <Input type="number" min="0" step="0.01" value={form.customs} onChange={(e) => upd("customs", e.target.value)} />
+                  </Field>
+                  <Field label="Handling Fee">
+                    <Input type="number" min="0" step="0.01" value={form.handling} onChange={(e) => upd("handling", e.target.value)} />
+                  </Field>
+                  <Field label="Insurance">
+                    <Input type="number" min="0" step="0.01" value={form.insurance} onChange={(e) => upd("insurance", e.target.value)} />
+                  </Field>
                   <Field label="Discount">
                     <Input type="number" min="0" value={form.discount} onChange={(e) => upd("discount", e.target.value)} />
                   </Field>
@@ -451,7 +476,7 @@ const AdminQuotationBuilder = () => {
                 <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
                   <div className="text-sm">
                     <p className="font-semibold">Apply VAT</p>
-                    <p className="text-xs text-muted-foreground">Tax on subtotal − discount</p>
+                    <p className="text-xs text-muted-foreground">Tax on subtotal + charges − discount</p>
                   </div>
                   <Switch checked={form.vat_enabled} onCheckedChange={(v) => upd("vat_enabled", v)} />
                 </div>
@@ -461,7 +486,11 @@ const AdminQuotationBuilder = () => {
                   </Field>
                 )}
                 <div className="space-y-2 border-t pt-4 text-sm">
-                  <Row label="Subtotal" value={formatMoney(totals.subtotal, form.currency)} />
+                  <Row label="Items Subtotal" value={formatMoney(totals.itemsSubtotal, form.currency)} />
+                  {totals.freight > 0 && <Row label="Freight / Shipping" value={formatMoney(totals.freight, form.currency)} />}
+                  {totals.customs > 0 && <Row label="Customs Clearance" value={formatMoney(totals.customs, form.currency)} />}
+                  {totals.handling > 0 && <Row label="Handling Fee" value={formatMoney(totals.handling, form.currency)} />}
+                  {totals.insurance > 0 && <Row label="Insurance" value={formatMoney(totals.insurance, form.currency)} />}
                   {totals.discount > 0 && <Row label="Discount" value={`− ${formatMoney(totals.discount, form.currency)}`} />}
                   {form.vat_enabled && <Row label={`VAT (${form.vat_percent}%)`} value={formatMoney(totals.vat, form.currency)} />}
                   <div className="flex items-center justify-between rounded-md bg-primary px-3 py-2.5 text-primary-foreground">
