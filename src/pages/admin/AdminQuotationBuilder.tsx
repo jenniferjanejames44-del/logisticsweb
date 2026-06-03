@@ -460,23 +460,11 @@ const AdminQuotationBuilder = () => {
                   <Field label="Freight / Shipping">
                     <Input type="number" min="0" step="0.01" value={form.freight} onChange={(e) => upd("freight", e.target.value)} />
                   </Field>
-                  <Field label="Customs Clearance">
-                    <Input type="number" min="0" step="0.01" value={form.customs} onChange={(e) => upd("customs", e.target.value)} />
-                  </Field>
-                  <Field label="Handling Fee">
-                    <Input type="number" min="0" step="0.01" value={form.handling} onChange={(e) => upd("handling", e.target.value)} />
-                  </Field>
-                  <Field label="Insurance">
-                    <Input type="number" min="0" step="0.01" value={form.insurance} onChange={(e) => upd("insurance", e.target.value)} />
-                  </Field>
-                  <Field label="Discount">
-                    <Input type="number" min="0" value={form.discount} onChange={(e) => upd("discount", e.target.value)} />
-                  </Field>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
                   <div className="text-sm">
                     <p className="font-semibold">Apply VAT</p>
-                    <p className="text-xs text-muted-foreground">Tax on subtotal + charges − discount</p>
+                    <p className="text-xs text-muted-foreground">Tax on items subtotal + freight</p>
                   </div>
                   <Switch checked={form.vat_enabled} onCheckedChange={(v) => upd("vat_enabled", v)} />
                 </div>
@@ -488,10 +476,6 @@ const AdminQuotationBuilder = () => {
                 <div className="space-y-2 border-t pt-4 text-sm">
                   <Row label="Items Subtotal" value={formatMoney(totals.itemsSubtotal, form.currency)} />
                   {totals.freight > 0 && <Row label="Freight / Shipping" value={formatMoney(totals.freight, form.currency)} />}
-                  {totals.customs > 0 && <Row label="Customs Clearance" value={formatMoney(totals.customs, form.currency)} />}
-                  {totals.handling > 0 && <Row label="Handling Fee" value={formatMoney(totals.handling, form.currency)} />}
-                  {totals.insurance > 0 && <Row label="Insurance" value={formatMoney(totals.insurance, form.currency)} />}
-                  {totals.discount > 0 && <Row label="Discount" value={`− ${formatMoney(totals.discount, form.currency)}`} />}
                   {form.vat_enabled && <Row label={`VAT (${form.vat_percent}%)`} value={formatMoney(totals.vat, form.currency)} />}
                   <div className="flex items-center justify-between rounded-md bg-primary px-3 py-2.5 text-primary-foreground">
                     <span className="text-sm font-bold uppercase tracking-wider">Grand Total</span>

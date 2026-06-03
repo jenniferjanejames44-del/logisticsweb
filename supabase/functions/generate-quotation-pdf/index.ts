@@ -85,7 +85,6 @@ function renderHTML(q: any) {
   const valid = fmtDate(q.valid_until);
   const currency = (q.currency || 'USD').toUpperCase();
   const reference = `RAC-QTN-${String(q.id || '').slice(0, 8).toUpperCase()}`;
-  const status = String(q.status || 'draft').replace(/_/g, ' ').toUpperCase();
   const ngnLine = q.ngn_total && currency !== 'NGN'
     ? `<tr class="ngn"><td>NGN payable estimate</td><td>&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
 
@@ -159,7 +158,7 @@ body{font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1d2433;backg
 table{width:100%;border-collapse:collapse;}.r{text-align:right;}.c{text-align:center;}.muted{color:var(--muted);}.strong{font-weight:800;color:var(--navy);}small{display:block;color:var(--muted);font-size:8.5px;margin-top:2px;}
 .top{width:100%;margin-bottom:14px;table-layout:fixed;}.top td{vertical-align:top;padding:0;}.brand-cell{width:61%;padding-right:18px!important;}.doc-cell{width:39%;text-align:right;padding-left:18px!important;}
 .brand-logo{height:60px;width:auto;max-width:330px;display:block;margin-bottom:8px;}.brand-sub{font-size:9px;color:#777;font-style:italic;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase;}.brand-details{font-size:9.8px;color:#444;line-height:1.65;}.rc-label{font-size:10px;color:#444;font-weight:700;margin-top:6px;}
-.doc-title{font-size:35px;font-weight:900;color:var(--navy);letter-spacing:3.5px;text-transform:uppercase;line-height:.95;margin-bottom:10px;}.status{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:9px;letter-spacing:.8px;text-transform:uppercase;padding:5px 10px;margin-bottom:8px;}
+.doc-title{font-size:24px;font-weight:900;color:var(--navy);letter-spacing:1.5px;text-transform:uppercase;line-height:1;margin-bottom:10px;}
 .doc-meta{display:inline-table;width:100%;max-width:245px;border-top:3px solid var(--navy);border-bottom:1px solid var(--line);}.doc-meta div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:5px 0;font-size:9.5px;}.doc-meta div:last-child{border-bottom:0;}.doc-meta span:first-child{color:#666;font-weight:800;text-transform:uppercase;}.doc-meta span:last-child{font-weight:800;text-align:right;color:var(--ink);}
 .divider{height:3.5px;background:var(--navy);margin:0 0 14px;}.bar{background:var(--navy);color:#fff;font-size:10px;font-weight:800;padding:6px 10px;letter-spacing:.4px;text-transform:uppercase;}.bar.orange{background:var(--orange);}
 .intro{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}.box{border:1px solid var(--line);background:#fff;}.box-body{padding:10px;font-size:10.5px;line-height:1.75;min-height:82px;}.box-body strong{color:var(--navy);font-size:11.5px;}.route{background:var(--soft);border:1px solid var(--line);padding:10px 12px;margin-bottom:14px;}.route h2{font-size:16px;color:var(--navy);line-height:1.2;}.route p{font-size:10px;color:var(--muted);margin-top:4px;}
@@ -180,8 +179,7 @@ table{width:100%;border-collapse:collapse;}.r{text-align:right;}.c{text-align:ce
       <div class="rc-label">RC: 1454183</div>
     </td>
     <td class="doc-cell">
-      <div class="status">${escapeHtml(status)}</div>
-      <div class="doc-title">Quotation</div>
+      <div class="doc-title">Quotation / Invoice</div>
       <div class="doc-meta">
         <div><span>No.</span><span>${escapeHtml(q.quote_number)}</span></div>
         <div><span>Date</span><span>${created}</span></div>
