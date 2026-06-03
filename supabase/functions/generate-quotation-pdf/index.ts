@@ -85,7 +85,6 @@ function renderHTML(q: any) {
   const valid = fmtDate(q.valid_until);
   const currency = (q.currency || 'USD').toUpperCase();
   const reference = `RAC-QTN-${String(q.id || '').slice(0, 8).toUpperCase()}`;
-  const status = String(q.status || 'draft').replace(/_/g, ' ').toUpperCase();
   const ngnLine = q.ngn_total && currency !== 'NGN'
     ? `<tr class="ngn"><td>NGN payable estimate</td><td>&#8358;${Number(q.ngn_total).toLocaleString('en-NG')}</td></tr>` : '';
 
@@ -180,8 +179,7 @@ table{width:100%;border-collapse:collapse;}.r{text-align:right;}.c{text-align:ce
       <div class="rc-label">RC: 1454183</div>
     </td>
     <td class="doc-cell">
-      <div class="status">${escapeHtml(status)}</div>
-      <div class="doc-title">Quotation</div>
+      <div class="doc-title">Quotation / Invoice</div>
       <div class="doc-meta">
         <div><span>No.</span><span>${escapeHtml(q.quote_number)}</span></div>
         <div><span>Date</span><span>${created}</span></div>
