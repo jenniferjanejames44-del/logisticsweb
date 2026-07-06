@@ -113,6 +113,22 @@ const SafeLoginTracker = ({ children }: { children: React.ReactNode }) => (
   </LoginTrackerBoundary>
 );
 
+// Redirects public pages to the Coming Soon screen while keeping admin,
+// dashboard, and auth flows accessible. Toggle with COMING_SOON_MODE above.
+const ComingSoonGuard = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  if (!COMING_SOON_MODE) return <>{children}</>;
+
+  const allowedPrefixes = ["/auth", "/dashboard", "/admin", "/unsubscribe"];
+  const isAllowed = allowedPrefixes.some(
+    (prefix) =>
+      location.pathname === prefix || location.pathname.startsWith(prefix + "/")
+  );
+
+  if (isAllowed) return <>{children}</>;
+  return <ComingSoon />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
