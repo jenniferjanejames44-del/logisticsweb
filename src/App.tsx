@@ -140,81 +140,83 @@ const App = () => (
               <Sonner />
             <BrowserRouter>
               <ScrollToTop />
-              <Routes>
-              <Route path="/" element={<Index />} />
-              {/* Original routes preserved below — re-enable by removing the catch-all above */}
-              <Route path="/__site/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/services/air-shipping" element={<AirShipping />} />
-              <Route path="/services/ocean-shipping" element={<OceanShipping />} />
-              <Route path="/services/personal-shopping" element={<PersonalShopping />} />
-              <Route path="/services/procurement" element={<Procurement />} />
-              <Route path="/services/import" element={<ImportService />} />
-              <Route path="/services/export" element={<ExportService />} />
-              <Route path="/services/import-export" element={<ImportExport />} />
-              <Route path="/services/warehousing" element={<WarehousingPage />} />
-              <Route path="/services/customs-clearance" element={<CustomsClearance />} />
-              <Route path="/services/global-pickup" element={<GlobalPickup />} />
-              
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/auth/callback" element={<AuthCallback />} />
-              <Route path="/auth/confirm" element={<AuthConfirm />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/track" element={<Track />} />
-              <Route path="/shipping" element={<Shipping />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/partners" element={<Partners />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-              {/* Customer Dashboard */}
-              <Route path="/dashboard" element={<Overview />} />
-              <Route path="/dashboard/wallet" element={<Wallet />} />
-              <Route path="/dashboard/shipments" element={<Shipments />} />
-              <Route path="/dashboard/shipments/new" element={<CreateShipment />} />
-              <Route path="/dashboard/shipments/:id" element={<ShipmentDetail />} />
-              <Route path="/dashboard/invoices" element={<Invoices />} />
-              <Route path="/dashboard/payments" element={<Payments />} />
-              <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />
-              <Route path="/dashboard/profile" element={<Profile />} />
-              <Route path="/dashboard/notifications" element={<Notifications />} />
-              <Route path="/dashboard/support" element={<Support />} />
-              <Route path="/dashboard/support/:id" element={<SupportTicketDetail />} />
-              <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
-              <Route path="/dashboard/shopping-orders/pay" element={<ShoppingOrderPayment />} />
-              <Route path="/dashboard/partner" element={<Partner />} />
-              <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
-              {/* Admin Dashboard */}
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/shipments" element={<AdminShipments />} />
-              <Route path="/admin/invoices" element={<AdminInvoices />} />
-              <Route path="/admin/quotations" element={<AdminQuotations />} />
-              <Route path="/admin/quotations/new" element={<AdminQuotationBuilder />} />
-              <Route path="/admin/quotations/:id/edit" element={<AdminQuotationBuilder />} />
-              <Route path="/admin/payments" element={<AdminPayments />} />
-              <Route path="/admin/pricing" element={<AdminPricing />} />
-              <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
-              <Route path="/admin/pricing-engine" element={<AdminPricingEngine />} />
-              <Route path="/admin/warehouses" element={<AdminWarehouses />} />
-              <Route path="/admin/packaging" element={<AdminPackaging />} />
-              <Route path="/admin/partners" element={<AdminPartners />} />
-              <Route path="/admin/analytics" element={<AdminAnalytics />} />
-              <Route path="/admin/notifications" element={<AdminNotifications />} />
-              <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />
-              <Route path="/admin/support" element={<AdminSupport />} />
-              <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
-              <Route path="/admin/refunds" element={<AdminRefunds />} />
-              <Route path="/admin/email" element={<AdminEmail />} />
-              <Route path="/unsubscribe" element={<Unsubscribe />} />
-              {/* Design System */}
-              <Route path="/design-system" element={<DesignSystem />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-              </Routes>
+              <ComingSoonGuard>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  {/* Original routes preserved below — re-enable by removing the catch-all above */}
+                  <Route path="/__site/" element={<Index />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/services/air-shipping" element={<AirShipping />} />
+                  <Route path="/services/ocean-shipping" element={<OceanShipping />} />
+                  <Route path="/services/personal-shopping" element={<PersonalShopping />} />
+                  <Route path="/services/procurement" element={<Procurement />} />
+                  <Route path="/services/import" element={<ImportService />} />
+                  <Route path="/services/export" element={<ExportService />} />
+                  <Route path="/services/import-export" element={<ImportExport />} />
+                  <Route path="/services/warehousing" element={<WarehousingPage />} />
+                  <Route path="/services/customs-clearance" element={<CustomsClearance />} />
+                  <Route path="/services/global-pickup" element={<GlobalPickup />} />
+
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/auth/callback" element={<AuthCallback />} />
+                  <Route path="/auth/confirm" element={<AuthConfirm />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/track" element={<Track />} />
+                  <Route path="/shipping" element={<Shipping />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/partners" element={<Partners />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  {/* Customer Dashboard */}
+                  <Route path="/dashboard" element={<Overview />} />
+                  <Route path="/dashboard/wallet" element={<Wallet />} />
+                  <Route path="/dashboard/shipments" element={<Shipments />} />
+                  <Route path="/dashboard/shipments/new" element={<CreateShipment />} />
+                  <Route path="/dashboard/shipments/:id" element={<ShipmentDetail />} />
+                  <Route path="/dashboard/invoices" element={<Invoices />} />
+                  <Route path="/dashboard/payments" element={<Payments />} />
+                  <Route path="/dashboard/payment-callback" element={<PaymentCallback />} />
+                  <Route path="/dashboard/profile" element={<Profile />} />
+                  <Route path="/dashboard/notifications" element={<Notifications />} />
+                  <Route path="/dashboard/support" element={<Support />} />
+                  <Route path="/dashboard/support/:id" element={<SupportTicketDetail />} />
+                  <Route path="/dashboard/shopping-orders" element={<ShoppingOrders />} />
+                  <Route path="/dashboard/shopping-orders/pay" element={<ShoppingOrderPayment />} />
+                  <Route path="/dashboard/partner" element={<Partner />} />
+                  <Route path="/personal-shopping/new" element={<PersonalShoppingForm />} />
+                  {/* Admin Dashboard */}
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/users" element={<AdminUsers />} />
+                  <Route path="/admin/shipments" element={<AdminShipments />} />
+                  <Route path="/admin/invoices" element={<AdminInvoices />} />
+                  <Route path="/admin/quotations" element={<AdminQuotations />} />
+                  <Route path="/admin/quotations/new" element={<AdminQuotationBuilder />} />
+                  <Route path="/admin/quotations/:id/edit" element={<AdminQuotationBuilder />} />
+                  <Route path="/admin/payments" element={<AdminPayments />} />
+                  <Route path="/admin/pricing" element={<AdminPricing />} />
+                  <Route path="/admin/shipping-routes" element={<AdminShippingRoutes />} />
+                  <Route path="/admin/pricing-engine" element={<AdminPricingEngine />} />
+                  <Route path="/admin/warehouses" element={<AdminWarehouses />} />
+                  <Route path="/admin/packaging" element={<AdminPackaging />} />
+                  <Route path="/admin/partners" element={<AdminPartners />} />
+                  <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                  <Route path="/admin/notifications" element={<AdminNotifications />} />
+                  <Route path="/admin/shopping-orders" element={<AdminShoppingOrders />} />
+                  <Route path="/admin/support" element={<AdminSupport />} />
+                  <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
+                  <Route path="/admin/refunds" element={<AdminRefunds />} />
+                  <Route path="/admin/email" element={<AdminEmail />} />
+                  <Route path="/unsubscribe" element={<Unsubscribe />} />
+                  {/* Design System */}
+                  <Route path="/design-system" element={<DesignSystem />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ComingSoonGuard>
             </BrowserRouter>
             </TooltipProvider>
           </SafeLoginTracker>
