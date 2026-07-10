@@ -77,7 +77,7 @@ import AdminPartners from "./pages/admin/AdminPartners";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 // Flip this to true to show the public Coming Soon page everywhere except admin/auth/dashboard.
-const COMING_SOON_MODE = true;
+const COMING_SOON_MODE = false;
 const queryClient = new QueryClient();
 
 // Defensive boundary: if anything in LoginTracker throws (e.g. stale HMR
