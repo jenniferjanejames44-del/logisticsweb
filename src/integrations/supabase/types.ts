@@ -286,6 +286,198 @@ export type Database = {
           },
         ]
       }
+      email_center_company_settings: {
+        Row: {
+          accent_color: string
+          address: string
+          company_name: string
+          facebook_url: string | null
+          id: number
+          instagram_url: string | null
+          linkedin_url: string | null
+          logo_url: string
+          phone: string
+          primary_color: string
+          slogan: string
+          support_email: string
+          tiktok_url: string | null
+          twitter_url: string | null
+          updated_at: string
+          website: string
+          whatsapp_url: string | null
+          youtube_url: string | null
+        }
+        Insert: {
+          accent_color?: string
+          address?: string
+          company_name?: string
+          facebook_url?: string | null
+          id?: number
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          logo_url?: string
+          phone?: string
+          primary_color?: string
+          slogan?: string
+          support_email?: string
+          tiktok_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          website?: string
+          whatsapp_url?: string | null
+          youtube_url?: string | null
+        }
+        Update: {
+          accent_color?: string
+          address?: string
+          company_name?: string
+          facebook_url?: string | null
+          id?: number
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          logo_url?: string
+          phone?: string
+          primary_color?: string
+          slogan?: string
+          support_email?: string
+          tiktok_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+          website?: string
+          whatsapp_url?: string | null
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      email_center_contacts: {
+        Row: {
+          company: string | null
+          created_at: string
+          created_by: string | null
+          email: string
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          created_by?: string | null
+          email: string
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_center_messages: {
+        Row: {
+          attachments: Json
+          bcc_recipients: string[]
+          body_html: string
+          cc_recipients: string[]
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          failed_count: number
+          id: string
+          sent_at: string | null
+          sent_count: number
+          status: string
+          subject: string
+          to_recipients: string[]
+          updated_at: string
+        }
+        Insert: {
+          attachments?: Json
+          bcc_recipients?: string[]
+          body_html?: string
+          cc_recipients?: string[]
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          failed_count?: number
+          id?: string
+          sent_at?: string | null
+          sent_count?: number
+          status?: string
+          subject?: string
+          to_recipients?: string[]
+          updated_at?: string
+        }
+        Update: {
+          attachments?: Json
+          bcc_recipients?: string[]
+          body_html?: string
+          cc_recipients?: string[]
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          failed_count?: number
+          id?: string
+          sent_at?: string | null
+          sent_count?: number
+          status?: string
+          subject?: string
+          to_recipients?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_center_templates: {
+        Row: {
+          body_html: string
+          category: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_system: boolean
+          name: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body_html: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_system?: boolean
+          name: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          body_html?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_system?: boolean
+          name?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
