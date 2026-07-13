@@ -54,6 +54,7 @@ import AdminQuotationBuilder from "./pages/admin/AdminQuotationBuilder";
 import AdminWarehouses from "./pages/admin/AdminWarehouses";
 import AdminPackaging from "./pages/admin/AdminPackaging";
 import AdminEmail from "./pages/admin/AdminEmail";
+import AdminEmailCenter from "./pages/admin/AdminEmailCenter";
 import Unsubscribe from "./pages/Unsubscribe";
 import Invoices from "./pages/dashboard/Invoices";
 import PaymentCallback from "./pages/dashboard/PaymentCallback";
@@ -210,6 +211,7 @@ const App = () => (
                   <Route path="/admin/support/:id" element={<AdminSupportDetail />} />
                   <Route path="/admin/refunds" element={<AdminRefunds />} />
                   <Route path="/admin/email" element={<AdminEmail />} />
+                  <Route path="/admin/email-center" element={<AdminEmailCenter />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
                   {/* Design System */}
                   <Route path="/design-system" element={<DesignSystem />} />

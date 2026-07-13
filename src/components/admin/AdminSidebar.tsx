@@ -69,6 +69,7 @@ const navSections: NavSection[] = [
       { name: "Pricing Engine", href: "/admin/pricing-engine", icon: Calculator },
       { name: "Notifications", href: "/admin/notifications", icon: Bell },
       { name: "Email Campaigns", href: "/admin/email", icon: Mail },
+      { name: "Email Center", href: "/admin/email-center", icon: Mail },
       { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     ],
   },
