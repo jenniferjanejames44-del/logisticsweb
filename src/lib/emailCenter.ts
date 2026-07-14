@@ -6,6 +6,10 @@ export interface Contact {
   email: string;
   company: string | null;
   phone: string | null;
+  position: string | null;
+  country: string | null;
+  industry: string | null;
+  status: string;
   tags: string[];
   notes: string | null;
   created_at: string;
@@ -29,11 +33,14 @@ export interface Message {
   cc_recipients: string[];
   bcc_recipients: string[];
   attachments: AttachmentMeta[];
-  status: "draft" | "sending" | "sent" | "failed";
+  status: "draft" | "scheduled" | "sending" | "sent" | "failed";
   error_message: string | null;
   sent_count: number;
   failed_count: number;
   sent_at: string | null;
+  scheduled_at: string | null;
+  template_name: string | null;
+  from_name: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -128,6 +135,8 @@ export async function saveDraft(m: Partial<Message> & { id?: string }) {
       subject: m.subject, body_html: m.body_html,
       to_recipients: m.to_recipients, cc_recipients: m.cc_recipients, bcc_recipients: m.bcc_recipients,
       attachments: m.attachments,
+      template_name: m.template_name ?? null,
+      from_name: m.from_name ?? null,
     }).eq("id", m.id);
     if (error) throw error;
     return m.id;
@@ -137,11 +146,38 @@ export async function saveDraft(m: Partial<Message> & { id?: string }) {
     subject: m.subject || "", body_html: m.body_html || "",
     to_recipients: m.to_recipients || [], cc_recipients: m.cc_recipients || [], bcc_recipients: m.bcc_recipients || [],
     attachments: m.attachments || [],
+    template_name: m.template_name ?? null,
+    from_name: m.from_name ?? null,
     created_by: user.user?.id,
     status: "draft",
   }).select("id").single();
   if (error) throw error;
   return data.id as string;
+}
+
+export async function scheduleMessage(id: string, scheduledAt: Date) {
+  const { error } = await (supabase as any).from("email_center_messages")
+    .update({ status: "scheduled", scheduled_at: scheduledAt.toISOString() })
+    .eq("id", id);
+  if (error) throw error;
+}
+export async function unscheduleMessage(id: string) {
+  const { error } = await (supabase as any).from("email_center_messages")
+    .update({ status: "draft", scheduled_at: null })
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function sendTestEmail(m: { subject: string; bodyHtml: string; testTo: string; fromName?: string; attachments?: AttachmentMeta[] }) {
+  const { data, error } = await supabase.functions.invoke("send-branded-email", {
+    body: {
+      subject: m.subject, bodyHtml: m.bodyHtml,
+      to: [], testTo: m.testTo, fromName: m.fromName, attachments: m.attachments,
+      personalize: true,
+    },
+  });
+  if (error) throw error;
+  return data;
 }
 export async function deleteMessage(id: string) {
   const { error } = await (supabase as any).from("email_center_messages").delete().eq("id", id);
@@ -153,12 +189,14 @@ export async function sendMessage(m: {
   subject: string; bodyHtml: string;
   to: string[]; cc?: string[]; bcc?: string[];
   attachments?: AttachmentMeta[];
+  fromName?: string;
 }) {
   await (supabase as any).from("email_center_messages").update({ status: "sending" }).eq("id", m.id);
   const { data, error } = await supabase.functions.invoke("send-branded-email", {
     body: {
       messageId: m.id, subject: m.subject, bodyHtml: m.bodyHtml,
       to: m.to, cc: m.cc, bcc: m.bcc, attachments: m.attachments,
+      fromName: m.fromName, personalize: true,
     },
   });
   if (error) {
