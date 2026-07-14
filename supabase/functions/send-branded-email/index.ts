@@ -21,6 +21,8 @@ interface Payload {
   attachments?: Attachment[];
   saveOnly?: boolean;
   fromName?: string;
+  testTo?: string;              // if set, send only to this address as a test (no logging changes)
+  personalize?: boolean;        // replace {{merge}} vars per recipient
 }
 
 function wrapBranded(bodyHtml: string, settings: any): string {
@@ -76,21 +78,24 @@ function escapeHtml(s: string): string {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   try {
-    const authHeader = req.headers.get('Authorization') || '';
-    const token = authHeader.replace('Bearer ', '');
-    if (!token) return json({ error: 'unauthorized' }, 401);
-
-    const supaAuth = createClient(SUPABASE_URL, SERVICE_KEY);
-    const { data: userData, error: uerr } = await supaAuth.auth.getUser(token);
-    if (uerr || !userData?.user) return json({ error: 'unauthorized' }, 401);
-
-    const { data: roleRow } = await supaAuth.from('user_roles').select('role').eq('user_id', userData.user.id).eq('role', 'admin').maybeSingle();
-    if (!roleRow) return json({ error: 'forbidden' }, 403);
+    // Auth: allow admin JWT OR internal service call (used by the scheduler)
+    const internal = req.headers.get('x-internal-key') === SERVICE_KEY;
+    if (!internal) {
+      const token = (req.headers.get('Authorization') || '').replace('Bearer ', '');
+      if (!token) return json({ error: 'unauthorized' }, 401);
+      const supaAuth = createClient(SUPABASE_URL, SERVICE_KEY);
+      const { data: userData, error: uerr } = await supaAuth.auth.getUser(token);
+      if (uerr || !userData?.user) return json({ error: 'unauthorized' }, 401);
+      const { data: roleRow } = await supaAuth.from('user_roles').select('role').eq('user_id', userData.user.id).eq('role', 'admin').maybeSingle();
+      if (!roleRow) return json({ error: 'forbidden' }, 403);
+    }
 
     const payload = await req.json() as Payload;
     if (!payload.subject?.trim()) return json({ error: 'Subject required' }, 400);
     if (!payload.bodyHtml?.trim()) return json({ error: 'Body required' }, 400);
-    const to = (payload.to || []).map(s => s.trim()).filter(Boolean);
+    const to = payload.testTo
+      ? [payload.testTo.trim()]
+      : (payload.to || []).map(s => s.trim()).filter(Boolean);
     if (!to.length) return json({ error: 'At least one recipient required' }, 400);
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
@@ -98,6 +103,15 @@ Deno.serve(async (req) => {
     if (!settings) return json({ error: 'Company settings missing' }, 500);
 
     if (!RESEND_API_KEY) return json({ error: 'Email service not configured' }, 500);
+
+    // Personalization lookup: pull contact rows for the given recipients
+    const contactMap = new Map<string, any>();
+    if (payload.personalize !== false && to.length) {
+      const { data: cts } = await admin.from('email_center_contacts')
+        .select('email, full_name, company, phone, country, position, industry')
+        .in('email', to.map(e => e.toLowerCase()));
+      (cts || []).forEach((c: any) => contactMap.set(c.email.toLowerCase(), c));
+    }
 
     // Build attachments: download from storage
     const attachments: { filename: string; content: string }[] = [];
@@ -110,7 +124,6 @@ Deno.serve(async (req) => {
       attachments.push({ filename: a.name, content: btoa(bin) });
     }
 
-    const html = wrapBranded(payload.bodyHtml, settings);
     const fromName = payload.fromName || settings.company_name;
     const fromEmail = settings.support_email || 'no-reply@raclogisticltd.com';
     const from = `${fromName} <${fromEmail}>`;
@@ -118,6 +131,24 @@ Deno.serve(async (req) => {
     let sent = 0, failed = 0;
     const errors: string[] = [];
     for (const recipient of to) {
+      const c = contactMap.get(recipient.toLowerCase());
+      const vars: Record<string, string> = {
+        contact_name: c?.full_name || recipient.split('@')[0],
+        name: c?.full_name || recipient.split('@')[0],
+        company_name: c?.company || '',
+        country: c?.country || '',
+        position: c?.position || '',
+        industry: c?.industry || '',
+        sender_name: fromName,
+        company: settings.company_name,
+        website: settings.website,
+        phone: settings.phone,
+        email: settings.support_email,
+        service: 'logistics services',
+      };
+      const personalizedBody = mergeVars(payload.bodyHtml, vars);
+      const personalizedSubject = mergeVars(payload.subject, vars);
+      const html = wrapBranded(personalizedBody, settings);
       try {
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
@@ -127,7 +158,7 @@ Deno.serve(async (req) => {
             to: [recipient],
             cc: payload.cc?.length ? payload.cc : undefined,
             bcc: payload.bcc?.length ? payload.bcc : undefined,
-            subject: payload.subject,
+            subject: personalizedSubject,
             html,
             reply_to: fromEmail,
             attachments: attachments.length ? attachments : undefined,
@@ -140,7 +171,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (payload.messageId) {
+    if (payload.messageId && !payload.testTo) {
       await admin.from('email_center_messages').update({
         status: failed && !sent ? 'failed' : 'sent',
         sent_count: sent, failed_count: failed,
@@ -154,6 +185,13 @@ Deno.serve(async (req) => {
     return json({ error: e.message || 'Internal error' }, 500);
   }
 });
+
+function mergeVars(html: string, vars: Record<string, string>): string {
+  return html.replace(/\{\{\s*([a-z_]+)\s*\}\}/gi, (_, k) => {
+    const v = vars[k.toLowerCase()];
+    return v === undefined ? '' : String(v);
+  });
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
