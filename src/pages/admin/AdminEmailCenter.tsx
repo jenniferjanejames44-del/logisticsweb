@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, History, Loader2 } from "lucide-react";
+import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, History, Loader2, Calendar } from "lucide-react";
 import { toast } from "sonner";
 import ComposerTab from "@/components/admin/email-center/ComposerTab";
 import ContactsTab from "@/components/admin/email-center/ContactsTab";
@@ -30,6 +30,7 @@ export default function AdminEmailCenter() {
   useEffect(() => { refresh(); }, []);
 
   const drafts = messages.filter(m => m.status === "draft");
+  const scheduled = messages.filter(m => m.status === "scheduled");
   const sent = messages.filter(m => m.status === "sent" || m.status === "sending" || m.status === "failed");
 
   const composeFromTemplate = (t: Template) => {
@@ -54,6 +55,7 @@ export default function AdminEmailCenter() {
         <TabsList className="bg-white border border-border/50 mb-6 flex-wrap h-auto">
           <TabsTrigger value="compose"><PenSquare className="w-4 h-4 mr-2"/>Compose</TabsTrigger>
           <TabsTrigger value="drafts"><Mail className="w-4 h-4 mr-2"/>Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>
+          <TabsTrigger value="scheduled"><Calendar className="w-4 h-4 mr-2"/>Scheduled <span className="ml-1.5 text-xs text-muted-foreground">({scheduled.length})</span></TabsTrigger>
           <TabsTrigger value="sent"><Send className="w-4 h-4 mr-2"/>Sent</TabsTrigger>
           <TabsTrigger value="templates"><FileText className="w-4 h-4 mr-2"/>Templates</TabsTrigger>
           <TabsTrigger value="contacts"><Users className="w-4 h-4 mr-2"/>Contacts</TabsTrigger>
@@ -71,6 +73,9 @@ export default function AdminEmailCenter() {
         </TabsContent>
         <TabsContent value="drafts">
           <MessagesTab messages={drafts} mode="drafts" onEdit={editDraft} onChange={refresh}/>
+        </TabsContent>
+        <TabsContent value="scheduled">
+          <MessagesTab messages={scheduled} mode="drafts" onEdit={editDraft} onChange={refresh}/>
         </TabsContent>
         <TabsContent value="sent">
           <MessagesTab messages={sent} mode="sent" onEdit={editDraft} onChange={refresh}/>
