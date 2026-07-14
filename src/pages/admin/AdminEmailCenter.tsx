@@ -38,7 +38,8 @@ export default function AdminEmailCenter() {
       id: "", subject: t.subject, body_html: t.body_html,
       to_recipients: [], cc_recipients: [], bcc_recipients: [], attachments: [],
       status: "draft", error_message: null, sent_count: 0, failed_count: 0,
-      sent_at: null, created_at: "", updated_at: "",
+      sent_at: null, scheduled_at: null, template_name: t.name, from_name: null,
+      created_at: "", updated_at: "",
     } as any);
     setTab("compose");
   };
