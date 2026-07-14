@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Plus, Upload, Trash2, Edit3, Search } from "lucide-react";
+import { Plus, Upload, Trash2, Edit3, Search, Download } from "lucide-react";
 import { Contact, upsertContact, deleteContact } from "@/lib/emailCenter";
 import { toast } from "sonner";
 
@@ -41,6 +41,8 @@ export default function ContactsTab({ contacts, onChange }: Props) {
       await upsertContact({
         id: editing.id, full_name: editing.full_name!, email: editing.email!.toLowerCase(),
         company: editing.company || null, phone: editing.phone || null, notes: editing.notes || null,
+        position: editing.position || null, country: editing.country || null, industry: editing.industry || null,
+        status: editing.status || "active",
         tags: (editing.tags as string[]) || [],
       } as any);
       toast.success("Contact saved");
@@ -62,12 +64,39 @@ export default function ContactsTab({ contacts, onChange }: Props) {
       if (!email || !/.+@.+\..+/.test(email)) { skipped++; continue; }
       const tags = (cols[idx("tags")] || cols[idx("group")] || "").split(/[;|]/).map(t => t.trim()).filter(Boolean);
       try {
-        await upsertContact({ full_name: name, email, company: cols[idx("company")] || null, phone: cols[idx("phone")] || null, tags });
+        await upsertContact({
+          full_name: name, email,
+          company: cols[idx("company")] || null,
+          phone: cols[idx("phone")] || null,
+          position: cols[idx("position")] || null,
+          country: cols[idx("country")] || null,
+          industry: cols[idx("industry")] || null,
+          tags,
+        } as any);
         added++;
       } catch { skipped++; }
     }
     toast.success(`Imported ${added} contacts (${skipped} skipped)`);
     onChange();
+  };
+
+  const exportCsv = () => {
+    const header = ["name","email","company","position","phone","country","industry","tags","status","notes"];
+    const escape = (v: any) => {
+      const s = String(v ?? "");
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const rows = filtered.map(c => [
+      c.full_name, c.email, c.company || "", (c as any).position || "", c.phone || "",
+      (c as any).country || "", (c as any).industry || "", (c.tags || []).join("|"),
+      (c as any).status || "active", (c.notes || "").replace(/\n/g, " "),
+    ].map(escape).join(","));
+    const csv = [header.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `contacts-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
   };
 
   return (
@@ -83,6 +112,7 @@ export default function ContactsTab({ contacts, onChange }: Props) {
         </select>
         <input ref={fileRef} type="file" accept=".csv" hidden onChange={e => e.target.files?.[0] && importCsv(e.target.files[0])}/>
         <Button variant="outline" onClick={() => fileRef.current?.click()}><Upload className="w-4 h-4 mr-2"/>Import CSV</Button>
+        <Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-2"/>Export</Button>
         <Button onClick={() => setEditing({ full_name: "", email: "", tags: [] })} className="bg-[#DF5101] hover:bg-[#c04600]"><Plus className="w-4 h-4 mr-2"/>Add contact</Button>
       </Card>
 
@@ -110,14 +140,27 @@ export default function ContactsTab({ contacts, onChange }: Props) {
       </Card>
 
       <Dialog open={!!editing} onOpenChange={o => !o && setEditing(null)}>
-        <DialogContent className="bg-white max-w-lg">
+        <DialogContent className="bg-white max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing?.id ? "Edit contact" : "New contact"}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div><Label className="text-xs">Full name*</Label><Input value={editing?.full_name || ""} onChange={e => setEditing(v => ({...v!, full_name: e.target.value}))}/></div>
               <div><Label className="text-xs">Email*</Label><Input value={editing?.email || ""} onChange={e => setEditing(v => ({...v!, email: e.target.value}))}/></div>
               <div><Label className="text-xs">Company</Label><Input value={editing?.company || ""} onChange={e => setEditing(v => ({...v!, company: e.target.value}))}/></div>
+              <div><Label className="text-xs">Position</Label><Input value={(editing as any)?.position || ""} onChange={e => setEditing(v => ({...v!, position: e.target.value} as any))}/></div>
               <div><Label className="text-xs">Phone</Label><Input value={editing?.phone || ""} onChange={e => setEditing(v => ({...v!, phone: e.target.value}))}/></div>
+              <div><Label className="text-xs">Country</Label><Input value={(editing as any)?.country || ""} onChange={e => setEditing(v => ({...v!, country: e.target.value} as any))}/></div>
+              <div><Label className="text-xs">Industry</Label><Input value={(editing as any)?.industry || ""} onChange={e => setEditing(v => ({...v!, industry: e.target.value} as any))}/></div>
+              <div>
+                <Label className="text-xs">Status</Label>
+                <select value={(editing as any)?.status || "active"} onChange={e => setEditing(v => ({...v!, status: e.target.value} as any))} className="w-full h-10 rounded-md border border-input bg-white px-3 text-sm">
+                  <option value="active">Active</option>
+                  <option value="lead">Lead</option>
+                  <option value="prospect">Prospect</option>
+                  <option value="customer">Customer</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
             </div>
             <div>
               <Label className="text-xs">Groups (comma separated)</Label>
