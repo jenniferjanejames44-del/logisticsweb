@@ -352,37 +352,49 @@ export type Database = {
       email_center_contacts: {
         Row: {
           company: string | null
+          country: string | null
           created_at: string
           created_by: string | null
           email: string
           full_name: string
           id: string
+          industry: string | null
           notes: string | null
           phone: string | null
+          position: string | null
+          status: string
           tags: string[]
           updated_at: string
         }
         Insert: {
           company?: string | null
+          country?: string | null
           created_at?: string
           created_by?: string | null
           email: string
           full_name: string
           id?: string
+          industry?: string | null
           notes?: string | null
           phone?: string | null
+          position?: string | null
+          status?: string
           tags?: string[]
           updated_at?: string
         }
         Update: {
           company?: string | null
+          country?: string | null
           created_at?: string
           created_by?: string | null
           email?: string
           full_name?: string
           id?: string
+          industry?: string | null
           notes?: string | null
           phone?: string | null
+          position?: string | null
+          status?: string
           tags?: string[]
           updated_at?: string
         }
@@ -398,11 +410,14 @@ export type Database = {
           created_by: string | null
           error_message: string | null
           failed_count: number
+          from_name: string | null
           id: string
+          scheduled_at: string | null
           sent_at: string | null
           sent_count: number
           status: string
           subject: string
+          template_name: string | null
           to_recipients: string[]
           updated_at: string
         }
@@ -415,11 +430,14 @@ export type Database = {
           created_by?: string | null
           error_message?: string | null
           failed_count?: number
+          from_name?: string | null
           id?: string
+          scheduled_at?: string | null
           sent_at?: string | null
           sent_count?: number
           status?: string
           subject?: string
+          template_name?: string | null
           to_recipients?: string[]
           updated_at?: string
         }
@@ -432,11 +450,14 @@ export type Database = {
           created_by?: string | null
           error_message?: string | null
           failed_count?: number
+          from_name?: string | null
           id?: string
+          scheduled_at?: string | null
           sent_at?: string | null
           sent_count?: number
           status?: string
           subject?: string
+          template_name?: string | null
           to_recipients?: string[]
           updated_at?: string
         }
