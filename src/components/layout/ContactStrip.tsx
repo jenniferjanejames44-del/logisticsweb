@@ -31,11 +31,11 @@ const ContactStrip = ({ variant = "header", className }: ContactStripProps) => {
         {/* Left: email + phones — horizontal scroll on small screens */}
         <div className="flex min-w-0 flex-1 items-center gap-4 overflow-x-auto whitespace-nowrap text-[12px] font-medium leading-none sm:gap-6 sm:text-[12.5px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           <a
-            href="mailto:info@raclogistic.com"
+            href="mailto:info@raclogisticltd.com"
             className="inline-flex shrink-0 items-center gap-1.5 transition-colors hover:text-accent"
           >
             <Mail className="h-3.5 w-3.5 text-accent" strokeWidth={2.4} />
-            <span>info@raclogistic.com</span>
+            <span>info@raclogisticltd.com</span>
           </a>
           {phones.map((p) => (
             <a

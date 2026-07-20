@@ -97,7 +97,7 @@ const Privacy = () => {
           </Section>
 
           <Section title="11. Contact Information">
-            <p>For any questions or to exercise your data protection rights, please contact our Data Protection team at <a href="mailto:info@raclogistic.com" className="text-accent font-semibold">info@raclogistic.com</a>.</p>
+            <p>For any questions or to exercise your data protection rights, please contact our Data Protection team at <a href="mailto:info@raclogisticltd.com" className="text-accent font-semibold">info@raclogisticltd.com</a>.</p>
           </Section>
         </article>
       </main>

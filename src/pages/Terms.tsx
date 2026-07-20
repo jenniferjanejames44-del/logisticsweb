@@ -109,7 +109,7 @@ const Terms = () => {
           </Section>
 
           <Section title="18. Contact Information">
-            <p>For any questions or notices regarding these Terms, please contact us at <a href="mailto:info@raclogistic.com" className="text-accent font-semibold">info@raclogistic.com</a>.</p>
+            <p>For any questions or notices regarding these Terms, please contact us at <a href="mailto:info@raclogisticltd.com" className="text-accent font-semibold">info@raclogisticltd.com</a>.</p>
           </Section>
         </article>
       </main>
