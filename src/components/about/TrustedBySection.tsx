@@ -2,9 +2,9 @@ import { Quote, Star } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const testimonials = [
-  { quote: "RAC Logistics transformed our supply chain operations. Their reliability and professionalism are unmatched in the industry.", author: "James Anderson", role: "CEO, TechFlow Industries", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop", rating: 5 },
-  { quote: "We've reduced shipping costs by 30% while improving delivery times. The team at RAC truly understands global logistics.", author: "Maria Santos", role: "Operations Director, Global Retail Co.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop", rating: 5 },
-  { quote: "Their customs clearance expertise saved us weeks of delays. Highly recommend for any international shipping needs.", author: "David Kim", role: "Founder, AsiaConnect Trading", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop", rating: 5 },
+  { quote: "RAC Logistics transformed our supply chain operations. Their reliability and professionalism are unmatched in the industry.", author: "Ego Maxwell", role: "CEO, TechFlow Industries", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop", rating: 5 },
+  { quote: "We've reduced shipping costs by 30% while improving delivery times. The team at RAC truly understands global logistics.", author: "Chukwuma Okoro", role: "Operations Director, Global Retail Co.", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop", rating: 5 },
+  { quote: "Their customs clearance expertise saved us weeks of delays. Highly recommend for any international shipping needs.", author: "Daniel Ajigini", role: "Founder, AsiaConnect Trading", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop", rating: 5 },
 ];
 
 const trustedLogos = [
