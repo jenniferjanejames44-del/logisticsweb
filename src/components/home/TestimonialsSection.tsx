@@ -4,7 +4,7 @@ import { useInView } from "@/hooks/useInView";
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
+    name: "Ego Maxwell",
     role: "CEO, TechCorp",
     company: "TechCorp International",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
@@ -12,7 +12,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: "Michael Chen",
+    name: "Chukwuma Okoro",
     role: "Operations Director",
     company: "GlobalTrade Solutions",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
@@ -20,7 +20,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    name: "Emily Rodriguez",
+    name: "Daniel Ajigini",
     role: "Founder",
     company: "Luxe Imports Co.",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",

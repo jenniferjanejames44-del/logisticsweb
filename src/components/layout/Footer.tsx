@@ -98,11 +98,11 @@ const Footer = () => {
             </div>
 
             <a
-              href="mailto:info@raclogistic.com"
+              href="mailto:info@raclogisticltd.com"
               className="inline-flex items-center gap-2 text-[15px] font-medium text-white/90 transition-colors hover:text-accent"
             >
               <Mail className="h-4 w-4 text-accent" strokeWidth={2.3} />
-              info@raclogistic.com
+              info@raclogisticltd.com
             </a>
 
             <Link
