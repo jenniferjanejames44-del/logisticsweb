@@ -5,25 +5,16 @@ import { useInView } from "@/hooks/useInView";
 const testimonials = [
   {
     name: "Ego Maxwell",
-    role: "CEO, TechCorp",
-    company: "TechCorp International",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
     content: "RAC Logistics has transformed our supply chain. Their reliability and speed are unmatched. We've reduced delivery times by 40% since partnering with them.",
     rating: 5,
   },
   {
     name: "Chukwuma Okoro",
-    role: "Operations Director",
-    company: "GlobalTrade Solutions",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop",
     content: "The tracking system is incredibly detailed. We can monitor our shipments in real-time, which has improved our customer satisfaction significantly.",
     rating: 5,
   },
   {
     name: "Daniel Ajigini",
-    role: "Founder",
-    company: "Luxe Imports Co.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop",
     content: "From personal shopping to customs clearance, RAC handles everything seamlessly. Their team is professional and always goes the extra mile.",
     rating: 5,
   },
@@ -101,17 +92,11 @@ const TestimonialsSection = () => {
                     </div>
 
                     {/* Author */}
-                    <div className="mx-auto max-w-sm space-y-1 text-center">
-                        <h4 className="font-extrabold text-foreground text-lg">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-muted-foreground text-sm">
-                          {testimonial.role}
-                        </p>
-                        <p className="text-primary text-sm font-bold">
-                          {testimonial.company}
-                        </p>
-                      </div>
+                    <div className="mx-auto max-w-sm text-center">
+                      <h4 className="font-extrabold text-foreground text-lg">
+                        {testimonial.name}
+                      </h4>
+                    </div>
                   </div>
                 </div>
               ))}
