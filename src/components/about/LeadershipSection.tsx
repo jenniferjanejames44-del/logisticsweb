@@ -8,9 +8,9 @@ import teamCImage from "@/assets/team-c.jpg";
 const teamMembers = [
   { name: "Offor Rex C.K", role: "Founder & CEO", image: founderImage, bio: "Visionary leader with 20+ years in global logistics and supply chain management.", linkedin: "#", twitter: "#" },
   { name: "Rex-Offor Rosecollet C.", role: "Head Customer Relations", image: rosecolletImage, bio: "Dedicated to building lasting client relationships and ensuring exceptional service delivery.", linkedin: "#", twitter: "#" },
-  { name: "Chukwuemeka Okafor", role: "Head of Operations", image: teamAImage, bio: "Oversees end-to-end logistics operations, ensuring every shipment moves on time and on budget.", linkedin: "#", twitter: "#" },
-  { name: "Ifeanyi Nwosu", role: "Head of Global Partnerships", image: teamBImage, bio: "Builds strategic carrier and freight partnerships across Asia, Europe, and Africa.", linkedin: "#", twitter: "#" },
-  { name: "Adaeze Balogun", role: "Head of Finance & Compliance", image: teamCImage, bio: "Leads financial planning and regulatory compliance across all RAC Logistics operations.", linkedin: "#", twitter: "#" },
+  { name: "Donald Unamma", role: "Head Operation and Innovation PhD", image: teamAImage, bio: "Oversees end-to-end logistics operations, ensuring every shipment moves on time and on budget.", linkedin: "#", twitter: "#" },
+  { name: "Emeka Udeagu", role: "Head Business Development and Strategy", image: teamBImage, bio: "Builds strategic carrier and freight partnerships across Asia, Europe, and Africa.", linkedin: "#", twitter: "#" },
+  { name: "Precious Uchendu", role: "Head, Legal & HR", image: teamCImage, bio: "Leads financial planning and regulatory compliance across all RAC Logistics operations.", linkedin: "#", twitter: "#" },
 ];
 
 const LeadershipSection = () => {
