@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, History, Loader2, Calendar } from "lucide-react";
+import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, Loader2, Calendar, Activity } from "lucide-react";
 import { toast } from "sonner";
-import ComposerTab from "@/components/admin/email-center/ComposerTab";
+import ComposerWizard from "@/components/admin/email-center/ComposerWizard";
 import ContactsTab from "@/components/admin/email-center/ContactsTab";
 import TemplatesTab from "@/components/admin/email-center/TemplatesTab";
 import SettingsTab from "@/components/admin/email-center/SettingsTab";
 import MessagesTab from "@/components/admin/email-center/MessagesTab";
+import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
 import { Contact, Message, Settings, Template, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
 export default function AdminEmailCenter() {
@@ -47,51 +48,51 @@ export default function AdminEmailCenter() {
   const editDraft = (m: Message) => { setInitialCompose(m); setTab("compose"); };
 
   if (loading || !settings) {
-    return <AdminLayout title="Email Center"><div className="flex justify-center py-20"><Loader2 className="w-6 h-6 animate-spin text-primary"/></div></AdminLayout>;
+    return <AdminLayout title="Email Center"><div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div></AdminLayout>;
   }
 
   return (
-    <AdminLayout title="Email Center" description="Compose branded business emails, manage contacts and templates.">
+    <AdminLayout title="Email Center" description="Send professional proposals and business emails, then track every delivery.">
       <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="bg-white border border-border/50 mb-6 flex-wrap h-auto">
-          <TabsTrigger value="compose"><PenSquare className="w-4 h-4 mr-2"/>Compose</TabsTrigger>
-          <TabsTrigger value="drafts"><Mail className="w-4 h-4 mr-2"/>Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>
-          <TabsTrigger value="scheduled"><Calendar className="w-4 h-4 mr-2"/>Scheduled <span className="ml-1.5 text-xs text-muted-foreground">({scheduled.length})</span></TabsTrigger>
-          <TabsTrigger value="sent"><Send className="w-4 h-4 mr-2"/>Sent</TabsTrigger>
-          <TabsTrigger value="templates"><FileText className="w-4 h-4 mr-2"/>Templates</TabsTrigger>
-          <TabsTrigger value="contacts"><Users className="w-4 h-4 mr-2"/>Contacts</TabsTrigger>
-          <TabsTrigger value="history"><History className="w-4 h-4 mr-2"/>History</TabsTrigger>
-          <TabsTrigger value="settings"><SettingsIcon className="w-4 h-4 mr-2"/>Settings</TabsTrigger>
+        <TabsList className="mb-6 h-auto flex-wrap border border-border/50 bg-white">
+          <TabsTrigger value="compose"><PenSquare className="mr-2 h-4 w-4" />Compose</TabsTrigger>
+          <TabsTrigger value="delivery"><Activity className="mr-2 h-4 w-4" />Delivery</TabsTrigger>
+          <TabsTrigger value="drafts"><Mail className="mr-2 h-4 w-4" />Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>
+          <TabsTrigger value="scheduled"><Calendar className="mr-2 h-4 w-4" />Scheduled <span className="ml-1.5 text-xs text-muted-foreground">({scheduled.length})</span></TabsTrigger>
+          <TabsTrigger value="sent"><Send className="mr-2 h-4 w-4" />Sent</TabsTrigger>
+          <TabsTrigger value="templates"><FileText className="mr-2 h-4 w-4" />Templates</TabsTrigger>
+          <TabsTrigger value="contacts"><Users className="mr-2 h-4 w-4" />Contacts</TabsTrigger>
+          <TabsTrigger value="settings"><SettingsIcon className="mr-2 h-4 w-4" />Settings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="compose">
-          <ComposerTab
+          <ComposerWizard
             settings={settings} contacts={contacts} templates={templates}
             initial={initialCompose}
             onSent={() => { setInitialCompose(null); refresh(); }}
             onDrafted={refresh}
           />
         </TabsContent>
+        <TabsContent value="delivery">
+          <DeliveryTab messages={messages} onChange={refresh} />
+        </TabsContent>
         <TabsContent value="drafts">
-          <MessagesTab messages={drafts} mode="drafts" onEdit={editDraft} onChange={refresh}/>
+          <MessagesTab messages={drafts} mode="drafts" onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="scheduled">
-          <MessagesTab messages={scheduled} mode="drafts" onEdit={editDraft} onChange={refresh}/>
+          <MessagesTab messages={scheduled} mode="drafts" onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="sent">
-          <MessagesTab messages={sent} mode="sent" onEdit={editDraft} onChange={refresh}/>
+          <MessagesTab messages={sent} mode="sent" onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="templates">
-          <TemplatesTab templates={templates} settings={settings} onChange={refresh} onUseTemplate={composeFromTemplate}/>
+          <TemplatesTab templates={templates} settings={settings} onChange={refresh} onUseTemplate={composeFromTemplate} />
         </TabsContent>
         <TabsContent value="contacts">
-          <ContactsTab contacts={contacts} onChange={refresh}/>
-        </TabsContent>
-        <TabsContent value="history">
-          <MessagesTab messages={messages} mode="history" onChange={refresh}/>
+          <ContactsTab contacts={contacts} onChange={refresh} />
         </TabsContent>
         <TabsContent value="settings">
-          <SettingsTab settings={settings} onSaved={refresh}/>
+          <SettingsTab settings={settings} onSaved={refresh} />
         </TabsContent>
       </Tabs>
     </AdminLayout>
