@@ -215,3 +215,58 @@ export async function uploadAttachment(file: File): Promise<AttachmentMeta> {
 export async function removeAttachment(path: string) {
   await supabase.storage.from("email-attachments").remove([path]);
 }
+
+/* ---------------- Delivery tracking ---------------- */
+
+export interface DeliveryRow {
+  message_id: string;
+  recipient_email: string;
+  template_name: string;
+  status: string;
+  error_message: string | null;
+  subject: string | null;
+  created_at: string;
+}
+
+/** Latest log row per message_id for Email Center sends. */
+export async function listDelivery(sinceDays = 30): Promise<DeliveryRow[]> {
+  const since = new Date(Date.now() - sinceDays * 86400000).toISOString();
+  const { data, error } = await (supabase as any)
+    .from("email_send_log")
+    .select("message_id, recipient_email, template_name, status, error_message, metadata, created_at")
+    .in("template_name", ["email_center", "email_center_test"])
+    .gte("created_at", since)
+    .order("created_at", { ascending: false })
+    .limit(1000);
+  if (error) throw error;
+
+  const latest = new Map<string, DeliveryRow>();
+  for (const r of (data as any[]) || []) {
+    const key = r.message_id || r.id;
+    if (latest.has(key)) continue; // already have newest (ordered desc)
+    latest.set(key, {
+      message_id: key,
+      recipient_email: r.recipient_email,
+      template_name: r.template_name,
+      status: r.status,
+      error_message: r.error_message,
+      subject: r.metadata?.subject ?? null,
+      created_at: r.created_at,
+    });
+  }
+  return Array.from(latest.values());
+}
+
+/** Re-send a message that previously failed. */
+export async function retryMessage(m: Message) {
+  return sendMessage({
+    id: m.id,
+    subject: m.subject,
+    bodyHtml: m.body_html,
+    to: m.to_recipients,
+    cc: m.cc_recipients,
+    bcc: m.bcc_recipients,
+    attachments: m.attachments,
+    fromName: m.from_name || undefined,
+  });
+}
