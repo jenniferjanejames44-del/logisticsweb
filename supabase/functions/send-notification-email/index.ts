@@ -12,22 +12,14 @@ const SITE_URL = "https://www.raclogisticltd.com";
 // ──────────────────────────────────────
 // Role-based FROM addresses
 // ──────────────────────────────────────
-// Once raclogisticltd.com is verified with Resend, these will send from the real domain.
-// Until then, Resend requires using onboarding@resend.dev.
-
-const RESEND_DOMAIN_VERIFIED = true;
-
 function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): string {
-  if (!RESEND_DOMAIN_VERIFIED) {
-    return "RAC Logistics <onboarding@resend.dev>";
-  }
   const map: Record<string, string> = {
     "info": "RAC Logistics <info@raclogisticltd.com>",
     "support": "RAC Support <info@raclogisticltd.com>",
     "billing": "RAC Billing <info@raclogisticltd.com>",
     "no-reply": "RAC Logistics <info@raclogisticltd.com>",
   };
-  return map[role];
+  return map[role] || "RAC Logistics <info@raclogisticltd.com>";
 }
 
 // ──────────────────────────────────────
