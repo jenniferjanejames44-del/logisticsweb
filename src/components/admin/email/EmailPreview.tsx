@@ -60,7 +60,7 @@ export default function EmailPreview(props: Props) {
         </div>
         <div style="padding:24px 40px 32px;">
           <p style="margin:0 0 8px;font-size:13px;color:#6b7280;line-height:1.55;">${props.footerText || "RAC Logistics — fast, reliable freight worldwide."}</p>
-          <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.6;">RAC Logistics · support@raclogisticltd.com · +234 800 000 0000<br/>raclogisticltd.com</p>
+          <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.6;">RAC Logistics · info@raclogisticltd.com · +234 800 000 0000<br/>raclogisticltd.com</p>
           <p style="margin:18px 0 0;font-size:11px;color:#6b7280;">You're receiving this because you subscribed. <a href="#" style="color:#6b7280;text-decoration:underline">Unsubscribe</a>.</p>
         </div>
       </div>

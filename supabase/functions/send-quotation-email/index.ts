@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const FROM = "RAC Logistics <billing@raclogisticltd.com>";
+const FROM = "RAC Logistics <info@raclogisticltd.com>";
 
 function fmtMoney(n: number, c: string) {
   return new Intl.NumberFormat("en-US", {

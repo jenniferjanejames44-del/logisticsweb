@@ -372,7 +372,7 @@ ${isPaid ? `.document::after{
         <div class="brand-sub">Courier &amp; Freight Services</div>
         <div class="brand-details">
           29b Osolo Way, Opposite Polaris Bank, Ajao Estate, Isolo, Lagos State<br>
-          +234 818 595 6707 &nbsp;·&nbsp; info@raclogistic.com &nbsp;·&nbsp; www.raclogisticltd.com
+          +234 818 595 6707 &nbsp;·&nbsp; info@raclogisticltd.com &nbsp;·&nbsp; www.raclogisticltd.com
         </div>
         <div class="rc-label">RC: 1454183</div>
       </td>
@@ -549,7 +549,7 @@ ${isPaid ? `.document::after{
   <div class="ftr">
     <p class="ftr-brand">RAC LOGISTICS LTD</p>
     <p>Thank you for choosing RAC Logistics</p>
-    <p>For questions about this invoice, contact us at info@raclogistic.com</p>
+    <p>For questions about this invoice, contact us at info@raclogisticltd.com</p>
   </div>
 
 </div>

@@ -10,7 +10,7 @@ const corsHeaders = {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")!;
-const FROM_EMAIL = Deno.env.get("RAC_FROM_EMAIL") || "RAC Logistics <noreply@raclogisticltd.com>";
+const FROM_EMAIL = Deno.env.get("RAC_FROM_EMAIL") || "RAC Logistics <info@raclogisticltd.com>";
 const PUBLIC_BASE = Deno.env.get("RAC_PUBLIC_BASE") || "https://raclogisticltd.com";
 const TRACK_BASE = `${SUPABASE_URL}/functions/v1`;
 

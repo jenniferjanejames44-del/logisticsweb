@@ -25,7 +25,7 @@ const MUTED = "#6b7280";
 const BG = "#eef0f5";
 const SITE = "https://raclogisticltd.com";
 const LOGO_URL = `${SITE}/lovable-uploads/rac-logo.png`;
-const SUPPORT_EMAIL = "support@raclogisticltd.com";
+const SUPPORT_EMAIL = "info@raclogisticltd.com";
 const PHONE = "+234 800 000 0000";
 
 function escapeHtml(s: string): string {

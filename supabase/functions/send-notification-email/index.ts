@@ -6,7 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const ADMIN_EMAIL = "rex@raclogisticltd.com";
+const ADMIN_EMAIL = "info@raclogisticltd.com";
 const SITE_URL = "https://www.raclogisticltd.com";
 
 // ──────────────────────────────────────
@@ -23,9 +23,9 @@ function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): stri
   }
   const map: Record<string, string> = {
     "info": "RAC Logistics <info@raclogisticltd.com>",
-    "support": "RAC Support <support@raclogisticltd.com>",
-    "billing": "RAC Billing <billing@raclogisticltd.com>",
-    "no-reply": "RAC Logistics <no-reply@raclogisticltd.com>",
+    "support": "RAC Support <info@raclogisticltd.com>",
+    "billing": "RAC Billing <info@raclogisticltd.com>",
+    "no-reply": "RAC Logistics <info@raclogisticltd.com>",
   };
   return map[role];
 }
@@ -361,7 +361,7 @@ function buildLoginNotificationEmails(data: Record<string, any>): EmailPayload[]
 
     ${ctaButton("Review account security", `${SITE_URL}/dashboard/profile`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? Reach us at support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? Reach us at info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -393,7 +393,7 @@ function buildPartnerApplicationReceivedEmails(data: Record<string, any>): Email
 
     ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions about the program? Reply to this email or contact support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions about the program? Reply to this email or contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -485,7 +485,7 @@ function buildPartnerApprovedEmails(data: Record<string, any>): EmailPayload[] {
       <li>Track clicks, signups and earnings in your partner dashboard at any time.</li>
     </ol>
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Need promotional materials or have a question? Contact partners@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Need promotional materials or have a question? Contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -514,7 +514,7 @@ function buildPartnerRejectedEmails(data: Record<string, any>): EmailPayload[] {
 
     ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? We're happy to help — contact support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? We're happy to help — contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -897,7 +897,7 @@ function buildAccountVerifiedEmails(data: Record<string, any>): EmailPayload[] {
 
       ${ctaButton("Go to Dashboard", `${SITE_URL}/dashboard`)}
       
-      <p style="color:#888;font-size:12px;text-align:center;">Need help getting started? Contact us at support@raclogisticltd.com</p>
+      <p style="color:#888;font-size:12px;text-align:center;">Need help getting started? Contact us at info@raclogisticltd.com</p>
     `;
     emails.push({
       to: data.user_email,
