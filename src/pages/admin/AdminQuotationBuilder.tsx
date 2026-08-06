@@ -247,7 +247,7 @@ const AdminQuotationBuilder = () => {
       });
       if (error) throw error;
       if ((data as any)?.error) throw new Error((data as any).error);
-      toast.success("Quotation email sent");
+      toast.success("Quotation queued for immediate delivery");
     } catch (e: any) {
       toast.error(e.message || "Failed to send email");
     } finally {
