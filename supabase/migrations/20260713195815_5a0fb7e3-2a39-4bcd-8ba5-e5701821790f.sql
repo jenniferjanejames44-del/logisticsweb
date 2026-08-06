@@ -30,7 +30,7 @@ CREATE TABLE public.email_center_company_settings (
   website TEXT NOT NULL DEFAULT 'https://raclogisticltd.com',
   address TEXT NOT NULL DEFAULT 'Lagos, Nigeria',
   phone TEXT NOT NULL DEFAULT '+234 800 000 0000',
-  support_email TEXT NOT NULL DEFAULT 'support@raclogisticltd.com',
+  support_email TEXT NOT NULL DEFAULT 'info@raclogisticltd.com',
   primary_color TEXT NOT NULL DEFAULT '#061043',
   accent_color TEXT NOT NULL DEFAULT '#DF5101',
   facebook_url TEXT,

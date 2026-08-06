@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2.91.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -6,28 +6,21 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const ADMIN_EMAIL = "rex@raclogisticltd.com";
+const ADMIN_EMAIL = "info@raclogisticltd.com";
 const SITE_URL = "https://www.raclogisticltd.com";
+const SENDER_DOMAIN = "notify.raclogisticltd.com";
 
 // ──────────────────────────────────────
 // Role-based FROM addresses
 // ──────────────────────────────────────
-// Once raclogisticltd.com is verified with Resend, these will send from the real domain.
-// Until then, Resend requires using onboarding@resend.dev.
-
-const RESEND_DOMAIN_VERIFIED = true;
-
 function getFromAddress(role: "info" | "support" | "billing" | "no-reply"): string {
-  if (!RESEND_DOMAIN_VERIFIED) {
-    return "RAC Logistics <onboarding@resend.dev>";
-  }
   const map: Record<string, string> = {
     "info": "RAC Logistics <info@raclogisticltd.com>",
-    "support": "RAC Support <support@raclogisticltd.com>",
-    "billing": "RAC Billing <billing@raclogisticltd.com>",
-    "no-reply": "RAC Logistics <no-reply@raclogisticltd.com>",
+    "support": "RAC Support <info@raclogisticltd.com>",
+    "billing": "RAC Billing <info@raclogisticltd.com>",
+    "no-reply": "RAC Logistics <info@raclogisticltd.com>",
   };
-  return map[role];
+  return map[role] || "RAC Logistics <info@raclogisticltd.com>";
 }
 
 // ──────────────────────────────────────
@@ -80,11 +73,11 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) {
-      console.error("RESEND_API_KEY not configured");
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    if (!supabaseUrl || !serviceKey) {
       return new Response(
-        JSON.stringify({ error: "Email service not configured" }),
+        JSON.stringify({ error: "Email service is not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -101,33 +94,44 @@ Deno.serve(async (req) => {
     const fromAddress = getFromAddress(senderRole);
     const emails = buildEmails(type, data);
     const results = [];
+    const admin = createClient(supabaseUrl, serviceKey);
 
     for (const email of emails) {
-      try {
-        const res = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+      const recipients = Array.isArray(email.to) ? email.to : [email.to];
+      for (const rawRecipient of recipients) {
+        const recipient = String(rawRecipient).trim().toLowerCase();
+        if (!recipient || !/.+@.+\..+/.test(recipient)) continue;
+        const messageId = `notification-${type}-${crypto.randomUUID()}`;
+        const { error } = await admin.rpc("enqueue_email", {
+          queue_name: "transactional_emails",
+          payload: {
+            message_id: messageId,
+            to: recipient,
             from: email.from || fromAddress,
-            to: Array.isArray(email.to) ? email.to : [email.to],
+            sender_domain: SENDER_DOMAIN,
             subject: email.subject,
             html: email.html,
-          }),
+            text: email.html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+            purpose: "transactional",
+            label: type,
+            idempotency_key: messageId,
+            queued_at: new Date().toISOString(),
+          },
         });
-        const result = await res.json();
-        results.push({ to: email.to, success: res.ok, result });
-        if (!res.ok) console.error("Resend error:", result);
-      } catch (err) {
-        console.error("Email send error:", err);
-        results.push({ to: email.to, success: false, error: (err as Error).message });
+        results.push({ to: recipient, success: !error, error: error?.message });
+        await admin.from("email_send_log").insert({
+          message_id: messageId,
+          template_name: type,
+          recipient_email: recipient,
+          status: error ? "failed" : "pending",
+          error_message: error?.message || null,
+          metadata: { subject: email.subject },
+        });
       }
     }
 
     return new Response(
-      JSON.stringify({ success: true, results }),
+      JSON.stringify({ success: results.length > 0 && results.every((result) => result.success), results }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
@@ -361,7 +365,7 @@ function buildLoginNotificationEmails(data: Record<string, any>): EmailPayload[]
 
     ${ctaButton("Review account security", `${SITE_URL}/dashboard/profile`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? Reach us at support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? Reach us at info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -393,7 +397,7 @@ function buildPartnerApplicationReceivedEmails(data: Record<string, any>): Email
 
     ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions about the program? Reply to this email or contact support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions about the program? Reply to this email or contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -485,7 +489,7 @@ function buildPartnerApprovedEmails(data: Record<string, any>): EmailPayload[] {
       <li>Track clicks, signups and earnings in your partner dashboard at any time.</li>
     </ol>
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Need promotional materials or have a question? Contact partners@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Need promotional materials or have a question? Contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -514,7 +518,7 @@ function buildPartnerRejectedEmails(data: Record<string, any>): EmailPayload[] {
 
     ${ctaButton("Visit RAC Logistics", `${SITE_URL}`)}
 
-    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? We're happy to help — contact support@raclogisticltd.com</p>
+    <p style="color:#888;font-size:12px;text-align:center;margin-top:20px;">Questions? We're happy to help — contact info@raclogisticltd.com</p>
   `;
 
   emails.push({
@@ -897,7 +901,7 @@ function buildAccountVerifiedEmails(data: Record<string, any>): EmailPayload[] {
 
       ${ctaButton("Go to Dashboard", `${SITE_URL}/dashboard`)}
       
-      <p style="color:#888;font-size:12px;text-align:center;">Need help getting started? Contact us at support@raclogisticltd.com</p>
+      <p style="color:#888;font-size:12px;text-align:center;">Need help getting started? Contact us at info@raclogisticltd.com</p>
     `;
     emails.push({
       to: data.user_email,
