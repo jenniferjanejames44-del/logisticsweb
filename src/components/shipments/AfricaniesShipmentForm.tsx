@@ -618,35 +618,57 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     return () => { cancelled = true; };
   }, [isExport, receiverCountry, warehouseCountryForRule, method]);
 
-  // Recompute totals whenever inputs change
+  // Recompute totals whenever inputs change. Every box contributes its own
+  // chargeable weight (max of actual vs volumetric) and its own packaging cost.
   useEffect(() => {
     const t = computeShipmentTotals({
-      packageDims: effectiveDims,
+      packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
       divisor: DEFAULT_VOLUMETRIC_DIVISOR,
-      items: items.map((i) => ({
-        quantity: i.quantity || 0,
-        weightKg: parseFloat(i.weight) || 0,
-        declaredValue: parseFloat(i.value) || 0,
-      })),
-      packagePrice: Number(selectedPackage?.price || 0),
+      items: [{ quantity: 1, weightKg: totalChargeableWeight, declaredValue: 0 }],
+      packagePrice: totalPackagePrice,
       rule: pricingRule,
       declaredValue: totalValue,
     });
-    setTotals(t);
-  }, [effectiveDims, items, selectedPackage, pricingRule, totalValue]);
+    setTotals({
+      ...t,
+      actualWeight: Number(totalWeight.toFixed(2)),
+      volumetricWeight: Number(
+        resolvedBoxes.reduce((s, b) => s + b.volumetricWeight, 0).toFixed(2),
+      ),
+    });
+  }, [totalChargeableWeight, totalPackagePrice, pricingRule, totalValue, totalWeight, resolvedBoxes]);
 
-  const openAddItemForm = () => {
+  // ---------- Box helpers ----------
+  const addBox = () => {
+    const box = createEmptyBox();
+    setBoxes((arr) => [...arr, box]);
+    setExpandedBoxIds((ids) => [...ids, box.id]);
+    clearFieldError("boxes");
+  };
+
+  const removeBox = (boxId: string) => {
+    setBoxes((arr) => (arr.length <= 1 ? arr : arr.filter((b) => b.id !== boxId)));
+    if (itemFormBoxId === boxId) setItemFormBoxId(null);
+  };
+
+  const updateBox = (boxId: string, patch: Partial<ShipmentBox>) =>
+    setBoxes((arr) => arr.map((b) => (b.id === boxId ? { ...b, ...patch } : b)));
+
+  const toggleBoxExpanded = (boxId: string) =>
+    setExpandedBoxIds((ids) => (ids.includes(boxId) ? ids.filter((i) => i !== boxId) : [...ids, boxId]));
+
+  const openAddItemForm = (boxId: string) => {
     setEditingItemId(null);
     setItemDraft(createEmptyItem());
     setItemFormErrors({});
-    setItemFormOpen(true);
+    setItemFormBoxId(boxId);
   };
 
-  const openEditItemForm = (item: Item) => {
+  const openEditItemForm = (boxId: string, item: Item) => {
     setEditingItemId(item.id);
     setItemDraft({ ...item });
     setItemFormErrors({});
-    setItemFormOpen(true);
+    setItemFormBoxId(boxId);
   };
 
   const saveItemForm = () => {
@@ -659,15 +681,25 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       return;
     }
 
-    setItems((arr) => {
-      if (editingItemId) return arr.map((it) => (it.id === editingItemId ? itemDraft : it));
-      return [...arr, itemDraft];
-    });
-    setItemFormOpen(false);
+    const boxId = itemFormBoxId;
+    setBoxes((arr) =>
+      arr.map((b) => {
+        if (b.id !== boxId) return b;
+        if (editingItemId) {
+          return { ...b, items: b.items.map((it) => (it.id === editingItemId ? itemDraft : it)) };
+        }
+        return { ...b, items: [...b.items, itemDraft] };
+      }),
+    );
+    setItemFormBoxId(null);
+    setEditingItemId(null);
   };
 
-  const removeItem = (id: string) =>
-    setItems((arr) => arr.filter((i) => i.id !== id));
+  const removeItem = (boxId: string, itemId: string) =>
+    setBoxes((arr) =>
+      arr.map((b) => (b.id === boxId ? { ...b, items: b.items.filter((i) => i.id !== itemId) } : b)),
+    );
+
 
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
