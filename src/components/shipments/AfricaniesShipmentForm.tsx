@@ -782,7 +782,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         destination_city: receiverCity,
         weight: String(totalWeight),
         service_type: method,
-        description: items.map((i) => `${i.quantity}× ${i.description}`).join("; "),
+        description: allItems.map((i) => `${i.quantity}× ${i.description}`).join("; "),
       });
       toast({ title: "Login required", description: "Please log in to complete your shipment." });
       navigate("/auth");
