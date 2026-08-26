@@ -795,17 +795,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const etaDays = method === "ocean" ? 60 : method === "air-standard" ? 21 : 5;
       eta.setDate(eta.getDate() + etaDays);
 
-      const itemLines = items.map((i) =>
-        `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
-      );
-      const packagingDesc = selectedPackage
-        ? `Package: ${selectedPackage.name} (${effectiveDims.length_cm}×${effectiveDims.width_cm}×${effectiveDims.height_cm}cm, $${Number(selectedPackage.price).toFixed(2)})`
-        : null;
+      const boxLines = resolvedBoxes.map((rb) => {
+        const dims = `${rb.dims.length_cm}×${rb.dims.width_cm}×${rb.dims.height_cm}cm`;
+        const itemsTxt = rb.box.items.length
+          ? rb.box.items.map((i) => `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`).join(", ")
+          : "no items declared";
+        return `${rb.label}: ${rb.pkg?.name ?? "Box"} ${dims} — ${itemsTxt}`;
+      });
       const desc = [
         !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
-        packagingDesc,
-        `Items: ${itemLines.join("; ")}`,
+        `Boxes (${resolvedBoxes.length}): ${boxLines.join(" | ")}`,
+
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
 
