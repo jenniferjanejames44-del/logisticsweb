@@ -149,6 +149,14 @@ const createEmptyItem = (): Item => ({
   value: "",
 });
 
+const createEmptyBox = (): ShipmentBox => ({
+  id: crypto.randomUUID(),
+  packageId: "",
+  customDims: { length_cm: "", width_cm: "", height_cm: "" },
+  items: [],
+});
+
+
 // Pick an icon for a packaging material based on its name keywords.
 const iconFor = (name: string) => {
   const n = name.toLowerCase();
