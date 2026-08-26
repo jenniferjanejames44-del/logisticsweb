@@ -732,19 +732,24 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (stepName === "Items") {
-      if (!selectedPackage) e.package = "Please select a package.";
-      if (selectedPackage?.is_custom) {
-        if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
-        if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
-        if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
-      }
-      if (items.length === 0) e.items = "Add at least one item.";
-      items.forEach((it, idx) => {
-        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
-        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
-        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
+      if (boxes.length === 0) e.boxes = "Add at least one box.";
+      resolvedBoxes.forEach((rb) => {
+        if (!rb.pkg) {
+          e[`box_${rb.box.id}_package`] = `${rb.label}: please select a box size.`;
+          return;
+        }
+        if (rb.pkg.is_custom) {
+          if (!(rb.dims.length_cm > 0) || !(rb.dims.width_cm > 0) || !(rb.dims.height_cm > 0)) {
+            e[`box_${rb.box.id}_dims`] = `${rb.label}: enter length, width and height.`;
+          }
+        }
+        rb.box.items.forEach((it, idx) => {
+          if (!it.description.trim()) e[`box_${rb.box.id}_item_${idx}_desc`] = "Description is required";
+          if (!it.weight || parseFloat(it.weight) <= 0) e[`box_${rb.box.id}_item_${idx}_weight`] = "Weight must be greater than 0";
+        });
       });
     }
+
     setErrors(e);
     if (Object.keys(e).length > 0) {
       const count = Object.keys(e).length;
