@@ -40,6 +40,14 @@ interface Item {
   value: string;
 }
 
+interface ShipmentBox {
+  id: string;
+  packageId: string;
+  customDims: { length_cm: string; width_cm: string; height_cm: string };
+  items: Item[];
+}
+
+
 type ShipmentInsert = TablesInsert<"shipments">;
 
 const COUNTRIES = [
@@ -148,6 +156,14 @@ const createEmptyItem = (): Item => ({
   weight: "",
   value: "",
 });
+
+const createEmptyBox = (): ShipmentBox => ({
+  id: crypto.randomUUID(),
+  packageId: "",
+  customDims: { length_cm: "", width_cm: "", height_cm: "" },
+  items: [],
+});
+
 
 // Pick an icon for a packaging material based on its name keywords.
 const iconFor = (name: string) => {
@@ -404,18 +420,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverStreetName, setReceiverStreetName] = useState("");
   const [receiverLandmark, setReceiverLandmark] = useState("");
 
-  const [items, setItems] = useState<Item[]>([]);
-  const [itemFormOpen, setItemFormOpen] = useState(false);
+  // Boxes: one shipment can contain many boxes. Items inside a box are optional.
+  const [boxes, setBoxes] = useState<ShipmentBox[]>(() => [createEmptyBox()]);
+  const [expandedBoxIds, setExpandedBoxIds] = useState<string[]>(() => []);
+  const [itemFormBoxId, setItemFormBoxId] = useState<string | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [itemDraft, setItemDraft] = useState<Item>(createEmptyItem());
   const [itemFormErrors, setItemFormErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
-  // Package selection (one package per shipment)
   const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
   const [packageLoading, setPackageLoading] = useState(true);
-  const [selectedPackageId, setSelectedPackageId] = useState<string>("");
-  const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
+
 
   const [pricingRule, setPricingRule] = useState<CountryPricingRule | null>(null);
   const [matchedRule, setMatchedRule] = useState<PricingRuleV2 | null>(null);
@@ -498,35 +514,68 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const selectedPackage = useMemo(
-    () => packageOptions.find((p) => p.id === selectedPackageId) || null,
-    [packageOptions, selectedPackageId],
-  );
-
-  const effectiveDims = useMemo(() => {
-    if (!selectedPackage) return { length_cm: 0, width_cm: 0, height_cm: 0 };
-    if (selectedPackage.is_custom) {
+  const dimsForBox = (box: ShipmentBox, pkg: PackageOption | null) => {
+    if (!pkg) return { length_cm: 0, width_cm: 0, height_cm: 0 };
+    if (pkg.is_custom) {
       return {
-        length_cm: parseFloat(customDims.length_cm) || 0,
-        width_cm: parseFloat(customDims.width_cm) || 0,
-        height_cm: parseFloat(customDims.height_cm) || 0,
+        length_cm: parseFloat(box.customDims.length_cm) || 0,
+        width_cm: parseFloat(box.customDims.width_cm) || 0,
+        height_cm: parseFloat(box.customDims.height_cm) || 0,
       };
     }
     return {
-      length_cm: Number(selectedPackage.length_cm) || 0,
-      width_cm: Number(selectedPackage.width_cm) || 0,
-      height_cm: Number(selectedPackage.height_cm) || 0,
+      length_cm: Number(pkg.length_cm) || 0,
+      width_cm: Number(pkg.width_cm) || 0,
+      height_cm: Number(pkg.height_cm) || 0,
     };
-  }, [selectedPackage, customDims]);
+  };
+
+  // Resolved boxes: package, dims, and per-box weights
+  const resolvedBoxes = useMemo(
+    () =>
+      boxes.map((box, idx) => {
+        const pkg = packageOptions.find((p) => p.id === box.packageId) || null;
+        const dims = dimsForBox(box, pkg);
+        const actualWeight = box.items.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0);
+        const volumetricWeight =
+          dims.length_cm > 0 && dims.width_cm > 0 && dims.height_cm > 0
+            ? (dims.length_cm * dims.width_cm * dims.height_cm) / DEFAULT_VOLUMETRIC_DIVISOR
+            : 0;
+        return {
+          box,
+          index: idx,
+          label: `Box ${idx + 1}`,
+          pkg,
+          dims,
+          actualWeight,
+          volumetricWeight,
+          chargeableWeight: Math.max(actualWeight, volumetricWeight),
+          price: Number(pkg?.price || 0),
+        };
+      }),
+    [boxes, packageOptions],
+  );
+
+  const allItems = useMemo(() => boxes.flatMap((b) => b.items), [boxes]);
+
+  const totalPackagePrice = useMemo(
+    () => resolvedBoxes.reduce((s, b) => s + b.price, 0),
+    [resolvedBoxes],
+  );
+  const totalChargeableWeight = useMemo(
+    () => resolvedBoxes.reduce((s, b) => s + b.chargeableWeight, 0),
+    [resolvedBoxes],
+  );
 
   const totalWeight = useMemo(
-    () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0),
-    [items],
+    () => allItems.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0),
+    [allItems],
   );
   const totalValue = useMemo(
-    () => items.reduce((s, i) => s + (parseFloat(i.value) || 0) * (i.quantity || 1), 0),
-    [items],
+    () => allItems.reduce((s, i) => s + (parseFloat(i.value) || 0) * (i.quantity || 1), 0),
+    [allItems],
   );
+
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
   const warehouseCountryForRule = !isExport ? selectedWarehouse?.country : null;
@@ -569,35 +618,57 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     return () => { cancelled = true; };
   }, [isExport, receiverCountry, warehouseCountryForRule, method]);
 
-  // Recompute totals whenever inputs change
+  // Recompute totals whenever inputs change. Every box contributes its own
+  // chargeable weight (max of actual vs volumetric) and its own packaging cost.
   useEffect(() => {
     const t = computeShipmentTotals({
-      packageDims: effectiveDims,
+      packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
       divisor: DEFAULT_VOLUMETRIC_DIVISOR,
-      items: items.map((i) => ({
-        quantity: i.quantity || 0,
-        weightKg: parseFloat(i.weight) || 0,
-        declaredValue: parseFloat(i.value) || 0,
-      })),
-      packagePrice: Number(selectedPackage?.price || 0),
+      items: [{ quantity: 1, weightKg: totalChargeableWeight, declaredValue: 0 }],
+      packagePrice: totalPackagePrice,
       rule: pricingRule,
       declaredValue: totalValue,
     });
-    setTotals(t);
-  }, [effectiveDims, items, selectedPackage, pricingRule, totalValue]);
+    setTotals({
+      ...t,
+      actualWeight: Number(totalWeight.toFixed(2)),
+      volumetricWeight: Number(
+        resolvedBoxes.reduce((s, b) => s + b.volumetricWeight, 0).toFixed(2),
+      ),
+    });
+  }, [totalChargeableWeight, totalPackagePrice, pricingRule, totalValue, totalWeight, resolvedBoxes]);
 
-  const openAddItemForm = () => {
+  // ---------- Box helpers ----------
+  const addBox = () => {
+    const box = createEmptyBox();
+    setBoxes((arr) => [...arr, box]);
+    setExpandedBoxIds((ids) => [...ids, box.id]);
+    clearFieldError("boxes");
+  };
+
+  const removeBox = (boxId: string) => {
+    setBoxes((arr) => (arr.length <= 1 ? arr : arr.filter((b) => b.id !== boxId)));
+    if (itemFormBoxId === boxId) setItemFormBoxId(null);
+  };
+
+  const updateBox = (boxId: string, patch: Partial<ShipmentBox>) =>
+    setBoxes((arr) => arr.map((b) => (b.id === boxId ? { ...b, ...patch } : b)));
+
+  const toggleBoxExpanded = (boxId: string) =>
+    setExpandedBoxIds((ids) => (ids.includes(boxId) ? ids.filter((i) => i !== boxId) : [...ids, boxId]));
+
+  const openAddItemForm = (boxId: string) => {
     setEditingItemId(null);
     setItemDraft(createEmptyItem());
     setItemFormErrors({});
-    setItemFormOpen(true);
+    setItemFormBoxId(boxId);
   };
 
-  const openEditItemForm = (item: Item) => {
+  const openEditItemForm = (boxId: string, item: Item) => {
     setEditingItemId(item.id);
     setItemDraft({ ...item });
     setItemFormErrors({});
-    setItemFormOpen(true);
+    setItemFormBoxId(boxId);
   };
 
   const saveItemForm = () => {
@@ -610,15 +681,25 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       return;
     }
 
-    setItems((arr) => {
-      if (editingItemId) return arr.map((it) => (it.id === editingItemId ? itemDraft : it));
-      return [...arr, itemDraft];
-    });
-    setItemFormOpen(false);
+    const boxId = itemFormBoxId;
+    setBoxes((arr) =>
+      arr.map((b) => {
+        if (b.id !== boxId) return b;
+        if (editingItemId) {
+          return { ...b, items: b.items.map((it) => (it.id === editingItemId ? itemDraft : it)) };
+        }
+        return { ...b, items: [...b.items, itemDraft] };
+      }),
+    );
+    setItemFormBoxId(null);
+    setEditingItemId(null);
   };
 
-  const removeItem = (id: string) =>
-    setItems((arr) => arr.filter((i) => i.id !== id));
+  const removeItem = (boxId: string, itemId: string) =>
+    setBoxes((arr) =>
+      arr.map((b) => (b.id === boxId ? { ...b, items: b.items.filter((i) => i.id !== itemId) } : b)),
+    );
+
 
   const validateStep = (s: number): boolean => {
     const e: Record<string, string> = {};
@@ -651,19 +732,24 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       if (!receiverAddress.trim()) e.receiverAddress = "Street address is required";
     }
     if (stepName === "Items") {
-      if (!selectedPackage) e.package = "Please select a package.";
-      if (selectedPackage?.is_custom) {
-        if (!(parseFloat(customDims.length_cm) > 0)) e.length = "Length must be greater than 0";
-        if (!(parseFloat(customDims.width_cm) > 0)) e.width = "Width must be greater than 0";
-        if (!(parseFloat(customDims.height_cm) > 0)) e.height = "Height must be greater than 0";
-      }
-      if (items.length === 0) e.items = "Add at least one item.";
-      items.forEach((it, idx) => {
-        if (!it.description.trim()) e[`item_${idx}_desc`] = "Description is required";
-        if (!it.weight || parseFloat(it.weight) <= 0) e[`item_${idx}_weight`] = "Weight must be greater than 0";
-        if (!it.value || parseFloat(it.value) <= 0) e[`item_${idx}_value`] = "Value must be greater than 0";
+      if (boxes.length === 0) e.boxes = "Add at least one box.";
+      resolvedBoxes.forEach((rb) => {
+        if (!rb.pkg) {
+          e[`box_${rb.box.id}_package`] = `${rb.label}: please select a box size.`;
+          return;
+        }
+        if (rb.pkg.is_custom) {
+          if (!(rb.dims.length_cm > 0) || !(rb.dims.width_cm > 0) || !(rb.dims.height_cm > 0)) {
+            e[`box_${rb.box.id}_dims`] = `${rb.label}: enter length, width and height.`;
+          }
+        }
+        rb.box.items.forEach((it, idx) => {
+          if (!it.description.trim()) e[`box_${rb.box.id}_item_${idx}_desc`] = "Description is required";
+          if (!it.weight || parseFloat(it.weight) <= 0) e[`box_${rb.box.id}_item_${idx}_weight`] = "Weight must be greater than 0";
+        });
       });
     }
+
     setErrors(e);
     if (Object.keys(e).length > 0) {
       const count = Object.keys(e).length;
@@ -696,7 +782,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
         destination_city: receiverCity,
         weight: String(totalWeight),
         service_type: method,
-        description: items.map((i) => `${i.quantity}× ${i.description}`).join("; "),
+        description: allItems.map((i) => `${i.quantity}× ${i.description}`).join("; "),
       });
       toast({ title: "Login required", description: "Please log in to complete your shipment." });
       navigate("/auth");
@@ -709,17 +795,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       const etaDays = method === "ocean" ? 60 : method === "air-standard" ? 21 : 5;
       eta.setDate(eta.getDate() + etaDays);
 
-      const itemLines = items.map((i) =>
-        `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`,
-      );
-      const packagingDesc = selectedPackage
-        ? `Package: ${selectedPackage.name} (${effectiveDims.length_cm}×${effectiveDims.width_cm}×${effectiveDims.height_cm}cm, $${Number(selectedPackage.price).toFixed(2)})`
-        : null;
+      const boxLines = resolvedBoxes.map((rb) => {
+        const dims = `${rb.dims.length_cm}×${rb.dims.width_cm}×${rb.dims.height_cm}cm`;
+        const itemsTxt = rb.box.items.length
+          ? rb.box.items.map((i) => `${i.quantity}× ${i.description} (${i.weight}kg${i.value ? `, $${i.value}` : ""})`).join(", ")
+          : "no items declared";
+        return `${rb.label}: ${rb.pkg?.name ?? "Box"} ${dims} — ${itemsTxt}`;
+      });
       const desc = [
         !isExport && selectedWarehouse ? `Warehouse: ${selectedWarehouse.name}` : null,
         `Delivery: ${DELIVERY_TYPES.find((d) => d.id === deliveryType)?.label}`,
-        packagingDesc,
-        `Items: ${itemLines.join("; ")}`,
+        `Boxes (${resolvedBoxes.length}): ${boxLines.join(" | ")}`,
+
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
 
