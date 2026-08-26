@@ -514,35 +514,68 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  const selectedPackage = useMemo(
-    () => packageOptions.find((p) => p.id === selectedPackageId) || null,
-    [packageOptions, selectedPackageId],
-  );
-
-  const effectiveDims = useMemo(() => {
-    if (!selectedPackage) return { length_cm: 0, width_cm: 0, height_cm: 0 };
-    if (selectedPackage.is_custom) {
+  const dimsForBox = (box: ShipmentBox, pkg: PackageOption | null) => {
+    if (!pkg) return { length_cm: 0, width_cm: 0, height_cm: 0 };
+    if (pkg.is_custom) {
       return {
-        length_cm: parseFloat(customDims.length_cm) || 0,
-        width_cm: parseFloat(customDims.width_cm) || 0,
-        height_cm: parseFloat(customDims.height_cm) || 0,
+        length_cm: parseFloat(box.customDims.length_cm) || 0,
+        width_cm: parseFloat(box.customDims.width_cm) || 0,
+        height_cm: parseFloat(box.customDims.height_cm) || 0,
       };
     }
     return {
-      length_cm: Number(selectedPackage.length_cm) || 0,
-      width_cm: Number(selectedPackage.width_cm) || 0,
-      height_cm: Number(selectedPackage.height_cm) || 0,
+      length_cm: Number(pkg.length_cm) || 0,
+      width_cm: Number(pkg.width_cm) || 0,
+      height_cm: Number(pkg.height_cm) || 0,
     };
-  }, [selectedPackage, customDims]);
+  };
+
+  // Resolved boxes: package, dims, and per-box weights
+  const resolvedBoxes = useMemo(
+    () =>
+      boxes.map((box, idx) => {
+        const pkg = packageOptions.find((p) => p.id === box.packageId) || null;
+        const dims = dimsForBox(box, pkg);
+        const actualWeight = box.items.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0);
+        const volumetricWeight =
+          dims.length_cm > 0 && dims.width_cm > 0 && dims.height_cm > 0
+            ? (dims.length_cm * dims.width_cm * dims.height_cm) / DEFAULT_VOLUMETRIC_DIVISOR
+            : 0;
+        return {
+          box,
+          index: idx,
+          label: `Box ${idx + 1}`,
+          pkg,
+          dims,
+          actualWeight,
+          volumetricWeight,
+          chargeableWeight: Math.max(actualWeight, volumetricWeight),
+          price: Number(pkg?.price || 0),
+        };
+      }),
+    [boxes, packageOptions],
+  );
+
+  const allItems = useMemo(() => boxes.flatMap((b) => b.items), [boxes]);
+
+  const totalPackagePrice = useMemo(
+    () => resolvedBoxes.reduce((s, b) => s + b.price, 0),
+    [resolvedBoxes],
+  );
+  const totalChargeableWeight = useMemo(
+    () => resolvedBoxes.reduce((s, b) => s + b.chargeableWeight, 0),
+    [resolvedBoxes],
+  );
 
   const totalWeight = useMemo(
-    () => items.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0),
-    [items],
+    () => allItems.reduce((s, i) => s + (parseFloat(i.weight) || 0), 0),
+    [allItems],
   );
   const totalValue = useMemo(
-    () => items.reduce((s, i) => s + (parseFloat(i.value) || 0) * (i.quantity || 1), 0),
-    [items],
+    () => allItems.reduce((s, i) => s + (parseFloat(i.value) || 0) * (i.quantity || 1), 0),
+    [allItems],
   );
+
 
   const destinationCountry = isExport ? receiverCountry : "Nigeria";
   const warehouseCountryForRule = !isExport ? selectedWarehouse?.country : null;
