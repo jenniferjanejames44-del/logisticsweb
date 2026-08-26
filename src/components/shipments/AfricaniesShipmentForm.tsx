@@ -420,18 +420,18 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [receiverStreetName, setReceiverStreetName] = useState("");
   const [receiverLandmark, setReceiverLandmark] = useState("");
 
-  const [items, setItems] = useState<Item[]>([]);
-  const [itemFormOpen, setItemFormOpen] = useState(false);
+  // Boxes: one shipment can contain many boxes. Items inside a box are optional.
+  const [boxes, setBoxes] = useState<ShipmentBox[]>(() => [createEmptyBox()]);
+  const [expandedBoxIds, setExpandedBoxIds] = useState<string[]>(() => []);
+  const [itemFormBoxId, setItemFormBoxId] = useState<string | null>(null);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [itemDraft, setItemDraft] = useState<Item>(createEmptyItem());
   const [itemFormErrors, setItemFormErrors] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState("");
 
-  // Package selection (one package per shipment)
   const [packageOptions, setPackageOptions] = useState<PackageOption[]>([]);
   const [packageLoading, setPackageLoading] = useState(true);
-  const [selectedPackageId, setSelectedPackageId] = useState<string>("");
-  const [customDims, setCustomDims] = useState({ length_cm: "", width_cm: "", height_cm: "" });
+
 
   const [pricingRule, setPricingRule] = useState<CountryPricingRule | null>(null);
   const [matchedRule, setMatchedRule] = useState<PricingRuleV2 | null>(null);
