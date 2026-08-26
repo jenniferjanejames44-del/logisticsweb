@@ -40,6 +40,14 @@ interface Item {
   value: string;
 }
 
+interface ShipmentBox {
+  id: string;
+  packageId: string;
+  customDims: { length_cm: string; width_cm: string; height_cm: string };
+  items: Item[];
+}
+
+
 type ShipmentInsert = TablesInsert<"shipments">;
 
 const COUNTRIES = [
