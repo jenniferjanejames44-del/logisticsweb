@@ -774,6 +774,13 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   const handleSubmit = async () => {
+    const firstInvalidStep = STEPS.findIndex((_, index) => !validateStep(index));
+    if (firstInvalidStep >= 0) {
+      setStep(firstInvalidStep);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     if (!user) {
       savePendingShipment({
         origin_country: senderCountry,
@@ -809,6 +816,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
         notes ? `Notes: ${notes}` : null,
       ].filter(Boolean).join(" | ");
+
+      const primaryBox = resolvedBoxes[0];
+      const storedItems = resolvedBoxes.flatMap((rb) =>
+        rb.box.items.map((item) => ({
+          ...item,
+          box_id: rb.box.id,
+          box_number: rb.index + 1,
+          box_name: rb.pkg?.name ?? "Box",
+          box_dimensions: rb.dims,
+        })),
+      );
 
       const shipmentPayload: ShipmentInsert = {
         user_id: user.id,
@@ -847,17 +865,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
           receiverZip,
           receiverCountry,
         ].filter(Boolean).join(", "),
-        length_cm: effectiveDims.length_cm || null,
-        width_cm: effectiveDims.width_cm || null,
-        height_cm: effectiveDims.height_cm || null,
-        package_id: selectedPackage?.id ?? null,
-        package_name: selectedPackage?.name ?? null,
-        package_price: Number(selectedPackage?.price || 0),
+        length_cm: primaryBox?.dims.length_cm || null,
+        width_cm: primaryBox?.dims.width_cm || null,
+        height_cm: primaryBox?.dims.height_cm || null,
+        package_id: resolvedBoxes.length === 1 ? primaryBox?.pkg?.id ?? null : null,
+        package_name: resolvedBoxes.length === 1 ? primaryBox?.pkg?.name ?? null : `${resolvedBoxes.length} boxes`,
+        package_price: totalPackagePrice,
         actual_weight: totals?.actualWeight ?? totalWeight,
         volumetric_weight: totals?.volumetricWeight ?? 0,
         chargeable_weight: totals?.chargeableWeight ?? totalWeight,
         volumetric_divisor: DEFAULT_VOLUMETRIC_DIVISOR,
-        items_json: items as unknown as ShipmentInsert["items_json"],
+        items_json: storedItems as unknown as ShipmentInsert["items_json"],
       };
 
       const { data: shipment, error } = await supabase.from("shipments").insert(shipmentPayload).select("id").single();
@@ -1251,80 +1269,112 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
       case "Items":
         return (
-          <div className="space-y-8">
-            <section>
-              <h2 className="text-lg font-bold text-foreground">Select Packaging</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Choose the package size before adding items.</p>
-              <div className="mt-4">
-                {packageLoading ? (
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {[1, 2, 3].map((i) => <div key={i} className="min-h-[148px] animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
-                  </div>
-                ) : packageOptions.length > 0 ? (
-                  <PackageSelector
-                    options={packageOptions}
-                    selectedId={selectedPackageId}
-                    onSelect={(id) => { setSelectedPackageId(id); clearFieldError("package"); }}
-                    customDims={customDims}
-                    onCustomDimsChange={setCustomDims}
-                    errors={{ package: errors.package, length: errors.length, width: errors.width, height: errors.height }}
-                  />
-                ) : (
-                  <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
-                    No active packaging materials are available. Please add or enable packaging in Admin Packaging.
-                  </div>
-                )}
+          <div className="space-y-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-foreground">Shipment Boxes</h2>
+                <p className="mt-1 text-sm text-muted-foreground">Add every box now. Items inside each box are optional.</p>
               </div>
-            </section>
+              <Button type="button" onClick={addBox} className="shrink-0 sm:w-auto">
+                <Plus className="mr-1 h-4 w-4" /> Add Box
+              </Button>
+            </div>
 
-            <section className="border-t border-border/40 pt-6">
-              <h2 className="text-lg font-bold text-foreground">Item Details</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Add the items included in your shipment.</p>
-              <div className="mt-4 space-y-3">
-              {items.length === 0 && !itemFormOpen ? (
-                <button
-                  type="button"
-                  onClick={openAddItemForm}
-                  className="flex min-h-[148px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 text-center transition-colors hover:border-accent/50 hover:bg-accent/5"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
-                    <Plus className="h-5 w-5" />
-                  </span>
-                  <span className="mt-3 text-sm font-bold text-foreground">Add shipment item</span>
-                  <span className="mt-1 text-xs text-muted-foreground">Description, quantity, weight and value</span>
-                </button>
-              ) : items.length > 0 ? (
-                <div className="space-y-2.5">
-                  {items.map((item, idx) => (
-                    <div key={item.id} className="rounded-xl border border-border bg-background p-4 shadow-sm">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">{idx + 1}</span>
-                            <h3 className="truncate text-sm font-bold text-foreground">{item.description}</h3>
-                          </div>
-                          <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
-                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Qty</span><b>{item.quantity}</b></div>
-                            <div className="rounded-lg bg-muted/40 px-3 py-2">
-                              <span className="block text-muted-foreground">Total weight</span>
-                              <b>{item.weight}kg</b>
-                            </div>
-                            <div className="rounded-lg bg-muted/40 px-3 py-2"><span className="block text-muted-foreground">Value</span><b>${item.value}</b></div>
-                          </div>
-                        </div>
-                        <div className="flex shrink-0 items-center gap-1">
-                          <button type="button" onClick={() => openEditItemForm(item)} className="rounded-lg px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/5">Edit</button>
-                          <button type="button" onClick={() => removeItem(item.id)} className="flex h-8 w-8 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10" aria-label="Remove item">
+            {packageLoading ? (
+              <div className="space-y-3">
+                {[1, 2].map((i) => <div key={i} className="h-24 animate-pulse rounded-xl border border-border/60 bg-muted/40" />)}
+              </div>
+            ) : packageOptions.length === 0 ? (
+              <div className="rounded-xl border border-destructive/25 bg-destructive/[0.03] p-4 text-sm text-destructive">
+                No active packaging materials are available. Please contact support.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {resolvedBoxes.map((rb) => {
+                  const expanded = expandedBoxIds.includes(rb.box.id) || !rb.pkg;
+                  const PackageIcon = rb.pkg ? iconForPackage(rb.pkg.icon_key, rb.pkg.name) : Box;
+                  return (
+                    <section key={rb.box.id} className="overflow-hidden rounded-xl border border-border/60 bg-white shadow-sm">
+                      <div className="flex items-center gap-3 p-4">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                          <PackageIcon className="h-5 w-5" />
+                        </span>
+                        <button type="button" onClick={() => toggleBoxExpanded(rb.box.id)} className="min-w-0 flex-1 text-left">
+                          <span className="block text-sm font-bold text-foreground">{rb.label}</span>
+                          <span className="block text-xs text-muted-foreground">
+                            {rb.pkg ? `${rb.pkg.name} · ${rb.box.items.length} item${rb.box.items.length === 1 ? "" : "s"}` : "Choose a box size"}
+                          </span>
+                        </button>
+                        <Button type="button" variant="outline" onClick={() => openAddItemForm(rb.box.id)} className="hidden sm:inline-flex sm:w-auto">
+                          <Plus className="mr-1 h-4 w-4" /> Add Item
+                        </Button>
+                        {boxes.length > 1 && (
+                          <Button type="button" variant="ghost" size="icon" onClick={() => removeBox(rb.box.id)} aria-label={`Remove ${rb.label}`} className="text-destructive">
                             <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
+                          </Button>
+                        )}
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
 
-              {itemFormOpen && (
+                      {expanded && (
+                        <div className="border-t border-border/40 p-4">
+                          <PackageSelector
+                            options={packageOptions}
+                            selectedId={rb.box.packageId}
+                            onSelect={(id) => {
+                              updateBox(rb.box.id, { packageId: id });
+                              clearFieldError(`box_${rb.box.id}_package`);
+                            }}
+                            customDims={rb.box.customDims}
+                            onCustomDimsChange={(customDims) => updateBox(rb.box.id, { customDims })}
+                            errors={{
+                              package: errors[`box_${rb.box.id}_package`],
+                              length: errors[`box_${rb.box.id}_dims`],
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      <div className="border-t border-border/40 p-4">
+                        {rb.box.items.length === 0 ? (
+                          <div className="flex flex-col items-start justify-between gap-3 rounded-lg border border-dashed border-border bg-muted/30 p-4 sm:flex-row sm:items-center">
+                            <div>
+                              <p className="text-sm font-semibold text-foreground">No items added yet</p>
+                              <p className="text-xs text-muted-foreground">This box is valid and can be completed later.</p>
+                            </div>
+                            <Button type="button" variant="outline" onClick={() => openAddItemForm(rb.box.id)} className="w-full sm:w-auto">
+                              <Plus className="mr-1 h-4 w-4" /> Add Item
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            {rb.box.items.map((item, idx) => (
+                              <div key={item.id} className="flex items-center gap-3 rounded-lg bg-muted/40 p-3">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">{idx + 1}</span>
+                                <div className="min-w-0 flex-1">
+                                  <p className="truncate text-sm font-semibold text-foreground">{item.description}</p>
+                                  <p className="text-[11px] text-muted-foreground">Qty {item.quantity} · {item.weight} kg · ${item.value}</p>
+                                </div>
+                                <Button type="button" variant="ghost" size="sm" onClick={() => openEditItemForm(rb.box.id, item)}>Edit</Button>
+                                <Button type="button" variant="ghost" size="icon" onClick={() => removeItem(rb.box.id, item.id)} aria-label="Remove item" className="text-destructive">
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ))}
+                            <Button type="button" variant="outline" onClick={() => openAddItemForm(rb.box.id)} className="mt-2 w-full max-w-none">
+                              <Plus className="mr-1 h-4 w-4" /> Add another item to {rb.label}
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  );
+                })}
+              </div>
+            )}
+
+            {errors.boxes && <p className="text-xs text-destructive">{errors.boxes}</p>}
+
+            {itemFormBoxId && (
                 <div className="rounded-xl border border-accent/30 bg-accent/5 p-4 sm:p-5 space-y-4">
                   <div className="flex items-center gap-2">
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground">
@@ -1332,7 +1382,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </span>
                     <div>
                       <h3 className="text-sm font-bold text-foreground">{editingItemId ? "Edit item" : "Add item"}</h3>
-                      <p className="text-[11px] text-muted-foreground">Enter the item details for this shipment</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        Add details to Box {boxes.findIndex((box) => box.id === itemFormBoxId) + 1}
+                      </p>
                     </div>
                   </div>
                   <Field label="Description" required error={itemFormErrors.description}>
@@ -1373,7 +1425,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </Field>
                   </div>
                   <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                    <Button type="button" variant="outline" onClick={() => setItemFormOpen(false)} className="sm:w-auto">
+                    <Button type="button" variant="outline" onClick={() => { setItemFormBoxId(null); setEditingItemId(null); }} className="sm:w-auto">
                       Cancel
                     </Button>
                     <Button type="button" onClick={saveItemForm} className="sm:w-auto">
@@ -1383,18 +1435,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </div>
               )}
 
-              {errors.items && <p className="text-xs text-destructive">{errors.items}</p>}
-              {items.length > 0 && !itemFormOpen && (
-                <Button type="button" variant="outline" onClick={openAddItemForm} className="w-full max-w-none">
-                  <Plus className="h-4 w-4 mr-1" /> Add another item
-                </Button>
-              )}
-              <Field label="Additional notes (optional)">
-                <SmoothTextarea rows={2} value={notes} onCommit={setNotes}
-                  placeholder="Special handling instructions, fragile items, etc." />
-              </Field>
-              </div>
-            </section>
+            )}
+
+            <Button type="button" variant="outline" onClick={addBox} className="w-full max-w-none border-dashed">
+              <Plus className="mr-1 h-4 w-4" /> Add Another Box
+            </Button>
+            <Field label="Additional notes (optional)">
+              <SmoothTextarea rows={2} value={notes} onCommit={setNotes} placeholder="Special handling instructions, fragile items, etc." />
+            </Field>
           </div>
         );
 
@@ -1423,8 +1471,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 )}
               </div>
               <div className="rounded-xl border border-border/60 bg-white p-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Items</h3>
-                <SummaryRow label="Total items" value={items.reduce((s, i) => s + (i.quantity || 0), 0)} />
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Boxes &amp; Items</h3>
+                <SummaryRow label="Total boxes" value={boxes.length} />
+                <SummaryRow label="Total items" value={allItems.reduce((s, i) => s + (i.quantity || 0), 0)} />
                 <SummaryRow label="Total weight" value={`${totalWeight.toFixed(2)} kg`} />
                 <SummaryRow label="Declared value" value={`$${totalValue.toFixed(2)}`} />
               </div>
@@ -1440,12 +1489,17 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <SummaryRow label="Phone" value={receiverPhone} />
                 <SummaryRow label="Address" value={[receiverAddress, receiverCity, receiverState, receiverZip, receiverCountry].filter(Boolean).join(", ")} />
               </div>
-              {selectedPackage && (
+              {resolvedBoxes.length > 0 && (
                 <div className="rounded-xl border border-border/60 bg-white p-4 lg:col-span-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Package</h3>
-                  <SummaryRow label="Type" value={selectedPackage.name} />
-                  <SummaryRow label="Dimensions" value={`${effectiveDims.length_cm} × ${effectiveDims.width_cm} × ${effectiveDims.height_cm} cm`} />
-                  <SummaryRow label="Package cost" value={`$${Number(selectedPackage.price).toFixed(2)}`} />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Package Details</h3>
+                  {resolvedBoxes.map((rb) => (
+                    <SummaryRow
+                      key={rb.box.id}
+                      label={rb.label}
+                      value={`${rb.pkg?.name ?? "Box"} · ${rb.dims.length_cm} × ${rb.dims.width_cm} × ${rb.dims.height_cm} cm · ${rb.box.items.length} item${rb.box.items.length === 1 ? "" : "s"}`}
+                    />
+                  ))}
+                  <SummaryRow label="Packaging cost" value={`$${totalPackagePrice.toFixed(2)}`} />
                   {totals && (
                     <>
                       <SummaryRow label="Actual weight" value={`${totals.actualWeight.toFixed(2)} kg`} />
