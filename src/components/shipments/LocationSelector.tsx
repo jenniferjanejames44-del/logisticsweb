@@ -43,12 +43,9 @@ const LocationSelector = ({
 
   const handleCountry = (v: string) => {
     onCountryChange(v);
-    if (state) onStateChange("");
-    if (city) onCityChange("");
   };
   const handleState = (v: string) => {
     onStateChange(v);
-    if (city) onCityChange("");
   };
 
   const baseInput = `h-11 w-full rounded-[10px] border bg-white px-3.5 text-sm transition-colors hover:border-border focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10 ${inputClassName}`;

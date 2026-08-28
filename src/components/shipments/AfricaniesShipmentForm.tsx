@@ -701,7 +701,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
     );
 
 
-  const validateStep = (s: number): boolean => {
+  const getStepErrors = (s: number): Record<string, string> => {
     const e: Record<string, string> = {};
     const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
     const isPhone = (v: string) => v.trim().replace(/[^\d+]/g, "").length >= 7;
@@ -750,6 +750,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
       });
     }
 
+    return e;
+  };
+
+  const validateStep = (s: number): boolean => {
+    const e = getStepErrors(s);
     setErrors(e);
     if (Object.keys(e).length > 0) {
       const count = Object.keys(e).length;
@@ -774,9 +779,27 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   };
 
   const handleSubmit = async () => {
-    const firstInvalidStep = STEPS.findIndex((_, index) => !validateStep(index));
+    let firstInvalidStep = -1;
+    let firstInvalidErrors: Record<string, string> = {};
+
+    for (let index = 0; index < STEPS.length; index += 1) {
+      const stepErrors = getStepErrors(index);
+      if (Object.keys(stepErrors).length > 0) {
+        firstInvalidStep = index;
+        firstInvalidErrors = stepErrors;
+        break;
+      }
+    }
+
     if (firstInvalidStep >= 0) {
+      setErrors(firstInvalidErrors);
       setStep(firstInvalidStep);
+      const count = Object.keys(firstInvalidErrors).length;
+      toast({
+        title: `Check your ${STEPS[firstInvalidStep].toLowerCase()} details`,
+        description: `${count} field${count === 1 ? "" : "s"} need${count === 1 ? "s" : ""} your attention. Your other details are still saved.`,
+        variant: "destructive",
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
