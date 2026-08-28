@@ -1435,7 +1435,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 </div>
               )}
 
-            )}
+
 
             <Button type="button" variant="outline" onClick={addBox} className="w-full max-w-none border-dashed">
               <Plus className="mr-1 h-4 w-4" /> Add Another Box
