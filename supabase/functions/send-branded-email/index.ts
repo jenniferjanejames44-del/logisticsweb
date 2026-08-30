@@ -191,7 +191,9 @@ Deno.serve(async (req) => {
       const bodyPersonalized = mergeVars(payload.bodyHtml, vars);
       const subjectPersonalized = mergeVars(payload.subject, vars);
       const html = wrapBranded(bodyPersonalized, settings, attachmentsHtml);
-      const messageId = `ec-${batchId}-${recipient.replace(/[^a-z0-9]/gi, '')}`.slice(0, 120);
+      // Unique per attempt — reusing a key after a failed run returns 409 run_failed.
+      const attemptTag = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+      const messageId = `ec-${batchId}-${recipient.replace(/[^a-z0-9]/gi, '')}-${attemptTag}`.slice(0, 120);
 
       const { error: enqueueError } = await admin.rpc('enqueue_email', {
         queue_name: 'transactional_emails',
