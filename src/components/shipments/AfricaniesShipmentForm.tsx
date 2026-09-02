@@ -405,10 +405,45 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
   const [warehouseId, setWarehouseId] = useState<string>("");
+  const [warehouses, setWarehouses] = useState<WarehouseRecord[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await (supabase as any)
+        .from("warehouses")
+        .select("*")
+        .eq("is_active", true)
+        .order("country");
+      if (!cancelled) setWarehouses((data || []) as WarehouseRecord[]);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Nigeria warehouses are for export drop-offs, not import destinations.
+  const importWarehouses = useMemo(() => {
+    const kind = methodFreightKind(method);
+    return warehouses
+      .filter((w) => w.country !== "Nigeria")
+      .filter((w) => {
+        const m = (w.shipping_method || "any").toLowerCase();
+        if (m === "any" || !kind) return true;
+        return m === kind;
+      });
+  }, [warehouses, method]);
+
   const selectedWarehouse = useMemo(
-    () => IMPORT_WAREHOUSES.find((w) => w.id === warehouseId) || null,
-    [warehouseId],
+    () => warehouses.find((w) => w.id === warehouseId) || null,
+    [warehouses, warehouseId],
   );
+
+  // Clear a warehouse that is no longer valid for the chosen shipping method.
+  useEffect(() => {
+    if (warehouseId && !importWarehouses.some((w) => w.id === warehouseId)) {
+      setWarehouseId("");
+    }
+  }, [importWarehouses, warehouseId]);
+
 
   const [senderFirstName, setSenderFirstName] = useState("");
   const [senderLastName, setSenderLastName] = useState("");
