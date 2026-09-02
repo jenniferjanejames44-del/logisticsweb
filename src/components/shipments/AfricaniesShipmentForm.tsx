@@ -1555,7 +1555,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 {!isExport && selectedWarehouse && (
                   <SummaryRow
                     label="RAC warehouse"
-                    value={`${selectedWarehouse.name} — ${selectedWarehouse.city}, ${selectedWarehouse.country}`}
+                    value={`${selectedWarehouse.name} — ${[selectedWarehouse.city, selectedWarehouse.country].filter(Boolean).join(", ")}`}
                   />
                 )}
               </div>
