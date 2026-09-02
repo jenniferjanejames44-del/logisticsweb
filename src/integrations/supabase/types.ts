@@ -1933,39 +1933,54 @@ export type Database = {
       warehouses: {
         Row: {
           address: string
+          care_of: string | null
           city: string | null
+          company: string | null
           country: string
+          country_code: string | null
           created_at: string
           id: string
           is_active: boolean
           name: string
           phone: string | null
+          recipient: string | null
+          shipping_method: string | null
           state: string | null
           updated_at: string
           zip_code: string | null
         }
         Insert: {
           address: string
+          care_of?: string | null
           city?: string | null
+          company?: string | null
           country: string
+          country_code?: string | null
           created_at?: string
           id?: string
           is_active?: boolean
           name: string
           phone?: string | null
+          recipient?: string | null
+          shipping_method?: string | null
           state?: string | null
           updated_at?: string
           zip_code?: string | null
         }
         Update: {
           address?: string
+          care_of?: string | null
           city?: string | null
+          company?: string | null
           country?: string
+          country_code?: string | null
           created_at?: string
           id?: string
           is_active?: boolean
           name?: string
           phone?: string | null
+          recipient?: string | null
+          shipping_method?: string | null
           state?: string | null
           updated_at?: string
           zip_code?: string | null
