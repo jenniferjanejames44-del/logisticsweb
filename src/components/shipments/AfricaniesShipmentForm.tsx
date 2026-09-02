@@ -138,7 +138,18 @@ const renderWarehouseFlag = (countryCode: string, country: string) => {
       </svg>
     );
   }
+  if (countryCode === "ca") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(0 0% 100%)" />
+        <rect width="16" height="64" fill="hsl(355 78% 46%)" />
+        <rect x="48" width="16" height="64" fill="hsl(355 78% 46%)" />
+        <polygon points="32,16 35,26 43,22 38,32 46,34 38,38 40,46 32,42 24,46 26,38 18,34 26,32 21,22 29,26" fill="hsl(355 78% 46%)" />
+      </svg>
+    );
+  }
   return (
+
     <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
       <rect width="64" height="64" fill="hsl(0 74% 45%)" />
       <polygon points="18,10 20.5,17 28,17 22,21.5 24,29 18,24.5 12,29 14,21.5 8,17 15.5,17" fill="hsl(48 96% 55%)" />
