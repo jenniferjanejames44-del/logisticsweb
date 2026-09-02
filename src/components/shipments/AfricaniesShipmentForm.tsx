@@ -76,37 +76,45 @@ const EXPORT_DELIVERY_TYPES = [
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
 ];
 
-// RAC Logistics overseas warehouses for IMPORT shipments. Senders abroad
-// drop off / ship items to one of these addresses.
-const IMPORT_WAREHOUSES = [
-  {
-    id: "usa_warehouse",
-    name: "USA Warehouse",
-    countryCode: "us",
-    country: "United States",
-    city: "Richmond, TX",
-    lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
-    phone: "+1 281 591 9189",
-  },
-  {
-    id: "uk_warehouse",
-    name: "UK Warehouse",
-    countryCode: "gb",
-    country: "United Kingdom",
-    city: "London",
-    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
-    phone: null,
-  },
-  {
-    id: "china_warehouse",
-    name: "China Warehouse",
-    countryCode: "cn",
-    country: "China",
-    city: "Guangzhou",
-    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
-    phone: null,
-  },
-] as const;
+// RAC Logistics overseas warehouses for IMPORT shipments are loaded from the
+// database (admin-managed) so addresses stay accurate everywhere.
+interface WarehouseRecord {
+  id: string;
+  country: string;
+  country_code: string | null;
+  name: string;
+  company: string | null;
+  care_of: string | null;
+  recipient: string | null;
+  address: string;
+  city: string | null;
+  state: string | null;
+  zip_code: string | null;
+  phone: string | null;
+  shipping_method: string | null;
+  is_active: boolean;
+}
+
+const warehouseAddressLines = (w: WarehouseRecord): string[] => {
+  const lines: string[] = [];
+  if (w.company) lines.push(w.company);
+  if (w.care_of) lines.push(`C/O ${w.care_of}`);
+  if (w.recipient && w.recipient !== w.company) lines.push(`Recipient: ${w.recipient}`);
+  lines.push(w.address);
+  const locality = [w.city, w.state, w.zip_code].filter(Boolean).join(", ");
+  if (locality) lines.push(locality);
+  lines.push(w.country);
+  return lines;
+};
+
+// "ocean" ships to sea-freight warehouses, air methods to air-freight ones.
+const methodFreightKind = (methodId: string): "sea" | "air" | null => {
+  if (!methodId) return null;
+  if (methodId === "ocean") return "sea";
+  if (methodId.startsWith("air")) return "air";
+  return null;
+};
+
 
 const renderWarehouseFlag = (countryCode: string, country: string) => {
   if (countryCode === "us") {
