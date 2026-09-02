@@ -76,37 +76,45 @@ const EXPORT_DELIVERY_TYPES = [
   { id: "pickup", label: "Pickup", desc: "We collect your items from your address in Nigeria", icon: PackageCheck },
 ];
 
-// RAC Logistics overseas warehouses for IMPORT shipments. Senders abroad
-// drop off / ship items to one of these addresses.
-const IMPORT_WAREHOUSES = [
-  {
-    id: "usa_warehouse",
-    name: "USA Warehouse",
-    countryCode: "us",
-    country: "United States",
-    city: "Richmond, TX",
-    lines: ["13107 Orchard Mill Drive", "Richmond, Texas 77407"],
-    phone: "+1 281 591 9189",
-  },
-  {
-    id: "uk_warehouse",
-    name: "UK Warehouse",
-    countryCode: "gb",
-    country: "United Kingdom",
-    city: "London",
-    lines: ["Unit 1, Loughborough Centre", "105 Angell Road", "Brixton, London, SW9 7PD"],
-    phone: null,
-  },
-  {
-    id: "china_warehouse",
-    name: "China Warehouse",
-    countryCode: "cn",
-    country: "China",
-    city: "Guangzhou",
-    lines: ["Guangzhou Baiyun District", "Shijing Town Shitan West Road 12", "Jieli Logistics Park C08-B"],
-    phone: null,
-  },
-] as const;
+// RAC Logistics overseas warehouses for IMPORT shipments are loaded from the
+// database (admin-managed) so addresses stay accurate everywhere.
+interface WarehouseRecord {
+  id: string;
+  country: string;
+  country_code: string | null;
+  name: string;
+  company: string | null;
+  care_of: string | null;
+  recipient: string | null;
+  address: string;
+  city: string | null;
+  state: string | null;
+  zip_code: string | null;
+  phone: string | null;
+  shipping_method: string | null;
+  is_active: boolean;
+}
+
+const warehouseAddressLines = (w: WarehouseRecord): string[] => {
+  const lines: string[] = [];
+  if (w.company) lines.push(w.company);
+  if (w.care_of) lines.push(`C/O ${w.care_of}`);
+  if (w.recipient && w.recipient !== w.company) lines.push(`Recipient: ${w.recipient}`);
+  lines.push(w.address);
+  const locality = [w.city, w.state, w.zip_code].filter(Boolean).join(", ");
+  if (locality) lines.push(locality);
+  lines.push(w.country);
+  return lines;
+};
+
+// "ocean" ships to sea-freight warehouses, air methods to air-freight ones.
+const methodFreightKind = (methodId: string): "sea" | "air" | null => {
+  if (!methodId) return null;
+  if (methodId === "ocean") return "sea";
+  if (methodId.startsWith("air")) return "air";
+  return null;
+};
+
 
 const renderWarehouseFlag = (countryCode: string, country: string) => {
   if (countryCode === "us") {
@@ -130,7 +138,18 @@ const renderWarehouseFlag = (countryCode: string, country: string) => {
       </svg>
     );
   }
+  if (countryCode === "ca") {
+    return (
+      <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
+        <rect width="64" height="64" fill="hsl(0 0% 100%)" />
+        <rect width="16" height="64" fill="hsl(355 78% 46%)" />
+        <rect x="48" width="16" height="64" fill="hsl(355 78% 46%)" />
+        <polygon points="32,16 35,26 43,22 38,32 46,34 38,38 40,46 32,42 24,46 26,38 18,34 26,32 21,22 29,26" fill="hsl(355 78% 46%)" />
+      </svg>
+    );
+  }
   return (
+
     <svg viewBox="0 0 64 64" role="img" aria-label={`${country} flag`} className="h-full w-full">
       <rect width="64" height="64" fill="hsl(0 74% 45%)" />
       <polygon points="18,10 20.5,17 28,17 22,21.5 24,29 18,24.5 12,29 14,21.5 8,17 15.5,17" fill="hsl(48 96% 55%)" />
@@ -386,10 +405,45 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [method, setMethod] = useState<string>("");
   const [deliveryType, setDeliveryType] = useState<string>("");
   const [warehouseId, setWarehouseId] = useState<string>("");
+  const [warehouses, setWarehouses] = useState<WarehouseRecord[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await (supabase as any)
+        .from("warehouses")
+        .select("*")
+        .eq("is_active", true)
+        .order("country");
+      if (!cancelled) setWarehouses((data || []) as WarehouseRecord[]);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Nigeria warehouses are for export drop-offs, not import destinations.
+  const importWarehouses = useMemo(() => {
+    const kind = methodFreightKind(method);
+    return warehouses
+      .filter((w) => w.country !== "Nigeria")
+      .filter((w) => {
+        const m = (w.shipping_method || "any").toLowerCase();
+        if (m === "any" || !kind) return true;
+        return m === kind;
+      });
+  }, [warehouses, method]);
+
   const selectedWarehouse = useMemo(
-    () => IMPORT_WAREHOUSES.find((w) => w.id === warehouseId) || null,
-    [warehouseId],
+    () => warehouses.find((w) => w.id === warehouseId) || null,
+    [warehouses, warehouseId],
   );
+
+  // Clear a warehouse that is no longer valid for the chosen shipping method.
+  useEffect(() => {
+    if (warehouseId && !importWarehouses.some((w) => w.id === warehouseId)) {
+      setWarehouseId("");
+    }
+  }, [importWarehouses, warehouseId]);
+
 
   const [senderFirstName, setSenderFirstName] = useState("");
   const [senderLastName, setSenderLastName] = useState("");
@@ -983,8 +1037,9 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   Your sender abroad will drop off or ship the goods to the RAC warehouse you select below.
                 </p>
                 <div className="mt-4 grid gap-3 sm:grid-cols-3">
-              {IMPORT_WAREHOUSES.map((w) => {
+              {importWarehouses.map((w) => {
                 const active = warehouseId === w.id;
+                const freight = (w.shipping_method || "any").toLowerCase();
                 return (
                   <button
                     key={w.id}
@@ -996,7 +1051,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white shadow-sm">
-                        {renderWarehouseFlag(w.countryCode, w.country)}
+                        {renderWarehouseFlag(w.country_code || "", w.country)}
                       </span>
                       <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${active ? "border-accent bg-accent text-accent-foreground" : "border-border text-transparent"}`}>
                         <CheckCircle2 className="h-3.5 w-3.5" />
@@ -1004,12 +1059,22 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </div>
                     <div className="mt-3">
                       <div className="text-sm font-bold text-foreground">{w.name}</div>
-                      <div className="mt-1 text-[11px] font-medium text-muted-foreground">{w.city}, {w.country}</div>
+                      <div className="mt-1 text-[11px] font-medium text-muted-foreground">
+                        {[w.city, w.country].filter(Boolean).join(", ")}
+                      </div>
+                      {(freight === "sea" || freight === "air") && (
+                        <span className="mt-2 inline-flex items-center rounded-full border border-border/60 bg-muted/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          {freight === "sea" ? "Sea Freight" : "Air Freight"}
+                        </span>
+                      )}
                     </div>
                   </button>
                 );
               })}
                 </div>
+                {importWarehouses.length === 0 && (
+                  <p className="mt-2 text-xs text-muted-foreground">No warehouse is available for the selected shipping method yet.</p>
+                )}
                 {errors.warehouse && <p className="mt-2 text-xs text-destructive">{errors.warehouse}</p>}
 
                 {selectedWarehouse && (
@@ -1021,9 +1086,10 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 <div className="mt-2 flex items-start gap-2 text-xs text-foreground">
                   <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                   <div className="leading-relaxed">
-                    {selectedWarehouse.lines.map((l) => <div key={l}>{l}</div>)}
+                    {warehouseAddressLines(selectedWarehouse).map((l, i) => <div key={`${l}-${i}`}>{l}</div>)}
                   </div>
                 </div>
+
                 {selectedWarehouse.phone && (
                   <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
                     <Phone className="h-3.5 w-3.5" /> {selectedWarehouse.phone}
@@ -1489,7 +1555,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 {!isExport && selectedWarehouse && (
                   <SummaryRow
                     label="RAC warehouse"
-                    value={`${selectedWarehouse.name} — ${selectedWarehouse.city}, ${selectedWarehouse.country}`}
+                    value={`${selectedWarehouse.name} — ${[selectedWarehouse.city, selectedWarehouse.country].filter(Boolean).join(", ")}`}
                   />
                 )}
               </div>
