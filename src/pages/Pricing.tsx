@@ -212,6 +212,12 @@ const Pricing = () => {
                     <Input id="weight" type="number" min="0.1" step="0.1" placeholder="Enter weight in kilograms" className="h-11 rounded-lg border-border bg-white" value={weight} onChange={(e) => setWeight(e.target.value)} />
                   </div>
 
+	                    <div className="space-y-2">
+                    <Label htmlFor="declared" className="font-medium text-sm">Declared Value (optional)</Label>
+                    <Input id="declared" type="number" min="0" step="1" placeholder="Value of goods, for insurance" className="h-11 rounded-lg border-border bg-white" value={declaredValue} onChange={(e) => setDeclaredValue(e.target.value)} />
+                  </div>
+
+
 	                    <div className="space-y-3">
                     <Label className="font-medium text-sm">Service Type</Label>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
