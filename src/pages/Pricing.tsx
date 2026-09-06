@@ -12,15 +12,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight } from "lucide-react";
+import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight, AlertCircle } from "lucide-react";
 import { getCountries } from "@/lib/locationData";
+import { computeShipmentTotals, formatPriceInCurrency, type ShipmentTotals } from "@/lib/pricingEngine";
+import { matchPricingRule, toLegacyRule } from "@/lib/pricingEngineV2";
 
 const allCountries = getCountries();
 
 const services = [
-  { id: "air-express", name: "Air Express", icon: Plane, fallbackRate: 25, description: "3–5 Business Days" },
-  { id: "standard-shipping", name: "Standard Shipping", icon: Package, fallbackRate: 18, description: "14 Business Days" },
-  { id: "ocean-sea-freight", name: "Ocean / Sea Freight", icon: Ship, fallbackRate: 8, description: "45–60 Days" },
+  { id: "air-express", name: "Air Express", icon: Plane, method: "air", serviceType: "express", description: "3–5 Business Days" },
+  { id: "standard-shipping", name: "Standard Shipping", icon: Package, method: "air", serviceType: null, description: "14 Business Days" },
+  { id: "ocean-sea-freight", name: "Ocean / Sea Freight", icon: Ship, method: "ocean", serviceType: null, description: "45–60 Days" },
 ];
 
 const serviceSlugMap: Record<string, string> = {
@@ -28,25 +30,18 @@ const serviceSlugMap: Record<string, string> = {
   ocean: "ocean-sea-freight",
 };
 
-interface RoutePrice {
-  origin_country: string;
-  destination_country: string;
-  price_per_kg: number;
-}
-
 const Pricing = () => {
   const [searchParams] = useSearchParams();
   const { ref: heroRef, isInView: heroInView } = useInView({ threshold: 0.2 });
   const { user } = useAuth();
-  const { formatUsd } = useCurrency();
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [weight, setWeight] = useState<string>("");
+  const [declaredValue, setDeclaredValue] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
-  const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
+  const [totals, setTotals] = useState<ShipmentTotals | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [routePrices, setRoutePrices] = useState<RoutePrice[]>([]);
-  const [routeRate, setRouteRate] = useState<number | null>(null);
+  const [pricingError, setPricingError] = useState<string | null>(null);
 
   // Auto-select service from URL param
   useEffect(() => {
@@ -56,24 +51,17 @@ const Pricing = () => {
     }
   }, [searchParams]);
 
-  // Fetch route-based prices from database
-  useEffect(() => {
-    const fetchRoutes = async () => {
-      const { data } = await supabase
-        .from("shipping_routes")
-        .select("origin_country, destination_country, price_per_kg")
-        .eq("is_active", true);
-      if (data) setRoutePrices(data);
-    };
-    fetchRoutes();
-  }, []);
+  const selectedServiceData = services.find((s) => s.id === selectedService);
+  const calculatedPrice = totals?.total ?? null;
+  const currency = totals?.currency || "USD";
+  const fmt = (n: number) => formatPriceInCurrency(n, currency);
 
   const handleContinueToCheckout = () => {
     if (!selectedCountry || !weight || !selectedService || calculatedPrice === null) return;
-    
+
     const country = allCountries.find(c => c.isoCode === selectedCountry);
     const service = services.find(s => s.id === selectedService);
-    
+
     // Store quote data for checkout
     const quoteData = {
       destination_country: country?.name || selectedCountry,
@@ -83,14 +71,16 @@ const Pricing = () => {
       service_name: service?.name || selectedService,
       delivery_estimate: service?.description || "",
       calculated_price: calculatedPrice,
-      base_rate: baseRate,
-      base_shipping_cost: baseShippingCost,
-      handling_fee: handlingFee,
-      insurance_fee: insuranceFee,
-      route_rate: routeRate,
+      currency,
+      base_rate: totals && totals.chargeableWeight > 0 ? totals.shippingCost / totals.chargeableWeight : 0,
+      base_shipping_cost: totals?.shippingCost ?? 0,
+      handling_fee: totals?.handlingFee ?? 0,
+      vat: totals?.vat ?? 0,
+      insurance_fee: totals?.insurance ?? 0,
+      declared_value: totals?.declaredValue ?? 0,
     };
     localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
-    
+
     if (user) {
       navigate("/checkout");
     } else {
@@ -99,45 +89,65 @@ const Pricing = () => {
     }
   };
 
+  // Live quote using the same pricing engine the shipment form and admin use.
   useEffect(() => {
-    if (selectedCountry && weight && selectedService && parseFloat(weight) > 0) {
-      setIsCalculating(true);
-      
-      const timer = setTimeout(() => {
-        const country = allCountries.find(c => c.isoCode === selectedCountry);
-        const service = services.find(s => s.id === selectedService);
-        
-        if (country && service) {
-          // Look for a route-based price (origin: Nigeria → destination)
-          const route = routePrices.find(
-            r => r.origin_country === "Nigeria" && r.destination_country === country.name
-          );
-          
-          const ratePerKg = route ? Number(route.price_per_kg) : service.fallbackRate;
-          setRouteRate(route ? Number(route.price_per_kg) : null);
-          
-          const basePrice = ratePerKg * parseFloat(weight);
-          const handlingFee = 15;
-          const insuranceFee = basePrice * 0.02;
-          const totalPrice = basePrice + handlingFee + insuranceFee;
-          
-          setCalculatedPrice(Math.round(totalPrice * 100) / 100);
-        }
-        setIsCalculating(false);
-      }, 800);
+    const country = allCountries.find((c) => c.isoCode === selectedCountry);
+    const service = services.find((s) => s.id === selectedService);
+    const w = parseFloat(weight);
 
-      return () => clearTimeout(timer);
-    } else {
-      setCalculatedPrice(null);
-      setRouteRate(null);
+    if (!country || !service || !w || w <= 0) {
+      setTotals(null);
+      setPricingError(null);
+      setIsCalculating(false);
+      return;
     }
-  }, [selectedCountry, weight, selectedService, routePrices]);
 
-  const selectedServiceData = services.find(s => s.id === selectedService);
-  const baseRate = routeRate ?? selectedServiceData?.fallbackRate ?? 0;
-  const baseShippingCost = weight ? parseFloat(weight) * baseRate : 0;
-  const handlingFee = 15;
-  const insuranceFee = baseShippingCost * 0.02;
+    let cancelled = false;
+    setIsCalculating(true);
+    setPricingError(null);
+
+    const timer = setTimeout(async () => {
+      try {
+        const rule = await matchPricingRule({
+          shipmentType: "export",
+          originCountry: "Nigeria",
+          destinationCountry: country.name,
+          shippingMethod: service.method,
+          serviceType: service.serviceType,
+          chargeableWeight: w,
+        });
+        if (cancelled) return;
+        if (!rule) {
+          setTotals(null);
+          setPricingError(
+            `We don't have a published ${service.name.toLowerCase()} rate to ${country.name} yet. Please contact us for a quote.`,
+          );
+          return;
+        }
+        const t = computeShipmentTotals({
+          packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
+          items: [{ quantity: 1, weightKg: w, declaredValue: 0 }],
+          packagePrice: 0,
+          rule: toLegacyRule(rule),
+          declaredValue: parseFloat(declaredValue) || 0,
+        });
+        setTotals(t);
+      } catch {
+        if (!cancelled) {
+          setTotals(null);
+          setPricingError("Could not load pricing right now. Please try again.");
+        }
+      } finally {
+        if (!cancelled) setIsCalculating(false);
+      }
+    }, 500);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [selectedCountry, weight, declaredValue, selectedService]);
+
 
   return (
     <div className="min-h-screen">
