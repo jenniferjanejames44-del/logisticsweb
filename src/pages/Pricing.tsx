@@ -262,7 +262,12 @@ const Pricing = () => {
                           </div>
                         ) : calculatedPrice !== null ? (
                           <span className="text-4xl md:text-5xl font-bold text-primary">
-                            {formatUsd(calculatedPrice)}
+                            {fmt(calculatedPrice)}
+                          </span>
+                        ) : pricingError ? (
+                          <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <AlertCircle className="h-4 w-4 text-accent" />
+                            {pricingError}
                           </span>
                         ) : (
                           <span className="text-muted-foreground text-sm">Fill in the form to get a quote</span>
@@ -270,7 +275,7 @@ const Pricing = () => {
                         </div>
                       </div>
                       
-                      {calculatedPrice !== null && selectedServiceData && (
+                      {calculatedPrice !== null && totals && selectedServiceData && (
                         <div className="mt-5 space-y-4">
                           <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
                             <selectedServiceData.icon className="w-4 h-4" strokeWidth={2.5} />
@@ -281,18 +286,31 @@ const Pricing = () => {
                           
                           <div className="space-y-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Base Rate ({weight} KG × {formatUsd(baseRate)}/KG{routeRate ? " (route price)" : ""})</span>
-                              <span>{formatUsd(baseShippingCost)}</span>
+                              <span>Shipping ({totals.chargeableWeight} KG)</span>
+                              <span>{fmt(totals.shippingCost)}</span>
                             </div>
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Handling Fee</span>
-                              <span>{formatUsd(handlingFee)}</span>
+                              <span>Handling &amp; Customs</span>
+                              <span>{fmt(totals.handlingFee)}</span>
                             </div>
-                            <div className="flex justify-between text-muted-foreground">
-                              <span>Insurance (2%)</span>
-                              <span>{formatUsd(insuranceFee)}</span>
+                            {totals.vat > 0 && (
+                              <div className="flex justify-between text-muted-foreground">
+                                <span>VAT ({totals.vatPercent}%)</span>
+                                <span>{fmt(totals.vat)}</span>
+                              </div>
+                            )}
+                            {totals.insurance > 0 && (
+                              <div className="flex justify-between text-muted-foreground">
+                                <span>Insurance ({totals.insurancePercent}%)</span>
+                                <span>{fmt(totals.insurance)}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between border-t border-border/70 pt-2 font-semibold text-foreground">
+                              <span>Total</span>
+                              <span>{fmt(totals.total)}</span>
                             </div>
                           </div>
+
                           
                           <Button variant="accent" className="mt-4 shadow-[0_12px_24px_rgba(223,81,1,0.2)]" size="lg" onClick={handleContinueToCheckout}>
                             Continue Shipment
