@@ -1127,6 +1127,8 @@ export type Database = {
           currency: string
           customs_fee: number
           destination_country: string
+          effective_from: string | null
+          effective_to: string | null
           estimated_days_max: number | null
           estimated_days_min: number | null
           flat_price: number
@@ -1137,16 +1139,19 @@ export type Database = {
           is_active: boolean
           max_weight_kg: number | null
           min_weight_kg: number | null
+          minimum_charge: number
           name: string
           notes: string | null
           origin_country: string
           price_per_kg: number
+          pricing_model: string
           priority: number
           service_type: string | null
           shipment_type: string
           shipping_method: string
           updated_at: string
           vat_percent: number
+          volumetric_divisor: number
           warehouse_country: string | null
         }
         Insert: {
@@ -1155,6 +1160,8 @@ export type Database = {
           currency?: string
           customs_fee?: number
           destination_country: string
+          effective_from?: string | null
+          effective_to?: string | null
           estimated_days_max?: number | null
           estimated_days_min?: number | null
           flat_price?: number
@@ -1165,16 +1172,19 @@ export type Database = {
           is_active?: boolean
           max_weight_kg?: number | null
           min_weight_kg?: number | null
+          minimum_charge?: number
           name: string
           notes?: string | null
           origin_country: string
           price_per_kg?: number
+          pricing_model?: string
           priority?: number
           service_type?: string | null
           shipment_type: string
           shipping_method: string
           updated_at?: string
           vat_percent?: number
+          volumetric_divisor?: number
           warehouse_country?: string | null
         }
         Update: {
@@ -1183,6 +1193,8 @@ export type Database = {
           currency?: string
           customs_fee?: number
           destination_country?: string
+          effective_from?: string | null
+          effective_to?: string | null
           estimated_days_max?: number | null
           estimated_days_min?: number | null
           flat_price?: number
@@ -1193,16 +1205,19 @@ export type Database = {
           is_active?: boolean
           max_weight_kg?: number | null
           min_weight_kg?: number | null
+          minimum_charge?: number
           name?: string
           notes?: string | null
           origin_country?: string
           price_per_kg?: number
+          pricing_model?: string
           priority?: number
           service_type?: string | null
           shipment_type?: string
           shipping_method?: string
           updated_at?: string
           vat_percent?: number
+          volumetric_divisor?: number
           warehouse_country?: string | null
         }
         Relationships: []
@@ -1528,6 +1543,7 @@ export type Database = {
           actual_weight: number | null
           chargeable_weight: number | null
           created_at: string
+          currency: string | null
           description: string | null
           destination_city: string
           destination_country: string
@@ -1544,6 +1560,7 @@ export type Database = {
           payment_status: string
           pickup_prepaid: boolean
           price: number | null
+          pricing_snapshot: Json | null
           receiver_address: string | null
           receiver_alt_phone: string | null
           receiver_name: string | null
@@ -1568,6 +1585,7 @@ export type Database = {
           actual_weight?: number | null
           chargeable_weight?: number | null
           created_at?: string
+          currency?: string | null
           description?: string | null
           destination_city: string
           destination_country: string
@@ -1584,6 +1602,7 @@ export type Database = {
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
+          pricing_snapshot?: Json | null
           receiver_address?: string | null
           receiver_alt_phone?: string | null
           receiver_name?: string | null
@@ -1608,6 +1627,7 @@ export type Database = {
           actual_weight?: number | null
           chargeable_weight?: number | null
           created_at?: string
+          currency?: string | null
           description?: string | null
           destination_city?: string
           destination_country?: string
@@ -1624,6 +1644,7 @@ export type Database = {
           payment_status?: string
           pickup_prepaid?: boolean
           price?: number | null
+          pricing_snapshot?: Json | null
           receiver_address?: string | null
           receiver_alt_phone?: string | null
           receiver_name?: string | null

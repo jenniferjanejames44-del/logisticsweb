@@ -1,0 +1,430 @@
+// =====================================================================
+// RAC LOGISTICS — AUTHORITATIVE PRICING CORE
+// ---------------------------------------------------------------------
+// This is the ONE place a shipping price is ever calculated.
+// It is pure (no I/O, no Deno/browser APIs) so it can be:
+//   - executed by the `calculate-quote` edge function (authoritative)
+//   - unit tested by vitest
+// The frontend must NEVER reimplement any of this maths.
+// All money arithmetic is done in integer minor units (cents) to avoid
+// floating point drift; rounding happens once, at the end of each stage.
+// =====================================================================
+
+export type ShipmentDirection = "import" | "export";
+export type PricingModel = "flat" | "tiered" | "per_kg";
+
+export interface PricingRuleRow {
+  id: string;
+  shipment_type: ShipmentDirection;
+  name: string;
+  origin_country: string;
+  warehouse_country: string | null;
+  destination_country: string;
+  shipping_method: string;
+  service_type: string | null;
+  pricing_model: PricingModel | null;
+  min_weight_kg: number | null;
+  max_weight_kg: number | null;
+  flat_price: number;
+  flat_weight_threshold_kg: number;
+  price_per_kg: number;
+  minimum_charge: number | null;
+  handling_fee: number;
+  customs_fee: number;
+  vat_percent: number;
+  insurance_percent: number;
+  volumetric_divisor: number | null;
+  currency: string;
+  estimated_days_min: number | null;
+  estimated_days_max: number | null;
+  is_active: boolean;
+  priority: number;
+  effective_from?: string | null;
+  effective_to?: string | null;
+}
+
+export interface BoxInput {
+  /** Physical dimensions of THIS box (never multiplied by item quantity). */
+  length_cm?: number | null;
+  width_cm?: number | null;
+  height_cm?: number | null;
+  /** Total actual weight of this box, in kg. Already a total — never multiplied. */
+  actual_weight_kg?: number | null;
+  /** Packaging material cost for this box, in the rule currency. */
+  packaging_price?: number | null;
+  /** Optional items inside the box, used only for declared value + weight fallback. */
+  items?: ItemInput[];
+}
+
+export interface ItemInput {
+  quantity?: number | null;
+  /** Weight of ONE unit, in kg. Total = quantity x unit_weight_kg. */
+  unit_weight_kg?: number | null;
+  /** Value of ONE unit. Total = quantity x unit_value. */
+  unit_value?: number | null;
+}
+
+export interface QuoteInput {
+  direction: ShipmentDirection;
+  originCountry?: string | null;
+  destinationCountry?: string | null;
+  warehouseCountry?: string | null;
+  shippingMethod: string;
+  serviceType?: string | null;
+  boxes?: BoxInput[];
+  /** Simple mode: a single already-known chargeable weight (e.g. the public calculator). */
+  weightKg?: number | null;
+  /** Overrides the value derived from items. */
+  declaredValue?: number | null;
+  /** Flat discount in the rule currency. */
+  discount?: number | null;
+}
+
+export interface QuoteLine {
+  key: string;
+  label: string;
+  amount: number;
+}
+
+export interface QuoteBreakdown {
+  currency: string;
+  pricing_model: PricingModel;
+  rule_id: string;
+  rule_name: string;
+  direction: ShipmentDirection;
+  origin_country: string;
+  destination_country: string;
+  warehouse_country: string | null;
+  shipping_method: string;
+  service_type: string | null;
+
+  actual_weight_kg: number;
+  volumetric_weight_kg: number;
+  chargeable_weight_kg: number;
+  volumetric_divisor: number;
+
+  included_weight_kg: number;
+  base_price: number;
+  additional_weight_kg: number;
+  additional_rate_per_kg: number;
+  additional_charge: number;
+  minimum_charge_applied: boolean;
+
+  shipping_cost: number;
+  packaging_cost: number;
+  handling_fee: number;
+  customs_fee: number;
+  subtotal: number;
+  vat_percent: number;
+  vat: number;
+  insurance_percent: number;
+  insurance: number;
+  declared_value: number;
+  discount: number;
+  total: number;
+
+  estimated_days_min: number | null;
+  estimated_days_max: number | null;
+  lines: QuoteLine[];
+  calculated_at: string;
+}
+
+export class PricingUnavailableError extends Error {
+  code = "PRICING_UNAVAILABLE";
+  constructor(
+    message = "Pricing is currently unavailable for this route/service. Please contact RAC Logistics.",
+  ) {
+    super(message);
+    this.name = "PricingUnavailableError";
+  }
+}
+
+// ---------------------------------------------------------------------
+// Decimal-safe helpers (integer cents)
+// ---------------------------------------------------------------------
+const toCents = (v: unknown): number => Math.round((Number(v) || 0) * 100);
+const fromCents = (c: number): number => Math.round(c) / 100;
+const num = (v: unknown): number => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+};
+/** Weights keep 3 decimals internally, are reported with 2. */
+const roundWeight = (kg: number): number => Math.round((kg + Number.EPSILON) * 1000) / 1000;
+const displayWeight = (kg: number): number => Math.round((kg + Number.EPSILON) * 100) / 100;
+
+export const DEFAULT_VOLUMETRIC_DIVISOR = 5000;
+
+/** Normalises free-text shipping methods (air-express, Sea Freight, ...) to a canonical family. */
+export function normaliseMethod(method?: string | null): string {
+  if (!method) return "";
+  const s = String(method).toLowerCase().trim();
+  if (s.startsWith("air")) return "air";
+  if (s.startsWith("ocean") || s.startsWith("sea")) return "ocean";
+  if (s.startsWith("road") || s.startsWith("ground") || s.startsWith("land")) return "road";
+  return s;
+}
+
+// ---------------------------------------------------------------------
+// Weight
+// ---------------------------------------------------------------------
+export interface WeightResult {
+  actual: number;
+  volumetric: number;
+  chargeable: number;
+  declaredValue: number;
+}
+
+/**
+ * Weight rules:
+ *  - A box's `actual_weight_kg` is a TOTAL. It is never multiplied by item quantity.
+ *  - If a box has no actual weight, we fall back to the sum of its items
+ *    (quantity x unit weight), which is the only place quantity multiplies.
+ *  - Volumetric weight comes from BOX dimensions only.
+ *  - Chargeable weight = MAX(actual, volumetric), summed per box.
+ */
+export function computeWeights(boxes: BoxInput[], divisor: number): WeightResult {
+  const safeDivisor = divisor > 0 ? divisor : DEFAULT_VOLUMETRIC_DIVISOR;
+  let actual = 0;
+  let volumetric = 0;
+  let chargeable = 0;
+  let declaredCents = 0;
+
+  for (const box of boxes) {
+    const itemsWeight = (box.items || []).reduce(
+      (s, it) => s + num(it.quantity ?? 1) * num(it.unit_weight_kg),
+      0,
+    );
+    const boxActual = num(box.actual_weight_kg) > 0 ? num(box.actual_weight_kg) : itemsWeight;
+
+    const l = num(box.length_cm);
+    const w = num(box.width_cm);
+    const h = num(box.height_cm);
+    const boxVolumetric = l > 0 && w > 0 && h > 0 ? (l * w * h) / safeDivisor : 0;
+
+    actual += boxActual;
+    volumetric += boxVolumetric;
+    chargeable += Math.max(boxActual, boxVolumetric);
+
+    for (const it of box.items || []) {
+      declaredCents += Math.round(num(it.quantity ?? 1) * toCents(it.unit_value));
+    }
+  }
+
+  return {
+    actual: roundWeight(actual),
+    volumetric: roundWeight(volumetric),
+    chargeable: roundWeight(chargeable),
+    declaredValue: fromCents(declaredCents),
+  };
+}
+
+// ---------------------------------------------------------------------
+// Rule matching — IMPORT and EXPORT never mix
+// ---------------------------------------------------------------------
+export function selectRule(rules: PricingRuleRow[], input: QuoteInput, chargeableWeight: number, today = new Date()): PricingRuleRow | null {
+  const method = normaliseMethod(input.shippingMethod);
+  if (!method || !input.direction) return null;
+  const iso = today.toISOString().slice(0, 10);
+  const eq = (a?: string | null, b?: string | null) =>
+    (a || "").trim().toLowerCase() === (b || "").trim().toLowerCase();
+
+  const candidates = rules.filter((r) => {
+    if (!r.is_active) return false;
+    if (r.shipment_type !== input.direction) return false;
+    if (normaliseMethod(r.shipping_method) !== method) return false;
+    if (r.effective_from && r.effective_from > iso) return false;
+    if (r.effective_to && r.effective_to < iso) return false;
+
+    if (input.direction === "export") {
+      if (!eq(r.destination_country, input.destinationCountry)) return false;
+    } else {
+      const source = input.warehouseCountry || input.originCountry;
+      const ruleSource = r.warehouse_country || r.origin_country;
+      if (!eq(ruleSource, source)) return false;
+    }
+
+    if (input.serviceType && r.service_type && !eq(r.service_type, input.serviceType)) return false;
+
+    const w = chargeableWeight;
+    if (w > 0 && r.min_weight_kg != null && w < num(r.min_weight_kg)) return false;
+    if (w > 0 && r.max_weight_kg != null && w > num(r.max_weight_kg)) return false;
+    return true;
+  });
+
+  if (!candidates.length) return null;
+
+  candidates.sort((a, b) => {
+    // 1. higher priority wins
+    const p = num(b.priority) - num(a.priority);
+    if (p !== 0) return p;
+    // 2. exact service-type match beats a generic rule
+    const sa = eq(a.service_type, input.serviceType) ? 1 : 0;
+    const sb = eq(b.service_type, input.serviceType) ? 1 : 0;
+    if (sa !== sb) return sb - sa;
+    // 3. a weight-banded rule is more specific than an open-ended one
+    const ba = (a.min_weight_kg != null ? 1 : 0) + (a.max_weight_kg != null ? 1 : 0);
+    const bb = (b.min_weight_kg != null ? 1 : 0) + (b.max_weight_kg != null ? 1 : 0);
+    if (ba !== bb) return bb - ba;
+    // 4. deterministic tie-break so the same rule is always picked
+    return a.id < b.id ? -1 : 1;
+  });
+
+  return candidates[0];
+}
+
+// ---------------------------------------------------------------------
+// The calculation pipeline
+// ---------------------------------------------------------------------
+export function calculateQuote(rule: PricingRuleRow, input: QuoteInput): QuoteBreakdown {
+  if (!rule) throw new PricingUnavailableError();
+  if (!rule.is_active) throw new PricingUnavailableError("This rate is not currently active.");
+  if (!rule.currency) throw new PricingUnavailableError("This rate has no currency configured.");
+
+  const divisor = num(rule.volumetric_divisor) > 0 ? num(rule.volumetric_divisor) : DEFAULT_VOLUMETRIC_DIVISOR;
+  const boxes = input.boxes && input.boxes.length ? input.boxes : [];
+
+  let weights: WeightResult;
+  if (boxes.length) {
+    weights = computeWeights(boxes, divisor);
+  } else {
+    const w = roundWeight(num(input.weightKg));
+    weights = { actual: w, volumetric: 0, chargeable: w, declaredValue: 0 };
+  }
+
+  const chargeable = weights.chargeable;
+  if (!(chargeable > 0)) throw new PricingUnavailableError("Weight must be greater than zero.");
+
+  const model: PricingModel = (rule.pricing_model as PricingModel) || "tiered";
+  const includedWeight = num(rule.flat_weight_threshold_kg);
+  const perKgCents = toCents(rule.price_per_kg);
+  const flatCents = toCents(rule.flat_price);
+
+  // --- base + additional weight -------------------------------------
+  let baseCents = 0;
+  let additionalWeight = 0;
+  let additionalCents = 0;
+
+  if (model === "flat") {
+    baseCents = flatCents;
+  } else if (model === "per_kg") {
+    baseCents = Math.round(chargeable * perKgCents);
+  } else {
+    // tiered: included weight is covered by the flat price, only the
+    // EXTRA kilos are charged at the per-kg rate.
+    baseCents = flatCents;
+    if (chargeable > includedWeight) {
+      additionalWeight = roundWeight(chargeable - includedWeight);
+      additionalCents = Math.round(additionalWeight * perKgCents);
+    }
+  }
+
+  let shippingCents = baseCents + additionalCents;
+
+  // --- minimum charge ------------------------------------------------
+  const minimumCents = toCents(rule.minimum_charge);
+  const minimumApplied = minimumCents > 0 && shippingCents < minimumCents;
+  if (minimumApplied) shippingCents = minimumCents;
+
+  // --- fixed fees (each applied exactly once) -------------------------
+  const packagingCents = boxes.reduce((s, b) => s + toCents(b.packaging_price), 0);
+  const handlingCents = toCents(rule.handling_fee);
+  const customsCents = toCents(rule.customs_fee);
+
+  const subtotalCents = shippingCents + packagingCents + handlingCents + customsCents;
+
+  // --- percentage fees ------------------------------------------------
+  const declaredValue = input.declaredValue != null && Number.isFinite(Number(input.declaredValue))
+    ? num(input.declaredValue)
+    : weights.declaredValue;
+
+  const vatPercent = num(rule.vat_percent);
+  const insurancePercent = num(rule.insurance_percent);
+  const vatCents = Math.round((subtotalCents * vatPercent) / 100);
+  const insuranceCents = Math.round((toCents(declaredValue) * insurancePercent) / 100);
+
+  // --- discount + total ------------------------------------------------
+  const discountCents = Math.max(0, toCents(input.discount));
+  const totalCents = Math.max(0, subtotalCents + vatCents + insuranceCents - discountCents);
+
+  const lines: QuoteLine[] = [];
+  const push = (key: string, label: string, cents: number) => {
+    if (cents !== 0) lines.push({ key, label, amount: fromCents(cents) });
+  };
+  push("base", model === "per_kg" ? `Shipping (${displayWeight(chargeable)} kg)` : `Shipping (first ${displayWeight(includedWeight)} kg)`, baseCents);
+  push("additional", `Additional weight (${displayWeight(additionalWeight)} kg @ ${fromCents(perKgCents)}/kg)`, additionalCents);
+  if (minimumApplied) lines.push({ key: "minimum", label: "Minimum charge adjustment", amount: fromCents(minimumCents - (baseCents + additionalCents)) });
+  push("packaging", "Packaging materials", packagingCents);
+  push("handling", "Handling", handlingCents);
+  push("customs", "Customs clearance", customsCents);
+  push("vat", `VAT (${vatPercent}%)`, vatCents);
+  push("insurance", `Insurance (${insurancePercent}%)`, insuranceCents);
+  if (discountCents > 0) lines.push({ key: "discount", label: "Discount", amount: -fromCents(discountCents) });
+
+  return {
+    currency: rule.currency,
+    pricing_model: model,
+    rule_id: rule.id,
+    rule_name: rule.name,
+    direction: rule.shipment_type,
+    origin_country: rule.origin_country,
+    destination_country: rule.destination_country,
+    warehouse_country: rule.warehouse_country,
+    shipping_method: rule.shipping_method,
+    service_type: rule.service_type,
+
+    actual_weight_kg: displayWeight(weights.actual),
+    volumetric_weight_kg: displayWeight(weights.volumetric),
+    chargeable_weight_kg: displayWeight(chargeable),
+    volumetric_divisor: divisor,
+
+    included_weight_kg: includedWeight,
+    base_price: fromCents(baseCents),
+    additional_weight_kg: displayWeight(additionalWeight),
+    additional_rate_per_kg: fromCents(perKgCents),
+    additional_charge: fromCents(additionalCents),
+    minimum_charge_applied: minimumApplied,
+
+    shipping_cost: fromCents(shippingCents),
+    packaging_cost: fromCents(packagingCents),
+    handling_fee: fromCents(handlingCents),
+    customs_fee: fromCents(customsCents),
+    subtotal: fromCents(subtotalCents),
+    vat_percent: vatPercent,
+    vat: fromCents(vatCents),
+    insurance_percent: insurancePercent,
+    insurance: fromCents(insuranceCents),
+    declared_value: declaredValue,
+    discount: fromCents(discountCents),
+    total: fromCents(totalCents),
+
+    estimated_days_min: rule.estimated_days_min,
+    estimated_days_max: rule.estimated_days_max,
+    lines,
+    calculated_at: new Date().toISOString(),
+  };
+}
+
+/** Convenience: match then calculate. Throws PricingUnavailableError when no rule fits. */
+export function quoteFromRules(rules: PricingRuleRow[], input: QuoteInput): QuoteBreakdown {
+  const divisorGuess = DEFAULT_VOLUMETRIC_DIVISOR;
+  const probe = input.boxes && input.boxes.length
+    ? computeWeights(input.boxes, divisorGuess).chargeable
+    : roundWeight(num(input.weightKg));
+  const rule = selectRule(rules, input, probe);
+  if (!rule) throw new PricingUnavailableError();
+  return calculateQuote(rule, input);
+}
+
+/** Display-only money formatter. Never used to change an amount. */
+export function formatMoney(amount: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency || "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(Number(amount) || 0);
+  } catch {
+    return `${currency} ${(Number(amount) || 0).toFixed(2)}`;
+  }
+}
