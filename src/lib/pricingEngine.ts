@@ -174,8 +174,17 @@ export interface ShipmentTotals {
   chargeableWeight: number;
   declaredValue: number;
   packagingCost: number;
+  /** Flat/base portion of the shipping charge (covers the included weight). */
+  basePrice: number;
+  includedWeight: number;
+  additionalWeight: number;
+  additionalRatePerKg: number;
+  additionalCharge: number;
+  minimumChargeApplied: boolean;
   shippingCost: number;
   handlingFee: number;
+  customsFee: number;
+  subtotal: number;
   vat: number;
   vatPercent: number;
   insurance: number;
@@ -193,6 +202,10 @@ export interface ComputeShipmentArgs {
   declaredValue?: number;
 }
 
+/**
+ * Thin adapter over the ONE authoritative pricing core.
+ * No pricing maths lives here — see supabase/functions/_shared/pricing-core.ts
+ */
 export function computeShipmentTotals({
   packageDims,
   divisor = DEFAULT_VOLUMETRIC_DIVISOR,
@@ -202,23 +215,9 @@ export function computeShipmentTotals({
   declaredValue,
 }: ComputeShipmentArgs): ShipmentTotals {
   const actualWeight = round2(
-    items.reduce(
-      (sum, it) => {
-        const w = Number(it.weightKg) || 0;
-        // weightKg is ALWAYS the total weight for the line — never multiply by quantity.
-        return sum + w;
-      },
-      0,
-    ),
+    // weightKg is ALWAYS the total weight for the line — never multiply by quantity.
+    items.reduce((sum, it) => sum + (Number(it.weightKg) || 0), 0),
   );
-
-  const l = Number(packageDims.length_cm) || 0;
-  const w = Number(packageDims.width_cm) || 0;
-  const h = Number(packageDims.height_cm) || 0;
-  const safeDivisor = divisor > 0 ? divisor : DEFAULT_VOLUMETRIC_DIVISOR;
-  const volumetricWeight = l > 0 && w > 0 && h > 0 ? round2((l * w * h) / safeDivisor) : 0;
-
-  const chargeableWeight = round2(Math.max(actualWeight, volumetricWeight));
 
   const computedDeclared =
     declaredValue ??
@@ -227,15 +226,37 @@ export function computeShipmentTotals({
       0,
     );
 
+  const safeDivisor =
+    (rule?.volumetric_divisor && Number(rule.volumetric_divisor) > 0
+      ? Number(rule.volumetric_divisor)
+      : divisor) || DEFAULT_VOLUMETRIC_DIVISOR;
+
+  const box = {
+    length_cm: Number(packageDims.length_cm) || 0,
+    width_cm: Number(packageDims.width_cm) || 0,
+    height_cm: Number(packageDims.height_cm) || 0,
+    actual_weight_kg: actualWeight,
+    packaging_price: Number(packagePrice) || 0,
+  };
+
   if (!rule) {
+    const w = computeWeights([box], safeDivisor);
     return {
-      actualWeight,
-      volumetricWeight,
-      chargeableWeight,
+      actualWeight: w.actual,
+      volumetricWeight: w.volumetric,
+      chargeableWeight: w.chargeable,
       declaredValue: round2(computedDeclared),
       packagingCost: round2(packagePrice),
+      basePrice: 0,
+      includedWeight: 0,
+      additionalWeight: 0,
+      additionalRatePerKg: 0,
+      additionalCharge: 0,
+      minimumChargeApplied: false,
       shippingCost: 0,
       handlingFee: 0,
+      customsFee: 0,
+      subtotal: round2(packagePrice),
       vat: 0,
       vatPercent: 0,
       insurance: 0,
@@ -245,30 +266,62 @@ export function computeShipmentTotals({
     };
   }
 
-  const shippingCost =
-    chargeableWeight <= Number(rule.flat_weight_threshold_kg)
-      ? Number(rule.flat_price)
-      : chargeableWeight * Number(rule.price_per_kg);
+  const coreRule: PricingRuleRow = {
+    id: rule.id,
+    shipment_type: "import",
+    name: rule.country,
+    origin_country: rule.country,
+    warehouse_country: null,
+    destination_country: rule.country,
+    shipping_method: "air",
+    service_type: null,
+    pricing_model: (rule.pricing_model as PricingRuleRow["pricing_model"]) || "tiered",
+    min_weight_kg: null,
+    max_weight_kg: null,
+    flat_price: Number(rule.flat_price),
+    flat_weight_threshold_kg: Number(rule.flat_weight_threshold_kg),
+    price_per_kg: Number(rule.price_per_kg),
+    minimum_charge: Number(rule.minimum_charge ?? 0),
+    handling_fee: Number(rule.handling_fee),
+    customs_fee: Number(rule.customs_fee ?? 0),
+    vat_percent: Number(rule.vat_percent),
+    insurance_percent: Number(rule.insurance_percent),
+    volumetric_divisor: safeDivisor,
+    currency: rule.currency,
+    estimated_days_min: null,
+    estimated_days_max: null,
+    is_active: true,
+    priority: 0,
+  };
 
-  const handlingFee = Number(rule.handling_fee);
-  const subtotal = shippingCost + handlingFee + Number(packagePrice || 0);
-  const vat = (subtotal * Number(rule.vat_percent)) / 100;
-  const insurance = (Number(computedDeclared || 0) * Number(rule.insurance_percent)) / 100;
-  const total = subtotal + vat + insurance;
+  const q = calculateQuote(coreRule, {
+    direction: "import",
+    shippingMethod: "air",
+    boxes: [box],
+    declaredValue: Number(computedDeclared) || 0,
+  });
 
   return {
-    actualWeight,
-    volumetricWeight,
-    chargeableWeight,
+    actualWeight: q.actual_weight_kg,
+    volumetricWeight: q.volumetric_weight_kg,
+    chargeableWeight: q.chargeable_weight_kg,
     declaredValue: round2(computedDeclared),
-    packagingCost: round2(packagePrice),
-    shippingCost: round2(shippingCost),
-    handlingFee: round2(handlingFee),
-    vat: round2(vat),
-    vatPercent: Number(rule.vat_percent),
-    insurance: round2(insurance),
-    insurancePercent: Number(rule.insurance_percent),
-    total: round2(total),
-    currency: rule.currency,
+    packagingCost: q.packaging_cost,
+    basePrice: q.base_price,
+    includedWeight: q.included_weight_kg,
+    additionalWeight: q.additional_weight_kg,
+    additionalRatePerKg: q.additional_rate_per_kg,
+    additionalCharge: q.additional_charge,
+    minimumChargeApplied: q.minimum_charge_applied,
+    shippingCost: q.shipping_cost,
+    handlingFee: q.handling_fee,
+    customsFee: q.customs_fee,
+    subtotal: q.subtotal,
+    vat: q.vat,
+    vatPercent: q.vat_percent,
+    insurance: q.insurance,
+    insurancePercent: q.insurance_percent,
+    total: q.total,
+    currency: q.currency,
   };
 }
