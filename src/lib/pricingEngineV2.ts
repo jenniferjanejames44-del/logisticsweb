@@ -14,6 +14,9 @@ export interface PricingRuleV2 {
   service_type: string | null;
   min_weight_kg: number | null;
   max_weight_kg: number | null;
+  pricing_model?: string | null;
+  minimum_charge?: number | null;
+  volumetric_divisor?: number | null;
   flat_price: number;
   flat_weight_threshold_kg: number;
   price_per_kg: number;
@@ -101,7 +104,7 @@ export async function matchPricingRule(args: MatchArgs): Promise<PricingRuleV2 |
   return candidates[0];
 }
 
-/** Adapt the new rule to the legacy CountryPricingRule shape used by computeShipmentTotals. */
+/** Adapt the admin pricing rule to the shape used by computeShipmentTotals. */
 export function toLegacyRule(rule: PricingRuleV2): CountryPricingRule {
   return {
     id: rule.id,
@@ -110,8 +113,11 @@ export function toLegacyRule(rule: PricingRuleV2): CountryPricingRule {
     flat_price: Number(rule.flat_price),
     flat_weight_threshold_kg: Number(rule.flat_weight_threshold_kg),
     price_per_kg: Number(rule.price_per_kg),
-    // Roll customs into handling so existing breakdown displays full ops cost.
-    handling_fee: Number(rule.handling_fee) + Number(rule.customs_fee),
+    handling_fee: Number(rule.handling_fee),
+    customs_fee: Number(rule.customs_fee || 0),
+    pricing_model: (rule as any).pricing_model || "tiered",
+    minimum_charge: Number((rule as any).minimum_charge || 0),
+    volumetric_divisor: Number((rule as any).volumetric_divisor || 0) || null,
     vat_percent: Number(rule.vat_percent),
     insurance_percent: Number(rule.insurance_percent),
     is_active: rule.is_active,

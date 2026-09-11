@@ -1634,7 +1634,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                 {totals && pricingRule && (
                   <div className="mt-4 rounded-xl bg-white/10 backdrop-blur-sm p-4 space-y-1.5 text-xs">
                     <div className="flex justify-between text-white/90">
-                      <span>Shipping · {totals.chargeableWeight.toFixed(2)} kg</span>
+                      <span>
+                        Shipping · {totals.chargeableWeight.toFixed(2)} kg
+                        {totals.additionalWeight > 0 && (
+                          <span className="block text-[10px] text-white/60">
+                            First {totals.includedWeight} kg {formatPriceInCurrency(totals.basePrice, totals.currency)} + {totals.additionalWeight} kg × {formatPriceInCurrency(totals.additionalRatePerKg, totals.currency)}
+                          </span>
+                        )}
+                      </span>
                       <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.shippingCost, totals.currency)}</span>
                     </div>
                     {totals.packagingCost > 0 && (
@@ -1645,8 +1652,14 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     )}
                     {totals.handlingFee > 0 && (
                       <div className="flex justify-between text-white/90">
-                        <span>Handling &amp; Customs</span>
+                        <span>Handling</span>
                         <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.handlingFee, totals.currency)}</span>
+                      </div>
+                    )}
+                    {totals.customsFee > 0 && (
+                      <div className="flex justify-between text-white/90">
+                        <span>Customs clearance</span>
+                        <span className="font-semibold tabular-nums">{formatPriceInCurrency(totals.customsFee, totals.currency)}</span>
                       </div>
                     )}
                     {totals.vat > 0 && (
