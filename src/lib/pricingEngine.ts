@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { calculateQuote, computeWeights, type PricingRuleRow } from "@/lib/pricingCore";
 
 export interface CountryPricingRule {
   id: string;
@@ -11,6 +12,11 @@ export interface CountryPricingRule {
   vat_percent: number;
   insurance_percent: number;
   is_active: boolean;
+  /** Optional advanced fields carried over from the admin pricing engine. */
+  pricing_model?: string | null;
+  minimum_charge?: number | null;
+  customs_fee?: number | null;
+  volumetric_divisor?: number | null;
 }
 
 export interface PriceBreakdown {
