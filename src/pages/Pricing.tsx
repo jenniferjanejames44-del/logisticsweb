@@ -290,13 +290,28 @@ const Pricing = () => {
                           
                           <div className="space-y-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
                             <div className="flex justify-between text-muted-foreground">
-                              <span>Shipping ({totals.chargeableWeight} KG)</span>
+                              <span>
+                                Shipping ({totals.chargeableWeight} KG)
+                                {totals.additionalWeight > 0 && (
+                                  <span className="block text-xs opacity-70">
+                                    First {totals.includedWeight} KG {fmt(totals.basePrice)} + {totals.additionalWeight} KG × {fmt(totals.additionalRatePerKg)}
+                                  </span>
+                                )}
+                              </span>
                               <span>{fmt(totals.shippingCost)}</span>
                             </div>
-                            <div className="flex justify-between text-muted-foreground">
-                              <span>Handling &amp; Customs</span>
-                              <span>{fmt(totals.handlingFee)}</span>
-                            </div>
+                            {totals.handlingFee > 0 && (
+                              <div className="flex justify-between text-muted-foreground">
+                                <span>Handling</span>
+                                <span>{fmt(totals.handlingFee)}</span>
+                              </div>
+                            )}
+                            {totals.customsFee > 0 && (
+                              <div className="flex justify-between text-muted-foreground">
+                                <span>Customs clearance</span>
+                                <span>{fmt(totals.customsFee)}</span>
+                              </div>
+                            )}
                             {totals.vat > 0 && (
                               <div className="flex justify-between text-muted-foreground">
                                 <span>VAT ({totals.vatPercent}%)</span>

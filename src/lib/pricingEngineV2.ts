@@ -14,6 +14,9 @@ export interface PricingRuleV2 {
   service_type: string | null;
   min_weight_kg: number | null;
   max_weight_kg: number | null;
+  pricing_model?: string | null;
+  minimum_charge?: number | null;
+  volumetric_divisor?: number | null;
   flat_price: number;
   flat_weight_threshold_kg: number;
   price_per_kg: number;
