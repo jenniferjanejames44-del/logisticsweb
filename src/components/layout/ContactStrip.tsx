@@ -1,4 +1,4 @@
-import { Mail, Phone, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Mail, Phone, Facebook, Instagram, Twitter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const phones = [
@@ -11,7 +11,6 @@ const socials = [
   { name: "Facebook", href: "https://facebook.com/raclogistics", Icon: Facebook },
   { name: "Instagram", href: "https://instagram.com/raclogistics", Icon: Instagram },
   { name: "Twitter", href: "https://twitter.com/raclogistics", Icon: Twitter },
-  { name: "LinkedIn", href: "https://linkedin.com/company/raclogistics", Icon: Linkedin },
 ];
 
 interface ContactStripProps {
