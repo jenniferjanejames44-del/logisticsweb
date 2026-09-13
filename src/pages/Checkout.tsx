@@ -25,6 +25,7 @@ export interface QuoteData {
   handling_fee: number;
   insurance_fee: number;
   route_rate: number | null;
+  quote_request?: QuoteRequest;
 }
 
 type PaymentMethod = "paystack" | "bank_transfer";
