@@ -42,11 +42,37 @@ const Checkout = () => {
 
   useEffect(() => {
     const raw = localStorage.getItem("pricing_quote_data");
-    if (raw) {
-      try { setQuote(JSON.parse(raw)); } catch { navigate("/pricing"); }
-    } else {
-      navigate("/pricing");
-    }
+    if (!raw) { navigate("/pricing"); return; }
+
+    let parsed: QuoteData;
+    try { parsed = JSON.parse(raw); } catch { navigate("/pricing"); return; }
+    setQuote(parsed);
+
+    // Re-price server-side against the admin pricing rules so the amount
+    // charged can never drift from what the engine says.
+    if (!parsed.quote_request) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const { quote: fresh } = await fetchQuote(parsed.quote_request as QuoteRequest);
+        if (cancelled) return;
+        if (Math.abs(fresh.total - parsed.calculated_price) > 0.01) {
+          toast.info("Pricing was updated — your total has been refreshed.");
+        }
+        const updated: QuoteData = {
+          ...parsed,
+          calculated_price: fresh.total,
+          base_shipping_cost: fresh.shipping_cost,
+          handling_fee: fresh.handling_fee,
+          insurance_fee: fresh.insurance,
+        };
+        setQuote(updated);
+        localStorage.setItem("pricing_quote_data", JSON.stringify(updated));
+      } catch {
+        /* keep the stored quote if the engine is briefly unreachable */
+      }
+    })();
+    return () => { cancelled = true; };
   }, [navigate]);
 
   useEffect(() => {
