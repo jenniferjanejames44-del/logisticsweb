@@ -288,36 +288,36 @@ const Pricing = () => {
                           <div className="space-y-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
                             <div className="flex justify-between text-muted-foreground">
                               <span>
-                                Shipping ({totals.chargeableWeight} KG)
-                                {totals.additionalWeight > 0 && (
+                                Shipping ({totals.chargeable_weight_kg} KG)
+                                {totals.additional_weight_kg > 0 && (
                                   <span className="block text-xs opacity-70">
-                                    First {totals.includedWeight} KG {fmt(totals.basePrice)} + {totals.additionalWeight} KG × {fmt(totals.additionalRatePerKg)}
+                                    First {totals.included_weight_kg} KG {fmt(totals.base_price)} + {totals.additional_weight_kg} KG × {fmt(totals.additional_rate_per_kg)}
                                   </span>
                                 )}
                               </span>
-                              <span>{fmt(totals.shippingCost)}</span>
+                              <span>{fmt(totals.shipping_cost)}</span>
                             </div>
-                            {totals.handlingFee > 0 && (
+                            {totals.handling_fee > 0 && (
                               <div className="flex justify-between text-muted-foreground">
                                 <span>Handling</span>
-                                <span>{fmt(totals.handlingFee)}</span>
+                                <span>{fmt(totals.handling_fee)}</span>
                               </div>
                             )}
-                            {totals.customsFee > 0 && (
+                            {totals.customs_fee > 0 && (
                               <div className="flex justify-between text-muted-foreground">
                                 <span>Customs clearance</span>
-                                <span>{fmt(totals.customsFee)}</span>
+                                <span>{fmt(totals.customs_fee)}</span>
                               </div>
                             )}
                             {totals.vat > 0 && (
                               <div className="flex justify-between text-muted-foreground">
-                                <span>VAT ({totals.vatPercent}%)</span>
+                                <span>VAT ({totals.vat_percent}%)</span>
                                 <span>{fmt(totals.vat)}</span>
                               </div>
                             )}
                             {totals.insurance > 0 && (
                               <div className="flex justify-between text-muted-foreground">
-                                <span>Insurance ({totals.insurancePercent}%)</span>
+                                <span>Insurance ({totals.insurance_percent}%)</span>
                                 <span>{fmt(totals.insurance)}</span>
                               </div>
                             )}
