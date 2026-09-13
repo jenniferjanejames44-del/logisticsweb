@@ -11,6 +11,7 @@ import {
   ArrowLeft, Loader2, Shield, CreditCard, ChevronRight, Building2, MessageCircle, Lock, BadgeCheck,
 } from "lucide-react";
 import { toast } from "sonner";
+import { fetchQuote, type QuoteRequest } from "@/lib/quoteApi";
 
 export interface QuoteData {
   destination_country: string;
