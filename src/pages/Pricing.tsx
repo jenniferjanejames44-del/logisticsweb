@@ -12,8 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight, AlertCircle } from "lucide-react";
 import { getCountries } from "@/lib/locationData";
-import { computeShipmentTotals, formatPriceInCurrency, type ShipmentTotals } from "@/lib/pricingEngine";
-import { matchPricingRule, toLegacyRule } from "@/lib/pricingEngineV2";
+import { formatPriceInCurrency } from "@/lib/pricingEngine";
+import { fetchQuote } from "@/lib/quoteApi";
+import type { QuoteBreakdown } from "@/lib/pricingCore";
 
 const allCountries = getCountries();
 
