@@ -191,7 +191,20 @@ const Pricing = () => {
                 </CardHeader>
                 <CardContent className="space-y-5">
 	                    <div className="space-y-2">
-                    <Label htmlFor="country" className="font-medium text-sm">Destination Country</Label>
+                    <Label htmlFor="direction" className="font-medium text-sm">Shipping Direction</Label>
+                    <Select value={direction} onValueChange={(v) => setDirection(v as "import" | "export")}>
+                      <SelectTrigger id="direction" className="h-11 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="export">Export — from Nigeria</SelectItem>
+                        <SelectItem value="import">Import — into Nigeria</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+	                    <div className="space-y-2">
+                    <Label htmlFor="country" className="font-medium text-sm">
+                      {direction === "export" ? "Destination Country" : "Origin Country"}
+                    </Label>
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                       <SelectTrigger id="country" className="h-11 rounded-lg border-border bg-white"><SelectValue placeholder="Select destination country" /></SelectTrigger>
                       <SelectContent>
