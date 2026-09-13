@@ -12,8 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calculator, Plane, Ship, Package, Zap, Shield, Clock, CheckCircle, ArrowRight, AlertCircle } from "lucide-react";
 import { getCountries } from "@/lib/locationData";
-import { computeShipmentTotals, formatPriceInCurrency, type ShipmentTotals } from "@/lib/pricingEngine";
-import { matchPricingRule, toLegacyRule } from "@/lib/pricingEngineV2";
+import { formatPriceInCurrency } from "@/lib/pricingEngine";
+import { fetchQuote } from "@/lib/quoteApi";
+import type { QuoteBreakdown } from "@/lib/pricingCore";
 
 const allCountries = getCountries();
 
@@ -37,7 +38,8 @@ const Pricing = () => {
   const [weight, setWeight] = useState<string>("");
   const [declaredValue, setDeclaredValue] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
-  const [totals, setTotals] = useState<ShipmentTotals | null>(null);
+  const [direction, setDirection] = useState<"import" | "export">("export");
+  const [totals, setTotals] = useState<QuoteBreakdown | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
 
@@ -70,12 +72,17 @@ const Pricing = () => {
       delivery_estimate: service?.description || "",
       calculated_price: calculatedPrice,
       currency,
-      base_rate: totals && totals.chargeableWeight > 0 ? totals.shippingCost / totals.chargeableWeight : 0,
-      base_shipping_cost: totals?.shippingCost ?? 0,
-      handling_fee: totals?.handlingFee ?? 0,
+      base_rate:
+        totals && totals.chargeable_weight_kg > 0
+          ? totals.shipping_cost / totals.chargeable_weight_kg
+          : 0,
+      base_shipping_cost: totals?.shipping_cost ?? 0,
+      handling_fee: totals?.handling_fee ?? 0,
+      customs_fee: totals?.customs_fee ?? 0,
       vat: totals?.vat ?? 0,
       insurance_fee: totals?.insurance ?? 0,
-      declared_value: totals?.declaredValue ?? 0,
+      declared_value: totals?.declared_value ?? 0,
+      direction,
     };
     localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
 
@@ -106,34 +113,24 @@ const Pricing = () => {
 
     const timer = setTimeout(async () => {
       try {
-        const rule = await matchPricingRule({
-          shipmentType: "export",
-          originCountry: "Nigeria",
-          destinationCountry: country.name,
+        const { quote } = await fetchQuote({
+          direction,
+          originCountry: direction === "export" ? "Nigeria" : country.name,
+          destinationCountry: direction === "export" ? country.name : "Nigeria",
+          warehouseCountry: direction === "import" ? country.name : null,
           shippingMethod: service.method,
           serviceType: service.serviceType,
-          chargeableWeight: w,
-        });
-        if (cancelled) return;
-        if (!rule) {
-          setTotals(null);
-          setPricingError(
-            `We don't have a published ${service.name.toLowerCase()} rate to ${country.name} yet. Please contact us for a quote.`,
-          );
-          return;
-        }
-        const t = computeShipmentTotals({
-          packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
-          items: [{ quantity: 1, weightKg: w, declaredValue: 0 }],
-          packagePrice: 0,
-          rule: toLegacyRule(rule),
+          weightKg: w,
           declaredValue: parseFloat(declaredValue) || 0,
         });
-        setTotals(t);
-      } catch {
+        if (cancelled) return;
+        setTotals(quote);
+      } catch (e) {
         if (!cancelled) {
           setTotals(null);
-          setPricingError("Could not load pricing right now. Please try again.");
+          setPricingError(
+            (e as Error).message || "Could not load pricing right now. Please try again.",
+          );
         }
       } finally {
         if (!cancelled) setIsCalculating(false);
@@ -144,7 +141,7 @@ const Pricing = () => {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [selectedCountry, weight, declaredValue, selectedService]);
+  }, [selectedCountry, weight, declaredValue, selectedService, direction]);
 
 
   return (
@@ -194,7 +191,20 @@ const Pricing = () => {
                 </CardHeader>
                 <CardContent className="space-y-5">
 	                    <div className="space-y-2">
-                    <Label htmlFor="country" className="font-medium text-sm">Destination Country</Label>
+                    <Label htmlFor="direction" className="font-medium text-sm">Shipping Direction</Label>
+                    <Select value={direction} onValueChange={(v) => setDirection(v as "import" | "export")}>
+                      <SelectTrigger id="direction" className="h-11 rounded-lg border-border bg-white"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="export">Export — from Nigeria</SelectItem>
+                        <SelectItem value="import">Import — into Nigeria</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+	                    <div className="space-y-2">
+                    <Label htmlFor="country" className="font-medium text-sm">
+                      {direction === "export" ? "Destination Country" : "Origin Country"}
+                    </Label>
                     <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                       <SelectTrigger id="country" className="h-11 rounded-lg border-border bg-white"><SelectValue placeholder="Select destination country" /></SelectTrigger>
                       <SelectContent>
@@ -291,36 +301,36 @@ const Pricing = () => {
                           <div className="space-y-2 rounded-xl border border-border/70 bg-muted/[0.18] p-4 text-sm">
                             <div className="flex justify-between text-muted-foreground">
                               <span>
-                                Shipping ({totals.chargeableWeight} KG)
-                                {totals.additionalWeight > 0 && (
+                                Shipping ({totals.chargeable_weight_kg} KG)
+                                {totals.additional_weight_kg > 0 && (
                                   <span className="block text-xs opacity-70">
-                                    First {totals.includedWeight} KG {fmt(totals.basePrice)} + {totals.additionalWeight} KG × {fmt(totals.additionalRatePerKg)}
+                                    First {totals.included_weight_kg} KG {fmt(totals.base_price)} + {totals.additional_weight_kg} KG × {fmt(totals.additional_rate_per_kg)}
                                   </span>
                                 )}
                               </span>
-                              <span>{fmt(totals.shippingCost)}</span>
+                              <span>{fmt(totals.shipping_cost)}</span>
                             </div>
-                            {totals.handlingFee > 0 && (
+                            {totals.handling_fee > 0 && (
                               <div className="flex justify-between text-muted-foreground">
                                 <span>Handling</span>
-                                <span>{fmt(totals.handlingFee)}</span>
+                                <span>{fmt(totals.handling_fee)}</span>
                               </div>
                             )}
-                            {totals.customsFee > 0 && (
+                            {totals.customs_fee > 0 && (
                               <div className="flex justify-between text-muted-foreground">
                                 <span>Customs clearance</span>
-                                <span>{fmt(totals.customsFee)}</span>
+                                <span>{fmt(totals.customs_fee)}</span>
                               </div>
                             )}
                             {totals.vat > 0 && (
                               <div className="flex justify-between text-muted-foreground">
-                                <span>VAT ({totals.vatPercent}%)</span>
+                                <span>VAT ({totals.vat_percent}%)</span>
                                 <span>{fmt(totals.vat)}</span>
                               </div>
                             )}
                             {totals.insurance > 0 && (
                               <div className="flex justify-between text-muted-foreground">
-                                <span>Insurance ({totals.insurancePercent}%)</span>
+                                <span>Insurance ({totals.insurance_percent}%)</span>
                                 <span>{fmt(totals.insurance)}</span>
                               </div>
                             )}
