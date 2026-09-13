@@ -113,34 +113,24 @@ const Pricing = () => {
 
     const timer = setTimeout(async () => {
       try {
-        const rule = await matchPricingRule({
-          shipmentType: "export",
-          originCountry: "Nigeria",
-          destinationCountry: country.name,
+        const { quote } = await fetchQuote({
+          direction,
+          originCountry: direction === "export" ? "Nigeria" : country.name,
+          destinationCountry: direction === "export" ? country.name : "Nigeria",
+          warehouseCountry: direction === "import" ? country.name : null,
           shippingMethod: service.method,
           serviceType: service.serviceType,
-          chargeableWeight: w,
-        });
-        if (cancelled) return;
-        if (!rule) {
-          setTotals(null);
-          setPricingError(
-            `We don't have a published ${service.name.toLowerCase()} rate to ${country.name} yet. Please contact us for a quote.`,
-          );
-          return;
-        }
-        const t = computeShipmentTotals({
-          packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
-          items: [{ quantity: 1, weightKg: w, declaredValue: 0 }],
-          packagePrice: 0,
-          rule: toLegacyRule(rule),
+          weightKg: w,
           declaredValue: parseFloat(declaredValue) || 0,
         });
-        setTotals(t);
-      } catch {
+        if (cancelled) return;
+        setTotals(quote);
+      } catch (e) {
         if (!cancelled) {
           setTotals(null);
-          setPricingError("Could not load pricing right now. Please try again.");
+          setPricingError(
+            (e as Error).message || "Could not load pricing right now. Please try again.",
+          );
         }
       } finally {
         if (!cancelled) setIsCalculating(false);
@@ -151,7 +141,7 @@ const Pricing = () => {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [selectedCountry, weight, declaredValue, selectedService]);
+  }, [selectedCountry, weight, declaredValue, selectedService, direction]);
 
 
   return (
