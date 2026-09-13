@@ -38,7 +38,8 @@ const Pricing = () => {
   const [weight, setWeight] = useState<string>("");
   const [declaredValue, setDeclaredValue] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
-  const [totals, setTotals] = useState<ShipmentTotals | null>(null);
+  const [direction, setDirection] = useState<"import" | "export">("export");
+  const [totals, setTotals] = useState<QuoteBreakdown | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
 
