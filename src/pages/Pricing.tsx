@@ -83,6 +83,17 @@ const Pricing = () => {
       insurance_fee: totals?.insurance ?? 0,
       declared_value: totals?.declared_value ?? 0,
       direction,
+      // Everything the server needs to re-price this quote authoritatively.
+      quote_request: {
+        direction,
+        originCountry: direction === "export" ? "Nigeria" : country?.name || selectedCountry,
+        destinationCountry: direction === "export" ? country?.name || selectedCountry : "Nigeria",
+        warehouseCountry: direction === "import" ? country?.name || selectedCountry : null,
+        shippingMethod: service?.method,
+        serviceType: service?.serviceType,
+        weightKg: parseFloat(weight) || 0,
+        declaredValue: parseFloat(declaredValue) || 0,
+      },
     };
     localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
 

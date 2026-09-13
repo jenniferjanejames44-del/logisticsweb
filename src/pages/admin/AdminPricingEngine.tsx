@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import PricingTestCalculator from "@/components/admin/pricing/PricingTestCalculator";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -548,15 +550,18 @@ const AdminPricingEngine = () => {
         </div>
 
         <Tabs defaultValue="import" className="w-full">
-          <TabsList className="grid w-full max-w-xl grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="import"><PackageOpen className="w-4 h-4 mr-2" /> Import Pricing</TabsTrigger>
             <TabsTrigger value="export"><Send className="w-4 h-4 mr-2" /> Export Pricing</TabsTrigger>
             <TabsTrigger value="fx"><RefreshCw className="w-4 h-4 mr-2" /> Exchange Rates</TabsTrigger>
+            <TabsTrigger value="test">Test Calculator</TabsTrigger>
           </TabsList>
           <TabsContent value="import" className="mt-5"><RulesTab shipmentType="import" /></TabsContent>
           <TabsContent value="export" className="mt-5"><RulesTab shipmentType="export" /></TabsContent>
           <TabsContent value="fx" className="mt-5"><ExchangeRatesTab /></TabsContent>
+          <TabsContent value="test" className="mt-5"><PricingTestCalculator /></TabsContent>
         </Tabs>
+
       </div>
     </AdminLayout>
   );
