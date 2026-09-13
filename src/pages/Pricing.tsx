@@ -72,12 +72,17 @@ const Pricing = () => {
       delivery_estimate: service?.description || "",
       calculated_price: calculatedPrice,
       currency,
-      base_rate: totals && totals.chargeableWeight > 0 ? totals.shippingCost / totals.chargeableWeight : 0,
-      base_shipping_cost: totals?.shippingCost ?? 0,
-      handling_fee: totals?.handlingFee ?? 0,
+      base_rate:
+        totals && totals.chargeable_weight_kg > 0
+          ? totals.shipping_cost / totals.chargeable_weight_kg
+          : 0,
+      base_shipping_cost: totals?.shipping_cost ?? 0,
+      handling_fee: totals?.handling_fee ?? 0,
+      customs_fee: totals?.customs_fee ?? 0,
       vat: totals?.vat ?? 0,
       insurance_fee: totals?.insurance ?? 0,
-      declared_value: totals?.declaredValue ?? 0,
+      declared_value: totals?.declared_value ?? 0,
+      direction,
     };
     localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
 
