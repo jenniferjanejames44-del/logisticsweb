@@ -15,6 +15,7 @@ import { formatMoney } from "@/lib/pricingCore";
 const PricingTestCalculator = () => {
   const [direction, setDirection] = useState<"import" | "export">("import");
   const [country, setCountry] = useState("United States");
+  const [countryCode, setCountryCode] = useState("US");
   const [method, setMethod] = useState("air");
   const [serviceType, setServiceType] = useState("");
   const [weight, setWeight] = useState("3");
@@ -37,6 +38,7 @@ const PricingTestCalculator = () => {
         serviceType: serviceType || null,
         weightKg: parseFloat(weight) || 0,
         declaredValue: parseFloat(declaredValue) || 0,
+        countryCode: countryCode.trim().toUpperCase() || null,
       });
       setResult(res);
     } catch (e) {
@@ -45,6 +47,7 @@ const PricingTestCalculator = () => {
       setLoading(false);
     }
   };
+
 
   const q = result?.quote;
   const fmt = (n: number) => formatMoney(n, q?.currency || "USD");
