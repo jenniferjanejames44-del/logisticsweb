@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit2, PackageOpen, Send, RefreshCw } from "lucide-react";
+import { Plus, Edit2, PackageOpen, Send, RefreshCw, Globe2 } from "lucide-react";
 import { toast } from "sonner";
 import DeleteConfirmDialog from "@/components/ui/DeleteConfirmDialog";
 import type { PricingRuleV2, ShipmentType } from "@/lib/pricingEngineV2";
