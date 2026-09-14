@@ -35,6 +35,33 @@ export type Database = {
         }
         Relationships: []
       }
+      countries: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          iso_code: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          iso_code: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          iso_code?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       country_pricing_rules: {
         Row: {
           country: string
@@ -1153,6 +1180,8 @@ export type Database = {
           vat_percent: number
           volumetric_divisor: number
           warehouse_country: string | null
+          zone_id: string | null
+          zone_number: number | null
         }
         Insert: {
           created_at?: string
@@ -1186,6 +1215,8 @@ export type Database = {
           vat_percent?: number
           volumetric_divisor?: number
           warehouse_country?: string | null
+          zone_id?: string | null
+          zone_number?: number | null
         }
         Update: {
           created_at?: string
@@ -1219,8 +1250,18 @@ export type Database = {
           vat_percent?: number
           volumetric_divisor?: number
           warehouse_country?: string | null
+          zone_id?: string | null
+          zone_number?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "pricing_rules_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "shipping_zones"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       processing_fees: {
         Row: {
@@ -1696,6 +1737,75 @@ export type Database = {
         }
         Relationships: []
       }
+      shipping_zone_countries: {
+        Row: {
+          country_id: string
+          created_at: string
+          id: string
+          updated_at: string
+          zone_id: string
+        }
+        Insert: {
+          country_id: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          zone_id: string
+        }
+        Update: {
+          country_id?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          zone_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shipping_zone_countries_country_id_fkey"
+            columns: ["country_id"]
+            isOneToOne: true
+            referencedRelation: "countries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shipping_zone_countries_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "shipping_zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shipping_zones: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+          zone_number: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+          zone_number: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+          zone_number?: number
+        }
+        Relationships: []
+      }
       shopping_orders: {
         Row: {
           additional_notes: string | null
@@ -2027,6 +2137,18 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_zone_by_country: {
+        Args: { _iso_code: string }
+        Returns: {
+          country_active: boolean
+          country_name: string
+          iso_code: string
+          zone_active: boolean
+          zone_id: string
+          zone_name: string
+          zone_number: number
+        }[]
       }
       has_role: {
         Args: {
