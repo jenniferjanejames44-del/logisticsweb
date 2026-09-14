@@ -65,8 +65,21 @@ const CheckoutSummaryCard = ({ quote, formatUsd, formatNgn, exchangeRates }: Che
             label={`Base Rate · ${quote.weight} KG × ${formatUsd(quote.base_rate)}`}
             value={formatUsd(quote.base_shipping_cost)}
           />
-          <CostRow label="Handling Fee" value={formatUsd(quote.handling_fee)} />
-          <CostRow label="Insurance (2%)" value={formatUsd(quote.insurance_fee)} />
+          {quote.handling_fee > 0 && (
+            <CostRow label="Handling Fee" value={formatUsd(quote.handling_fee)} />
+          )}
+          {(quote.customs_fee ?? 0) > 0 && (
+            <CostRow label="Customs Clearance" value={formatUsd(quote.customs_fee as number)} />
+          )}
+          {(quote.vat ?? 0) > 0 && (
+            <CostRow label={`VAT (${quote.vat_percent ?? 0}%)`} value={formatUsd(quote.vat as number)} />
+          )}
+          {quote.insurance_fee > 0 && (
+            <CostRow
+              label={`Insurance (${quote.insurance_percent ?? 0}%)`}
+              value={formatUsd(quote.insurance_fee)}
+            />
+          )}
         </div>
         <div className="mt-4 flex items-center justify-between border-t border-dashed border-border/60 pt-4">
           <span className="text-sm font-semibold text-foreground">Total</span>
