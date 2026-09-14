@@ -86,7 +86,7 @@ describe("zone tariff — above 10 kg is TOTAL WEIGHT x rate", () => {
 
   it("is never the 10 kg price plus extra kilos", () => {
     expect(total(8, 12)).not.toBe(305 + 2 * 31);
-    expect(total(1, 20)).not.toBe(180 + 10 * 18);
+    expect(total(2, 11)).not.toBe(235 + 24);
   });
 
 });
