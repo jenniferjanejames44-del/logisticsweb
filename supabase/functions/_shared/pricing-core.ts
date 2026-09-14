@@ -590,7 +590,11 @@ export function calculateZoneQuote(
   const vatPercent = num(rate.vat_percent);
   const insurancePercent = num(rate.insurance_percent);
   const vatCents = Math.round((subtotalCents * vatPercent) / 100);
-  const insuranceCents = Math.round((toCents(declaredValue) * insurancePercent) / 100);
+  // Insurance is charged on the declared value of the goods; when the customer
+  // has not declared a value we fall back to the shipment subtotal so the
+  // configured insurance percentage is always applied.
+  const insuranceBaseCents = toCents(declaredValue) > 0 ? toCents(declaredValue) : subtotalCents;
+  const insuranceCents = Math.round((insuranceBaseCents * insurancePercent) / 100);
   const discountCents = Math.max(0, toCents(input.discount));
   const totalCents = Math.max(0, subtotalCents + vatCents + insuranceCents - discountCents);
 
