@@ -120,10 +120,10 @@ Deno.serve(async (req) => {
 
     if (!isAdmin) {
       const { rule_id: _id, rule_name: _name, ...publicQuote } = quote;
-      return json({ quote: publicQuote });
+      return json({ quote: publicQuote, zone });
     }
 
-    return json({ quote, debug: { matched_rule: rule, candidates: rules.length } });
+    return json({ quote, zone, debug: { matched_rule: rule, candidates: rules.length } });
   } catch (e) {
     const err = e as Error;
     console.error("calculate-quote error:", err.message);
