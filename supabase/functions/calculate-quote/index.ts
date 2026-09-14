@@ -78,6 +78,32 @@ Deno.serve(async (req) => {
 
     const quote = calculateQuote(rule, input);
 
+    // Resolve the applicable shipping zone from the database (single source of
+    // truth). IMPORT -> foreign ORIGIN country. EXPORT -> foreign DESTINATION.
+    // Informational only for now; no price is derived from it yet.
+    let zone: Record<string, unknown> | null = null;
+    const zoneCode = typeof body.countryCode === "string" ? body.countryCode : null;
+    const zoneName = direction === "import" ? input.originCountry : input.destinationCountry;
+    try {
+      if (zoneCode) {
+        const { data: z } = await supabase.rpc("get_zone_by_country", { _iso_code: zoneCode });
+        zone = Array.isArray(z) ? z[0] ?? null : z ?? null;
+      } else if (zoneName) {
+        const { data: c } = await supabase
+          .from("countries")
+          .select("iso_code")
+          .ilike("name", zoneName)
+          .maybeSingle();
+        if (c?.iso_code) {
+          const { data: z } = await supabase.rpc("get_zone_by_country", { _iso_code: c.iso_code });
+          zone = Array.isArray(z) ? z[0] ?? null : z ?? null;
+        }
+      }
+    } catch (_) {
+      zone = null;
+    }
+
+
     // Admin callers get the rule identity for debugging; customers do not.
     let isAdmin = false;
     const authHeader = req.headers.get("Authorization");
@@ -94,10 +120,10 @@ Deno.serve(async (req) => {
 
     if (!isAdmin) {
       const { rule_id: _id, rule_name: _name, ...publicQuote } = quote;
-      return json({ quote: publicQuote });
+      return json({ quote: publicQuote, zone });
     }
 
-    return json({ quote, debug: { matched_rule: rule, candidates: rules.length } });
+    return json({ quote, zone, debug: { matched_rule: rule, candidates: rules.length } });
   } catch (e) {
     const err = e as Error;
     console.error("calculate-quote error:", err.message);

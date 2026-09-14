@@ -24,6 +24,7 @@ import {
   Settings,
   ChevronRight,
   Handshake,
+  Globe2,
   Mail,
   FileSignature,
 } from "lucide-react";
@@ -58,6 +59,7 @@ const navSections: NavSection[] = [
     label: "Logistics",
     items: [
       { name: "Shipping Routes", href: "/admin/shipping-routes", icon: Route },
+      { name: "Shipping Zones", href: "/admin/shipping-zones", icon: Globe2 },
       { name: "Warehouses", href: "/admin/warehouses", icon: Warehouse },
       { name: "Packaging", href: "/admin/packaging", icon: Package },
     ],
