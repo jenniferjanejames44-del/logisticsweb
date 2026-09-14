@@ -85,9 +85,10 @@ describe("zone tariff — above 10 kg is TOTAL WEIGHT x rate", () => {
   it("Zone 3: 15 kg = 375", () => expect(total(3, 15)).toBe(375));
 
   it("is never the 10 kg price plus extra kilos", () => {
-    expect(total(7, 11)).not.toBe(250 + 25);
-    expect(total(1, 11)).not.toBe(180 + 18);
+    expect(total(8, 12)).not.toBe(305 + 2 * 31);
+    expect(total(1, 20)).not.toBe(180 + 10 * 18);
   });
+
 });
 
 describe("decimal weights", () => {
