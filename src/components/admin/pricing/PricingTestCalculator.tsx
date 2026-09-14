@@ -111,10 +111,17 @@ const PricingTestCalculator = () => {
 
         {q && (
           <div className="space-y-3 rounded-lg border border-border bg-muted/30 p-4 text-sm">
+            <div className="flex justify-between text-muted-foreground">
+              <span>Zone</span>
+              <span className="font-medium text-foreground">
+                {result?.zone ? `Zone ${result.zone.zone_number} — ${result.zone.zone_name}` : "No zone assigned"}
+              </span>
+            </div>
             <div className="flex justify-between font-semibold text-foreground">
               <span>Total</span>
               <span>{fmt(q.total)} {q.currency}</span>
             </div>
+
             {q.lines.map((l) => (
               <div key={l.key} className="flex justify-between text-muted-foreground">
                 <span>{l.label}</span>
