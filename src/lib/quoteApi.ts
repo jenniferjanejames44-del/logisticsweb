@@ -27,7 +27,7 @@ export interface QuoteResult {
     iso_code: string;
     country_name: string;
   } | null;
-  debug?: { matched_rule: unknown; candidates: number };
+  debug?: { source?: string; matched_rule: unknown; candidates: number };
 }
 
 export class QuoteError extends Error {}

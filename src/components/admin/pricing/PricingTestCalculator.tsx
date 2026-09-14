@@ -15,6 +15,7 @@ import { formatMoney } from "@/lib/pricingCore";
 const PricingTestCalculator = () => {
   const [direction, setDirection] = useState<"import" | "export">("import");
   const [country, setCountry] = useState("United States");
+  const [countryCode, setCountryCode] = useState("US");
   const [method, setMethod] = useState("air");
   const [serviceType, setServiceType] = useState("");
   const [weight, setWeight] = useState("3");
@@ -37,6 +38,7 @@ const PricingTestCalculator = () => {
         serviceType: serviceType || null,
         weightKg: parseFloat(weight) || 0,
         declaredValue: parseFloat(declaredValue) || 0,
+        countryCode: countryCode.trim().toUpperCase() || null,
       });
       setResult(res);
     } catch (e) {
@@ -45,6 +47,7 @@ const PricingTestCalculator = () => {
       setLoading(false);
     }
   };
+
 
   const q = result?.quote;
   const fmt = (n: number) => formatMoney(n, q?.currency || "USD");
@@ -72,6 +75,11 @@ const PricingTestCalculator = () => {
             <Label>{direction === "import" ? "Origin / Warehouse country" : "Destination country"}</Label>
             <Input value={country} onChange={(e) => setCountry(e.target.value)} />
           </div>
+          <div className="space-y-2">
+            <Label>Country code (ISO)</Label>
+            <Input value={countryCode} onChange={(e) => setCountryCode(e.target.value)} placeholder="US" />
+          </div>
+
           <div className="space-y-2">
             <Label>Shipping method</Label>
             <Select value={method} onValueChange={setMethod}>
@@ -103,10 +111,17 @@ const PricingTestCalculator = () => {
 
         {q && (
           <div className="space-y-3 rounded-lg border border-border bg-muted/30 p-4 text-sm">
+            <div className="flex justify-between text-muted-foreground">
+              <span>Zone</span>
+              <span className="font-medium text-foreground">
+                {result?.zone ? `Zone ${result.zone.zone_number} — ${result.zone.zone_name}` : "No zone assigned"}
+              </span>
+            </div>
             <div className="flex justify-between font-semibold text-foreground">
               <span>Total</span>
               <span>{fmt(q.total)} {q.currency}</span>
             </div>
+
             {q.lines.map((l) => (
               <div key={l.key} className="flex justify-between text-muted-foreground">
                 <span>{l.label}</span>

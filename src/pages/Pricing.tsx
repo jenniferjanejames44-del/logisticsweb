@@ -93,6 +93,8 @@ const Pricing = () => {
         serviceType: service?.serviceType,
         weightKg: parseFloat(weight) || 0,
         declaredValue: parseFloat(declaredValue) || 0,
+        countryCode: selectedCountry,
+
       },
     };
     localStorage.setItem("pricing_quote_data", JSON.stringify(quoteData));
@@ -133,6 +135,8 @@ const Pricing = () => {
           serviceType: service.serviceType,
           weightKg: w,
           declaredValue: parseFloat(declaredValue) || 0,
+          countryCode: country.isoCode,
+
         });
         if (cancelled) return;
         setTotals(quote);

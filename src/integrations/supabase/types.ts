@@ -2118,6 +2118,116 @@ export type Database = {
         }
         Relationships: []
       }
+      zone_pricing_rates: {
+        Row: {
+          above_10_rate_per_kg: number
+          created_at: string
+          created_by: string | null
+          currency: string
+          customs_fee: number
+          direction: string
+          estimated_days_max: number | null
+          estimated_days_min: number | null
+          handling_fee: number
+          id: string
+          insurance_percent: number
+          is_active: boolean
+          notes: string | null
+          price_0_2: number
+          price_10: number
+          price_3: number
+          price_4: number
+          price_5: number
+          price_6: number
+          price_7: number
+          price_8: number
+          price_9: number
+          priority: number
+          service_type: string | null
+          shipping_method: string
+          updated_at: string
+          vat_percent: number
+          volumetric_divisor: number
+          weight_rounding: string
+          zone_id: string
+          zone_number: number
+        }
+        Insert: {
+          above_10_rate_per_kg?: number
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customs_fee?: number
+          direction: string
+          estimated_days_max?: number | null
+          estimated_days_min?: number | null
+          handling_fee?: number
+          id?: string
+          insurance_percent?: number
+          is_active?: boolean
+          notes?: string | null
+          price_0_2?: number
+          price_10?: number
+          price_3?: number
+          price_4?: number
+          price_5?: number
+          price_6?: number
+          price_7?: number
+          price_8?: number
+          price_9?: number
+          priority?: number
+          service_type?: string | null
+          shipping_method?: string
+          updated_at?: string
+          vat_percent?: number
+          volumetric_divisor?: number
+          weight_rounding?: string
+          zone_id: string
+          zone_number: number
+        }
+        Update: {
+          above_10_rate_per_kg?: number
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          customs_fee?: number
+          direction?: string
+          estimated_days_max?: number | null
+          estimated_days_min?: number | null
+          handling_fee?: number
+          id?: string
+          insurance_percent?: number
+          is_active?: boolean
+          notes?: string | null
+          price_0_2?: number
+          price_10?: number
+          price_3?: number
+          price_4?: number
+          price_5?: number
+          price_6?: number
+          price_7?: number
+          price_8?: number
+          price_9?: number
+          priority?: number
+          service_type?: string | null
+          shipping_method?: string
+          updated_at?: string
+          vat_percent?: number
+          volumetric_divisor?: number
+          weight_rounding?: string
+          zone_id?: string
+          zone_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "zone_pricing_rates_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "shipping_zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       user_balances: {
