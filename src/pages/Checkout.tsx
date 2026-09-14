@@ -24,6 +24,10 @@ export interface QuoteData {
   base_rate: number;
   base_shipping_cost: number;
   handling_fee: number;
+  customs_fee?: number;
+  vat?: number;
+  vat_percent?: number;
+  insurance_percent?: number;
   insurance_fee: number;
   route_rate: number | null;
   quote_request?: QuoteRequest;
@@ -64,6 +68,10 @@ const Checkout = () => {
           calculated_price: fresh.total,
           base_shipping_cost: fresh.shipping_cost,
           handling_fee: fresh.handling_fee,
+          customs_fee: fresh.customs_fee,
+          vat: fresh.vat,
+          vat_percent: fresh.vat_percent,
+          insurance_percent: fresh.insurance_percent,
           insurance_fee: fresh.insurance,
         };
         setQuote(updated);
