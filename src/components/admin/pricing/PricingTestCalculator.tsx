@@ -76,6 +76,11 @@ const PricingTestCalculator = () => {
             <Input value={country} onChange={(e) => setCountry(e.target.value)} />
           </div>
           <div className="space-y-2">
+            <Label>Country code (ISO)</Label>
+            <Input value={countryCode} onChange={(e) => setCountryCode(e.target.value)} placeholder="US" />
+          </div>
+
+          <div className="space-y-2">
             <Label>Shipping method</Label>
             <Select value={method} onValueChange={setMethod}>
               <SelectTrigger><SelectValue /></SelectTrigger>
