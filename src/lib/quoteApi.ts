@@ -12,10 +12,21 @@ export interface QuoteRequest {
   weightKg?: number | null;
   declaredValue?: number | null;
   discount?: number | null;
+  /** Optional ISO code of the foreign country, used for zone resolution. */
+  countryCode?: string | null;
 }
 
 export interface QuoteResult {
   quote: QuoteBreakdown;
+  /** Shipping zone resolved server-side from the database (never hardcoded). */
+  zone?: {
+    zone_id: string;
+    zone_number: number;
+    zone_name: string;
+    zone_active: boolean;
+    iso_code: string;
+    country_name: string;
+  } | null;
   debug?: { matched_rule: unknown; candidates: number };
 }
 
