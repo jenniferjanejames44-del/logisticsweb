@@ -34,6 +34,41 @@ function getRetryAfterSeconds(error: unknown): number {
   return 60
 }
 
+async function getOrCreateUnsubscribeToken(
+  supabase: ReturnType<typeof createClient>,
+  email: unknown
+): Promise<string | undefined> {
+  if (typeof email !== 'string' || !email.trim()) return undefined
+  const normalizedEmail = email.trim().toLowerCase()
+
+  const { data: existing } = await supabase
+    .from('email_unsubscribe_tokens')
+    .select('token')
+    .eq('email', normalizedEmail)
+    .maybeSingle()
+  if (existing?.token) return existing.token
+
+  const token = crypto.randomUUID()
+  const { data: created, error } = await supabase
+    .from('email_unsubscribe_tokens')
+    .upsert({ email: normalizedEmail, token }, { onConflict: 'email', ignoreDuplicates: true })
+    .select('token')
+    .maybeSingle()
+  if (created?.token) return created.token
+
+  if (error) {
+    const { data: raced } = await supabase
+      .from('email_unsubscribe_tokens')
+      .select('token')
+      .eq('email', normalizedEmail)
+      .maybeSingle()
+    if (raced?.token) return raced.token
+    throw error
+  }
+
+  return token
+}
+
 function parseJwtClaims(token: string): Record<string, unknown> | null {
   const parts = token.split('.')
   if (parts.length < 2) {
@@ -250,6 +285,17 @@ Deno.serve(async (req) => {
       }
 
       try {
+        const unsubscribeToken = payload.unsubscribe_token || (
+          queue === 'transactional_emails'
+            ? await getOrCreateUnsubscribeToken(supabase, payload.to)
+            : undefined
+        )
+        // A failed Email API run permanently consumes its idempotency key.
+        // Give each real retry a fresh key while retaining message_id for log deduplication.
+        const idempotencyKey = failedAttempts > 0
+          ? `${String(payload.idempotency_key || payload.message_id)}-retry-${failedAttempts}`
+          : payload.idempotency_key
+
         await sendLovableEmail(
           {
             run_id: payload.run_id,
@@ -261,8 +307,8 @@ Deno.serve(async (req) => {
             text: payload.text,
             purpose: payload.purpose,
             label: payload.label,
-            idempotency_key: payload.idempotency_key,
-            unsubscribe_token: payload.unsubscribe_token,
+            idempotency_key: idempotencyKey,
+            unsubscribe_token: unsubscribeToken,
             message_id: payload.message_id,
           },
           // sendUrl is optional — when LOVABLE_SEND_URL is not set, the library
