@@ -280,7 +280,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
             <div>
               <Label className="mb-1.5 block text-xs font-medium">Message</Label>
               <RichEditor value={bodyHtml} onChange={setBodyHtml} />
-              <div className="mt-3 flex flex-wrap gap-2"><span className="text-xs text-muted-foreground">Personalize:</span>{["{{contact_name}}", "{{company_name}}", "{{country}}"].map(token => <button type="button" key={token} onClick={() => setBodyHtml(v => `${v}<span>${token}</span>`)} className="rounded border border-border bg-secondary px-2 py-0.5 font-mono text-[11px] text-foreground">{token}</button>)}</div>
+              <div className="mt-3 flex flex-wrap items-center gap-2"><span className="text-xs text-muted-foreground">Personalize:</span>{["{{contact_name}}", "{{company_name}}", "{{country}}"].map(token => <Button type="button" variant="outline" size="sm" key={token} onClick={() => setBodyHtml(v => `${v}<span>${token}</span>`)} className="h-7 px-2 font-mono text-[11px]">{token}</Button>)}</div>
             </div>
 
             <div>
