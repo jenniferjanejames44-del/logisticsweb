@@ -4,4 +4,4 @@
 - [x] Upgrade built-in templates and template gallery
 - [x] Refine composer, review, send, history, and delivery presentation
 - [x] Deploy the updated email sender
-- [ ] Verify logo and clickable footer icons in delivered output
+- [x] Verify logo and clickable footer icons in delivered output
