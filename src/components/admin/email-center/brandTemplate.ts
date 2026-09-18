@@ -23,17 +23,17 @@ function esc(s: string) {
 
 export function renderBrandedEmail(bodyHtml: string, s: CompanySettings, subject = "A message from RAC Logistics"): string {
   const socials = [
-    s.facebook_url && { url: s.facebook_url, label: "Facebook", icon: "https://cdn-icons-png.flaticon.com/24/1077/1077041.png" },
-    s.instagram_url && { url: s.instagram_url, label: "Instagram", icon: "https://cdn-icons-png.flaticon.com/24/1384/1384063.png" },
-    s.linkedin_url && { url: s.linkedin_url, label: "LinkedIn", icon: "https://cdn-icons-png.flaticon.com/24/1384/1384014.png" },
-    s.twitter_url && { url: s.twitter_url, label: "X", icon: "https://cdn-icons-png.flaticon.com/24/5968/5968958.png" },
-    s.youtube_url && { url: s.youtube_url, label: "YouTube", icon: "https://cdn-icons-png.flaticon.com/24/1384/1384060.png" },
-    s.tiktok_url && { url: s.tiktok_url, label: "TikTok", icon: "https://cdn-icons-png.flaticon.com/24/3046/3046120.png" },
-    s.whatsapp_url && { url: s.whatsapp_url, label: "WhatsApp", icon: "https://cdn-icons-png.flaticon.com/24/733/733585.png" },
-  ].filter(Boolean) as { url: string; label: string; icon: string }[];
+    s.facebook_url && { url: s.facebook_url, label: "Facebook" },
+    s.instagram_url && { url: s.instagram_url, label: "Instagram" },
+    s.linkedin_url && { url: s.linkedin_url, label: "LinkedIn" },
+    s.twitter_url && { url: s.twitter_url, label: "X" },
+    s.youtube_url && { url: s.youtube_url, label: "YouTube" },
+    s.tiktok_url && { url: s.tiktok_url, label: "TikTok" },
+    s.whatsapp_url && { url: s.whatsapp_url, label: "WhatsApp" },
+  ].filter(Boolean) as { url: string; label: string }[];
 
   const socialHtml = socials.length
-    ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:18px auto 0;"><tr>${socials.map(x => `<td style="padding:0 4px;"><a href="${esc(x.url)}" style="display:inline-block;border:1px solid #dfe3eb;border-radius:999px;padding:6px 10px;color:#4b5563;font-size:10px;font-weight:700;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;">${x.label}</a></td>`).join("")}</tr></table>`
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:18px auto 0;"><tr>${socials.map(x => `<td style="padding:0 4px;"><a href="${esc(x.url)}" style="display:inline-block;border:1px solid #dfe3eb;border-radius:999px;padding:6px 10px;color:#4b5563;font-size:10px;font-weight:700;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;">${esc(x.label)}</a></td>`).join("")}</tr></table>`
     : "";
 
   return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="x-apple-disable-message-reformatting"/><title>${esc(subject)}</title><style>@media only screen and (max-width:620px){.email-shell{width:100%!important}.email-pad{padding-left:24px!important;padding-right:24px!important}.brand-tagline{display:none!important}.service-cell{display:block!important;width:100%!important;border:0!important;border-top:1px solid #e8eaf0!important;padding:12px 0!important}}</style></head>
