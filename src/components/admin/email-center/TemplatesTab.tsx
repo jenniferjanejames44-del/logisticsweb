@@ -70,7 +70,7 @@ export default function TemplatesTab({ templates, settings, onChange, onUseTempl
             </div>
             <div>
               <Label className="text-xs">Preview</Label>
-              <BrandedPreview html={renderBrandedEmail(editing?.body_html || "", settings)} height={520}/>
+              <BrandedPreview html={renderBrandedEmail(editing?.body_html || "", settings, editing?.subject || "Template preview")} height={520}/>
             </div>
           </div>
           <DialogFooter><Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button><Button onClick={save}>Save template</Button></DialogFooter>
