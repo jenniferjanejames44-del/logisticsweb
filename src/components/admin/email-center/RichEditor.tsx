@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import { Bold, Italic, Underline, List, ListOrdered, Link as LinkIcon, Image as ImageIcon, Heading1, Heading2, Undo, Redo, Type, AlignLeft, AlignCenter, AlignRight } from "lucide-react";
+import { Bold, Italic, Underline, List, ListOrdered, Link as LinkIcon, Image as ImageIcon, Heading1, Heading2, Undo, Redo, Type, AlignLeft, AlignCenter, AlignRight, MousePointerClick, Table2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Props { value: string; onChange: (v: string) => void; onInsertButton?: () => void; }
 
@@ -27,7 +28,7 @@ export default function RichEditor({ value, onChange }: Props) {
     const label = prompt("Button text", "Learn more");
     if (!label) return;
     const url = prompt("Button URL", "https://") || "#";
-    const html = `<div style="text-align:center;margin:20px 0;"><a href="${url}" style="display:inline-block;background:#DF5101;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;">${label}</a></div>`;
+    const html = `<div style="margin:28px 0;"><a href="${url}" style="display:inline-block;background:#DF5101;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:700;font-size:14px;">${label}</a></div>`;
     exec("insertHTML", html);
   };
   const insertTable = () => {
@@ -44,14 +45,14 @@ export default function RichEditor({ value, onChange }: Props) {
   };
 
   const Btn = ({ onClick, title, children }: any) => (
-    <button type="button" onClick={onClick} title={title} className="h-8 w-8 inline-flex items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground transition">
+    <Button type="button" variant="ghost" size="icon" onClick={onClick} title={title} aria-label={title} className="h-8 w-8 text-muted-foreground hover:text-foreground">
       {children}
-    </button>
+    </Button>
   );
 
   return (
-    <div className="border border-border/60 rounded-lg overflow-hidden bg-white">
-      <div className="flex flex-wrap items-center gap-0.5 border-b border-border/50 bg-muted/30 px-2 py-1.5">
+    <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm">
+      <div className="flex flex-wrap items-center gap-0.5 border-b border-border bg-secondary px-2 py-2">
         <Btn title="Undo" onClick={() => exec("undo")}><Undo className="w-4 h-4"/></Btn>
         <Btn title="Redo" onClick={() => exec("redo")}><Redo className="w-4 h-4"/></Btn>
         <div className="w-px h-5 bg-border mx-1"/>
@@ -72,14 +73,14 @@ export default function RichEditor({ value, onChange }: Props) {
         <div className="w-px h-5 bg-border mx-1"/>
         <Btn title="Link" onClick={insertLink}><LinkIcon className="w-4 h-4"/></Btn>
         <Btn title="Image" onClick={insertImage}><ImageIcon className="w-4 h-4"/></Btn>
-        <button type="button" onClick={insertButton} className="h-8 px-2 text-xs font-semibold rounded hover:bg-muted text-muted-foreground hover:text-foreground">Button</button>
-        <button type="button" onClick={insertTable} className="h-8 px-2 text-xs font-semibold rounded hover:bg-muted text-muted-foreground hover:text-foreground">Table</button>
+        <Button type="button" variant="ghost" size="sm" onClick={insertButton} className="h-8 gap-1.5 px-2 text-xs text-muted-foreground"><MousePointerClick className="h-3.5 w-3.5"/>CTA</Button>
+        <Button type="button" variant="ghost" size="sm" onClick={insertTable} className="h-8 gap-1.5 px-2 text-xs text-muted-foreground"><Table2 className="h-3.5 w-3.5"/>Table</Button>
       </div>
       <div
         ref={ref}
         contentEditable
         onInput={(e) => onChange((e.target as HTMLDivElement).innerHTML)}
-        className="min-h-[280px] max-h-[520px] overflow-y-auto p-4 text-[15px] leading-relaxed focus:outline-none prose prose-sm max-w-none"
+        className="prose prose-sm min-h-[360px] max-w-none overflow-y-auto p-6 text-[15px] leading-relaxed focus:outline-none"
         style={{ wordBreak: "break-word" }}
       />
     </div>

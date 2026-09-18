@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<string, string> = {
 
 function Stat({ icon: Icon, label, value, tone }: { icon: any; label: string; value: number; tone: string }) {
   return (
-    <Card className="p-5">
+    <Card className="border-border p-5 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
@@ -128,7 +128,7 @@ export default function DeliveryTab({ messages, onChange }: Props) {
         </Card>
       )}
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden border-border shadow-sm">
         <div className="flex flex-wrap items-center gap-3 border-b border-border/50 p-4">
           <div className="inline-flex rounded-lg border border-border/60 p-1">
             {["all", "sent", "pending", "failed"].map(s => (

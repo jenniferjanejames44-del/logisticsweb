@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Message, deleteMessage, unscheduleMessage } from "@/lib/emailCenter";
-import { Edit3, Trash2, Send as SendIcon, Loader2, Calendar, RotateCcw } from "lucide-react";
+import { Edit3, Trash2, Send as SendIcon, Loader2, Calendar, RotateCcw, MailOpen } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 
@@ -18,10 +18,11 @@ const STATUS: Record<string, string> = {
 
 export default function MessagesTab({ messages, mode, onEdit, onChange }: Props) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden border-border shadow-sm">
+      <div className="flex items-center justify-between border-b border-border bg-secondary px-5 py-4"><div><p className="text-sm font-semibold">{mode === "drafts" ? "Work in progress" : "Sent campaigns"}</p><p className="text-xs text-muted-foreground">{messages.length} message{messages.length === 1 ? "" : "s"}</p></div><MailOpen className="h-5 w-5 text-accent"/></div>
       <div className="divide-y divide-border/40">
         {messages.map(m => (
-          <div key={m.id} className="p-4 flex items-start justify-between gap-3 hover:bg-muted/30 transition">
+          <div key={m.id} className="flex items-start justify-between gap-3 p-5 transition hover:bg-muted/30">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap mb-1">
                 <p className="font-medium text-sm truncate">{m.subject || "(no subject)"}</p>

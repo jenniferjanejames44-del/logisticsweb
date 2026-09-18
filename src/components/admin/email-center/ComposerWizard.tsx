@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "sonner";
 import {
   Send, Save, Paperclip, X, Loader2, Calendar, TestTube, Smartphone, Monitor,
-  ArrowLeft, ArrowRight, Check, FileText, PenLine, Users, Eye, Rocket, Search,
+  ArrowLeft, ArrowRight, Check, FileText, PenLine, Users, Eye, Rocket, Search, Sparkles, ShieldCheck, Clock3,
 } from "lucide-react";
 import RichEditor from "./RichEditor";
 import BrandedPreview from "./BrandedPreview";
@@ -91,8 +91,8 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
   }, [contacts, contactQuery]);
 
   const previewHtml = useMemo(
-    () => renderBrandedEmail(bodyHtml || "<p style='color:#9ca3af;'>Your message will appear here…</p>", settings),
-    [bodyHtml, settings]
+    () => renderBrandedEmail(bodyHtml || "<p style='color:#9ca3af;'>Your message will appear here…</p>", settings, subject),
+    [bodyHtml, settings, subject]
   );
 
   const goto = (n: number) => { setStep(n); topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); };
@@ -199,13 +199,13 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
   return (
     <div ref={topRef} className="space-y-6">
       {/* Stepper */}
-      <Card className="p-1.5">
+      <Card className="overflow-hidden border-border p-1.5 shadow-sm">
         <div className="flex items-center gap-1 overflow-x-auto">
           {STEPS.map((s, i) => {
             const active = step === s.n, done = step > s.n;
             return (
               <button key={s.n} onClick={() => (done || s.n < step) && goto(s.n)}
-                className={`flex min-w-fit flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition
+                className={`flex min-w-fit flex-1 items-center justify-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition
                   ${active ? "bg-primary text-primary-foreground" : done ? "text-foreground hover:bg-muted" : "text-muted-foreground"}`}>
                 <span className={`grid h-5 w-5 place-items-center rounded-full text-[11px] font-semibold
                   ${active ? "bg-primary-foreground/20" : done ? "bg-emerald-100 text-emerald-700" : "bg-muted"}`}>
@@ -222,23 +222,23 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
       {/* Step 1 — Template */}
       {step === 1 && (
         <div className="space-y-6">
-          <div>
-            <h3 className="text-base font-semibold">Choose a starting point</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Professional layouts written for real business correspondence.</p>
+          <div className="flex flex-wrap items-end justify-between gap-3 border-b border-border pb-5">
+            <div><div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-accent"><Sparkles className="h-4 w-4"/>Premium designs</div><h3 className="text-xl font-semibold">Choose your campaign style</h3><p className="mt-1 text-sm text-muted-foreground">Customer-ready layouts built for professional logistics communication.</p></div>
+            <Badge variant="outline" className="gap-1.5"><ShieldCheck className="h-3.5 w-3.5"/>Inbox ready</Badge>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {PRO_TEMPLATES.map(t => (
               <button key={t.key} onClick={() => chooseBuiltIn(t.key)}
-                className="group rounded-xl border border-border/60 bg-white p-5 text-left transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
-                <div className="mb-3 grid h-10 w-10 place-items-center rounded-lg bg-primary/5 text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
-                  <FileText className="h-4.5 w-4.5" />
+                className="group overflow-hidden rounded-md border border-border bg-card text-left transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md">
+                <div className="relative flex h-28 items-end overflow-hidden bg-primary p-4 text-primary-foreground">
+                  <div className="absolute right-4 top-4 grid h-9 w-9 place-items-center rounded-full bg-primary-foreground/10"><FileText className="h-4 w-4" /></div>
+                  <div><span className="text-[10px] font-bold uppercase tracking-wider text-accent">{t.category}</span><p className="mt-1 max-w-[220px] text-base font-semibold leading-tight text-primary-foreground">{t.eyebrow}</p></div>
                 </div>
-                <p className="font-semibold">{t.name}</p>
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t.description}</p>
+                <div className="p-5"><p className="font-semibold">{t.name}</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t.description}</p><span className="mt-4 inline-flex items-center text-xs font-semibold text-accent">Use template <ArrowRight className="ml-1 h-3.5 w-3.5"/></span></div>
               </button>
             ))}
             <button onClick={startBlank}
-              className="rounded-xl border-2 border-dashed border-border/60 p-5 text-left transition hover:border-primary/40 hover:bg-muted/30">
+              className="rounded-md border-2 border-dashed border-border p-5 text-left transition hover:border-primary/40 hover:bg-muted/30">
               <div className="mb-3 grid h-10 w-10 place-items-center rounded-lg bg-muted text-muted-foreground"><PenLine className="h-4.5 w-4.5" /></div>
               <p className="font-semibold">Blank email</p>
               <p className="mt-1 text-sm text-muted-foreground">Start from an empty branded shell.</p>
@@ -263,8 +263,9 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
       {/* Step 2 — Write */}
       {step === 2 && (
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_440px]">
           <Card className="space-y-5 p-6">
+            <div className="flex items-center justify-between border-b border-border pb-4"><div><h3 className="text-base font-semibold">Build your email</h3><p className="mt-1 text-sm text-muted-foreground">Write once, then review the exact customer experience.</p></div><Badge variant="secondary">Autosaved manually</Badge></div>
             <div className="grid gap-4 sm:grid-cols-[1fr_200px]">
               <div>
                 <Label className="text-xs font-medium">Subject line</Label>
@@ -279,10 +280,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
             <div>
               <Label className="mb-1.5 block text-xs font-medium">Message</Label>
               <RichEditor value={bodyHtml} onChange={setBodyHtml} />
-              <p className="mt-2 text-[11px] text-muted-foreground">
-                Tip: <code className="rounded bg-muted px-1">{"{{contact_name}}"}</code> and{" "}
-                <code className="rounded bg-muted px-1">{"{{company_name}}"}</code> are replaced with each recipient's details.
-              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-2"><span className="text-xs text-muted-foreground">Personalize:</span>{["{{contact_name}}", "{{company_name}}", "{{country}}"].map(token => <Button type="button" variant="outline" size="sm" key={token} onClick={() => setBodyHtml(v => `${v}<span>${token}</span>`)} className="h-7 px-2 font-mono text-[11px]">{token}</Button>)}</div>
             </div>
 
             <div>
@@ -317,9 +315,9 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
           </Card>
 
           <div className="h-fit lg:sticky lg:top-4">
-            <Card className="p-3">
-              <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Live preview</p>
-              <BrandedPreview html={previewHtml} height={520} />
+            <Card className="overflow-hidden border-border p-3 shadow-sm">
+              <div className="mb-3 flex items-center justify-between px-1"><div><p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Customer preview</p><p className="mt-0.5 max-w-[280px] truncate text-xs text-foreground">{subject || "Add a subject line"}</p></div><Badge variant="outline">Live</Badge></div>
+              <BrandedPreview html={previewHtml} height={610} />
             </Card>
           </div>
         </div>
@@ -400,13 +398,15 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
       {/* Step 5 — Send */}
       {step === 5 && (
-        <Card className="mx-auto max-w-xl p-8 text-center">
+          <Card className="mx-auto max-w-2xl overflow-hidden border-border p-0 text-center shadow-md">
+           <div className="h-1.5 bg-accent" />
+           <div className="p-8 sm:p-10">
           <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/5 text-primary"><Rocket className="h-6 w-6" /></div>
           <h3 className="text-lg font-semibold">Ready to send</h3>
           <p className="mt-1 text-sm text-muted-foreground">
             “{subject || "(no subject)"}” will be delivered to <strong>{recipients.length}</strong> recipient{recipients.length === 1 ? "" : "s"}.
           </p>
-          <div className="mt-6 space-y-2 rounded-xl border border-border/50 bg-muted/20 p-4 text-left text-sm">
+          <div className="mt-6 space-y-3 rounded-md border border-border bg-secondary p-5 text-left text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">From</span><span className="font-medium">{fromName}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Recipients</span><span className="font-medium">{recipients.length}</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Attachments</span><span className="font-medium">{attachments.length}</span></div>
@@ -417,7 +417,8 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
             </Button>
             <Button variant="outline" size="lg" onClick={() => setShowSchedule(true)}><Calendar className="mr-2 h-4 w-4" />Schedule</Button>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground">Delivery status is tracked in the Delivery tab.</p>
+           <div className="mt-5 flex items-center justify-center gap-5 text-xs text-muted-foreground"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5"/>Branded</span><span className="inline-flex items-center gap-1.5"><Clock3 className="h-3.5 w-3.5"/>Tracked delivery</span></div>
+           </div>
         </Card>
       )}
 

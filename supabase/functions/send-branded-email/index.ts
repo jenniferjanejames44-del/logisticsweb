@@ -43,7 +43,7 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-function wrapBranded(bodyHtml: string, settings: any, attachmentsHtml: string): string {
+function wrapBranded(bodyHtml: string, settings: any, attachmentsHtml: string, subject: string): string {
   const {
     company_name, slogan, logo_url, website, address, phone, support_email,
     primary_color, accent_color,
@@ -51,43 +51,30 @@ function wrapBranded(bodyHtml: string, settings: any, attachmentsHtml: string): 
   } = settings;
 
   const social = [
-    facebook_url && { label: 'Facebook', url: facebook_url, icon: 'https://cdn-icons-png.flaticon.com/24/1077/1077041.png' },
-    instagram_url && { label: 'Instagram', url: instagram_url, icon: 'https://cdn-icons-png.flaticon.com/24/1384/1384063.png' },
-    linkedin_url && { label: 'LinkedIn', url: linkedin_url, icon: 'https://cdn-icons-png.flaticon.com/24/1384/1384014.png' },
-    twitter_url && { label: 'X', url: twitter_url, icon: 'https://cdn-icons-png.flaticon.com/24/5968/5968958.png' },
-    youtube_url && { label: 'YouTube', url: youtube_url, icon: 'https://cdn-icons-png.flaticon.com/24/1384/1384060.png' },
-    tiktok_url && { label: 'TikTok', url: tiktok_url, icon: 'https://cdn-icons-png.flaticon.com/24/3046/3046120.png' },
-    whatsapp_url && { label: 'WhatsApp', url: whatsapp_url, icon: 'https://cdn-icons-png.flaticon.com/24/733/733585.png' },
-  ].filter(Boolean) as { label: string; url: string; icon: string }[];
+    facebook_url && { label: 'Facebook', url: facebook_url },
+    instagram_url && { label: 'Instagram', url: instagram_url },
+    linkedin_url && { label: 'LinkedIn', url: linkedin_url },
+    twitter_url && { label: 'X', url: twitter_url },
+    youtube_url && { label: 'YouTube', url: youtube_url },
+    tiktok_url && { label: 'TikTok', url: tiktok_url },
+    whatsapp_url && { label: 'WhatsApp', url: whatsapp_url },
+  ].filter(Boolean) as { label: string; url: string }[];
 
   const socialHtml = social.length
-    ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:12px auto 0;"><tr>${social.map(s => `<td style="padding:0 6px;"><a href="${s.url}" style="text-decoration:none;"><img src="${s.icon}" alt="${s.label}" width="22" height="22" style="display:block;border:0;"/></a></td>`).join('')}</tr></table>`
+    ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:18px auto 0;"><tr>${social.map(s => `<td style="padding:0 4px;"><a href="${escapeHtml(s.url)}" style="display:inline-block;border:1px solid #dfe3eb;border-radius:999px;padding:6px 10px;color:#4b5563;font-size:10px;font-weight:700;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;">${escapeHtml(s.label)}</a></td>`).join('')}</tr></table>`
     : '';
 
-  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>${escapeHtml(company_name)}</title></head>
-<body style="margin:0;padding:0;background:#f1f3f8;font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1f2937;-webkit-font-smoothing:antialiased;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f3f8;padding:32px 12px;"><tr><td align="center">
-  <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="max-width:640px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e6e9f0;">
-    <tr><td style="background:${primary_color};padding:22px 34px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td align="left"><img src="${logo_url}" alt="${escapeHtml(company_name)}" height="36" style="display:block;height:36px;width:auto;"/></td>
-        <td align="right" style="font-size:11.5px;color:#cdd2e6;letter-spacing:.05em;text-transform:uppercase;">${escapeHtml(slogan)}</td>
-      </tr></table>
-    </td></tr>
-    <tr><td style="padding:38px 42px;font-size:15.5px;line-height:1.75;color:#1f2937;">${bodyHtml}${attachmentsHtml}</td></tr>
-    <tr><td style="background:#fafbfc;border-top:1px solid #eef0f3;padding:24px 40px;text-align:center;">
-      <div style="font-size:14px;font-weight:700;color:${primary_color};margin-bottom:3px;">${escapeHtml(company_name)}</div>
-      <div style="font-size:11.5px;color:#6b7280;margin-bottom:8px;">${escapeHtml(slogan)}</div>
-      <div style="font-size:12px;color:#6b7280;line-height:1.65;">
-        ${escapeHtml(address)}<br/>
-        ${escapeHtml(phone)} &middot; <a href="mailto:${escapeHtml(support_email)}" style="color:${accent_color};text-decoration:none;">${escapeHtml(support_email)}</a><br/>
-        <a href="${escapeHtml(website)}" style="color:${accent_color};text-decoration:none;">${escapeHtml(String(website || '').replace(/^https?:\/\//, ''))}</a>
-      </div>
-      ${socialHtml}
-      <div style="margin-top:14px;font-size:11px;color:#9ca3af;">&copy; ${new Date().getFullYear()} ${escapeHtml(company_name)}. All rights reserved.</div>
-    </td></tr>
-  </table>
-</td></tr></table></body></html>`;
+  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="x-apple-disable-message-reformatting"/><title>${escapeHtml(subject)}</title><style>@media only screen and (max-width:620px){.email-shell{width:100%!important}.email-pad{padding-left:24px!important;padding-right:24px!important}.brand-tagline{display:none!important}.service-cell{display:block!important;width:100%!important;border:0!important;border-top:1px solid #e8eaf0!important;padding:12px 0!important}}</style></head>
+<body style="margin:0;padding:0;background:#f3f5f9;font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1f2937;-webkit-font-smoothing:antialiased;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${escapeHtml(subject)} — ${escapeHtml(slogan)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5f9;padding:30px 12px;"><tr><td align="center"><table role="presentation" width="640" cellpadding="0" cellspacing="0" class="email-shell" style="max-width:640px;width:100%;">
+<tr><td style="padding:0 4px 10px;font-size:11px;color:#778093;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="left" style="font-weight:700;letter-spacing:.08em;text-transform:uppercase;">RAC Logistics Dispatch</td><td align="right">Trusted global freight</td></tr></table></td></tr>
+<tr><td style="background:#ffffff;border:1px solid #e4e7ed;border-radius:14px;overflow:hidden;box-shadow:0 18px 48px rgba(6,16,67,.10);"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background:${primary_color};padding:26px 38px;border-bottom:4px solid ${accent_color};"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="left"><img src="${escapeHtml(logo_url)}" alt="${escapeHtml(company_name)}" height="40" style="height:40px;width:auto;max-width:190px;display:block;border:0;"/></td><td align="right" class="brand-tagline" style="font-size:11px;color:#d8dceb;letter-spacing:.06em;text-transform:uppercase;">${escapeHtml(slogan)}</td></tr></table></td></tr>
+<tr><td class="email-pad" style="padding:46px 48px 38px;font-size:15.5px;line-height:1.75;color:#283142;">${bodyHtml}${attachmentsHtml}</td></tr>
+<tr><td class="email-pad" style="padding:0 48px 34px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e8eaf0;border-bottom:1px solid #e8eaf0;"><tr><td class="service-cell" align="center" width="33.33%" style="padding:16px 8px;"><div style="font-size:12px;font-weight:800;color:${primary_color};">AIR FREIGHT</div><div style="margin-top:3px;font-size:10px;color:#778093;">Fast global delivery</div></td><td class="service-cell" align="center" width="33.33%" style="padding:16px 8px;border-left:1px solid #e8eaf0;border-right:1px solid #e8eaf0;"><div style="font-size:12px;font-weight:800;color:${primary_color};">SEA FREIGHT</div><div style="margin-top:3px;font-size:10px;color:#778093;">Reliable bulk shipping</div></td><td class="service-cell" align="center" width="33.33%" style="padding:16px 8px;"><div style="font-size:12px;font-weight:800;color:${primary_color};">PROCUREMENT</div><div style="margin-top:3px;font-size:10px;color:#778093;">Sourcing made simple</div></td></tr></table></td></tr>
+<tr><td style="background:#fafbfc;border-top:1px solid #eceef3;padding:28px 38px;text-align:center;"><div style="font-size:14px;font-weight:800;color:${primary_color};">${escapeHtml(company_name)}</div><div style="margin:4px 0 12px;font-size:11.5px;color:#778093;">${escapeHtml(slogan)}</div><div style="font-size:11.5px;color:#687184;line-height:1.75;">${escapeHtml(address)}<br/>${escapeHtml(phone)} &nbsp;&middot;&nbsp; <a href="mailto:${escapeHtml(support_email)}" style="color:${accent_color};text-decoration:none;font-weight:600;">${escapeHtml(support_email)}</a><br/><a href="${escapeHtml(website)}" style="color:${accent_color};text-decoration:none;font-weight:600;">${escapeHtml(String(website || '').replace(/^https?:\/\//, ''))}</a></div>${socialHtml}<div style="margin-top:16px;font-size:10.5px;color:#9aa1af;line-height:1.5;">&copy; ${new Date().getFullYear()} ${escapeHtml(company_name)}. All rights reserved.<br/>This message was sent by RAC Logistics.</div></td></tr>
+</table></td></tr><tr><td align="center" style="padding:16px 12px 0;font-size:10px;color:#9aa1af;">Securely delivered by RAC Logistics</td></tr></table></td></tr></table></body></html>`;
 }
 
 function mergeVars(html: string, vars: Record<string, string>): string {
@@ -190,7 +177,7 @@ Deno.serve(async (req) => {
       };
       const bodyPersonalized = mergeVars(payload.bodyHtml, vars);
       const subjectPersonalized = mergeVars(payload.subject, vars);
-      const html = wrapBranded(bodyPersonalized, settings, attachmentsHtml);
+      const html = wrapBranded(bodyPersonalized, settings, attachmentsHtml, subjectPersonalized);
       // Unique per attempt — reusing a key after a failed run returns 409 run_failed.
       const attemptTag = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
       const messageId = `ec-${batchId}-${recipient.replace(/[^a-z0-9]/gi, '')}-${attemptTag}`.slice(0, 120);
