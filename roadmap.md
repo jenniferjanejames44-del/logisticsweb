@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Create one premium branded email shell for preview and delivery
-- [ ] Upgrade built-in templates and template gallery
-- [ ] Refine composer, review, send, history, and delivery presentation
-- [ ] Deploy the updated email sender
-- [ ] Verify desktop/mobile Email Center and delivered output
+- [x] Create one premium branded email shell for preview and delivery
+- [x] Upgrade built-in templates and template gallery
+- [x] Refine composer, review, send, history, and delivery presentation
+- [x] Deploy the updated email sender
+- [ ] Verify logo and clickable footer icons in delivered output
