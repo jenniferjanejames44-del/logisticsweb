@@ -52,9 +52,9 @@ export default function AdminEmailCenter() {
   }
 
   return (
-    <AdminLayout title="Email Center" description="Send professional proposals and business emails, then track every delivery.">
+    <AdminLayout title="Email Center" description="Create polished, on-brand customer communications and track every delivery.">
       <Tabs value={tab} onValueChange={setTab} className="w-full">
-        <TabsList className="mb-6 h-auto flex-wrap border border-border/50 bg-white">
+        <TabsList className="mb-6 h-auto flex-wrap border border-border bg-card p-1 shadow-sm">
           <TabsTrigger value="compose"><PenSquare className="mr-2 h-4 w-4" />Compose</TabsTrigger>
           <TabsTrigger value="delivery"><Activity className="mr-2 h-4 w-4" />Delivery</TabsTrigger>
           <TabsTrigger value="drafts"><Mail className="mr-2 h-4 w-4" />Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>

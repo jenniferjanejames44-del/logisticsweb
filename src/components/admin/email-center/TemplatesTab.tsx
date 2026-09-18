@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
-import { Plus, Copy, Trash2, Edit3, Send } from "lucide-react";
+import { Plus, Copy, Trash2, Edit3, Send, LayoutTemplate } from "lucide-react";
 import RichEditor from "./RichEditor";
 import { Template, saveTemplate, deleteTemplate, duplicateTemplate, Settings } from "@/lib/emailCenter";
 import BrandedPreview from "./BrandedPreview";
@@ -29,13 +29,15 @@ export default function TemplatesTab({ templates, settings, onChange, onUseTempl
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-end">
-        <Button onClick={() => setEditing({ name: "", subject: "", body_html: "<p></p>", category: "general" })} className="bg-[#DF5101] hover:bg-[#c04600]"><Plus className="w-4 h-4 mr-2"/>New template</Button>
+    <div className="space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+        <div><h3 className="text-base font-semibold">Saved templates</h3><p className="mt-1 text-sm text-muted-foreground">Reusable branded messages for your team.</p></div>
+        <Button onClick={() => setEditing({ name: "", subject: "", body_html: "<p></p>", category: "general" })}><Plus className="mr-2 h-4 w-4"/>New template</Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates.map(t => (
-          <Card key={t.id} className="p-4 flex flex-col gap-3 hover:shadow-md transition">
+          <Card key={t.id} className="group flex min-h-[210px] flex-col gap-4 overflow-hidden border-border p-5 transition hover:-translate-y-0.5 hover:shadow-md">
+            <div className="flex h-20 items-center justify-center rounded-md border border-border bg-secondary text-primary"><LayoutTemplate className="h-7 w-7" /></div>
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <div className="font-semibold text-sm truncate">{t.name}</div>
@@ -43,7 +45,7 @@ export default function TemplatesTab({ templates, settings, onChange, onUseTempl
               </div>
               {t.is_system && <Badge variant="secondary" className="text-[10px] shrink-0">System</Badge>}
             </div>
-            <div className="text-xs text-muted-foreground line-clamp-3" dangerouslySetInnerHTML={{ __html: t.body_html }}/>
+            <div className="line-clamp-2 text-xs text-muted-foreground" dangerouslySetInnerHTML={{ __html: t.body_html }}/>
             <div className="flex gap-1 pt-2 border-t border-border/40 mt-auto">
               <Button size="sm" variant="outline" onClick={() => onUseTemplate(t)}><Send className="w-3.5 h-3.5 mr-1.5"/>Use</Button>
               <Button size="sm" variant="ghost" onClick={() => setEditing(t)}><Edit3 className="w-3.5 h-3.5"/></Button>
@@ -71,7 +73,7 @@ export default function TemplatesTab({ templates, settings, onChange, onUseTempl
               <BrandedPreview html={renderBrandedEmail(editing?.body_html || "", settings)} height={520}/>
             </div>
           </div>
-          <DialogFooter><Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button><Button onClick={save} className="bg-[#DF5101] hover:bg-[#c04600]">Save</Button></DialogFooter>
+          <DialogFooter><Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button><Button onClick={save}>Save template</Button></DialogFooter>
         </DialogContent>
       </Dialog>
 
