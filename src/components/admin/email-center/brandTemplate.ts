@@ -48,7 +48,7 @@ export function renderBrandedEmail(bodyHtml: string, s: CompanySettings, subject
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td class="email-header" style="background:${s.primary_color};padding:24px 38px;border-bottom:3px solid ${s.accent_color};">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-             <td align="left"><img class="email-logo" src="${esc(s.logo_url)}" alt="RAC Logistics" width="128" style="display:block;width:128px;max-width:100%;height:auto;border:0;outline:0;color:#ffffff;font-size:14px;font-weight:800;filter:brightness(0) invert(1);"/></td>
+             <td align="left"><img class="email-logo" src="${esc(s.logo_url)}" alt="RAC Logistics" width="128" style="display:block;width:128px;max-width:100%;height:auto;border:0;outline:0;background:transparent;color:#ffffff;font-size:14px;font-weight:800;"/></td>
             <td align="right" class="brand-tagline" style="font-size:11px;color:#d8dceb;letter-spacing:.06em;text-transform:uppercase;">${esc(s.slogan)}</td>
           </tr></table>
         </td></tr>
