@@ -5,3 +5,4 @@
 - [x] Refine composer, review, send, history, and delivery presentation
 - [x] Deploy the updated email sender
 - [x] Verify logo and clickable footer icons in delivered output
+- [x] Simplify email actions and keep one website button near the mobile-friendly footer

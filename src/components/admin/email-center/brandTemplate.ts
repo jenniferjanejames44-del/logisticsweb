@@ -36,23 +36,23 @@ export function renderBrandedEmail(bodyHtml: string, s: CompanySettings, subject
     ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:18px auto 0;"><tr>${socials.map(x => `<td style="padding:0 5px;"><a href="${esc(x.url)}" target="_blank" aria-label="${esc(x.label)}" style="display:block;text-decoration:none;"><img src="${esc(x.icon)}" alt="${esc(x.label)}" width="28" height="28" style="display:block;width:28px;height:28px;border:0;outline:0;"/></a></td>`).join("")}</tr></table>`
     : "";
 
-  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="x-apple-disable-message-reformatting"/><title>${esc(subject)}</title><style>@media only screen and (max-width:620px){.email-shell{width:100%!important}.email-pad{padding-left:24px!important;padding-right:24px!important}.brand-tagline{display:none!important}.service-cell{display:block!important;width:100%!important;border:0!important;border-top:1px solid #e8eaf0!important;padding:12px 0!important}}</style></head>
+  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="x-apple-disable-message-reformatting"/><title>${esc(subject)}</title><style>@media only screen and (max-width:620px){.email-outer{padding:0!important}.email-shell{width:100%!important}.email-card{border-left:0!important;border-right:0!important;border-radius:0!important}.email-header{padding:20px!important}.email-logo{width:152px!important}.email-pad{padding-left:22px!important;padding-right:22px!important}.brand-tagline,.dispatch-note{display:none!important}.service-cell{display:block!important;width:100%!important;border:0!important;border-top:1px solid #e8eaf0!important;padding:12px 0!important}.email-footer{padding:26px 22px!important}}</style></head>
 <body style="margin:0;padding:0;background:#f3f5f9;font-family:'DM Sans','Helvetica Neue',Arial,sans-serif;color:#1f2937;-webkit-font-smoothing:antialiased;">
 <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${esc(subject)} — ${esc(s.slogan)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f5f9;padding:30px 12px;"><tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="email-outer" style="background:#f3f5f9;padding:30px 12px;"><tr><td align="center">
   <table role="presentation" width="640" cellpadding="0" cellspacing="0" class="email-shell" style="max-width:640px;width:100%;">
-    <tr><td style="padding:0 4px 10px;font-size:11px;color:#778093;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="left" style="font-weight:700;letter-spacing:.08em;text-transform:uppercase;">RAC Logistics Dispatch</td><td align="right">Trusted global freight</td></tr></table>
+    <tr class="dispatch-note"><td style="padding:0 4px 10px;font-size:11px;color:#778093;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="left" style="font-weight:700;letter-spacing:.08em;text-transform:uppercase;">RAC Logistics</td><td align="right">Trusted global freight</td></tr></table>
     </td></tr>
-    <tr><td style="background:#ffffff;border:1px solid #e4e7ed;border-radius:14px;overflow:hidden;box-shadow:0 18px 48px rgba(6,16,67,.10);">
+    <tr><td class="email-card" style="background:#ffffff;border:1px solid #e4e7ed;border-radius:10px;overflow:hidden;box-shadow:0 12px 36px rgba(6,16,67,.08);">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="background:${s.primary_color};padding:26px 38px;border-bottom:4px solid ${s.accent_color};">
+        <tr><td class="email-header" style="background:${s.primary_color};padding:24px 38px;border-bottom:3px solid ${s.accent_color};">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td align="left"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#ffffff;border-radius:6px;padding:7px 11px;"><img src="${esc(s.logo_url)}" alt="RAC Logistics" width="178" style="display:block;width:178px;max-width:100%;height:auto;border:0;outline:0;color:${s.primary_color};font-size:16px;font-weight:800;"/></td></tr></table></td>
+             <td align="left"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#ffffff;border-radius:5px;padding:7px 10px;"><img class="email-logo" src="${esc(s.logo_url)}" alt="RAC Logistics" width="170" style="display:block;width:170px;max-width:100%;height:auto;border:0;outline:0;color:${s.primary_color};font-size:16px;font-weight:800;"/></td></tr></table></td>
             <td align="right" class="brand-tagline" style="font-size:11px;color:#d8dceb;letter-spacing:.06em;text-transform:uppercase;">${esc(s.slogan)}</td>
           </tr></table>
         </td></tr>
-        <tr><td class="email-pad" style="padding:46px 48px 38px;font-size:15.5px;line-height:1.75;color:#283142;">${bodyHtml}</td></tr>
+        <tr><td class="email-pad" style="padding:42px 48px 34px;font-size:15.5px;line-height:1.75;color:#283142;">${bodyHtml}</td></tr>
         <tr><td class="email-pad" style="padding:0 48px 34px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e8eaf0;border-bottom:1px solid #e8eaf0;">
             <tr>
@@ -62,7 +62,8 @@ export function renderBrandedEmail(bodyHtml: string, s: CompanySettings, subject
             </tr>
           </table>
         </td></tr>
-        <tr><td style="background:#fafbfc;border-top:1px solid #eceef3;padding:28px 38px;text-align:center;">
+        <tr><td class="email-footer" style="background:#fafbfc;border-top:1px solid #eceef3;padding:28px 38px;text-align:center;">
+          <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 22px;"><tr><td style="background:${s.accent_color};border-radius:5px;"><a href="${esc(s.website)}" target="_blank" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-size:13px;font-weight:800;">Visit our website</a></td></tr></table>
           <div style="font-size:14px;font-weight:800;color:${s.primary_color};">${esc(s.company_name)}</div>
           <div style="margin:4px 0 12px;font-size:11.5px;color:#778093;">${esc(s.slogan)}</div>
           <div style="font-size:11.5px;color:#687184;line-height:1.75;">${esc(s.address)}<br/>${esc(s.phone)} &nbsp;&middot;&nbsp; <a href="mailto:${esc(s.support_email)}" style="color:${s.accent_color};text-decoration:none;font-weight:600;">${esc(s.support_email)}</a><br/><a href="${esc(s.website)}" style="color:${s.accent_color};text-decoration:none;font-weight:600;">${esc(s.website.replace(/^https?:\/\//, ""))}</a></div>
