@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Bold, Italic, Underline, List, ListOrdered, Link as LinkIcon, Image as ImageIcon, Heading1, Heading2, Undo, Redo, Type, AlignLeft, AlignCenter, AlignRight, MousePointerClick, Table2 } from "lucide-react";
+import { Bold, Italic, Underline, List, ListOrdered, Link as LinkIcon, Image as ImageIcon, Heading1, Heading2, Undo, Redo, Type, AlignLeft, AlignCenter, AlignRight, Table2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Props { value: string; onChange: (v: string) => void; onInsertButton?: () => void; }
@@ -23,13 +23,6 @@ export default function RichEditor({ value, onChange }: Props) {
   const insertImage = () => {
     const url = prompt("Image URL", "https://");
     if (url) exec("insertImage", url);
-  };
-  const insertButton = () => {
-    const label = prompt("Button text", "Learn more");
-    if (!label) return;
-    const url = prompt("Button URL", "https://") || "#";
-    const html = `<div style="margin:28px 0;"><a href="${url}" style="display:inline-block;background:#DF5101;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:700;font-size:14px;">${label}</a></div>`;
-    exec("insertHTML", html);
   };
   const insertTable = () => {
     const rows = parseInt(prompt("Rows", "2") || "2", 10);
@@ -73,7 +66,6 @@ export default function RichEditor({ value, onChange }: Props) {
         <div className="w-px h-5 bg-border mx-1"/>
         <Btn title="Link" onClick={insertLink}><LinkIcon className="w-4 h-4"/></Btn>
         <Btn title="Image" onClick={insertImage}><ImageIcon className="w-4 h-4"/></Btn>
-        <Button type="button" variant="ghost" size="sm" onClick={insertButton} className="h-8 gap-1.5 px-2 text-xs text-muted-foreground"><MousePointerClick className="h-3.5 w-3.5"/>CTA</Button>
         <Button type="button" variant="ghost" size="sm" onClick={insertTable} className="h-8 gap-1.5 px-2 text-xs text-muted-foreground"><Table2 className="h-3.5 w-3.5"/>Table</Button>
       </div>
       <div
