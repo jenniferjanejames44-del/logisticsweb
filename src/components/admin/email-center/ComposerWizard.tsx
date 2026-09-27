@@ -82,12 +82,12 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
   const filteredContacts = useMemo(() => {
     const q = contactQuery.trim().toLowerCase();
-    if (!q) return contacts.slice(0, 200);
+    if (!q) return contacts;
     return contacts.filter(c =>
       c.full_name.toLowerCase().includes(q) ||
       c.email.toLowerCase().includes(q) ||
       (c.company || "").toLowerCase().includes(q)
-    ).slice(0, 200);
+    );
   }, [contacts, contactQuery]);
 
   const previewHtml = useMemo(
@@ -327,9 +327,16 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
       {step === 3 && (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           <Card className="p-6">
-            <div className="relative mb-4">
+            <div className="relative mb-3">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input value={contactQuery} onChange={e => setContactQuery(e.target.value)} placeholder="Search contacts by name, email or company" className="pl-9" />
+            </div>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <span>{filteredContacts.length} contact{filteredContacts.length === 1 ? "" : "s"} shown</span>
+              <div className="flex gap-2">
+                <Button type="button" size="sm" variant="outline" onClick={() => setSelected(s => Array.from(new Set([...s, ...filteredContacts.map(c => c.email.toLowerCase())])))}>Select all</Button>
+                <Button type="button" size="sm" variant="ghost" onClick={() => { const shown = new Set(filteredContacts.map(c => c.email.toLowerCase())); setSelected(s => s.filter(e => !shown.has(e))); }}>Clear</Button>
+              </div>
             </div>
             <div className="max-h-[420px] divide-y divide-border/40 overflow-y-auto rounded-lg border border-border/50">
               {filteredContacts.map(c => {
