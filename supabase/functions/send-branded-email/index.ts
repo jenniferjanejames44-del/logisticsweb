@@ -160,7 +160,7 @@ Deno.serve(async (req) => {
     let queued = 0, failed = 0;
     const errors: string[] = [];
 
-    for (const recipient of allRecipients) {
+    const processOne = async (recipient: string) => {
       const c = contactMap.get(recipient);
       const vars: Record<string, string> = {
         contact_name: c?.full_name || recipient.split('@')[0],
@@ -219,6 +219,12 @@ Deno.serve(async (req) => {
           metadata: { batch_id: batchId, subject: subjectPersonalized },
         });
       }
+    };
+
+    // Queue recipients in parallel groups so bulk sends go out together.
+    const CHUNK = 25;
+    for (let i = 0; i < allRecipients.length; i += CHUNK) {
+      await Promise.all(allRecipients.slice(i, i + CHUNK).map(processOne));
     }
 
     if (payload.messageId && !payload.testTo) {
