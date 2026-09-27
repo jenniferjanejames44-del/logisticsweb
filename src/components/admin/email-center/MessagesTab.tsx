@@ -30,14 +30,10 @@ function PreviewDialog({ m, settings, onClose }: { m: Message; settings?: Settin
     (async () => {
       const { data } = await (supabase as any).from("email_send_log")
         .select("recipient_email,status,error_message,metadata,created_at")
-        .eq("template_name", "email_center")
-        .gte("created_at", new Date(new Date(m.created_at).getTime() - 60000).toISOString())
+        .like("message_id", `ec-${m.id}-%`)
         .order("created_at", { ascending: false }).limit(5000);
       const map = new Map<string, RecipientStatus>();
       for (const r of (data || []) as any[]) {
-        const mid = r.metadata?.email_center_message_id || r.metadata?.messageId;
-        if (mid && mid !== m.id) continue;
-        if (!mid && r.metadata?.subject !== m.subject) continue;
         const key = r.recipient_email.toLowerCase();
         if (!map.has(key)) map.set(key, { email: r.recipient_email, status: r.status, error: r.error_message });
       }

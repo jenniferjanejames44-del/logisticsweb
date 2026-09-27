@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, Loader2, Calendar, Activity } from "lucide-react";
+import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, Loader2, Calendar, Activity, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import ComposerWizard from "@/components/admin/email-center/ComposerWizard";
 import ContactsTab from "@/components/admin/email-center/ContactsTab";
@@ -32,7 +32,8 @@ export default function AdminEmailCenter() {
 
   const drafts = messages.filter(m => m.status === "draft");
   const scheduled = messages.filter(m => m.status === "scheduled");
-  const sent = messages.filter(m => m.status === "sent" || m.status === "sending" || m.status === "failed");
+  const sent = messages.filter(m => m.status === "sent" || m.status === "sending");
+  const failed = messages.filter(m => m.status === "failed" || m.failed_count > 0);
 
   const composeFromTemplate = (t: Template) => {
     setInitialCompose({
@@ -60,6 +61,7 @@ export default function AdminEmailCenter() {
           <TabsTrigger value="drafts"><Mail className="mr-2 h-4 w-4" />Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>
           <TabsTrigger value="scheduled"><Calendar className="mr-2 h-4 w-4" />Scheduled <span className="ml-1.5 text-xs text-muted-foreground">({scheduled.length})</span></TabsTrigger>
           <TabsTrigger value="sent"><Send className="mr-2 h-4 w-4" />Sent</TabsTrigger>
+          <TabsTrigger value="failed"><AlertTriangle className="mr-2 h-4 w-4" />Failed <span className="ml-1.5 text-xs text-muted-foreground">({failed.length})</span></TabsTrigger>
           <TabsTrigger value="templates"><FileText className="mr-2 h-4 w-4" />Templates</TabsTrigger>
           <TabsTrigger value="contacts"><Users className="mr-2 h-4 w-4" />Contacts</TabsTrigger>
           <TabsTrigger value="settings"><SettingsIcon className="mr-2 h-4 w-4" />Settings</TabsTrigger>
@@ -77,13 +79,16 @@ export default function AdminEmailCenter() {
           <DeliveryTab messages={messages} onChange={refresh} />
         </TabsContent>
         <TabsContent value="drafts">
-          <MessagesTab messages={drafts} mode="drafts" onEdit={editDraft} onChange={refresh} />
+          <MessagesTab messages={drafts} mode="drafts" settings={settings} onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="scheduled">
-          <MessagesTab messages={scheduled} mode="drafts" onEdit={editDraft} onChange={refresh} />
+          <MessagesTab messages={scheduled} mode="drafts" settings={settings} onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="sent">
-          <MessagesTab messages={sent} mode="sent" onEdit={editDraft} onChange={refresh} />
+          <MessagesTab messages={sent} mode="sent" settings={settings} onEdit={editDraft} onChange={refresh} />
+        </TabsContent>
+        <TabsContent value="failed">
+          <MessagesTab messages={failed} mode="failed" settings={settings} onEdit={editDraft} onChange={refresh} />
         </TabsContent>
         <TabsContent value="templates">
           <TemplatesTab templates={templates} settings={settings} onChange={refresh} onUseTemplate={composeFromTemplate} />
