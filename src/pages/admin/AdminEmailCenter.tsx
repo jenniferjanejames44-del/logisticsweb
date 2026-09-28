@@ -19,12 +19,13 @@ export default function AdminEmailCenter() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [initialCompose, setInitialCompose] = useState<Message | null>(null);
+  const [totals, setTotals] = useState<{ sent: number; failed: number; pending: number }>({ sent: 0, failed: 0, pending: 0 });
 
   const refresh = async () => {
     setLoading(true);
     try {
-      const [s, c, t, m] = await Promise.all([fetchSettings(), listContacts(), listTemplates(), listMessages()]);
-      setSettings(s); setContacts(c); setTemplates(t); setMessages(m);
+      const [s, c, t, m, all] = await Promise.all([fetchSettings(), listContacts(), listTemplates(), listMessages(), countEmailsSent()]);
+      setSettings(s); setContacts(c); setTemplates(t); setMessages(m); setTotals(all);
     } catch (e: any) { toast.error(e.message || "Failed to load"); }
     setLoading(false);
   };
