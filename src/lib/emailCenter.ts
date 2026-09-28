@@ -41,6 +41,7 @@ export interface Message {
   scheduled_at: string | null;
   template_name: string | null;
   from_name: string | null;
+  failed_recipients?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -127,7 +128,32 @@ export async function listMessages(status?: string): Promise<Message[]> {
   if (status) q = q.eq("status", status);
   const { data, error } = await q;
   if (error) throw error;
-  return (data as Message[]) || [];
+  const msgs = ((data as Message[]) || []).map(m => ({ ...m, failed_recipients: [] as string[] }));
+  // Pull real delivery outcomes from the send log so failures after queuing are visible.
+  const since = new Date(Date.now() - 90 * 86400000).toISOString();
+  const { data: logs } = await (supabase as any).from("email_send_log")
+    .select("message_id,recipient_email,status,created_at")
+    .like("message_id", "ec-%").gte("created_at", since)
+    .order("created_at", { ascending: false }).limit(10000);
+  const latest = new Map<string, Map<string, string>>();
+  for (const r of (logs || []) as any[]) {
+    const mid = msgs.find(m => r.message_id.startsWith(`ec-${m.id}-`))?.id;
+    if (!mid) continue;
+    const per = latest.get(mid) || new Map<string, string>();
+    const k = r.recipient_email.toLowerCase();
+    if (!per.has(k)) per.set(k, r.status);
+    latest.set(mid, per);
+  }
+  for (const m of msgs) {
+    const per = latest.get(m.id);
+    if (!per) continue;
+    const failed = [...per].filter(([, st]) => ["failed", "dlq", "bounced", "suppressed"].includes(st)).map(([e]) => e);
+    const sent = [...per].filter(([, st]) => st === "sent").length;
+    m.failed_recipients = failed;
+    m.failed_count = Math.max(m.failed_count, failed.length);
+    if (sent || failed.length) m.sent_count = sent;
+  }
+  return msgs;
 }
 export async function saveDraft(m: Partial<Message> & { id?: string }) {
   if (m.id) {

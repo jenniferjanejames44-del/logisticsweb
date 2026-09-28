@@ -47,6 +47,7 @@ function PreviewDialog({ m, settings, onClose }: { m: Message; settings?: Settin
         <DialogHeader><DialogTitle>{m.subject || "(no subject)"}</DialogTitle></DialogHeader>
         <div className="space-y-1 text-xs text-muted-foreground">
           <p>To: {m.to_recipients.join(", ") || "—"}</p>
+          {m.sent_at && <p>Sent: {new Date(m.sent_at).toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}</p>}
           {m.error_message && <p className="whitespace-pre-line text-red-600">{m.error_message}</p>}
         </div>
         {rows && rows.length > 0 && (
@@ -100,9 +101,10 @@ export default function MessagesTab({ messages, mode, settings, onEdit, onChange
                 {m.status === "scheduled" && m.scheduled_at ? (
                   <span className="inline-flex items-center gap-1 text-blue-700"><Calendar className="w-3 h-3"/> Scheduled for {new Date(m.scheduled_at).toLocaleString()}</span>
                 ) : (
-                  <>{mode === "drafts" ? "Updated" : "Sent"} {formatDistanceToNow(new Date(m.sent_at || m.updated_at), { addSuffix: true })}</>
+                  <>{mode === "drafts" ? "Updated" : "Sent"} {new Date(m.sent_at || m.updated_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })} · {formatDistanceToNow(new Date(m.sent_at || m.updated_at), { addSuffix: true })}</>
                 )}
               </p>
+              {!!m.failed_recipients?.length && <p className="text-[11px] text-red-600 mt-1 line-clamp-2">Failed to deliver: {m.failed_recipients.join(", ")}</p>}
               {m.error_message && <p className="text-[11px] text-red-600 mt-1 line-clamp-2">{m.error_message}</p>}
             </button>
             <div className="flex gap-1 shrink-0">
