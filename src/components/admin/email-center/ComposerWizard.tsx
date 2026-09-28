@@ -37,7 +37,7 @@ const STEPS = [
 ];
 
 const parseEmails = (s: string) =>
-  Array.from(new Set(s.split(/[,;\n\s]+/).map(x => x.trim().toLowerCase()).filter(x => /.+@.+\..+/.test(x))));
+  Array.from(new Set(s.split(/[,;\n\s]+/).map(x => x.trim().toLowerCase()).filter(x => /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(x))));
 
 export default function ComposerWizard({ settings, contacts, templates, initial, onSent, onDrafted }: Props) {
   const [step, setStep] = useState(1);
@@ -360,7 +360,15 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
             <div className="mt-4">
               <Label className="text-xs font-medium">Or type email addresses</Label>
-              <Input value={manual} onChange={e => setManual(e.target.value)} placeholder="name@company.com, another@company.com" className="mt-1.5" />
+              <div className="mt-1.5 flex gap-2">
+                <Input value={manual} onChange={e => setManual(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); const add = parseEmails(manual); if (add.length) { setSelected(s => Array.from(new Set([...s, ...add]))); setManual(""); } } }}
+                  placeholder="Paste or type many emails, separated by comma, space or new line" />
+                <Button type="button" variant="outline" onClick={() => { const add = parseEmails(manual); if (!add.length) return toast.error("No valid email addresses found"); setSelected(s => Array.from(new Set([...s, ...add]))); setManual(""); toast.success(`Added ${add.length} recipient${add.length === 1 ? "" : "s"}`); }}>Add</Button>
+              </div>
+              {manual.split(/[,;\n\s]+/).filter(x => x.trim() && !parseEmails(x).length).length > 0 && (
+                <p className="mt-1 text-xs text-destructive">Invalid: {manual.split(/[,;\n\s]+/).filter(x => x.trim() && !parseEmails(x).length).join(", ")}</p>
+              )}
             </div>
           </Card>
 
