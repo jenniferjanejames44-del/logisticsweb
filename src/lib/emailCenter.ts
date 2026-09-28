@@ -283,6 +283,18 @@ export async function listDelivery(sinceDays = 30): Promise<DeliveryRow[]> {
   return Array.from(latest.values());
 }
 
+/** All-time totals of Email Center sends (per recipient), via admin-only backend function. */
+export async function countEmailsSent(): Promise<{ sent: number; failed: number; pending: number }> {
+  const { data, error } = await (supabase as any).rpc("email_center_send_stats");
+  if (error) throw error;
+  const row = Array.isArray(data) ? data[0] : data;
+  return {
+    sent: Number(row?.sent || 0),
+    failed: Number(row?.failed || 0),
+    pending: Number(row?.pending || 0),
+  };
+}
+
 /** Re-send a message that previously failed. */
 export async function retryMessage(m: Message) {
   return sendMessage({

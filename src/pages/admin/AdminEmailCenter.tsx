@@ -9,7 +9,7 @@ import TemplatesTab from "@/components/admin/email-center/TemplatesTab";
 import SettingsTab from "@/components/admin/email-center/SettingsTab";
 import MessagesTab from "@/components/admin/email-center/MessagesTab";
 import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
-import { Contact, Message, Settings, Template, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
+import { Contact, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
 export default function AdminEmailCenter() {
   const [tab, setTab] = useState("compose");
@@ -19,12 +19,13 @@ export default function AdminEmailCenter() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [initialCompose, setInitialCompose] = useState<Message | null>(null);
+  const [totals, setTotals] = useState<{ sent: number; failed: number; pending: number }>({ sent: 0, failed: 0, pending: 0 });
 
   const refresh = async () => {
     setLoading(true);
     try {
-      const [s, c, t, m] = await Promise.all([fetchSettings(), listContacts(), listTemplates(), listMessages()]);
-      setSettings(s); setContacts(c); setTemplates(t); setMessages(m);
+      const [s, c, t, m, all] = await Promise.all([fetchSettings(), listContacts(), listTemplates(), listMessages(), countEmailsSent()]);
+      setSettings(s); setContacts(c); setTemplates(t); setMessages(m); setTotals(all);
     } catch (e: any) { toast.error(e.message || "Failed to load"); }
     setLoading(false);
   };
@@ -54,6 +55,20 @@ export default function AdminEmailCenter() {
 
   return (
     <AdminLayout title="Email Center" description="Create polished, on-brand customer communications and track every delivery.">
+      <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Emails sent (all time)</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.sent.toLocaleString()}</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Pending</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.pending.toLocaleString()}</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Failed</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.failed.toLocaleString()}</p>
+        </div>
+      </div>
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="mb-6 h-auto flex-wrap border border-border bg-card p-1 shadow-sm">
           <TabsTrigger value="compose"><PenSquare className="mr-2 h-4 w-4" />Compose</TabsTrigger>
