@@ -56,18 +56,27 @@ export default function AdminEmailCenter() {
   return (
     <AdminLayout title="Email Center" description="Create polished, on-brand customer communications and track every delivery.">
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Emails sent (all time)</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.sent.toLocaleString()}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Pending</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.pending.toLocaleString()}</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Failed</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight">{totals.failed.toLocaleString()}</p>
-        </div>
+        {([
+          { label: "Emails sent (all time)", value: totals.sent, tab: "sent", icon: Send, tone: "text-emerald-600 bg-emerald-50", ring: "hover:border-emerald-300" },
+          { label: "Pending delivery", value: totals.pending, tab: "delivery", icon: Calendar, tone: "text-amber-600 bg-amber-50", ring: "hover:border-amber-300" },
+          { label: "Failed to send", value: totals.failed, tab: "failed", icon: AlertTriangle, tone: "text-red-600 bg-red-50", ring: "hover:border-red-300" },
+        ] as const).map(s => (
+          <button
+            key={s.tab}
+            type="button"
+            onClick={() => setTab(s.tab)}
+            className={`group flex items-center justify-between rounded-xl border border-border bg-card p-5 text-left shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md ${s.ring}`}
+          >
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{s.label}</p>
+              <p className="mt-1 text-2xl font-semibold tracking-tight">{s.value.toLocaleString()}</p>
+              <p className="mt-1 text-[11px] font-medium text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">View details →</p>
+            </div>
+            <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${s.tone}`}>
+              <s.icon className="h-5 w-5" />
+            </div>
+          </button>
+        ))}
       </div>
       <Tabs value={tab} onValueChange={setTab} className="w-full">
         <TabsList className="mb-6 h-auto flex-wrap border border-border bg-card p-1 shadow-sm">
