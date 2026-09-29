@@ -50,7 +50,11 @@ export default function DeliveryTab({ messages, onChange }: Props) {
 
   const load = async () => {
     setLoading(true);
-    try { setRows(await listDelivery(days)); }
+    try {
+      const subj = new Map(messages.map(m => [m.id, m.subject]));
+      const data = await listDelivery(days);
+      setRows(data.map(r => ({ ...r, subject: r.subject || (r.message_id?.startsWith("ec-") ? subj.get(r.message_id.slice(3, 39)) ?? null : null) })));
+    }
     catch (e: any) { toast.error(e.message || "Could not load delivery data"); }
     setLoading(false);
   };
