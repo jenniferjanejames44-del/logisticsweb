@@ -129,16 +129,14 @@ export async function listMessages(status?: string): Promise<Message[]> {
   const { data, error } = await q;
   if (error) throw error;
   const msgs = ((data as Message[]) || []).map(m => ({ ...m, failed_recipients: [] as string[] }));
-  // Pull real delivery outcomes from the send log so failures after queuing are visible.
-  const since = new Date(Date.now() - 90 * 86400000).toISOString();
-  const { data: logs } = await (supabase as any).from("email_send_log")
-    .select("message_id,recipient_email,status,created_at")
-    .like("message_id", "ec-%").gte("created_at", since)
-    .order("created_at", { ascending: false }).limit(10000);
+  // Pull real delivery outcomes (latest status per email) so failures after queuing are visible.
+  const logs = await listDelivery(3650).catch(() => [] as DeliveryRow[]);
+  const byId = new Map(msgs.map(m => [m.id, m]));
   const latest = new Map<string, Map<string, string>>();
-  for (const r of (logs || []) as any[]) {
-    const mid = msgs.find(m => r.message_id.startsWith(`ec-${m.id}-`))?.id;
-    if (!mid) continue;
+  for (const r of logs) {
+    if (!r.message_id?.startsWith("ec-")) continue;
+    const mid = r.message_id.slice(3, 39);
+    if (!byId.has(mid)) continue;
     const per = latest.get(mid) || new Map<string, string>();
     const k = r.recipient_email.toLowerCase();
     if (!per.has(k)) per.set(k, r.status);
@@ -254,33 +252,12 @@ export interface DeliveryRow {
   created_at: string;
 }
 
-/** Latest log row per message_id for Email Center sends. */
-export async function listDelivery(sinceDays = 30): Promise<DeliveryRow[]> {
+/** Latest status per email (deduplicated), via admin-only backend function. */
+export async function listDelivery(sinceDays = 3650): Promise<DeliveryRow[]> {
   const since = new Date(Date.now() - sinceDays * 86400000).toISOString();
-  const { data, error } = await (supabase as any)
-    .from("email_send_log")
-    .select("message_id, recipient_email, template_name, status, error_message, metadata, created_at")
-    .in("template_name", ["email_center", "email_center_test"])
-    .gte("created_at", since)
-    .order("created_at", { ascending: false })
-    .limit(1000);
+  const { data, error } = await (supabase as any).rpc("email_center_delivery", { _since: since });
   if (error) throw error;
-
-  const latest = new Map<string, DeliveryRow>();
-  for (const r of (data as any[]) || []) {
-    const key = r.message_id || r.id;
-    if (latest.has(key)) continue; // already have newest (ordered desc)
-    latest.set(key, {
-      message_id: key,
-      recipient_email: r.recipient_email,
-      template_name: r.template_name,
-      status: r.status,
-      error_message: r.error_message,
-      subject: r.metadata?.subject ?? null,
-      created_at: r.created_at,
-    });
-  }
-  return Array.from(latest.values());
+  return ((data as DeliveryRow[]) || []);
 }
 
 /** All-time totals of Email Center sends (per recipient), via admin-only backend function. */
