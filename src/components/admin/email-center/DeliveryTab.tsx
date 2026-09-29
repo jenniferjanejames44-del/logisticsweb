@@ -11,9 +11,10 @@ import { toast } from "sonner";
 interface Props { messages: Message[]; onChange: () => void; }
 
 const RANGES = [
-  { label: "24 hours", days: 1 },
-  { label: "7 days", days: 7 },
-  { label: "30 days", days: 30 },
+  { label: "Last 24 hours", days: 1 },
+  { label: "Last 7 days", days: 7 },
+  { label: "Last 30 days", days: 30 },
+  { label: "All time", days: 3650 },
 ];
 
 const STATUS_STYLES: Record<string, string> = {
@@ -40,7 +41,7 @@ function Stat({ icon: Icon, label, value, tone }: { icon: any; label: string; va
 }
 
 export default function DeliveryTab({ messages, onChange }: Props) {
-  const [days, setDays] = useState(7);
+  const [days, setDays] = useState(3650);
   const [rows, setRows] = useState<DeliveryRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");

@@ -81,7 +81,7 @@ export default function MessagesTab({ messages, mode, settings, onEdit, onChange
 
   return (
     <Card className="overflow-hidden border-border shadow-sm">
-      <div className="flex items-center justify-between border-b border-border bg-secondary px-5 py-4"><div><p className="text-sm font-semibold">{title}</p><p className="text-xs text-muted-foreground">{messages.length} message{messages.length === 1 ? "" : "s"}</p></div><MailOpen className="h-5 w-5 text-accent"/></div>
+      <div className="flex items-center justify-between border-b border-border bg-secondary px-5 py-4"><div><p className="text-sm font-semibold">{title}</p><p className="text-xs text-muted-foreground">{messages.length} campaign{messages.length === 1 ? "" : "s"}{mode !== "drafts" && <> · {messages.reduce((a, m) => a + (m.sent_count || 0), 0)} delivered · {messages.reduce((a, m) => a + (m.failed_count || 0), 0)} failed recipients</>}</p></div><MailOpen className="h-5 w-5 text-accent"/></div>
       <div className="divide-y divide-border/40">
         {messages.map(m => (
           <div key={m.id} className="flex items-start justify-between gap-3 p-5 transition hover:bg-muted/30">
