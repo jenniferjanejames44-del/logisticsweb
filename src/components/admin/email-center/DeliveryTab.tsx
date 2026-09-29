@@ -11,9 +11,10 @@ import { toast } from "sonner";
 interface Props { messages: Message[]; onChange: () => void; }
 
 const RANGES = [
-  { label: "24 hours", days: 1 },
-  { label: "7 days", days: 7 },
-  { label: "30 days", days: 30 },
+  { label: "Last 24 hours", days: 1 },
+  { label: "Last 7 days", days: 7 },
+  { label: "Last 30 days", days: 30 },
+  { label: "All time", days: 3650 },
 ];
 
 const STATUS_STYLES: Record<string, string> = {
@@ -40,7 +41,7 @@ function Stat({ icon: Icon, label, value, tone }: { icon: any; label: string; va
 }
 
 export default function DeliveryTab({ messages, onChange }: Props) {
-  const [days, setDays] = useState(7);
+  const [days, setDays] = useState(3650);
   const [rows, setRows] = useState<DeliveryRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
@@ -49,7 +50,11 @@ export default function DeliveryTab({ messages, onChange }: Props) {
 
   const load = async () => {
     setLoading(true);
-    try { setRows(await listDelivery(days)); }
+    try {
+      const subj = new Map(messages.map(m => [m.id, m.subject]));
+      const data = await listDelivery(days);
+      setRows(data.map(r => ({ ...r, subject: r.subject || (r.message_id?.startsWith("ec-") ? subj.get(r.message_id.slice(3, 39)) ?? null : null) })));
+    }
     catch (e: any) { toast.error(e.message || "Could not load delivery data"); }
     setLoading(false);
   };
@@ -91,7 +96,7 @@ export default function DeliveryTab({ messages, onChange }: Props) {
           {RANGES.map(r => (
             <button key={r.days} onClick={() => setDays(r.days)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${days === r.days ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              Last {r.label}
+              {r.label}
             </button>
           ))}
         </div>
@@ -146,7 +151,7 @@ export default function DeliveryTab({ messages, onChange }: Props) {
 
         <div className="divide-y divide-border/40">
           {loading && <div className="p-10 text-center"><Loader2 className="mx-auto h-5 w-5 animate-spin text-muted-foreground" /></div>}
-          {!loading && visible.slice(0, 100).map(r => (
+          {!loading && visible.slice(0, 500).map(r => (
             <div key={r.message_id} className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-muted/30">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{r.subject || "(no subject)"}</p>

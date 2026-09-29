@@ -2243,6 +2243,18 @@ export type Database = {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
       }
+      email_center_delivery: {
+        Args: { _since?: string }
+        Returns: {
+          created_at: string
+          error_message: string
+          message_id: string
+          recipient_email: string
+          status: string
+          subject: string
+          template_name: string
+        }[]
+      }
       email_center_send_stats: {
         Args: never
         Returns: {

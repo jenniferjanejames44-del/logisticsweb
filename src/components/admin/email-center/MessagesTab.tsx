@@ -3,8 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Message, Settings, deleteMessage, unscheduleMessage, retryMessage } from "@/lib/emailCenter";
-import { supabase } from "@/integrations/supabase/client";
+import { Message, Settings, deleteMessage, unscheduleMessage, retryMessage, listDelivery } from "@/lib/emailCenter";
 import { renderBrandedEmail } from "./brandTemplate";
 import BrandedPreview from "./BrandedPreview";
 import { Edit3, Trash2, Send as SendIcon, Loader2, Calendar, RotateCcw, MailOpen, Eye, RefreshCw } from "lucide-react";
@@ -28,12 +27,10 @@ function PreviewDialog({ m, settings, onClose }: { m: Message; settings?: Settin
   useEffect(() => {
     if (m.status === "draft" || m.status === "scheduled") { setRows([]); return; }
     (async () => {
-      const { data } = await (supabase as any).from("email_send_log")
-        .select("recipient_email,status,error_message,metadata,created_at")
-        .like("message_id", `ec-${m.id}-%`)
-        .order("created_at", { ascending: false }).limit(5000);
+      const all = await listDelivery(3650).catch(() => []);
+      const data = all.filter(r => r.message_id?.startsWith(`ec-${m.id}-`));
       const map = new Map<string, RecipientStatus>();
-      for (const r of (data || []) as any[]) {
+      for (const r of data as any[]) {
         const key = r.recipient_email.toLowerCase();
         if (!map.has(key)) map.set(key, { email: r.recipient_email, status: r.status, error: r.error_message });
       }
@@ -84,7 +81,7 @@ export default function MessagesTab({ messages, mode, settings, onEdit, onChange
 
   return (
     <Card className="overflow-hidden border-border shadow-sm">
-      <div className="flex items-center justify-between border-b border-border bg-secondary px-5 py-4"><div><p className="text-sm font-semibold">{title}</p><p className="text-xs text-muted-foreground">{messages.length} message{messages.length === 1 ? "" : "s"}</p></div><MailOpen className="h-5 w-5 text-accent"/></div>
+      <div className="flex items-center justify-between border-b border-border bg-secondary px-5 py-4"><div><p className="text-sm font-semibold">{title}</p><p className="text-xs text-muted-foreground">{messages.length} campaign{messages.length === 1 ? "" : "s"}{mode !== "drafts" && <> · {messages.reduce((a, m) => a + (m.sent_count || 0), 0)} delivered · {messages.reduce((a, m) => a + (m.failed_count || 0), 0)} failed recipients</>}</p></div><MailOpen className="h-5 w-5 text-accent"/></div>
       <div className="divide-y divide-border/40">
         {messages.map(m => (
           <div key={m.id} className="flex items-start justify-between gap-3 p-5 transition hover:bg-muted/30">
