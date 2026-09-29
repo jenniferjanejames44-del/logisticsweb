@@ -92,7 +92,7 @@ export default function DeliveryTab({ messages, onChange }: Props) {
           {RANGES.map(r => (
             <button key={r.days} onClick={() => setDays(r.days)}
               className={`rounded-md px-3 py-1.5 text-xs font-medium transition ${days === r.days ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-              Last {r.label}
+              {r.label}
             </button>
           ))}
         </div>
@@ -147,7 +147,7 @@ export default function DeliveryTab({ messages, onChange }: Props) {
 
         <div className="divide-y divide-border/40">
           {loading && <div className="p-10 text-center"><Loader2 className="mx-auto h-5 w-5 animate-spin text-muted-foreground" /></div>}
-          {!loading && visible.slice(0, 100).map(r => (
+          {!loading && visible.slice(0, 500).map(r => (
             <div key={r.message_id} className="flex flex-wrap items-center justify-between gap-3 p-4 transition hover:bg-muted/30">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{r.subject || "(no subject)"}</p>
