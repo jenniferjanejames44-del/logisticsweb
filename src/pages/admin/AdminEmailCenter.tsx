@@ -11,6 +11,21 @@ import MessagesTab from "@/components/admin/email-center/MessagesTab";
 import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
 import { Contact, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
+function EmailSuspensionNotice() {
+  return (
+    <div role="alert" className="mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive/5 p-4 text-foreground">
+      <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
+      <div>
+        <p className="font-semibold">Email sending is suspended</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Sending from <span className="font-medium text-foreground">notify.raclogisticltd.com</span> has been disabled by Lovable, even though the domain is verified. Emails cannot be delivered until Lovable Support reviews and lifts the suspension.
+        </p>
+        <p className="mt-2 text-sm font-medium">You can still create, save, and preview drafts. Sending, test emails, scheduling, and retries are paused.</p>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminEmailCenter() {
   const [tab, setTab] = useState("compose");
   const [loading, setLoading] = useState(true);
@@ -50,11 +65,12 @@ export default function AdminEmailCenter() {
   const editDraft = (m: Message) => { setInitialCompose(m); setTab("compose"); };
 
   if (loading || !settings) {
-    return <AdminLayout title="Email Center"><div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div></AdminLayout>;
+    return <AdminLayout title="Email Center"><EmailSuspensionNotice /><div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div></AdminLayout>;
   }
 
   return (
     <AdminLayout title="Email Center" description="Create polished, on-brand customer communications and track every delivery.">
+      <EmailSuspensionNotice />
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         {([
           { label: "Emails sent (all time)", value: totals.sent, tab: "sent", icon: Send, tone: "text-emerald-600 bg-emerald-50", ring: "hover:border-emerald-300" },

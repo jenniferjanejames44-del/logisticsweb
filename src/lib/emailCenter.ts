@@ -1,5 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
 
+export const EMAIL_SENDING_SUSPENDED = true;
+export const EMAIL_SUSPENSION_MESSAGE =
+  "Email sending from notify.raclogisticltd.com is suspended by Lovable. Contact Lovable Support to review the suspension.";
+
 export interface Contact {
   id: string;
   full_name: string;
@@ -180,6 +184,7 @@ export async function saveDraft(m: Partial<Message> & { id?: string }) {
 }
 
 export async function scheduleMessage(id: string, scheduledAt: Date) {
+  if (EMAIL_SENDING_SUSPENDED) throw new Error(EMAIL_SUSPENSION_MESSAGE);
   const { error } = await (supabase as any).from("email_center_messages")
     .update({ status: "scheduled", scheduled_at: scheduledAt.toISOString() })
     .eq("id", id);
@@ -193,6 +198,7 @@ export async function unscheduleMessage(id: string) {
 }
 
 export async function sendTestEmail(m: { subject: string; bodyHtml: string; testTo: string; fromName?: string; attachments?: AttachmentMeta[] }) {
+  if (EMAIL_SENDING_SUSPENDED) throw new Error(EMAIL_SUSPENSION_MESSAGE);
   const { data, error } = await supabase.functions.invoke("send-branded-email", {
     body: {
       subject: m.subject, bodyHtml: m.bodyHtml,
@@ -215,6 +221,7 @@ export async function sendMessage(m: {
   attachments?: AttachmentMeta[];
   fromName?: string;
 }) {
+  if (EMAIL_SENDING_SUSPENDED) throw new Error(EMAIL_SUSPENSION_MESSAGE);
   await (supabase as any).from("email_center_messages").update({ status: "sending" }).eq("id", m.id);
   const { data, error } = await supabase.functions.invoke("send-branded-email", {
     body: {

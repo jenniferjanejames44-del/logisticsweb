@@ -16,7 +16,7 @@ import { renderBrandedEmail } from "./brandTemplate";
 import { PRO_TEMPLATES } from "./proTemplates";
 import {
   Contact, Settings, Template, Message, AttachmentMeta,
-  saveDraft, sendMessage, uploadAttachment, removeAttachment, scheduleMessage, sendTestEmail,
+  EMAIL_SENDING_SUSPENDED, saveDraft, sendMessage, uploadAttachment, removeAttachment, scheduleMessage, sendTestEmail,
 } from "@/lib/emailCenter";
 
 interface Props {
@@ -402,7 +402,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
             <div className="flex gap-1">
               <button onClick={() => setPreviewDevice("desktop")} className={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-xs ${previewDevice === "desktop" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}><Monitor className="h-3.5 w-3.5" />Desktop</button>
               <button onClick={() => setPreviewDevice("mobile")} className={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-xs ${previewDevice === "mobile" ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/60"}`}><Smartphone className="h-3.5 w-3.5" />Mobile</button>
-              <Button size="sm" variant="outline" className="ml-2" onClick={() => setShowTest(true)}><TestTube className="mr-1.5 h-3.5 w-3.5" />Send test</Button>
+              <Button size="sm" variant="outline" className="ml-2" onClick={() => setShowTest(true)} disabled={EMAIL_SENDING_SUSPENDED} title="Email sending is suspended"><TestTube className="mr-1.5 h-3.5 w-3.5" />Send test</Button>
             </div>
           </div>
           <div className={previewDevice === "mobile" ? "mx-auto" : ""} style={previewDevice === "mobile" ? { width: 380 } : undefined}>
@@ -427,10 +427,10 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
             <div className="flex justify-between"><span className="text-muted-foreground">Attachments</span><span className="font-medium">{attachments.length}</span></div>
           </div>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Button onClick={handleSend} disabled={sending} size="lg">
-              {sending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}Send now
+            <Button onClick={handleSend} disabled={sending || EMAIL_SENDING_SUSPENDED} size="lg" title={EMAIL_SENDING_SUSPENDED ? "Email sending is suspended" : undefined}>
+              {sending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}{EMAIL_SENDING_SUSPENDED ? "Sending suspended" : "Send now"}
             </Button>
-            <Button variant="outline" size="lg" onClick={() => setShowSchedule(true)}><Calendar className="mr-2 h-4 w-4" />Schedule</Button>
+            <Button variant="outline" size="lg" onClick={() => setShowSchedule(true)} disabled={EMAIL_SENDING_SUSPENDED} title="Email sending is suspended"><Calendar className="mr-2 h-4 w-4" />Schedule</Button>
           </div>
            <div className="mt-5 flex items-center justify-center gap-5 text-xs text-muted-foreground"><span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5"/>Branded</span><span className="inline-flex items-center gap-1.5"><Clock3 className="h-3.5 w-3.5"/>Tracked delivery</span></div>
            </div>
@@ -466,7 +466,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowSchedule(false)}>Cancel</Button>
-            <Button onClick={handleSchedule} disabled={scheduling}>{scheduling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Schedule</Button>
+            <Button onClick={handleSchedule} disabled={scheduling || EMAIL_SENDING_SUSPENDED}>{scheduling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Schedule</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -481,7 +481,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => setShowTest(false)}>Cancel</Button>
-            <Button onClick={handleTest} disabled={testing}>{testing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Send test</Button>
+            <Button onClick={handleTest} disabled={testing || EMAIL_SENDING_SUSPENDED}>{testing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Send test</Button>
           </div>
         </DialogContent>
       </Dialog>
