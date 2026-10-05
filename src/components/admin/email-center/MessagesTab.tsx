@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Message, Settings, deleteMessage, unscheduleMessage, retryMessage, listDelivery } from "@/lib/emailCenter";
+import { EMAIL_SENDING_SUSPENDED, Message, Settings, deleteMessage, unscheduleMessage, retryMessage, listDelivery } from "@/lib/emailCenter";
 import { renderBrandedEmail } from "./brandTemplate";
 import BrandedPreview from "./BrandedPreview";
 import { Edit3, Trash2, Send as SendIcon, Loader2, Calendar, RotateCcw, MailOpen, Eye, RefreshCw } from "lucide-react";
@@ -107,7 +107,7 @@ export default function MessagesTab({ messages, mode, settings, onEdit, onChange
             <div className="flex gap-1 shrink-0">
               <Button size="icon" variant="ghost" title="Preview" onClick={() => setPreview(m)}><Eye className="w-4 h-4"/></Button>
               {(m.status === "failed" || m.failed_count > 0) && (
-                <Button size="icon" variant="ghost" title="Retry" disabled={retrying === m.id} onClick={() => doRetry(m)}>
+                <Button size="icon" variant="ghost" title={EMAIL_SENDING_SUSPENDED ? "Email sending is suspended" : "Retry"} disabled={retrying === m.id || EMAIL_SENDING_SUSPENDED} onClick={() => doRetry(m)}>
                   {retrying === m.id ? <Loader2 className="w-4 h-4 animate-spin"/> : <RefreshCw className="w-4 h-4"/>}
                 </Button>
               )}
