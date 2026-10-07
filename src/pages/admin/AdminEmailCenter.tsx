@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { Mail, PenSquare, FileText, Users, Send, Settings as SettingsIcon, Loader2, Calendar, Activity, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import ComposerWizard from "@/components/admin/email-center/ComposerWizard";
@@ -29,6 +30,7 @@ function EmailSuspensionNotice() {
 export default function AdminEmailCenter() {
   const [tab, setTab] = useState("compose");
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -38,10 +40,28 @@ export default function AdminEmailCenter() {
 
   const refresh = async () => {
     setLoading(true);
-    try {
-      const [s, c, t, m, all] = await Promise.all([fetchSettings(), listContacts(), listTemplates(), listMessages(), countEmailsSent()]);
-      setSettings(s); setContacts(c); setTemplates(t); setMessages(m); setTotals(all);
-    } catch (e: any) { toast.error(e.message || "Failed to load"); }
+    const results = await Promise.allSettled([
+      fetchSettings(), listContacts(), listTemplates(), listMessages(), countEmailsSent(),
+    ]);
+    const failures: string[] = [];
+    const [settingsResult, contactsResult, templatesResult, messagesResult, totalsResult] = results;
+
+    if (settingsResult.status === "fulfilled" && settingsResult.value) setSettings(settingsResult.value);
+    else failures.push("company settings");
+    if (contactsResult.status === "fulfilled") setContacts(contactsResult.value);
+    else failures.push("contacts");
+    if (templatesResult.status === "fulfilled") setTemplates(templatesResult.value);
+    else failures.push("templates");
+    if (messagesResult.status === "fulfilled") setMessages(messagesResult.value);
+    else failures.push("email history");
+    if (totalsResult.status === "fulfilled") setTotals(totalsResult.value);
+    else failures.push("delivery totals");
+
+    const errorMessage = failures.length
+      ? `Couldn't load ${failures.join(", ")}. Check the connection and try again.`
+      : null;
+    setLoadError(errorMessage);
+    if (errorMessage) toast.error(errorMessage);
     setLoading(false);
   };
   useEffect(() => { refresh(); }, []);
@@ -64,13 +84,32 @@ export default function AdminEmailCenter() {
 
   const editDraft = (m: Message) => { setInitialCompose(m); setTab("compose"); };
 
-  if (loading || !settings) {
+  if (loading) {
     return <AdminLayout title="Email Center"><EmailSuspensionNotice /><div className="flex justify-center py-20"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div></AdminLayout>;
+  }
+
+  if (!settings) {
+    return (
+      <AdminLayout title="Email Center">
+        <EmailSuspensionNotice />
+        <div role="alert" className="border border-border bg-card p-6">
+          <h2 className="font-semibold">Email Center data is unavailable</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{loadError || "Company settings could not be loaded."} No email actions have been performed.</p>
+          <Button className="mt-4" onClick={refresh}>Try again</Button>
+        </div>
+      </AdminLayout>
+    );
   }
 
   return (
     <AdminLayout title="Email Center" description="Create polished, on-brand customer communications and track every delivery.">
       <EmailSuspensionNotice />
+      {loadError && (
+        <div role="status" className="mb-6 flex flex-wrap items-center justify-between gap-3 border border-border bg-card p-4">
+          <p className="text-sm text-muted-foreground">{loadError} Some Email Center sections may be incomplete.</p>
+          <Button variant="outline" size="sm" onClick={refresh}>Retry loading</Button>
+        </div>
+      )}
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         {([
           { label: "Emails sent (all time)", value: totals.sent, tab: "sent", icon: Send, tone: "text-emerald-600 bg-emerald-50", ring: "hover:border-emerald-300" },
