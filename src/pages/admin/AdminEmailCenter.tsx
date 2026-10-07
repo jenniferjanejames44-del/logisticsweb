@@ -12,6 +12,15 @@ import MessagesTab from "@/components/admin/email-center/MessagesTab";
 import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
 import { Contact, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
+function loadWithTimeout<T>(request: Promise<T>, section: string): Promise<T> {
+  return Promise.race([
+    request,
+    new Promise<T>((_, reject) => {
+      window.setTimeout(() => reject(new Error(`${section} took too long to load`)), 15000);
+    }),
+  ]);
+}
+
 function EmailSuspensionNotice() {
   return (
     <div role="alert" className="mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive/5 p-4 text-foreground">
@@ -41,7 +50,11 @@ export default function AdminEmailCenter() {
   const refresh = async () => {
     setLoading(true);
     const results = await Promise.allSettled([
-      fetchSettings(), listContacts(), listTemplates(), listMessages(), countEmailsSent(),
+      loadWithTimeout(fetchSettings(), "Company settings"),
+      loadWithTimeout(listContacts(), "Contacts"),
+      loadWithTimeout(listTemplates(), "Templates"),
+      loadWithTimeout(listMessages(), "Email history"),
+      loadWithTimeout(countEmailsSent(), "Delivery totals"),
     ]);
     const failures: string[] = [];
     const [settingsResult, contactsResult, templatesResult, messagesResult, totalsResult] = results;
