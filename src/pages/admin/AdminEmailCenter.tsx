@@ -22,6 +22,7 @@ function loadWithTimeout<T>(request: Promise<T>, section: string): Promise<T> {
 }
 
 function EmailSuspensionNotice() {
+  if (!EMAIL_SENDING_SUSPENDED) return null;
   return (
     <div role="alert" className="mb-6 flex items-start gap-3 border border-destructive/40 bg-destructive/5 p-4 text-foreground">
       <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
