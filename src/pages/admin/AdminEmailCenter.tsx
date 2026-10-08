@@ -10,7 +10,7 @@ import TemplatesTab from "@/components/admin/email-center/TemplatesTab";
 import SettingsTab from "@/components/admin/email-center/SettingsTab";
 import MessagesTab from "@/components/admin/email-center/MessagesTab";
 import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
-import { Contact, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
+import { Contact, EMAIL_SENDING_SUSPENDED, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
 function loadWithTimeout<T>(request: Promise<T>, section: string): Promise<T> {
   return Promise.race([
