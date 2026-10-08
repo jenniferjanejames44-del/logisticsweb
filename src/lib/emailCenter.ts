@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const EMAIL_SENDING_SUSPENDED = true;
+export const EMAIL_SENDING_SUSPENDED = false;
 export const EMAIL_SUSPENSION_MESSAGE =
   "Email sending from notify.raclogisticltd.com is suspended by Lovable. Contact Lovable Support to review the suspension.";
 
