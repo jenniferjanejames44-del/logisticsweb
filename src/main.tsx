@@ -52,8 +52,19 @@ installBrowserCompatibility();
 async function mountApp() {
   const root = document.getElementById("root");
   if (!root) return;
-  const { default: App } = await import("./App.tsx");
-  createRoot(root).render(<App />);
+  try {
+    const { default: App } = await import("./App.tsx");
+    createRoot(root).render(<App />);
+  } catch (error) {
+    const { isChunkLoadError, reloadOnceForNewVersion } = await import("./lib/lazyPage");
+    if (isChunkLoadError(error) && reloadOnceForNewVersion()) return;
+    console.error("[App] failed to start", error);
+    root.innerHTML =
+      '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:DM Sans,sans-serif;text-align:center;padding:24px">' +
+      '<h1 style="font-size:22px;color:#061043">RAC Logistics could not load</h1>' +
+      '<p style="color:#555">Please check your connection and try again.</p>' +
+      '<button onclick="location.reload()" style="height:48px;padding:0 24px;border:0;border-radius:8px;background:#DF5101;color:#fff;font-weight:600">Reload page</button></div>';
+  }
 }
 
 void mountApp();
