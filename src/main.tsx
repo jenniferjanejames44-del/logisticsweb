@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import { installBrowserCompatibility } from "./lib/browserCompatibility";
 import "./index.css";
+
+installBrowserCompatibility();
 
 /**
  * Restore SPA routes redirected by public/404.html.
@@ -46,4 +48,12 @@ import "./index.css";
   }
 })();
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Import only after storage is safe: the generated auth client reads it on import.
+async function mountApp() {
+  const root = document.getElementById("root");
+  if (!root) return;
+  const { default: App } = await import("./App.tsx");
+  createRoot(root).render(<App />);
+}
+
+void mountApp();

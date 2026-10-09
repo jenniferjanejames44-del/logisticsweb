@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Fix restricted-browser startup and older Safari UUID compatibility
+- [x] Verify homepage loading and navigation with browser restrictions
+
 - [x] Create one premium branded email shell for preview and delivery
 - [x] Upgrade built-in templates and template gallery
 - [x] Refine composer, review, send, history, and delivery presentation
