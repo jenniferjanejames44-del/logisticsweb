@@ -56,8 +56,8 @@ async function mountApp() {
     const { default: App } = await import("./App.tsx");
     createRoot(root).render(<App />);
   } catch (error) {
-    const { isChunkLoadError, reloadOnceForNewVersion } = await import("./lib/lazyPage");
-    if (isChunkLoadError(error) && reloadOnceForNewVersion()) return;
+    const helpers = await import("./lib/lazyPage").catch(() => null);
+    if (helpers?.isChunkLoadError(error) && helpers.reloadOnceForNewVersion()) return;
     console.error("[App] failed to start", error);
     root.innerHTML =
       '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:DM Sans,sans-serif;text-align:center;padding:24px">' +
