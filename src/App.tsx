@@ -9,75 +9,76 @@ import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useLoginTracking } from "@/hooks/useLoginTracking";
 import ScrollToTop from "@/components/ScrollToTop";
-import ComingSoon from "./pages/ComingSoon";
+import { lazyPage, PageLoader, AppErrorBoundary } from "@/lib/lazyPage";
+const ComingSoon = lazyPage(() => import("./pages/ComingSoon"));
 import Index from "./pages/Index";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import AirShipping from "./pages/services/AirShipping";
-import OceanShipping from "./pages/services/OceanShipping";
-import PersonalShopping from "./pages/services/PersonalShopping";
-import Procurement from "./pages/services/Procurement";
-import ImportExport from "./pages/services/ImportExport";
-import ImportService from "./pages/services/ImportService";
-import ExportService from "./pages/services/ExportService";
-import WarehousingPage from "./pages/services/Warehousing";
-import CustomsClearance from "./pages/services/CustomsClearance";
-import GlobalPickup from "./pages/services/GlobalPickup";
+const About = lazyPage(() => import("./pages/About"));
+const Services = lazyPage(() => import("./pages/Services"));
+const AirShipping = lazyPage(() => import("./pages/services/AirShipping"));
+const OceanShipping = lazyPage(() => import("./pages/services/OceanShipping"));
+const PersonalShopping = lazyPage(() => import("./pages/services/PersonalShopping"));
+const Procurement = lazyPage(() => import("./pages/services/Procurement"));
+const ImportExport = lazyPage(() => import("./pages/services/ImportExport"));
+const ImportService = lazyPage(() => import("./pages/services/ImportService"));
+const ExportService = lazyPage(() => import("./pages/services/ExportService"));
+const WarehousingPage = lazyPage(() => import("./pages/services/Warehousing"));
+const CustomsClearance = lazyPage(() => import("./pages/services/CustomsClearance"));
+const GlobalPickup = lazyPage(() => import("./pages/services/GlobalPickup"));
 
-import Pricing from "./pages/Pricing";
-import Contact from "./pages/Contact";
-import Blog from "./pages/Blog";
-import Auth from "./pages/Auth";
-import AuthConfirm from "./pages/AuthConfirm";
-import AuthCallback from "./pages/AuthCallback";
-import ResetPassword from "./pages/ResetPassword";
-import Overview from "./pages/dashboard/Overview";
-import Shipments from "./pages/dashboard/Shipments";
-import CreateShipment from "./pages/dashboard/CreateShipment";
-import ShipmentDetail from "./pages/dashboard/ShipmentDetail";
-import Wallet from "./pages/dashboard/Wallet";
-import Payments from "./pages/dashboard/Payments";
-import Profile from "./pages/dashboard/Profile";
-import Notifications from "./pages/dashboard/Notifications";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminShipments from "./pages/admin/AdminShipments";
-import AdminPayments from "./pages/admin/AdminPayments";
-import AdminPricing from "./pages/admin/AdminPricing";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import AdminNotifications from "./pages/admin/AdminNotifications";
-import AdminInvoices from "./pages/admin/AdminInvoices";
-import AdminShippingRoutes from "./pages/admin/AdminShippingRoutes";
-import AdminShippingZones from "./pages/admin/AdminShippingZones";
-import AdminPricingEngine from "./pages/admin/AdminPricingEngine";
-import AdminQuotations from "./pages/admin/AdminQuotations";
-import AdminQuotationBuilder from "./pages/admin/AdminQuotationBuilder";
-import AdminWarehouses from "./pages/admin/AdminWarehouses";
-import AdminPackaging from "./pages/admin/AdminPackaging";
-import AdminEmail from "./pages/admin/AdminEmail";
-import AdminEmailCenter from "./pages/admin/AdminEmailCenter";
-import Unsubscribe from "./pages/Unsubscribe";
-import Invoices from "./pages/dashboard/Invoices";
-import PaymentCallback from "./pages/dashboard/PaymentCallback";
-import Support from "./pages/dashboard/Support";
-import SupportTicketDetail from "./pages/dashboard/SupportTicketDetail";
-import NotFound from "./pages/NotFound";
-import Track from "./pages/Track";
-import Shipping from "./pages/Shipping";
-import PersonalShoppingForm from "./pages/PersonalShoppingForm";
-import ShoppingOrders from "./pages/dashboard/ShoppingOrders";
-import ShoppingOrderPayment from "./pages/dashboard/ShoppingOrderPayment";
-import AdminShoppingOrders from "./pages/admin/AdminShoppingOrders";
-import AdminSupport from "./pages/admin/AdminSupport";
-import AdminSupportDetail from "./pages/admin/AdminSupportDetail";
-import AdminRefunds from "./pages/admin/AdminRefunds";
-import Checkout from "./pages/Checkout";
-import DesignSystem from "./pages/DesignSystem";
-import Partners from "./pages/Partners";
-import Partner from "./pages/dashboard/Partner";
-import AdminPartners from "./pages/admin/AdminPartners";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
+const Pricing = lazyPage(() => import("./pages/Pricing"));
+const Contact = lazyPage(() => import("./pages/Contact"));
+const Blog = lazyPage(() => import("./pages/Blog"));
+const Auth = lazyPage(() => import("./pages/Auth"));
+const AuthConfirm = lazyPage(() => import("./pages/AuthConfirm"));
+const AuthCallback = lazyPage(() => import("./pages/AuthCallback"));
+const ResetPassword = lazyPage(() => import("./pages/ResetPassword"));
+const Overview = lazyPage(() => import("./pages/dashboard/Overview"));
+const Shipments = lazyPage(() => import("./pages/dashboard/Shipments"));
+const CreateShipment = lazyPage(() => import("./pages/dashboard/CreateShipment"));
+const ShipmentDetail = lazyPage(() => import("./pages/dashboard/ShipmentDetail"));
+const Wallet = lazyPage(() => import("./pages/dashboard/Wallet"));
+const Payments = lazyPage(() => import("./pages/dashboard/Payments"));
+const Profile = lazyPage(() => import("./pages/dashboard/Profile"));
+const Notifications = lazyPage(() => import("./pages/dashboard/Notifications"));
+const AdminDashboard = lazyPage(() => import("./pages/admin/AdminDashboard"));
+const AdminUsers = lazyPage(() => import("./pages/admin/AdminUsers"));
+const AdminShipments = lazyPage(() => import("./pages/admin/AdminShipments"));
+const AdminPayments = lazyPage(() => import("./pages/admin/AdminPayments"));
+const AdminPricing = lazyPage(() => import("./pages/admin/AdminPricing"));
+const AdminAnalytics = lazyPage(() => import("./pages/admin/AdminAnalytics"));
+const AdminNotifications = lazyPage(() => import("./pages/admin/AdminNotifications"));
+const AdminInvoices = lazyPage(() => import("./pages/admin/AdminInvoices"));
+const AdminShippingRoutes = lazyPage(() => import("./pages/admin/AdminShippingRoutes"));
+const AdminShippingZones = lazyPage(() => import("./pages/admin/AdminShippingZones"));
+const AdminPricingEngine = lazyPage(() => import("./pages/admin/AdminPricingEngine"));
+const AdminQuotations = lazyPage(() => import("./pages/admin/AdminQuotations"));
+const AdminQuotationBuilder = lazyPage(() => import("./pages/admin/AdminQuotationBuilder"));
+const AdminWarehouses = lazyPage(() => import("./pages/admin/AdminWarehouses"));
+const AdminPackaging = lazyPage(() => import("./pages/admin/AdminPackaging"));
+const AdminEmail = lazyPage(() => import("./pages/admin/AdminEmail"));
+const AdminEmailCenter = lazyPage(() => import("./pages/admin/AdminEmailCenter"));
+const Unsubscribe = lazyPage(() => import("./pages/Unsubscribe"));
+const Invoices = lazyPage(() => import("./pages/dashboard/Invoices"));
+const PaymentCallback = lazyPage(() => import("./pages/dashboard/PaymentCallback"));
+const Support = lazyPage(() => import("./pages/dashboard/Support"));
+const SupportTicketDetail = lazyPage(() => import("./pages/dashboard/SupportTicketDetail"));
+const NotFound = lazyPage(() => import("./pages/NotFound"));
+const Track = lazyPage(() => import("./pages/Track"));
+const Shipping = lazyPage(() => import("./pages/Shipping"));
+const PersonalShoppingForm = lazyPage(() => import("./pages/PersonalShoppingForm"));
+const ShoppingOrders = lazyPage(() => import("./pages/dashboard/ShoppingOrders"));
+const ShoppingOrderPayment = lazyPage(() => import("./pages/dashboard/ShoppingOrderPayment"));
+const AdminShoppingOrders = lazyPage(() => import("./pages/admin/AdminShoppingOrders"));
+const AdminSupport = lazyPage(() => import("./pages/admin/AdminSupport"));
+const AdminSupportDetail = lazyPage(() => import("./pages/admin/AdminSupportDetail"));
+const AdminRefunds = lazyPage(() => import("./pages/admin/AdminRefunds"));
+const Checkout = lazyPage(() => import("./pages/Checkout"));
+const DesignSystem = lazyPage(() => import("./pages/DesignSystem"));
+const Partners = lazyPage(() => import("./pages/Partners"));
+const Partner = lazyPage(() => import("./pages/dashboard/Partner"));
+const AdminPartners = lazyPage(() => import("./pages/admin/AdminPartners"));
+const Terms = lazyPage(() => import("./pages/Terms"));
+const Privacy = lazyPage(() => import("./pages/Privacy"));
 // Flip this to true to show the public Coming Soon page everywhere except admin/auth/dashboard.
 const COMING_SOON_MODE = false;
 const queryClient = new QueryClient();
@@ -143,6 +144,8 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <ComingSoonGuard>
+                <AppErrorBoundary>
+                <React.Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
                   {/* Original routes preserved below — re-enable by removing the catch-all above */}
@@ -220,6 +223,8 @@ const App = () => (
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+              </React.Suspense>
+                </AppErrorBoundary>
               </ComingSoonGuard>
             </BrowserRouter>
             </TooltipProvider>
