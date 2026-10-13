@@ -1,8 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SearchableCountrySelect from "./SearchableCountrySelect";
 import AsyncCitySelect from "./AsyncCitySelect";
 import { Input } from "@/components/ui/input";
-import { getCountries, getStates, getCities } from "@/lib/locationData";
+import { getCountries, getStates, loadCities } from "@/lib/locationData";
 
 interface LocationSelectorProps {
   country: string;
@@ -39,7 +39,14 @@ const LocationSelector = ({
 }: LocationSelectorProps) => {
   const countries = useMemo(() => getCountries().map((c) => c.name), []);
   const states = useMemo(() => getStates(country), [country]);
-  const cities = useMemo(() => getCities(country, state), [country, state]);
+  const [cities, setCities] = useState<string[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    setCities([]);
+    if (!country || !state) return;
+    loadCities(country, state).then((list) => { if (!cancelled) setCities(list); });
+    return () => { cancelled = true; };
+  }, [country, state]);
 
   const handleCountry = (v: string) => {
     onCountryChange(v);

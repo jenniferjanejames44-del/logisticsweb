@@ -46,11 +46,44 @@ export function createResilientStorage(readStorage: () => Storage): Storage {
   };
 }
 
+/**
+ * Browser page translation (Chrome/Safari "Translate this page") and some
+ * extensions move text nodes React owns. React then calls removeChild /
+ * insertBefore on a node with a different parent and the page crashes with
+ * "Something went wrong". Make those two calls tolerant instead of fatal.
+ */
+export function installDomMutationGuard() {
+  if (typeof Node === "undefined" || !Node.prototype) return;
+  const proto = Node.prototype as Node & { __racGuarded?: boolean };
+  if (proto.__racGuarded) return;
+  proto.__racGuarded = true;
+
+  const originalRemoveChild = proto.removeChild;
+  proto.removeChild = function <T extends Node>(this: Node, child: T): T {
+    if (child && child.parentNode !== this) {
+      try { child.parentNode?.removeChild(child); } catch { /* already detached */ }
+      return child;
+    }
+    return originalRemoveChild.call(this, child) as T;
+  };
+
+  const originalInsertBefore = proto.insertBefore;
+  proto.insertBefore = function <T extends Node>(this: Node, newNode: T, referenceNode: Node | null): T {
+    if (referenceNode && referenceNode.parentNode !== this) {
+      return originalInsertBefore.call(this, newNode, null) as T;
+    }
+    return originalInsertBefore.call(this, newNode, referenceNode) as T;
+  };
+}
+
 export function installBrowserCompatibility() {
   for (const name of ["localStorage", "sessionStorage"] as const) {
     const storage = createResilientStorage(() => window[name]);
     Object.defineProperty(window, name, { configurable: true, get: () => storage });
   }
+
+  installDomMutationGuard();
+
 
   // Safari before 15.4 lacks randomUUID; these IDs identify form rows only.
   if (window.crypto && typeof window.crypto.randomUUID !== "function") {
