@@ -30,7 +30,7 @@ const nigeriaStateRows = () => {
 let _countriesCache: LocationOption[] | null = null;
 export const getCountries = (): LocationOption[] => {
   if (!_countriesCache) {
-    _countriesCache = (countryRows as [string, string][]).map(([isoCode, name]) => ({ name, isoCode }));
+    _countriesCache = (countryRows as unknown as [string, string][]).map(([isoCode, name]) => ({ name, isoCode }));
   }
   return _countriesCache;
 };
@@ -55,7 +55,7 @@ export const getStates = (countryName: string): LocationOption[] => {
       .sort((a, b) => a.name.localeCompare(b.name));
   } else {
     const c = findCountryByName(countryName);
-    const rows = c ? ((stateRows as Record<string, [string, string][]>)[c.isoCode] || []) : [];
+    const rows = c ? ((stateRows as unknown as Record<string, [string, string][]>)[c.isoCode] || []) : [];
     result = rows.map(([isoCode, name]) => ({ name, isoCode }));
   }
   statesCache.set(key, result);
