@@ -20,7 +20,6 @@ vi.mock("@/contexts/CurrencyContext", () => ({
   useCurrency: () => ({
     formatConverted: (amount: number) => `$${amount.toFixed(2)}`,
     formatMoney: (amount: number) => `$${amount.toFixed(2)}`,
-    convertUsdAmount: (amount: number) => amount,
   }),
 }));
 
