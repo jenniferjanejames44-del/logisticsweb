@@ -5,7 +5,7 @@ const RELOAD_KEY = "rac-chunk-reload-at";
 /** After a new deploy, old page files disappear; reload once to fetch the new version. */
 export function isChunkLoadError(error: unknown) {
   const message = error instanceof Error ? `${error.name} ${error.message}` : String(error);
-  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|ChunkLoadError|Loading chunk/i.test(message);
+  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|ChunkLoadError|Loading chunk|Load failed|NetworkError/i.test(message);
 }
 
 export function reloadOnceForNewVersion() {
@@ -20,9 +20,26 @@ export function reloadOnceForNewVersion() {
   return true;
 }
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Slow or flaky mobile networks: retry a page download before giving up. */
+export async function loadWithRetry<T>(load: () => Promise<T>, attempts = 3): Promise<T> {
+  let lastError: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await load();
+    } catch (error) {
+      lastError = error;
+      if (!isChunkLoadError(error)) throw error;
+      await wait(600 * (i + 1));
+    }
+  }
+  throw lastError;
+}
+
 export function lazyPage<T extends React.ComponentType<any>>(load: () => Promise<{ default: T }>) {
   return React.lazy(() =>
-    load().catch((error) => {
+    loadWithRetry(load).catch((error) => {
       if (isChunkLoadError(error) && reloadOnceForNewVersion()) {
         return new Promise<{ default: T }>(() => {});
       }
@@ -37,10 +54,22 @@ export const PageLoader = () => (
   </div>
 );
 
-export class AppErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+/**
+ * Catches page crashes. Resets automatically when the visitor moves to another
+ * page (resetKey changes), and "Try again" re-renders without losing the session.
+ */
+export class AppErrorBoundary extends React.Component<
+  { children: React.ReactNode; resetKey?: string },
+  { hasError: boolean }
+> {
   state = { hasError: false };
   static getDerivedStateFromError() {
     return { hasError: true };
+  }
+  componentDidUpdate(prev: { resetKey?: string }) {
+    if (this.state.hasError && prev.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false });
+    }
   }
   componentDidCatch(error: unknown) {
     if (isChunkLoadError(error)) reloadOnceForNewVersion();
@@ -52,13 +81,22 @@ export class AppErrorBoundary extends React.Component<{ children: React.ReactNod
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
         <h1 className="text-2xl font-bold text-foreground">Something went wrong loading this page</h1>
         <p className="max-w-md text-muted-foreground">Please check your connection and try again.</p>
-        <button
-          type="button"
-          onClick={() => window.location.reload()}
-          className="h-12 rounded-lg bg-secondary px-6 font-semibold text-secondary-foreground"
-        >
-          Reload page
-        </button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => this.setState({ hasError: false })}
+            className="h-12 rounded-lg bg-secondary px-6 font-semibold text-secondary-foreground"
+          >
+            Try again
+          </button>
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="h-12 rounded-lg border border-border px-6 font-semibold text-foreground"
+          >
+            Reload page
+          </button>
+        </div>
       </div>
     );
   }

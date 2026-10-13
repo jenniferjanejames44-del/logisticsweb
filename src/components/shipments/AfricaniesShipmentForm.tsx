@@ -491,6 +491,7 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
   const [matchedRule, setMatchedRule] = useState<PricingRuleV2 | null>(null);
   const [ngnRate, setNgnRate] = useState<number>(0);
   const [totals, setTotals] = useState<ShipmentTotals | null>(null);
+  const [totalsError, setTotalsError] = useState<string | null>(null);
   const [calculating, setCalculating] = useState(false);
   const [pricingError, setPricingError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -674,22 +675,36 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
 
   // Recompute totals whenever inputs change. Every box contributes its own
   // chargeable weight (max of actual vs volumetric) and its own packaging cost.
+  // The price can only be worked out once there is a weight; until then (e.g.
+  // while the visitor is still on the address steps) show no total instead of
+  // crashing the page.
   useEffect(() => {
-    const t = computeShipmentTotals({
-      packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
-      divisor: DEFAULT_VOLUMETRIC_DIVISOR,
-      items: [{ quantity: 1, weightKg: totalChargeableWeight, declaredValue: 0 }],
-      packagePrice: totalPackagePrice,
-      rule: pricingRule,
-      declaredValue: totalValue,
-    });
-    setTotals({
-      ...t,
-      actualWeight: Number(totalWeight.toFixed(2)),
-      volumetricWeight: Number(
-        resolvedBoxes.reduce((s, b) => s + b.volumetricWeight, 0).toFixed(2),
-      ),
-    });
+    if (pricingRule && !(totalChargeableWeight > 0)) {
+      setTotals(null);
+      setTotalsError(null);
+      return;
+    }
+    try {
+      const t = computeShipmentTotals({
+        packageDims: { length_cm: 0, width_cm: 0, height_cm: 0 },
+        divisor: DEFAULT_VOLUMETRIC_DIVISOR,
+        items: [{ quantity: 1, weightKg: totalChargeableWeight, declaredValue: 0 }],
+        packagePrice: totalPackagePrice,
+        rule: pricingRule,
+        declaredValue: totalValue,
+      });
+      setTotals({
+        ...t,
+        actualWeight: Number(totalWeight.toFixed(2)),
+        volumetricWeight: Number(
+          resolvedBoxes.reduce((s, b) => s + b.volumetricWeight, 0).toFixed(2),
+        ),
+      });
+      setTotalsError(null);
+    } catch (error) {
+      setTotals(null);
+      setTotalsError(error instanceof Error ? error.message : "Pricing is currently unavailable for this route and service.");
+    }
   }, [totalChargeableWeight, totalPackagePrice, pricingRule, totalValue, totalWeight, resolvedBoxes]);
 
   // ---------- Box helpers ----------
@@ -1620,7 +1635,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </>
                   ) : (
                     <p className="text-base font-medium text-white/80">
-                      Calculating your shipping rate…
+                      {totalsError
+                        ? totalsError
+                        : pricingRule && !(totalChargeableWeight > 0)
+                          ? "Add item weights or box dimensions to see your price."
+                          : "Calculating your shipping rate…"}
                     </p>
                   )}
                 </div>

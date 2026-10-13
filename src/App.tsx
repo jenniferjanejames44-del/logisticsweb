@@ -132,6 +132,11 @@ const ComingSoonGuard = ({ children }: { children: React.ReactNode }) => {
   return <ComingSoon />;
 };
 
+const RouteErrorBoundary = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  return <AppErrorBoundary resetKey={location.pathname}>{children}</AppErrorBoundary>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
@@ -144,7 +149,7 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <ComingSoonGuard>
-                <AppErrorBoundary>
+                <RouteErrorBoundary>
                 <React.Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -224,7 +229,7 @@ const App = () => (
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </React.Suspense>
-                </AppErrorBoundary>
+                </RouteErrorBoundary>
               </ComingSoonGuard>
             </BrowserRouter>
             </TooltipProvider>
