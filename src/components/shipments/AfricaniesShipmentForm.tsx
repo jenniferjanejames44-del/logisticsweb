@@ -1635,7 +1635,11 @@ export default function AfricaniesShipmentForm({ flow }: { flow: Flow }) {
                     </>
                   ) : (
                     <p className="text-base font-medium text-white/80">
-                      Calculating your shipping rate…
+                      {totalsError
+                        ? totalsError
+                        : pricingRule && !(totalChargeableWeight > 0)
+                          ? "Add item weights or box dimensions to see your price."
+                          : "Calculating your shipping rate…"}
                     </p>
                   )}
                 </div>
