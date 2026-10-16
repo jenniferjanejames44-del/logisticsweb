@@ -8,6 +8,13 @@
       "when": 1792137080891,
       "tag": "0000_sms_management_system",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792137501640,
+      "tag": "0001_grant_sms_helpers_to_service_role",
+      "breakpoints": true
     }
   ]
 }
