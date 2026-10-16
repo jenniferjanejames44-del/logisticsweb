@@ -1,5 +1,13 @@
 # Roadmap
 
+## SMS Management System (uploaded brief, Termii + BulkSMSNigeria)
+- [ ] DB schema: providers, templates, campaigns, messages, automation rules, contacts, suppressions, audit log
+- [ ] Provider abstraction (_shared/sms-providers.ts) — Termii primary, BulkSMSNigeria backup
+- [ ] Edge functions: sms-admin (settings/send/campaigns), process-sms-queue (automation worker)
+- [ ] Automation triggers: welcome, shipment created, status change, payment received
+- [ ] Admin SMS Center UI + sidebar + route
+- [ ] Verify build; real sending blocked until Termii API key is entered in Provider Settings
+
 - [x] Fix restricted-browser startup and older Safari UUID compatibility
 - [x] Verify homepage loading and navigation with browser restrictions
 
