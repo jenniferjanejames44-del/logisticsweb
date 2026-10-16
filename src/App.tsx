@@ -57,6 +57,7 @@ const AdminWarehouses = lazyPage(() => import("./pages/admin/AdminWarehouses"));
 const AdminPackaging = lazyPage(() => import("./pages/admin/AdminPackaging"));
 const AdminEmail = lazyPage(() => import("./pages/admin/AdminEmail"));
 const AdminEmailCenter = lazyPage(() => import("./pages/admin/AdminEmailCenter"));
+const AdminSMSCenter = lazyPage(() => import("./pages/admin/AdminSMSCenter"));
 const Unsubscribe = lazyPage(() => import("./pages/Unsubscribe"));
 const Invoices = lazyPage(() => import("./pages/dashboard/Invoices"));
 const PaymentCallback = lazyPage(() => import("./pages/dashboard/PaymentCallback"));
@@ -222,6 +223,7 @@ const App = () => (
                   <Route path="/admin/refunds" element={<AdminRefunds />} />
                   <Route path="/admin/email" element={<AdminEmail />} />
                   <Route path="/admin/email-center" element={<AdminEmailCenter />} />
+                  <Route path="/admin/sms" element={<AdminSMSCenter />} />
                   <Route path="/unsubscribe" element={<Unsubscribe />} />
                   {/* Design System */}
                   <Route path="/design-system" element={<DesignSystem />} />
