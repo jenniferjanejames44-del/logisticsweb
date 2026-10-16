@@ -27,6 +27,7 @@ import {
   Globe2,
   Mail,
   FileSignature,
+  Smartphone,
 } from "lucide-react";
 
 interface NavSection {
@@ -72,6 +73,7 @@ const navSections: NavSection[] = [
       { name: "Notifications", href: "/admin/notifications", icon: Bell },
       { name: "Email Campaigns", href: "/admin/email", icon: Mail },
       { name: "Email Center", href: "/admin/email-center", icon: Mail },
+      { name: "SMS Center", href: "/admin/sms", icon: Smartphone },
       { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     ],
   },
