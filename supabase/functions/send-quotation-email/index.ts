@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.91.1";
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { corsHeaders } from "../_shared/cors.ts";
 
 const SENDER_DOMAIN = "notify.raclogisticltd.com";
 const FROM = "RAC Logistics <info@raclogisticltd.com>";
@@ -40,15 +40,16 @@ Deno.serve(async (req) => {
     if (quoteError || !quote) return json({ error: "Quotation not found" }, 404);
     if (!quote.customer_email) return json({ error: "Customer email is missing" }, 400);
 
-    let path = quote.pdf_url as string | null;
-    if (!path) {
+    let path: string | null = null;
+    {
       const generated = await admin.functions.invoke("generate-quotation-pdf", { body: { quotation_id: quotationId }, headers: { Authorization: authHeader } });
-      if (generated.error) return json({ error: "Could not generate the quotation document" }, 500);
+      if (generated.error || generated.data?.error) return json({ error: "Could not generate the quotation document. Please try again." }, 500);
       path = typeof generated.data?.file_path === "string" ? generated.data.file_path : null;
     }
     let documentLink = "";
     if (path) {
-      const { data: signed } = await admin.storage.from("invoices").createSignedUrl(path, 60 * 60 * 24 * 30);
+      const { data: signed, error: linkError } = await admin.storage.from("invoices").createSignedUrl(path, 60 * 60 * 24 * 30);
+      if (linkError || !signed?.signedUrl) return json({ error: "Could not create the quotation download link. Please try again." }, 500);
       documentLink = signed?.signedUrl || "";
     }
     const validUntil = new Date(quote.valid_until).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
@@ -57,7 +58,7 @@ Deno.serve(async (req) => {
       : `<p style="margin:0 0 18px;line-height:1.6;">Please find your RAC Logistics quotation <strong>${escapeHtml(quote.quote_number)}</strong> below. Reply to this email if you have any questions.</p>`;
     const html = `<!doctype html><html><body style="margin:0;padding:0;background:#f4f6fb;font-family:Arial,sans-serif;color:#1d2433;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 12px;"><tr><td align="center"><table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#fff;border:1px solid #e2e8f0;"><tr><td style="background:#061043;color:#fff;padding:24px 28px;"><h1 style="margin:0;font-size:22px;">RAC LOGISTICS</h1><p style="margin:6px 0 0;font-size:12px;">Quotation / Invoice</p></td></tr><tr><td style="padding:28px;"><p style="margin:0 0 14px;">Hello ${escapeHtml(quote.customer_name)},</p>${customMessage}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:18px 0;font-size:14px;"><tr><td style="padding:8px 0;color:#666;">Quote #</td><td align="right" style="font-weight:700;">${escapeHtml(quote.quote_number)}</td></tr><tr><td style="padding:8px 0;color:#666;">Valid Until</td><td align="right" style="font-weight:700;">${escapeHtml(validUntil)}</td></tr><tr><td style="padding:14px 0;border-top:2px solid #061043;font-weight:800;">Total</td><td align="right" style="padding:14px 0;border-top:2px solid #061043;color:#DF5101;font-weight:800;font-size:18px;">${escapeHtml(fmtMoney(quote.total, quote.currency))}</td></tr></table>${documentLink ? `<p style="text-align:center;margin:24px 0;"><a href="${escapeHtml(documentLink)}" style="background:#DF5101;color:#fff;text-decoration:none;font-weight:700;padding:13px 22px;display:inline-block;">View / Download Quotation</a></p>` : ""}<p style="margin:24px 0 0;font-size:12px;color:#777;line-height:1.6;">RAC Logistics Ltd · 29b Osolo Way, Ajao Estate, Lagos<br/>info@raclogisticltd.com · +234 818 595 6707</p></td></tr></table></td></tr></table></body></html>`;
 
-    const messageId = `quotation-${quote.id}-${String(quote.updated_at || quote.created_at || "original").replace(/[^0-9]/g, "").slice(0, 18)}`;
+    const messageId = `quotation-${quote.id}-${crypto.randomUUID()}`;
     const recipient = String(quote.customer_email).trim().toLowerCase();
     const subject = `Your RAC Logistics Quotation ${quote.quote_number}`;
     const { error: enqueueError } = await admin.rpc("enqueue_email", { queue_name: "transactional_emails", payload: { message_id: messageId, to: recipient, from: FROM, sender_domain: SENDER_DOMAIN, subject, html, text: `Hello ${quote.customer_name}, your quotation ${quote.quote_number} is ready. Total: ${fmtMoney(quote.total, quote.currency)}. Valid until ${validUntil}.${documentLink ? ` View it here: ${documentLink}` : ""} Contact: info@raclogisticltd.com`, purpose: "transactional", label: "quotation_email", idempotency_key: messageId, queued_at: new Date().toISOString() } });

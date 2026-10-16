@@ -6,3 +6,4 @@
 - Bundle only countries and states; serve cities as per-country files under public/geo/cities (regenerate with scripts/build-geo-data.mjs) and load them on demand, because the full world city list froze and crashed iPhones.
 - Never let on-screen price previews throw during render or effects; catch pricing errors and show a message, since one thrown error replaces the whole page with the error screen.
 - The page error screen resets on navigation and patches DOM removeChild/insertBefore at startup, so browser page-translation cannot crash React.
+- Quotation emails save the current form before queueing and use local shared CORS headers; this avoids stale recipients/documents and unsupported SDK subpath imports.

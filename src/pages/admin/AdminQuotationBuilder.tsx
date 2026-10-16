@@ -15,6 +15,7 @@ import {
   MessageCircle, Mail, FileText,
 } from "lucide-react";
 import { formatMoney, type Quotation, type QuoteLineItem } from "@/lib/quotations";
+import { sendQuotationEmail } from "@/lib/quotationEmail";
 import PdfPreviewDialog from "@/components/admin/quotations/PdfPreviewDialog";
 import WhatsAppShareDialog from "@/components/admin/quotations/WhatsAppShareDialog";
 
@@ -202,9 +203,10 @@ const AdminQuotationBuilder = () => {
     try {
       const payload = buildPayload(status);
       let saved: Quotation;
-      if (isEdit && id) {
+      const existingId = id || savedQuote?.id;
+      if (existingId) {
         const { data, error } = await (supabase as any)
-          .from("quotations").update(payload).eq("id", id).select().single();
+          .from("quotations").update(payload).eq("id", existingId).select().single();
         if (error) throw error;
         saved = data as Quotation;
       } else {
@@ -237,17 +239,17 @@ const AdminQuotationBuilder = () => {
   };
 
   const handleEmail = async () => {
-    if (!form.customer_email) { toast.error("Add a customer email first"); return; }
-    const q = savedQuote || (await save("sent"));
-    if (!q) return;
+    if (emailing || saving) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customer_email.trim())) {
+      toast.error("Enter a valid customer email first"); return;
+    }
     setEmailing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("send-quotation-email", {
-        body: { quotation_id: q.id },
-      });
-      if (error) throw error;
-      if ((data as any)?.error) throw new Error((data as any).error);
-      toast.success("Quotation queued for immediate delivery");
+      const q = await save();
+      if (!q) return;
+      await sendQuotationEmail(q.id);
+      setSavedQuote({ ...q, status: "sent", sent_at: new Date().toISOString() });
+      toast.success(`Quotation email queued for ${q.customer_email}`);
     } catch (e: any) {
       toast.error(e.message || "Failed to send email");
     } finally {
