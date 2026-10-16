@@ -14,10 +14,22 @@ Deno.serve(async (req) => {
 
   const service = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-  // Two legitimate callers: the database cron wake (Lovable-Context: cron) and
-  // signed-in admins triggering a manual drain from the dashboard.
+  // Two legitimate callers: the database cron wake (Lovable-Context: cron plus
+  // the internal worker token) and signed-in admins triggering a manual drain.
+  // The Lovable-Context header alone is spoofable, so cron callers must also
+  // present the random token stored in sms_internal_config.
   const isCronWake = (req.headers.get("Lovable-Context") || "").toLowerCase() === "cron";
-  if (!isCronWake) {
+  if (isCronWake) {
+    const presented = req.headers.get("X-SMS-Worker-Token") || "";
+    const { data: cfg } = await service
+      .from("sms_internal_config")
+      .select("value")
+      .eq("key", "worker_token")
+      .maybeSingle();
+    if (!cfg?.value || presented !== cfg.value) {
+      return json({ error: "Forbidden" }, 403);
+    }
+  } else {
     const token = (req.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
     const { data: userData } = token ? await service.auth.getUser(token) : { data: { user: null } };
     if (!userData?.user) return json({ error: "Authentication required" }, 401);
