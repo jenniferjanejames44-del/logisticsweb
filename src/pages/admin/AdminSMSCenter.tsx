@@ -47,7 +47,7 @@ const DeleteConfirmDialog = ({ open, onOpenChange, onConfirm, title, description
   </AlertDialog>
 );
 import {
-  Smartphone, Send, RefreshCw, Wallet, Plug, Users, FileText, History, ShieldBan,
+  Smartphone, Send, RefreshCw, Wallet, Users, FileText, History, ShieldBan,
   ScrollText, Zap, Megaphone, LayoutDashboard, Plus, Search, CheckCircle2, XCircle, Clock,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -193,106 +193,6 @@ const AdminSMSCenter = () => {
     </Card>
   );
 
-  // ---------- Providers tab ----------
-  const ProviderCard = ({ p }: { p: SmsProvider }) => {
-    const [form, setForm] = useState({ api_key: "", sender_id: p.sender_id || "", base_url: p.base_url, notes: p.notes || "" });
-    const [busy, setBusy] = useState<string | null>(null);
-    const [balance, setBalance] = useState<{ balance?: number; currency?: string } | null>(
-      p.last_balance !== null ? { balance: p.last_balance, currency: p.balance_currency || undefined } : null,
-    );
-
-    const run = async (label: string, fn: () => Promise<unknown>, okMsg?: string) => {
-      setBusy(label);
-      try {
-        await fn();
-        if (okMsg) toast({ title: okMsg });
-        await loadAll();
-      } catch (e) {
-        toast({ title: "Action failed", description: (e as Error).message, variant: "destructive" });
-      }
-      setBusy(null);
-    };
-
-    return (
-      <Card className="border-border/50">
-        <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <CardTitle className="text-base">{p.display_name}</CardTitle>
-            {p.is_primary && <Badge>Primary</Badge>}
-            {p.is_backup && <Badge variant="outline">Backup</Badge>}
-            {p.is_active ? <Badge variant="successOutline">Active</Badge> : <Badge variant="outline">Disabled</Badge>}
-            {p.last_check_status && (
-              <span className={`text-xs flex items-center gap-1 ${p.last_check_status === "ok" ? "text-success" : "text-destructive"}`}>
-                {p.last_check_status === "ok" ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                Last check {p.last_check_at ? format(new Date(p.last_check_at), "MMM d, HH:mm") : ""}
-              </span>
-            )}
-          </div>
-          {p.notes && <p className="text-xs text-muted-foreground">{p.notes}</p>}
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <Label className="text-xs">API Key {p.has_api_key ? `(saved: ${p.api_key})` : "(not set)"}</Label>
-              <Input type="password" placeholder={p.has_api_key ? "Enter new key to replace" : "Paste API key"} value={form.api_key}
-                onChange={(e) => setForm({ ...form, api_key: e.target.value })} />
-            </div>
-            <div className="space-y-1">
-              <Label className="text-xs">Sender ID (3–11 characters)</Label>
-              <Input value={form.sender_id} maxLength={11} onChange={(e) => setForm({ ...form, sender_id: e.target.value })} />
-            </div>
-            <div className="space-y-1 sm:col-span-2">
-              <Label className="text-xs">Base URL</Label>
-              <Input value={form.base_url} onChange={(e) => setForm({ ...form, base_url: e.target.value })} />
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Button size="sm" disabled={busy !== null} onClick={() => run("save", () =>
-              smsCall("save_provider", { provider_key: p.provider_key, api_key: form.api_key, sender_id: form.sender_id, base_url: form.base_url }), "Provider saved")}>
-              {busy === "save" ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : "Save"}
-            </Button>
-            <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => run("test", () =>
-              smsCall("test_connection", { provider_key: p.provider_key }).then((r) => {
-                if (!r.ok) throw new Error(r.error || "Connection failed");
-                toast({ title: "Connection OK" });
-              }))}>
-              <Plug className="w-3.5 h-3.5 mr-1" /> Test Connection
-            </Button>
-            <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => run("balance", async () => {
-              const r = await smsCall("get_balance", { provider_key: p.provider_key });
-              if (r.supported === false) { toast({ title: "Not supported by this provider" }); return; }
-              if (r.error) throw new Error(r.error);
-              setBalance({ balance: r.balance, currency: r.currency });
-            })}>
-              <Wallet className="w-3.5 h-3.5 mr-1" /> Check Balance
-            </Button>
-            {!p.is_primary && (
-              <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => run("primary", () =>
-                smsCall("set_role", { provider_key: p.provider_key, role: "primary" }), `${p.display_name} is now the primary provider`)}>
-                Set Primary
-              </Button>
-            )}
-            {!p.is_backup && !p.is_primary && (
-              <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => run("backup", () =>
-                smsCall("set_role", { provider_key: p.provider_key, role: "backup" }), `${p.display_name} is now the backup provider`)}>
-                Set Backup
-              </Button>
-            )}
-            <div className="flex items-center gap-2 ml-auto">
-              <Label className="text-xs">Enabled</Label>
-              <Switch checked={p.is_active} disabled={busy !== null} onCheckedChange={(v) => run("toggle", () =>
-                smsCall("save_provider", { provider_key: p.provider_key, is_active: v }))} />
-            </div>
-          </div>
-          {balance && (
-            <p className="text-sm text-muted-foreground">
-              Balance: <span className="font-semibold text-foreground">{balance.balance ?? "—"} {balance.currency || ""}</span>
-            </p>
-          )}
-        </CardContent>
-      </Card>
-    );
-  };
 
   // ---------- Send SMS tab ----------
   const SendTab = () => {
