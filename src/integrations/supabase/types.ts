@@ -2023,6 +2023,21 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_internal_config: {
+        Row: {
+          key: string
+          value: string
+        }
+        Insert: {
+          key: string
+          value: string
+        }
+        Update: {
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
       sms_messages: {
         Row: {
           body: string
