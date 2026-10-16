@@ -7,7 +7,7 @@
 - [x] Automation triggers: welcome, shipment created, status change, payment received
 - [x] Admin SMS Center UI + sidebar + route (verified signed-in in preview)
 - [x] Queue pipeline self-test: enqueue → wake → drain → cron unschedules; forged worker calls rejected
-- [ ] Real sending: paste Termii API key in SMS Center → Providers, then Test Connection (blocked on credentials)
+- [ ] Real sending: Termii API key must be stored for you (Providers tab is hidden from the admin UI by request), then Test Connection (blocked on credentials)
 
 - [x] Fix restricted-browser startup and older Safari UUID compatibility
 - [x] Verify homepage loading and navigation with browser restrictions
