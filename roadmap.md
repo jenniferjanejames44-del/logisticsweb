@@ -1,5 +1,9 @@
 # Roadmap
 
+## Quotation email repair
+- [x] Diagnose and fix quotation email errors
+- [x] Verify signed-in quotation save → email queue → delivery status (company inbox test; provider accepted)
+
 ## SMS Management System (uploaded brief, Termii + BulkSMSNigeria)
 - [x] DB schema: providers, templates, campaigns, messages, automation rules, contacts, suppressions, audit log
 - [x] Provider abstraction (_shared/sms-providers.ts) — Termii primary, BulkSMSNigeria backup
