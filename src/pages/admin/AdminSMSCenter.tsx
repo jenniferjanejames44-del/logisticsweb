@@ -862,11 +862,10 @@ const AdminSMSCenter = () => {
   );
 
   return (
-    <AdminLayout title="SMS Center" description="Send SMS, manage providers, campaigns, automation and consent">
+    <AdminLayout title="SMS Center" description="Send SMS, campaigns, automation and consent">
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="flex flex-wrap h-auto gap-1 mb-4">
           <TabsTrigger value="overview"><LayoutDashboard className="w-3.5 h-3.5 mr-1" />Overview</TabsTrigger>
-          <TabsTrigger value="providers"><Plug className="w-3.5 h-3.5 mr-1" />Providers</TabsTrigger>
           <TabsTrigger value="send"><Send className="w-3.5 h-3.5 mr-1" />Send SMS</TabsTrigger>
           <TabsTrigger value="campaigns"><Megaphone className="w-3.5 h-3.5 mr-1" />Campaigns</TabsTrigger>
           <TabsTrigger value="automation"><Zap className="w-3.5 h-3.5 mr-1" />Automation</TabsTrigger>
@@ -930,12 +929,6 @@ const AdminSMSCenter = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="providers">
-          <div className="space-y-4">
-            {providers.map((p) => <ProviderCard key={p.id} p={p} />)}
-            {providers.length === 0 && !loading && <p className="text-sm text-muted-foreground">No providers configured.</p>}
-          </div>
-        </TabsContent>
         <TabsContent value="send"><SendTab /></TabsContent>
         <TabsContent value="campaigns"><CampaignsTab /></TabsContent>
         <TabsContent value="automation"><AutomationTab /></TabsContent>
