@@ -777,12 +777,7 @@ const AdminSMSCenter = () => {
         </TabsList>
 
         <TabsContent value="overview">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Smartphone className="w-4 h-4" />
-              Active provider: <span className="font-semibold text-foreground">{primary ? primary.display_name : "None configured"}</span>
-              {primary?.last_check_status === "ok" && <Badge variant="successOutline">Connected</Badge>}
-            </div>
+          <div className="flex items-center justify-end mb-4">
             <div className="flex items-center gap-2">
               <Select value={range} onValueChange={setRange}>
                 <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
@@ -801,7 +796,7 @@ const AdminSMSCenter = () => {
             <StatCard label="Delivered (range)" value={stats.delivered} icon={CheckCircle2} hint="Where the provider reports it" />
             <StatCard label="Failed (range)" value={stats.failed} icon={XCircle} />
             <StatCard label="Pending (range)" value={stats.pending} icon={Clock} />
-            <StatCard label="Balance" value={primary?.last_balance !== null && primary?.last_balance !== undefined ? `${primary.last_balance} ${primary.balance_currency || ""}` : "—"} icon={Wallet} hint={primary ? primary.display_name : undefined} />
+            <StatCard label="Balance" value={primary?.last_balance !== null && primary?.last_balance !== undefined ? `${primary.last_balance} ${primary.balance_currency || ""}` : "—"} icon={Wallet} />
             <StatCard label="Marketing subscribers" value={stats.subscribers} icon={Users} />
             <StatCard label="Opted out / suppressed" value={stats.optedOut} icon={ShieldBan} />
             <StatCard label="Active automation rules" value={stats.activeRules} icon={Zap} />
