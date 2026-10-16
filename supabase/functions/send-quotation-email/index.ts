@@ -46,12 +46,10 @@ Deno.serve(async (req) => {
       if (generated.error || generated.data?.error) return json({ error: "Could not generate the quotation document. Please try again." }, 500);
       path = typeof generated.data?.file_path === "string" ? generated.data.file_path : null;
     }
-    let documentLink = "";
-    if (path) {
-      const { data: signed, error: linkError } = await admin.storage.from("invoices").createSignedUrl(path, 60 * 60 * 24 * 30);
-      if (linkError || !signed?.signedUrl) return json({ error: "Could not create the quotation download link. Please try again." }, 500);
-      documentLink = signed?.signedUrl || "";
-    }
+    const SITE_URL = "https://raclogisticltd.com";
+    const documentLink = path && quote.view_token
+      ? `${SITE_URL}/quotation/view?id=${encodeURIComponent(quote.id)}&token=${encodeURIComponent(quote.view_token)}`
+      : "";
     const validUntil = new Date(quote.valid_until).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
     const customMessage = typeof body?.message === "string" && body.message.trim()
       ? `<p style="margin:0 0 18px;line-height:1.6;">${escapeHtml(body.message.trim()).replace(/\n/g, "<br/>")}</p>`

@@ -59,6 +59,7 @@ const AdminEmail = lazyPage(() => import("./pages/admin/AdminEmail"));
 const AdminEmailCenter = lazyPage(() => import("./pages/admin/AdminEmailCenter"));
 const AdminSMSCenter = lazyPage(() => import("./pages/admin/AdminSMSCenter"));
 const Unsubscribe = lazyPage(() => import("./pages/Unsubscribe"));
+const QuotationView = lazyPage(() => import("./pages/QuotationView"));
 const Invoices = lazyPage(() => import("./pages/dashboard/Invoices"));
 const PaymentCallback = lazyPage(() => import("./pages/dashboard/PaymentCallback"));
 const Support = lazyPage(() => import("./pages/dashboard/Support"));
@@ -182,6 +183,7 @@ const App = () => (
                   <Route path="/partners" element={<Partners />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/quotation/view" element={<QuotationView />} />
                   {/* Customer Dashboard */}
                   <Route path="/dashboard" element={<Overview />} />
                   <Route path="/dashboard/wallet" element={<Wallet />} />
