@@ -882,7 +882,6 @@ const AdminSMSCenter = () => {
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Smartphone className="w-4 h-4" />
               Active provider: <span className="font-semibold text-foreground">{primary ? primary.display_name : "None configured"}</span>
-              {primary && !primary.has_api_key && <Badge variant="destructive">API key missing</Badge>}
               {primary?.last_check_status === "ok" && <Badge variant="successOutline">Connected</Badge>}
             </div>
             <div className="flex items-center gap-2">
@@ -896,11 +895,6 @@ const AdminSMSCenter = () => {
               <Button variant="outline" size="iconSm" onClick={loadAll}><RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /></Button>
             </div>
           </div>
-          {!loading && primary && !primary.has_api_key && (
-            <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-              No SMS provider API key is configured yet. Open the <button className="underline font-medium" onClick={() => setTab("providers")}>Providers tab</button> and paste your {primary.display_name} API key to start sending real SMS.
-            </div>
-          )}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
             <StatCard label="Sent today" value={stats.sentToday} icon={Send} />
             <StatCard label="Sent this month" value={stats.sentMonth} icon={Send} />
