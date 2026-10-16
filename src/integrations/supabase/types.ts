@@ -1863,6 +1863,339 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_audit_log: {
+        Row: {
+          action: string
+          admin_user_id: string | null
+          created_at: string
+          details: Json | null
+          id: string
+        }
+        Insert: {
+          action: string
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          admin_user_id?: string | null
+          created_at?: string
+          details?: Json | null
+          id?: string
+        }
+        Relationships: []
+      }
+      sms_automation_rules: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          template_id: string | null
+          trigger_event: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          template_id?: string | null
+          trigger_event: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          template_id?: string | null
+          trigger_event?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_automation_rules_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "sms_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sms_campaigns: {
+        Row: {
+          audience: string
+          created_at: string
+          created_by: string | null
+          failed_count: number
+          id: string
+          manual_phones: string[] | null
+          message: string
+          name: string
+          scheduled_at: string | null
+          sent_at: string | null
+          sent_count: number
+          status: string
+          template_id: string | null
+          total_recipients: number
+          updated_at: string
+        }
+        Insert: {
+          audience?: string
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number
+          id?: string
+          manual_phones?: string[] | null
+          message: string
+          name: string
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number
+          status?: string
+          template_id?: string | null
+          total_recipients?: number
+          updated_at?: string
+        }
+        Update: {
+          audience?: string
+          created_at?: string
+          created_by?: string | null
+          failed_count?: number
+          id?: string
+          manual_phones?: string[] | null
+          message?: string
+          name?: string
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number
+          status?: string
+          template_id?: string | null
+          total_recipients?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_campaigns_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "sms_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sms_contacts: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          marketing_opt_in: boolean
+          opted_out_at: string | null
+          phone: string
+          source: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          marketing_opt_in?: boolean
+          opted_out_at?: string | null
+          phone: string
+          source?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          marketing_opt_in?: boolean
+          opted_out_at?: string | null
+          phone?: string
+          source?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      sms_messages: {
+        Row: {
+          body: string
+          campaign_id: string | null
+          contact_name: string | null
+          created_at: string
+          created_by: string | null
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          message_type: string
+          phone: string
+          provider_key: string | null
+          provider_message_id: string | null
+          sent_at: string | null
+          source: string
+          status: string
+        }
+        Insert: {
+          body: string
+          campaign_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          message_type?: string
+          phone: string
+          provider_key?: string | null
+          provider_message_id?: string | null
+          sent_at?: string | null
+          source?: string
+          status?: string
+        }
+        Update: {
+          body?: string
+          campaign_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          created_by?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          message_type?: string
+          phone?: string
+          provider_key?: string | null
+          provider_message_id?: string | null
+          sent_at?: string | null
+          source?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_messages_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "sms_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sms_providers: {
+        Row: {
+          api_key: string | null
+          balance_currency: string | null
+          base_url: string
+          created_at: string
+          display_name: string
+          id: string
+          is_active: boolean
+          is_backup: boolean
+          is_primary: boolean
+          last_balance: number | null
+          last_check_at: string | null
+          last_check_status: string | null
+          notes: string | null
+          provider_key: string
+          sender_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          api_key?: string | null
+          balance_currency?: string | null
+          base_url: string
+          created_at?: string
+          display_name: string
+          id?: string
+          is_active?: boolean
+          is_backup?: boolean
+          is_primary?: boolean
+          last_balance?: number | null
+          last_check_at?: string | null
+          last_check_status?: string | null
+          notes?: string | null
+          provider_key: string
+          sender_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          api_key?: string | null
+          balance_currency?: string | null
+          base_url?: string
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_active?: boolean
+          is_backup?: boolean
+          is_primary?: boolean
+          last_balance?: number | null
+          last_check_at?: string | null
+          last_check_status?: string | null
+          notes?: string | null
+          provider_key?: string
+          sender_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sms_suppressions: {
+        Row: {
+          created_at: string
+          id: string
+          phone: string
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phone: string
+          reason?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phone?: string
+          reason?: string
+        }
+        Relationships: []
+      }
+      sms_templates: {
+        Row: {
+          body: string
+          category: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       support_ticket_attachments: {
         Row: {
           created_at: string
@@ -2268,6 +2601,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      enqueue_sms: { Args: { payload: Json }; Returns: number }
       get_zone_by_country: {
         Args: { _iso_code: string }
         Returns: {
@@ -2304,6 +2638,8 @@ export type Database = {
           read_ct: number
         }[]
       }
+      sms_queue_dispatch: { Args: never; Returns: undefined }
+      sms_worker_wake: { Args: never; Returns: undefined }
       track_shipment_public: {
         Args: { tracking_num: string }
         Returns: {
