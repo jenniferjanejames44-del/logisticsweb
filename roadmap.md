@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Termii sending repair
-- [ ] Correct Nigerian local mobile-number formatting and verify provider payloads
+- [x] Correct Nigerian local mobile-number formatting; nine regression tests pass including bulk provider payloads; both SMS functions deployed; website build OK
 - [x] Use the saved Termii secret for manual, campaign, and automated SMS configuration checks
 - [x] Five regression tests pass; deployed Termii connection accepted from the signed-in SMS page; website build OK
 - [ ] Confirm live SMS delivery — requires an approved recipient/test send; no customer messages sent during verification
