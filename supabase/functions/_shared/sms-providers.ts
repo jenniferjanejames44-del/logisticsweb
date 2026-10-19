@@ -220,16 +220,26 @@ class BulkSmsNigeriaProvider implements SmsProvider {
   }
 }
 
-export function getSmsProvider(config: SmsProviderConfig): SmsProvider {
+export function resolveSmsProviderConfig(config: SmsProviderConfig): SmsProviderConfig {
   // Fall back to securely stored secrets when the provider record has no key,
   // so credentials never have to live in the database.
   if (!config.api_key) {
     const secretName =
       config.provider_key === "termii" ? "TERMII_API_KEY" :
       config.provider_key === "bulksmsnigeria" ? "BULKSMS_NIGERIA_API_TOKEN" : null;
-    const secretValue = secretName ? Deno.env.get(secretName) : undefined;
+    const runtime = globalThis as typeof globalThis & { Deno?: { env: { get(name: string): string | undefined } } };
+    const secretValue = secretName ? runtime.Deno?.env.get(secretName) : undefined;
     if (secretValue) config = { ...config, api_key: secretValue };
   }
+  return config;
+}
+
+export function hasSmsProviderKey(config: SmsProviderConfig): boolean {
+  return Boolean(resolveSmsProviderConfig(config).api_key);
+}
+
+export function getSmsProvider(config: SmsProviderConfig): SmsProvider {
+  config = resolveSmsProviderConfig(config);
   switch (config.provider_key) {
     case "termii":
       return new TermiiSmsProvider(config);
