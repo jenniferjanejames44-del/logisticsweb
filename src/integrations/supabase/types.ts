@@ -1398,6 +1398,7 @@ export type Database = {
           user_id: string | null
           valid_until: string
           vat: number
+          view_token: string
           warehouse_country: string | null
           weight_kg: number
           width_cm: number | null
@@ -1449,6 +1450,7 @@ export type Database = {
           user_id?: string | null
           valid_until?: string
           vat?: number
+          view_token?: string
           warehouse_country?: string | null
           weight_kg?: number
           width_cm?: number | null
@@ -1500,6 +1502,7 @@ export type Database = {
           user_id?: string | null
           valid_until?: string
           vat?: number
+          view_token?: string
           warehouse_country?: string | null
           weight_kg?: number
           width_cm?: number | null
