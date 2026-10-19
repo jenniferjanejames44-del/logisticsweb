@@ -25,12 +25,12 @@ const HeroSection = () => {
         preload="auto"
         poster={heroPoster}
         disablePictureInPicture
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
+        className="absolute inset-0 w-full h-full object-cover"
       >
         <source src={heroVideo} type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,16,67,0.6),rgba(6,16,67,0.75))]" />
+      <div className="home-hero-overlay absolute inset-0" />
 
       <div className="section-container relative z-10 pb-10 pt-24 sm:pb-14 sm:pt-28 md:pb-16 md:pt-32 lg:py-36">
         <div className="mx-auto max-w-[820px] text-center animate-fade-in-soft">
