@@ -31,6 +31,8 @@ const HeroSection = () => {
       </video>
 
       <div className="home-hero-overlay absolute inset-0" />
+      <div className="home-hero-scrim pointer-events-none absolute inset-0" />
+
 
       <div className="section-container relative z-10 pb-10 pt-24 sm:pb-14 sm:pt-28 md:pb-16 md:pt-32 lg:py-36">
         <div className="mx-auto max-w-[820px] text-center animate-fade-in-soft">
@@ -38,7 +40,7 @@ const HeroSection = () => {
           <div className={`mb-6 transition-all duration-500 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}>
-            <span className="page-hero-badge">
+            <span className="home-hero-badge">
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/15">
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               </span>
@@ -47,7 +49,7 @@ const HeroSection = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className={`mb-8 transition-all duration-700 ${
+          <h1 className={`home-hero-heading mb-8 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             <span className="text-white block leading-[1.05]">Global Logistics.</span>
@@ -55,7 +57,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className={`hero-subtext mb-6 max-w-2xl text-[1.05rem] font-medium leading-relaxed transition-all duration-700 delay-150 sm:text-[1.125rem] md:text-[1.25rem] ${
+          <p className={`home-hero-subtext mb-6 max-w-2xl text-[1.05rem] font-semibold leading-relaxed transition-all duration-700 delay-150 sm:text-[1.125rem] md:text-[1.25rem] ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}>
             Your trusted partner for seamless shipping solutions across 150+ countries. 
