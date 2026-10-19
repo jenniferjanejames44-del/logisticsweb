@@ -1,5 +1,9 @@
 # Roadmap
 
+## Termii sending repair
+- [ ] Use the saved Termii secret for manual, campaign, and automated SMS configuration checks
+- [ ] Run regression checks and verify the deployed connection and sending path
+
 ## Quotation email repair
 - [x] Diagnose and fix quotation email errors
 - [x] Verify signed-in quotation save → email queue → delivery status (company inbox test; provider accepted)
