@@ -45,9 +45,12 @@ export interface SmsProvider {
   testConnection(): Promise<{ ok: boolean; error?: string }>;
 }
 
-/** Normalize a phone number to international digits only (e.g. +234 801 234 5678 -> 2348012345678). */
+/** Normalize international numbers and Nigerian local mobile numbers for SMS. */
 export function normalizePhone(raw: string): string {
-  return (raw || "").replace(/[^\d]/g, "").replace(/^0+/, (m) => (m.length > 1 ? "0" : m));
+  const digits = (raw || "").replace(/[^\d]/g, "");
+  if (/^0[789]\d{9}$/.test(digits)) return `234${digits.slice(1)}`;
+  if (digits.startsWith("00")) return digits.slice(2);
+  return digits;
 }
 
 function baseUrl(config: SmsProviderConfig): string {
