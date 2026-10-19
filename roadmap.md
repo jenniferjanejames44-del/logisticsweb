@@ -1,8 +1,9 @@
 # Roadmap
 
 ## Termii sending repair
-- [ ] Use the saved Termii secret for manual, campaign, and automated SMS configuration checks
-- [ ] Run regression checks and verify the deployed connection and sending path
+- [x] Use the saved Termii secret for manual, campaign, and automated SMS configuration checks
+- [x] Five regression tests pass; deployed Termii connection accepted from the signed-in SMS page; website build OK
+- [ ] Confirm live SMS delivery — requires an approved recipient/test send; no customer messages sent during verification
 
 ## Quotation email repair
 - [x] Diagnose and fix quotation email errors
