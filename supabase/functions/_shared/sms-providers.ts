@@ -227,7 +227,8 @@ export function resolveSmsProviderConfig(config: SmsProviderConfig): SmsProvider
     const secretName =
       config.provider_key === "termii" ? "TERMII_API_KEY" :
       config.provider_key === "bulksmsnigeria" ? "BULKSMS_NIGERIA_API_TOKEN" : null;
-    const secretValue = secretName ? Deno.env.get(secretName) : undefined;
+    const runtime = globalThis as typeof globalThis & { Deno?: { env: { get(name: string): string | undefined } } };
+    const secretValue = secretName ? runtime.Deno?.env.get(secretName) : undefined;
     if (secretValue) config = { ...config, api_key: secretValue };
   }
   return config;
