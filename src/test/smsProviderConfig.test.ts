@@ -1,9 +1,38 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getSmsProvider, hasSmsProviderKey, resolveSmsProviderConfig } from "../../supabase/functions/_shared/sms-providers";
+import { getSmsProvider, hasSmsProviderKey, normalizePhone, resolveSmsProviderConfig } from "../../supabase/functions/_shared/sms-providers";
 
 const config = { provider_key: "termii", api_key: null, sender_id: "RACLOGISTIC", base_url: "https://api.ng.termii.com" };
 
 afterEach(() => vi.unstubAllGlobals());
+
+describe("SMS phone normalization", () => {
+  it("converts Nigerian local mobile numbers to international format", () => {
+    expect(normalizePhone("0800 000 0000")).toBe("2348000000000");
+    expect(normalizePhone("0900 000 0000")).toBe("2349000000000");
+    expect(normalizePhone("0700 000 0000")).toBe("2347000000000");
+  });
+  it("preserves international numbers and removes their dialling prefix", () => {
+    expect(normalizePhone("+234 800 000 0000")).toBe("2348000000000");
+    expect(normalizePhone("00234 800 000 0000")).toBe("2348000000000");
+    expect(normalizePhone("+44 7700 900000")).toBe("447700900000");
+  });
+  it("does not invent country codes for incomplete or non-Nigerian local numbers", () => {
+    expect(normalizePhone("0800")).toBe("0800");
+    expect(normalizePhone("02012345678")).toBe("02012345678");
+    expect(normalizePhone("")).toBe("");
+  });
+  it("sends normalized local recipients to the provider", async () => {
+    vi.stubGlobal("Deno", { env: { get: () => "synthetic-test-credential" } });
+    let sentRecipients: string[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (_url: string, init: RequestInit) => {
+      sentRecipients = JSON.parse(String(init.body)).to;
+      return new Response(JSON.stringify({ message_id: "test-message" }));
+    }));
+    const result = await getSmsProvider(config).sendSms(["08000000000", "09000000000"], "Regression test", "transactional");
+    expect(result.ok).toBe(true);
+    expect(sentRecipients).toEqual(["2348000000000", "2349000000000"]);
+  });
+});
 
 describe("SMS secret-backed configuration", () => {
   it("accepts a saved Termii secret with no database key for sending checks", () => {

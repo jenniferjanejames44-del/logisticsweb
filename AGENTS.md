@@ -8,3 +8,4 @@
 - The page error screen resets on navigation and patches DOM removeChild/insertBefore at startup, so browser page-translation cannot crash React.
 - Quotation emails save the current form before queueing and use local shared CORS headers; this avoids stale recipients/documents and unsupported SDK subpath imports.
 - Resolve SMS credentials through the shared server-only provider configuration for validation and delivery alike; this keeps secret-backed providers usable across manual sends, campaigns, and automation without returning credentials to browsers.
+- Normalize SMS recipient and suppression numbers with the shared provider helper before sending or comparing them; this prevents local and international representations from bypassing suppressions or failing provider validation.
