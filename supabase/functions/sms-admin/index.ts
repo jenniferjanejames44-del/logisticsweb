@@ -1,15 +1,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
-import { getSmsProvider, normalizePhone, renderTemplate, SmsProviderConfig } from "../_shared/sms-providers.ts";
+import { getSmsProvider, hasSmsProviderKey, normalizePhone, renderTemplate, SmsProviderConfig } from "../_shared/sms-providers.ts";
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-
-function maskKey(key: string | null): string | null {
-  if (!key) return null;
-  if (key.length <= 4) return "••••";
-  return "••••••••" + key.slice(-4);
-}
 
 async function requireAdmin(req: Request, service: ReturnType<typeof createClient>) {
   const authHeader = req.headers.get("Authorization") || "";
@@ -36,7 +30,7 @@ async function getActiveProvider(service: ReturnType<typeof createClient>) {
   if (error) throw new Error(error.message);
   const primary = (providers || []).find((p) => p.is_primary) || (providers || [])[0];
   if (!primary) throw new Error("No active SMS provider configured");
-  if (!primary.api_key) throw new Error(`${primary.display_name} API key is not configured yet`);
+  if (!hasSmsProviderKey(primary)) throw new Error(`${primary.display_name} API key is not configured yet`);
   return primary;
 }
 
@@ -104,7 +98,8 @@ Deno.serve(async (req) => {
   try {
     const auth = await requireAdmin(req, service);
     if ("error" in auth) return auth.error;
-    const adminUserId = auth.userId!;
+    const adminUserId = auth.userId;
+    if (!adminUserId) return json({ error: "Authentication required" }, 401);
 
     const body = await req.json().catch(() => ({}));
     const action = String(body.action || "");
@@ -116,8 +111,8 @@ Deno.serve(async (req) => {
         return json({
           providers: (data || []).map((p) => ({
             ...p,
-            api_key: maskKey(p.api_key),
-            has_api_key: Boolean(p.api_key),
+            api_key: null,
+            has_api_key: hasSmsProviderKey(p),
           })),
         });
       }

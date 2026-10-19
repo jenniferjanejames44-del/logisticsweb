@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders } from "../_shared/cors.ts";
-import { getSmsProvider, normalizePhone, renderTemplate } from "../_shared/sms-providers.ts";
+import { getSmsProvider, hasSmsProviderKey, normalizePhone, renderTemplate } from "../_shared/sms-providers.ts";
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -95,7 +95,7 @@ Deno.serve(async (req) => {
 
       const bodyText = renderTemplate(rule.template.body, payload as Record<string, unknown>);
 
-      if (!providerRow || !providerRow.api_key) {
+      if (!providerRow || !hasSmsProviderKey(providerRow)) {
         // Provider not configured yet: keep the message for retry until attempts run out.
         if (item.read_ct >= MAX_ATTEMPTS) {
           await service.from("sms_messages").insert({
