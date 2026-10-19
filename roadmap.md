@@ -1,8 +1,8 @@
 # Roadmap
 
 ## BulkSMSNigeria switch
-- [ ] Make BulkSMSNigeria the active primary sender and disable Termii
-- [ ] Verify BulkSMSNigeria connection; request its token securely if missing
+- [x] Make BulkSMSNigeria the active primary sender and disable Termii; verified saved provider settings from signed-in SMS page
+- [ ] Verify BulkSMSNigeria connection — blocked until its API token is supplied securely
 
 ## Termii sending repair
 - [x] Correct Nigerian local mobile-number formatting; nine regression tests pass including bulk provider payloads; both SMS functions deployed; website build OK
