@@ -43,6 +43,17 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Global SMS pause switch: when set, the worker does nothing and queued
+    // messages stay in the queue until sending is resumed.
+    const { data: pausedRow } = await service
+      .from("sms_internal_config")
+      .select("value")
+      .eq("key", "sms_paused")
+      .maybeSingle();
+    if (pausedRow?.value === "true") {
+      return json({ success: true, paused: true, processed: 0 });
+    }
+
     const { data: providerRow } = await service
       .from("sms_providers")
       .select("*")

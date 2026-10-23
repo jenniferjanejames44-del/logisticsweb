@@ -104,6 +104,20 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = String(body.action || "");
 
+    // Global SMS pause switch: block every action that would dispatch messages.
+    const SENDING_ACTIONS = new Set(["send_single", "send_bulk", "launch_campaign", "run_due_campaigns"]);
+    if (SENDING_ACTIONS.has(action)) {
+      const { data: pausedRow } = await service
+        .from("sms_internal_config")
+        .select("value")
+        .eq("key", "sms_paused")
+        .maybeSingle();
+      if (pausedRow?.value === "true") {
+        await audit(service, adminUserId, "send_blocked_paused", { action });
+        return json({ error: "SMS sending is paused. No messages will be delivered until it is resumed." }, 423);
+      }
+    }
+
     switch (action) {
       case "list_providers": {
         const { data, error } = await service.from("sms_providers").select("*").order("created_at");
