@@ -73,7 +73,7 @@ interface SmsContact { id: string; user_id: string | null; full_name: string | n
 interface SmsSuppression { id: string; phone: string; reason: string; created_at: string; }
 interface SmsMessage {
   id: string; phone: string; contact_name: string | null; body: string; message_type: string;
-  source: string; provider_key: string | null; status: string; error_message: string | null;
+  source: string; provider_key: string | null; provider_message_id: string | null; status: string; error_message: string | null;
   created_at: string; sent_at: string | null; delivered_at: string | null; campaign_id: string | null;
 }
 interface AuditRow { id: string; action: string; details: Record<string, unknown> | null; created_at: string; }
