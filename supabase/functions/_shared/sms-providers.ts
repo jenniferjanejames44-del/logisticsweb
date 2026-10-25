@@ -161,9 +161,8 @@ class TermiiSmsProvider implements SmsProvider {
 
 class BulkSmsNigeriaProvider implements SmsProvider {
   readonly key = "bulksmsnigeria";
-  // Per-message status lookup is not implemented: the documented delivery-reports
-  // endpoint is account-level, so we report the capability honestly as unsupported.
-  readonly capabilities = { send: true, bulkSend: false, balance: true, status: false };
+  // Delivery is looked up per message through the documented delivery-reports endpoint.
+  readonly capabilities = { send: true, bulkSend: false, balance: true, status: true };
 
   constructor(private config: SmsProviderConfig) {}
 
@@ -173,8 +172,8 @@ class BulkSmsNigeriaProvider implements SmsProvider {
     const recipients = (Array.isArray(to) ? to : [to]).map(normalizePhone).filter(Boolean);
     if (recipients.length === 0) return { ok: false, error: "No valid recipient phone numbers" };
 
-    // Documented single-send endpoint; service layer loops for multiple recipients.
-    const results: SendResult[] = [];
+    // Documented single-send endpoint; each recipient gets its own provider message ID.
+    const results: RecipientResult[] = [];
     for (const phone of recipients) {
       try {
         const res = await fetch(`${baseUrl(this.config)}/sms`, {
@@ -190,27 +189,27 @@ class BulkSmsNigeriaProvider implements SmsProvider {
         let data: any = null;
         try { data = JSON.parse(text); } catch { /* keep raw */ }
         if (!res.ok) {
-          results.push({ ok: false, error: `BulkSMS Nigeria HTTP ${res.status}: ${text.slice(0, 300)}`, raw: data ?? text });
+          results.push({ phone, ok: false, error: `BulkSMS Nigeria HTTP ${res.status}: ${text.slice(0, 300)}` });
         } else if (data && (data.status === "error" || data.error)) {
-          results.push({ ok: false, error: `BulkSMS Nigeria error: ${text.slice(0, 300)}`, raw: data });
+          results.push({ phone, ok: false, error: `BulkSMS Nigeria error: ${text.slice(0, 300)}` });
         } else {
-          const id = data?.data?.id ?? data?.data?.message_id ?? data?.message_id ?? null;
-          results.push({ ok: true, providerMessageId: id ? String(id) : undefined, raw: data });
+          const id = data?.data?.message_id ?? data?.data?.id ?? data?.message_id ?? null;
+          results.push({ phone, ok: true, providerMessageId: id ? String(id) : undefined });
         }
       } catch (err) {
-        results.push({ ok: false, error: `BulkSMS Nigeria request failed: ${(err as Error).message}` });
+        results.push({ phone, ok: false, error: `BulkSMS Nigeria request failed: ${(err as Error).message}` });
       }
     }
 
     const failed = results.filter((r) => !r.ok);
     if (failed.length === results.length) {
-      return { ok: false, error: failed[0].error, raw: results.map((r) => r.raw) };
+      return { ok: false, error: failed[0].error, recipients: results };
     }
     return {
       ok: true,
       providerMessageId: results.find((r) => r.providerMessageId)?.providerMessageId,
       error: failed.length ? `${failed.length}/${results.length} recipients failed: ${failed[0].error}` : undefined,
-      raw: results.map((r) => r.raw),
+      recipients: results,
     };
   }
 
@@ -232,8 +231,26 @@ class BulkSmsNigeriaProvider implements SmsProvider {
     }
   }
 
-  async getStatus(_providerMessageId: string): Promise<StatusResult> {
-    return { supported: false, error: "Not supported by this provider" };
+  async getStatus(providerMessageId: string, phone?: string): Promise<StatusResult> {
+    if (!this.config.api_key) return { supported: true, error: "BulkSMS Nigeria API token is not configured" };
+    try {
+      const res = await fetch(
+        `${baseUrl(this.config)}/delivery-reports?message_id=${encodeURIComponent(providerMessageId)}`,
+        { headers: { Accept: "application/json", Authorization: `Bearer ${this.config.api_key}` } },
+      );
+      const text = await res.text();
+      let data: any = null;
+      try { data = JSON.parse(text); } catch { /* keep raw */ }
+      if (!res.ok) return { supported: true, error: `BulkSMS Nigeria HTTP ${res.status}: ${text.slice(0, 300)}` };
+      const reports: { recipient?: string; delivery_status?: string }[] = data?.data?.reports ?? [];
+      const target = phone ? normalizePhone(phone) : null;
+      const report = target ? reports.find((r) => normalizePhone(String(r.recipient || "")) === target) : reports[0];
+      if (!report?.delivery_status) return { supported: true, outcome: "pending", status: "awaiting network report" };
+      const status = String(report.delivery_status);
+      return { supported: true, status, outcome: classifyDeliveryStatus(status) };
+    } catch (err) {
+      return { supported: true, error: `BulkSMS Nigeria request failed: ${(err as Error).message}` };
+    }
   }
 
   async testConnection(): Promise<{ ok: boolean; error?: string }> {
