@@ -147,7 +147,7 @@ class TermiiSmsProvider implements SmsProvider {
       let data: any = null;
       try { data = JSON.parse(text); } catch { /* keep raw */ }
       const status = data?.status ?? data?.data?.status ?? data?.message_status ?? null;
-      return status ? { supported: true, status: String(status) } : { supported: true, error: "Status not present in provider response", };
+      return status ? { supported: true, status: String(status), outcome: classifyDeliveryStatus(String(status)) } : { supported: true, error: "Status not present in provider response", };
     } catch (err) {
       return { supported: true, error: `Termii request failed: ${(err as Error).message}` };
     }

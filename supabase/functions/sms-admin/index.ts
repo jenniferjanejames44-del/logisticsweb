@@ -64,27 +64,32 @@ async function sendToPhones(
     if (chunk.length === 0) continue;
 
     const res = await provider.sendSms(chunk.map((c) => c.phone), body, messageType);
-    const rows = chunk.map((c) => ({
-      campaign_id: campaignId,
-      phone: normalizePhone(c.phone),
-      contact_name: c.name ?? null,
-      body,
-      message_type: messageType,
-      source,
-      provider_key: providerRow.provider_key,
-      provider_message_id: res.providerMessageId ?? null,
-      status: res.ok ? "sent" : "failed",
-      error_message: res.ok ? res.error ?? null : res.error ?? "Unknown provider error",
-      created_by: adminUserId,
-      sent_at: res.ok ? new Date().toISOString() : null,
-    }));
+    const now = new Date().toISOString();
+    const rows = chunk.map((c) => {
+      const phone = normalizePhone(c.phone);
+      // Use each recipient's own outcome and message ID when the provider reports them,
+      // so one recipient's success is never recorded against another number.
+      const r = res.recipients?.find((x) => x.phone === phone);
+      const ok = r ? r.ok : res.ok;
+      return {
+        campaign_id: campaignId,
+        phone,
+        contact_name: c.name ?? null,
+        body,
+        message_type: messageType,
+        source,
+        provider_key: providerRow.provider_key,
+        provider_message_id: (r ? r.providerMessageId : res.providerMessageId) ?? null,
+        status: ok ? "sent" : "failed",
+        error_message: ok ? null : (r?.error ?? res.error ?? "Unknown provider error"),
+        created_by: adminUserId,
+        sent_at: ok ? now : null,
+      };
+    });
     await service.from("sms_messages").insert(rows);
-    if (res.ok) {
-      results.sent += chunk.length;
-      if (res.error) results.errors.push(res.error);
-    } else {
-      results.failed += chunk.length;
-      if (res.error) results.errors.push(res.error);
+    for (const row of rows) {
+      if (row.status === "sent") results.sent++;
+      else { results.failed++; if (row.error_message) results.errors.push(`${row.phone}: ${row.error_message}`); }
     }
   }
   return results;
