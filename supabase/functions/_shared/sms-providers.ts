@@ -11,11 +11,20 @@ export interface SmsProviderConfig {
   base_url: string;
 }
 
+export interface RecipientResult {
+  phone: string;
+  ok: boolean;
+  providerMessageId?: string;
+  error?: string;
+}
+
 export interface SendResult {
   ok: boolean;
   providerMessageId?: string;
   error?: string;
   raw?: unknown;
+  /** Per-recipient outcome when the provider submits recipients separately. */
+  recipients?: RecipientResult[];
 }
 
 export interface BalanceResult {
@@ -28,6 +37,8 @@ export interface BalanceResult {
 export interface StatusResult {
   supported: boolean;
   status?: string;
+  /** Normalized outcome: delivered, failed, or still pending on the network. */
+  outcome?: "delivered" | "failed" | "pending";
   error?: string;
 }
 
@@ -41,8 +52,16 @@ export interface SmsProvider {
   };
   sendSms(to: string | string[], body: string, messageType: "transactional" | "marketing"): Promise<SendResult>;
   getBalance(): Promise<BalanceResult>;
-  getStatus(providerMessageId: string): Promise<StatusResult>;
+  getStatus(providerMessageId: string, phone?: string): Promise<StatusResult>;
   testConnection(): Promise<{ ok: boolean; error?: string }>;
+}
+
+/** Map a provider/network delivery status to delivered, failed, or pending. */
+export function classifyDeliveryStatus(raw: string): "delivered" | "failed" | "pending" {
+  const s = (raw || "").trim().toLowerCase();
+  if (["delivrd", "delivered", "success"].includes(s)) return "delivered";
+  if (!s || /queued|awaiting|pending|accepted|processing|submitted|^sent$/.test(s)) return "pending";
+  return "failed";
 }
 
 /** Normalize international numbers and Nigerian local mobile numbers for SMS. */
