@@ -1,5 +1,9 @@
 # Roadmap
 
+## SMS international route
+- [ ] Replace direct-refund with the provider-documented international route for all SMS sends; test and deploy both SMS functions
+- [ ] Confirm receipt on an affected phone — requires an approved test recipient and their receipt confirmation
+
 ## BulkSMSNigeria switch
 - [x] Make BulkSMSNigeria the active primary sender and disable Termii; verified saved provider settings from signed-in SMS page
 - [x] BulkSMSNigeria token saved securely; both SMS functions deployed; signed-in connection test accepted; nine SMS regression tests pass
