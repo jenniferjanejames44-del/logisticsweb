@@ -5,6 +5,30 @@ const config = { provider_key: "termii", api_key: null, sender_id: "RACLOGISTIC"
 
 afterEach(() => vi.unstubAllGlobals());
 
+describe("BulkSMSNigeria delivery route", () => {
+  it.each(["transactional", "marketing"] as const)("uses international rather than direct-refund for %s recipients", async (messageType) => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ status: "success", data: { message_id: "test-message" } })));
+    vi.stubGlobal("fetch", fetchMock);
+    const provider = getSmsProvider({
+      provider_key: "bulksmsnigeria", api_key: "synthetic-test-credential",
+      sender_id: "RACLOGISTIC", base_url: "https://sms.example.test/api/v2",
+    });
+    const result = await provider.sendSms(["08000000000", "+2349000000000"], "Route regression test", messageType);
+    expect(result.ok).toBe(true);
+    expect(result.providerMessageId).toBe("test-message");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    for (const [index, call] of fetchMock.mock.calls.entries()) {
+      const [url, init] = call as unknown as [string, RequestInit];
+      expect(url).toBe("https://sms.example.test/api/v2/sms");
+      expect(init.method).toBe("POST");
+      expect(JSON.parse(String(init.body))).toEqual({
+        from: "RACLOGISTIC", to: ["2348000000000", "2349000000000"][index],
+        body: "Route regression test", gateway: "international",
+      });
+    }
+  });
+});
+
 describe("SMS phone normalization", () => {
   it("converts Nigerian local mobile numbers to international format", () => {
     expect(normalizePhone("0800 000 0000")).toBe("2348000000000");
