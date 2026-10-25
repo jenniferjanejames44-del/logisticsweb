@@ -1,5 +1,9 @@
 # Roadmap
 
+## SMS international route
+- [x] Replace direct-refund with the provider-documented international route for all SMS sends; 11 regression tests pass and both SMS functions deployed
+- [ ] Confirm receipt on an affected phone — requires an approved test recipient and their receipt confirmation
+
 ## BulkSMSNigeria switch
 - [x] Make BulkSMSNigeria the active primary sender and disable Termii; verified saved provider settings from signed-in SMS page
 - [x] BulkSMSNigeria token saved securely; both SMS functions deployed; signed-in connection test accepted; nine SMS regression tests pass
@@ -7,7 +11,7 @@
 
 ## SMS pause (user request, 2026-10-23)
 - [x] SMS sending paused via `sms_internal_config` key `sms_paused` = `true`; queue worker skips draining and admin send/campaign actions are blocked (HTTP 423); both functions deployed
-- [ ] Resume SMS when the user asks — set `sms_paused` to `false` in `sms_internal_config` (queued messages will then send)
+- [x] SMS resumed following the user's subsequent request
 
 ## Termii sending repair
 - [x] Correct Nigerian local mobile-number formatting; nine regression tests pass including bulk provider payloads; both SMS functions deployed; website build OK
