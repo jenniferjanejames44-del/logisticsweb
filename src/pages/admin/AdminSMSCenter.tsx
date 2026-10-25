@@ -73,7 +73,7 @@ interface SmsContact { id: string; user_id: string | null; full_name: string | n
 interface SmsSuppression { id: string; phone: string; reason: string; created_at: string; }
 interface SmsMessage {
   id: string; phone: string; contact_name: string | null; body: string; message_type: string;
-  source: string; provider_key: string | null; status: string; error_message: string | null;
+  source: string; provider_key: string | null; provider_message_id: string | null; status: string; error_message: string | null;
   created_at: string; sent_at: string | null; delivered_at: string | null; campaign_id: string | null;
 }
 interface AuditRow { id: string; action: string; details: Record<string, unknown> | null; created_at: string; }
@@ -87,7 +87,8 @@ const TRIGGER_LABELS: Record<string, string> = {
 
 const statusBadge = (status: string) => {
   switch (status) {
-    case "sent": case "delivered": return <Badge variant="successOutline">{status}</Badge>;
+    case "delivered": return <Badge variant="successOutline">{status}</Badge>;
+    case "sent": return <Badge variant="outline" title="Accepted by the provider; waiting for the network delivery report">sent</Badge>;
     case "failed": return <Badge variant="destructive">{status}</Badge>;
     case "sending": case "scheduled": case "pending": return <Badge variant="outline" className="text-amber-600 border-amber-300">{status}</Badge>;
     default: return <Badge variant="outline">{status}</Badge>;
@@ -591,6 +592,7 @@ const AdminSMSCenter = () => {
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("all");
     const [type, setType] = useState("all");
+    const [checking, setChecking] = useState(false);
     const filtered = messages.filter((m) =>
       (status === "all" || m.status === status) &&
       (type === "all" || m.message_type === type) &&
@@ -602,6 +604,15 @@ const AdminSMSCenter = () => {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <CardTitle className="flex items-center gap-2 text-base"><History className="w-4 h-4 text-primary" /> Message History & Delivery</CardTitle>
             <div className="flex flex-wrap gap-2">
+              <Button variant="outline" disabled={checking} onClick={async () => {
+                setChecking(true);
+                try {
+                  const r = await smsCall("sync_delivery");
+                  toast({ title: "Delivery check complete", description: `${r.delivered} delivered, ${r.failed} failed, ${r.pending} still waiting on the network.` });
+                  loadAll();
+                } catch (e) { toast({ title: "Error", description: (e as Error).message, variant: "destructive" }); }
+                finally { setChecking(false); }
+              }}>{checking ? "Checking…" : "Check delivery"}</Button>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input className="pl-9 w-44" placeholder="Search phone…" value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -649,18 +660,18 @@ const AdminSMSCenter = () => {
                     {m.sent_at ? format(new Date(m.sent_at), "MMM d, HH:mm") : format(new Date(m.created_at), "MMM d, HH:mm")}
                   </TableCell>
                   <TableCell className="text-right">
-                    {m.provider_key === "termii" && m.status !== "failed" ? (
+                    {m.provider_message_id && m.status === "sent" ? (
                       <Button size="sm" variant="ghost" onClick={async () => {
                         try {
                           const r = await smsCall("refresh_status", { message_id: m.id });
                           if (r.supported === false) toast({ title: "Not supported by this provider" });
                           else if (r.error) toast({ title: "Status unavailable", description: r.error, variant: "destructive" });
-                          else toast({ title: `Provider status: ${r.status || "unknown"}` });
+                          else toast({ title: `Network status: ${r.status || "unknown"}` });
                           loadAll();
                         } catch (e) { toast({ title: "Error", description: (e as Error).message, variant: "destructive" }); }
-                      }}>Refresh</Button>
+                      }}>Check</Button>
                     ) : (
-                      <span className="text-xs text-muted-foreground">{m.status === "failed" ? "—" : "Not supported"}</span>
+                      <span className="text-xs text-muted-foreground">—</span>
                     )}
                   </TableCell>
                 </TableRow>

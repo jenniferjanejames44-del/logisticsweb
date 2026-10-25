@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getSmsProvider, hasSmsProviderKey, normalizePhone, resolveSmsProviderConfig } from "../../supabase/functions/_shared/sms-providers";
+import { classifyDeliveryStatus, getSmsProvider, hasSmsProviderKey, normalizePhone, resolveSmsProviderConfig } from "../../supabase/functions/_shared/sms-providers";
 
 const config = { provider_key: "termii", api_key: null, sender_id: "RACLOGISTIC", base_url: "https://api.ng.termii.com" };
 
@@ -91,5 +91,44 @@ describe("SMS secret-backed configuration", () => {
   it("does not use the Termii secret for another provider", () => {
     vi.stubGlobal("Deno", { env: { get: (name: string) => name === "TERMII_API_KEY" ? "synthetic-test-credential" : undefined } });
     expect(hasSmsProviderKey({ ...config, provider_key: "bulksmsnigeria" })).toBe(false);
+  });
+});
+describe("BulkSMSNigeria delivery tracking", () => {
+  const bulk = { provider_key: "bulksmsnigeria", api_key: "synthetic-test-credential", sender_id: "RACLOGISTIC", base_url: "https://sms.example.test/api/v2" };
+
+  it("keeps each recipient's own message ID and failure", async () => {
+    let n = 0;
+    vi.stubGlobal("fetch", vi.fn(async () => {
+      n++;
+      return n === 1
+        ? new Response(JSON.stringify({ status: "success", data: { message_id: "id-first" } }))
+        : new Response(JSON.stringify({ status: "error", error: { message: "Invalid number" } }), { status: 422 });
+    }));
+    const result = await getSmsProvider(bulk).sendSms(["08000000000", "08096663337"], "Hi", "transactional");
+    expect(result.recipients).toEqual([
+      { phone: "2348000000000", ok: true, providerMessageId: "id-first" },
+      expect.objectContaining({ phone: "2348096663337", ok: false }),
+    ]);
+  });
+
+  it("classifies network delivery statuses", () => {
+    expect(classifyDeliveryStatus("delivrd")).toBe("delivered");
+    expect(classifyDeliveryStatus("DELIVERED")).toBe("delivered");
+    expect(classifyDeliveryStatus("sent awaiting status")).toBe("pending");
+    expect(classifyDeliveryStatus("queued")).toBe("pending");
+    expect(classifyDeliveryStatus("undeliv")).toBe("failed");
+    expect(classifyDeliveryStatus("rejectd")).toBe("failed");
+    expect(classifyDeliveryStatus("expired")).toBe("failed");
+  });
+
+  it("reads the delivery report for the matching recipient", async () => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ status: "success", data: { reports: [
+      { recipient: "2348000000000", delivery_status: "delivrd" },
+      { recipient: "2348096663337", delivery_status: "undeliv" },
+    ] } })));
+    vi.stubGlobal("fetch", fetchMock);
+    const r = await getSmsProvider(bulk).getStatus("msg-1", "08096663337");
+    expect(r).toEqual({ supported: true, status: "undeliv", outcome: "failed" });
+    expect((fetchMock.mock.calls[0] as unknown as [string])[0]).toBe("https://sms.example.test/api/v2/delivery-reports?message_id=msg-1");
   });
 });

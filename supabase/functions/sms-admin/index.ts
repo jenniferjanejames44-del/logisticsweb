@@ -39,6 +39,27 @@ async function getSuppressedPhones(service: ReturnType<typeof createClient>): Pr
   return new Set((data || []).map((r) => normalizePhone(r.phone)));
 }
 
+/** Look up the network delivery result and record delivered/failed on the message. */
+async function applyDeliveryStatus(
+  service: ReturnType<typeof createClient>,
+  provider: ReturnType<typeof getSmsProvider>,
+  msg: { id: string; phone: string; provider_message_id: string; status: string; delivered_at: string | null },
+) {
+  const result = await provider.getStatus(msg.provider_message_id, msg.phone);
+  if (!result.supported || result.error) return result;
+  if (result.outcome === "delivered") {
+    await service.from("sms_messages").update({
+      status: "delivered", delivered_at: msg.delivered_at ?? new Date().toISOString(), error_message: null,
+    }).eq("id", msg.id);
+  } else if (result.outcome === "failed") {
+    await service.from("sms_messages").update({
+      status: "failed",
+      error_message: `Network did not deliver (${result.status}). Check this number with BulkSMSNigeria.`,
+    }).eq("id", msg.id);
+  }
+  return result;
+}
+
 async function sendToPhones(
   service: ReturnType<typeof createClient>,
   providerRow: SmsProviderConfig & { display_name?: string },
@@ -64,27 +85,32 @@ async function sendToPhones(
     if (chunk.length === 0) continue;
 
     const res = await provider.sendSms(chunk.map((c) => c.phone), body, messageType);
-    const rows = chunk.map((c) => ({
-      campaign_id: campaignId,
-      phone: normalizePhone(c.phone),
-      contact_name: c.name ?? null,
-      body,
-      message_type: messageType,
-      source,
-      provider_key: providerRow.provider_key,
-      provider_message_id: res.providerMessageId ?? null,
-      status: res.ok ? "sent" : "failed",
-      error_message: res.ok ? res.error ?? null : res.error ?? "Unknown provider error",
-      created_by: adminUserId,
-      sent_at: res.ok ? new Date().toISOString() : null,
-    }));
+    const now = new Date().toISOString();
+    const rows = chunk.map((c) => {
+      const phone = normalizePhone(c.phone);
+      // Use each recipient's own outcome and message ID when the provider reports them,
+      // so one recipient's success is never recorded against another number.
+      const r = res.recipients?.find((x) => x.phone === phone);
+      const ok = r ? r.ok : res.ok;
+      return {
+        campaign_id: campaignId,
+        phone,
+        contact_name: c.name ?? null,
+        body,
+        message_type: messageType,
+        source,
+        provider_key: providerRow.provider_key,
+        provider_message_id: (r ? r.providerMessageId : res.providerMessageId) ?? null,
+        status: ok ? "sent" : "failed",
+        error_message: ok ? null : (r?.error ?? res.error ?? "Unknown provider error"),
+        created_by: adminUserId,
+        sent_at: ok ? now : null,
+      };
+    });
     await service.from("sms_messages").insert(rows);
-    if (res.ok) {
-      results.sent += chunk.length;
-      if (res.error) results.errors.push(res.error);
-    } else {
-      results.failed += chunk.length;
-      if (res.error) results.errors.push(res.error);
+    for (const row of rows) {
+      if (row.status === "sent") results.sent++;
+      else { results.failed++; if (row.error_message) results.errors.push(`${row.phone}: ${row.error_message}`); }
     }
   }
   return results;
@@ -290,17 +316,34 @@ Deno.serve(async (req) => {
         }
         const { data: providerRow } = await service.from("sms_providers").select("*").eq("provider_key", msg.provider_key).single();
         if (!providerRow) return json({ error: "Provider not found" }, 404);
-        const provider = getSmsProvider(providerRow);
-        const result = await provider.getStatus(msg.provider_message_id);
-        if (!result.supported) return json({ supported: false, message: "Not supported by this provider" });
-        if (result.status) {
-          const delivered = /delivered|success|sent/i.test(result.status);
-          await service.from("sms_messages").update({
-            status: delivered ? "delivered" : msg.status,
-            delivered_at: delivered ? new Date().toISOString() : msg.delivered_at,
-          }).eq("id", message_id);
-        }
+        const result = await applyDeliveryStatus(service, getSmsProvider(providerRow), msg);
         return json(result);
+      }
+
+      case "sync_delivery": {
+        // Ask the provider for the network delivery result of recent sent messages.
+        const since = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
+        const { data: pending } = await service
+          .from("sms_messages")
+          .select("*")
+          .eq("status", "sent")
+          .not("provider_message_id", "is", null)
+          .gte("created_at", since)
+          .order("created_at", { ascending: false })
+          .limit(100);
+        const { data: providerRows } = await service.from("sms_providers").select("*");
+        const providers = new Map((providerRows || []).map((p) => [p.provider_key, getSmsProvider(p)]));
+        const summary = { checked: 0, delivered: 0, failed: 0, pending: 0 };
+        for (const msg of pending || []) {
+          const provider = providers.get(msg.provider_key);
+          if (!provider?.capabilities.status) continue;
+          const r = await applyDeliveryStatus(service, provider, msg);
+          summary.checked++;
+          if (r.outcome === "delivered") summary.delivered++;
+          else if (r.outcome === "failed") summary.failed++;
+          else summary.pending++;
+        }
+        return json({ success: true, ...summary });
       }
 
       case "sync_contacts": {
