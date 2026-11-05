@@ -27,6 +27,19 @@ Deno.serve(async req => {
   } catch {
     return json({ error: 'Invalid webhook signature or payload.' }, 400);
   }
+  const deliveryStatus: Record<string, string> = { 'email.delivered': 'delivered', 'email.bounced': 'bounced', 'email.failed': 'failed', 'email.complained': 'complained' };
+  if (deliveryStatus[event.type]) {
+    try {
+      const admin = createClient(Deno.env.get('SUPABASE_URL') || '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '');
+      const status = deliveryStatus[event.type];
+      const errorMessage = status === 'delivered' ? null : `Provider reported ${status}`;
+      const { error: itemError } = await admin.from('email_reply_items').update({ status, error_message: errorMessage }).eq('provider_email_id', event.data.email_id);
+      if (itemError) throw itemError;
+      const { error: notificationError } = await admin.from('email_reply_notifications').update({ status, error_message: errorMessage }).eq('provider_email_id', event.data.email_id);
+      if (notificationError) throw notificationError;
+      return json({ processed: true });
+    } catch { return json({ error: 'Delivery status update failed; retry required.' }, 500); }
+  }
   if (event.type !== 'email.received') return json({ ignored: true });
   try {
     const admin = createClient(Deno.env.get('SUPABASE_URL') || '', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '');
