@@ -11,7 +11,7 @@
 - [x] Automatic receiving/DNS setup superseded by requested direct inbox replies; unused tracking retained inactive
 
 ## SMS direct-refund route
-- [ ] Restore direct-refund instead of international for all BulkSMSNigeria sends; test and deploy both SMS functions
+- [x] Restore direct-refund instead of international for all BulkSMSNigeria sends; 14 regression tests passed
 - [ ] Confirm receipt on an affected phone — requires an approved test recipient and their receipt confirmation
 
 ## BulkSMSNigeria switch
