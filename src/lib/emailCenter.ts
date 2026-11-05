@@ -45,6 +45,7 @@ export interface Message {
   scheduled_at: string | null;
   template_name: string | null;
   from_name: string | null;
+  reply_notification_emails?: string[] | null;
   failed_recipients?: string[];
   created_at: string;
   updated_at: string;
@@ -165,6 +166,7 @@ export async function saveDraft(m: Partial<Message> & { id?: string }) {
       attachments: m.attachments,
       template_name: m.template_name ?? null,
       from_name: m.from_name ?? null,
+      reply_notification_emails: m.reply_notification_emails ?? null,
     }).eq("id", m.id);
     if (error) throw error;
     return m.id;
@@ -176,6 +178,7 @@ export async function saveDraft(m: Partial<Message> & { id?: string }) {
     attachments: m.attachments || [],
     template_name: m.template_name ?? null,
     from_name: m.from_name ?? null,
+    reply_notification_emails: m.reply_notification_emails ?? null,
     created_by: user.user?.id,
     status: "draft",
   }).select("id").single();

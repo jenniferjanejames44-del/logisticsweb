@@ -10,6 +10,7 @@ import TemplatesTab from "@/components/admin/email-center/TemplatesTab";
 import SettingsTab from "@/components/admin/email-center/SettingsTab";
 import MessagesTab from "@/components/admin/email-center/MessagesTab";
 import DeliveryTab from "@/components/admin/email-center/DeliveryTab";
+import ConversationsTab from '@/components/admin/email-center/ConversationsTab';
 import { Contact, EMAIL_SENDING_SUSPENDED, Message, Settings, Template, countEmailsSent, fetchSettings, listContacts, listMessages, listTemplates } from "@/lib/emailCenter";
 
 function loadWithTimeout<T>(request: Promise<T>, section: string): Promise<T> {
@@ -151,6 +152,7 @@ export default function AdminEmailCenter() {
         <TabsList className="mb-6 h-auto flex-wrap border border-border bg-card p-1 shadow-sm">
           <TabsTrigger value="compose"><PenSquare className="mr-2 h-4 w-4" />Compose</TabsTrigger>
           <TabsTrigger value="delivery"><Activity className="mr-2 h-4 w-4" />Delivery</TabsTrigger>
+          <TabsTrigger value="conversations"><Mail className="mr-2 h-4 w-4" />Conversations</TabsTrigger>
           <TabsTrigger value="drafts"><Mail className="mr-2 h-4 w-4" />Drafts <span className="ml-1.5 text-xs text-muted-foreground">({drafts.length})</span></TabsTrigger>
           <TabsTrigger value="scheduled"><Calendar className="mr-2 h-4 w-4" />Scheduled <span className="ml-1.5 text-xs text-muted-foreground">({scheduled.length})</span></TabsTrigger>
           <TabsTrigger value="sent"><Send className="mr-2 h-4 w-4" />Sent</TabsTrigger>
@@ -171,6 +173,7 @@ export default function AdminEmailCenter() {
         <TabsContent value="delivery">
           <DeliveryTab messages={messages} onChange={refresh} />
         </TabsContent>
+        <TabsContent value="conversations"><ConversationsTab /></TabsContent>
         <TabsContent value="drafts">
           <MessagesTab messages={drafts} mode="drafts" settings={settings} onEdit={editDraft} onChange={refresh} />
         </TabsContent>

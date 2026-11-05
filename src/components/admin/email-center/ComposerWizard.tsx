@@ -11,6 +11,7 @@ import {
   ArrowLeft, ArrowRight, Check, FileText, PenLine, Users, Eye, Rocket, Search, Sparkles, ShieldCheck, Clock3,
 } from "lucide-react";
 import RichEditor from "./RichEditor";
+import NotificationEmailTags from './NotificationEmailTags';
 import BrandedPreview from "./BrandedPreview";
 import { renderBrandedEmail } from "./brandTemplate";
 import { PRO_TEMPLATES } from "./proTemplates";
@@ -47,6 +48,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
   const [bodyHtml, setBodyHtml] = useState(initial?.body_html || "");
   const [selected, setSelected] = useState<string[]>(initial?.to_recipients || []);
   const [manual, setManual] = useState("");
+  const [notificationEmails, setNotificationEmails] = useState<string[] | null>(initial?.reply_notification_emails ?? null);
   const [contactQuery, setContactQuery] = useState("");
   const [attachments, setAttachments] = useState<AttachmentMeta[]>(initial?.attachments || []);
   const [templateKey, setTemplateKey] = useState<string>("");
@@ -72,6 +74,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
     setSelected(initial.to_recipients || []);
     setAttachments(initial.attachments || []);
     setFromName(initial.from_name || settings.company_name);
+    setNotificationEmails(initial.reply_notification_emails ?? null);
     setStep(2);
   }, [initial, settings.company_name]);
 
@@ -134,6 +137,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
       id, subject, body_html: bodyHtml,
       to_recipients: recipients, cc_recipients: [], bcc_recipients: [],
       attachments, from_name: fromName,
+      reply_notification_emails: notificationEmails,
     });
 
   const handleSaveDraft = async () => {
@@ -145,6 +149,7 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
   const reset = () => {
     setId(undefined); setSubject(""); setBodyHtml(""); setSelected([]); setManual("");
+    setNotificationEmails(null);
     setAttachments([]); setFromName(settings.company_name); setTemplateKey(""); setStep(1);
   };
 
@@ -373,6 +378,10 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
           </Card>
 
           <Card className="h-fit p-5">
+            <div className="mb-5">
+              <NotificationEmailTags emails={notificationEmails || []} onChange={setNotificationEmails} />
+              {notificationEmails === null && <p className="mt-2 text-xs text-muted-foreground">Default: your registered email address</p>}
+            </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sending to</p>
             <p className="mt-2 text-3xl font-semibold">{recipients.length}</p>
             <p className="text-sm text-muted-foreground">recipient{recipients.length === 1 ? "" : "s"}</p>

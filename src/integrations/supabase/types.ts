@@ -439,6 +439,7 @@ export type Database = {
           failed_count: number
           from_name: string | null
           id: string
+          reply_notification_emails: string[] | null
           scheduled_at: string | null
           sent_at: string | null
           sent_count: number
@@ -459,6 +460,7 @@ export type Database = {
           failed_count?: number
           from_name?: string | null
           id?: string
+          reply_notification_emails?: string[] | null
           scheduled_at?: string | null
           sent_at?: string | null
           sent_count?: number
@@ -479,6 +481,7 @@ export type Database = {
           failed_count?: number
           from_name?: string | null
           id?: string
+          reply_notification_emails?: string[] | null
           scheduled_at?: string | null
           sent_at?: string | null
           sent_count?: number
@@ -525,6 +528,218 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      email_reply_events: {
+        Row: {
+          created_at: string
+          outcome: string
+          provider_email_id: string
+          reason: string | null
+          thread_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          outcome: string
+          provider_email_id: string
+          reason?: string | null
+          thread_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          outcome?: string
+          provider_email_id?: string
+          reason?: string | null
+          thread_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_reply_events_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "email_reply_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_reply_items: {
+        Row: {
+          body_html: string
+          body_text: string
+          created_at: string
+          direction: string
+          error_message: string | null
+          id: string
+          in_reply_to: string | null
+          provider_email_id: string | null
+          queue_message_id: string | null
+          read_at: string | null
+          recipient_email: string
+          reference_ids: string[]
+          rfc_message_id: string
+          sender_email: string
+          status: string
+          subject: string
+          thread_id: string
+        }
+        Insert: {
+          body_html?: string
+          body_text?: string
+          created_at?: string
+          direction: string
+          error_message?: string | null
+          id?: string
+          in_reply_to?: string | null
+          provider_email_id?: string | null
+          queue_message_id?: string | null
+          read_at?: string | null
+          recipient_email: string
+          reference_ids?: string[]
+          rfc_message_id: string
+          sender_email: string
+          status?: string
+          subject: string
+          thread_id: string
+        }
+        Update: {
+          body_html?: string
+          body_text?: string
+          created_at?: string
+          direction?: string
+          error_message?: string | null
+          id?: string
+          in_reply_to?: string | null
+          provider_email_id?: string | null
+          queue_message_id?: string | null
+          read_at?: string | null
+          recipient_email?: string
+          reference_ids?: string[]
+          rfc_message_id?: string
+          sender_email?: string
+          status?: string
+          subject?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_reply_items_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "email_reply_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_reply_notifications: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          item_id: string
+          provider_email_id: string | null
+          queue_message_id: string
+          recipient_email: string
+          rfc_message_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          item_id: string
+          provider_email_id?: string | null
+          queue_message_id: string
+          recipient_email: string
+          rfc_message_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          item_id?: string
+          provider_email_id?: string | null
+          queue_message_id?: string
+          recipient_email?: string
+          rfc_message_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_reply_notifications_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "email_reply_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_reply_settings: {
+        Row: {
+          enabled: boolean
+          id: number
+          provider_domain_id: string | null
+          receiving_domain: string
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean
+          id?: number
+          provider_domain_id?: string | null
+          receiving_domain: string
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean
+          id?: number
+          provider_domain_id?: string | null
+          receiving_domain?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_reply_threads: {
+        Row: {
+          created_at: string
+          id: string
+          notification_emails: string[]
+          original_message_id: string | null
+          owner_id: string
+          participant_email: string
+          route_token: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notification_emails?: string[]
+          original_message_id?: string | null
+          owner_id: string
+          participant_email: string
+          route_token?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notification_emails?: string[]
+          original_message_id?: string | null
+          owner_id?: string
+          participant_email?: string
+          route_token?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_reply_threads_original_message_id_fkey"
+            columns: ["original_message_id"]
+            isOneToOne: false
+            referencedRelation: "email_center_messages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_send_log: {
         Row: {
@@ -2639,6 +2854,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      ingest_email_thread_reply: {
+        Args: { _item: Json; _notifications: Json; _thread_id: string }
+        Returns: string
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -2647,6 +2866,10 @@ export type Database = {
           source_queue: string
         }
         Returns: number
+      }
+      queue_email_thread_item: {
+        Args: { _item: Json; _payload: Json; _thread_id: string }
+        Returns: string
       }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
