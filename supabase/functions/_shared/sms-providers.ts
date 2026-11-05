@@ -183,7 +183,7 @@ class BulkSmsNigeriaProvider implements SmsProvider {
             Accept: "application/json",
             Authorization: `Bearer ${this.config.api_key}`,
           },
-          body: JSON.stringify({ from: this.config.sender_id, to: phone, body, gateway: "international" }),
+          body: JSON.stringify({ from: this.config.sender_id, to: phone, body, gateway: "direct-refund" }),
         });
         const text = await res.text();
         let data: any = null;

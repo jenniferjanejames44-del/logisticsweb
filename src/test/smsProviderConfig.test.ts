@@ -6,7 +6,7 @@ const config = { provider_key: "termii", api_key: null, sender_id: "RACLOGISTIC"
 afterEach(() => vi.unstubAllGlobals());
 
 describe("BulkSMSNigeria delivery route", () => {
-  it.each(["transactional", "marketing"] as const)("uses international rather than direct-refund for %s recipients", async (messageType) => {
+  it.each(["transactional", "marketing"] as const)("uses direct-refund rather than international for %s recipients", async (messageType) => {
     const fetchMock = vi.fn(async () => new Response(JSON.stringify({ status: "success", data: { message_id: "test-message" } })));
     vi.stubGlobal("fetch", fetchMock);
     const provider = getSmsProvider({
@@ -23,7 +23,7 @@ describe("BulkSMSNigeria delivery route", () => {
       expect(init.method).toBe("POST");
       expect(JSON.parse(String(init.body))).toEqual({
         from: "RACLOGISTIC", to: ["2348000000000", "2349000000000"][index],
-        body: "Route regression test", gateway: "international",
+        body: "Route regression test", gateway: "direct-refund",
       });
     }
   });
