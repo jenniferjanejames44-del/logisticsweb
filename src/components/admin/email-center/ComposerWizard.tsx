@@ -379,8 +379,8 @@ export default function ComposerWizard({ settings, contacts, templates, initial,
 
           <Card className="h-fit p-5">
             <div className="mb-5">
-              <NotificationEmailTags emails={notificationEmails || []} onChange={setNotificationEmails} />
-              {notificationEmails === null && <p className="mt-2 text-xs text-muted-foreground">Default: your registered email address</p>}
+              <NotificationEmailTags emails={notificationEmails || []} onChange={setNotificationEmails} label="Reply to" />
+              {!notificationEmails?.length && <p className="mt-2 text-xs text-muted-foreground">Default: your registered email address</p>}
             </div>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sending to</p>
             <p className="mt-2 text-3xl font-semibold">{recipients.length}</p>

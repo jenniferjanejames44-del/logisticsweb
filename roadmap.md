@@ -1,12 +1,13 @@
 # Roadmap
 
 ## Mail Center email reply notifications
+- [ ] Switch to direct tagged Reply-To addresses without DNS; preserve tags in drafts and scheduled sends
+- [ ] Verify tagged-address persistence and outgoing reply destination
 - [x] Audit existing sending, provider receiving capabilities, privacy, and thread storage
 - [x] Add authenticated conversation tracking and securely verified inbound reply processing; unsigned webhook rejected live
 - [x] Implement actual reply forwarding to configurable notification addresses with atomic queueing and duplicate prevention; inactive until receiving verification
 - [x] Display incoming/outgoing history, recipient tags, and read status in the existing Mail Center; signed-in desktop/phone controls checked
-- [ ] Confirm provider preserves custom Message-ID and actual inbox replies end-to-end — requires verified receiving DNS and approved external inbox reply
-- [ ] Verify actual external reply reception and correct-account notification — requires receiving-domain/webhook configuration and approved inbox testing
+- [x] Automatic receiving/DNS setup superseded by requested direct inbox replies; unused tracking retained inactive
 
 ## SMS international route
 - [x] Replace direct-refund with the provider-documented international route for all SMS sends; 11 regression tests pass and both SMS functions deployed

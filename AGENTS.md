@@ -10,4 +10,4 @@
 - Resolve SMS credentials through the shared server-only provider configuration for validation and delivery alike; this keeps secret-backed providers usable across manual sends, campaigns, and automation without returning credentials to browsers.
 - Normalize SMS recipient and suppression numbers with the shared provider helper before sending or comparing them; this prevents local and international representations from bypassing suppressions or failing provider validation.
 - Keep inbound Mail Center replies in per-recipient threads, verify Resend signatures and references before routing, and atomically persist replies with queued notifications; this prevents cross-conversation disclosure and duplicate forwarding.
-- Enable tracked Reply-To addresses only after receiving DNS and webhook secrets are verified; existing company inbox routing must remain intact while setup is pending.
+- Mail Center sends use persisted reply-address tags as a Resend Reply-To array with the sending account email as default; direct inbox replies must not depend on inbound DNS or imply website tracking.

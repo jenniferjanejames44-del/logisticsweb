@@ -9,6 +9,11 @@ export function notificationAddresses(values: string[]): string[] {
   return emails;
 }
 
+export function directReplyAddresses(tags: string[] | null | undefined, senderEmail?: string): string[] {
+  const addresses = notificationAddresses(tags || []);
+  return addresses.length ? addresses : notificationAddresses([senderEmail || 'info@raclogisticltd.com']);
+}
+
 export function headerValue(headers: Record<string, string>, name: string): string {
   return Object.entries(headers).find(([key]) => key.toLowerCase() === name.toLowerCase())?.[1] || '';
 }

@@ -44,7 +44,7 @@ async function sendViaResend(p: {
     body: JSON.stringify({
       from: normalizeFrom(p.from),
       to: [String(p.to)],
-      reply_to: p.replyTo ? String(p.replyTo) : 'info@raclogisticltd.com',
+      reply_to: Array.isArray(p.replyTo) ? p.replyTo : p.replyTo ? String(p.replyTo) : 'info@raclogisticltd.com',
       subject: String(p.subject || ''),
       html: p.html ? String(p.html) : undefined,
       text: p.text ? String(p.text) : undefined,
