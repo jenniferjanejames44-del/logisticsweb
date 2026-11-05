@@ -23,11 +23,12 @@ function normalizeFrom(from: unknown): string {
 async function sendViaResend(p: {
   to: unknown; from: unknown; subject: unknown; html: unknown; text: unknown
   idempotencyKey: string; unsubscribeToken?: string
+  replyTo?: unknown; threadHeaders?: Record<string, string>
 }) {
   const lovableKey = Deno.env.get('LOVABLE_API_KEY')
   const resendKey = Deno.env.get('RESEND_API_KEY')
   if (!lovableKey || !resendKey) throw new ResendError(500, 'Email keys not configured', null)
-  const headers: Record<string, string> = {}
+  const headers: Record<string, string> = { ...p.threadHeaders }
   if (p.unsubscribeToken) {
     const base = Deno.env.get('SUPABASE_URL')
     headers['List-Unsubscribe'] = `<${base}/functions/v1/email-unsubscribe?token=${p.unsubscribeToken}>`
@@ -43,7 +44,7 @@ async function sendViaResend(p: {
     body: JSON.stringify({
       from: normalizeFrom(p.from),
       to: [String(p.to)],
-      reply_to: 'info@raclogisticltd.com',
+      reply_to: p.replyTo ? String(p.replyTo) : 'info@raclogisticltd.com',
       subject: String(p.subject || ''),
       html: p.html ? String(p.html) : undefined,
       text: p.text ? String(p.text) : undefined,
@@ -55,6 +56,7 @@ async function sendViaResend(p: {
     const ra = Number(res.headers.get('retry-after'))
     throw new ResendError(res.status, body, Number.isFinite(ra) && ra > 0 ? ra : null)
   }
+  return await res.json() as { id: string }
 }
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
@@ -349,12 +351,12 @@ Deno.serve(async (req) => {
         )
         // A failed Email API run permanently consumes its idempotency key.
         // Give each real retry a fresh key while retaining message_id for log deduplication.
-        const idempotencyKey = failedAttempts > 0
+        const idempotencyKey = !payload.headers && failedAttempts > 0
           ? `${String(payload.idempotency_key || payload.message_id)}-retry-${failedAttempts}`
           : payload.idempotency_key
 
         void idempotencyKey
-        await sendViaResend({
+        const providerResult = await sendViaResend({
           to: payload.to,
           from: payload.from,
           subject: payload.subject,
@@ -362,15 +364,24 @@ Deno.serve(async (req) => {
           text: payload.text,
           idempotencyKey: String(idempotencyKey || payload.message_id),
           unsubscribeToken,
+          replyTo: payload.reply_to,
+          threadHeaders: payload.headers,
         })
 
+        if (payload.headers) {
+          const { error: recordError } = await supabase.from('email_reply_items').update({ provider_email_id: providerResult.id }).eq('queue_message_id', payload.message_id)
+          if (recordError) throw recordError
+        }
+
         // Log success
-        await supabase.from('email_send_log').insert({
+        const { error: logError } = await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
           status: 'sent',
+          metadata: { provider_email_id: providerResult.id, subject: payload.subject },
         })
+        if (logError) throw logError
 
         // Delete from queue
         const { error: delError } = await supabase.rpc('delete_email', {
