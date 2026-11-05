@@ -44,7 +44,7 @@ const AdminLayout = ({ children, title, description }: AdminLayoutProps) => {
   return (
     <div className="min-h-screen flex bg-[#f8f9fb]">
       <AdminSidebar />
-      <main className="flex-1 ml-0 overflow-auto lg:ml-[260px]">
+      <main className="min-w-0 flex-1 ml-0 overflow-auto lg:ml-[260px]">
         <div className="mx-auto max-w-[1200px] px-4 py-5 pt-16 sm:px-6 lg:px-8 lg:pt-6 lg:py-6">
           {title && (
             <div className="mb-6 pl-16 lg:pl-0">

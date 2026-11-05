@@ -371,6 +371,8 @@ Deno.serve(async (req) => {
         if (payload.headers) {
           const { error: recordError } = await supabase.from('email_reply_items').update({ provider_email_id: providerResult.id }).eq('queue_message_id', payload.message_id)
           if (recordError) throw recordError
+          const { error: notificationError } = await supabase.from('email_reply_notifications').update({ provider_email_id: providerResult.id }).eq('queue_message_id', payload.message_id)
+          if (notificationError) throw notificationError
         }
 
         // Log success
