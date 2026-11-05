@@ -1,7 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.25.76';
-import { receivingReady } from '../_shared/email-reply-provider.ts';
-import { notificationAddresses } from '../_shared/email-reply-core.ts';
+import { directReplyAddresses } from '../_shared/email-reply-core.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -96,7 +95,6 @@ Deno.serve(async (req) => {
   try {
     const internal = req.headers.get('x-internal-key') === SERVICE_KEY;
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
-    let initiatorId: string | undefined;
     let initiatorEmail: string | undefined;
 
     if (!internal) {
@@ -107,7 +105,6 @@ Deno.serve(async (req) => {
       const { data: roleRow } = await admin.from('user_roles').select('role')
         .eq('user_id', userData.user.id).eq('role', 'admin').maybeSingle();
       if (!roleRow) return json({ error: 'Only admins can send emails from the Email Center.' }, 403);
-      initiatorId = userData.user.id;
       initiatorEmail = userData.user.email;
     }
 
@@ -120,13 +117,10 @@ Deno.serve(async (req) => {
       storedMessage = data;
       if (internal && data.created_by) {
         const { data: owner } = await admin.auth.admin.getUserById(data.created_by);
-        initiatorId = owner.user?.id;
         initiatorEmail = owner.user?.email;
       }
     }
-    const replySetup = await receivingReady(admin);
-    const notifyEmails = notificationAddresses(storedMessage?.reply_notification_emails ?? (initiatorEmail ? [initiatorEmail] : []));
-    if (replySetup.ready && !payload.testTo && !initiatorId) return json({ error: 'The conversation sender account could not be identified.' }, 400);
+    const replyAddresses = directReplyAddresses(storedMessage?.reply_notification_emails, initiatorEmail);
     if (!payload.subject?.trim()) return json({ error: 'Subject is required.' }, 400);
     if (!payload.bodyHtml?.trim()) return json({ error: 'Email body is required.' }, 400);
 
@@ -216,30 +210,9 @@ Deno.serve(async (req) => {
           label: payload.testTo ? 'email_center_test' : 'email_center',
           idempotency_key: messageId,
           queued_at: new Date().toISOString(),
+          reply_to: replyAddresses,
       };
-      let enqueueError: any;
-      if (replySetup.ready && !payload.testTo && initiatorId) {
-        let { data: thread, error: threadError } = await admin.from('email_reply_threads').select('*').eq('original_message_id', batchId).eq('participant_email', recipient).maybeSingle();
-        if (threadError) throw threadError;
-        if (!thread) {
-          const result = await admin.from('email_reply_threads').insert({ original_message_id: payload.messageId || null, owner_id: initiatorId, participant_email: recipient, subject: subjectPersonalized, notification_emails: notifyEmails }).select('*').single();
-          if (result.error) throw result.error;
-          thread = result.data;
-        }
-        if (!thread) throw new Error('Conversation could not be created.');
-        const rfcId = `<${crypto.randomUUID()}@raclogisticltd.com>`;
-        queuePayload.reply_to = `reply+${thread.route_token}@${replySetup.domain}`;
-        queuePayload.headers = { 'Message-ID': rfcId };
-        const result = await admin.rpc('queue_email_thread_item', {
-          _thread_id: thread.id,
-          _item: { sender_email: `${FROM_MAILBOX}@${FROM_DOMAIN}`, recipient_email: recipient, subject: subjectPersonalized, body_text: stripHtml(bodyPersonalized), body_html: html, rfc_message_id: rfcId, reference_ids: [] },
-          _payload: queuePayload,
-        });
-        enqueueError = result.error;
-      } else {
-        const result = await admin.rpc('enqueue_email', { queue_name: 'transactional_emails', payload: queuePayload });
-        enqueueError = result.error;
-      }
+      const { error: enqueueError } = await admin.rpc('enqueue_email', { queue_name: 'transactional_emails', payload: queuePayload });
 
       if (enqueueError) {
         failed++;
