@@ -1,8 +1,9 @@
 # Roadmap
 
 ## Mail Center email reply notifications
-- [ ] Switch to direct tagged Reply-To addresses without DNS; preserve tags in drafts and scheduled sends
-- [ ] Verify tagged-address persistence and outgoing reply destination
+- [x] Switch to direct tagged Reply-To arrays without DNS; drafts and scheduled sends use persisted addresses; both sending functions deployed
+- [x] Verify two tags persist through signed-in draft save/reload; 25 focused tests pass; verification draft removed
+- [ ] Confirm receipt of a real inbox reply — requires an approved external email and reply confirmation; no test email sent
 - [x] Audit existing sending, provider receiving capabilities, privacy, and thread storage
 - [x] Add authenticated conversation tracking and securely verified inbound reply processing; unsigned webhook rejected live
 - [x] Implement actual reply forwarding to configurable notification addresses with atomic queueing and duplicate prevention; inactive until receiving verification
