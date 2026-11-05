@@ -10,8 +10,8 @@
 - [x] Display incoming/outgoing history, recipient tags, and read status in the existing Mail Center; signed-in desktop/phone controls checked
 - [x] Automatic receiving/DNS setup superseded by requested direct inbox replies; unused tracking retained inactive
 
-## SMS international route
-- [x] Replace direct-refund with the provider-documented international route for all SMS sends; 11 regression tests pass and both SMS functions deployed
+## SMS direct-refund route
+- [x] Restore direct-refund instead of international for all BulkSMSNigeria sends; 14 regression tests passed
 - [ ] Confirm receipt on an affected phone — requires an approved test recipient and their receipt confirmation
 
 ## BulkSMSNigeria switch
