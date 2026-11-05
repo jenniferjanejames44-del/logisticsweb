@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Mail Center email reply notifications
-- [ ] Audit existing sending, provider receiving capabilities, privacy, and thread storage
+- [x] Audit existing sending, provider receiving capabilities, privacy, and thread storage
 - [ ] Add authenticated conversation tracking and securely verified inbound reply processing
 - [ ] Forward actual replies to the initiating account's registered inbox with duplicate prevention and delivery tracking
 - [ ] Display incoming/outgoing history and read status in the existing Mail Center
