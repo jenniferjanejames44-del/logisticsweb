@@ -1,5 +1,12 @@
 # Roadmap
 
+## Mail Center email reply notifications
+- [ ] Audit existing sending, provider receiving capabilities, privacy, and thread storage
+- [ ] Add authenticated conversation tracking and securely verified inbound reply processing
+- [ ] Forward actual replies to the initiating account's registered inbox with duplicate prevention and delivery tracking
+- [ ] Display incoming/outgoing history and read status in the existing Mail Center
+- [ ] Verify actual external reply reception and correct-account notification — requires receiving-domain/webhook configuration and approved inbox testing
+
 ## SMS international route
 - [x] Replace direct-refund with the provider-documented international route for all SMS sends; 11 regression tests pass and both SMS functions deployed
 - [ ] Confirm receipt on an affected phone — requires an approved test recipient and their receipt confirmation
