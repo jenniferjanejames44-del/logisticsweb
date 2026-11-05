@@ -635,6 +635,7 @@ export type Database = {
           error_message: string | null
           id: string
           item_id: string
+          provider_email_id: string | null
           queue_message_id: string
           recipient_email: string
           rfc_message_id: string
@@ -645,6 +646,7 @@ export type Database = {
           error_message?: string | null
           id?: string
           item_id: string
+          provider_email_id?: string | null
           queue_message_id: string
           recipient_email: string
           rfc_message_id: string
@@ -655,6 +657,7 @@ export type Database = {
           error_message?: string | null
           id?: string
           item_id?: string
+          provider_email_id?: string | null
           queue_message_id?: string
           recipient_email?: string
           rfc_message_id?: string

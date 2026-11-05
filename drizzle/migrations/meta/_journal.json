@@ -29,6 +29,13 @@
       "when": 1793897342163,
       "tag": "0003_email_reply_conversations",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793897570970,
+      "tag": "0004_email_reply_notification_delivery",
+      "breakpoints": true
     }
   ]
 }

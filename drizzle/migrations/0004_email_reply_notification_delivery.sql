@@ -1,0 +1,1 @@
+ALTER TABLE public.email_reply_notifications ADD COLUMN provider_email_id text UNIQUE;
